@@ -1,0 +1,212 @@
+#' Data Manipulation Function
+#' 
+#' This function takes the data and all the variables and expand and emulate it
+#' @param datatable A data.table
+#' @param keeplist A list contains names of variables used in final model
+#' @param outcomeCov_var A list of individual baseline variables used in final model
+#' @param cov_switchn List of covariates to be used in logistic model for switching probabilities for numerator model
+#' @param model_switchn List of models (functions) to use the covariates from cov_switchn
+#' @param class_switchn Class variables used in logistic model for nominator model
+#' @param cov_switchd List of covariates to be used in logistic model for switching probabilities for denominator model
+#' @param model_switchd List of models (functions) to use the covariates from cov_switchd
+#' @param class_switchd Class variables used in logistic model for denominator model
+#' @param first_period First period value to start expanding about
+#' @param last_period Last period value to expand about
+#' @param use_weight Use weights in analysis. If 0 then no weights will be calculated
+#' @param use_censor Use censoring for per-protocol analysis - censor person-times once a person-trial stops taking the initial treatment value
+#' @param check_missing Check for missing values in final model when use_censor=1 (Not added yet!)
+#' @param cense Censoring variable
+#' @param pool_cense Pool the numerator and denominator models (0: split models by previous treatment Am1 = 0 and Am1 = 1 as in treatment models and 1: pool all observations together into a single numerator and denominator model) Defaults to 0
+#' @param cov_censed List of covariates to be used in logistic model for censoring weights in denominator model
+#' @param model_censed List of models (functions) to use the covariates from cov_censed
+#' @param class_censed Class variables used in censoring logistic regression in denominator model
+#' @param cov_censen List of covariates to be used in logistic model for censoring weights in numerator model
+#' @param model_censen List of models (functions) to use the covariates from cov_censen
+#' @param class_censen Class variables used in censoring logistic regression in numerator model
+#' @param include_regime_length If defined as 1 a new variable (time_on_regime) is added to dataset - This variable stores the duration of time that the patient has been on the current treatment value
+#' @param eligible_wts_0 Eligibility criteria used in weights for model condition Am1 = 0
+#' @param eligible_wts_1 Eligibility criteria used in weights for model condition Am1 = 1
+#' @param lag_p_nosw when 1 this will set the first weight to be 1 and use p_nosw_d and p_nosw_n at followup-time (t-1) for calculating the weights at followup-time t - can be set to 0 which will increase the maximum and variance of weights (Defaults to 1)
+#' @param where_var Variables used in where conditions used in subsetting the data used in final analysis (where_case), the variables not included in the final model
+#' data_manipulation()
+
+data_manipulation <- function(datatable, keeplist, outcomeCov_var=NA,
+                              cov_switchn=NA, model_switchn=NA, 
+                              class_switchn=NA, cov_switchd=NA, 
+                              model_switchd=NA, class_switchd=NA,
+                              first_period=NA, last_period=NA,
+                              use_weight=0, use_censor=0, check_missing=0, 
+                              cense=NA, pool_cense=0, cov_censed=NA, 
+                              model_censed=NA, class_censed=NA,
+                              cov_censen=NA, model_censen=NA, class_censen=NA,
+                              include_regime_length=0, 
+                              eligible_wts_0=NA, eligible_wts_1=NA, 
+                              lag_p_nosw=1, where_var=NA){
+  
+  len = nrow(datatable)
+  len_id = length(unique(datatable[, id]))
+  
+  temp_data <- copy(datatable)
+  temp_data <- datatable[, .SD[.N], by=id]
+  temp_data[, time_of_event := 9999]
+  temp_data[(!is.na(outcome) & outcome == 1), 
+            time_of_event := as.double(period)]
+  temp_data = temp_data[, .(id, time_of_event)]
+  datatable = datatable[temp_data, on="id"]
+  
+  temp_data = datatable[, first:=!duplicated(datatable[, id])]
+  temp_data = temp_data[, am_1 := c(NA, treatment[-.N])]
+  temp_data[first == TRUE, cumA := 0]
+  temp_data[first == TRUE, am_1 := 0]
+  temp_data[first == TRUE, switch := 0]
+  temp_data[first == TRUE, regime_start := period]
+  temp_data[first == TRUE, time_on_regime := 0]
+  temp_data[first == TRUE, time_on_regime2 := 0]
+  
+  temp_data[(first == FALSE & am_1 != treatment), switch := 1 ]
+  temp_data[(first == FALSE & am_1 == treatment), switch := 0 ]
+  
+  temp_data[(first == FALSE & switch == 1), regime_start := period]
+  temp_data[, regime_start_shift := regime_start[1], .(cumsum(!is.na(regime_start)))]
+  temp_data[(first == FALSE & switch == 0), regime_start := regime_start_shift]
+  
+  temp_data[, regime_start_shift := shift(regime_start)]
+  temp_data[first == FALSE, time_on_regime := period - 
+              as.double(regime_start_shift)]
+  temp_data[first == FALSE, time_on_regime2 := time_on_regime ** 2]
+  
+  temp_data[first == TRUE, cumA := cumA + treatment]
+  temp_data[first == FALSE, cumA := treatment]
+  temp_data[, cumA := cumsum(cumA), by=id]
+  temp_data[, regime_start_shift := NULL]
+  
+  datatable = copy(temp_data)
+  
+  sw_data <- copy(datatable)
+  if(use_censor == 1){
+    sw_data[, started0 := as.numeric(NA)]
+    sw_data[, started1 := as.numeric(NA)]
+    sw_data[, stop0 := as.numeric(NA)]
+    sw_data[, stop1 := as.numeric(NA)]
+    sw_data[, eligible0_sw := as.numeric(NA)]
+    sw_data[, eligible1_sw := as.numeric(NA)]
+    sw_data[, delete := NA]
+    sw_data = censor_func(sw_data)
+    sw_data = sw_data[delete == FALSE]
+  }
+  
+  maxperiod = max(sw_data[, period])
+  minperiod = min(sw_data[, period])
+  
+  if(is.na(first_period)){
+    first_period = minperiod
+  }
+  if(is.na(last_period)){
+    last_period = maxperiod
+  }
+  
+  if(first_period > minperiod){
+    sw_data = sw_data[period >= first_period]
+  }
+  # need checking - it's not like SAS!
+  if(last_period < maxperiod){
+    sw_data = sw_data[period <= last_period]
+  }
+  
+  sw_data[, eligible0 := 0]
+  sw_data[, eligible1 := 0]
+  sw_data[am_1 == 0, eligible0 := 1]
+  sw_data[am_1 == 1, eligible1 := 1]
+  
+  # for weight = 1
+  if(use_weight == 1){
+    sw_data = weight_func(sw_data, cov_switchn, model_switchn, class_switchn,
+                          cov_switchd, model_switchd, class_switchd,
+                          eligible_wts_0, eligible_wts_1,
+                          cense, pool_cense, cov_censed, 
+                          model_censed, class_censed, cov_censen, 
+                          model_censen, class_censen, include_regime_length)
+  }else if(use_weight == 0){
+    sw_data[, wt := 1]
+  }
+  
+  range = (last_period - first_period) + 1
+  rm(datatable)
+  temp_data = data.table(id = sw_data[, id],
+                         period = sw_data[, period],
+                         switch = sw_data[, switch])
+  temp_data[, wtprod := 1.0, by=id][, elgcount := 0.0, by=id][, expand := 0.0, by=id]
+  temp_data[, treat := 0.0, by=id][, dosesum := 0.0, by=id]
+  temp_data[(sw_data[, eligible] == 1 & !is.na(sw_data[, treatment])),
+            expand := 1 , by=id]
+  sw_data[first == TRUE, weight0 := 1.0]
+  sw_data[, weight0 := cumprod(wt), by=id]
+  temp_data[, wtprod := sw_data[, weight0]]
+  temp_data[, treat := sw_data[, treatment]]
+  temp_data[, dosesum := sw_data[, cumA]]
+  temp_data[, elgcount := sw_data[, eligible]]
+  temp_data[sw_data[, eligible] == 1, init := sw_data[eligible == 1, treatment]]
+  temp_data[, init_shift := shift(sw_data[, treatment])]
+  temp_data[sw_data[, eligible] == 0, init := init_shift, by=id]
+  temp_data[, init_shift := NULL]
+  if(any(!is.na(outcomeCov_var))){
+    temp_data[, eval(outcomeCov_var) := sw_data[, ..outcomeCov_var]]
+  }
+  if(any(!is.na(where_var))){
+    temp_data[, eval(where_var) := sw_data[, ..where_var]]
+  }
+  switch_data = data.table(id = sw_data[, id])
+  switch_data = switch_data[rep(1:.N, sw_data[, period]+1)]
+  switch_data[, period_new := sw_data[rep(1:.N, period+1), period]]
+  switch_data[, cumA_new := sw_data[rep(1:.N, period+1), cumA]]
+  if(use_censor == 1){
+    switch_data[, switch_new := sw_data[rep(1:.N, period+1), switch]]
+  }else{
+    switch_data[, switch_new := 0]
+  }
+  switch_data[, outcome_new := sw_data[rep(1:.N, period+1), outcome]]
+  switch_data[, time_of_event := sw_data[rep(1:.N, period+1), time_of_event]]
+  switch_data[, weight0 := sw_data[rep(1:.N, period+1), weight0]]
+  switch_data[, for_period := for_period_func(sw_data)]
+  switch_data[, index := 1:nrow(switch_data)]
+  switch_data = switch_data[temp_data, on = .(id=id, for_period=period)]
+  setorder(switch_data, index)
+  switch_data[, for_period2 := for_period ** 2]
+  switch_data[, followup_time := period_new - for_period]
+  switch_data[, followup_time2 := followup_time **2]
+  if(use_censor == 0){
+    switch_data[, dose := cumA_new - dosesum + treat]
+    switch_data[, dose2 := dose ** 2]
+  }else{
+    switch_data[, treatment := init]
+  }
+  
+  switch_data[, expand := expand_func(.SD, (maxperiod-minperiod)+1, first_period), by=id]
+  
+  if(lag_p_nosw == 1){
+    switch_data[, weight := (weight0/wtprod)]
+  }else{
+    switch_data[ for_period == first_period, weight := weight0]
+    wtprod_shift = shift(switch_data[, wtprod])
+    switch_data[ for_period != first_period, weight := (weight0/wtprod_shift)]
+  }
+  switch_data[, case := 0]
+  if(use_censor == 0){
+    switch_data[(time_of_event == period_new & outcome_new == 1), case := 1]
+  }else{
+    switch_data[switch_new == 1, case := as.numeric(NA)]
+    switch_data[(switch_new == 0 & 
+                   time_of_event == period_new & outcome_new == 1), case := 1]
+  }
+  
+  setnames(switch_data, c("case"), c("outcome"))
+  setnames(switch_data, c("init"), c("assigned_treatment"))
+  switch_data = switch_data[expand == 1]
+  switch_data = switch_data[, ..keeplist]
+  rm(temp_data)
+  
+  return(list(switch_data = data.table(switch_data),
+              min_period = first_period,
+              max_period = last_period,
+              range =  range))
+}

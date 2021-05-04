@@ -1,0 +1,25 @@
+{
+    "id": "6FCB6DEB",
+    "path": "~/Desktop/cambridge_hpc/RandomisedTrialsEmulation/R/lr_utils.R",
+    "project_path": "lr_utils.R",
+    "type": "r_source",
+    "hash": "1297591390",
+    "contents": "",
+    "dirty": false,
+    "created": 1607426700759.0,
+    "source_on_save": false,
+    "relative_order": 2,
+    "properties": {
+        "tempName": "Untitled1",
+        "cursorPosition": "113,0",
+        "scrollLine": "60"
+    },
+    "folds": "6|36|14|0|\n24|64|29|0|\n37|25|55|0|\n64|49|84|0|\n92|18|105|0|\n114|47|135|0|\n",
+    "lastKnownWriteTime": 1607427511,
+    "encoding": "UTF-8",
+    "collab_server": "",
+    "source_window": "",
+    "last_content_update": 1607427511336,
+    "read_only": false,
+    "read_only_alternatives": []
+}

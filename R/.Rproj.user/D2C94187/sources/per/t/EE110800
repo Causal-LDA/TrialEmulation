@@ -1,0 +1,25 @@
+{
+    "id": "EE110800",
+    "path": "~/Desktop/cambridge_hpc/RandomisedTrialsEmulation/R/initiators.R",
+    "project_path": "initiators.R",
+    "type": "r_source",
+    "hash": "586580524",
+    "contents": "",
+    "dirty": false,
+    "created": 1607436106596.0,
+    "source_on_save": false,
+    "relative_order": 4,
+    "properties": {
+        "tempName": "Untitled1",
+        "cursorPosition": "51,14",
+        "scrollLine": "34"
+    },
+    "folds": "74|52|343|0|\n229|24|247|2|\n250|32|258|2|\n262|29|264|2|\n265|38|267|2|\n268|39|270|2|\n271|30|273|2|\n286|30|305|2|\n307|26|338|2|\n308|24|316|4|\n",
+    "lastKnownWriteTime": 1607437202,
+    "encoding": "UTF-8",
+    "collab_server": "",
+    "source_window": "",
+    "last_content_update": 1607437202558,
+    "read_only": false,
+    "read_only_alternatives": []
+}
