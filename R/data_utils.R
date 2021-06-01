@@ -76,7 +76,6 @@ read_data <- function(data_address, data_path=NA, id_num=NA,
                               c(id, period, outcome, eligible, treatment),
                               c("id", "period", "outcome", "eligible", "treatment")))
   })
-  data_new = data_new[eligible == 1]
   if(any(!is.na(eligible_wts_0))){
     setnames(data_new, c(eligible_wts_0), c("eligible_wts_0"))
   }
