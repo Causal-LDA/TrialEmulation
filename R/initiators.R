@@ -584,8 +584,8 @@ data_modelling <- function(id="id", period="period",
     suppressWarnings(out <- bigmemory::read.big.matrix(path, header = TRUE, type="double"))
   })
 
-  maxperiod = max(data_address[, "period"])
-  minperiod = min(data_address[, "period"])
+  max_period = max(data_address[, "period"])
+  min_period = min(data_address[, "period"])
 
   if(is.na(first_followup)){
     first_followup = 0
