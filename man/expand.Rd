@@ -13,7 +13,8 @@ expand(
   minperiod,
   lag_p_nosw,
   keeplist,
-  data_dir
+  data_dir,
+  separate_files
 )
 }
 \arguments{
@@ -34,6 +35,8 @@ expand(
 \item{keeplist}{A list contains names of variables used in final model}
 
 \item{data_dir}{Direction to save data}
+
+\item{separate_files}{Write to one file or one per trial}
 }
 \description{
 This function performs the data expansion for a given dataset

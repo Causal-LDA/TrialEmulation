@@ -162,12 +162,13 @@ robust_calculation <- function(model, data_id){
 #' @param lag_p_nosw when 1 this will set the first weight to be 1 and use p_nosw_d and p_nosw_n at followup-time (t-1) for calculating the weights at followup-time t - can be set to 0 which will increase the maximum and variance of weights (Defaults to 1)
 #' @param keeplist A list contains names of variables used in final model
 #' @param data_dir Direction to save data
+#' @param separate_files Write to one file or one per trial
 #' @import data.table
 
 expand <- function(sw_data,
                    outcomeCov_var, where_var,
                    use_censor, maxperiod, minperiod,
-                   lag_p_nosw, keeplist, data_dir){
+                   lag_p_nosw, keeplist, data_dir, separate_files){
 
   temp_data = data.table(id = sw_data[, id],
                          period = sw_data[, period],
@@ -244,7 +245,15 @@ expand <- function(sw_data,
   setnames(switch_data, c("init"), c("assigned_treatment"))
   switch_data = switch_data[expand == 1]
   switch_data = switch_data[, ..keeplist]
-  fwrite(switch_data, paste0(data_dir, "switch_data.csv"), append=TRUE, row.names=FALSE)
+
+  if(!separate_files){
+    fwrite(switch_data, file.path(data_dir, "switch_data.csv"), append=TRUE, row.names=FALSE)
+  } else if(separate_files) {
+    for(p in unique(switch_data[,"for_period"])[[1]]){
+      fwrite(switch_data[for_period==p,], file.path(data_dir, paste0("trial_",p,".csv")), append=TRUE, row.names=FALSE)
+    }
+  }
+
   rm(temp_data, switch_data)
   gc()
 }
@@ -276,7 +285,7 @@ expand_switch <- function(id_num, data_address,
     sw_data = as.data.table(d)
   }
   expand(sw_data, outcomeCov_var, where_var, use_censor, maxperiod, minperiod,
-         lag_p_nosw, keeplist, data_dir)
+         lag_p_nosw, keeplist, data_dir, separate_files=TRUE)
   rm(sw_data, d)
   gc()
 }
