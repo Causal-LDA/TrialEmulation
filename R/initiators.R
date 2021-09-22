@@ -185,12 +185,7 @@ initiators <- function(data_path, id="id", period="period",
 #' @param numCores Number of cores for parallel programming (default value is maximum cores and parallel programming)
 #' data_preparation()
 #' @export
-#' @import foreach
-#' @import doParallel
-#' @import parallel
-#' @import data.table
-#' @importFrom Rcpp sourceCpp
-#' @useDynLib RandomisedTrialsEmulation
+
 
 data_preparation <- function(data_path, id="id", period="period",
                              treatment="treatment", outcome="outcome",
@@ -547,12 +542,7 @@ data_preparation <- function(data_path, id="id", period="period",
 #' @param numCores Number of cores for parallel programming (default value is maximum cores and parallel programming)
 #' data_modelling()
 #' @export
-#' @import foreach
-#' @import doParallel
-#' @import parallel
-#' @import data.table
-#' @importFrom Rcpp sourceCpp
-#' @useDynLib RandomisedTrialsEmulation
+
 
 data_modelling <- function(id="id", period="period",
                            treatment="treatment", outcome="outcome",
