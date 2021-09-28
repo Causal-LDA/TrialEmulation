@@ -31,6 +31,10 @@ read_data <- function(data_address, data_path=NA, id_num=NA,
                       outcomeCov_var=NA,
                       cov_switchn=NA, cov_switchd=NA,
                       cov_censed=NA, cov_censen=NA, cense=NA, where_var=NA){
+
+  # Dummy variables used in data.table calls declared to prevent package check NOTES:
+  weight <- NULL
+
   covs <- c()
   if(any(!is.na(eligible_wts_0))){
     covs <- c(covs, eligible_wts_0)
@@ -105,6 +109,9 @@ f <- function(y){
 #' for_period_func()
 
 for_period_func <- function(x){
+  # Dummy variables used in data.table calls declared to prevent package check NOTES:
+  period <- id <- for_period <- NULL
+
   x_new = x[rep(1:.N, period+1), list(id, period)]
   x_new[, for_period := f(.BY), by=list(id, period)]
   return(x_new[, for_period])
@@ -142,6 +149,12 @@ weight_func <- function(sw_data, cov_switchn=NA, model_switchn=NA,
                         cov_censen=NA, model_censen=NA, class_censen=NA,
                         include_regime_length=0,
                         numCores=NA){
+
+  # Dummy variables used in data.table calls declared to prevent package check NOTES:
+  eligible0 <- eligible1 <- id <- period <- eligible0.y <- eligible1.y <- am_1 <-
+    treatment <- wt <- wtC <- p0_n <- p0_d <- p1_n <- p1_d <- pC_n0 <- pC_d0 <-
+    pC_n1 <- pC_d1 <- pC_n <- pC_d <- NULL
+
 
   if(include_regime_length == 1){
     model_switchd <- c(model_switchd, "time_on_regime", "time_on_regime2")

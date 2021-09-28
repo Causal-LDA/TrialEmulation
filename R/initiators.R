@@ -569,6 +569,9 @@ data_modelling <- function(id="id", period="period",
                            absolutePath="~/rds/hpc-work/switch_data.csv",
                            numCores=NA){
 
+  # Dummy variables used in data.table calls declared to prevent package check NOTES:
+  weight <- NULL
+
   path = normalizePath(paste0(data_dir, "sw_data.csv"))
   data_address = tryCatch({
     suppressWarnings(out <- bigmemory::read.big.matrix(path, header = TRUE, type="double"))

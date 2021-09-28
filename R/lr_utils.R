@@ -4,9 +4,13 @@
 #' @param switch_data The data.table with weight column
 
 p99_weight <- function(switch_data){
+  # Dummy variables used in data.table calls declared to prevent package check NOTES:
+  weight <- NULL
+
   p99 = quantile(switch_data[, weight],
                  prob=c(0.99, 0.1),
                  type = 1)
+
   len = nrow(switch_data)
   switch_data[weight > p99[1], weight := p99[1]]
   switch_data[weight < p99[2], weight := p99[2]]
@@ -21,6 +25,10 @@ p99_weight <- function(switch_data){
 #' @param upper_limit The user defined maximum possible weight
 
 limit_weight <- function(switch_data, lower_limit, upper_limit){
+
+  # Dummy variables used in data.table calls declared to prevent package check NOTES:
+  weight <- NULL
+
   len = nrow(switch_data)
   switch_data[weight > upper_limit, weight := upper_limit]
   switch_data[weight < lower_limit, weight := lower_limit]
@@ -107,6 +115,9 @@ case_control_func <- function(period_num, data_address, n_control=5,
 #' @param l A list contains the data with categorical feature determind if needed and logistic regression formula
 
 lr <- function(l){
+  # Dummy variables used in data.table calls declared to prevent package check NOTES:
+  weight <- id <- NULL
+
   d = l[[1]]
   regf = l[[2]]
 
@@ -128,6 +139,9 @@ lr <- function(l){
 #' @param data_id Values of column id of the data (data[, id])
 
 robust_calculation <- function(model, data_id){
+  # Dummy variables used in data.table calls declared to prevent package check NOTES:
+  lb <- estimate <- robust_se <- ub <- z <- p_value <- NULL
+
   est_temp = model$coefficients
   v = sandwich::vcovCL(model, cluster = data_id,
              type = NULL, sandwich = TRUE, fix = FALSE)
@@ -168,6 +182,13 @@ expand <- function(sw_data,
                    outcomeCov_var, where_var,
                    use_censor, maxperiod, minperiod,
                    lag_p_nosw, keeplist, data_dir){
+
+  # Dummy variables used in data.table calls declared to prevent package check NOTES:
+  id <- period <- wtprod <- elgcount <- treat <- dosesum <- eligible <- treatment <-
+    weight0 <- wt <- cumA <- init <- init_shift <- period_new <- cumA_new <- switch_new <-
+    outcome_new <- outcome <- time_of_event <- for_period <- index <- for_period2 <-
+    followup_time <- followup_time2 <- dose <- dose2 <- weight <- case <- NULL
+
 
   temp_data = data.table(id = sw_data[, id],
                          period = sw_data[, period],
