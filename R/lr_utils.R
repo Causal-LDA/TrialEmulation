@@ -96,7 +96,7 @@ case_control_func <- function(period_num, data_address, n_control=5,
   }
 
   new_d = rbindlist(m)
-  fwrite(new_d, paste0(data_dir, "temp_data.csv"), append=TRUE, row.names=FALSE)
+  fwrite(new_d, file.path(data_dir, "temp_data.csv"), append=TRUE, row.names=FALSE)
   rm(d_period, d, m, new_d)
   gc()
 }
@@ -244,7 +244,7 @@ expand <- function(sw_data,
   setnames(switch_data, c("init"), c("assigned_treatment"))
   switch_data = switch_data[expand == 1]
   switch_data = switch_data[, ..keeplist]
-  fwrite(switch_data, paste0(data_dir, "switch_data.csv"), append=TRUE, row.names=FALSE)
+  fwrite(switch_data, file.path(data_dir, "switch_data.csv"), append=TRUE, row.names=FALSE)
   rm(temp_data, switch_data)
   gc()
 }

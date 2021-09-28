@@ -131,7 +131,7 @@ data_manipulation <- function(data_address, data_path, keeplist,
     sw_data[, wt := 1]
   }
 
-  fwrite(sw_data, paste0(data_dir, "sw_data.csv"))
+  fwrite(sw_data, file.path(data_dir, "sw_data.csv"))
   rm(datatable, temp_data, sw_data)
   gc()
 }
