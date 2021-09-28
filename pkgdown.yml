@@ -2,7 +2,7 @@ pandoc: 2.7.3
 pkgdown: 1.6.1
 pkgdown_sha: ~
 articles: {}
-last_built: 2021-09-21T14:14Z
+last_built: 2021-09-28T14:59Z
 urls:
   reference: https://cam-roche.github.io/RandomisedTrialsEmulation/reference
   article: https://cam-roche.github.io/RandomisedTrialsEmulation/articles
