@@ -140,7 +140,7 @@ lr <- function(l){
 
 robust_calculation <- function(model, data_id){
   # Dummy variables used in data.table calls declared to prevent package check NOTES:
-  lb <- estimate <- robust_se <- ub <- z <- p_value <- NULL
+  lb <- estimate <- robust_se <- ub <- z <- p_value <- name <- std <- NULL
 
   est_temp = model$coefficients
   v = sandwich::vcovCL(model, cluster = data_id,
