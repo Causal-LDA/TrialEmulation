@@ -9,7 +9,7 @@ robust_calculation(model, data_id)
 \arguments{
 \item{model}{The Logistic Regression model}
 
-\item{data_id}{Values of column id of the data (data\link{, id})}
+\item{data_id}{Values of id column of the data (ie \code{data[, id]})}
 }
 \description{
 This function performs the calculation with Robust Standard Errors

@@ -4,9 +4,13 @@
 #' @param switch_data The data.table with weight column
 
 p99_weight <- function(switch_data){
+  # Dummy variables used in data.table calls declared to prevent package check NOTES:
+  weight <- NULL
+
   p99 = quantile(switch_data[, weight],
                  prob=c(0.99, 0.1),
                  type = 1)
+
   len = nrow(switch_data)
   switch_data[weight > p99[1], weight := p99[1]]
   switch_data[weight < p99[2], weight := p99[2]]
@@ -21,6 +25,10 @@ p99_weight <- function(switch_data){
 #' @param upper_limit The user defined maximum possible weight
 
 limit_weight <- function(switch_data, lower_limit, upper_limit){
+
+  # Dummy variables used in data.table calls declared to prevent package check NOTES:
+  weight <- NULL
+
   len = nrow(switch_data)
   switch_data[weight > upper_limit, weight := upper_limit]
   switch_data[weight < lower_limit, weight := lower_limit]
@@ -55,10 +63,13 @@ weight_lr <- function(l){
 #' Case Control Sampling Function
 #'
 #' This function apply case control sampling on the extended data
+#'
 #' @param period_num Period id
 #' @param data_address A data.table which is the extended version of input data
 #' @param n_control Number of controls in the case control sampling Defaults to 5
 #' @param numCores Number of cores for parallel programming
+#' @param data_dir Directory to write sampled data csv to
+#'
 
 case_control_func <- function(period_num, data_address, n_control=5,
                               data_dir="~/rds/hpc-work/",
@@ -107,6 +118,9 @@ case_control_func <- function(period_num, data_address, n_control=5,
 #' @param l A list contains the data with categorical feature determind if needed and logistic regression formula
 
 lr <- function(l){
+  # Dummy variables used in data.table calls declared to prevent package check NOTES:
+  weight <- id <- NULL
+
   d = l[[1]]
   regf = l[[2]]
 
@@ -125,9 +139,12 @@ lr <- function(l){
 #'
 #' This function performs the calculation with Robust Standard Errors
 #' @param model The Logistic Regression model
-#' @param data_id Values of column id of the data (data[, id])
+#' @param data_id Values of id column of the data (ie `data[, id]`)
 
 robust_calculation <- function(model, data_id){
+  # Dummy variables used in data.table calls declared to prevent package check NOTES:
+  lb <- estimate <- robust_se <- ub <- z <- p_value <- name <- std <- NULL
+
   est_temp = model$coefficients
   v = sandwich::vcovCL(model, cluster = data_id,
              type = NULL, sandwich = TRUE, fix = FALSE)
@@ -170,6 +187,13 @@ expand <- function(sw_data,
                    use_censor, maxperiod, minperiod,
                    lag_p_nosw, keeplist, data_dir, separate_files){
 
+  # Dummy variables used in data.table calls declared to prevent package check NOTES:
+  id <- period <- wtprod <- elgcount <- treat <- dosesum <- eligible <- treatment <-
+    weight0 <- wt <- cumA <- init <- init_shift <- period_new <- cumA_new <- switch_new <-
+    outcome_new <- outcome <- time_of_event <- for_period <- index <- for_period2 <-
+    followup_time <- followup_time2 <- dose <- dose2 <- weight <- case <- NULL
+
+
   temp_data = data.table(id = sw_data[, id],
                          period = sw_data[, period],
                          switch = sw_data[, switch])
@@ -189,12 +213,12 @@ expand <- function(sw_data,
   temp_data[, init_shift := NULL]
   if(any(!is.na(outcomeCov_var))){
     tryCatch({
-      suppressWarnings(temp_data[, eval(outcomeCov_var) := sw_data[, ..outcomeCov_var]])
+      suppressWarnings(temp_data[, eval(outcomeCov_var) := sw_data[, outcomeCov_var, with=FALSE]])
     })
 
   }
   if(any(!is.na(where_var))){
-    temp_data[, eval(where_var) := sw_data[, ..where_var]]
+    temp_data[, eval(where_var) := sw_data[, where_var, with=FALSE]]
   }
 
   switch_data = data.table(id = sw_data[, id])
@@ -211,7 +235,7 @@ expand <- function(sw_data,
   switch_data[, weight0 := sw_data[rep(1:.N, period+1), weight0]]
   switch_data[, for_period := for_period_func(sw_data)]
   switch_data[, index := 1:nrow(switch_data)]
-  switch_data = switch_data[temp_data, on = .(id=id, for_period=period)]
+  switch_data = switch_data[temp_data, on = list(id=id, for_period=period)]
   setorder(switch_data, index)
   switch_data[, for_period2 := for_period ** 2]
   switch_data[, followup_time := period_new - for_period]
@@ -255,6 +279,7 @@ expand <- function(sw_data,
   }
 
 rm(temp_data, switch_data)
+
   gc()
 }
 

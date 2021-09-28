@@ -31,6 +31,10 @@ read_data <- function(data_address, data_path=NA, id_num=NA,
                       outcomeCov_var=NA,
                       cov_switchn=NA, cov_switchd=NA,
                       cov_censed=NA, cov_censen=NA, cense=NA, where_var=NA){
+
+  # Dummy variables used in data.table calls declared to prevent package check NOTES:
+  weight <- NULL
+
   covs <- c()
   if(any(!is.na(eligible_wts_0))){
     covs <- c(covs, eligible_wts_0)
@@ -62,7 +66,7 @@ read_data <- function(data_address, data_path=NA, id_num=NA,
   covs <- covs[!duplicated(covs)]
   cols = c(id, period, treatment, outcome, eligible, covs)
   if(!is.na(id_num)){
-    data = data_address[mwhich(data_address, c("id"), c(id_num), c('eq')),]
+    data = data_address[bigmemory::mwhich(data_address, c("id"), c(id_num), c('eq')),]
   }else{
     data = fread(data_path, header = TRUE, sep = ",")
   }
@@ -105,8 +109,11 @@ f <- function(y){
 #' for_period_func()
 
 for_period_func <- function(x){
-  x_new = x[rep(1:.N, period+1), .(id, period)]
-  x_new[, for_period := f(.BY), by=.(id, period)]
+  # Dummy variables used in data.table calls declared to prevent package check NOTES:
+  period <- id <- for_period <- NULL
+
+  x_new = x[rep(1:.N, period+1), list(id, period)]
+  x_new[, for_period := f(.BY), by=list(id, period)]
   return(x_new[, for_period])
 }
 
@@ -142,6 +149,12 @@ weight_func <- function(sw_data, cov_switchn=NA, model_switchn=NA,
                         cov_censen=NA, model_censen=NA, class_censen=NA,
                         include_regime_length=0,
                         numCores=NA){
+
+  # Dummy variables used in data.table calls declared to prevent package check NOTES:
+  eligible0 <- eligible1 <- id <- period <- eligible0.y <- eligible1.y <- am_1 <-
+    treatment <- wt <- wtC <- p0_n <- p0_d <- p1_n <- p1_d <- pC_n0 <- pC_d0 <-
+    pC_n1 <- pC_d1 <- pC_n <- pC_d <- NULL
+
 
   if(include_regime_length == 1){
     model_switchd <- c(model_switchd, "time_on_regime", "time_on_regime2")
@@ -238,9 +251,9 @@ weight_func <- function(sw_data, cov_switchn=NA, model_switchn=NA,
                          id = model4$data[, id],
                          period = model4$data[, period])
 
-  switch_0 = switch_d0[switch_n0, on = .(id=id, period=period,
+  switch_0 = switch_d0[switch_n0, on = list(id=id, period=period,
                                          eligible0=eligible0)]
-  switch_1 = switch_d1[switch_n1, on = .(id=id, period=period,
+  switch_1 = switch_d1[switch_n1, on = list(id=id, period=period,
                                          eligible1=eligible1)]
 
   new_data = Reduce(function(x,y) merge(x, y,
@@ -379,8 +392,8 @@ weight_func <- function(sw_data, cov_switchn=NA, model_switchn=NA,
                              id = model4.cense$data[, id],
                              period = model4.cense$data[, period])
 
-      cense_0 = cense_d0[cense_n0, on = .(id=id, period=period)]
-      cense_1 = cense_d1[cense_n1, on = .(id=id, period=period)]
+      cense_0 = cense_d0[cense_n0, on = list(id=id, period=period)]
+      cense_1 = cense_d1[cense_n1, on = list(id=id, period=period)]
 
       new_data = Reduce(function(x,y) merge(x, y,
                                             by = c("id", "period"),
