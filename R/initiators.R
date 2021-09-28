@@ -538,7 +538,7 @@ data_preparation <- function(data_path, id="id", period="period",
 #' @param case_control Run the case control sampling or not Defaults to 0
 #' @param n_control Number of controls used in case control sampling Defaults to 5
 #' @param absolutePath Direction to where the data for modelling is saved
-#' @param data_dir
+#' @param data_dir Directory containing 'sw_data.csv'
 #' @param numCores Number of cores for parallel programming (default value is maximum cores and parallel programming)
 #' data_modelling()
 #' @export

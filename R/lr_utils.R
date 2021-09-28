@@ -63,10 +63,13 @@ weight_lr <- function(l){
 #' Case Control Sampling Function
 #'
 #' This function apply case control sampling on the extended data
+#'
 #' @param period_num Period id
 #' @param data_address A data.table which is the extended version of input data
 #' @param n_control Number of controls in the case control sampling Defaults to 5
 #' @param numCores Number of cores for parallel programming
+#' @param data_dir Directory to write sampled data csv to
+#'
 
 case_control_func <- function(period_num, data_address, n_control=5,
                               data_dir="~/rds/hpc-work/",
@@ -136,7 +139,7 @@ lr <- function(l){
 #'
 #' This function performs the calculation with Robust Standard Errors
 #' @param model The Logistic Regression model
-#' @param data_id Values of column id of the data (data[, id])
+#' @param data_id Values of id column of the data (ie `data[, id]`)
 
 robust_calculation <- function(model, data_id){
   # Dummy variables used in data.table calls declared to prevent package check NOTES:
