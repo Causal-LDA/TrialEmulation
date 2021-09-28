@@ -209,12 +209,12 @@ expand <- function(sw_data,
   temp_data[, init_shift := NULL]
   if(any(!is.na(outcomeCov_var))){
     tryCatch({
-      suppressWarnings(temp_data[, eval(outcomeCov_var) := sw_data[, ..outcomeCov_var]])
+      suppressWarnings(temp_data[, eval(outcomeCov_var) := sw_data[, outcomeCov_var, with=FALSE]])
     })
 
   }
   if(any(!is.na(where_var))){
-    temp_data[, eval(where_var) := sw_data[, ..where_var]]
+    temp_data[, eval(where_var) := sw_data[, where_var, with=FALSE]]
   }
 
   switch_data = data.table(id = sw_data[, id])
@@ -264,7 +264,7 @@ expand <- function(sw_data,
   setnames(switch_data, c("case"), c("outcome"))
   setnames(switch_data, c("init"), c("assigned_treatment"))
   switch_data = switch_data[expand == 1]
-  switch_data = switch_data[, ..keeplist]
+  switch_data = switch_data[, keeplist, with=FALSE]
   fwrite(switch_data, paste0(data_dir, "switch_data.csv"), append=TRUE, row.names=FALSE)
   rm(temp_data, switch_data)
   gc()
