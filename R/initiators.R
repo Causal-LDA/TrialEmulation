@@ -351,14 +351,14 @@ data_preparation <- function(data_path, id="id", period="period",
   print("processing time of data manipulation (Sys.time):")
   print(end - beg)
   print("------------end of first data manipulation!----------------")
-  absolutePath <- normalizePath(paste0(data_dir, "sw_data.csv"))
+  absolutePath <- normalizePath(file.path(data_dir, "sw_data.csv"))
 
   beg = Sys.time()
 
   df <- data.frame(matrix(ncol = length(keeplist), nrow = 0))
   colnames(df) <- keeplist
 
-  write.csv(df, paste0(data_dir, "switch_data.csv"), row.names=FALSE)
+  write.csv(df, file.path(data_dir, "switch_data.csv"), row.names=FALSE)
 
   if(numCores == 1){
     manipulate = tryCatch(
@@ -367,8 +367,8 @@ data_preparation <- function(data_path, id="id", period="period",
                      where_var, data_dir),
       error = function(err){
         gc()
-        file.remove(paste0(data_dir, "switch_data.csv"))
-        write.csv(df, paste0(data_dir, "switch_data.csv"), row.names=FALSE)
+        file.remove(file.path(data_dir, "switch_data.csv"))
+        write.csv(df, file.path(data_dir, "switch_data.csv"), row.names=FALSE)
         print("The memory is not enough to do the data extention without data division so performed in parallel programming fashion!")
         data = tryCatch({
           suppressWarnings(out <- bigmemory::read.big.matrix(absolutePath, header = TRUE, type="double"))
@@ -411,12 +411,12 @@ data_preparation <- function(data_path, id="id", period="period",
   rm(data, absolutePath)
   gc()
 
-  absolutePath <- normalizePath(paste0(data_dir, "switch_data.csv"))
+  absolutePath <- normalizePath(file.path(data_dir, "switch_data.csv"))
   data_address = tryCatch({
     suppressWarnings(out <- bigmemory::read.big.matrix(absolutePath, header = TRUE, shared=FALSE, type="double"))
   })
 
-  write.csv(df, paste0(data_dir, "temp_data.csv"), row.names=FALSE)
+  write.csv(df, file.path(data_dir, "temp_data.csv"), row.names=FALSE)
   # print("----------------------------------------------")
   # print("Analysis of weights for switching treatment:")
   # print(summary(switch_data[, weight]))
@@ -454,7 +454,7 @@ data_preparation <- function(data_path, id="id", period="period",
     end = Sys.time()
     print("processing time of case control (Sys.time):")
     print(end-beg)
-    absolutePath <- normalizePath(paste0(data_dir, "temp_data.csv"))
+    absolutePath <- normalizePath(file.path(data_dir, "temp_data.csv"))
   }else{
     if(nrow(data_address) >= 2^31 -1){
       print("Number of rows is more than R limit (2^31 -1) so we apply the case control sampling!")
@@ -473,9 +473,9 @@ data_preparation <- function(data_path, id="id", period="period",
                  data_dir=data_dir, numCores,
                  mc.cores=numCores)
       }
-      absolutePath <- normalizePath(paste0(data_dir, "temp_data.csv"))
+      absolutePath <- normalizePath(file.path(data_dir, "temp_data.csv"))
     }else{
-      absolutePath <- normalizePath(paste0(data_dir, "switch_data.csv"))
+      absolutePath <- normalizePath(file.path(data_dir, "switch_data.csv"))
     }
   }
 
@@ -571,10 +571,12 @@ data_modelling <- function(id="id", period="period",
                            absolutePath="~/rds/hpc-work/switch_data.csv",
                            numCores=NA){
 
+
   # Dummy variables used in data.table calls declared to prevent package check NOTES:
   weight <- NULL
 
-  path = normalizePath(paste0(data_dir, "sw_data.csv"))
+  path = normalizePath(file.path(data_dir, "sw_data.csv"))
+
   data_address = tryCatch({
     suppressWarnings(out <- bigmemory::read.big.matrix(path, header = TRUE, type="double"))
   })
