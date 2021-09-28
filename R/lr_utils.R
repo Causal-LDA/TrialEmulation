@@ -244,7 +244,7 @@ expand <- function(sw_data,
   setnames(switch_data, c("case"), c("outcome"))
   setnames(switch_data, c("init"), c("assigned_treatment"))
   switch_data = switch_data[expand == 1]
-  switch_data = switch_data[, ..keeplist]
+  switch_data = switch_data[, keeplist, with=FALSE]
 
   if(!separate_files){
     fwrite(switch_data, file.path(data_dir, "switch_data.csv"), append=TRUE, row.names=FALSE)
