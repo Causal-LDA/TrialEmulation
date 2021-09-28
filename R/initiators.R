@@ -542,6 +542,8 @@ data_preparation <- function(data_path, id="id", period="period",
 #' @param numCores Number of cores for parallel programming (default value is maximum cores and parallel programming)
 #' data_modelling()
 #' @export
+#' @importFrom stats as.formula binomial pnorm quantile relevel
+#' @importFrom utils write.csv
 
 
 data_modelling <- function(id="id", period="period",
