@@ -60,57 +60,7 @@ weight_lr <- function(l){
   return(model)
 }
 
-#' Case Control Sampling Function
-#'
-#' This function apply case control sampling on the extended data
-#'
-#' @param period_num Period id
-#' @param data_address A data.table which is the extended version of input data
-#' @param n_control Number of controls in the case control sampling Defaults to 5
-#' @param numCores Number of cores for parallel programming
-#' @param data_dir Directory to write sampled data csv to
-#'
 
-case_control_func <- function(period_num, data_address, n_control=5,
-                              data_dir="~/rds/hpc-work/",
-                              numCores=NA){
-  case_util <- function(data, n_control=5){
-    ### cases occurred at each period and follow-up visit
-    casedatajk<-data[data$outcome==1, ]
-    ### controls (still under follow-up and events haven't occurred) at each period and follow-up visit
-    controldatajk<-data[data$outcome==0, ]
-    dataall = NULL
-    ncase<-dim(casedatajk)[1]  ## number of cases
-    ncontrol<-dim(controldatajk)[1]  ## number of potential controls
-    if(ncase>0){
-      #cluster = 1  ## sampling cluster index
-      controlselect<-controldatajk[sample(1:ncontrol, n_control*ncase),]  ## sample 5 controls for each case without replacement
-      #casedatajk$strata<-cluster*100000+1:ncase    ## create index for each sampled case-control strata
-      #controlselect$strata<-cluster*100000+rep(1:ncase,each=5) ## create index for each sampled case-control strata
-      dataall<-rbind(casedatajk, controlselect) ## append sampled data
-    }
-    return(dataall)
-  }
-  d_period = data_address[bigmemory::mwhich(data_address, c("for_period"), c(period_num), c('eq')),]
-  d_period = as.data.table(d_period)
-  d = split(d_period, d_period$followup_time)
-
-  if(numCores == 1) {
-    # cl <- makeCluster(numCores)
-    # clusterExport(cl, "n_control", envir=environment())
-    # m = parLapply(cl, d, case_util, n_control)
-    # stopCluster(cl)
-    m = lapply(d, case_util, n_control)
-  } else {
-    m = mclapply(d, case_util, n_control=n_control,
-                 mc.cores=numCores)
-  }
-
-  new_d = rbindlist(m)
-  fwrite(new_d, file.path(data_dir, "temp_data.csv"), append=TRUE, row.names=FALSE)
-  rm(d_period, d, m, new_d)
-  gc()
-}
 
 #' Logistic Regression Function
 #'
