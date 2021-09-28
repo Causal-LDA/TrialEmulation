@@ -105,8 +105,8 @@ f <- function(y){
 #' for_period_func()
 
 for_period_func <- function(x){
-  x_new = x[rep(1:.N, period+1), .(id, period)]
-  x_new[, for_period := f(.BY), by=.(id, period)]
+  x_new = x[rep(1:.N, period+1), list(id, period)]
+  x_new[, for_period := f(.BY), by=list(id, period)]
   return(x_new[, for_period])
 }
 
@@ -238,9 +238,9 @@ weight_func <- function(sw_data, cov_switchn=NA, model_switchn=NA,
                          id = model4$data[, id],
                          period = model4$data[, period])
 
-  switch_0 = switch_d0[switch_n0, on = .(id=id, period=period,
+  switch_0 = switch_d0[switch_n0, on = list(id=id, period=period,
                                          eligible0=eligible0)]
-  switch_1 = switch_d1[switch_n1, on = .(id=id, period=period,
+  switch_1 = switch_d1[switch_n1, on = list(id=id, period=period,
                                          eligible1=eligible1)]
 
   new_data = Reduce(function(x,y) merge(x, y,
@@ -379,8 +379,8 @@ weight_func <- function(sw_data, cov_switchn=NA, model_switchn=NA,
                              id = model4.cense$data[, id],
                              period = model4.cense$data[, period])
 
-      cense_0 = cense_d0[cense_n0, on = .(id=id, period=period)]
-      cense_1 = cense_d1[cense_n1, on = .(id=id, period=period)]
+      cense_0 = cense_d0[cense_n0, on = list(id=id, period=period)]
+      cense_1 = cense_d1[cense_n1, on = list(id=id, period=period)]
 
       new_data = Reduce(function(x,y) merge(x, y,
                                             by = c("id", "period"),

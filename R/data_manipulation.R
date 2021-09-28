@@ -69,7 +69,7 @@ data_manipulation <- function(data_address, data_path, keeplist,
   temp_data[, time_of_event := 9999]
   temp_data[(!is.na(outcome) & outcome == 1),
             time_of_event := as.double(period)]
-  temp_data = temp_data[, .(id, time_of_event)]
+  temp_data = temp_data[, list(id, time_of_event)]
   datatable = datatable[temp_data, on="id"]
 
   temp_data = datatable[, first:=!duplicated(datatable[, id])]
@@ -85,7 +85,7 @@ data_manipulation <- function(data_address, data_path, keeplist,
   temp_data[(first == FALSE & am_1 == treatment), switch := 0 ]
 
   temp_data[(first == FALSE & switch == 1), regime_start := period]
-  temp_data[, regime_start_shift := regime_start[1], .(cumsum(!is.na(regime_start)))]
+  temp_data[, regime_start_shift := regime_start[1], list(cumsum(!is.na(regime_start)))]
   temp_data[(first == FALSE & switch == 0), regime_start := regime_start_shift]
 
   temp_data[, regime_start_shift := shift(regime_start)]
