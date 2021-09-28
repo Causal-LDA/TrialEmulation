@@ -109,7 +109,9 @@ data_manipulation(
 
 \item{where_var}{Variables used in where conditions used in subsetting the data used in final analysis (where_case), the variables not included in the final model}
 
-\item{data_dir}{Direction to save data
+\item{data_dir}{Direction to save data}
+
+\item{numCores}{Number of cores to be used for fitting weights (passed to \code{weight_func})
 data_manipulation()}
 }
 \description{

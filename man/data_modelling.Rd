@@ -152,6 +152,8 @@ data_modelling(
 
 \item{n_control}{Number of controls used in case control sampling Defaults to 5}
 
+\item{data_dir}{Directory containing 'sw_data.csv'}
+
 \item{absolutePath}{Direction to where the data for modelling is saved}
 
 \item{numCores}{Number of cores for parallel programming (default value is maximum cores and parallel programming)

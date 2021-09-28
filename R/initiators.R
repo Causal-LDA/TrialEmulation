@@ -538,10 +538,12 @@ data_preparation <- function(data_path, id="id", period="period",
 #' @param case_control Run the case control sampling or not Defaults to 0
 #' @param n_control Number of controls used in case control sampling Defaults to 5
 #' @param absolutePath Direction to where the data for modelling is saved
-#' @param data_dir
+#' @param data_dir Directory containing 'sw_data.csv'
 #' @param numCores Number of cores for parallel programming (default value is maximum cores and parallel programming)
 #' data_modelling()
 #' @export
+#' @importFrom stats as.formula binomial pnorm quantile relevel
+#' @importFrom utils write.csv
 
 
 data_modelling <- function(id="id", period="period",
@@ -569,7 +571,12 @@ data_modelling <- function(id="id", period="period",
                            absolutePath="~/rds/hpc-work/switch_data.csv",
                            numCores=NA){
 
+
+  # Dummy variables used in data.table calls declared to prevent package check NOTES:
+  weight <- NULL
+
   path = normalizePath(file.path(data_dir, "sw_data.csv"))
+
   data_address = tryCatch({
     suppressWarnings(out <- bigmemory::read.big.matrix(path, header = TRUE, type="double"))
   })
