@@ -96,7 +96,7 @@ case_control_func <- function(period_num, data_address, n_control=5,
   }
 
   new_d = rbindlist(m)
-  fwrite(new_d, paste0(data_dir, "temp_data.csv"), append=TRUE, row.names=FALSE)
+  fwrite(new_d, file.path(data_dir, "temp_data.csv"), append=TRUE, row.names=FALSE)
   rm(d_period, d, m, new_d)
   gc()
 }
@@ -254,7 +254,7 @@ expand <- function(sw_data,
     }
   }
 
-  rm(temp_data, switch_data)
+rm(temp_data, switch_data)
   gc()
 }
 
