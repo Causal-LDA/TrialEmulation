@@ -66,7 +66,7 @@ read_data <- function(data_address, data_path=NA, id_num=NA,
   covs <- covs[!duplicated(covs)]
   cols = c(id, period, treatment, outcome, eligible, covs)
   if(!is.na(id_num)){
-    data = data_address[mwhich(data_address, c("id"), c(id_num), c('eq')),]
+    data = data_address[bigmemory::mwhich(data_address, c("id"), c(id_num), c('eq')),]
   }else{
     data = fread(data_path, header = TRUE, sep = ",")
   }
