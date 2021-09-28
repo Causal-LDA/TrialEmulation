@@ -1,8 +1,7 @@
 Package: RandomisedTrialsEmulation
 Title: Design and analysis of target trial emulation on observational data.
 Version: 0.0.1.0
-Authors@R: 
-    c(
+Authors@R:  c(
         person(given = "Roonak",
                family = "Rezvani",
                role = "aut",
@@ -18,7 +17,7 @@ Authors@R:
                email = "li.su@mrc-bsu.cam.ac.uk")
      )
 Description: This R package is is designed to estimate intention-to-treat and per-protocol effects in emulated trials using electronic health records. The package applies the randomized clinical trials design and analysis to an observational setting.
-License: use_gpl3_license()
+License: GPL (>= 3)
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)
