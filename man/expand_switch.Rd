@@ -18,7 +18,7 @@ expand_switch(
 )
 }
 \arguments{
-\item{id_num}{Id number}
+\item{id_num}{Vector of Ids}
 
 \item{data_address}{Address for data read with bigmemory}
 

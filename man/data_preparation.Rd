@@ -54,7 +54,8 @@ data_preparation(
   case_control = 0,
   n_control = 5,
   data_dir = "~/rds/hpc-work/",
-  numCores = NA
+  numCores = NA,
+  chunk_size = 100
 )
 }
 \arguments{
@@ -156,7 +157,9 @@ data_preparation(
 
 \item{data_dir}{Direction to save data}
 
-\item{numCores}{Number of cores for parallel programming (default value is maximum cores and parallel programming)
+\item{numCores}{Number of cores for parallel programming (default value is maximum cores and parallel programming)}
+
+\item{chunk_size}{Number of ids to process at once when doing the expansion in parallel (default 100)
 data_preparation()}
 }
 \description{
