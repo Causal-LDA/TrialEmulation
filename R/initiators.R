@@ -183,6 +183,7 @@ initiators <- function(data_path, id="id", period="period",
 #' @param n_control Number of controls used in case control sampling Defaults to 5
 #' @param data_dir Direction to save data
 #' @param numCores Number of cores for parallel programming (default value is maximum cores and parallel programming)
+#' @param chunk_size Number of ids to process at once when doing the expansion in parallel (default 100)
 #' data_preparation()
 #' @export
 
@@ -209,7 +210,8 @@ data_preparation <- function(data_path, id="id", period="period",
                              where_var=NA, where_case=NA, run_base_model=1,
                              case_control=0, n_control=5,
                              data_dir="~/rds/hpc-work/",
-                             numCores=NA){
+                             numCores=NA,
+                             chunk_size = 100){
   if(is.na(model_var)){
     if(use_censor == 0){
       model_var = c("dose", "dose2")
@@ -375,7 +377,7 @@ data_preparation <- function(data_path, id="id", period="period",
         })
         data_extension_parallel(data, keeplist, outcomeCov_var,
                                 first_period, last_period, use_censor, lag_p_nosw,
-                                where_var, data_dir, numCores)
+                                where_var, data_dir, numCores, chunk_size = 1)
       }
     )
   }else{
@@ -388,7 +390,8 @@ data_preparation <- function(data_path, id="id", period="period",
                                          first_period, last_period,
                                          use_censor, lag_p_nosw,
                                          where_var, data_dir,
-                                         numCores)
+                                         numCores,
+                                         chunk_size = chunk_size)
   }
 
 
