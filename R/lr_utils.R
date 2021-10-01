@@ -246,7 +246,7 @@ expand <- function(sw_data,
     switch_data[, treatment := init]
   }
 
-  switch_data[expand == 1, expand := expand_func(.SD, minperiod), by=id]
+  switch_data[expand == 1, expand := expand_func(.SD, maxperiod, minperiod), by=id]
 
   if(lag_p_nosw == 1){
     switch_data[, weight := (weight0/wtprod)]
@@ -294,6 +294,8 @@ expand_switch <- function(id_num, data_address,
                           outcomeCov_var, where_var,
                           use_censor, maxperiod, minperiod,
                           lag_p_nosw, keeplist, data_dir){
+  print("id=")
+  print(id_num)
   d = data_address[bigmemory::mwhich(data_address, c("id"), c(id_num), c('eq')),]
   if(is.null(nrow(d))){
     sw_data = as.data.table(t(d))

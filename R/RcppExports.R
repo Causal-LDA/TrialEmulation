@@ -12,8 +12,8 @@ NULL
 #' @param sw_data A dataframe with the columns needed in censoring process
 NULL
 
-expand_func <- function(d, first_period) {
-    .Call('_RandomisedTrialsEmulation_expand_func', PACKAGE = 'RandomisedTrialsEmulation', d, first_period)
+expand_func <- function(d, last_period, first_period) {
+    .Call('_RandomisedTrialsEmulation_expand_func', PACKAGE = 'RandomisedTrialsEmulation', d, last_period, first_period)
 }
 
 censor_func <- function(sw_data) {

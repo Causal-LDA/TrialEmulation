@@ -7,9 +7,9 @@ using namespace Rcpp;
 //' @param first_period First period value to start expanding about
 
 // [[Rcpp::export(expand_func)]]
-Rcpp::IntegerVector expand_func(Rcpp::DataFrame& d, int first_period){
+Rcpp::IntegerVector expand_func(Rcpp::DataFrame& d, int last_period, int first_period){
   int n = d.nrows();
-  Rcpp::IntegerVector ex (n, 1);
+  Rcpp::IntegerVector ex (last_period, 1);
   Rcpp::IntegerVector expand (n, 1);
   Rcpp::IntegerVector t_period = d["for_period"];
   Rcpp::IntegerVector t_new = d["period_new"];
