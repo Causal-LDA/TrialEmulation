@@ -213,7 +213,7 @@ data_preparation <- function(data_path, id="id", period="period",
                              data_dir="~/rds/hpc-work/",
                              numCores=NA,
                              chunk_expansion = TRUE,
-                             chunk_size = 100){
+                             chunk_size = 500){
   if(is.na(model_var)){
     if(use_censor == 0){
       model_var = c("dose", "dose2")
