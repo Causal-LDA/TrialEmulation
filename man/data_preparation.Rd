@@ -56,7 +56,7 @@ data_preparation(
   data_dir = "~/rds/hpc-work/",
   numCores = NA,
   chunk_expansion = TRUE,
-  chunk_size = 100
+  chunk_size = 500
 )
 }
 \arguments{
