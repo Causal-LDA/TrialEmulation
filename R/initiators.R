@@ -333,72 +333,72 @@ data_preparation <- function(data_path, id="id", period="period",
   }
   keeplist <- c(keeplist, model_var)
 
-  beg = Sys.time()
 
-  data_manipulation(data, data_path, keeplist,
-                    treatment, id, period, outcome, eligible,
-                    outcomeCov_var,
-                    cov_switchn, model_switchn, class_switchn,
-                    cov_switchd, model_switchd, class_switchd,
-                    first_period, last_period,
-                    use_weight, use_censor, check_missing,
-                    cense, pool_cense, cov_censed, model_censed,
-                    class_censed, cov_censen, model_censen,
-                    class_censen,
-                    include_regime_length, eligible_wts_0,
-                    eligible_wts_1, lag_p_nosw, where_var, data_dir,
-                    numCores)
-
-  end = Sys.time()
-  print("processing time of data manipulation (Sys.time):")
-  print(end - beg)
-  print("------------end of first data manipulation!----------------")
+  print("Start data manipulation")
+  timing = system.time({
+    data_manipulation(data, data_path, keeplist,
+                      treatment, id, period, outcome, eligible,
+                      outcomeCov_var,
+                      cov_switchn, model_switchn, class_switchn,
+                      cov_switchd, model_switchd, class_switchd,
+                      first_period, last_period,
+                      use_weight, use_censor, check_missing,
+                      cense, pool_cense, cov_censed, model_censed,
+                      class_censed, cov_censen, model_censen,
+                      class_censen,
+                      include_regime_length, eligible_wts_0,
+                      eligible_wts_1, lag_p_nosw, where_var, data_dir,
+                      numCores)
+    })
+  print("Finish data manipulation")
+  print("Processing time of data manipulation:")
+  print(timing)
+  print("----------------------------")
   absolutePath <- normalizePath(file.path(data_dir, "sw_data.csv"))
 
-  beg = Sys.time()
+  print("Start data extention")
+  timing = system.time({
+    df <- data.frame(matrix(ncol = length(keeplist), nrow = 0))
+    colnames(df) <- keeplist
 
-  df <- data.frame(matrix(ncol = length(keeplist), nrow = 0))
-  colnames(df) <- keeplist
+    write.csv(df, file.path(data_dir, "switch_data.csv"), row.names=FALSE)
 
-  write.csv(df, file.path(data_dir, "switch_data.csv"), row.names=FALSE)
+    if(numCores == 1){
+      manipulate = tryCatch(
+        data_extension(absolutePath, keeplist, outcomeCov_var,
+                       first_period, last_period, use_censor, lag_p_nosw,
+                       where_var, data_dir),
+        error = function(err){
+          gc()
+          file.remove(file.path(data_dir, "switch_data.csv"))
+          write.csv(df, file.path(data_dir, "switch_data.csv"), row.names=FALSE)
+          print("The memory is not enough to do the data extention without data division so performed in parallel programming fashion!")
+          data = tryCatch({
+            suppressWarnings(out <- bigmemory::read.big.matrix(absolutePath, header = TRUE, type="double"))
+          })
+          data_extension_parallel(data, keeplist, outcomeCov_var,
+                                  first_period, last_period, use_censor, lag_p_nosw,
+                                  where_var, data_dir, numCores, chunk_size = 1)
+        }
+      )
+    }else{
+      data = tryCatch({
+        suppressWarnings(out <- bigmemory::read.big.matrix(absolutePath, header = TRUE, type="double"))
+      })
 
-  if(numCores == 1){
-    manipulate = tryCatch(
-      data_extension(absolutePath, keeplist, outcomeCov_var,
-                     first_period, last_period, use_censor, lag_p_nosw,
-                     where_var, data_dir),
-      error = function(err){
-        gc()
-        file.remove(file.path(data_dir, "switch_data.csv"))
-        write.csv(df, file.path(data_dir, "switch_data.csv"), row.names=FALSE)
-        print("The memory is not enough to do the data extention without data division so performed in parallel programming fashion!")
-        data = tryCatch({
-          suppressWarnings(out <- bigmemory::read.big.matrix(absolutePath, header = TRUE, type="double"))
-        })
-        data_extension_parallel(data, keeplist, outcomeCov_var,
-                                first_period, last_period, use_censor, lag_p_nosw,
-                                where_var, data_dir, numCores, chunk_size = 1)
-      }
-    )
-  }else{
-    data = tryCatch({
-      suppressWarnings(out <- bigmemory::read.big.matrix(absolutePath, header = TRUE, type="double"))
-    })
+      manipulate = data_extension_parallel(data, keeplist,
+                                           outcomeCov_var,
+                                           first_period, last_period,
+                                           use_censor, lag_p_nosw,
+                                           where_var, data_dir,
+                                           numCores, chunk_size = chunk_size)
+    }
+  })
+  peint("Finish data extention")
+  print("Processing time of data extention:")
+  print(timing)
+  print("----------------------------")
 
-    manipulate = data_extension_parallel(data, keeplist,
-                                         outcomeCov_var,
-                                         first_period, last_period,
-                                         use_censor, lag_p_nosw,
-                                         where_var, data_dir,
-                                         numCores,
-                                         chunk_size = chunk_size)
-  }
-
-
-  end = Sys.time()
-  print("processing time of second data manipulation with mclapply (Sys.time):")
-  print(end - beg)
-  print("------------end of second data manipulation!----------------")
 
   range <- manipulate$range
   min_period = manipulate$min_period
@@ -431,32 +431,34 @@ data_preparation <- function(data_path, id="id", period="period",
 
   if(case_control == 1){
     j = seq(min_period, max_period, 1)
-    beg = Sys.time()
-    if(numCores == 1) {
-      #cl <- makeCluster(numCores)
-      # clusterExport(cl,c("data_address", "n_control", "data_dir"),
-      #               envir=environment())
-      # parLapply(cl, j, case_control_func, data_address, n_control,
-      #                     data_dir)
-      # registerDoParallel(cl)
-      # foreach(id_num=j) %dopar% {
-      #   case_control_func(id_num, data_address=data_address,
-      #                     n_control=n_control,
-      #                     data_dir=data_dir)
-      # }
-      # stopCluster(cl)
-      lapply(j, case_control_func, data_address, n_control,
-             data_dir, numCores)
-    } else {
-      mclapply(j, case_control_func,
-               data_address=data_address, n_control=n_control,
-               data_dir=data_dir, numCores,
-               mc.cores=numCores)
-    }
-
-    end = Sys.time()
-    print("processing time of case control (Sys.time):")
-    print(end-beg)
+    print("Start case control sampling")
+    timing = system.time({
+      if(numCores == 1) {
+        #cl <- makeCluster(numCores)
+        # clusterExport(cl,c("data_address", "n_control", "data_dir"),
+        #               envir=environment())
+        # parLapply(cl, j, case_control_func, data_address, n_control,
+        #                     data_dir)
+        # registerDoParallel(cl)
+        # foreach(id_num=j) %dopar% {
+        #   case_control_func(id_num, data_address=data_address,
+        #                     n_control=n_control,
+        #                     data_dir=data_dir)
+        # }
+        # stopCluster(cl)
+        lapply(j, case_control_func, data_address, n_control,
+               data_dir, numCores)
+      } else {
+        mclapply(j, case_control_func,
+                 data_address=data_address, n_control=n_control,
+                 data_dir=data_dir, numCores,
+                 mc.cores=numCores)
+      }
+    })
+    print("Finish case control sampling")
+    print("Processing time of case control sampling:")
+    print(timing)
+    print("---------------------------")
     absolutePath <- normalizePath(file.path(data_dir, "temp_data.csv"))
   }else{
     if(nrow(data_address) >= 2^31 -1){
@@ -638,36 +640,32 @@ data_modelling <- function(id="id", period="period",
     )
   )
 
-  beg = Sys.time()
+  timing = system.time({
+    if(any(!is.na(where_case))){
+      d = list()
+      for(i in 1:length(where_case)){
+        d[[i]] = list(temp_data[eval(parse(text = where_case[i]))], regform)
+      }
+      if(numCores == 1) {
+        #cl <- makeCluster(numCores)
+        #m = parLapply(cl, d, lr)
+        m = lapply(d, lr)
+        #stopCluster(cl)
+      } else {
+        m = mclapply(d, lr, mc.cores=numCores)
+      }
 
-  if(any(!is.na(where_case))){
-    beg = Sys.time()
-    d = list()
-    for(i in 1:length(where_case)){
-      d[[i]] = list(temp_data[eval(parse(text = where_case[i]))], regform)
+      for(i in 1:length(where_case)){
+        print(paste("Analysis with", where_case[i], sep=" "))
+        print(summary(m[i]$model))
+        print(paste("Analysis with", where_case[i], "using robust variance", sep=" "))
+        print(m[i]$output)
+      }
     }
-    if(numCores == 1) {
-      #cl <- makeCluster(numCores)
-      #m = parLapply(cl, d, lr)
-      m = lapply(d, lr)
-      #stopCluster(cl)
-    } else {
-      m = mclapply(d, lr, mc.cores=numCores)
-    }
-
-    end = Sys.time()
-    print("-----------------------------------------------------")
-    print("processing time of modeling for where case analysis in total parallel (Sys.time):")
-    print(end - beg)
-
-    for(i in 1:length(where_case)){
-      print(paste("Analysis with", where_case[i], sep=" "))
-      print(summary(m[i]$model))
-      print(paste("Analysis with", where_case[i], "using robust variance", sep=" "))
-      print(m[i]$output)
-    }
-
-  }
+  })
+  print("------------------------------------")
+  print("Processing time of modeling for where case analysis in total parallel:")
+  print(timing)
 
   if(run_base_model == 1){
     if(use_weight == 1){
@@ -679,26 +677,27 @@ data_modelling <- function(id="id", period="period",
         temp_data[, weight] = 1
       }
     }
-    beg = Sys.time()
-    model.full = parglm::parglm(as.formula(regform), data=temp_data,
-                                weights=temp_data[, weight],
-                                family=binomial(link = "logit"),
-                                control=parglm::parglm.control(nthreads = 4, method='FAST'))
-    end = Sys.time()
+
+    timing = system.time({
+      model.full = parglm::parglm(as.formula(regform), data=temp_data,
+                                  weights=temp_data[, weight],
+                                  family=binomial(link = "logit"),
+                                  control=parglm::parglm.control(nthreads = 4, method='FAST'))
+    })
     print("Base Analysis")
     print(summary(model.full))
-    print("-----------------------------------------------------")
-    print("processing time of modeling for base analysis (Sys.time):")
-    print(end - beg)
+    print("-------------------------------------------------")
+    print("Processing time of modeling for base analysis:")
+    print(timing)
 
     print("Base Analysis with robust variance")
-    beg = Sys.time()
-    out = robust_calculation(model.full, temp_data[, id])
-    end = Sys.time()
+    timing = system.time({
+      out = robust_calculation(model.full, temp_data[, id])
+    })
     print(out)
-    print("-----------------------------------------------------")
-    print("processing time of getting the output and sandwitch with reduced switch data (Sys.time):")
-    print(end - beg)
+    print("----------------------------------------------")
+    print("Processing time of getting the output and sandwitch with reduced switch data:")
+    print(timing)
   }
 
   return(model.full)
