@@ -365,7 +365,8 @@ data_preparation <- function(data_path, id="id", period="period",
 
     write.csv(df, file.path(data_dir, "switch_data.csv"), row.names=FALSE)
 
-    if(!chunk_expansion){
+    if(!chunk_expansion && numCores == 1){
+      #doesn't want to do chunks or parallel threads, but might have to do chunks if not enough memory
       manipulate = tryCatch(
         data_extension(absolutePath, keeplist, outcomeCov_var,
                        first_period, last_period, use_censor, lag_p_nosw,
