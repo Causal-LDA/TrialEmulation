@@ -183,6 +183,8 @@ initiators <- function(data_path, id="id", period="period",
 #' @param n_control Number of controls used in case control sampling Defaults to 5
 #' @param data_dir Direction to save data
 #' @param numCores Number of cores for parallel programming (default value is maximum cores and parallel programming)
+#' @param chunk_expansion Do the expansion in chunks (and in parallel if numCores > 1). Turn this off if you have enough memory to expand the whole dataset at once. (default TRUE)
+#' @param chunk_size Number of ids to process at once for the chunk expansion (default 500). Larger chunk_sizes may be faster but require more memory.
 #' data_preparation()
 #' @export
 
@@ -209,7 +211,9 @@ data_preparation <- function(data_path, id="id", period="period",
                              where_var=NA, where_case=NA, run_base_model=1,
                              case_control=0, n_control=5,
                              data_dir="~/rds/hpc-work/",
-                             numCores=NA){
+                             numCores=NA,
+                             chunk_expansion = TRUE,
+                             chunk_size = 500){
   if(is.na(model_var)){
     if(use_censor == 0){
       model_var = c("dose", "dose2")
@@ -331,6 +335,7 @@ data_preparation <- function(data_path, id="id", period="period",
   }
   keeplist <- c(keeplist, model_var)
 
+
   print("Start data manipulation")
   timing = system.time({
     data_manipulation(data, data_path, keeplist,
@@ -353,14 +358,15 @@ data_preparation <- function(data_path, id="id", period="period",
   print("----------------------------")
   absolutePath <- normalizePath(file.path(data_dir, "sw_data.csv"))
 
-  print("Start data extention")
+  print("Start data extension")
   timing = system.time({
     df <- data.frame(matrix(ncol = length(keeplist), nrow = 0))
     colnames(df) <- keeplist
 
     write.csv(df, file.path(data_dir, "switch_data.csv"), row.names=FALSE)
 
-    if(numCores == 1){
+    if(!chunk_expansion && numCores == 1){
+      #doesn't want to do chunks or parallel threads, but might have to do chunks if not enough memory
       manipulate = tryCatch(
         data_extension(absolutePath, keeplist, outcomeCov_var,
                        first_period, last_period, use_censor, lag_p_nosw,
@@ -369,13 +375,13 @@ data_preparation <- function(data_path, id="id", period="period",
           gc()
           file.remove(file.path(data_dir, "switch_data.csv"))
           write.csv(df, file.path(data_dir, "switch_data.csv"), row.names=FALSE)
-          print("The memory is not enough to do the data extention without data division so performed in parallel programming fashion!")
+          print(paste0("The memory is not enough to do the data extention without data division so performed in chunks with numCores=1 and chunk_size=",chunk_size,"!"))
           data = tryCatch({
             suppressWarnings(out <- bigmemory::read.big.matrix(absolutePath, header = TRUE, type="double"))
           })
           data_extension_parallel(data, keeplist, outcomeCov_var,
                                   first_period, last_period, use_censor, lag_p_nosw,
-                                  where_var, data_dir, numCores)
+                                  where_var, data_dir, numCores = 1, chunk_size = chunk_size)
         }
       )
     }else{
@@ -388,13 +394,14 @@ data_preparation <- function(data_path, id="id", period="period",
                                            first_period, last_period,
                                            use_censor, lag_p_nosw,
                                            where_var, data_dir,
-                                           numCores)
+                                           numCores, chunk_size = chunk_size)
     }
   })
-  peint("Finish data extention")
-  print("Processing time of data extention:")
+  print("Finish data extension")
+  print("Processing time of data extension:")
   print(timing)
   print("----------------------------")
+
 
   range <- manipulate$range
   min_period = manipulate$min_period

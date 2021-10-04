@@ -156,6 +156,7 @@ data_manipulation <- function(data_address, data_path, keeplist,
 #' @param where_var Variables used in where conditions used in subsetting the data used in final analysis (where_case), the variables not included in the final model
 #' @param data_dir Direction to save data
 #' @param numCores Number of cores for parallel programming
+#' @param chunk_size Number of ids to expand in each chunk
 #' data_extension_parallel()
 
 data_extension_parallel <- function(data_address, keeplist, outcomeCov_var=NA,
@@ -163,7 +164,8 @@ data_extension_parallel <- function(data_address, keeplist, outcomeCov_var=NA,
                            use_censor=0,
                            lag_p_nosw=1, where_var=NA,
                            data_dir="~/rds/hpc-work/",
-                           numCores=NA){
+                           numCores=NA,
+                           chunk_size = 200){
   max_id = max(data_address[, "id"])
   maxperiod = max(data_address[, "period"])
   minperiod = min(data_address[, "period"])
@@ -176,7 +178,8 @@ data_extension_parallel <- function(data_address, keeplist, outcomeCov_var=NA,
   }
   range = (maxperiod - minperiod) + 1
 
-  j = seq(1, max_id, 1)
+  all_ids <- unique(data_address[, "id"])
+  j <- split(all_ids, ceiling(seq_along(all_ids)/chunk_size))
 
   mclapply(j, expand_switch, data_address=data_address,
            outcomeCov_var=outcomeCov_var, where_var=where_var,

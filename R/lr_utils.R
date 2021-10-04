@@ -237,7 +237,7 @@ rm(temp_data, switch_data)
 #' Expand Switch Function
 #'
 #' This function performs the data expansion for a chunk of data
-#' @param id_num Id number
+#' @param id_num Vector of Ids
 #' @param data_address Address for data read with bigmemory
 #' @param outcomeCov_var A list of individual baseline variables used in final model
 #' @param where_var Variables used in where conditions used in subsetting the data used in final analysis (where_case), the variables not included in the final model
@@ -253,9 +253,12 @@ expand_switch <- function(id_num, data_address,
                           outcomeCov_var, where_var,
                           use_censor, maxperiod, minperiod,
                           lag_p_nosw, keeplist, data_dir){
-  print("id=")
-  print(id_num)
-  d = data_address[bigmemory::mwhich(data_address, c("id"), c(id_num), c('eq')),]
+
+  d = data_address[bigmemory::mwhich(data_address,
+                                     cols = rep("id",length(id_num)),
+                                     vals = as.list(id_num),
+                                     comps = c('eq'),
+                                     op = "OR"),]
   if(is.null(nrow(d))){
     sw_data = as.data.table(t(d))
   }else{

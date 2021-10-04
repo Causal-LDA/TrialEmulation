@@ -14,7 +14,8 @@ data_extension_parallel(
   lag_p_nosw = 1,
   where_var = NA,
   data_dir = "~/rds/hpc-work/",
-  numCores = NA
+  numCores = NA,
+  chunk_size = 200
 )
 }
 \arguments{
@@ -36,7 +37,9 @@ data_extension_parallel(
 
 \item{data_dir}{Direction to save data}
 
-\item{numCores}{Number of cores for parallel programming
+\item{numCores}{Number of cores for parallel programming}
+
+\item{chunk_size}{Number of ids to expand in each chunk
 data_extension_parallel()}
 }
 \description{
