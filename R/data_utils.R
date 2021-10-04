@@ -87,6 +87,7 @@ read_data <- function(data_address, data_path=NA, id_num=NA,
     setnames(data_new, c(eligible_wts_1), c("eligible_wts_1"))
   }
   rm(data, covs, cols)
+  data_new = data_new[order(id)]
   return(data_new)
 }
 

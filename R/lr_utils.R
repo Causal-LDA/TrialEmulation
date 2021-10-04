@@ -246,7 +246,7 @@ expand <- function(sw_data,
     switch_data[, treatment := init]
   }
 
-  switch_data[expand == 1, expand := expand_func(.SD, (maxperiod-minperiod)+1, minperiod), by=id]
+  switch_data[expand == 1, expand := expand_func(.SD, maxperiod, minperiod), by=id]
 
   if(lag_p_nosw == 1){
     switch_data[, weight := (weight0/wtprod)]
