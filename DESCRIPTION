@@ -35,5 +35,6 @@ Imports:
     sandwich
 Suggests: 
     rmarkdown,
-    knitr
+    knitr,
+    rticles
 VignetteBuilder: knitr
