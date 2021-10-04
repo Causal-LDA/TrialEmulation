@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Expand Function — expand • RandomisedTrialsEmulation</title>
+<title>Sample cases utility function — case_util • RandomisedTrialsEmulation</title>
 
 
 <!-- jquery -->
@@ -39,8 +39,8 @@
 
 
 
-<meta property="og:title" content="Expand Function — expand" />
-<meta property="og:description" content="This function performs the data expansion for a given dataset" />
+<meta property="og:title" content="Sample cases utility function — case_util" />
+<meta property="og:description" content="Sample cases utility function" />
 
 
 
@@ -118,73 +118,33 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Expand Function</h1>
+    <h1>Sample cases utility function</h1>
     
-    <div class="hidden name"><code>expand.Rd</code></div>
+    <div class="hidden name"><code>case_util.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>This function performs the data expansion for a given dataset</p>
+    <p>Sample cases utility function</p>
     </div>
 
-    <pre class="usage"><span class='fu'>expand</span><span class='op'>(</span>
-  <span class='va'>sw_data</span>,
-  <span class='va'>outcomeCov_var</span>,
-  <span class='va'>where_var</span>,
-  <span class='va'>use_censor</span>,
-  <span class='va'>maxperiod</span>,
-  <span class='va'>minperiod</span>,
-  <span class='va'>lag_p_nosw</span>,
-  <span class='va'>keeplist</span>,
-  <span class='va'>data_dir</span>,
-  <span class='va'>separate_files</span>
-<span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>case_util</span><span class='op'>(</span><span class='va'>data</span>, n_control <span class='op'>=</span> <span class='fl'>5</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>sw_data</th>
-      <td><p>datatable to expand</p></td>
+      <th>data</th>
+      <td><p>Data to sample from</p></td>
     </tr>
     <tr>
-      <th>outcomeCov_var</th>
-      <td><p>A list of individual baseline variables used in final model</p></td>
-    </tr>
-    <tr>
-      <th>where_var</th>
-      <td><p>Variables used in where conditions used in subsetting the data used in final analysis (where_case), the variables not included in the final model</p></td>
-    </tr>
-    <tr>
-      <th>use_censor</th>
-      <td><p>Use censoring for per-protocol analysis - censor person-times once a person-trial stops taking the initial treatment value</p></td>
-    </tr>
-    <tr>
-      <th>maxperiod</th>
-      <td><p>Maximum period</p></td>
-    </tr>
-    <tr>
-      <th>minperiod</th>
-      <td><p>Minimum period</p></td>
-    </tr>
-    <tr>
-      <th>lag_p_nosw</th>
-      <td><p>when 1 this will set the first weight to be 1 and use p_nosw_d and p_nosw_n at followup-time (t-1) for calculating the weights at followup-time t - can be set to 0 which will increase the maximum and variance of weights (Defaults to 1)</p></td>
-    </tr>
-    <tr>
-      <th>keeplist</th>
-      <td><p>A list contains names of variables used in final model</p></td>
-    </tr>
-    <tr>
-      <th>data_dir</th>
-      <td><p>Direction to save data</p></td>
-    </tr>
-    <tr>
-      <th>separate_files</th>
-      <td><p>Write to one file or one per trial</p></td>
+      <th>n_control</th>
+      <td><p>Number of controls for each case</p></td>
     </tr>
     </table>
 
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
+
+    <p>A data frame with the cases and sampled controls</p>
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
