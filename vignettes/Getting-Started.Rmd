@@ -1,0 +1,94 @@
+---
+title: "Getting-Started"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Getting-Started}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+This package implements methods to analyse a sequence of target trials.
+
+The steps to do this are:
+
+ 1. create the data set with all the required variables
+ 2. fit models for censoring and calculate weights
+ 3. expand the data set, with records for each eligible patient for each trial period
+ 4. fit models for outcomes
+
+Some of the functions are inspired by the [INITIATORS SAS macro](https://causalab.sph.harvard.edu/software/).
+
+```{r setup}
+library(RandomisedTrialsEmulation)
+```
+
+
+There is an all-in-one function `initators()` which does all of the steps with one function call.
+
+Currently, datasets are handled with csv files[^csv]. 
+
+To get started a longitudinal dataset must be created and saved as a csv.
+This should have:
+ * time period
+ * patient identifier
+ * treatment indicator
+ * outcome indicator
+ * eligibility indicator for trial start in period
+ * other covariates relating to treatment, outcome, or censoring to be used in the models for weights or the outcome
+ 
+
+[^csv]: Saving the data to disk as csv allows us to use various techniques when the expanded data set becomes very large and no longer fit easily in memory.
+
+
+```{r}
+# Prepare the example data
+data("trial_example")
+
+working_dir <- file.path(tempdir(),"trial_emu") 
+dir.create(working_dir)
+data_path <- file.path(working_dir,"trial_example.csv")
+write.csv(trial_example, file=data_path)
+```
+
+
+```{r}
+initiators(data_path = data_path,
+           id="id",
+           period = "period",
+           eligible = "eligible",
+           treatment = "treatment",
+           outcome = "outcome",
+           model_var = "assigned_treatment",
+           outcomeCov_var = c("catvarA", "catvarB", "catvarC","nvarA","nvarB","nvarC"),
+           # outcomeClass = c("catvarA", "catvarB", "catvarC"),
+           numCores = 1,
+           data_dir = working_dir,
+           use_censor = 0,
+           use_weight = 0)
+```
+
+`initiators()` creates a few additional data files, depending on the selected options
+```{r}
+list.files(working_dir)
+```
+ 
+ * `sw_data` is created in the first step and contains all the necessary variables for the next steps
+ * `switch_data` is the extended data
+ 
+
+Instead of using `initiators()` it is possible to run each step individually with `data_preparation()`, `data_modelling()` etc.
+
+```{r, echo=FALSE}
+# clean up
+unlink(working_dir)
+```
+
+
+
