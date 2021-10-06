@@ -129,13 +129,13 @@ robust_calculation <- function(model, data_id){
 #' @param lag_p_nosw when 1 this will set the first weight to be 1 and use p_nosw_d and p_nosw_n at followup-time (t-1) for calculating the weights at followup-time t - can be set to 0 which will increase the maximum and variance of weights (Defaults to 1)
 #' @param keeplist A list contains names of variables used in final model
 #' @param data_dir Direction to save data
-#' @param separate_files Write to one file or one per trial
+#' @param separate_files Write to one file or one per trial (default FALSE)
 #' @import data.table
 
 expand <- function(sw_data,
                    outcomeCov_var, where_var,
                    use_censor, maxperiod, minperiod,
-                   lag_p_nosw, keeplist, data_dir, separate_files){
+                   lag_p_nosw, keeplist, data_dir, separate_files=FALSE){
 
   # Dummy variables used in data.table calls declared to prevent package check NOTES:
   id <- period <- wtprod <- elgcount <- treat <- dosesum <- eligible <- treatment <-
@@ -247,12 +247,13 @@ rm(temp_data, switch_data)
 #' @param lag_p_nosw when 1 this will set the first weight to be 1 and use p_nosw_d and p_nosw_n at followup-time (t-1) for calculating the weights at followup-time t - can be set to 0 which will increase the maximum and variance of weights (Defaults to 1)
 #' @param keeplist A list contains names of variables used in final model
 #' @param data_dir Direction to save data
+#' @param separate_files Write to one file or one per trial (default FALSE)
 #' @import data.table
 
 expand_switch <- function(id_num, data_address,
                           outcomeCov_var, where_var,
                           use_censor, maxperiod, minperiod,
-                          lag_p_nosw, keeplist, data_dir){
+                          lag_p_nosw, keeplist, data_dir, separate_files=FALSE){
 
   d = data_address[bigmemory::mwhich(data_address,
                                      cols = rep("id",length(id_num)),
@@ -265,7 +266,7 @@ expand_switch <- function(id_num, data_address,
     sw_data = as.data.table(d)
   }
   expand(sw_data, outcomeCov_var, where_var, use_censor, maxperiod, minperiod,
-         lag_p_nosw, keeplist, data_dir, separate_files=TRUE)
+         lag_p_nosw, keeplist, data_dir, separate_files)
   rm(sw_data, d)
   gc()
 }

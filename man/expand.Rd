@@ -14,7 +14,7 @@ expand(
   lag_p_nosw,
   keeplist,
   data_dir,
-  separate_files
+  separate_files = FALSE
 )
 }
 \arguments{
@@ -36,7 +36,7 @@ expand(
 
 \item{data_dir}{Direction to save data}
 
-\item{separate_files}{Write to one file or one per trial}
+\item{separate_files}{Write to one file or one per trial (default FALSE)}
 }
 \description{
 This function performs the data expansion for a given dataset

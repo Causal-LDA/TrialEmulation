@@ -15,7 +15,8 @@ data_extension_parallel(
   where_var = NA,
   data_dir = "~/rds/hpc-work/",
   numCores = NA,
-  chunk_size = 200
+  chunk_size = 200,
+  separate_files = FALSE
 )
 }
 \arguments{
@@ -39,7 +40,9 @@ data_extension_parallel(
 
 \item{numCores}{Number of cores for parallel programming}
 
-\item{chunk_size}{Number of ids to expand in each chunk
+\item{chunk_size}{Number of ids to expand in each chunk}
+
+\item{separate_files}{Write to one file or one per trial (default FALSE)
 data_extension_parallel()}
 }
 \description{

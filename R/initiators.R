@@ -51,6 +51,9 @@
 #' @param n_control Number of controls used in case control sampling Defaults to 5
 #' @param data_dir Direction to save data
 #' @param numCores Number of cores for parallel programming (default value is maximum cores and parallel programming)
+#' @param chunk_expansion Do the expansion in chunks (and in parallel if numCores > 1). Turn this off if you have enough memory to expand the whole dataset at once. (default TRUE)
+#' @param chunk_size Number of ids to process at once for the chunk expansion (default 500). Larger chunk_sizes may be faster but require more memory.
+#' @param separate_files Write to one file or one per trial (default FALSE)
 #' initiators()
 #' @export
 #' @import foreach
@@ -82,7 +85,8 @@ initiators <- function(data_path, id="id", period="period",
                        where_var=NA, where_case=NA, run_base_model=1,
                        case_control=0, n_control=5,
                        data_dir="~/rds/hpc-work/",
-                       numCores=NA){
+                       numCores=NA, chunk_expansion=TRUE,
+                       chunk_size=500, separate_files=FALSE){
 
   prep_result <- data_preparation(data_path, id, period, treatment, outcome,
                                   eligible, outcomeCov_var, outcomeCov,
@@ -102,7 +106,8 @@ initiators <- function(data_path, id="id", period="period",
                                   include_regime_length,
                                   eligible_wts_0, eligible_wts_1, lag_p_nosw,
                                   where_var, where_case, run_base_model,
-                                  case_control, n_control, data_dir, numCores)
+                                  case_control, n_control, data_dir, numCores,
+                                  chunk_expansion, chunk_size, separate_files)
 
   model_full <- data_modelling(id, period, treatment, outcome,
                                eligible, outcomeCov_var, outcomeCov,
@@ -185,6 +190,7 @@ initiators <- function(data_path, id="id", period="period",
 #' @param numCores Number of cores for parallel programming (default value is maximum cores and parallel programming)
 #' @param chunk_expansion Do the expansion in chunks (and in parallel if numCores > 1). Turn this off if you have enough memory to expand the whole dataset at once. (default TRUE)
 #' @param chunk_size Number of ids to process at once for the chunk expansion (default 500). Larger chunk_sizes may be faster but require more memory.
+#' @param separate_files Write to one file or one per trial (default FALSE)
 #' data_preparation()
 #' @export
 
@@ -212,8 +218,9 @@ data_preparation <- function(data_path, id="id", period="period",
                              case_control=0, n_control=5,
                              data_dir="~/rds/hpc-work/",
                              numCores=NA,
-                             chunk_expansion = TRUE,
-                             chunk_size = 500){
+                             chunk_expansion=TRUE,
+                             chunk_size=500,
+                             separate_files=FALSE){
   if(is.na(model_var)){
     if(use_censor == 0){
       model_var = c("dose", "dose2")
@@ -381,7 +388,8 @@ data_preparation <- function(data_path, id="id", period="period",
           })
           data_extension_parallel(data, keeplist, outcomeCov_var,
                                   first_period, last_period, use_censor, lag_p_nosw,
-                                  where_var, data_dir, numCores = 1, chunk_size = chunk_size)
+                                  where_var, data_dir, numCores,
+                                  chunk_size, separate_files)
         }
       )
     }else{
@@ -394,7 +402,7 @@ data_preparation <- function(data_path, id="id", period="period",
                                            first_period, last_period,
                                            use_censor, lag_p_nosw,
                                            where_var, data_dir,
-                                           numCores, chunk_size = chunk_size)
+                                           numCores, chunk_size, separate_files)
     }
   })
   print("Finish data extension")
@@ -417,10 +425,11 @@ data_preparation <- function(data_path, id="id", period="period",
   rm(data, absolutePath)
   gc()
 
-  absolutePath <- normalizePath(file.path(data_dir, "switch_data.csv"))
-  data_address = tryCatch({
-    suppressWarnings(out <- bigmemory::read.big.matrix(absolutePath, header = TRUE, shared=FALSE, type="double"))
-  })
+
+  # absolutePath <- normalizePath(file.path(data_dir, "switch_data.csv"))
+  # data_address = tryCatch({
+  #   suppressWarnings(out <- bigmemory::read.big.matrix(absolutePath, header = TRUE, shared=FALSE, type="double"))
+  # })
 
   write.csv(df, file.path(data_dir, "temp_data.csv"), row.names=FALSE)
   # print("----------------------------------------------")
@@ -433,57 +442,73 @@ data_preparation <- function(data_path, id="id", period="period",
   # print(sd(switch_data[, weight]))
 
   if(case_control == 1){
-    j = seq(min_period, max_period, 1)
-    print("Start case control sampling")
-    timing = system.time({
-      if(numCores == 1) {
-        #cl <- makeCluster(numCores)
-        # clusterExport(cl,c("data_address", "n_control", "data_dir"),
-        #               envir=environment())
-        # parLapply(cl, j, case_control_func, data_address, n_control,
-        #                     data_dir)
-        # registerDoParallel(cl)
-        # foreach(id_num=j) %dopar% {
-        #   case_control_func(id_num, data_address=data_address,
-        #                     n_control=n_control,
-        #                     data_dir=data_dir)
-        # }
-        # stopCluster(cl)
-        lapply(j, case_control_func, data_address, n_control,
-               data_dir, numCores)
-      } else {
-        mclapply(j, case_control_func,
-                 data_address=data_address, n_control=n_control,
-                 data_dir=data_dir, numCores,
-                 mc.cores=numCores)
-      }
-    })
-    print("Finish case control sampling")
-    print("Processing time of case control sampling:")
-    print(timing)
-    print("---------------------------")
-    absolutePath <- normalizePath(file.path(data_dir, "temp_data.csv"))
-  }else{
-    if(nrow(data_address) >= 2^31 -1){
-      print("Number of rows is more than R limit (2^31 -1) so we apply the case control sampling!")
-      if(numCores == 1) {
-        # cl <- makeCluster(numCores)
-        # clusterExport(cl,c("data_address", "n_control", "data_dir"),
-        #               envir=environment())
-        # parLapply(cl, j, case_control_func, data_address, n_control,
-        #           data_dir)
-        # stopCluster(cl)
-        lapply(j, case_control_func, data_address, n_control,
-               data_dir, numCores)
-      } else {
-        mclapply(j, case_control_func,
-                 data_address=data_address, n_control=n_control,
-                 data_dir=data_dir, numCores,
-                 mc.cores=numCores)
-      }
+    if(!separate_files){
+      absolutePath <- normalizePath(file.path(data_dir, "switch_data.csv"))
+      data_address = tryCatch({
+        suppressWarnings(out <- bigmemory::read.big.matrix(absolutePath, header = TRUE, shared=FALSE, type="double"))
+      })
+      j = seq(min_period, max_period, 1)
+      print("Start case control sampling")
+      timing = system.time({
+        if(numCores == 1) {
+          #cl <- makeCluster(numCores)
+          # clusterExport(cl,c("data_address", "n_control", "data_dir"),
+          #               envir=environment())
+          # parLapply(cl, j, case_control_func, data_address, n_control,
+          #                     data_dir)
+          # registerDoParallel(cl)
+          # foreach(id_num=j) %dopar% {
+          #   case_control_func(id_num, data_address=data_address,
+          #                     n_control=n_control,
+          #                     data_dir=data_dir)
+          # }
+          # stopCluster(cl)
+          lapply(j, case_control_func, data_address, n_control,
+                 data_dir, numCores)
+        } else {
+          mclapply(j, case_control_func,
+                   data_address=data_address, n_control=n_control,
+                   data_dir=data_dir, numCores,
+                   mc.cores=numCores)
+        }
+      })
+      print("Finish case control sampling")
+      print("Processing time of case control sampling:")
+      print(timing)
+      print("---------------------------")
       absolutePath <- normalizePath(file.path(data_dir, "temp_data.csv"))
     }else{
+      # Isaac: could you please add the case_control for when there is no switch_data and data is in separate files?
+    }
+  }else{
+    if(!separate_files){
       absolutePath <- normalizePath(file.path(data_dir, "switch_data.csv"))
+      data_address = tryCatch({
+        suppressWarnings(out <- bigmemory::read.big.matrix(absolutePath, header = TRUE, shared=FALSE, type="double"))
+      })
+      if(nrow(data_address) >= 2^31 -1){
+        print("Number of rows is more than R limit (2^31 -1) so we apply the case control sampling!")
+        if(numCores == 1) {
+          # cl <- makeCluster(numCores)
+          # clusterExport(cl,c("data_address", "n_control", "data_dir"),
+          #               envir=environment())
+          # parLapply(cl, j, case_control_func, data_address, n_control,
+          #           data_dir)
+          # stopCluster(cl)
+          lapply(j, case_control_func, data_address, n_control,
+                 data_dir, numCores)
+        } else {
+          mclapply(j, case_control_func,
+                   data_address=data_address, n_control=n_control,
+                   data_dir=data_dir, numCores,
+                   mc.cores=numCores)
+        }
+        absolutePath <- normalizePath(file.path(data_dir, "temp_data.csv"))
+      }else{
+        absolutePath <- normalizePath(file.path(data_dir, "switch_data.csv"))
+      }
+    }else{
+      # Isaac: could you please add the case_control for when there is no switch_data and data is in separate files?
     }
   }
 
@@ -602,6 +627,7 @@ data_modelling <- function(id="id", period="period",
   rm(path, data_address)
   gc()
 
+  # Isaac: if the data is in separate file what will happen here?
   data = tryCatch({
     suppressWarnings(out <- bigmemory::read.big.matrix(absolutePath, header=TRUE, shared=FALSE, type="double"))
   })
@@ -622,9 +648,14 @@ data_modelling <- function(id="id", period="period",
   }
 
   vars <- c()
-
   if(any(!is.na(model_var))){
     vars <- c(vars, model_var)
+  }else{
+    if(use_censor == 0){
+      vars <- c(vars, c("dose", "dose2"))
+    }else{
+      vars <- c(vars, "treatment")
+    }
   }
   if(include_followup_time_case == 1){
     vars <- c(vars, c("followup_time", "followup_time2"))
