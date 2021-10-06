@@ -36,6 +36,7 @@ Currently, datasets are handled with csv files[^csv].
 
 To get started a longitudinal dataset must be created and saved as a csv.
 This should have:
+
  * time period
  * patient identifier
  * treatment indicator
@@ -51,13 +52,14 @@ This should have:
 # Prepare the example data
 data("trial_example")
 
+# for the purposes of the vignette, we use a temporary directory, however it may be useful to use a permanent location in order to inspect the outputs later
 working_dir <- file.path(tempdir(),"trial_emu") 
 dir.create(working_dir)
 data_path <- file.path(working_dir,"trial_example.csv")
 write.csv(trial_example, file=data_path)
 ```
 
-
+Call the `initiators()` function to run the complete analysis:
 ```{r}
 initiators(data_path = data_path,
            id="id",
