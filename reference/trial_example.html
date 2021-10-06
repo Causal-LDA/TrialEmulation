@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Case Control Sampling Function — case_control_func • RandomisedTrialsEmulation</title>
+<title>Example of longitundinal data for randomised trial emulation — trial_example • RandomisedTrialsEmulation</title>
 
 
 <!-- jquery -->
@@ -39,8 +39,8 @@
 
 
 
-<meta property="og:title" content="Case Control Sampling Function — case_control_func" />
-<meta property="og:description" content="This function apply case control sampling on the extended data" />
+<meta property="og:title" content="Example of longitundinal data for randomised trial emulation — trial_example" />
+<meta property="og:description" content="A dataset containing the treatment, outcomes and other attributes of 503 patients for randomised trial emulation." />
 
 
 
@@ -118,47 +118,34 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Case Control Sampling Function</h1>
+    <h1>Example of longitundinal data for randomised trial emulation</h1>
     
-    <div class="hidden name"><code>case_control_func.Rd</code></div>
+    <div class="hidden name"><code>trial_example.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>This function apply case control sampling on the extended data</p>
+    <p>A dataset containing the treatment, outcomes and other attributes of 503 patients for randomised trial emulation.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>case_control_func</span><span class='op'>(</span>
-  <span class='va'>period_num</span>,
-  <span class='va'>data_address</span>,
-  n_control <span class='op'>=</span> <span class='fl'>5</span>,
-  data_dir <span class='op'>=</span> <span class='st'>"~/rds/hpc-work/"</span>,
-  numCores <span class='op'>=</span> <span class='cn'>NA</span>
-<span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'><a href='https://rdrr.io/r/utils/vignette.html'>vignette</a></span><span class='op'>(</span><span class='st'>"Getting-Started"</span><span class='op'>)</span></pre>
 
-    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
-    <table class="ref-arguments">
-    <colgroup><col class="name" /><col class="desc" /></colgroup>
-    <tr>
-      <th>period_num</th>
-      <td><p>Period id</p></td>
-    </tr>
-    <tr>
-      <th>data_address</th>
-      <td><p>A data.table which is the extended version of input data</p></td>
-    </tr>
-    <tr>
-      <th>n_control</th>
-      <td><p>Number of controls in the case control sampling Defaults to 5</p></td>
-    </tr>
-    <tr>
-      <th>data_dir</th>
-      <td><p>Directory to write sampled data csv to</p></td>
-    </tr>
-    <tr>
-      <th>numCores</th>
-      <td><p>Number of cores for parallel programming</p></td>
-    </tr>
-    </table>
+
+    <h2 class="hasAnchor" id="format"><a class="anchor" href="#format"></a>Format</h2>
+
+    <p>A data frame with 48400 rows and 11 variables:</p><dl>
+<dt>id</dt><dd><p>patient identifier</p></dd>
+<dt>eligible</dt><dd><p>eligible for trial start in this period, 1=yes, 0=no</p></dd>
+<dt>period</dt><dd><p>time period</p></dd>
+<dt>outcome</dt><dd><p>indicator for outcome in this period, 1=event occurred, 0=no event</p></dd>
+<dt>treatment</dt><dd><p>indicator for receiving treatment in this period, 1=treatment, 0=no treatment</p></dd>
+<dt>catvarA</dt><dd><p>A categorical variable relating to treatment and the outcome</p></dd>
+<dt>catvarB</dt><dd><p>A categorical variable relating to treatment and the outcome</p></dd>
+<dt>catvarC</dt><dd><p>A categorical variable relating to treatment and the outcome</p></dd>
+<dt>nvarA</dt><dd><p>A numerical variable relating to treatment and the outcome</p></dd>
+<dt>nvarB</dt><dd><p>A numerical variable relating to treatment and the outcome</p></dd>
+<dt>nvarC</dt><dd><p>A numerical variable relating to treatment and the outcome</p></dd>
+
+</dl>
 
 
   </div>

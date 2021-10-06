@@ -2,7 +2,7 @@ pandoc: 2.7.3
 pkgdown: 1.6.1
 pkgdown_sha: ~
 articles:
+  Getting-Started: Getting-Started.html
   JSS_Rmd/MyJSSArticle: MyJSSArticle.html
-  My_draft_vignette: My_draft_vignette.html
-last_built: 2021-10-06T08:17Z
+last_built: 2021-10-06T14:34Z
 
