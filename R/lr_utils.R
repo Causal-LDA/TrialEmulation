@@ -265,7 +265,7 @@ expand_switch <- function(id_num, data_address,
     sw_data = as.data.table(d)
   }
   expand(sw_data, outcomeCov_var, where_var, use_censor, maxperiod, minperiod,
-         lag_p_nosw, keeplist, data_dir, separate_files=TRUE)
+         lag_p_nosw, keeplist, data_dir, separate_files=FALSE)
   rm(sw_data, d)
   gc()
 }
