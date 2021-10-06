@@ -625,6 +625,12 @@ data_modelling <- function(id="id", period="period",
 
   if(any(!is.na(model_var))){
     vars <- c(vars, model_var)
+  }else{
+    if(use_censor == 0){
+      vars <- c(vars, c("dose", "dose2"))
+    }else{
+      vars <- c(vars, "treatment")
+    }
   }
   if(include_followup_time_case == 1){
     vars <- c(vars, c("followup_time", "followup_time2"))
