@@ -654,12 +654,21 @@ data_modelling <- function(id="id", period="period",
 
   vars <- c()
   if(any(!is.na(model_var))){
+    # if the model_var is not empty, we use the information provided by user
     vars <- c(vars, model_var)
   }else{
+    # if the model_var is empty, we provide the needed variables based on analysis type
     if(use_censor == 0){
-      vars <- c(vars, c("dose", "dose2"))
+      if(use_weight == 0){
+        # for ITT analysis
+        vars <- c(vars, "assigned_treatment")
+      }else{
+        # for as treated analysis
+        vars <- c(vars, c("dose", "dose2"))
+      }
     }else{
-      vars <- c(vars, "treatment")
+      # for per-protocol analysis
+      vars <- c(vars, "assigned_treatment")
     }
   }
   if(include_followup_time_case == 1){
