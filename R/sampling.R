@@ -1,3 +1,60 @@
+
+#' Case-control sampling from extended data
+#'
+#' @param data_dir Directory containing 'sw_data.csv' and "switch_data.csv"
+#' @param n_control Number of controls for each case to sample
+#' @param numCores Number of cores used by mclapply for sampling from each trial
+#'
+#' @export
+#'
+case_control_sampling <- function(data_dir, n_control, numCores=1){
+  print("Starting case-control sampling function")
+
+  # get the periods
+  print("Getting the periods")
+  timing <- system.time({
+    small_data <- fread(normalizePath(file.path(data_dir, "sw_data.csv")))
+    max_period = max(small_data[, "period"])
+    min_period = min(small_data[, "period"])
+  })
+  rm(small_data)
+  print("Finished getting the periods")
+  print(timing)
+  print("-------------------------")
+
+
+
+  # read the data:
+  print("Reading the expanded data")
+  timing <- system.time({
+    absolutePath <- normalizePath(file.path(data_dir, "switch_data.csv"))
+    data_address = tryCatch({
+      suppressWarnings(out <- bigmemory::read.big.matrix(absolutePath, header = TRUE, shared=FALSE, type="double"))
+    })
+  })
+  print("Finished reading the expanded data")
+  print(timing)
+  print("-------------------------")
+
+  for(i in seq_len(n_control)){
+
+    print("Starting the sampling")
+    timing <- system.time({
+      j = seq(min_period, max_period, 1)
+      mclapply(j, case_control_func,
+               data_address=data_address, n_control=n_control[i],
+               data_dir=data_dir,
+               name_csv = paste0("cc_sample_",i,"_1x",n_control[i],".csv"),
+               numCores=1,
+               mc.cores=numCores)
+    })
+    print("Finished sampling")
+    print(timing)
+    print("-------------------------")
+  }
+}
+
+
 #' Case Control Sampling Function
 #'
 #' This function apply case control sampling on the extended data
