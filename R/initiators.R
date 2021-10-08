@@ -449,7 +449,7 @@ print(paste0("Number of observations in expanded data: ",manipulate$N))
                                                 samples_file = "temp_data.csv",
                                                 min_period=min_period,
                                                 max_period = max_period,
-                                                n_control, numCores=1)
+                                                n_control, numCores=numCores)
 
       absolutePath <- normalizePath(sample_data_path)
 
@@ -466,7 +466,7 @@ print(paste0("Number of observations in expanded data: ",manipulate$N))
                                                   samples_file = "temp_data.csv",
                                                   min_period=min_period,
                                                   max_period = max_period,
-                                                  n_control, numCores=1)
+                                                  n_control, numCores=numCores)
 
         absolutePath <- normalizePath(sample_data_path)
 
