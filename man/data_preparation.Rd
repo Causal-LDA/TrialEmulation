@@ -56,7 +56,8 @@ data_preparation(
   data_dir = "~/rds/hpc-work/",
   numCores = NA,
   chunk_expansion = TRUE,
-  chunk_size = 500
+  chunk_size = 500,
+  separate_files = FALSE
 )
 }
 \arguments{
@@ -162,7 +163,9 @@ data_preparation(
 
 \item{chunk_expansion}{Do the expansion in chunks (and in parallel if numCores > 1). Turn this off if you have enough memory to expand the whole dataset at once. (default TRUE)}
 
-\item{chunk_size}{Number of ids to process at once for the chunk expansion (default 500). Larger chunk_sizes may be faster but require more memory.
+\item{chunk_size}{Number of ids to process at once for the chunk expansion (default 500). Larger chunk_sizes may be faster but require more memory.}
+
+\item{separate_files}{Write to one file or one per trial (default FALSE)
 data_preparation()}
 }
 \description{

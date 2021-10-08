@@ -157,6 +157,7 @@ data_manipulation <- function(data_address, data_path, keeplist,
 #' @param data_dir Direction to save data
 #' @param numCores Number of cores for parallel programming
 #' @param chunk_size Number of ids to expand in each chunk
+#' @param separate_files Write to one file or one per trial (default FALSE)
 #' data_extension_parallel()
 
 data_extension_parallel <- function(data_address, keeplist, outcomeCov_var=NA,
@@ -165,7 +166,8 @@ data_extension_parallel <- function(data_address, keeplist, outcomeCov_var=NA,
                            lag_p_nosw=1, where_var=NA,
                            data_dir="~/rds/hpc-work/",
                            numCores=NA,
-                           chunk_size = 200){
+                           chunk_size=200,
+                           separate_files=FALSE){
   max_id = max(data_address[, "id"])
   maxperiod = max(data_address[, "period"])
   minperiod = min(data_address[, "period"])
@@ -185,7 +187,7 @@ data_extension_parallel <- function(data_address, keeplist, outcomeCov_var=NA,
            outcomeCov_var=outcomeCov_var, where_var=where_var,
            use_censor=use_censor, maxperiod=maxperiod, minperiod=minperiod,
            lag_p_nosw=lag_p_nosw, keeplist=keeplist, data_dir=data_dir,
-           mc.cores=numCores)
+           mc.cores=numCores, separate_files=separate_files)
 
   gc()
 
@@ -206,13 +208,14 @@ data_extension_parallel <- function(data_address, keeplist, outcomeCov_var=NA,
 #' @param lag_p_nosw when 1 this will set the first weight to be 1 and use p_nosw_d and p_nosw_n at followup-time (t-1) for calculating the weights at followup-time t - can be set to 0 which will increase the maximum and variance of weights (Defaults to 1)
 #' @param where_var Variables used in where conditions used in subsetting the data used in final analysis (where_case), the variables not included in the final model
 #' @param data_dir Direction to save data
+#' @param separate_files Write to one file or one per trial (default FALSE)
 #' data_extension()
 
 data_extension <- function(data_path, keeplist, outcomeCov_var=NA,
                            first_period=NA, last_period=NA,
                            use_censor=0,
                            lag_p_nosw=1, where_var=NA,
-                           data_dir="~/rds/hpc-work/"){
+                           data_dir="~/rds/hpc-work/", separate_files=FALSE){
 
   # Dummy variables used in data.table calls declared to prevent package check NOTES:
   id <- period <- NULL
@@ -231,7 +234,7 @@ data_extension <- function(data_path, keeplist, outcomeCov_var=NA,
   range = (maxperiod - minperiod) + 1
 
   expand(sw_data, outcomeCov_var, where_var, use_censor, maxperiod, minperiod,
-         lag_p_nosw, keeplist, data_dir, separate_files = FALSE)
+         lag_p_nosw, keeplist, data_dir, separate_files)
 
   rm(sw_data)
   gc()

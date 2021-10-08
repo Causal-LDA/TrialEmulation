@@ -13,7 +13,8 @@ data_extension(
   use_censor = 0,
   lag_p_nosw = 1,
   where_var = NA,
-  data_dir = "~/rds/hpc-work/"
+  data_dir = "~/rds/hpc-work/",
+  separate_files = FALSE
 )
 }
 \arguments{
@@ -33,7 +34,9 @@ data_extension(
 
 \item{where_var}{Variables used in where conditions used in subsetting the data used in final analysis (where_case), the variables not included in the final model}
 
-\item{data_dir}{Direction to save data
+\item{data_dir}{Direction to save data}
+
+\item{separate_files}{Write to one file or one per trial (default FALSE)
 data_extension()}
 }
 \description{
