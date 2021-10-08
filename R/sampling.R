@@ -122,7 +122,7 @@ case_control_sampling_trials <- function(data_dir, n_control, numCores, samples_
 
   trial_files <- dir(path=data_dir, pattern = infile_pattern, full.names = TRUE)
 
-  if(length(samples_files) != length(n_control)){
+  if(length(samples_file) != length(n_control)){
     warning("Number of filenames and number of samples are not equal. Using first specified name and counter.")
     samples_file <- paste0(rep(sub(".csv","",samples_file[1]), length(n_control)),
                            "_",seq_along(n_control),".csv")
@@ -153,10 +153,10 @@ case_control_sampling_trials <- function(data_dir, n_control, numCores, samples_
   if(nrow(trial_samples_bind)>0){
     mapply(fwrite,
            split(trial_samples_bind, by = ".id", keep.by = FALSE),
-           file.path(data_dir, sample_files),
+           file.path(data_dir, samples_file),
            append=FALSE, row.names=FALSE)
 
-    return(file.path(data_dir, sample_files))
+    return(file.path(data_dir, samples_file))
   }
 }
 
@@ -179,10 +179,13 @@ case_util <- function(data, n_control=5){
   ncase<-dim(casedatajk)[1]  ## number of cases
   ncontrol<-dim(controldatajk)[1]  ## number of potential controls
   if(ncase>0){
-    #cluster = 1  ## sampling cluster index
-    controlselect<-controldatajk[sample(1:ncontrol, n_control*ncase),]  ## sample 5 controls for each case without replacement
-    #casedatajk$strata<-cluster*100000+1:ncase    ## create index for each sampled case-control strata
-    #controlselect$strata<-cluster*100000+rep(1:ncase,each=5) ## create index for each sampled case-control strata
+
+    if(ncontrol >= n_control*ncase) {
+      controlselect <- controldatajk[sample(1:ncontrol, n_control*ncase),] ## sample 5 controls for each case without replacement
+    } else{
+      controlselect <- controldatajk #TODO https://github.com/CAM-Roche/RandomisedTrialsEmulation/issues/20
+    }
+
     dataall<-rbind(casedatajk, controlselect) ## append sampled data
   }
   return(dataall)

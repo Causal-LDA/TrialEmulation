@@ -8,7 +8,7 @@ case_control_sampling_trials(
   data_dir,
   n_control,
   numCores,
-  name_prefix = "cc_sample_",
+  samples_file = "sample_data.csv",
   infile_pattern = "trial_",
   subset_condition
 )
@@ -20,7 +20,7 @@ case_control_sampling_trials(
 
 \item{numCores}{Number of cores for parallel processing}
 
-\item{name_prefix}{Name of output csv files for each case-control sample, in the form \code{paste0(name_prefix,seq_along(n_control),"_1x",n_control,".csv")}}
+\item{samples_file}{Name of output csv files for each case-control sample. eg \code{paste0("samples_",seq_along(n_control),"_1x",n_control,".csv")}}
 
 \item{infile_pattern}{Name of trial dataset csv files. This is passed to the \code{pattern} argument of \code{dir()}}
 

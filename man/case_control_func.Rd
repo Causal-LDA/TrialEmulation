@@ -9,6 +9,7 @@ case_control_func(
   data_address,
   n_control = 5,
   data_dir = "~/rds/hpc-work/",
+  name_csv = "sample_data.csv",
   numCores = NA
 )
 }
@@ -20,6 +21,8 @@ case_control_func(
 \item{n_control}{Number of controls in the case control sampling Defaults to 5}
 
 \item{data_dir}{Directory to write sampled data csv to}
+
+\item{name_csv}{File name for the sampled data csv file}
 
 \item{numCores}{Number of cores for parallel programming}
 }

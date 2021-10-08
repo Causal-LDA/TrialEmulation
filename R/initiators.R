@@ -464,11 +464,13 @@ data_preparation <- function(data_path, id="id", period="period",
           # }
           # stopCluster(cl)
           lapply(j, case_control_func, data_address, n_control,
-                 data_dir, numCores)
+                 data_dir, name_csv = "temp_data.csv",
+                 numCores = numCores)
         } else {
           mclapply(j, case_control_func,
                    data_address=data_address, n_control=n_control,
-                   data_dir=data_dir, numCores,
+                   data_dir=data_dir, name_csv = "temp_data.csv",
+                   numCores = numCores,
                    mc.cores=numCores)
         }
       })
@@ -478,7 +480,7 @@ data_preparation <- function(data_path, id="id", period="period",
       print("---------------------------")
       absolutePath <- normalizePath(file.path(data_dir, "temp_data.csv"))
     }else{
-      sample_data_path <- case_control_sampling_trials(data_dir, n_control, numCores, samples_file="sample_data.csv", infile_pattern = "trial_")
+      sample_data_path <- case_control_sampling_trials(data_dir, n_control, numCores, samples_file="temp_data.csv", infile_pattern = "trial_")
       absolutePath <- normalizePath(sample_data_path)
     }
   }else{
@@ -509,8 +511,8 @@ data_preparation <- function(data_path, id="id", period="period",
         absolutePath <- normalizePath(file.path(data_dir, "switch_data.csv"))
       }
     }else{
-      warning("Separate trial files used but case control sampling not specified. Sampling will be done anyway!")
-      sample_data_path <- case_control_sampling_trials(data_dir, n_control, numCores, samples_file="sample_data.csv", infile_pattern = "trial_")
+      print("Separate trial files used but case control sampling not specified. Sampling will be done anyway!")
+      sample_data_path <- case_control_sampling_trials(data_dir, n_control, numCores, samples_file="temp_data.csv", infile_pattern = "trial_")
       absolutePath <- normalizePath(sample_data_path)
     }
   }
