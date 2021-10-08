@@ -479,6 +479,7 @@ data_preparation <- function(data_path, id="id", period="period",
       absolutePath <- normalizePath(file.path(data_dir, "temp_data.csv"))
     }else{
       # Isaac: could you please add the case_control for when there is no switch_data and data is in separate files?
+      case_control_sampling_trials(data_dir, n_control, numCores, name_prefix="temp_data.csv", infile_pattern = "trial_")
     }
   }else{
     if(!separate_files){
