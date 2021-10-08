@@ -4,24 +4,28 @@
 #' @param data_dir Directory containing 'sw_data.csv' and "switch_data.csv"
 #' @param n_control Number of controls for each case to sample
 #' @param numCores Number of cores used by mclapply for sampling from each trial
+#' @param min_period First trial period to sample from
+#' @param max_period Last trial period to sample from
 #'
 #' @export
 #'
-case_control_sampling <- function(data_dir, n_control, numCores=1){
+case_control_sampling <- function(data_dir, min_period, max_period, n_control, numCores=1){
   print("Starting case-control sampling function")
 
-  # get the periods
-  print("Getting the periods")
-  timing <- system.time({
-    small_data <- fread(normalizePath(file.path(data_dir, "sw_data.csv")))
-    max_period = max(small_data[, "period"])
-    min_period = min(small_data[, "period"])
-  })
-  rm(small_data)
-  print("Finished getting the periods")
-  print(timing)
-  print("-------------------------")
 
+  if(missing(min_period)|missing(max_period)){
+    # get the periods
+    print("Getting the periods")
+    timing <- system.time({
+      small_data <- fread(normalizePath(file.path(data_dir, "sw_data.csv")))
+      max_period = max(small_data[, "period"])
+      min_period = min(small_data[, "period"])
+    })
+    rm(small_data)
+    print("Finished getting the periods")
+    print(timing)
+    print("-------------------------")
+  }
 
 
   # read the data:
