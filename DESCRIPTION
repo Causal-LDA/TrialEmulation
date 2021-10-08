@@ -38,3 +38,5 @@ Suggests:
     knitr,
     rticles
 VignetteBuilder: knitr
+Depends: 
+    R (>= 2.10)
