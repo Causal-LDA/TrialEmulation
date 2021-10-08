@@ -179,7 +179,8 @@
   data_dir <span class='op'>=</span> <span class='st'>"~/rds/hpc-work/"</span>,
   numCores <span class='op'>=</span> <span class='cn'>NA</span>,
   chunk_expansion <span class='op'>=</span> <span class='cn'>TRUE</span>,
-  chunk_size <span class='op'>=</span> <span class='fl'>500</span>
+  chunk_size <span class='op'>=</span> <span class='fl'>500</span>,
+  separate_files <span class='op'>=</span> <span class='cn'>FALSE</span>
 <span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -391,7 +392,11 @@
     </tr>
     <tr>
       <th>chunk_size</th>
-      <td><p>Number of ids to process at once for the chunk expansion (default 500). Larger chunk_sizes may be faster but require more memory.
+      <td><p>Number of ids to process at once for the chunk expansion (default 500). Larger chunk_sizes may be faster but require more memory.</p></td>
+    </tr>
+    <tr>
+      <th>separate_files</th>
+      <td><p>Write to one file or one per trial (default FALSE)
 data_preparation()</p></td>
     </tr>
     </table>

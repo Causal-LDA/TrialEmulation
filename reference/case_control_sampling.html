@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Case-control sampling from extended data — case_control_sampling • RandomisedTrialsEmulationChunks</title>
+<title>Case-control sampling from extended data — case_control_sampling • RandomisedTrialsEmulation</title>
 
 
 <!-- jquery -->
@@ -71,8 +71,8 @@
         <span class="icon-bar"></span>
       </button>
       <span class="navbar-brand">
-        <a class="navbar-link" href="../index.html">RandomisedTrialsEmulationChunks</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.1.4</span>
+        <a class="navbar-link" href="../index.html">RandomisedTrialsEmulation</a>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.1.0</span>
       </span>
     </div>
 
@@ -86,6 +86,21 @@
 </li>
 <li>
   <a href="../reference/index.html">Reference</a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Articles
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="../articles/Getting-Started.html">Getting-Started</a>
+    </li>
+    <li>
+      <a href="../articles/JSS_Rmd/MyJSSArticle.html">A Capitalized Title: Something about a Package \pkg{foo}</a>
+    </li>
+  </ul>
 </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
@@ -112,14 +127,33 @@
     <p>Case-control sampling from extended data</p>
     </div>
 
-    <pre class="usage"><span class='fu'>case_control_sampling</span><span class='op'>(</span><span class='va'>data_dir</span>, <span class='va'>n_control</span>, numCores <span class='op'>=</span> <span class='fl'>1</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>case_control_sampling</span><span class='op'>(</span>
+  <span class='va'>data_dir</span>,
+  samples_file <span class='op'>=</span> <span class='st'>"sample_data.csv"</span>,
+  <span class='va'>min_period</span>,
+  <span class='va'>max_period</span>,
+  <span class='va'>n_control</span>,
+  numCores <span class='op'>=</span> <span class='fl'>1</span>
+<span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>data_dir</th>
-      <td><p>Directory to read 'sw_data.csv' from</p></td>
+      <td><p>Directory containing 'sw_data.csv' and "switch_data.csv"</p></td>
+    </tr>
+    <tr>
+      <th>samples_file</th>
+      <td><p>CSV file name for the  sampled data. Should be the same length as n_control.</p></td>
+    </tr>
+    <tr>
+      <th>min_period</th>
+      <td><p>First trial period to sample from</p></td>
+    </tr>
+    <tr>
+      <th>max_period</th>
+      <td><p>Last trial period to sample from</p></td>
     </tr>
     <tr>
       <th>n_control</th>
@@ -143,7 +177,7 @@
 
       <footer>
       <div class="copyright">
-  <p>Developed by Roonak R, Isaac Gravestock.</p>
+  <p>Developed by Roonak Rezvani, Isaac Gravestock, Li Su.</p>
 </div>
 
 <div class="pkgdown">

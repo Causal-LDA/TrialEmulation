@@ -136,7 +136,8 @@
   use_censor <span class='op'>=</span> <span class='fl'>0</span>,
   lag_p_nosw <span class='op'>=</span> <span class='fl'>1</span>,
   where_var <span class='op'>=</span> <span class='cn'>NA</span>,
-  data_dir <span class='op'>=</span> <span class='st'>"~/rds/hpc-work/"</span>
+  data_dir <span class='op'>=</span> <span class='st'>"~/rds/hpc-work/"</span>,
+  separate_files <span class='op'>=</span> <span class='cn'>FALSE</span>
 <span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -176,7 +177,11 @@
     </tr>
     <tr>
       <th>data_dir</th>
-      <td><p>Direction to save data
+      <td><p>Direction to save data</p></td>
+    </tr>
+    <tr>
+      <th>separate_files</th>
+      <td><p>Write to one file or one per trial (default FALSE)
 data_extension()</p></td>
     </tr>
     </table>

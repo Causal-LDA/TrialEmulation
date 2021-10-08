@@ -138,7 +138,8 @@
   where_var <span class='op'>=</span> <span class='cn'>NA</span>,
   data_dir <span class='op'>=</span> <span class='st'>"~/rds/hpc-work/"</span>,
   numCores <span class='op'>=</span> <span class='cn'>NA</span>,
-  chunk_size <span class='op'>=</span> <span class='fl'>200</span>
+  chunk_size <span class='op'>=</span> <span class='fl'>200</span>,
+  separate_files <span class='op'>=</span> <span class='cn'>FALSE</span>
 <span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -186,7 +187,11 @@
     </tr>
     <tr>
       <th>chunk_size</th>
-      <td><p>Number of ids to expand in each chunk
+      <td><p>Number of ids to expand in each chunk</p></td>
+    </tr>
+    <tr>
+      <th>separate_files</th>
+      <td><p>Write to one file or one per trial (default FALSE)
 data_extension_parallel()</p></td>
     </tr>
     </table>
