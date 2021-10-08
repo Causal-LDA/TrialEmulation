@@ -410,7 +410,8 @@ data_preparation <- function(data_path, id="id", period="period",
   print(timing)
   print("----------------------------")
 
-
+print(paste0("Number of observations in expanded data: ",manipulate$N))
+  n_rows <- manipulate$N
   range <- manipulate$range
   min_period = manipulate$min_period
   max_period = manipulate$max_period
@@ -485,11 +486,12 @@ data_preparation <- function(data_path, id="id", period="period",
     }
   }else{
     if(!separate_files){
-      absolutePath <- normalizePath(file.path(data_dir, "switch_data.csv"))
-      data_address = tryCatch({
-        suppressWarnings(out <- bigmemory::read.big.matrix(absolutePath, header = TRUE, shared=FALSE, type="double"))
-      })
-      if(nrow(data_address) >= 2^31 -1){
+
+      if(n_rows >= 2^31 -1){ #if data is too big, we sample
+        absolutePath <- normalizePath(file.path(data_dir, "switch_data.csv"))
+        data_address = tryCatch({
+          suppressWarnings(out <- bigmemory::read.big.matrix(absolutePath, header = TRUE, shared=FALSE, type="double"))
+        })
         print("Number of rows is more than R limit (2^31 -1) so we apply the case control sampling!")
         if(numCores == 1) {
           # cl <- makeCluster(numCores)
@@ -507,7 +509,7 @@ data_preparation <- function(data_path, id="id", period="period",
                    mc.cores=numCores)
         }
         absolutePath <- normalizePath(file.path(data_dir, "temp_data.csv"))
-      }else{
+      }else{ #data is not bigger than R's limit
         absolutePath <- normalizePath(file.path(data_dir, "switch_data.csv"))
       }
     }else{
