@@ -6,12 +6,18 @@
 #' @param numCores Number of cores used by mclapply for sampling from each trial
 #' @param min_period First trial period to sample from
 #' @param max_period Last trial period to sample from
+#' @param samples_file CSV file name for the  sampled data. Should be the same length as n_control.
 #'
 #' @export
 #'
-case_control_sampling <- function(data_dir, min_period, max_period, n_control, numCores=1){
+case_control_sampling <- function(data_dir, samples_file = "sample_data.csv", min_period, max_period, n_control, numCores=1){
   print("Starting case-control sampling function")
 
+  if(length(samples_files) != length(n_control)){
+    warning("Number of filenames and number of samples are not equal. Using first specified name and counter.")
+    samples_file <- paste0(rep(sub(".csv","",samples_file[1]), length(n_control)),
+                 "_",seq_along(n_control),".csv")
+  }
 
   if(missing(min_period)|missing(max_period)){
     # get the periods
@@ -48,7 +54,7 @@ case_control_sampling <- function(data_dir, min_period, max_period, n_control, n
       mclapply(j, case_control_func,
                data_address=data_address, n_control=n_control[i],
                data_dir=data_dir,
-               name_csv = paste0("cc_sample_",i,"_1x",n_control[i],".csv"),
+               name_csv = samples_file,
                numCores=1,
                mc.cores=numCores)
     })
@@ -56,6 +62,8 @@ case_control_sampling <- function(data_dir, min_period, max_period, n_control, n
     print(timing)
     print("-------------------------")
   }
+
+  return(file.path(data_dir,samples_file))
 }
 
 
@@ -67,11 +75,13 @@ case_control_sampling <- function(data_dir, min_period, max_period, n_control, n
 #' @param data_address A data.table which is the extended version of input data
 #' @param n_control Number of controls in the case control sampling Defaults to 5
 #' @param numCores Number of cores for parallel programming
+#' @param name_csv File name for the sampled data csv file
 #' @param data_dir Directory to write sampled data csv to
 #'
 
 case_control_func <- function(period_num, data_address, n_control=5,
                               data_dir="~/rds/hpc-work/",
+                              name_csv = "sample_data.csv",
                               numCores=NA){
 
   d_period = data_address[bigmemory::mwhich(data_address, c("for_period"), c(period_num), c('eq')),]
@@ -90,7 +100,7 @@ case_control_func <- function(period_num, data_address, n_control=5,
   }
 
   new_d = rbindlist(m)
-  fwrite(new_d, file.path(data_dir, "temp_data.csv"), append=TRUE, row.names=FALSE)
+  fwrite(new_d, file.path(data_dir, name_csv), append=TRUE, row.names=FALSE)
   rm(d_period, d, m, new_d)
   gc()
 }
@@ -100,7 +110,7 @@ case_control_func <- function(period_num, data_address, n_control=5,
 #' @param data_dir Directory containing trial-level extended data
 #' @param n_control Number of controls to sample per case
 #' @param numCores Number of cores for parallel processing
-#' @param name_prefix Name of output csv files for each case-control sample, in the form `paste0(name_prefix,seq_along(n_control),"_1x",n_control,".csv")`
+#' @param samples_file Name of output csv files for each case-control sample. eg `paste0("samples_",seq_along(n_control),"_1x",n_control,".csv")`
 #' @param infile_pattern Name of trial dataset csv files. This is passed to the `pattern` argument of `dir()`
 #' @param subset_condition Expression used to `subset` the trial data before sampling
 #'
@@ -108,9 +118,15 @@ case_control_func <- function(period_num, data_address, n_control=5,
 #'
 #' @export
 #'
-case_control_sampling_trials <- function(data_dir, n_control, numCores, name_prefix="cc_sample_", infile_pattern = "trial_", subset_condition){
+case_control_sampling_trials <- function(data_dir, n_control, numCores, samples_file = "sample_data.csv", infile_pattern = "trial_", subset_condition){
 
   trial_files <- dir(path=data_dir, pattern = infile_pattern, full.names = TRUE)
+
+  if(length(samples_files) != length(n_control)){
+    warning("Number of filenames and number of samples are not equal. Using first specified name and counter.")
+    samples_file <- paste0(rep(sub(".csv","",samples_file[1]), length(n_control)),
+                           "_",seq_along(n_control),".csv")
+  }
 
   if(!missing(subset_condition)) subset_cond <- substitute(subset_condition)
 
@@ -137,10 +153,10 @@ case_control_sampling_trials <- function(data_dir, n_control, numCores, name_pre
   if(nrow(trial_samples_bind)>0){
     mapply(fwrite,
            split(trial_samples_bind, by = ".id", keep.by = FALSE),
-           file.path(data_dir, paste0(name_prefix,seq_along(n_control),"_1x",n_control,".csv")),
+           file.path(data_dir, sample_files),
            append=FALSE, row.names=FALSE)
 
-    return(file.path(data_dir, paste0(name_prefix,seq_along(n_control),"_1x",n_control,".csv")))
+    return(file.path(data_dir, sample_files))
   }
 }
 
