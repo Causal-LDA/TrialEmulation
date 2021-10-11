@@ -39,9 +39,9 @@ limit_weight <- function(switch_data, lower_limit, upper_limit){
 #'
 #' This function get the information needed for performing Logistic Regression in the weight calculation process using parglm
 #'
-#' @param data
-#' @param formula
-#' @param class_var
+#' @param data data
+#' @param formula model formula for `parglm`
+#' @param class_var categorical variables to be converted to factors
 
 weight_lr <- function(data, formula, class_var){
 
