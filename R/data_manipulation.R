@@ -183,17 +183,19 @@ data_extension_parallel <- function(data_address, keeplist, outcomeCov_var=NA,
   all_ids <- unique(data_address[, "id"])
   j <- split(all_ids, ceiling(seq_along(all_ids)/chunk_size))
 
-  mclapply(j, expand_switch, data_address=data_address,
-           outcomeCov_var=outcomeCov_var, where_var=where_var,
-           use_censor=use_censor, maxperiod=maxperiod, minperiod=minperiod,
-           lag_p_nosw=lag_p_nosw, keeplist=keeplist, data_dir=data_dir,
-           mc.cores=numCores, separate_files=separate_files)
+  N <- mclapply(j, expand_switch, data_address=data_address,
+                outcomeCov_var=outcomeCov_var, where_var=where_var,
+                use_censor=use_censor, maxperiod=maxperiod, minperiod=minperiod,
+                lag_p_nosw=lag_p_nosw, keeplist=keeplist, data_dir=data_dir,
+                mc.cores=numCores, separate_files=separate_files)
+
 
   gc()
 
   return(list(min_period = minperiod,
               max_period = maxperiod,
-              range =  range))
+              range =  range,
+              N = sum(unlist(as.numeric(N)))))
 }
 
 #' Data Extension Function
@@ -233,12 +235,13 @@ data_extension <- function(data_path, keeplist, outcomeCov_var=NA,
   }
   range = (maxperiod - minperiod) + 1
 
-  expand(sw_data, outcomeCov_var, where_var, use_censor, maxperiod, minperiod,
+  N <- expand(sw_data, outcomeCov_var, where_var, use_censor, maxperiod, minperiod,
          lag_p_nosw, keeplist, data_dir, separate_files)
 
   rm(sw_data)
   gc()
   return(list(min_period = minperiod,
               max_period = maxperiod,
-              range =  range))
+              range =  range,
+              N = N))
 }

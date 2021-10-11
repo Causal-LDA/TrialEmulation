@@ -228,9 +228,13 @@ expand <- function(sw_data,
     }
   }
 
+  N <- nrow(switch_data)
+
 rm(temp_data, switch_data)
 
   gc()
+
+  N
 }
 
 
@@ -265,8 +269,9 @@ expand_switch <- function(id_num, data_address,
   }else{
     sw_data = as.data.table(d)
   }
-  expand(sw_data, outcomeCov_var, where_var, use_censor, maxperiod, minperiod,
+  N <- expand(sw_data, outcomeCov_var, where_var, use_censor, maxperiod, minperiod,
          lag_p_nosw, keeplist, data_dir, separate_files)
   rm(sw_data, d)
   gc()
+  N
 }

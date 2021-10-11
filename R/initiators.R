@@ -410,7 +410,8 @@ data_preparation <- function(data_path, id="id", period="period",
   print(timing)
   print("----------------------------")
 
-
+print(paste0("Number of observations in expanded data: ",manipulate$N))
+  n_rows <- manipulate$N
   range <- manipulate$range
   min_period = manipulate$min_period
   max_period = manipulate$max_period
@@ -441,83 +442,44 @@ data_preparation <- function(data_path, id="id", period="period",
   # print("standard deviation:")
   # print(sd(switch_data[, weight]))
 
-  if(case_control == 1){
-    if(!separate_files){
-      absolutePath <- normalizePath(file.path(data_dir, "switch_data.csv"))
-      data_address = tryCatch({
-        suppressWarnings(out <- bigmemory::read.big.matrix(absolutePath, header = TRUE, shared=FALSE, type="double"))
-      })
-      j = seq(min_period, max_period, 1)
-      print("Start case control sampling")
-      timing = system.time({
-        if(numCores == 1) {
-          #cl <- makeCluster(numCores)
-          # clusterExport(cl,c("data_address", "n_control", "data_dir"),
-          #               envir=environment())
-          # parLapply(cl, j, case_control_func, data_address, n_control,
-          #                     data_dir)
-          # registerDoParallel(cl)
-          # foreach(id_num=j) %dopar% {
-          #   case_control_func(id_num, data_address=data_address,
-          #                     n_control=n_control,
-          #                     data_dir=data_dir)
-          # }
-          # stopCluster(cl)
-          lapply(j, case_control_func, data_address, n_control,
-                 data_dir, name_csv = "temp_data.csv",
-                 numCores = numCores)
-        } else {
-          mclapply(j, case_control_func,
-                   data_address=data_address, n_control=n_control,
-                   data_dir=data_dir, name_csv = "temp_data.csv",
-                   numCores = numCores,
-                   mc.cores=numCores)
-        }
-      })
-      print("Finish case control sampling")
-      print("Processing time of case control sampling:")
-      print(timing)
-      print("---------------------------")
-      absolutePath <- normalizePath(file.path(data_dir, "temp_data.csv"))
-    }else{
+  if(case_control == 1){ # Do case-control sampling:
+    if(!separate_files){# Extended data in switch_data.csv
+
+      sample_data_path <- case_control_sampling(data_dir,
+                                                samples_file = "temp_data.csv",
+                                                min_period=min_period,
+                                                max_period = max_period,
+                                                n_control, numCores=numCores)
+
+      absolutePath <- normalizePath(sample_data_path)
+
+    }else{ # Extended data in trial_*.csv files
       sample_data_path <- case_control_sampling_trials(data_dir, n_control, numCores, samples_file="temp_data.csv", infile_pattern = "trial_")
       absolutePath <- normalizePath(sample_data_path)
     }
-  }else{
-    if(!separate_files){
-      absolutePath <- normalizePath(file.path(data_dir, "switch_data.csv"))
-      data_address = tryCatch({
-        suppressWarnings(out <- bigmemory::read.big.matrix(absolutePath, header = TRUE, shared=FALSE, type="double"))
-      })
-      if(nrow(data_address) >= 2^31 -1){
-        print("Number of rows is more than R limit (2^31 -1) so we apply the case control sampling!")
-        if(numCores == 1) {
-          # cl <- makeCluster(numCores)
-          # clusterExport(cl,c("data_address", "n_control", "data_dir"),
-          #               envir=environment())
-          # parLapply(cl, j, case_control_func, data_address, n_control,
-          #           data_dir)
-          # stopCluster(cl)
-          lapply(j, case_control_func, data_address, n_control,
-                 data_dir, numCores)
-        } else {
-          mclapply(j, case_control_func,
-                   data_address=data_address, n_control=n_control,
-                   data_dir=data_dir, numCores,
-                   mc.cores=numCores)
-        }
-        absolutePath <- normalizePath(file.path(data_dir, "temp_data.csv"))
-      }else{
+  }else{ # No case-control sampling
+    if(!separate_files){# Extended data in switch_data.csv
+
+      if(n_rows >= 2^31 -1){ #if data is too big, we sample
+
+        sample_data_path <- case_control_sampling(data_dir,
+                                                  samples_file = "temp_data.csv",
+                                                  min_period=min_period,
+                                                  max_period = max_period,
+                                                  n_control, numCores=numCores)
+
+        absolutePath <- normalizePath(sample_data_path)
+
+      } else { #data is not bigger than R's limit
         absolutePath <- normalizePath(file.path(data_dir, "switch_data.csv"))
       }
-    }else{
+    } else { # Extended data in trial_*.csv files, but case-control != 1
       print("Separate trial files used but case control sampling not specified. Sampling will be done anyway!")
       sample_data_path <- case_control_sampling_trials(data_dir, n_control, numCores, samples_file="temp_data.csv", infile_pattern = "trial_")
       absolutePath <- normalizePath(sample_data_path)
     }
   }
 
-  rm(data_address)
   gc()
 
   return(list(absolutePath = absolutePath,
