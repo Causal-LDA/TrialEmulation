@@ -208,8 +208,10 @@ weight_func <- function(sw_data, cov_switchn=NA, model_switchn=NA,
   # --------------- denominator ------------------
   print("P(treatment=1 | treatment=0) for denominator")
 
-  model1 <- weight_lr(list(sw_data[if(any(!is.na(eligible_wts_0)))
-    (eligible0 == 1 & eligible_wts_0 == 1) else eligible0 == 1], regformd, class_switchd))
+  model1 <- weight_lr(
+    sw_data[if(any(!is.na(eligible_wts_0))) (eligible0 == 1 & eligible_wts_0 == 1) else eligible0 == 1],
+    regformd,
+    class_switchd)
 
   print(summary(model1))
   switch_d0 = data.table(p0_d = model1$fitted.values,
@@ -222,8 +224,10 @@ weight_func <- function(sw_data, cov_switchn=NA, model_switchn=NA,
 
   print("P(treatment=1 | treatment=0) for numerator")
 
-  model2 <- weight_lr(list(sw_data[if(any(!is.na(eligible_wts_0)))
-    (eligible0 == 1 & eligible_wts_0 == 1) else eligible0 == 1], regformn, class_switchn))
+  model2 <- weight_lr(
+    sw_data[if(any(!is.na(eligible_wts_0))) (eligible0 == 1 & eligible_wts_0 == 1) else eligible0 == 1],
+    regformn,
+    class_switchn)
 
   print(summary(model2))
   switch_n0 = data.table(p0_n = model2$fitted.values,
@@ -236,8 +240,10 @@ weight_func <- function(sw_data, cov_switchn=NA, model_switchn=NA,
   # ------------------- eligible1 == 1 --------------------
   # --------------- denominator ------------------
   print("P(treatment=1 | treatment=1) for denominator")
-  model3 <- weight_lr( list(sw_data[if(any(!is.na(eligible_wts_1)))
-    (eligible1 == 1 & eligible_wts_1 == 1) else eligible1 == 1], regformd, class_switchd))
+  model3 <- weight_lr(
+    sw_data[if(any(!is.na(eligible_wts_1))) (eligible1 == 1 & eligible_wts_1 == 1) else eligible1 == 1],
+    regformd,
+    class_switchd)
 
   print(summary(model3))
   switch_d1 = data.table(p1_d = model3$fitted.values,
@@ -249,8 +255,10 @@ weight_func <- function(sw_data, cov_switchn=NA, model_switchn=NA,
 
   # -------------------- numerator ---------------------------
   print("P(treatment=1 | treatment=1) for numerator")
-  model4 <- weight_lr(list(sw_data[if(any(!is.na(eligible_wts_1)))
-    (eligible1 == 1 & eligible_wts_1 == 1) else eligible1 == 1], regformn, class_switchn))
+  model4 <- weight_lr(
+    sw_data[if(any(!is.na(eligible_wts_1))) (eligible1 == 1 & eligible_wts_1 == 1) else eligible1 == 1],
+    regformn,
+    class_switchn)
 
   print(summary(model4))
   switch_n1 = data.table(p1_n = model4$fitted.values,
@@ -327,7 +335,7 @@ weight_func <- function(sw_data, cov_switchn=NA, model_switchn=NA,
       # -------------------- denominator -------------------------
       print("Model for P(cense = 0 |  X ) for denominator")
       # -----------------------------------------------------------
-      model1.cense <- weight_lr(list(new_data, regformd, class_censed))
+      model1.cense <- weight_lr(new_data, regformd, class_censed)
       print(summary(model1.cense))
       cense_d0 = data.table( pC_d = model1.cense$fitted.values,
                              id = model1.cense$data[, id],
@@ -337,7 +345,7 @@ weight_func <- function(sw_data, cov_switchn=NA, model_switchn=NA,
       # --------------------- numerator ---------------------------
       print("Model for P(cense = 0 |  X ) for numerator")
       # ---------------------------------------------------------
-      model2.cense = weight_lr(list(new_data, regformn, class_censen))
+      model2.cense = weight_lr(new_data, regformn, class_censen)
       print(summary(model2.cense))
       cense_n0 = data.table( pC_n = model2.cense$fitted.values,
                              id = model2.cense$data[, id],
@@ -356,7 +364,7 @@ weight_func <- function(sw_data, cov_switchn=NA, model_switchn=NA,
       print("Model for P(cense = 0 |  X, Am1=0) for denominator")
       # ---------------------- eligible0 ---------------------------
 
-      model1.cense <- weight_lr(list(new_data[eligible0 == 1], regformd, class_censed))
+      model1.cense <- weight_lr(new_data[eligible0 == 1], regformd, class_censed)
       print(summary(model1.cense))
       cense_d0 = data.table( pC_d0 = model1.cense$fitted.values,
                              id = model1.cense$data[, id],
@@ -365,7 +373,7 @@ weight_func <- function(sw_data, cov_switchn=NA, model_switchn=NA,
       # -------------------------- numerator ----------------------
       print("Model for P(cense = 0 |  X, Am1=0) for numerator")
       #--------------------------- eligible0 -----------------------
-      model2.cense <- weight_lr(list(new_data[eligible0 == 1], regformn, class_censen))
+      model2.cense <- weight_lr(new_data[eligible0 == 1], regformn, class_censen)
       print(summary(model2.cense))
       cense_n0 = data.table( pC_n0=model2.cense$fitted.values,
                              id = model2.cense$data[, id],
@@ -374,7 +382,7 @@ weight_func <- function(sw_data, cov_switchn=NA, model_switchn=NA,
       # ------------------------- denomirator ---------------------
       print("Model for P(cense = 0 |  X, Am1=1) for denominator")
       # ------------------------ eligible1 -------------------------
-      model3.cense <- weight_lr(list(new_data[eligible1 == 1], regformd, class_censed))
+      model3.cense <- weight_lr(new_data[eligible1 == 1], regformd, class_censed)
       print(summary(model3.cense))
       cense_d1 = data.table( pC_d1=model3.cense$fitted.values,
                              id = model3.cense$data[, id],
@@ -383,7 +391,7 @@ weight_func <- function(sw_data, cov_switchn=NA, model_switchn=NA,
       # ------------------------ numerator -------------------------
       print("Model for P(cense = 0 |  X, Am1=1) for numerator")
       # ------------------------- eligible1 -----------------------
-      model4.cense <- weight_lr(list(new_data[eligible1 == 1], regformn, class_censen))
+      model4.cense <- weight_lr(new_data[eligible1 == 1], regformn, class_censen)
       print(summary(model4.cense))
       cense_n1 = data.frame( pC_n1 = model4.cense$fitted.values,
                              id = model4.cense$data[, id],

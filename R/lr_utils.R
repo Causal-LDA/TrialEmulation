@@ -38,23 +38,23 @@ limit_weight <- function(switch_data, lower_limit, upper_limit){
 #' Weight Logistic Regression Function
 #'
 #' This function get the information needed for performing Logistic Regression in the weight calculation process using parglm
-#' @param l A list contains the data, logistic regression formula and name of the categorical variables
+#'
+#' @param data
+#' @param formula
+#' @param class_var
 
-weight_lr <- function(l){
-  d = l[[1]]
-  regf = l[[2]]
-  class_var = l[[3]]
+weight_lr <- function(data, formula, class_var){
 
   if(any(!is.na(class_var))){
     for(i in 1:length(class_var)){
-      x = factor(d[[eval(class_var[i])]])
+      x = factor(data[[eval(class_var[i])]])
       x = relevel(x, ref="1")
-      d[, c(eval(class_var[i])) := NULL]
-      d[, eval(class_var[i]) := x]
+      data[, c(eval(class_var[i])) := NULL]
+      data[, eval(class_var[i]) := x]
     }
   }
 
-  model = parglm::parglm(as.formula(regf), data=d,
+  model = parglm::parglm(as.formula(formula), data=data,
                          family = binomial(link = "logit"),
                          control = parglm::parglm.control(nthreads = 4, method='FAST'))
   return(model)
