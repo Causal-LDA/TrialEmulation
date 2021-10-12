@@ -143,7 +143,6 @@ expand <- function(sw_data,
     outcome_new <- outcome <- time_of_event <- for_period <- index <- for_period2 <-
     followup_time <- followup_time2 <- dose <- dose2 <- weight <- case <- NULL
 
-
   temp_data = data.table(id = sw_data[, id],
                          period = sw_data[, period],
                          switch = sw_data[, switch])
