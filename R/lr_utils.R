@@ -164,7 +164,6 @@ expand <- function(sw_data,
     tryCatch({
       suppressWarnings(temp_data[, eval(outcomeCov_var) := sw_data[, outcomeCov_var, with=FALSE]])
     })
-
   }
   if(any(!is.na(where_var))){
     temp_data[, eval(where_var) := sw_data[, where_var, with=FALSE]]
@@ -174,6 +173,8 @@ expand <- function(sw_data,
   switch_data = switch_data[rep(1:.N, sw_data[, period]+1)]
   switch_data[, period_new := sw_data[rep(1:.N, period+1), period]]
   switch_data[, cumA_new := sw_data[rep(1:.N, period+1), cumA]]
+  switch_data[, treatment_new := shift(sw_data[rep(1:.N, period+1), treatment])]
+  switch_data[1, "treatment_new"] = sw_data[1, "treatment"]
   if(use_censor == 1){
     switch_data[, switch_new := sw_data[rep(1:.N, period+1), switch]]
   }else{
@@ -216,6 +217,7 @@ expand <- function(sw_data,
 
   setnames(switch_data, c("case"), c("outcome"))
   setnames(switch_data, c("init"), c("assigned_treatment"))
+  setnames(switch_data, c("treatment_new"), c("treatment"))
   switch_data = switch_data[expand == 1]
   switch_data = switch_data[, keeplist, with=FALSE]
 

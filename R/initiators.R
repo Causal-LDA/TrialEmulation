@@ -221,13 +221,6 @@ data_preparation <- function(data_path, id="id", period="period",
                              chunk_expansion=TRUE,
                              chunk_size=500,
                              separate_files=FALSE){
-  if(is.na(model_var)){
-    if(use_censor == 0){
-      model_var = c("dose", "dose2")
-    }else{
-      model_var = "treatment"
-    }
-  }
 
   # outcomeCov_var needs to have outcomeCov
   if(any(!is.na(outcomeCov_var)) & any(is.na(outcomeCov))){
@@ -326,8 +319,8 @@ data_preparation <- function(data_path, id="id", period="period",
     suppressWarnings(out <- bigmemory::read.big.matrix(absolutePath, header = TRUE, type="double"))
   })
 
-  keeplist <- c("id", "for_period", "followup_time", "assigned_treatment",
-                "outcome", "weight")
+  keeplist <- c("id", "for_period", "followup_time", "outcome",
+                "weight", "treatment")
   if(include_expansion_time_case == 1){
     keeplist <- c(keeplist, "for_period2")
   }
@@ -340,8 +333,27 @@ data_preparation <- function(data_path, id="id", period="period",
   if(any(!is.na(where_var))){
     keeplist <- c(keeplist, where_var)
   }
-  keeplist <- c(keeplist, model_var)
-
+  if(any(!is.na(model_var))){
+    # if the model_var is not empty, we use the information provided by user
+    keeplist <- c(keeplist, model_var)
+  }else{
+    # if the model_var is empty, we provide the needed variables based on analysis type
+    if(use_censor == 0){
+      if(use_weight == 0){
+        # for ITT analysis
+        keeplist <- c(keeplist, "assigned_treatment")
+      }else{
+        # for as treated analysis
+        keeplist <- c(keeplist, c("dose", "dose2"))
+      }
+    }else{
+      # for per-protocol analysis
+      keeplist <- c(keeplist, "assigned_treatment")
+    }
+  }
+  if(! "assigned_treatment" %in% keeplist){
+    keeplist <- c(keeplist, "assigned_treatment")
+  }
 
   print("Start data manipulation")
   timing = system.time({
