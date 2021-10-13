@@ -736,9 +736,9 @@ data_modelling <- function(id="id", period="period",
     })
     print(out)
     print("----------------------------------------------")
-    print("Processing time of getting the output and sandwitch with reduced switch data:")
+    print("Processing time of getting the output and sandwich with reduced switch data:")
     print(timing)
   }
 
-  return(model.full)
+  return(list(model = model.full, robust = out))
 }
