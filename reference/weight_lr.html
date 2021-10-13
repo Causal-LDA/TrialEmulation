@@ -127,14 +127,22 @@
     <p>This function get the information needed for performing Logistic Regression in the weight calculation process using parglm</p>
     </div>
 
-    <pre class="usage"><span class='fu'>weight_lr</span><span class='op'>(</span><span class='va'>l</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>weight_lr</span><span class='op'>(</span><span class='va'>data</span>, <span class='va'>formula</span>, <span class='va'>class_var</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>l</th>
-      <td><p>A list contains the data, logistic regression formula and name of the categorical variables</p></td>
+      <th>data</th>
+      <td><p>data</p></td>
+    </tr>
+    <tr>
+      <th>formula</th>
+      <td><p>model formula for <code>parglm</code></p></td>
+    </tr>
+    <tr>
+      <th>class_var</th>
+      <td><p>categorical variables to be converted to factors</p></td>
     </tr>
     </table>
 
