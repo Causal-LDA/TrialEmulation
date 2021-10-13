@@ -620,14 +620,14 @@ data_modelling <- function(id="id", period="period",
       # variable name provided only
       if(is.character(outcomeClass[[i]])) {
         this_var <- outcomeClass[[i]]
-        set(data, j = this_var, value = as.factor(data[[this_var]]))
+        set(temp_data, j = this_var, value = as.factor(temp_data[[this_var]]))
       }
 
       # named list provided
       if(is.list(outcomeClass[[i]])){
         this_var <- names(outcomeClass[i])
-        set(data, j = this_var,
-            value = do.call("factor", c(x = list(data[[this_var]]), outcomeClass[[this_var]])))
+        set(temp_data, j = this_var,
+            value = do.call("factor", c(x = list(temp_data[[this_var]]), outcomeClass[[this_var]])))
       }
     }
   }
