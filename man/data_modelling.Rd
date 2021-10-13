@@ -41,8 +41,10 @@ data_modelling(
   cov_censen = NA,
   model_censen = NA,
   class_censen = NA,
-  include_followup_time_case = 1,
-  include_expansion_time_case = 1,
+  include_followup_time_case = c("linear", "quadratic"),
+  include_expansion_time_case = c("linear", "quadratic"),
+  followup_spline = NA,
+  period_spline = NA,
   include_regime_length = 0,
   eligible_wts_0 = NA,
   eligible_wts_1 = NA,
@@ -130,9 +132,13 @@ data_modelling(
 
 \item{class_censen}{Class variables used in censoring logistic regression in numerator model}
 
-\item{include_followup_time_case}{Include follow up time in outcome model}
+\item{include_followup_time_case}{The model to include follow up time in outcome model. This has 3 options c("linear","quadratic","spline").}
 
-\item{include_expansion_time_case}{Include for_period and for_period2 in outcome model}
+\item{include_expansion_time_case}{The model to include for_period in outcome model. This has 3 options c("linear","quadratic","spline")}
+
+\item{followup_spline}{The spline model for followup time when choose "spline" in the include_followup_time_case}
+
+\item{period_spline}{The spline model for for_period when choose "spline" in the include_expansion_time_case}
 
 \item{include_regime_length}{If defined as 1 a new variable (time_on_regime) is added to dataset - This variable stores the duration of time that the patient has been on the current treatment value}
 

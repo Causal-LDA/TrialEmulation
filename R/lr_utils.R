@@ -124,17 +124,21 @@ robust_calculation <- function(model, data_id){
 #' @param outcomeCov_var A list of individual baseline variables used in final model
 #' @param where_var Variables used in where conditions used in subsetting the data used in final analysis (where_case), the variables not included in the final model
 #' @param use_censor Use censoring for per-protocol analysis - censor person-times once a person-trial stops taking the initial treatment value
+#' @param followup_spline The spline model for followup time when choose "spline" in the include_followup_time_case
+#' @param period_spline The spline model for for_period when choose "spline" in the include_expansion_time_case
 #' @param maxperiod Maximum period
 #' @param minperiod Minimum period
 #' @param lag_p_nosw when 1 this will set the first weight to be 1 and use p_nosw_d and p_nosw_n at followup-time (t-1) for calculating the weights at followup-time t - can be set to 0 which will increase the maximum and variance of weights (Defaults to 1)
 #' @param keeplist A list contains names of variables used in final model
 #' @param data_dir Direction to save data
 #' @param separate_files Write to one file or one per trial (default FALSE)
+#' @importFrom splines ns
 #' @import data.table
 
 expand <- function(sw_data,
                    outcomeCov_var, where_var,
-                   use_censor, maxperiod, minperiod,
+                   use_censor, followup_spline=NA, period_spline=NA,
+                   maxperiod, minperiod,
                    lag_p_nosw, keeplist, data_dir, separate_files=FALSE){
 
   # Dummy variables used in data.table calls declared to prevent package check NOTES:
@@ -187,9 +191,23 @@ expand <- function(sw_data,
   switch_data[, index := 1:nrow(switch_data)]
   switch_data = switch_data[temp_data, on = list(id=id, for_period=period)]
   setorder(switch_data, index)
-  switch_data[, for_period2 := for_period ** 2]
+  if("for_period2" %in% keeplist){
+    switch_data[, for_period2 := for_period ** 2]
+  }
+  if(!is.na(period_spline)){
+    for_period = switch_data[, for_period]
+    temp = eval(parse(text=period_spline))
+    switch_data[, eval(period_spline) := temp]
+  }
   switch_data[, followup_time := period_new - for_period]
-  switch_data[, followup_time2 := followup_time **2]
+  if("followup_time2" %in% keeplist){
+    switch_data[, followup_time2 := followup_time **2]
+  }
+  if(!is.na(followup_spline)){
+    followup_time = switch_data[, followup_time]
+    temp = eval(parse(text=followup_spline))
+    switch_data[, eval(followup_spline) := temp]
+  }
   if(use_censor == 0){
     switch_data[, dose := cumA_new - dosesum + treat]
     switch_data[, dose2 := dose ** 2]
@@ -231,7 +249,7 @@ expand <- function(sw_data,
 
   N <- nrow(switch_data)
 
-rm(temp_data, switch_data)
+  rm(temp_data, switch_data)
 
   gc()
 
@@ -247,6 +265,8 @@ rm(temp_data, switch_data)
 #' @param outcomeCov_var A list of individual baseline variables used in final model
 #' @param where_var Variables used in where conditions used in subsetting the data used in final analysis (where_case), the variables not included in the final model
 #' @param use_censor Use censoring for per-protocol analysis - censor person-times once a person-trial stops taking the initial treatment value
+#' @param followup_spline The spline model for followup time when choose "spline" in the include_followup_time_case
+#' @param period_spline The spline model for for_period when choose "spline" in the include_expansion_time_case
 #' @param maxperiod Maximum period
 #' @param minperiod Minimum period
 #' @param lag_p_nosw when 1 this will set the first weight to be 1 and use p_nosw_d and p_nosw_n at followup-time (t-1) for calculating the weights at followup-time t - can be set to 0 which will increase the maximum and variance of weights (Defaults to 1)
@@ -257,8 +277,9 @@ rm(temp_data, switch_data)
 
 expand_switch <- function(id_num, data_address,
                           outcomeCov_var, where_var,
-                          use_censor, maxperiod, minperiod,
-                          lag_p_nosw, keeplist, data_dir, separate_files=FALSE){
+                          use_censor, followup_spline, period_spline,
+                          maxperiod, minperiod, lag_p_nosw,
+                          keeplist, data_dir, separate_files=FALSE){
 
   d = data_address[bigmemory::mwhich(data_address,
                                      cols = rep("id",length(id_num)),
@@ -270,8 +291,10 @@ expand_switch <- function(id_num, data_address,
   }else{
     sw_data = as.data.table(d)
   }
-  N <- expand(sw_data, outcomeCov_var, where_var, use_censor, maxperiod, minperiod,
-         lag_p_nosw, keeplist, data_dir, separate_files)
+  N <- expand(sw_data, outcomeCov_var, where_var, use_censor,
+              followup_spline, period_spline,
+              maxperiod, minperiod, lag_p_nosw,
+              keeplist, data_dir, separate_files)
   rm(sw_data, d)
   gc()
   N
