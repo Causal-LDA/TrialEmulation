@@ -592,35 +592,26 @@ data_modelling <- function(id="id", period="period",
   # Dummy variables used in data.table calls declared to prevent package check NOTES:
   weight <- NULL
 
-  path = normalizePath(file.path(data_dir, "sw_data.csv"))
 
-  data_address = tryCatch({
-    suppressWarnings(out <- bigmemory::read.big.matrix(path, header = TRUE, type="double"))
-  })
+  # if there are any limits on the follow up
+  if(!is.na(first_followup) | !is.na(last_followup)){
+    #make sure that the other is well defined
+    if(is.na(first_followup)) first_followup <- 0
+    if(is.na(last_followup)) last_followup <- Inf
 
-  max_period = max(data_address[, "period"])
-  min_period = min(data_address[, "period"])
-
-  if(is.na(first_followup)){
-    first_followup = 0
+    data = tryCatch({
+      suppressWarnings(bigmemory::read.big.matrix(absolutePath, header=TRUE, shared=FALSE, type="double"))
+    })
+    #subset the data
+    temp_data = data[bigmemory::mwhich(data, c("followup_time", "followup_time"), c(first_followup, last_followup), c('ge', 'le'), 'AND'), ]
+    temp_data = as.data.table(temp_data)
+    rm(data)
+    gc()
+  } else {
+    #read data directly as data.table
+    temp_data <- fread(absolutePath)
   }
-  if(is.na(last_followup)){
-    last_followup = max_period
-  }
 
-  rm(path, data_address)
-  gc()
-
-  # Isaac: if the data is in separate file what will happen here?
-  data = tryCatch({
-    suppressWarnings(out <- bigmemory::read.big.matrix(absolutePath, header=TRUE, shared=FALSE, type="double"))
-  })
-
-  temp_data = data[bigmemory::mwhich(data, c("followup_time", "followup_time"), c(first_followup, last_followup), c('ge', 'le'), 'AND'), ]
-  temp_data = as.data.table(temp_data)
-
-  rm(data)
-  gc()
 
   if(any(!is.na(outcomeClass))){
     if(!(is.list(outcomeClass) | is.character(outcomeClass))) stop("outcomeClass is not a list or character vector")
