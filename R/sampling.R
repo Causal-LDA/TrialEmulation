@@ -13,7 +13,7 @@
 case_control_sampling <- function(data_dir, samples_file = "sample_data.csv", min_period, max_period, n_control, numCores=1){
   print("Starting case-control sampling function")
 
-  if(length(samples_files) != length(n_control)){
+  if(length(samples_file) != length(n_control)){
     warning("Number of filenames and number of samples are not equal. Using first specified name and counter.")
     samples_file <- paste0(rep(sub(".csv","",samples_file[1]), length(n_control)),
                  "_",seq_along(n_control),".csv")

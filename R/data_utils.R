@@ -161,6 +161,11 @@ weight_func <- function(sw_data, cov_switchn=NA, model_switchn=NA,
     model_switchd <- c(model_switchd, "time_on_regime", "time_on_regime2")
     model_switchn <- c(model_switchn, "time_on_regime", "time_on_regime2")
   }
+
+  ##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  # Switching weights --------------------
+  ##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
   # ------------------- eligible0 == 1 --------------------
   # --------------- denominator ------------------
   if(any(!is.na(cov_switchd))){
@@ -197,77 +202,100 @@ weight_func <- function(sw_data, cov_switchn=NA, model_switchn=NA,
     )
   }
 
-  d = list(
-    list(sw_data[if(any(!is.na(eligible_wts_0)))
-      (eligible0 == 1 & eligible_wts_0 == 1) else eligible0 == 1], regformd, class_switchd),
-    list(sw_data[if(any(!is.na(eligible_wts_0)))
-      (eligible0 == 1 & eligible_wts_0 == 1) else eligible0 == 1], regformn, class_switchn),
-    list(sw_data[if(any(!is.na(eligible_wts_1)))
-      (eligible1 == 1 & eligible_wts_1 == 1) else eligible1 == 1], regformd, class_switchd),
-    list(sw_data[if(any(!is.na(eligible_wts_1)))
-      (eligible1 == 1 & eligible_wts_1 == 1) else eligible1 == 1], regformn, class_switchn)
-  )
+  # Fit the models for the weights in the four scenarios
 
-  if(numCores == 1) {
-    # cl <- makeCluster(numCores)
-    # m = parLapply(cl, d, weight_lr)
-    # stopCluster(cl)
-    m = lapply(d, weight_lr)
-  } else {
-    m = mclapply(d, weight_lr, mc.cores=numCores)
-  }
-
+  # ------------------- eligible0 == 1 --------------------
+  # --------------- denominator ------------------
   print("P(treatment=1 | treatment=0) for denominator")
-  model1 = m[[1]]
+
+  model1 <- weight_lr(
+    sw_data[if(any(!is.na(eligible_wts_0))) (eligible0 == 1 & eligible_wts_0 == 1) else eligible0 == 1],
+    regformd,
+    class_switchd)
+
   print(summary(model1))
   switch_d0 = data.table(p0_d = model1$fitted.values,
                          eligible0 = unlist(model1$data$eligible0),
                          id = model1$data[, id],
                          period = model1$data[, period])
+  rm(model1)
 
   # -------------- numerator --------------------
+
   print("P(treatment=1 | treatment=0) for numerator")
 
-  model2 = m[[2]]
+  model2 <- weight_lr(
+    sw_data[if(any(!is.na(eligible_wts_0))) (eligible0 == 1 & eligible_wts_0 == 1) else eligible0 == 1],
+    regformn,
+    class_switchn)
+
   print(summary(model2))
   switch_n0 = data.table(p0_n = model2$fitted.values,
                          eligible0 = unlist(model2$data$eligible0),
                          id = model2$data[, id],
                          period = model2$data[, period])
+
+  rm(model2)
+
   # ------------------- eligible1 == 1 --------------------
   # --------------- denominator ------------------
   print("P(treatment=1 | treatment=1) for denominator")
-  model3 = m[[3]]
+  model3 <- weight_lr(
+    sw_data[if(any(!is.na(eligible_wts_1))) (eligible1 == 1 & eligible_wts_1 == 1) else eligible1 == 1],
+    regformd,
+    class_switchd)
+
   print(summary(model3))
   switch_d1 = data.table(p1_d = model3$fitted.values,
                          eligible1 = unlist(model3$data$eligible1),
                          id = model3$data[, id],
                          period = model3$data[, period])
+
+  rm(model3)
+
   # -------------------- numerator ---------------------------
   print("P(treatment=1 | treatment=1) for numerator")
-  model4 = m[[4]]
+  model4 <- weight_lr(
+    sw_data[if(any(!is.na(eligible_wts_1))) (eligible1 == 1 & eligible_wts_1 == 1) else eligible1 == 1],
+    regformn,
+    class_switchn)
+
   print(summary(model4))
   switch_n1 = data.table(p1_n = model4$fitted.values,
                          eligible1 = unlist(model4$data$eligible1),
                          id = model4$data[, id],
                          period = model4$data[, period])
 
+  rm(model4)
+
+
+  # -------------- Combine results --------------------
+
   switch_0 = switch_d0[switch_n0, on = list(id=id, period=period,
                                          eligible0=eligible0)]
   switch_1 = switch_d1[switch_n1, on = list(id=id, period=period,
                                          eligible1=eligible1)]
+
+  rm(switch_d0, switch_d1, switch_n0, switch_n1)
 
   new_data = Reduce(function(x,y) merge(x, y,
                                         by = c("id", "period"),
                                         all = TRUE),
                     list(sw_data, switch_1, switch_0))
 
-  rm(switch_d0, switch_d1, switch_n0, switch_n1, switch_1, switch_0)
+  rm(switch_1, switch_0)
+
+  #TODO Can we remove sw_data here?
 
   new_data[, eligible0.y := NULL]
   new_data[, eligible1.y := NULL]
   setnames(new_data, c("eligible0.x", "eligible1.x"),
            c("eligible0", "eligible1"))
+
+
+  ##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  # Censoring weights --------------------
+  ##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
   if(!is.na(cense)){
     if(any(!is.na(model_censed))){
@@ -306,101 +334,81 @@ weight_func <- function(sw_data, cov_switchn=NA, model_switchn=NA,
     if(pool_cense == 1){
       # -------------------- denominator -------------------------
       print("Model for P(cense = 0 |  X ) for denominator")
-      # ------------------------------------------------------------
-
-      d = list(
-        list(new_data, regformd, class_censed),
-        list(new_data, regformn, class_censen)
-      )
-
-      if(numCores == 1) {
-        # cl <- makeCluster(numCores)
-        # m = parLapply(cl, d, weight_lr)
-        # stopCluster(cl)
-        m = lapply(d, weight_lr)
-      } else {
-        m = mclapply(d, weight_lr, mc.cores=numCores)
-      }
-
-      model1.cense = m[[1]]
+      # -----------------------------------------------------------
+      model1.cense <- weight_lr(new_data, regformd, class_censed)
       print(summary(model1.cense))
       cense_d0 = data.table( pC_d = model1.cense$fitted.values,
                              id = model1.cense$data[, id],
                              period = model1.cense$data[, period])
+      rm(model1.cense)
 
       # --------------------- numerator ---------------------------
       print("Model for P(cense = 0 |  X ) for numerator")
       # ---------------------------------------------------------
-      model2.cense = m[[2]]
+      model2.cense = weight_lr(new_data, regformn, class_censen)
       print(summary(model2.cense))
       cense_n0 = data.table( pC_n = model2.cense$fitted.values,
                              id = model2.cense$data[, id],
                              period = model2.cense$data[, period])
 
+      rm(model2.cense)
       new_data = Reduce(function(x,y) merge(x, y,
                                             by = c("id", "period"),
                                             all.x = TRUE, all.y = TRUE),
                         list(new_data, cense_d0, cense_n0))
       rm(cense_d0, cense_n0)
-    }else{
+
+    }else{ # when pool_cense != 1
+
       # ---------------------- denominator -----------------------
       print("Model for P(cense = 0 |  X, Am1=0) for denominator")
       # ---------------------- eligible0 ---------------------------
 
-      d = list(
-        list(new_data[eligible0 == 1], regformd, class_censed),
-        list(new_data[eligible0 == 1], regformn, class_censen),
-        list(new_data[eligible1 == 1], regformd, class_censed),
-        list(new_data[eligible1 == 1], regformn, class_censen)
-      )
-
-      if(numCores == 1) {
-        # cl <- makeCluster(numCores)
-        # m = parLapply(cl, d, weight_lr)
-        # stopCluster(cl)
-        m = lapply(d, weight_lr)
-      } else {
-        m = mclapply(d, weight_lr, mc.cores=numCores)
-      }
-
-      model1.cense = m[[1]]
+      model1.cense <- weight_lr(new_data[eligible0 == 1], regformd, class_censed)
       print(summary(model1.cense))
       cense_d0 = data.table( pC_d0 = model1.cense$fitted.values,
                              id = model1.cense$data[, id],
                              period = model1.cense$data[, period])
+      rm(model1.cense)
       # -------------------------- numerator ----------------------
       print("Model for P(cense = 0 |  X, Am1=0) for numerator")
       #--------------------------- eligible0 -----------------------
-      model2.cense = m[[2]]
+      model2.cense <- weight_lr(new_data[eligible0 == 1], regformn, class_censen)
       print(summary(model2.cense))
       cense_n0 = data.table( pC_n0=model2.cense$fitted.values,
                              id = model2.cense$data[, id],
                              period = model2.cense$data[, period])
+      rm(model2.cense)
       # ------------------------- denomirator ---------------------
       print("Model for P(cense = 0 |  X, Am1=1) for denominator")
       # ------------------------ eligible1 -------------------------
-      model3.cense = m[[3]]
+      model3.cense <- weight_lr(new_data[eligible1 == 1], regformd, class_censed)
       print(summary(model3.cense))
       cense_d1 = data.table( pC_d1=model3.cense$fitted.values,
                              id = model3.cense$data[, id],
                              period = model3.cense$data[, period])
+      rm(model3.cense)
       # ------------------------ numerator -------------------------
       print("Model for P(cense = 0 |  X, Am1=1) for numerator")
       # ------------------------- eligible1 -----------------------
-      model4.cense = m[[4]]
+      model4.cense <- weight_lr(new_data[eligible1 == 1], regformn, class_censen)
       print(summary(model4.cense))
       cense_n1 = data.frame( pC_n1 = model4.cense$fitted.values,
                              id = model4.cense$data[, id],
                              period = model4.cense$data[, period])
+      rm(model4.cense)
+
+      # combine ------------------------------
 
       cense_0 = cense_d0[cense_n0, on = list(id=id, period=period)]
       cense_1 = cense_d1[cense_n1, on = list(id=id, period=period)]
+      rm(cense_n1, cense_d1, cense_n0, cense_d0)
 
       new_data = Reduce(function(x,y) merge(x, y,
                                             by = c("id", "period"),
                                             all.x = TRUE, all.y = TRUE),
                         list(new_data, cense_0, cense_1))
-      rm(cense_n1, cense_d1, cense_n0, cense_d0, cense_0, cense_1)
+      rm(cense_0, cense_1)
     }
   }
   # wt and wtC calculation

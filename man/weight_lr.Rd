@@ -4,10 +4,14 @@
 \alias{weight_lr}
 \title{Weight Logistic Regression Function}
 \usage{
-weight_lr(l)
+weight_lr(data, formula, class_var)
 }
 \arguments{
-\item{l}{A list contains the data, logistic regression formula and name of the categorical variables}
+\item{data}{data}
+
+\item{formula}{model formula for \code{parglm}}
+
+\item{class_var}{categorical variables to be converted to factors}
 }
 \description{
 This function get the information needed for performing Logistic Regression in the weight calculation process using parglm

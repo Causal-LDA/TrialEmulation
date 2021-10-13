@@ -38,23 +38,38 @@ limit_weight <- function(switch_data, lower_limit, upper_limit){
 #' Weight Logistic Regression Function
 #'
 #' This function get the information needed for performing Logistic Regression in the weight calculation process using parglm
-#' @param l A list contains the data, logistic regression formula and name of the categorical variables
+#'
+#' @param data data
+#' @param formula model formula for `parglm`
+#' @param class_var categorical variables to be converted to factors
 
-weight_lr <- function(l){
-  d = l[[1]]
-  regf = l[[2]]
-  class_var = l[[3]]
+weight_lr <- function(data, formula, class_var){
 
-  if(any(!is.na(class_var))){
-    for(i in 1:length(class_var)){
-      x = factor(d[[eval(class_var[i])]])
-      x = relevel(x, ref="1")
-      d[, c(eval(class_var[i])) := NULL]
-      d[, eval(class_var[i]) := x]
+  if(!missing(class_var) & any(!is.na(class_var))){
+    class_var <- class_var[!is.na(class_var)]
+
+    if(!(is.list(class_var) | is.character(class_var))) stop("outcomeClass is not a list or character vector")
+    #class_var given as a character vector, convert to list
+    if(is.character(class_var)) class_Var <- as.list(class_var)
+
+    #process the list
+    for(i in seq_along(class_var)){
+      # variable name provided only
+      if(is.character(class_var[[i]])) {
+        this_var <- class_var[[i]]
+        set(data, j = this_var, value = as.factor(data[[this_var]]))
+      }
+
+      # named list provided
+      if(is.list(class_var[[i]])){
+        this_var <- names(class_var[i])
+        set(data, j = this_var,
+            value = do.call("factor", c(x = list(data[[this_var]]), class_var[[this_var]])))
+      }
     }
   }
 
-  model = parglm::parglm(as.formula(regf), data=d,
+  model = parglm::parglm(as.formula(formula), data=data,
                          family = binomial(link = "logit"),
                          control = parglm::parglm.control(nthreads = 4, method='FAST'))
   return(model)
