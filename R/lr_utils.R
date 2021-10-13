@@ -45,7 +45,9 @@ limit_weight <- function(switch_data, lower_limit, upper_limit){
 
 weight_lr <- function(data, formula, class_var){
 
-  if(!missing(class_var) & !is.na(class_var)){
+  if(!missing(class_var) & any(!is.na(class_var))){
+    class_var <- class_var[!is.na(class_var)]
+
     if(!(is.list(class_var) | is.character(class_var))) stop("outcomeClass is not a list or character vector")
     #class_var given as a character vector, convert to list
     if(is.character(class_var)) class_Var <- as.list(class_var)
