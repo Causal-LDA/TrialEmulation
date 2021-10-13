@@ -541,6 +541,11 @@ print(paste0("Number of observations in expanded data: ",manipulate$N))
 #' @param data_dir Directory containing 'sw_data.csv'
 #' @param numCores Number of cores for parallel programming (default value is maximum cores and parallel programming)
 #' data_modelling()
+#'
+#' @details The class variables paramers (`outcomeClass`,`class_switchn`,`class_switchd`,`class_censen`,`class_censed`)
+#' can be given as a character vector which will construct factors using `as.factor` or as a named list with the arguments for factor
+#' eg `list(risk_cat=list(levels = c(1,2,3,0), age_cat=list(levels=c(1,2,3),labels=c("50-60","60-70","70+")`
+#'
 #' @export
 #' @importFrom stats as.formula binomial pnorm quantile relevel
 #' @importFrom utils write.csv
@@ -606,11 +611,24 @@ data_modelling <- function(id="id", period="period",
   gc()
 
   if(any(!is.na(outcomeClass))){
-    for(i in 1:length(outcomeClass)){
-      x = factor(temp_data[[eval(outcomeClass[i])]])
-      x = relevel(x, ref="1")
-      temp_data[, c(eval(outcomeClass[i])) := NULL]
-      temp_data[, eval(outcomeClass[i]) := x]
+    if(!(is.list(outcomeClass) | is.character(outcomeClass))) stop("outcomeClass is not a list or character vector")
+    #class_var given as a character vector, convert to list
+    if(is.character(outcomeClass)) outcomeClass <- as.list(outcomeClass)
+
+    #process the list
+    for(i in seq_along(outcomeClass)){
+      # variable name provided only
+      if(is.character(outcomeClass[[i]])) {
+        this_var <- outcomeClass[[i]]
+        set(data, j = this_var, value = as.factor(data[[this_var]]))
+      }
+
+      # named list provided
+      if(is.list(outcomeClass[[i]])){
+        this_var <- names(outcomeClass[i])
+        set(data, j = this_var,
+            value = do.call("factor", c(x = list(data[[this_var]]), outcomeClass[[this_var]])))
+      }
     }
   }
 

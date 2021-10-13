@@ -45,12 +45,25 @@ limit_weight <- function(switch_data, lower_limit, upper_limit){
 
 weight_lr <- function(data, formula, class_var){
 
-  if(any(!is.na(class_var))){
-    for(i in 1:length(class_var)){
-      x = factor(data[[eval(class_var[i])]])
-      x = relevel(x, ref="1")
-      data[, c(eval(class_var[i])) := NULL]
-      data[, eval(class_var[i]) := x]
+  if(!missing(class_var) & !is.na(class_var)){
+    if(!(is.list(class_var) | is.character(class_var))) stop("outcomeClass is not a list or character vector")
+    #class_var given as a character vector, convert to list
+    if(is.character(class_var)) class_Var <- as.list(class_var)
+
+    #process the list
+    for(i in seq_along(class_var)){
+      # variable name provided only
+      if(is.character(class_var[[i]])) {
+        this_var <- class_var[[i]]
+        set(data, j = this_var, value = as.factor(data[[this_var]]))
+      }
+
+      # named list provided
+      if(is.list(class_var[[i]])){
+        this_var <- names(class_var[i])
+        set(data, j = this_var,
+            value = do.call("factor", c(x = list(data[[this_var]]), class_var[[this_var]])))
+      }
     }
   }
 
