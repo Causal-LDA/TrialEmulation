@@ -197,7 +197,9 @@ expand <- function(sw_data,
   if(!is.na(period_spline)){
     for_period = switch_data[, for_period]
     temp = eval(parse(text=period_spline))
-    switch_data[, eval(period_spline) := temp]
+    for(i in 1:ncol(temp)){
+      switch_data[, paste0(period_spline, i)] = temp[, i]
+    }
   }
   switch_data[, followup_time := period_new - for_period]
   if("followup_time2" %in% keeplist){
@@ -206,7 +208,9 @@ expand <- function(sw_data,
   if(!is.na(followup_spline)){
     followup_time = switch_data[, followup_time]
     temp = eval(parse(text=followup_spline))
-    switch_data[, eval(followup_spline) := temp]
+    for(i in 1:ncol(temp)){
+      switch_data[, paste0(followup_spline, i)] = temp[, i]
+    }
   }
   if(use_censor == 0){
     switch_data[, dose := cumA_new - dosesum + treat]

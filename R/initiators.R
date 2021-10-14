@@ -337,13 +337,21 @@ data_preparation <- function(data_path, id="id", period="period",
     keeplist <- c(keeplist, "for_period2")
   }
   if("spline" %in% include_expansion_time_case){
-    keeplist <- c(keeplist, period_spline)
+    n = substr(period_spline, regexpr("df=", period_spline)+3,
+               regexpr("df=", period_spline)+3)
+    for(i in 1:n){
+      keeplist <- c(keeplist, paste0(period_spline, i))
+    }
   }
   if("quadratic" %in% include_followup_time_case){
     keeplist <- c(keeplist, "followup_time2")
   }
   if("spline" %in% include_followup_time_case){
-    keeplist <- c(keeplist, followup_spline)
+    n = substr(followup_spline, regexpr("df=", followup_spline)+3,
+               regexpr("df=", followup_spline)+3)
+    for(i in 1:n){
+      keeplist <- c(keeplist, paste0(followup_spline, i))
+    }
   }
   if(any(!is.na(outcomeCov_var))){
     keeplist <- c(keeplist, outcomeCov_var)
@@ -617,7 +625,7 @@ data_modelling <- function(id="id", period="period",
   path = normalizePath(file.path(data_dir, "sw_data.csv"))
 
   data_address = tryCatch({
-    suppressWarnings(out <- bigmemory::read.big.matrix(path, header = TRUE, type="double"))
+    suppressWarnings(out <- bigmemory::read.big.matrix(path, header = TRUE, type="double", has.row.names = FALSE))
   })
 
   max_period = max(data_address[, "period"])
@@ -632,6 +640,7 @@ data_modelling <- function(id="id", period="period",
 
   rm(path, data_address)
   gc()
+
   # Isaac: if the data is in separate file what will happen here?
   data = tryCatch({
     suppressWarnings(out <- bigmemory::read.big.matrix(absolutePath, header=TRUE, shared=FALSE, type="double"))

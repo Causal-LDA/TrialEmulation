@@ -138,7 +138,7 @@ data_manipulation <- function(data_address, data_path, keeplist,
     sw_data[, wt := 1]
   }
 
-  fwrite(sw_data, file.path(data_dir, "sw_data.csv"))
+  fwrite(sw_data, file.path(data_dir, "sw_data.csv"), row.names=FALSE)
   rm(datatable, temp_data, sw_data)
   gc()
 }
@@ -193,8 +193,6 @@ data_extension_parallel <- function(data_address, keeplist, outcomeCov_var=NA,
                 maxperiod=maxperiod, minperiod=minperiod,
                 lag_p_nosw=lag_p_nosw, keeplist=keeplist, data_dir=data_dir,
                 mc.cores=numCores, separate_files=separate_files)
-
-
   gc()
 
   return(list(min_period = minperiod,
