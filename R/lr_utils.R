@@ -244,6 +244,7 @@ expand <- function(sw_data,
   switch_data = switch_data[, keeplist, with=FALSE]
 
   if(!separate_files){
+    print("I don't know why when I use spline it adds NA columns at the end of data when writing switch_data with fwrite and this causes a mismatch between header and rows dimensions!")
     fwrite(switch_data, file.path(data_dir, "switch_data.csv"), append=TRUE, row.names=FALSE)
   } else if(separate_files) {
     for(p in unique(switch_data[,"for_period"])[[1]]){
