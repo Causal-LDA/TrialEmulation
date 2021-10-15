@@ -220,6 +220,7 @@ weight_func <- function(sw_data, cov_switchn=NA, model_switchn=NA,
                          id = model1$data[, id],
                          period = model1$data[, period])
 
+  model1$method <- "glm.fit" #TODO remove when bug is fixed in broom
   tidy_weight_models$switch_d0 <- broom::tidy(model1)
   rm(model1)
 
@@ -238,6 +239,7 @@ weight_func <- function(sw_data, cov_switchn=NA, model_switchn=NA,
                          id = model2$data[, id],
                          period = model2$data[, period])
 
+  model2$method <- "glm.fit" #TODO remove when bug is fixed in broom
   tidy_weight_models$switch_n0 <- broom::tidy(model2)
   rm(model2)
 
@@ -255,6 +257,7 @@ weight_func <- function(sw_data, cov_switchn=NA, model_switchn=NA,
                          id = model3$data[, id],
                          period = model3$data[, period])
 
+  model3$method <- "glm.fit" #TODO remove when bug is fixed in broom
   tidy_weight_models$switch_d1 <- broom::tidy(model3)
   rm(model3)
 
@@ -271,6 +274,7 @@ weight_func <- function(sw_data, cov_switchn=NA, model_switchn=NA,
                          id = model4$data[, id],
                          period = model4$data[, period])
 
+  model4$method <- "glm.fit"  #TODO remove when bug is fixed in broom
   tidy_weight_models$switch_n1 <- broom::tidy(model4)
   rm(model4)
 
