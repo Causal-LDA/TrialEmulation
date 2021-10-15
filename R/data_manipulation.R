@@ -133,7 +133,7 @@ data_manipulation <- function(data_address, data_path, keeplist,
                           cense, pool_cense, cov_censed,
                           model_censed, class_censed, cov_censen,
                           model_censen, class_censen, include_regime_length,
-                          numCores)
+                          numCores, data_dir)
   }else if(use_weight == 0){
     sw_data[, wt := 1]
   }
