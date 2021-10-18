@@ -124,8 +124,8 @@ robust_calculation <- function(model, data_id){
 #' @param outcomeCov_var A list of individual baseline variables used in final model
 #' @param where_var Variables used in where conditions used in subsetting the data used in final analysis (where_case), the variables not included in the final model
 #' @param use_censor Use censoring for per-protocol analysis - censor person-times once a person-trial stops taking the initial treatment value
-#' @param followup_spline The spline model for followup time when choose "spline" in the include_followup_time_case
-#' @param period_spline The spline model for for_period when choose "spline" in the include_expansion_time_case
+#' @param followup_spline The parameters for spline model for followup time when choose "spline" in the include_followup_time_case
+#' @param period_spline The parameters for spline model for for_period when choose "spline" in the include_expansion_time_case
 #' @param maxperiod Maximum period
 #' @param minperiod Minimum period
 #' @param lag_p_nosw when 1 this will set the first weight to be 1 and use p_nosw_d and p_nosw_n at followup-time (t-1) for calculating the weights at followup-time t - can be set to 0 which will increase the maximum and variance of weights (Defaults to 1)
@@ -136,8 +136,9 @@ robust_calculation <- function(model, data_id){
 #' @import data.table
 
 expand <- function(sw_data,
-                   outcomeCov_var, where_var,
-                   use_censor, followup_spline=NA, period_spline=NA,
+                   outcomeCov_var, where_var, use_censor,
+                   followup_spline=NA,
+                   period_spline=NA,
                    maxperiod, minperiod,
                    lag_p_nosw, keeplist, data_dir, separate_files=FALSE){
 
@@ -178,7 +179,7 @@ expand <- function(sw_data,
   switch_data[, period_new := sw_data[rep(1:.N, period+1), period]]
   switch_data[, cumA_new := sw_data[rep(1:.N, period+1), cumA]]
   switch_data[, treatment_new := shift(sw_data[rep(1:.N, period+1), treatment])]
-  switch_data[1, "treatment_new"] = sw_data[1, "treatment"]
+  switch_data[1, "treatment_new"] = sw_data[1, treatment]
   if(use_censor == 1){
     switch_data[, switch_new := sw_data[rep(1:.N, period+1), switch]]
   }else{
@@ -194,24 +195,30 @@ expand <- function(sw_data,
   if("for_period2" %in% keeplist){
     switch_data[, for_period2 := for_period ** 2]
   }
-  if(!is.na(period_spline)){
-    for_period = switch_data[, for_period]
-    temp = eval(parse(text=period_spline))
-    for(i in 1:ncol(temp)){
-      switch_data[, paste0(period_spline, i)] = temp[, i]
-    }
-  }
+  # if(any(!is.na(period_spline))){
+  #   if(knots %in% period_spline){
+  #     for_period = switch_data[, for_period]
+  #     temp = do.call("ns", c(x = list(for_period), period_spline))
+  #     for(i in 1:ncol(temp)){
+  #       switch_data[, paste0("period_base_", i)] = temp[, i]
+  #     }
+  #   }else{
+  #
+  #   }
+  # }
   switch_data[, followup_time := period_new - for_period]
   if("followup_time2" %in% keeplist){
     switch_data[, followup_time2 := followup_time **2]
   }
-  if(!is.na(followup_spline)){
-    followup_time = switch_data[, followup_time]
-    temp = eval(parse(text=followup_spline))
-    for(i in 1:ncol(temp)){
-      switch_data[, paste0(followup_spline, i)] = temp[, i]
-    }
-  }
+  # if(!is.na(followup_spline)){
+  #   if(knots %in% followup_spline){
+  #     followup_time = switch_data[, followup_time]
+  #     temp = do.call("ns", c(x = list(followup_time), followup_spline))
+  #     for(i in 1:ncol(temp)){
+  #       switch_data[, paste0("followup_base_", i)] = temp[, i]
+  #     }
+  #   }
+  # }
   if(use_censor == 0){
     switch_data[, dose := cumA_new - dosesum + treat]
     switch_data[, dose2 := dose ** 2]
@@ -244,7 +251,6 @@ expand <- function(sw_data,
   switch_data = switch_data[, keeplist, with=FALSE]
 
   if(!separate_files){
-    print("I don't know why when I use spline it adds NA columns at the end of data when writing switch_data with fwrite and this causes a mismatch between header and rows dimensions!")
     fwrite(switch_data, file.path(data_dir, "switch_data.csv"), append=TRUE, row.names=FALSE)
   } else if(separate_files) {
     for(p in unique(switch_data[,"for_period"])[[1]]){
