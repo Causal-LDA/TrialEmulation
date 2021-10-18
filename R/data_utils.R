@@ -140,6 +140,7 @@ for_period_func <- function(x){
 #' @param class_censen Class variables used in censoring logistic regression in numerator model
 #' @param include_regime_length If defined as 1 a new variable (time_on_regime) is added to dataset - This variable stores the duration of time that the patient has been on the current treatment value
 #' @param numCores Number of cores for parallel programming
+#' @param save_dir Directory to save tidy weight model summaries in as 'weight_models.rda'
 
 weight_func <- function(sw_data, cov_switchn=NA, model_switchn=NA,
                         class_switchn=NA, cov_switchd=NA,
@@ -149,7 +150,7 @@ weight_func <- function(sw_data, cov_switchn=NA, model_switchn=NA,
                         model_censed=NA, class_censed=NA,
                         cov_censen=NA, model_censen=NA, class_censen=NA,
                         include_regime_length=0,
-                        numCores=NA){
+                        numCores=NA, save_dir){
 
   # Dummy variables used in data.table calls declared to prevent package check NOTES:
   eligible0 <- eligible1 <- id <- period <- eligible0.y <- eligible1.y <- am_1 <-
@@ -203,7 +204,7 @@ weight_func <- function(sw_data, cov_switchn=NA, model_switchn=NA,
   }
 
   # Fit the models for the weights in the four scenarios
-
+  weight_models <- list()
   # ------------------- eligible0 == 1 --------------------
   # --------------- denominator ------------------
   print("P(treatment=1 | treatment=0) for denominator")
@@ -218,6 +219,10 @@ weight_func <- function(sw_data, cov_switchn=NA, model_switchn=NA,
                          eligible0 = unlist(model1$data$eligible0),
                          id = model1$data[, id],
                          period = model1$data[, period])
+
+  model1$method <- "glm.fit" #TODO remove when bug is fixed in broom
+  weight_models$switch_d0 <- broom::tidy(model1)
+  weight_models$switch_d0_statistics <- broom::glance(model1)
   rm(model1)
 
   # -------------- numerator --------------------
@@ -235,6 +240,9 @@ weight_func <- function(sw_data, cov_switchn=NA, model_switchn=NA,
                          id = model2$data[, id],
                          period = model2$data[, period])
 
+  model2$method <- "glm.fit" #TODO remove when bug is fixed in broom
+  weight_models$switch_n0 <- broom::tidy(model2)
+  weight_models$switch_n0_statistics <- broom::glance(model2)
   rm(model2)
 
   # ------------------- eligible1 == 1 --------------------
@@ -251,6 +259,9 @@ weight_func <- function(sw_data, cov_switchn=NA, model_switchn=NA,
                          id = model3$data[, id],
                          period = model3$data[, period])
 
+  model3$method <- "glm.fit" #TODO remove when bug is fixed in broom
+  weight_models$switch_d1 <- broom::tidy(model3)
+  weight_models$switch_statistics <- broom::glance(model3)
   rm(model3)
 
   # -------------------- numerator ---------------------------
@@ -266,10 +277,18 @@ weight_func <- function(sw_data, cov_switchn=NA, model_switchn=NA,
                          id = model4$data[, id],
                          period = model4$data[, period])
 
+  model4$method <- "glm.fit"  #TODO remove when bug is fixed in broom
+  weight_models$switch_n1 <- broom::tidy(model4)
+  weight_models$switch_n1_statistics <- broom::glance(model4)
+
   rm(model4)
 
 
   # -------------- Combine results --------------------
+  if(!missing(save_dir)){
+    save(weight_models, file = file.path(save_dir,"weight_models.rda"))
+  }
+  rm(weight_models)
 
   switch_0 = switch_d0[switch_n0, on = list(id=id, period=period,
                                          eligible0=eligible0)]
