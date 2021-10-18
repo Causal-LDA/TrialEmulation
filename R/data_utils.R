@@ -204,7 +204,7 @@ weight_func <- function(sw_data, cov_switchn=NA, model_switchn=NA,
   }
 
   # Fit the models for the weights in the four scenarios
-  tidy_weight_models <- list()
+  weight_models <- list()
   # ------------------- eligible0 == 1 --------------------
   # --------------- denominator ------------------
   print("P(treatment=1 | treatment=0) for denominator")
@@ -221,7 +221,8 @@ weight_func <- function(sw_data, cov_switchn=NA, model_switchn=NA,
                          period = model1$data[, period])
 
   model1$method <- "glm.fit" #TODO remove when bug is fixed in broom
-  tidy_weight_models$switch_d0 <- broom::tidy(model1)
+  weight_models$switch_d0 <- broom::tidy(model1)
+  weight_models$switch_d0_statistics <- broom::glance(model1)
   rm(model1)
 
   # -------------- numerator --------------------
@@ -240,7 +241,8 @@ weight_func <- function(sw_data, cov_switchn=NA, model_switchn=NA,
                          period = model2$data[, period])
 
   model2$method <- "glm.fit" #TODO remove when bug is fixed in broom
-  tidy_weight_models$switch_n0 <- broom::tidy(model2)
+  weight_models$switch_n0 <- broom::tidy(model2)
+  weight_models$switch_n0_statistics <- broom::glance(model2)
   rm(model2)
 
   # ------------------- eligible1 == 1 --------------------
@@ -258,7 +260,8 @@ weight_func <- function(sw_data, cov_switchn=NA, model_switchn=NA,
                          period = model3$data[, period])
 
   model3$method <- "glm.fit" #TODO remove when bug is fixed in broom
-  tidy_weight_models$switch_d1 <- broom::tidy(model3)
+  weight_models$switch_d1 <- broom::tidy(model3)
+  weight_models$switch_statistics <- broom::glance(model3)
   rm(model3)
 
   # -------------------- numerator ---------------------------
@@ -275,15 +278,17 @@ weight_func <- function(sw_data, cov_switchn=NA, model_switchn=NA,
                          period = model4$data[, period])
 
   model4$method <- "glm.fit"  #TODO remove when bug is fixed in broom
-  tidy_weight_models$switch_n1 <- broom::tidy(model4)
+  weight_models$switch_n1 <- broom::tidy(model4)
+  weight_models$switch_n1_statistics <- broom::glance(model4)
+
   rm(model4)
 
 
   # -------------- Combine results --------------------
   if(!missing(save_dir)){
-    save(tidy_weight_models, file = file.path(save_dir,"weight_models.rda"))
+    save(weight_models, file = file.path(save_dir,"weight_models.rda"))
   }
-  rm(tidy_weight_models)
+  rm(weight_models)
 
   switch_0 = switch_d0[switch_n0, on = list(id=id, period=period,
                                          eligible0=eligible0)]
