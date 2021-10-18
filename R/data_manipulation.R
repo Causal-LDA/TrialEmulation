@@ -184,7 +184,7 @@ data_extension_parallel <- function(data_address, keeplist, outcomeCov_var=NA,
     all_ids <- unique(data_address[, "id"])
   } else if (is.data.frame(data_address)){
     all_ids <- unique(data_address$id)
-  } else error("Unknown data_adress object!")
+  } else stop("Unknown data_adress object!")
 
   j <- split(all_ids, ceiling(seq_along(all_ids)/chunk_size))
 
