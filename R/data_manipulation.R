@@ -105,9 +105,8 @@ data_manipulation <- function(data_address, data_path, keeplist,
   temp_data[, cumA := cumsum(cumA), by=id]
   temp_data[, regime_start_shift := NULL]
 
-  datatable = copy(temp_data)
 
-  sw_data <- copy(datatable)
+  sw_data <- copy(temp_data)
   if(use_censor == 1){
     sw_data[, started0 := as.numeric(NA)]
     sw_data[, started1 := as.numeric(NA)]
@@ -139,8 +138,9 @@ data_manipulation <- function(data_address, data_path, keeplist,
   }
 
   fwrite(sw_data, file.path(data_dir, "sw_data.csv"))
-  rm(datatable, temp_data, sw_data)
+  rm(datatable, temp_data)
   gc()
+  sw_data
 }
 
 #' Data Extension in Parallel Function
@@ -168,7 +168,7 @@ data_extension_parallel <- function(data_address, keeplist, outcomeCov_var=NA,
                            numCores=NA,
                            chunk_size=200,
                            separate_files=FALSE){
-  max_id = max(data_address[, "id"])
+
   maxperiod = max(data_address[, "period"])
   minperiod = min(data_address[, "period"])
 
@@ -180,7 +180,12 @@ data_extension_parallel <- function(data_address, keeplist, outcomeCov_var=NA,
   }
   range = (maxperiod - minperiod) + 1
 
-  all_ids <- unique(data_address[, "id"])
+  if(bigmemory::is.big.matrix(data_address)){
+    all_ids <- unique(data_address[, "id"])
+  } else if (is.data.frame(data_address)){
+    all_ids <- unique(data_address$id)
+  } else error("Unknown data_adress object!")
+
   j <- split(all_ids, ceiling(seq_along(all_ids)/chunk_size))
 
   N <- mclapply(j, expand_switch, data_address=data_address,
@@ -202,6 +207,7 @@ data_extension_parallel <- function(data_address, keeplist, outcomeCov_var=NA,
 #'
 #' This function takes the data and all the variables and expand it
 #' @param data_path data path
+#' @param sw_data A data.frame or similar
 #' @param keeplist A list contains names of variables used in final model
 #' @param outcomeCov_var A list of individual baseline variables used in final model
 #' @param first_period First period value to start expanding about
@@ -217,12 +223,14 @@ data_extension <- function(data_path, keeplist, outcomeCov_var=NA,
                            first_period=NA, last_period=NA,
                            use_censor=0,
                            lag_p_nosw=1, where_var=NA,
-                           data_dir="~/rds/hpc-work/", separate_files=FALSE){
+                           data_dir="~/rds/hpc-work/", separate_files=FALSE, sw_data){
 
   # Dummy variables used in data.table calls declared to prevent package check NOTES:
   id <- period <- NULL
 
-  sw_data = fread(data_path, header = TRUE, sep = ",")
+  if(missing(sw_data)){
+    sw_data <- fread(data_path, header = TRUE, sep = ",")
+  }
   max_id = max(sw_data[, id])
   maxperiod = max(sw_data[, period])
   minperiod = min(sw_data[, period])

@@ -272,19 +272,25 @@ expand_switch <- function(id_num, data_address,
                           use_censor, maxperiod, minperiod,
                           lag_p_nosw, keeplist, data_dir, separate_files=FALSE){
 
-  d = data_address[bigmemory::mwhich(data_address,
+  if(bigmemory::is.big.matrix(data_address)){
+    sw_data <- as.data.table(
+      data_address[bigmemory::mwhich(data_address,
                                      cols = rep("id",length(id_num)),
                                      vals = as.list(id_num),
                                      comps = c('eq'),
                                      op = "OR"),]
-  if(is.null(nrow(d))){
-    sw_data = as.data.table(t(d))
-  }else{
-    sw_data = as.data.table(d)
+    )
+  } else {
+    sw_data <- data_address[ id %in% id_num,]
   }
+  # if(is.null(nrow(d))){
+  #   sw_data = as.data.table(t(d))
+  # }else{
+  #   sw_data = as.data.table(d)
+  # }
   N <- expand(sw_data, outcomeCov_var, where_var, use_censor, maxperiod, minperiod,
          lag_p_nosw, keeplist, data_dir, separate_files)
-  rm(sw_data, d)
+  rm(sw_data)
   gc()
   N
 }

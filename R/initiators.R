@@ -364,7 +364,8 @@ data_preparation <- function(data_path, id="id", period="period",
 
   print("Start data manipulation")
   timing = system.time({
-    data_manipulation(NA, data_path, keeplist,
+    sw_data <-
+    data_manipulation(NA, absolutePath, keeplist,
                       treatment, id, period, outcome, eligible,
                       outcomeCov_var,
                       cov_switchn, model_switchn, class_switchn,
@@ -396,27 +397,27 @@ data_preparation <- function(data_path, id="id", period="period",
       manipulate = tryCatch(
         data_extension(absolutePath, keeplist, outcomeCov_var,
                        first_period, last_period, use_censor, lag_p_nosw,
-                       where_var, data_dir),
+                       where_var, data_dir, sw_data),
         error = function(err){
           gc()
           file.remove(file.path(data_dir, "switch_data.csv"))
           write.csv(df, file.path(data_dir, "switch_data.csv"), row.names=FALSE)
           print(paste0("The memory is not enough to do the data extention without data division so performed in chunks with numCores=1 and chunk_size=",chunk_size,"!"))
-          data = tryCatch({
-            suppressWarnings(out <- bigmemory::read.big.matrix(absolutePath, header = TRUE, type="double"))
-          })
-          data_extension_parallel(data, keeplist, outcomeCov_var,
+          # data = tryCatch({
+          #   suppressWarnings(bigmemory::read.big.matrix(absolutePath, header = TRUE, type="double"))
+          # })
+          data_extension_parallel(sw_data, keeplist, outcomeCov_var,
                                   first_period, last_period, use_censor, lag_p_nosw,
                                   where_var, data_dir, numCores,
                                   chunk_size, separate_files)
         }
       )
     }else{
-      data = tryCatch({
-        suppressWarnings(out <- bigmemory::read.big.matrix(absolutePath, header = TRUE, type="double"))
-      })
+      # data = tryCatch({
+      #   suppressWarnings(bigmemory::read.big.matrix(absolutePath, header = TRUE, type="double"))
+      # })
 
-      manipulate = data_extension_parallel(data, keeplist,
+      manipulate = data_extension_parallel(sw_data, keeplist,
                                            outcomeCov_var,
                                            first_period, last_period,
                                            use_censor, lag_p_nosw,
@@ -442,7 +443,7 @@ print(paste0("Number of observations in expanded data: ",manipulate$N))
     last_followup = max_period
   }
 
-  rm(data, absolutePath)
+  rm(sw_data, absolutePath)
   gc()
 
 
