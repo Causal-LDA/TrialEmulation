@@ -32,7 +32,8 @@ Imports:
     parallel,
     doParallel,
     foreach,
-    sandwich
+    sandwich,
+    broom
 Suggests: 
     rmarkdown,
     knitr,

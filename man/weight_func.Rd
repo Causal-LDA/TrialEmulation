@@ -23,7 +23,8 @@ weight_func(
   model_censen = NA,
   class_censen = NA,
   include_regime_length = 0,
-  numCores = NA
+  numCores = NA,
+  save_dir
 )
 }
 \arguments{
@@ -64,6 +65,8 @@ weight_func(
 \item{include_regime_length}{If defined as 1 a new variable (time_on_regime) is added to dataset - This variable stores the duration of time that the patient has been on the current treatment value}
 
 \item{numCores}{Number of cores for parallel programming}
+
+\item{save_dir}{Directory to save tidy weight model summaries in as 'weight_models.rda'}
 }
 \description{
 This function performs the calculation for weight of the data
