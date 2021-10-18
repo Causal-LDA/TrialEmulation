@@ -318,14 +318,13 @@ data_preparation <- function(data_path, id="id", period="period",
     numCores = 1
   }
 
-  # line1 = read.csv(data_path, header = TRUE, nrows = 1)
-  # col.names = colnames(line1)
 
+  if(!file.exists(data_path)) stop(paste0("'data_path' file not found: ", data_path))
   absolutePath <- normalizePath(data_path)
 
-  data = tryCatch({
-    suppressWarnings(out <- bigmemory::read.big.matrix(absolutePath, header = TRUE, type="double"))
-  })
+  # data = tryCatch({
+  #   suppressWarnings(out <- bigmemory::read.big.matrix(absolutePath, header = TRUE, type="double"))
+  # })
 
   keeplist <- c("id", "for_period", "followup_time", "outcome",
                 "weight", "treatment")
@@ -365,7 +364,7 @@ data_preparation <- function(data_path, id="id", period="period",
 
   print("Start data manipulation")
   timing = system.time({
-    data_manipulation(data, data_path, keeplist,
+    data_manipulation(NA, data_path, keeplist,
                       treatment, id, period, outcome, eligible,
                       outcomeCov_var,
                       cov_switchn, model_switchn, class_switchn,

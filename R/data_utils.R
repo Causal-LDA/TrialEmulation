@@ -65,16 +65,20 @@ read_data <- function(data_address, data_path=NA, id_num=NA,
   }
   covs <- covs[!duplicated(covs)]
   cols = c(id, period, treatment, outcome, eligible, covs)
-  if(!is.na(id_num)){
-    data = data_address[bigmemory::mwhich(data_address, c("id"), c(id_num), c('eq')),]
+  if(!is.na(id_num) & bigmemory::is.big.matrix(data_address)){
+    data_new = as.data.table(data_address[bigmemory::mwhich(data_address, c("id"), c(id_num), c('eq')),])
   }else{
-    data = fread(data_path, header = TRUE, sep = ",")
+    data_new = fread(data_path, header = TRUE, sep = ",", select = cols)
   }
-  if(!eligible %in% colnames(data)){
-    data$eligible = 1
+
+  if(!eligible %in% colnames(data_new)){
+    message(paste0("Eligibility variable not found in data: ",eligible))
+    message("Eligibility set to 1 for all patients for all periods")
+    data_new[, (eligible) := 1]
   }
-  data_new = as.data.table(data)
+
   data_new = subset(data_new, select=cols)
+
   tryCatch({
     suppressWarnings(setnames(data_new,
                               c(id, period, outcome, eligible, treatment),
@@ -86,7 +90,7 @@ read_data <- function(data_address, data_path=NA, id_num=NA,
   if(any(!is.na(eligible_wts_1))){
     setnames(data_new, c(eligible_wts_1), c("eligible_wts_1"))
   }
-  rm(data, covs, cols)
+  rm(covs, cols)
   data_new = data_new[order(id)]
   return(data_new)
 }
