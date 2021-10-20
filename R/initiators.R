@@ -38,10 +38,10 @@
 #' @param cov_censen List of covariates to be used in logistic model for censoring weights in numerator model
 #' @param model_censen List of models (functions) to use the covariates from cov_censen
 #' @param class_censen Class variables used in censoring logistic regression in numerator model
-#' @param include_followup_time_case The model to include follow up time in outcome model. This has 3 options c("linear","quadratic","spline").
+#' @param include_followup_time_case The model to include follow up time in outcome model. This has 3 options c("linear","quadratic","spline")
 #' @param include_expansion_time_case The model to include for_period in outcome model. This has 3 options c("linear","quadratic","spline")
-#' @param followup_spline The parameters for spline model for followup time when choose "spline" in the include_followup_time_case
-#' @param period_spline The parameters for spline model for for_period when choose "spline" in the include_expansion_time_case
+#' @param followup_spline The parameters for spline model for followup time when choose "spline" in the include_followup_time_case (ex. list(df=2, knots=3))
+#' @param period_spline The parameters for spline model for for_period when choose "spline" in the include_expansion_time_case (ex. list(df=3, knots=1))
 #' @param include_regime_length If defined as 1 a new variable (time_on_regime) is added to dataset - This variable stores the duration of time that the patient has been on the current treatment value
 #' @param eligible_wts_0 Eligibility criteria used in weights for model condition Am1 = 0
 #' @param eligible_wts_1 Eligibility criteria used in weights for model condition Am1 = 1
@@ -185,8 +185,8 @@ initiators <- function(data_path, id="id", period="period",
 #' @param class_censen Class variables used in censoring logistic regression in numerator model
 #' @param include_followup_time_case The model to include follow up time in outcome model. This has 3 options c("linear","quadratic","spline").
 #' @param include_expansion_time_case The model to include for_period in outcome model. This has 3 options c("linear","quadratic","spline")
-#' @param followup_spline The parameters for spline model for followup time when choose "spline" in the include_followup_time_case
-#' @param period_spline The parameters for spline model for for_period when choose "spline" in the include_expansion_time_case
+#' @param followup_spline The parameters for spline model for followup time when choose "spline" in the include_followup_time_case (ex. list(df=2, knots=3))
+#' @param period_spline The parameters for spline model for for_period when choose "spline" in the include_expansion_time_case (ex. list(df=3, knots=1))
 #' @param include_regime_length If defined as 1 a new variable (time_on_regime) is added to dataset - This variable stores the duration of time that the patient has been on the current treatment value
 #' @param eligible_wts_0 Eligibility criteria used in weights for model condition Am1 = 0
 #' @param eligible_wts_1 Eligibility criteria used in weights for model condition Am1 = 1
@@ -596,8 +596,8 @@ data_preparation <- function(data_path, id="id", period="period",
 #' @param class_censen Class variables used in censoring logistic regression in numerator model
 #' @param include_followup_time_case The model to include follow up time in outcome model. This has 3 options c("linear","quadratic","spline").
 #' @param include_expansion_time_case The model to include for_period in outcome model. This has 3 options c("linear","quadratic","spline")
-#' @param followup_spline The parameters for spline model for followup time when choose "spline" in the include_followup_time_case
-#' @param period_spline The parameters for spline model for for_period when choose "spline" in the include_expansion_time_case
+#' @param followup_spline The parameters for spline model for followup time when choose "spline" in the include_followup_time_case (ex. list(df=2, knots=3))
+#' @param period_spline The parameters for spline model for for_period when choose "spline" in the include_expansion_time_case (ex. list(df=3, knots=1))
 #' @param include_regime_length If defined as 1 a new variable (time_on_regime) is added to dataset - This variable stores the duration of time that the patient has been on the current treatment value
 #' @param eligible_wts_0 Eligibility criteria used in weights for model condition Am1 = 0
 #' @param eligible_wts_1 Eligibility criteria used in weights for model condition Am1 = 1
