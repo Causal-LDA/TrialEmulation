@@ -38,8 +38,10 @@
 #' @param cov_censen List of covariates to be used in logistic model for censoring weights in numerator model
 #' @param model_censen List of models (functions) to use the covariates from cov_censen
 #' @param class_censen Class variables used in censoring logistic regression in numerator model
-#' @param include_followup_time_case Include follow up time in outcome model
-#' @param include_expansion_time_case Include for_period and for_period2 in outcome model
+#' @param include_followup_time_case The model to include follow up time in outcome model. This has 3 options c("linear","quadratic","spline")
+#' @param include_expansion_time_case The model to include for_period in outcome model. This has 3 options c("linear","quadratic","spline")
+#' @param followup_spline The parameters for spline model for followup time when choose "spline" in the include_followup_time_case (ex. list(df=2))
+#' @param period_spline The parameters for spline model for for_period when choose "spline" in the include_expansion_time_case (ex. list(df=3))
 #' @param include_regime_length If defined as 1 a new variable (time_on_regime) is added to dataset - This variable stores the duration of time that the patient has been on the current treatment value
 #' @param eligible_wts_0 Eligibility criteria used in weights for model condition Am1 = 0
 #' @param eligible_wts_1 Eligibility criteria used in weights for model condition Am1 = 1
@@ -78,8 +80,10 @@ initiators <- function(data_path, id="id", period="period",
                        cense=NA, pool_cense=0,
                        cov_censed=NA, model_censed=NA, class_censed=NA,
                        cov_censen=NA, model_censen=NA, class_censen=NA,
-                       include_followup_time_case=1,
-                       include_expansion_time_case=1,
+                       include_followup_time_case="linear",
+                       include_expansion_time_case="linear",
+                       followup_spline=NA,
+                       period_spline=NA,
                        include_regime_length=0,
                        eligible_wts_0=NA, eligible_wts_1=NA, lag_p_nosw=1,
                        where_var=NA, where_case=NA, run_base_model=1,
@@ -103,6 +107,8 @@ initiators <- function(data_path, id="id", period="period",
                                   cov_censen, model_censen, class_censen,
                                   include_followup_time_case,
                                   include_expansion_time_case,
+                                  followup_spline,
+                                  period_spline,
                                   include_regime_length,
                                   eligible_wts_0, eligible_wts_1, lag_p_nosw,
                                   where_var, where_case, run_base_model,
@@ -125,6 +131,8 @@ initiators <- function(data_path, id="id", period="period",
                                class_censed, cov_censen, model_censen,
                                class_censen, include_followup_time_case,
                                include_expansion_time_case,
+                               followup_spline,
+                               period_spline,
                                include_regime_length,
                                eligible_wts_0, eligible_wts_1, lag_p_nosw,
                                where_var, where_case, run_base_model,
@@ -175,8 +183,10 @@ initiators <- function(data_path, id="id", period="period",
 #' @param cov_censen List of covariates to be used in logistic model for censoring weights in numerator model
 #' @param model_censen List of models (functions) to use the covariates from cov_censen
 #' @param class_censen Class variables used in censoring logistic regression in numerator model
-#' @param include_followup_time_case Include follow up time in outcome model
-#' @param include_expansion_time_case Include for_period and for_period2 in outcome model
+#' @param include_followup_time_case The model to include follow up time in outcome model. This has 3 options c("linear","quadratic","spline").
+#' @param include_expansion_time_case The model to include for_period in outcome model. This has 3 options c("linear","quadratic","spline")
+#' @param followup_spline The parameters for spline model for followup time when choose "spline" in the include_followup_time_case (ex. list(df=2))
+#' @param period_spline The parameters for spline model for for_period when choose "spline" in the include_expansion_time_case (ex. list(df=3))
 #' @param include_regime_length If defined as 1 a new variable (time_on_regime) is added to dataset - This variable stores the duration of time that the patient has been on the current treatment value
 #' @param eligible_wts_0 Eligibility criteria used in weights for model condition Am1 = 0
 #' @param eligible_wts_1 Eligibility criteria used in weights for model condition Am1 = 1
@@ -210,8 +220,10 @@ data_preparation <- function(data_path, id="id", period="period",
                              cense=NA, pool_cense=0,
                              cov_censed=NA, model_censed=NA, class_censed=NA,
                              cov_censen=NA, model_censen=NA, class_censen=NA,
-                             include_followup_time_case=1,
-                             include_expansion_time_case=1,
+                             include_followup_time_case="linear",
+                             include_expansion_time_case="linear",
+                             followup_spline=NA,
+                             period_spline=NA,
                              include_regime_length=0,
                              eligible_wts_0=NA, eligible_wts_1=NA, lag_p_nosw=1,
                              where_var=NA, where_case=NA, run_base_model=1,
@@ -321,12 +333,32 @@ data_preparation <- function(data_path, id="id", period="period",
 
   keeplist <- c("id", "for_period", "followup_time", "outcome",
                 "weight", "treatment")
-  if(include_expansion_time_case == 1){
+  if("quadratic" %in% include_expansion_time_case){
     keeplist <- c(keeplist, "for_period2")
   }
-  if(include_followup_time_case == 1){
+  # if("spline" %in% include_expansion_time_case){
+  #   if(df %in% period_spline){
+  #     n = period_spline$df
+  #   }else{
+  #     n = 1
+  #   }
+  #   for(i in 1:n){
+  #     keeplist <- c(keeplist, paste0("period_base_", i))
+  #   }
+  # }
+  if("quadratic" %in% include_followup_time_case){
     keeplist <- c(keeplist, "followup_time2")
   }
+  # if("spline" %in% include_followup_time_case){
+  #   if(df %in% followup_spline){
+  #     n = followup_spline$df
+  #   }else{
+  #     n = 1
+  #   }
+  #   for(i in 1:n){
+  #     keeplist <- c(keeplist, paste0("followup_base_", i))
+  #   }
+  # }
   if(any(!is.na(outcomeCov_var))){
     keeplist <- c(keeplist, outcomeCov_var)
   }
@@ -389,7 +421,8 @@ data_preparation <- function(data_path, id="id", period="period",
       manipulate = tryCatch(
         data_extension(absolutePath, keeplist, outcomeCov_var,
                        first_period, last_period, use_censor, lag_p_nosw,
-                       where_var, data_dir),
+                       where_var, followup_spline, period_spline,
+                       data_dir),
         error = function(err){
           gc()
           file.remove(file.path(data_dir, "switch_data.csv"))
@@ -399,8 +432,9 @@ data_preparation <- function(data_path, id="id", period="period",
             suppressWarnings(out <- bigmemory::read.big.matrix(absolutePath, header = TRUE, type="double"))
           })
           data_extension_parallel(data, keeplist, outcomeCov_var,
-                                  first_period, last_period, use_censor, lag_p_nosw,
-                                  where_var, data_dir, numCores,
+                                  first_period, last_period, use_censor,
+                                  lag_p_nosw, where_var, followup_spline,
+                                  period_spline, data_dir, numCores,
                                   chunk_size, separate_files)
         }
       )
@@ -413,16 +447,24 @@ data_preparation <- function(data_path, id="id", period="period",
                                            outcomeCov_var,
                                            first_period, last_period,
                                            use_censor, lag_p_nosw,
-                                           where_var, data_dir,
+                                           where_var, followup_spline,
+                                           period_spline, data_dir,
                                            numCores, chunk_size, separate_files)
     }
+
+    # adding spline
+    add_splines(data_path = file.path(data_dir, "switch_data.csv"),
+                period_spline = period_spline,
+                followup_spline = followup_spline)
+
+
   })
   print("Finish data extension")
   print("Processing time of data extension:")
   print(timing)
   print("----------------------------")
 
-print(paste0("Number of observations in expanded data: ",manipulate$N))
+  print(paste0("Number of observations in expanded data: ",manipulate$N))
   n_rows <- manipulate$N
   range <- manipulate$range
   min_period = manipulate$min_period
@@ -474,6 +516,7 @@ print(paste0("Number of observations in expanded data: ",manipulate$N))
 
       if(n_rows >= 2^31 -1){ #if data is too big, we sample
 
+        print("case control sampling needed!")
         sample_data_path <- case_control_sampling(data_dir,
                                                   samples_file = "temp_data.csv",
                                                   min_period=min_period,
@@ -538,8 +581,10 @@ print(paste0("Number of observations in expanded data: ",manipulate$N))
 #' @param cov_censen List of covariates to be used in logistic model for censoring weights in numerator model
 #' @param model_censen List of models (functions) to use the covariates from cov_censen
 #' @param class_censen Class variables used in censoring logistic regression in numerator model
-#' @param include_followup_time_case Include follow up time in outcome model
-#' @param include_expansion_time_case Include for_period and for_period2 in outcome model
+#' @param include_followup_time_case The model to include follow up time in outcome model. This has 3 options c("linear","quadratic","spline").
+#' @param include_expansion_time_case The model to include for_period in outcome model. This has 3 options c("linear","quadratic","spline")
+#' @param followup_spline The parameters for spline model for followup time when choose "spline" in the include_followup_time_case (ex. list(df=2))
+#' @param period_spline The parameters for spline model for for_period when choose "spline" in the include_expansion_time_case (ex. list(df=3))
 #' @param include_regime_length If defined as 1 a new variable (time_on_regime) is added to dataset - This variable stores the duration of time that the patient has been on the current treatment value
 #' @param eligible_wts_0 Eligibility criteria used in weights for model condition Am1 = 0
 #' @param eligible_wts_1 Eligibility criteria used in weights for model condition Am1 = 1
@@ -559,6 +604,7 @@ print(paste0("Number of observations in expanded data: ",manipulate$N))
 #' eg `list(risk_cat=list(levels = c(1,2,3,0), age_cat=list(levels=c(1,2,3),labels=c("50-60","60-70","70+")`
 #'
 #' @export
+#' @importFrom splines ns
 #' @importFrom stats as.formula binomial pnorm quantile relevel
 #' @importFrom utils write.csv
 
@@ -578,8 +624,10 @@ data_modelling <- function(id="id", period="period",
                            cense=NA, pool_cense=0,
                            cov_censed=NA, model_censed=NA, class_censed=NA,
                            cov_censen=NA, model_censen=NA, class_censen=NA,
-                           include_followup_time_case=1,
-                           include_expansion_time_case=1,
+                           include_followup_time_case="linear",
+                           include_expansion_time_case="linear",
+                           followup_spline=NA,
+                           period_spline=NA,
                            include_regime_length=0,
                            eligible_wts_0=NA, eligible_wts_1=NA, lag_p_nosw=1,
                            where_var=NA, where_case=NA, run_base_model=1,
@@ -595,7 +643,7 @@ data_modelling <- function(id="id", period="period",
   path = normalizePath(file.path(data_dir, "sw_data.csv"))
 
   data_address = tryCatch({
-    suppressWarnings(out <- bigmemory::read.big.matrix(path, header = TRUE, type="double"))
+    suppressWarnings(out <- bigmemory::read.big.matrix(path, header = TRUE, type="double", has.row.names = FALSE))
   })
 
   max_period = max(data_address[, "period"])
@@ -618,7 +666,7 @@ data_modelling <- function(id="id", period="period",
 
   temp_data = data[bigmemory::mwhich(data, c("followup_time", "followup_time"), c(first_followup, last_followup), c('ge', 'le'), 'AND'), ]
   temp_data = as.data.table(temp_data)
-
+  cols = colnames(temp_data)
   rm(data)
   gc()
 
@@ -663,11 +711,37 @@ data_modelling <- function(id="id", period="period",
       vars <- c(vars, "assigned_treatment")
     }
   }
-  if(include_followup_time_case == 1){
-    vars <- c(vars, c("followup_time", "followup_time2"))
+  if(any(!is.na(include_expansion_time_case))){
+    if("linear" %in% include_expansion_time_case){
+      vars <- c(vars, "for_period")
+    }
+    if("quadratic" %in% include_expansion_time_case){
+      vars <- c(vars, "for_period2")
+    }
+    if("spline" %in% include_expansion_time_case){
+      idx = sapply("period_base", function(y) grep(y, cols))
+      if(any(regexpr("period_base", cols > 0))){
+        vars <- c(vars, cols[idx])
+      }
+    }
+  }else{
+    vars <- c(vars, "for_period")
   }
-  if(include_expansion_time_case == 1){
-    vars <- c(vars, c("for_period", "for_period2"))
+  if(any(!is.na(include_followup_time_case))){
+    if("linear" %in% include_followup_time_case){
+      vars <- c(vars, "followup_time")
+    }
+    if("quadratic" %in% include_followup_time_case){
+      vars <- c(vars, "followup_time2")
+    }
+    if("spline" %in% include_followup_time_case){
+      idx = sapply("followup_base", function(y) grep(y, cols))
+      if(any(regexpr("followup_base", cols > 0))){
+        vars <- c(vars, cols[idx])
+      }
+    }
+  }else{
+    vars <- c(vars, "followup_time")
   }
   if(any(!is.na(outcomeCov))){
     vars <- c(vars, outcomeCov)
@@ -680,32 +754,32 @@ data_modelling <- function(id="id", period="period",
     )
   )
 
-  timing = system.time({
-    if(any(!is.na(where_case))){
-      d = list()
-      for(i in 1:length(where_case)){
-        d[[i]] = list(temp_data[eval(parse(text = where_case[i]))], regform)
-      }
-      if(numCores == 1) {
-        #cl <- makeCluster(numCores)
-        #m = parLapply(cl, d, lr)
-        m = lapply(d, lr)
-        #stopCluster(cl)
-      } else {
-        m = mclapply(d, lr, mc.cores=numCores)
-      }
-
-      for(i in 1:length(where_case)){
-        print(paste("Analysis with", where_case[i], sep=" "))
-        print(summary(m[i]$model))
-        print(paste("Analysis with", where_case[i], "using robust variance", sep=" "))
-        print(m[i]$output)
-      }
+  if(any(!is.na(where_case))){
+    timing = system.time({
+    d = list()
+    for(i in 1:length(where_case)){
+      d[[i]] = list(temp_data[eval(parse(text = where_case[i]))], regform)
     }
-  })
-  print("------------------------------------")
-  print("Processing time of modeling for where case analysis in total parallel:")
-  print(timing)
+    if(numCores == 1) {
+      #cl <- makeCluster(numCores)
+      #m = parLapply(cl, d, lr)
+      m = lapply(d, lr)
+      #stopCluster(cl)
+    } else {
+      m = mclapply(d, lr, mc.cores=numCores)
+    }
+
+    for(i in 1:length(where_case)){
+      print(paste("Analysis with", where_case[i], sep=" "))
+      print(summary(m[i]$model))
+      print(paste("Analysis with", where_case[i], "using robust variance", sep=" "))
+      print(m[i]$output)
+    }
+    })
+    print("------------------------------------")
+    print("Processing time of modeling for where case analysis in total parallel:")
+    print(timing)
+  }
 
   if(run_base_model == 1){
     if(use_weight == 1){

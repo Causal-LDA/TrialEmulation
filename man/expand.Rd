@@ -9,6 +9,8 @@ expand(
   outcomeCov_var,
   where_var,
   use_censor,
+  followup_spline = NA,
+  period_spline = NA,
   maxperiod,
   minperiod,
   lag_p_nosw,
@@ -25,6 +27,10 @@ expand(
 \item{where_var}{Variables used in where conditions used in subsetting the data used in final analysis (where_case), the variables not included in the final model}
 
 \item{use_censor}{Use censoring for per-protocol analysis - censor person-times once a person-trial stops taking the initial treatment value}
+
+\item{followup_spline}{The parameters for spline model for followup time when choose "spline" in the include_followup_time_case}
+
+\item{period_spline}{The parameters for spline model for for_period when choose "spline" in the include_expansion_time_case}
 
 \item{maxperiod}{Maximum period}
 

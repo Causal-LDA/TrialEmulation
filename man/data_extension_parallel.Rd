@@ -13,6 +13,8 @@ data_extension_parallel(
   use_censor = 0,
   lag_p_nosw = 1,
   where_var = NA,
+  followup_spline = NA,
+  period_spline = NA,
   data_dir = "~/rds/hpc-work/",
   numCores = NA,
   chunk_size = 200,
@@ -35,6 +37,10 @@ data_extension_parallel(
 \item{lag_p_nosw}{when 1 this will set the first weight to be 1 and use p_nosw_d and p_nosw_n at followup-time (t-1) for calculating the weights at followup-time t - can be set to 0 which will increase the maximum and variance of weights (Defaults to 1)}
 
 \item{where_var}{Variables used in where conditions used in subsetting the data used in final analysis (where_case), the variables not included in the final model}
+
+\item{followup_spline}{The spline model for followup time when choose "spline" in the include_followup_time_case}
+
+\item{period_spline}{The spline model for for_period when choose "spline" in the include_expansion_time_case}
 
 \item{data_dir}{Direction to save data}
 
