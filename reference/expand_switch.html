@@ -133,6 +133,8 @@
   <span class='va'>outcomeCov_var</span>,
   <span class='va'>where_var</span>,
   <span class='va'>use_censor</span>,
+  <span class='va'>followup_spline</span>,
+  <span class='va'>period_spline</span>,
   <span class='va'>maxperiod</span>,
   <span class='va'>minperiod</span>,
   <span class='va'>lag_p_nosw</span>,
@@ -163,6 +165,14 @@
     <tr>
       <th>use_censor</th>
       <td><p>Use censoring for per-protocol analysis - censor person-times once a person-trial stops taking the initial treatment value</p></td>
+    </tr>
+    <tr>
+      <th>followup_spline</th>
+      <td><p>The spline model for followup time when choose "spline" in the include_followup_time_case</p></td>
+    </tr>
+    <tr>
+      <th>period_spline</th>
+      <td><p>The spline model for for_period when choose "spline" in the include_expansion_time_case</p></td>
     </tr>
     <tr>
       <th>maxperiod</th>
