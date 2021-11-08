@@ -40,8 +40,8 @@
 #' @param class_censen Class variables used in censoring logistic regression in numerator model
 #' @param include_followup_time_case The model to include follow up time in outcome model. This has 3 options c("linear","quadratic","spline")
 #' @param include_expansion_time_case The model to include for_period in outcome model. This has 3 options c("linear","quadratic","spline")
-#' @param followup_spline The parameters for spline model for followup time when choose "spline" in the include_followup_time_case (ex. list(df=2, knots=3))
-#' @param period_spline The parameters for spline model for for_period when choose "spline" in the include_expansion_time_case (ex. list(df=3, knots=1))
+#' @param followup_spline The parameters for spline model for followup time when choose "spline" in the include_followup_time_case (ex. list(df=2))
+#' @param period_spline The parameters for spline model for for_period when choose "spline" in the include_expansion_time_case (ex. list(df=3))
 #' @param include_regime_length If defined as 1 a new variable (time_on_regime) is added to dataset - This variable stores the duration of time that the patient has been on the current treatment value
 #' @param eligible_wts_0 Eligibility criteria used in weights for model condition Am1 = 0
 #' @param eligible_wts_1 Eligibility criteria used in weights for model condition Am1 = 1
@@ -185,8 +185,8 @@ initiators <- function(data_path, id="id", period="period",
 #' @param class_censen Class variables used in censoring logistic regression in numerator model
 #' @param include_followup_time_case The model to include follow up time in outcome model. This has 3 options c("linear","quadratic","spline").
 #' @param include_expansion_time_case The model to include for_period in outcome model. This has 3 options c("linear","quadratic","spline")
-#' @param followup_spline The parameters for spline model for followup time when choose "spline" in the include_followup_time_case (ex. list(df=2, knots=3))
-#' @param period_spline The parameters for spline model for for_period when choose "spline" in the include_expansion_time_case (ex. list(df=3, knots=1))
+#' @param followup_spline The parameters for spline model for followup time when choose "spline" in the include_followup_time_case (ex. list(df=2))
+#' @param period_spline The parameters for spline model for for_period when choose "spline" in the include_expansion_time_case (ex. list(df=3))
 #' @param include_regime_length If defined as 1 a new variable (time_on_regime) is added to dataset - This variable stores the duration of time that the patient has been on the current treatment value
 #' @param eligible_wts_0 Eligibility criteria used in weights for model condition Am1 = 0
 #' @param eligible_wts_1 Eligibility criteria used in weights for model condition Am1 = 1
@@ -453,24 +453,11 @@ data_preparation <- function(data_path, id="id", period="period",
     }
 
     # adding spline
-    data = fread(file.path(data_dir, "switch_data.csv"), header = TRUE, sep = ",")
+    add_splines(data_path = file.path(data_dir, "switch_data.csv"),
+                period_spline = period_spline,
+                followup_spline = followup_spline)
 
-    if(any(!is.na(period_spline))){
-      temp = do.call("ns", c(x = list(data[, for_period]),
-                             period_spline))
-      for(i in 1:ncol(temp)){
-        data[, paste0("period_base_", i)] = temp[, i]
-      }
-    }
-    if(any(!is.na(followup_spline))){
-      temp = do.call("ns", c(x = list(data[, followup_time]),
-                             followup_spline))
-      for(i in 1:ncol(temp)){
-        data[, paste0("followup_base_", i)] = temp[, i]
-      }
-    }
 
-    fwrite(data, file.path(data_dir, "switch_data.csv"), row.names=FALSE)
   })
   print("Finish data extension")
   print("Processing time of data extension:")
@@ -596,8 +583,8 @@ data_preparation <- function(data_path, id="id", period="period",
 #' @param class_censen Class variables used in censoring logistic regression in numerator model
 #' @param include_followup_time_case The model to include follow up time in outcome model. This has 3 options c("linear","quadratic","spline").
 #' @param include_expansion_time_case The model to include for_period in outcome model. This has 3 options c("linear","quadratic","spline")
-#' @param followup_spline The parameters for spline model for followup time when choose "spline" in the include_followup_time_case (ex. list(df=2, knots=3))
-#' @param period_spline The parameters for spline model for for_period when choose "spline" in the include_expansion_time_case (ex. list(df=3, knots=1))
+#' @param followup_spline The parameters for spline model for followup time when choose "spline" in the include_followup_time_case (ex. list(df=2))
+#' @param period_spline The parameters for spline model for for_period when choose "spline" in the include_expansion_time_case (ex. list(df=3))
 #' @param include_regime_length If defined as 1 a new variable (time_on_regime) is added to dataset - This variable stores the duration of time that the patient has been on the current treatment value
 #' @param eligible_wts_0 Eligibility criteria used in weights for model condition Am1 = 0
 #' @param eligible_wts_1 Eligibility criteria used in weights for model condition Am1 = 1
