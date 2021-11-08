@@ -137,8 +137,8 @@ data_manipulation <- function(data_address, data_path, keeplist,
     sw_data[, wt := 1]
   }
 
-  fwrite(sw_data, file.path(data_dir, "sw_data.csv"))
-  rm(datatable, temp_data)
+  fwrite(sw_data, file.path(data_dir, "sw_data.csv"), row.names=FALSE)
+  rm(datatable, temp_data, sw_data)
   gc()
   sw_data
 }
@@ -154,6 +154,8 @@ data_manipulation <- function(data_address, data_path, keeplist,
 #' @param use_censor Use censoring for per-protocol analysis - censor person-times once a person-trial stops taking the initial treatment value
 #' @param lag_p_nosw when 1 this will set the first weight to be 1 and use p_nosw_d and p_nosw_n at followup-time (t-1) for calculating the weights at followup-time t - can be set to 0 which will increase the maximum and variance of weights (Defaults to 1)
 #' @param where_var Variables used in where conditions used in subsetting the data used in final analysis (where_case), the variables not included in the final model
+#' @param followup_spline The spline model for followup time when choose "spline" in the include_followup_time_case
+#' @param period_spline The spline model for for_period when choose "spline" in the include_expansion_time_case
 #' @param data_dir Direction to save data
 #' @param numCores Number of cores for parallel programming
 #' @param chunk_size Number of ids to expand in each chunk
@@ -164,6 +166,7 @@ data_extension_parallel <- function(data_address, keeplist, outcomeCov_var=NA,
                            first_period=NA, last_period=NA,
                            use_censor=0,
                            lag_p_nosw=1, where_var=NA,
+                           followup_spline=NA, period_spline=NA,
                            data_dir="~/rds/hpc-work/",
                            numCores=NA,
                            chunk_size=200,
@@ -190,11 +193,11 @@ data_extension_parallel <- function(data_address, keeplist, outcomeCov_var=NA,
 
   N <- mclapply(j, expand_switch, data_address=data_address,
                 outcomeCov_var=outcomeCov_var, where_var=where_var,
-                use_censor=use_censor, maxperiod=maxperiod, minperiod=minperiod,
+                use_censor=use_censor, followup_spline=followup_spline,
+                period_spline=period_spline,
+                maxperiod=maxperiod, minperiod=minperiod,
                 lag_p_nosw=lag_p_nosw, keeplist=keeplist, data_dir=data_dir,
                 mc.cores=numCores, separate_files=separate_files)
-
-
   gc()
 
   return(list(min_period = minperiod,
@@ -215,6 +218,8 @@ data_extension_parallel <- function(data_address, keeplist, outcomeCov_var=NA,
 #' @param use_censor Use censoring for per-protocol analysis - censor person-times once a person-trial stops taking the initial treatment value
 #' @param lag_p_nosw when 1 this will set the first weight to be 1 and use p_nosw_d and p_nosw_n at followup-time (t-1) for calculating the weights at followup-time t - can be set to 0 which will increase the maximum and variance of weights (Defaults to 1)
 #' @param where_var Variables used in where conditions used in subsetting the data used in final analysis (where_case), the variables not included in the final model
+#' @param followup_spline The spline model for followup time when choose "spline" in the include_followup_time_case
+#' @param period_spline The spline model for for_period when choose "spline" in the include_expansion_time_case
 #' @param data_dir Direction to save data
 #' @param separate_files Write to one file or one per trial (default FALSE)
 #' data_extension()
@@ -223,7 +228,9 @@ data_extension <- function(data_path, keeplist, outcomeCov_var=NA,
                            first_period=NA, last_period=NA,
                            use_censor=0,
                            lag_p_nosw=1, where_var=NA,
+                           followup_spline=NA, period_spline=NA,
                            data_dir="~/rds/hpc-work/", separate_files=FALSE, sw_data){
+
 
   # Dummy variables used in data.table calls declared to prevent package check NOTES:
   id <- period <- NULL
@@ -243,8 +250,10 @@ data_extension <- function(data_path, keeplist, outcomeCov_var=NA,
   }
   range = (maxperiod - minperiod) + 1
 
-  N <- expand(sw_data, outcomeCov_var, where_var, use_censor, maxperiod, minperiod,
-         lag_p_nosw, keeplist, data_dir, separate_files)
+  N <- expand(sw_data, outcomeCov_var, where_var, use_censor,
+              followup_spline, period_spline,
+              maxperiod, minperiod,lag_p_nosw,
+              keeplist, data_dir, separate_files)
 
   rm(sw_data)
   gc()
