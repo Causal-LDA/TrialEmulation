@@ -71,8 +71,8 @@ data_manipulation <- function(data_address, data_path, keeplist,
   len = nrow(datatable)
   len_id = length(unique(datatable[, id]))
 
-  temp_data <- copy(datatable)
-  temp_data <- datatable[, .SD[.N], by=id]
+  temp_data <- copy(datatable) # TODO check if this code is used
+  temp_data <- datatable[, .SD[.N], by=id] # what if event is not last row?
   temp_data[, time_of_event := 9999]
   temp_data[(!is.na(outcome) & outcome == 1),
             time_of_event := as.double(period)]
@@ -80,6 +80,10 @@ data_manipulation <- function(data_address, data_path, keeplist,
   datatable = datatable[temp_data, on="id"]
 
   temp_data = datatable[, first:=!duplicated(datatable[, id])]
+
+  rm(datatable)
+  gc()
+
   temp_data = temp_data[, am_1 := c(NA, treatment[-.N])]
   temp_data[first == TRUE, cumA := 0]
   temp_data[first == TRUE, am_1 := 0]
@@ -107,6 +111,9 @@ data_manipulation <- function(data_address, data_path, keeplist,
 
 
   sw_data <- copy(temp_data)
+  rm(temp_data)
+  gc()
+
   if(use_censor == 1){
     sw_data[, started0 := as.numeric(NA)]
     sw_data[, started1 := as.numeric(NA)]
@@ -138,8 +145,7 @@ data_manipulation <- function(data_address, data_path, keeplist,
   }
 
   fwrite(sw_data, file.path(data_dir, "sw_data.csv"), row.names=FALSE)
-  rm(datatable, temp_data, sw_data)
-  gc()
+
   sw_data
 }
 
