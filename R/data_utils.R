@@ -315,6 +315,7 @@ weight_func <- function(sw_data, cov_switchn=NA, model_switchn=NA,
   ##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   # Censoring weights --------------------
   ##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+cens_models <- list()
 
   if(!is.na(cense)){
     if(any(!is.na(model_censed))){
@@ -359,6 +360,11 @@ weight_func <- function(sw_data, cov_switchn=NA, model_switchn=NA,
       cense_d0 = data.table( pC_d = model1.cense$fitted.values,
                              id = model1.cense$data[, id],
                              period = model1.cense$data[, period])
+
+      model1.cense$method <- "glm.fit"  #TODO remove when bug is fixed in broom
+      cens_models$cens_pool_d <- broom::tidy(model1.cense)
+      cens_models$cens_pool_d_statistics <- broom::glance(model1.cense)
+
       rm(model1.cense)
 
       # --------------------- numerator ---------------------------
@@ -369,6 +375,10 @@ weight_func <- function(sw_data, cov_switchn=NA, model_switchn=NA,
       cense_n0 = data.table( pC_n = model2.cense$fitted.values,
                              id = model2.cense$data[, id],
                              period = model2.cense$data[, period])
+
+      model2.cense$method <- "glm.fit"  #TODO remove when bug is fixed in broom
+      cens_models$cens_pool_n <- broom::tidy(model2.cense)
+      cens_models$cens_pool_n_statistics <- broom::glance(model2.cense)
 
       rm(model2.cense)
       new_data = Reduce(function(x,y) merge(x, y,
@@ -388,6 +398,11 @@ weight_func <- function(sw_data, cov_switchn=NA, model_switchn=NA,
       cense_d0 = data.table( pC_d0 = model1.cense$fitted.values,
                              id = model1.cense$data[, id],
                              period = model1.cense$data[, period])
+
+      model1.cense$method <- "glm.fit"  #TODO remove when bug is fixed in broom
+      cens_models$cens_d0 <- broom::tidy(model1.cense)
+      cens_models$cens_d0_statistics <- broom::glance(model1.cense)
+
       rm(model1.cense)
       # -------------------------- numerator ----------------------
       print("Model for P(cense = 0 |  X, Am1=0) for numerator")
@@ -397,6 +412,11 @@ weight_func <- function(sw_data, cov_switchn=NA, model_switchn=NA,
       cense_n0 = data.table( pC_n0=model2.cense$fitted.values,
                              id = model2.cense$data[, id],
                              period = model2.cense$data[, period])
+
+      model2.cense$method <- "glm.fit"  #TODO remove when bug is fixed in broom
+      cens_models$cens_n0 <- broom::tidy(model2.cense)
+      cens_models$cens_n0_statistics <- broom::glance(model2.cense)
+
       rm(model2.cense)
       # ------------------------- denomirator ---------------------
       print("Model for P(cense = 0 |  X, Am1=1) for denominator")
@@ -406,6 +426,11 @@ weight_func <- function(sw_data, cov_switchn=NA, model_switchn=NA,
       cense_d1 = data.table( pC_d1=model3.cense$fitted.values,
                              id = model3.cense$data[, id],
                              period = model3.cense$data[, period])
+
+      model3.cense$method <- "glm.fit"  #TODO remove when bug is fixed in broom
+      cens_models$cens_d1 <- broom::tidy(model3.cense)
+      cens_models$cens_d1_statistics <- broom::glance(model3.cense)
+
       rm(model3.cense)
       # ------------------------ numerator -------------------------
       print("Model for P(cense = 0 |  X, Am1=1) for numerator")
@@ -415,9 +440,18 @@ weight_func <- function(sw_data, cov_switchn=NA, model_switchn=NA,
       cense_n1 = data.frame( pC_n1 = model4.cense$fitted.values,
                              id = model4.cense$data[, id],
                              period = model4.cense$data[, period])
+
+      model4.cense$method <- "glm.fit"  #TODO remove when bug is fixed in broom
+      cens_models$cens_n1 <- broom::tidy(model4.cense)
+      cens_models$cens_n1_statistics <- broom::glance(model4.cense)
+
       rm(model4.cense)
 
       # combine ------------------------------
+      if(!missing(save_dir)){
+        save(cens_models, file = file.path(save_dir,"cens_models.rda"))
+      }
+      rm(cens_models)
 
       cense_0 = cense_d0[cense_n0, on = list(id=id, period=period)]
       cense_1 = cense_d1[cense_n1, on = list(id=id, period=period)]
