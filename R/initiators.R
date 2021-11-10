@@ -725,7 +725,8 @@ data_modelling <- function(id="id", period="period",
       }
     }
   }else{
-    vars <- c(vars, "for_period")
+    message("No trial period term included in outcome model (include_expansion_time_case).")
+    # vars <- c(vars, "for_period")
   }
   if(any(!is.na(include_followup_time_case))){
     if("linear" %in% include_followup_time_case){
@@ -741,7 +742,8 @@ data_modelling <- function(id="id", period="period",
       }
     }
   }else{
-    vars <- c(vars, "followup_time")
+    message("No follow-up time term included in outcome model (include_followup_time_case).")
+    # vars <- c(vars, "followup_time")
   }
   if(any(!is.na(outcomeCov))){
     vars <- c(vars, outcomeCov)
