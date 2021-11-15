@@ -57,7 +57,7 @@
 #' @param chunk_size Number of ids to process at once for the chunk expansion (default 500). Larger chunk_sizes may be faster but require more memory.
 #' @param separate_files Write to one file or one per trial (default FALSE)
 #'
-#' #' @details The class variables paramers (`outcomeClass`,`class_switchn`,`class_switchd`,`class_censen`,`class_censed`)
+#' @details The class variables paramers (`outcomeClass`,`class_switchn`,`class_switchd`,`class_censen`,`class_censed`)
 #' can be given as a character vector which will construct factors using `as.factor` or as a named list with the arguments for factor
 #' eg `list(risk_cat=list(levels = c(1,2,3,0), age_cat=list(levels=c(1,2,3),labels=c("50-60","60-70","70+")`
 #'
