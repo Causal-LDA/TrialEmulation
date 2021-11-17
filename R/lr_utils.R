@@ -313,15 +313,10 @@ expand_switch <- function(id_num, data_address,
                                      op = "OR"),]
     )
   } else {
-    sw_data <- data_address[ id %in% id_num,]
+    sw_data <- data_address[list(id_num),]
   }
 
-  # if(is.null(nrow(d))){
-  #   sw_data = as.data.table(t(d))
-  # }else{
-  #   sw_data = as.data.table(d)
-  # }
-  N <- expand(sw_data, outcomeCov_var, where_var, use_censor, 
+  N <- expand(sw_data, outcomeCov_var, where_var, use_censor,
               followup_spline, period_spline, maxperiod, minperiod,
          lag_p_nosw, keeplist, data_dir, separate_files)
   rm(sw_data)

@@ -145,7 +145,7 @@ data_manipulation <- function(data_address, data_path, keeplist,
   }
 
   fwrite(sw_data, file.path(data_dir, "sw_data.csv"), row.names=FALSE)
-
+  setkeyv(sw_data, cols = "id")
   sw_data
 }
 
