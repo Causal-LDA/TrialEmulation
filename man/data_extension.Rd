@@ -16,7 +16,8 @@ data_extension(
   followup_spline = NA,
   period_spline = NA,
   data_dir = "~/rds/hpc-work/",
-  separate_files = FALSE
+  separate_files = FALSE,
+  sw_data
 )
 }
 \arguments{
@@ -44,6 +45,8 @@ data_extension(
 
 \item{separate_files}{Write to one file or one per trial (default FALSE)
 data_extension()}
+
+\item{sw_data}{A data.frame or similar}
 }
 \description{
 This function takes the data and all the variables and expand it

@@ -1,7 +1,7 @@
 Package: RandomisedTrialsEmulation
 Title: Design and analysis of target trial emulation on observational data
 Version: 0.0.1.0
-Authors@R:  c(
+Authors@R: c(
         person(given = "Roonak",
                family = "Rezvani",
                role = c("aut","cre"),
@@ -40,4 +40,4 @@ Suggests:
     rticles
 VignetteBuilder: knitr
 Depends: 
-    R (>= 2.10)
+    R (>= 3.5.0)

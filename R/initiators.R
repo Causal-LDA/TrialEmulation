@@ -56,6 +56,11 @@
 #' @param chunk_expansion Do the expansion in chunks (and in parallel if numCores > 1). Turn this off if you have enough memory to expand the whole dataset at once. (default TRUE)
 #' @param chunk_size Number of ids to process at once for the chunk expansion (default 500). Larger chunk_sizes may be faster but require more memory.
 #' @param separate_files Write to one file or one per trial (default FALSE)
+#'
+#' @details The class variables paramers (`outcomeClass`,`class_switchn`,`class_switchd`,`class_censen`,`class_censed`)
+#' can be given as a character vector which will construct factors using `as.factor` or as a named list with the arguments for factor
+#' eg `list(risk_cat=list(levels = c(1,2,3,0), age_cat=list(levels=c(1,2,3),labels=c("50-60","60-70","70+")`
+#'
 #' initiators()
 #' @export
 #' @import foreach
@@ -203,7 +208,10 @@ initiators <- function(data_path, id="id", period="period",
 #' @param separate_files Write to one file or one per trial (default FALSE)
 #' data_preparation()
 #' @export
-
+#'
+#' @details The class variables paramers (`outcomeClass`,`class_switchn`,`class_switchd`,`class_censen`,`class_censed`)
+#' can be given as a character vector which will construct factors using `as.factor` or as a named list with the arguments for factor
+#' eg `list(risk_cat=list(levels = c(1,2,3,0), age_cat=list(levels=c(1,2,3),labels=c("50-60","60-70","70+")`
 
 data_preparation <- function(data_path, id="id", period="period",
                              treatment="treatment", outcome="outcome",
@@ -322,14 +330,13 @@ data_preparation <- function(data_path, id="id", period="period",
     numCores = 1
   }
 
-  # line1 = read.csv(data_path, header = TRUE, nrows = 1)
-  # col.names = colnames(line1)
 
+  if(!file.exists(data_path)) stop(paste0("'data_path' file not found: ", data_path))
   absolutePath <- normalizePath(data_path)
 
-  data = tryCatch({
-    suppressWarnings(out <- bigmemory::read.big.matrix(absolutePath, header = TRUE, type="double"))
-  })
+  # data = tryCatch({
+  #   suppressWarnings(out <- bigmemory::read.big.matrix(absolutePath, header = TRUE, type="double"))
+  # })
 
   keeplist <- c("id", "for_period", "followup_time", "outcome",
                 "weight", "treatment")
@@ -389,7 +396,8 @@ data_preparation <- function(data_path, id="id", period="period",
 
   print("Start data manipulation")
   timing = system.time({
-    data_manipulation(data, data_path, keeplist,
+    sw_data <-
+    data_manipulation(NA, absolutePath, keeplist,
                       treatment, id, period, outcome, eligible,
                       outcomeCov_var,
                       cov_switchn, model_switchn, class_switchn,
@@ -423,27 +431,28 @@ data_preparation <- function(data_path, id="id", period="period",
                        first_period, last_period, use_censor, lag_p_nosw,
                        where_var, followup_spline, period_spline,
                        data_dir),
+
         error = function(err){
           gc()
           file.remove(file.path(data_dir, "switch_data.csv"))
           write.csv(df, file.path(data_dir, "switch_data.csv"), row.names=FALSE)
           print(paste0("The memory is not enough to do the data extention without data division so performed in chunks with numCores=1 and chunk_size=",chunk_size,"!"))
-          data = tryCatch({
-            suppressWarnings(out <- bigmemory::read.big.matrix(absolutePath, header = TRUE, type="double"))
-          })
-          data_extension_parallel(data, keeplist, outcomeCov_var,
-                                  first_period, last_period, use_censor,
-                                  lag_p_nosw, where_var, followup_spline,
+          # data = tryCatch({
+          #   suppressWarnings(bigmemory::read.big.matrix(absolutePath, header = TRUE, type="double"))
+          # })
+          data_extension_parallel(sw_data, keeplist, outcomeCov_var,
+                                  first_period, last_period, use_censor, lag_p_nosw,
+                                  where_var, followup_spline,
                                   period_spline, data_dir, numCores,
                                   chunk_size, separate_files)
         }
       )
     }else{
-      data = tryCatch({
-        suppressWarnings(out <- bigmemory::read.big.matrix(absolutePath, header = TRUE, type="double"))
-      })
+      # data = tryCatch({
+      #   suppressWarnings(bigmemory::read.big.matrix(absolutePath, header = TRUE, type="double"))
+      # })
 
-      manipulate = data_extension_parallel(data, keeplist,
+      manipulate = data_extension_parallel(sw_data, keeplist,
                                            outcomeCov_var,
                                            first_period, last_period,
                                            use_censor, lag_p_nosw,
@@ -477,7 +486,7 @@ data_preparation <- function(data_path, id="id", period="period",
     last_followup = max_period
   }
 
-  rm(data, absolutePath)
+  rm(sw_data, absolutePath)
   gc()
 
 
@@ -640,35 +649,26 @@ data_modelling <- function(id="id", period="period",
   # Dummy variables used in data.table calls declared to prevent package check NOTES:
   weight <- NULL
 
-  path = normalizePath(file.path(data_dir, "sw_data.csv"))
 
-  data_address = tryCatch({
-    suppressWarnings(out <- bigmemory::read.big.matrix(path, header = TRUE, type="double", has.row.names = FALSE))
-  })
+  # if there are any limits on the follow up
+  if(!is.na(first_followup) | !is.na(last_followup)){
+    #make sure that the other is well defined
+    if(is.na(first_followup)) first_followup <- 0
+    if(is.na(last_followup)) last_followup <- Inf
 
-  max_period = max(data_address[, "period"])
-  min_period = min(data_address[, "period"])
-
-  if(is.na(first_followup)){
-    first_followup = 0
+    data = tryCatch({
+      suppressWarnings(bigmemory::read.big.matrix(absolutePath, header=TRUE, shared=FALSE, type="double"))
+    })
+    #subset the data
+    temp_data = data[bigmemory::mwhich(data, c("followup_time", "followup_time"), c(first_followup, last_followup), c('ge', 'le'), 'AND'), ]
+    temp_data = as.data.table(temp_data)
+    rm(data)
+    gc()
+  } else {
+    #read data directly as data.table
+    temp_data <- fread(absolutePath)
   }
-  if(is.na(last_followup)){
-    last_followup = max_period
-  }
 
-  rm(path, data_address)
-  gc()
-
-  # Isaac: if the data is in separate file what will happen here?
-  data = tryCatch({
-    suppressWarnings(out <- bigmemory::read.big.matrix(absolutePath, header=TRUE, shared=FALSE, type="double"))
-  })
-
-  temp_data = data[bigmemory::mwhich(data, c("followup_time", "followup_time"), c(first_followup, last_followup), c('ge', 'le'), 'AND'), ]
-  temp_data = as.data.table(temp_data)
-  cols = colnames(temp_data)
-  rm(data)
-  gc()
 
   if(any(!is.na(outcomeClass))){
     if(!(is.list(outcomeClass) | is.character(outcomeClass))) stop("outcomeClass is not a list or character vector")
