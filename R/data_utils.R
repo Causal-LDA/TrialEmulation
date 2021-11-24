@@ -163,12 +163,8 @@ weight_func <- function(sw_data, cov_switchn=NA, model_switchn=NA,
 
 
   if(include_regime_length == 1){
-    model_switchd <- ifelse(is.na(model_switchd),
-                            c("time_on_regime", "time_on_regime2"),
-                            c(model_switchd,c("time_on_regime", "time_on_regime2")))
-    model_switchn <- ifelse(is.na(model_switchn),
-                            c("time_on_regime", "time_on_regime2"),
-                            c(model_switchn,c("time_on_regime", "time_on_regime2")))
+    model_switchd <- c(model_switchd[!is.na(model_switchd)], c("time_on_regime", "time_on_regime2"))
+    model_switchn <- c(model_switchn[!is.na(model_switchn)], c("time_on_regime", "time_on_regime2"))
   }
 
   ##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
