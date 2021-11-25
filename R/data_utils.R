@@ -173,7 +173,7 @@ weight_func <- function(sw_data, cov_switchn=NA, model_switchn=NA,
 
   # ------------------- eligible0 == 1 --------------------
   # --------------- denominator ------------------
-  if(any(!is.na(cov_switchd))){
+  if(any(!is.na(model_switchd))){
     len_d = length(model_switchd)
     regformd <- paste(
       paste("treatment", "~"),
