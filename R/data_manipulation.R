@@ -209,7 +209,12 @@ data_extension_parallel <- function(data_address, keeplist, outcomeCov_var=NA,
   return(list(min_period = minperiod,
               max_period = maxperiod,
               range =  range,
-              N = sum(unlist(as.numeric(N)))))
+              N = sum(unlist(as.numeric(N))),
+              path = ifelse(separate_files,
+                             file.path(data_dir, paste0("trial_", first_period:last_period, ".csv")),
+                             file.path(data_dir,"switch_data.csv"))
+  )
+  )
 }
 
 #' Data Extension Function
@@ -266,5 +271,6 @@ data_extension <- function(data_path, keeplist, outcomeCov_var=NA,
   return(list(min_period = minperiod,
               max_period = maxperiod,
               range =  range,
-              N = N))
+              N = N,
+              path = file.path(data_dir,"switch_data.csv")))
 }
