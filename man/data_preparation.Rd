@@ -23,15 +23,7 @@ data_preparation(
   class_switchd = NA,
   first_period = NA,
   last_period = NA,
-  first_followup = NA,
-  last_followup = NA,
   use_weight = 0,
-  run_unweighted_analysis = 0,
-  run_weighted_analysis = 1,
-  run_p99_analysis = 0,
-  run_user_limits_analysis = 0,
-  lower_weight = NA,
-  upper_weight = NA,
   use_censor = 0,
   check_missing = 0,
   cense = NA,
@@ -51,11 +43,7 @@ data_preparation(
   eligible_wts_1 = NA,
   lag_p_nosw = 1,
   where_var = NA,
-  where_case = NA,
-  run_base_model = 1,
-  case_control = 0,
-  n_control = 5,
-  data_dir = "~/rds/hpc-work/",
+  data_dir,
   numCores = NA,
   chunk_expansion = TRUE,
   chunk_size = 500,
@@ -99,23 +87,7 @@ data_preparation(
 
 \item{last_period}{Last period value to expand about}
 
-\item{first_followup}{First follow-up period}
-
-\item{last_followup}{Last follow-up period}
-
 \item{use_weight}{Use weights in analysis. If 0 then no weights will be calculated}
-
-\item{run_unweighted_analysis}{Run the final model with no weights when use_weights = 1}
-
-\item{run_weighted_analysis}{Run the final model with original weights}
-
-\item{run_p99_analysis}{Run the final model with truncating the weights at the 1st and 99th percentile}
-
-\item{run_user_limits_analysis}{Run the final model with truncating the weights using user defined limits}
-
-\item{lower_weight}{Use lower weight as minimum possible weight}
-
-\item{upper_weight}{Use upper weight as maximum possible weight}
 
 \item{use_censor}{Use censoring for per-protocol analysis - censor person-times once a person-trial stops taking the initial treatment value}
 
@@ -154,14 +126,6 @@ data_preparation(
 \item{lag_p_nosw}{When 1 this will set the first weight to be 1 and use p_nosw_d and p_nosw_n at followup-time (t-1) for calculating the weights at followup-time t - can be set to 0 which will increase the maximum and variance of weights (Defaults to 1)}
 
 \item{where_var}{List of variables used in where conditions used in subsetting the data used in final analysis (where_case), the variables not included in the final model}
-
-\item{where_case}{List of where conditions used in subsetting the data used in final analysis}
-
-\item{run_base_model}{Run the model with no conditions Defaults to 1}
-
-\item{case_control}{Run the case control sampling or not Defaults to 0}
-
-\item{n_control}{Number of controls used in case control sampling Defaults to 5}
 
 \item{data_dir}{Direction to save data}
 
