@@ -5,23 +5,10 @@
 \title{Data modelling Function}
 \usage{
 data_modelling(
-  id = "id",
-  period = "period",
-  treatment = "treatment",
-  outcome = "outcome",
-  eligible = "eligible",
   outcomeCov_var = NA,
   outcomeCov = NA,
   outcomeClass = NA,
   model_var = NA,
-  cov_switchn = NA,
-  model_switchn = NA,
-  class_switchn = NA,
-  cov_switchd = NA,
-  model_switchd = NA,
-  class_switchd = NA,
-  first_period = NA,
-  last_period = NA,
   first_followup = NA,
   last_followup = NA,
   use_weight = 0,
@@ -33,43 +20,16 @@ data_modelling(
   upper_weight = NA,
   use_censor = 0,
   check_missing = 0,
-  cense = NA,
-  pool_cense = 0,
-  cov_censed = NA,
-  model_censed = NA,
-  class_censed = NA,
-  cov_censen = NA,
-  model_censen = NA,
-  class_censen = NA,
-  include_followup_time_case = "linear",
-  include_expansion_time_case = "linear",
-  followup_spline = NA,
-  period_spline = NA,
-  include_regime_length = 0,
-  eligible_wts_0 = NA,
-  eligible_wts_1 = NA,
-  lag_p_nosw = 1,
-  where_var = NA,
+  include_followup_time_case = c("linear", "quadratic", "spline"),
+  include_expansion_time_case = c("linear", "quadratic", "spline"),
   where_case = NA,
   run_base_model = 1,
-  case_control = 0,
-  n_control = 5,
-  data_dir = "~/rds/hpc-work/",
-  absolutePath = "~/rds/hpc-work/switch_data.csv",
-  numCores = NA
+  absolutePath,
+  numCores = NA,
+  glm_function = c("parglm", "glm")
 )
 }
 \arguments{
-\item{id}{Name of the data column for id feature Defaults to id}
-
-\item{period}{Name of the data column for period feature Defaults to period}
-
-\item{treatment}{Name of the data column for treatment feature Defaults to treatment}
-
-\item{outcome}{Name of the data column for outcome feature Defaults to outcome}
-
-\item{eligible}{Indicator of whether or not an observation is eligible to be expanded about Defaults to eligible}
-
 \item{outcomeCov_var}{List of individual baseline variables used in final model}
 
 \item{outcomeCov}{List of functions of baseline covariates used in final model}
@@ -77,22 +37,6 @@ data_modelling(
 \item{outcomeClass}{Categorical variables used in the final model}
 
 \item{model_var}{List of Variables of interest to be used in final model}
-
-\item{cov_switchn}{List of covariates to be used in logistic model for switching probabilities for numerator model}
-
-\item{model_switchn}{List of models (functions) to use the covariates from cov_switchn}
-
-\item{class_switchn}{Class variables used in logistic model for nominator model}
-
-\item{cov_switchd}{List of covariates to be used in logistic model for switching probabilities for denominator model}
-
-\item{model_switchd}{List of models (functions) to use the covariates from cov_switchd}
-
-\item{class_switchd}{Class variables used in logistic model for denominator model}
-
-\item{first_period}{First period value to start expanding about}
-
-\item{last_period}{Last period value to expand about}
 
 \item{first_followup}{First follow-up period}
 
@@ -116,53 +60,19 @@ data_modelling(
 
 \item{check_missing}{Check for missing values in final model when use_censor=1 (Not added yet!)}
 
-\item{cense}{Censoring variable}
+\item{include_followup_time_case}{The model to include follow up time in outcome model. This has 3 options c("none","linear","quadratic","spline"). The data should contain the corresponding columns: "followup_time","followup_time2" or "followup_base".}
 
-\item{pool_cense}{Pool the numerator and denominator models (0: split models by previous treatment Am1 = 0 and Am1 = 1 as in treatment models and 1: pool all observations together into a single numerator and denominator model) Defaults to 0}
-
-\item{cov_censed}{List of covariates to be used in logistic model for censoring weights in denominator model}
-
-\item{model_censed}{List of models (functions) to use the covariates from cov_censed}
-
-\item{class_censed}{Class variables used in censoring logistic regression in denominator model}
-
-\item{cov_censen}{List of covariates to be used in logistic model for censoring weights in numerator model}
-
-\item{model_censen}{List of models (functions) to use the covariates from cov_censen}
-
-\item{class_censen}{Class variables used in censoring logistic regression in numerator model}
-
-\item{include_followup_time_case}{The model to include follow up time in outcome model. This has 3 options c("linear","quadratic","spline").}
-
-\item{include_expansion_time_case}{The model to include for_period in outcome model. This has 3 options c("linear","quadratic","spline")}
-
-\item{followup_spline}{The parameters for spline model for followup time when choose "spline" in the include_followup_time_case (ex. list(df=2))}
-
-\item{period_spline}{The parameters for spline model for for_period when choose "spline" in the include_expansion_time_case (ex. list(df=3))}
-
-\item{include_regime_length}{If defined as 1 a new variable (time_on_regime) is added to dataset - This variable stores the duration of time that the patient has been on the current treatment value}
-
-\item{eligible_wts_0}{Eligibility criteria used in weights for model condition Am1 = 0}
-
-\item{eligible_wts_1}{Eligibility criteria used in weights for model condition Am1 = 1}
-
-\item{lag_p_nosw}{When 1 this will set the first weight to be 1 and use p_nosw_d and p_nosw_n at followup-time (t-1) for calculating the weights at followup-time t - can be set to 0 which will increase the maximum and variance of weights (Defaults to 1)}
-
-\item{where_var}{List of variables used in where conditions used in subsetting the data used in final analysis (where_case), the variables not included in the final model}
+\item{include_expansion_time_case}{The model to include for_period in outcome model. This has 3 options c("none","linear","quadratic","spline").  The data should contain the corresponding columns: "for_period","for_period2" or "period_base".}
 
 \item{where_case}{List of where conditions used in subsetting the data used in final analysis}
 
 \item{run_base_model}{Run the model with no conditions Defaults to 1}
 
-\item{case_control}{Run the case control sampling or not Defaults to 0}
-
-\item{n_control}{Number of controls used in case control sampling Defaults to 5}
-
-\item{data_dir}{Directory containing 'sw_data.csv'}
-
 \item{absolutePath}{Direction to where the data for modelling is saved}
 
-\item{numCores}{Number of cores for parallel programming (default value is maximum cores and parallel programming)
+\item{numCores}{Number of cores for parallel programming (default value is maximum cores and parallel programming)}
+
+\item{glm_function}{Which glm function to use for the final model from \code{stats} or \code{parglm} packages
 data_modelling()}
 }
 \description{

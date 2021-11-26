@@ -7,11 +7,11 @@
 add_splines(data_path, period_spline, followup_spline)
 }
 \arguments{
-\item{data_path}{Path to expanded data csv file}
+\item{data_path}{Path to expanded data csv file which has columns \code{for_period} and \code{followup_time}.}
 
-\item{period_spline}{Named list of arguments for \code{ns} for periods spline}
+\item{period_spline}{Named list of arguments for \code{ns} for periods spline (column \code{for_period})}
 
-\item{followup_spline}{Named list of arguments for \code{ns} for follow up time}
+\item{followup_spline}{Named list of arguments for \code{ns} for follow up time (column \code{follow_time})}
 }
 \value{
 Overwrites data_path with new csv with spline basis columns.

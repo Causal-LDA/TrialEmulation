@@ -1,6 +1,6 @@
 Package: RandomisedTrialsEmulation
 Title: Design and analysis of target trial emulation on observational data
-Version: 0.0.1.0
+Version: 0.0.1.2
 Authors@R: c(
         person(given = "Roonak",
                family = "Rezvani",
@@ -21,7 +21,7 @@ License: GPL (>= 3)
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.1.1
+RoxygenNote: 7.1.2
 LinkingTo: 
     Rcpp
 Imports: 
@@ -33,7 +33,8 @@ Imports:
     doParallel,
     foreach,
     sandwich,
-    broom
+    broom,
+    assertthat
 Suggests: 
     rmarkdown,
     knitr,

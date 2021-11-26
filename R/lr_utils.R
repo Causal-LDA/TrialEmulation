@@ -155,7 +155,7 @@ expand <- function(sw_data,
                    lag_p_nosw, keeplist, data_dir, separate_files=FALSE){
 
   # Dummy variables used in data.table calls declared to prevent package check NOTES:
-  id <- period <- wtprod <- elgcount <- treat <- dosesum <- eligible <- treatment <-
+  id <- period <- wtprod <- elgcount <- treat <- dosesum <- eligible <- treatment <- treatment_new <-
     weight0 <- wt <- cumA <- init <- init_shift <- period_new <- cumA_new <- switch_new <-
     outcome_new <- outcome <- time_of_event <- for_period <- index <- for_period2 <-
     followup_time <- followup_time2 <- dose <- dose2 <- weight <- case <- NULL
