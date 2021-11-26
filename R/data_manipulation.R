@@ -59,7 +59,8 @@ data_manipulation <- function(data_address, data_path, keeplist,
   # Dummy variables used in data.table calls declared to prevent package check NOTES:
   time_of_event <- am_1 <- cumA <- regime_start <- time_on_regime <- time_on_regime2 <-
     regime_start_shift <- started0 <- started1 <- stop0 <- stop1 <- eligible0_sw <-
-    eligible1_sw <- delete <- eligible0 <- eligible1 <- wt <- NULL
+    eligible1_sw <- delete <- eligible0 <- eligible1 <- wt <- after_eligibility <-
+    after_event <- NULL
 
 
   datatable = read_data(data_address, data_path, NA, id,
@@ -71,8 +72,15 @@ data_manipulation <- function(data_address, data_path, keeplist,
   len = nrow(datatable)
   len_id = length(unique(datatable[, id]))
 
-  temp_data <- copy(datatable) # TODO check if this code is used
-  temp_data <- datatable[, .SD[.N], by=id] # what if event is not last row?
+  datatable[, after_eligibility :=  period >= .SD[eligible==1,min(period,Inf)], by=id]
+  if(any(datatable$after_eligibitliy==TRUE)) warning("Observations before trial eligibility were removed")
+  datatable <- datatable[after_eligibility==TRUE]
+  datatable[, after_event :=  period > .SD[outcome==1,min(period,Inf)], by=id]
+  if(any(datatable$after_event==FALSE)) warning("Observations after the outcome occured were removed")
+  datatable <- datatable[after_event==FALSE] # keep all which are _not_ after the outcome event
+
+  # temp_data <- copy(datatable) # TODO check if this code is used
+  temp_data <- datatable[, .SD[.N], by=id]
   temp_data[, time_of_event := 9999]
   temp_data[(!is.na(outcome) & outcome == 1),
             time_of_event := as.double(period)]
