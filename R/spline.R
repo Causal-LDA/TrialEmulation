@@ -8,6 +8,7 @@
 #'
 #' @return Overwrites data_path with new csv with spline basis columns.
 #' @export
+#' @import assertthat
 #'
 add_splines <- function(data_path, period_spline, followup_spline){
 
