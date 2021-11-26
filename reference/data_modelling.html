@@ -72,7 +72,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">RandomisedTrialsEmulation</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.1.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.1.2</span>
       </span>
     </div>
 
@@ -128,23 +128,10 @@
     </div>
 
     <pre class="usage"><span class='fu'>data_modelling</span><span class='op'>(</span>
-  id <span class='op'>=</span> <span class='st'>"id"</span>,
-  period <span class='op'>=</span> <span class='st'>"period"</span>,
-  treatment <span class='op'>=</span> <span class='st'>"treatment"</span>,
-  outcome <span class='op'>=</span> <span class='st'>"outcome"</span>,
-  eligible <span class='op'>=</span> <span class='st'>"eligible"</span>,
   outcomeCov_var <span class='op'>=</span> <span class='cn'>NA</span>,
   outcomeCov <span class='op'>=</span> <span class='cn'>NA</span>,
   outcomeClass <span class='op'>=</span> <span class='cn'>NA</span>,
   model_var <span class='op'>=</span> <span class='cn'>NA</span>,
-  cov_switchn <span class='op'>=</span> <span class='cn'>NA</span>,
-  model_switchn <span class='op'>=</span> <span class='cn'>NA</span>,
-  class_switchn <span class='op'>=</span> <span class='cn'>NA</span>,
-  cov_switchd <span class='op'>=</span> <span class='cn'>NA</span>,
-  model_switchd <span class='op'>=</span> <span class='cn'>NA</span>,
-  class_switchd <span class='op'>=</span> <span class='cn'>NA</span>,
-  first_period <span class='op'>=</span> <span class='cn'>NA</span>,
-  last_period <span class='op'>=</span> <span class='cn'>NA</span>,
   first_followup <span class='op'>=</span> <span class='cn'>NA</span>,
   last_followup <span class='op'>=</span> <span class='cn'>NA</span>,
   use_weight <span class='op'>=</span> <span class='fl'>0</span>,
@@ -156,55 +143,18 @@
   upper_weight <span class='op'>=</span> <span class='cn'>NA</span>,
   use_censor <span class='op'>=</span> <span class='fl'>0</span>,
   check_missing <span class='op'>=</span> <span class='fl'>0</span>,
-  cense <span class='op'>=</span> <span class='cn'>NA</span>,
-  pool_cense <span class='op'>=</span> <span class='fl'>0</span>,
-  cov_censed <span class='op'>=</span> <span class='cn'>NA</span>,
-  model_censed <span class='op'>=</span> <span class='cn'>NA</span>,
-  class_censed <span class='op'>=</span> <span class='cn'>NA</span>,
-  cov_censen <span class='op'>=</span> <span class='cn'>NA</span>,
-  model_censen <span class='op'>=</span> <span class='cn'>NA</span>,
-  class_censen <span class='op'>=</span> <span class='cn'>NA</span>,
-  include_followup_time_case <span class='op'>=</span> <span class='st'>"linear"</span>,
-  include_expansion_time_case <span class='op'>=</span> <span class='st'>"linear"</span>,
-  followup_spline <span class='op'>=</span> <span class='cn'>NA</span>,
-  period_spline <span class='op'>=</span> <span class='cn'>NA</span>,
-  include_regime_length <span class='op'>=</span> <span class='fl'>0</span>,
-  eligible_wts_0 <span class='op'>=</span> <span class='cn'>NA</span>,
-  eligible_wts_1 <span class='op'>=</span> <span class='cn'>NA</span>,
-  lag_p_nosw <span class='op'>=</span> <span class='fl'>1</span>,
-  where_var <span class='op'>=</span> <span class='cn'>NA</span>,
+  include_followup_time_case <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"linear"</span>, <span class='st'>"quadratic"</span>, <span class='st'>"spline"</span><span class='op'>)</span>,
+  include_expansion_time_case <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"linear"</span>, <span class='st'>"quadratic"</span>, <span class='st'>"spline"</span><span class='op'>)</span>,
   where_case <span class='op'>=</span> <span class='cn'>NA</span>,
   run_base_model <span class='op'>=</span> <span class='fl'>1</span>,
-  case_control <span class='op'>=</span> <span class='fl'>0</span>,
-  n_control <span class='op'>=</span> <span class='fl'>5</span>,
-  data_dir <span class='op'>=</span> <span class='st'>"~/rds/hpc-work/"</span>,
-  absolutePath <span class='op'>=</span> <span class='st'>"~/rds/hpc-work/switch_data.csv"</span>,
-  numCores <span class='op'>=</span> <span class='cn'>NA</span>
+  <span class='va'>absolutePath</span>,
+  numCores <span class='op'>=</span> <span class='cn'>NA</span>,
+  glm_function <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"parglm"</span>, <span class='st'>"glm"</span><span class='op'>)</span>
 <span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
-    <tr>
-      <th>id</th>
-      <td><p>Name of the data column for id feature Defaults to id</p></td>
-    </tr>
-    <tr>
-      <th>period</th>
-      <td><p>Name of the data column for period feature Defaults to period</p></td>
-    </tr>
-    <tr>
-      <th>treatment</th>
-      <td><p>Name of the data column for treatment feature Defaults to treatment</p></td>
-    </tr>
-    <tr>
-      <th>outcome</th>
-      <td><p>Name of the data column for outcome feature Defaults to outcome</p></td>
-    </tr>
-    <tr>
-      <th>eligible</th>
-      <td><p>Indicator of whether or not an observation is eligible to be expanded about Defaults to eligible</p></td>
-    </tr>
     <tr>
       <th>outcomeCov_var</th>
       <td><p>List of individual baseline variables used in final model</p></td>
@@ -220,38 +170,6 @@
     <tr>
       <th>model_var</th>
       <td><p>List of Variables of interest to be used in final model</p></td>
-    </tr>
-    <tr>
-      <th>cov_switchn</th>
-      <td><p>List of covariates to be used in logistic model for switching probabilities for numerator model</p></td>
-    </tr>
-    <tr>
-      <th>model_switchn</th>
-      <td><p>List of models (functions) to use the covariates from cov_switchn</p></td>
-    </tr>
-    <tr>
-      <th>class_switchn</th>
-      <td><p>Class variables used in logistic model for nominator model</p></td>
-    </tr>
-    <tr>
-      <th>cov_switchd</th>
-      <td><p>List of covariates to be used in logistic model for switching probabilities for denominator model</p></td>
-    </tr>
-    <tr>
-      <th>model_switchd</th>
-      <td><p>List of models (functions) to use the covariates from cov_switchd</p></td>
-    </tr>
-    <tr>
-      <th>class_switchd</th>
-      <td><p>Class variables used in logistic model for denominator model</p></td>
-    </tr>
-    <tr>
-      <th>first_period</th>
-      <td><p>First period value to start expanding about</p></td>
-    </tr>
-    <tr>
-      <th>last_period</th>
-      <td><p>Last period value to expand about</p></td>
     </tr>
     <tr>
       <th>first_followup</th>
@@ -298,72 +216,12 @@
       <td><p>Check for missing values in final model when use_censor=1 (Not added yet!)</p></td>
     </tr>
     <tr>
-      <th>cense</th>
-      <td><p>Censoring variable</p></td>
-    </tr>
-    <tr>
-      <th>pool_cense</th>
-      <td><p>Pool the numerator and denominator models (0: split models by previous treatment Am1 = 0 and Am1 = 1 as in treatment models and 1: pool all observations together into a single numerator and denominator model) Defaults to 0</p></td>
-    </tr>
-    <tr>
-      <th>cov_censed</th>
-      <td><p>List of covariates to be used in logistic model for censoring weights in denominator model</p></td>
-    </tr>
-    <tr>
-      <th>model_censed</th>
-      <td><p>List of models (functions) to use the covariates from cov_censed</p></td>
-    </tr>
-    <tr>
-      <th>class_censed</th>
-      <td><p>Class variables used in censoring logistic regression in denominator model</p></td>
-    </tr>
-    <tr>
-      <th>cov_censen</th>
-      <td><p>List of covariates to be used in logistic model for censoring weights in numerator model</p></td>
-    </tr>
-    <tr>
-      <th>model_censen</th>
-      <td><p>List of models (functions) to use the covariates from cov_censen</p></td>
-    </tr>
-    <tr>
-      <th>class_censen</th>
-      <td><p>Class variables used in censoring logistic regression in numerator model</p></td>
-    </tr>
-    <tr>
       <th>include_followup_time_case</th>
-      <td><p>The model to include follow up time in outcome model. This has 3 options c("linear","quadratic","spline").</p></td>
+      <td><p>The model to include follow up time in outcome model. This has 3 options c("none","linear","quadratic","spline"). The data should contain the corresponding columns: "followup_time","followup_time2" or "followup_base".</p></td>
     </tr>
     <tr>
       <th>include_expansion_time_case</th>
-      <td><p>The model to include for_period in outcome model. This has 3 options c("linear","quadratic","spline")</p></td>
-    </tr>
-    <tr>
-      <th>followup_spline</th>
-      <td><p>The parameters for spline model for followup time when choose "spline" in the include_followup_time_case (ex. list(df=2))</p></td>
-    </tr>
-    <tr>
-      <th>period_spline</th>
-      <td><p>The parameters for spline model for for_period when choose "spline" in the include_expansion_time_case (ex. list(df=3))</p></td>
-    </tr>
-    <tr>
-      <th>include_regime_length</th>
-      <td><p>If defined as 1 a new variable (time_on_regime) is added to dataset - This variable stores the duration of time that the patient has been on the current treatment value</p></td>
-    </tr>
-    <tr>
-      <th>eligible_wts_0</th>
-      <td><p>Eligibility criteria used in weights for model condition Am1 = 0</p></td>
-    </tr>
-    <tr>
-      <th>eligible_wts_1</th>
-      <td><p>Eligibility criteria used in weights for model condition Am1 = 1</p></td>
-    </tr>
-    <tr>
-      <th>lag_p_nosw</th>
-      <td><p>When 1 this will set the first weight to be 1 and use p_nosw_d and p_nosw_n at followup-time (t-1) for calculating the weights at followup-time t - can be set to 0 which will increase the maximum and variance of weights (Defaults to 1)</p></td>
-    </tr>
-    <tr>
-      <th>where_var</th>
-      <td><p>List of variables used in where conditions used in subsetting the data used in final analysis (where_case), the variables not included in the final model</p></td>
+      <td><p>The model to include for_period in outcome model. This has 3 options c("none","linear","quadratic","spline").  The data should contain the corresponding columns: "for_period","for_period2" or "period_base".</p></td>
     </tr>
     <tr>
       <th>where_case</th>
@@ -374,24 +232,16 @@
       <td><p>Run the model with no conditions Defaults to 1</p></td>
     </tr>
     <tr>
-      <th>case_control</th>
-      <td><p>Run the case control sampling or not Defaults to 0</p></td>
-    </tr>
-    <tr>
-      <th>n_control</th>
-      <td><p>Number of controls used in case control sampling Defaults to 5</p></td>
-    </tr>
-    <tr>
-      <th>data_dir</th>
-      <td><p>Directory containing 'sw_data.csv'</p></td>
-    </tr>
-    <tr>
       <th>absolutePath</th>
       <td><p>Direction to where the data for modelling is saved</p></td>
     </tr>
     <tr>
       <th>numCores</th>
-      <td><p>Number of cores for parallel programming (default value is maximum cores and parallel programming)
+      <td><p>Number of cores for parallel programming (default value is maximum cores and parallel programming)</p></td>
+    </tr>
+    <tr>
+      <th>glm_function</th>
+      <td><p>Which glm function to use for the final model from <code>stats</code> or <code>parglm</code> packages
 data_modelling()</p></td>
     </tr>
     </table>

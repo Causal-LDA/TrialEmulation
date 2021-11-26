@@ -31,7 +31,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">RandomisedTrialsEmulation</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.1.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.1.2</span>
       </span>
     </div>
 
@@ -132,16 +132,18 @@
            use_censor <span class="op">=</span> <span class="fl">0</span>,
            use_weight <span class="op">=</span> <span class="fl">0</span><span class="op">)</span>
 <span class="co">#&gt; [1] "Start data manipulation"</span>
+<span class="co">#&gt; Warning in data_manipulation(NA, absolutePath, keeplist, treatment, id, :</span>
+<span class="co">#&gt; Observations after the outcome occured were removed</span>
 <span class="co">#&gt; [1] "Finish data manipulation"</span>
 <span class="co">#&gt; [1] "Processing time of data manipulation:"</span>
 <span class="co">#&gt;    user  system elapsed </span>
-<span class="co">#&gt;   0.279   0.008   0.287 </span>
+<span class="co">#&gt;   0.616   0.028   0.645 </span>
 <span class="co">#&gt; [1] "----------------------------"</span>
 <span class="co">#&gt; [1] "Start data extension"</span>
 <span class="co">#&gt; [1] "Finish data extension"</span>
 <span class="co">#&gt; [1] "Processing time of data extension:"</span>
 <span class="co">#&gt;    user  system elapsed </span>
-<span class="co">#&gt;   5.559   1.027   6.693 </span>
+<span class="co">#&gt;   4.653   1.005   5.658 </span>
 <span class="co">#&gt; [1] "----------------------------"</span>
 <span class="co">#&gt; [1] "Number of observations in expanded data: 1939053"</span>
 <span class="co">#&gt; [1] "Base Analysis"</span>
@@ -175,7 +177,7 @@
 <span class="co">#&gt; [1] "-------------------------------------------------"</span>
 <span class="co">#&gt; [1] "Processing time of modeling for base analysis:"</span>
 <span class="co">#&gt;    user  system elapsed </span>
-<span class="co">#&gt;   4.826   0.279   4.441 </span>
+<span class="co">#&gt;   4.352   0.277   4.083 </span>
 <span class="co">#&gt; [1] "Base Analysis with robust variance"</span>
 <span class="co">#&gt; [1] "-------------------------------------------------------"</span>
 <span class="co">#&gt; [1] "Robust standard error:"</span>
@@ -192,7 +194,7 @@
 <span class="co">#&gt; [1] "----------------------------------------------"</span>
 <span class="co">#&gt; [1] "Processing time of getting the output and sandwich with reduced switch data:"</span>
 <span class="co">#&gt;    user  system elapsed </span>
-<span class="co">#&gt;    0.99    0.12    1.11</span>
+<span class="co">#&gt;   0.828   0.048   0.876</span>
 <span class="co">#&gt; $model</span>
 <span class="co">#&gt; $model$model</span>
 <span class="co">#&gt; </span>

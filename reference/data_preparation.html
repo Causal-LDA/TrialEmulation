@@ -72,7 +72,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">RandomisedTrialsEmulation</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.1.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.1.2</span>
       </span>
     </div>
 
@@ -146,15 +146,7 @@
   class_switchd <span class='op'>=</span> <span class='cn'>NA</span>,
   first_period <span class='op'>=</span> <span class='cn'>NA</span>,
   last_period <span class='op'>=</span> <span class='cn'>NA</span>,
-  first_followup <span class='op'>=</span> <span class='cn'>NA</span>,
-  last_followup <span class='op'>=</span> <span class='cn'>NA</span>,
   use_weight <span class='op'>=</span> <span class='fl'>0</span>,
-  run_unweighted_analysis <span class='op'>=</span> <span class='fl'>0</span>,
-  run_weighted_analysis <span class='op'>=</span> <span class='fl'>1</span>,
-  run_p99_analysis <span class='op'>=</span> <span class='fl'>0</span>,
-  run_user_limits_analysis <span class='op'>=</span> <span class='fl'>0</span>,
-  lower_weight <span class='op'>=</span> <span class='cn'>NA</span>,
-  upper_weight <span class='op'>=</span> <span class='cn'>NA</span>,
   use_censor <span class='op'>=</span> <span class='fl'>0</span>,
   check_missing <span class='op'>=</span> <span class='fl'>0</span>,
   cense <span class='op'>=</span> <span class='cn'>NA</span>,
@@ -174,11 +166,7 @@
   eligible_wts_1 <span class='op'>=</span> <span class='cn'>NA</span>,
   lag_p_nosw <span class='op'>=</span> <span class='fl'>1</span>,
   where_var <span class='op'>=</span> <span class='cn'>NA</span>,
-  where_case <span class='op'>=</span> <span class='cn'>NA</span>,
-  run_base_model <span class='op'>=</span> <span class='fl'>1</span>,
-  case_control <span class='op'>=</span> <span class='fl'>0</span>,
-  n_control <span class='op'>=</span> <span class='fl'>5</span>,
-  data_dir <span class='op'>=</span> <span class='st'>"~/rds/hpc-work/"</span>,
+  <span class='va'>data_dir</span>,
   numCores <span class='op'>=</span> <span class='cn'>NA</span>,
   chunk_expansion <span class='op'>=</span> <span class='cn'>TRUE</span>,
   chunk_size <span class='op'>=</span> <span class='fl'>500</span>,
@@ -261,40 +249,8 @@
       <td><p>Last period value to expand about</p></td>
     </tr>
     <tr>
-      <th>first_followup</th>
-      <td><p>First follow-up period</p></td>
-    </tr>
-    <tr>
-      <th>last_followup</th>
-      <td><p>Last follow-up period</p></td>
-    </tr>
-    <tr>
       <th>use_weight</th>
       <td><p>Use weights in analysis. If 0 then no weights will be calculated</p></td>
-    </tr>
-    <tr>
-      <th>run_unweighted_analysis</th>
-      <td><p>Run the final model with no weights when use_weights = 1</p></td>
-    </tr>
-    <tr>
-      <th>run_weighted_analysis</th>
-      <td><p>Run the final model with original weights</p></td>
-    </tr>
-    <tr>
-      <th>run_p99_analysis</th>
-      <td><p>Run the final model with truncating the weights at the 1st and 99th percentile</p></td>
-    </tr>
-    <tr>
-      <th>run_user_limits_analysis</th>
-      <td><p>Run the final model with truncating the weights using user defined limits</p></td>
-    </tr>
-    <tr>
-      <th>lower_weight</th>
-      <td><p>Use lower weight as minimum possible weight</p></td>
-    </tr>
-    <tr>
-      <th>upper_weight</th>
-      <td><p>Use upper weight as maximum possible weight</p></td>
     </tr>
     <tr>
       <th>use_censor</th>
@@ -371,22 +327,6 @@
     <tr>
       <th>where_var</th>
       <td><p>List of variables used in where conditions used in subsetting the data used in final analysis (where_case), the variables not included in the final model</p></td>
-    </tr>
-    <tr>
-      <th>where_case</th>
-      <td><p>List of where conditions used in subsetting the data used in final analysis</p></td>
-    </tr>
-    <tr>
-      <th>run_base_model</th>
-      <td><p>Run the model with no conditions Defaults to 1</p></td>
-    </tr>
-    <tr>
-      <th>case_control</th>
-      <td><p>Run the case control sampling or not Defaults to 0</p></td>
-    </tr>
-    <tr>
-      <th>n_control</th>
-      <td><p>Number of controls used in case control sampling Defaults to 5</p></td>
     </tr>
     <tr>
       <th>data_dir</th>

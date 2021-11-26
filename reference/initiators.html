@@ -72,7 +72,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">RandomisedTrialsEmulation</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.1.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.1.2</span>
       </span>
     </div>
 
@@ -178,11 +178,12 @@
   run_base_model <span class='op'>=</span> <span class='fl'>1</span>,
   case_control <span class='op'>=</span> <span class='fl'>0</span>,
   n_control <span class='op'>=</span> <span class='fl'>5</span>,
-  data_dir <span class='op'>=</span> <span class='st'>"~/rds/hpc-work/"</span>,
+  <span class='va'>data_dir</span>,
   numCores <span class='op'>=</span> <span class='cn'>NA</span>,
   chunk_expansion <span class='op'>=</span> <span class='cn'>TRUE</span>,
   chunk_size <span class='op'>=</span> <span class='fl'>500</span>,
-  separate_files <span class='op'>=</span> <span class='cn'>FALSE</span>
+  separate_files <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  glm_function <span class='op'>=</span> <span class='st'>"parglm"</span>
 <span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -407,6 +408,10 @@
     <tr>
       <th>separate_files</th>
       <td><p>Write to one file or one per trial (default FALSE)</p></td>
+    </tr>
+    <tr>
+      <th>glm_function</th>
+      <td><p>Which glm function to use for the final model from <code>stats</code> or <code>parglm</code> packages</p></td>
     </tr>
     </table>
 

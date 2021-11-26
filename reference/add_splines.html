@@ -72,7 +72,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">RandomisedTrialsEmulation</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.1.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.1.2</span>
       </span>
     </div>
 
@@ -134,15 +134,15 @@
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>data_path</th>
-      <td><p>Path to expanded data csv file</p></td>
+      <td><p>Path to expanded data csv file which has columns <code>for_period</code> and <code>followup_time</code>.</p></td>
     </tr>
     <tr>
       <th>period_spline</th>
-      <td><p>Named list of arguments for <code>ns</code> for periods spline</p></td>
+      <td><p>Named list of arguments for <code>ns</code> for periods spline (column <code>for_period</code>)</p></td>
     </tr>
     <tr>
       <th>followup_spline</th>
-      <td><p>Named list of arguments for <code>ns</code> for follow up time</p></td>
+      <td><p>Named list of arguments for <code>ns</code> for follow up time (column <code>follow_time</code>)</p></td>
     </tr>
     </table>
 
