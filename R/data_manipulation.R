@@ -73,11 +73,16 @@ data_manipulation <- function(data_address, data_path, keeplist,
   len_id = length(unique(datatable[, id]))
 
   datatable[, after_eligibility :=  period >= .SD[eligible==1,min(period,Inf)], by=id]
-  if(any(datatable$after_eligibitliy==TRUE)) warning("Observations before trial eligibility were removed")
-  datatable <- datatable[after_eligibility==TRUE]
+  if(any(datatable$after_eligibitliy==FALSE)) {
+    warning("Observations before trial eligibility were removed")
+    datatable <- datatable[after_eligibility==TRUE]
+  }
+
   datatable[, after_event :=  period > .SD[outcome==1,min(period,Inf)], by=id]
-  if(any(datatable$after_event==FALSE)) warning("Observations after the outcome occured were removed")
-  datatable <- datatable[after_event==FALSE] # keep all which are _not_ after the outcome event
+  if(any(datatable$after_event==TRUE)) {
+    warning("Observations after the outcome occured were removed")
+    datatable <- datatable[after_event==FALSE] # keep all which are _not_ after the outcome event
+  }
 
   # temp_data <- copy(datatable) # TODO check if this code is used
   temp_data <- datatable[, .SD[.N], by=id]
