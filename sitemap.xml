@@ -1,66 +1,99 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://cam-roche.github.io/RandomisedTrialsEmulation/index.html</loc>
+    <loc>/404.html</loc>
   </url>
   <url>
-    <loc>https://cam-roche.github.io/RandomisedTrialsEmulation/reference/case_control_func.html</loc>
+    <loc>/articles/Getting-Started.html</loc>
   </url>
   <url>
-    <loc>https://cam-roche.github.io/RandomisedTrialsEmulation/reference/case_control_sampling.html</loc>
+    <loc>/articles/JSS_Rmd/MyJSSArticle.html</loc>
   </url>
   <url>
-    <loc>https://cam-roche.github.io/RandomisedTrialsEmulation/reference/case_control_sampling_trials.html</loc>
+    <loc>/articles/index.html</loc>
   </url>
   <url>
-    <loc>https://cam-roche.github.io/RandomisedTrialsEmulation/reference/data_extension.html</loc>
+    <loc>/authors.html</loc>
   </url>
   <url>
-    <loc>https://cam-roche.github.io/RandomisedTrialsEmulation/reference/data_extension_parallel.html</loc>
+    <loc>/index.html</loc>
   </url>
   <url>
-    <loc>https://cam-roche.github.io/RandomisedTrialsEmulation/reference/data_manipulation.html</loc>
+    <loc>/reference/add_splines.html</loc>
   </url>
   <url>
-    <loc>https://cam-roche.github.io/RandomisedTrialsEmulation/reference/data_modelling.html</loc>
+    <loc>/reference/case_control_func.html</loc>
   </url>
   <url>
-    <loc>https://cam-roche.github.io/RandomisedTrialsEmulation/reference/data_preparation.html</loc>
+    <loc>/reference/case_control_sampling.html</loc>
   </url>
   <url>
-    <loc>https://cam-roche.github.io/RandomisedTrialsEmulation/reference/expand.html</loc>
+    <loc>/reference/case_control_sampling_trials.html</loc>
   </url>
   <url>
-    <loc>https://cam-roche.github.io/RandomisedTrialsEmulation/reference/expand_switch.html</loc>
+    <loc>/reference/case_util.html</loc>
   </url>
   <url>
-    <loc>https://cam-roche.github.io/RandomisedTrialsEmulation/reference/f.html</loc>
+    <loc>/reference/censor_func.html</loc>
   </url>
   <url>
-    <loc>https://cam-roche.github.io/RandomisedTrialsEmulation/reference/for_period_func.html</loc>
+    <loc>/reference/data_extension.html</loc>
   </url>
   <url>
-    <loc>https://cam-roche.github.io/RandomisedTrialsEmulation/reference/initiators.html</loc>
+    <loc>/reference/data_extension_parallel.html</loc>
   </url>
   <url>
-    <loc>https://cam-roche.github.io/RandomisedTrialsEmulation/reference/limit_weight.html</loc>
+    <loc>/reference/data_manipulation.html</loc>
   </url>
   <url>
-    <loc>https://cam-roche.github.io/RandomisedTrialsEmulation/reference/lr.html</loc>
+    <loc>/reference/data_modelling.html</loc>
   </url>
   <url>
-    <loc>https://cam-roche.github.io/RandomisedTrialsEmulation/reference/p99_weight.html</loc>
+    <loc>/reference/data_preparation.html</loc>
   </url>
   <url>
-    <loc>https://cam-roche.github.io/RandomisedTrialsEmulation/reference/read_data.html</loc>
+    <loc>/reference/expand.html</loc>
   </url>
   <url>
-    <loc>https://cam-roche.github.io/RandomisedTrialsEmulation/reference/robust_calculation.html</loc>
+    <loc>/reference/expand_func.html</loc>
   </url>
   <url>
-    <loc>https://cam-roche.github.io/RandomisedTrialsEmulation/reference/weight_func.html</loc>
+    <loc>/reference/expand_switch.html</loc>
   </url>
   <url>
-    <loc>https://cam-roche.github.io/RandomisedTrialsEmulation/reference/weight_lr.html</loc>
+    <loc>/reference/f.html</loc>
+  </url>
+  <url>
+    <loc>/reference/for_period_func.html</loc>
+  </url>
+  <url>
+    <loc>/reference/index.html</loc>
+  </url>
+  <url>
+    <loc>/reference/initiators.html</loc>
+  </url>
+  <url>
+    <loc>/reference/limit_weight.html</loc>
+  </url>
+  <url>
+    <loc>/reference/lr.html</loc>
+  </url>
+  <url>
+    <loc>/reference/p99_weight.html</loc>
+  </url>
+  <url>
+    <loc>/reference/read_data.html</loc>
+  </url>
+  <url>
+    <loc>/reference/robust_calculation.html</loc>
+  </url>
+  <url>
+    <loc>/reference/trial_example.html</loc>
+  </url>
+  <url>
+    <loc>/reference/weight_func.html</loc>
+  </url>
+  <url>
+    <loc>/reference/weight_lr.html</loc>
   </url>
 </urlset>

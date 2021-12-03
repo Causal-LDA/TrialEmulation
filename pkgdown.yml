@@ -1,8 +1,8 @@
 pandoc: 2.7.3
-pkgdown: 1.6.1
+pkgdown: 2.0.0
 pkgdown_sha: ~
 articles:
   Getting-Started: Getting-Started.html
-  JSS_Rmd/MyJSSArticle: MyJSSArticle.html
-last_built: 2021-11-26T16:29Z
+  MyJSSArticle: JSS_Rmd/MyJSSArticle.html
+last_built: 2021-12-03T09:14Z
 
