@@ -51,8 +51,10 @@ case_control_sampling <- function(data_dir, samples_file = "sample_data.csv", mi
     print("Starting the sampling")
     timing <- system.time({
       j = seq(min_period, max_period, 1)
-      mclapply(j, case_control_func,
-               data_address=data_address, n_control=n_control[i],
+      mclapply(j,
+               FUN = case_control_func,
+               data_address=data_address,
+               n_control=n_control[i],
                data_dir=data_dir,
                name_csv = samples_file,
                numCores=1,
@@ -100,7 +102,9 @@ case_control_func <- function(period_num, data_address, n_control=5,
   }
 
   new_d = rbindlist(m)
-  fwrite(new_d, file.path(data_dir, name_csv), append=TRUE, row.names=FALSE)
+  if(nrow(new_d > 0)) {
+    fwrite(new_d, file.path(data_dir, name_csv), append=TRUE, row.names=FALSE)
+  }
   rm(d_period, d, m, new_d)
   gc()
 }

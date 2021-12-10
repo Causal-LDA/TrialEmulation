@@ -591,10 +591,6 @@ data_preparation <- function(data_path,
 #   }
 #
 
-
-
-  write.csv(df, file.path(data_dir, "temp_data.csv"), row.names=FALSE)
-
   return(list(absolutePath = manipulate$path,
               N = manipulate$N,
               range = manipulate$range,
