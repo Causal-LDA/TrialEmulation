@@ -183,8 +183,14 @@ case_util <- function(data, n_control=5){
     if(ncontrol >= n_control*ncase) {
       controlselect <- controldatajk[sample(1:ncontrol, n_control*ncase),] ## sample 5 controls for each case without replacement
     } else{
-      controlselect <- controldatajk #TODO https://github.com/CAM-Roche/RandomisedTrialsEmulation/issues/20
+      warning(paste0(ncontrol, ifelse(ncontrol==1, "control", "controls"),
+       " available in this period but ", n_control*ncase, " were requested. All available controls will be used."))
+      controlselect <- controldatajk
     }
+
+    # sampling weights
+    casedatajk$samplew<-rep(1,ncase)
+    controlselect$samplew<-rep(ncontrol/(ncase*5), ncase*5)
 
     dataall<-rbind(casedatajk, controlselect) ## append sampled data
   }
