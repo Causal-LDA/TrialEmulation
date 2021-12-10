@@ -46,7 +46,7 @@ case_control_sampling <- function(data_dir, samples_file = "sample_data.csv", mi
   print(timing)
   print("-------------------------")
 
-  for(i in seq_len(n_control)){
+  for(i in seq_along(n_control)){
 
     print("Starting the sampling")
     timing <- system.time({
