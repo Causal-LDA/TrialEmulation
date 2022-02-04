@@ -6,7 +6,9 @@
 \usage{
 case_control_sampling_trials(
   data_dir,
-  n_control,
+  n_control = NULL,
+  p_control = NULL,
+  sample_all_periods,
   numCores,
   samples_file = "sample_data.csv",
   infile_pattern = "trial_",
@@ -17,6 +19,10 @@ case_control_sampling_trials(
 \item{data_dir}{Directory containing trial-level extended data}
 
 \item{n_control}{Number of controls to sample per case}
+
+\item{p_control}{Proportion of controls to select}
+
+\item{sample_all_periods}{Sample controls in all periods (TRUE) or only when there is a case in the period (FALSE)?}
 
 \item{numCores}{Number of cores for parallel processing}
 

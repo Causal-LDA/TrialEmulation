@@ -5,6 +5,11 @@
 
 using namespace Rcpp;
 
+#ifdef RCPP_USE_GLOBAL_ROSTREAM
+Rcpp::Rostream<true>&  Rcpp::Rcout = Rcpp::Rcpp_cout_get();
+Rcpp::Rostream<false>& Rcpp::Rcerr = Rcpp::Rcpp_cerr_get();
+#endif
+
 // expand_func
 Rcpp::IntegerVector expand_func(Rcpp::DataFrame& d, int last_period, int first_period);
 RcppExport SEXP _RandomisedTrialsEmulation_expand_func(SEXP dSEXP, SEXP last_periodSEXP, SEXP first_periodSEXP) {
