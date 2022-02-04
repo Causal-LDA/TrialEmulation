@@ -54,7 +54,9 @@ initiators(
   where_case = NA,
   run_base_model = 1,
   case_control = 0,
-  n_control = 5,
+  n_control,
+  p_control,
+  sample_all_periods = FALSE,
   data_dir,
   numCores = NA,
   chunk_expansion = TRUE,
@@ -162,7 +164,11 @@ initiators(
 
 \item{case_control}{Run the case control sampling or not Defaults to 0}
 
-\item{n_control}{Number of controls used in case control sampling Defaults to 5}
+\item{n_control}{Number of controls used in case control sampling. Not compatible with \code{p_control}. If \code{p_control} is specified, \code{n_control} has no effect.}
+
+\item{p_control}{Proportion of control to sample. If \code{p_control} is specified, \code{n_control} has no effect.}
+
+\item{sample_all_periods}{Sample a proportion of controls even if there are no cases in that period. Useful when estimating the baseline hazard.}
 
 \item{data_dir}{Direction to save data}
 

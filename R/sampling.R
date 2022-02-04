@@ -7,16 +7,37 @@
 #' @param min_period First trial period to sample from
 #' @param max_period Last trial period to sample from
 #' @param samples_file CSV file name for the  sampled data. Should be the same length as n_control.
+#' @param p_control Proportion of controls to select
+#' @param sample_all_periods Sample controls in all periods (TRUE) or only when there is a case in the period (FALSE)?
 #'
 #' @export
 #'
-case_control_sampling <- function(data_dir, samples_file = "sample_data.csv", min_period, max_period, n_control, numCores=1){
+case_control_sampling <- function(data_dir,
+                                  samples_file = "sample_data.csv",
+                                  min_period,
+                                  max_period,
+                                  n_control = NULL,
+                                  p_control = NULL,
+                                  sample_all_periods,
+                                  numCores=1
+){
+
   print("Starting case-control sampling function")
 
-  if(length(samples_file) != length(n_control)){
+  if (!is.null(p_control)) {
+    n_sample_sets <- length(p_control)
+    case_util_fun <- case_util_p
+    sampling_value <- p_control
+  }  else if (!is.null(n_control)) {
+    n_sample_sets <- length(n_control)
+    case_util_fun <- case_util_n
+    sampling_value <- n_control
+  }
+
+  if(length(samples_file) != n_sample_sets){
     warning("Number of filenames and number of samples are not equal. Using first specified name and counter.")
-    samples_file <- paste0(rep(sub(".csv","",samples_file[1]), length(n_control)),
-                 "_",seq_along(n_control),".csv")
+    samples_file <- paste0(rep(sub(".csv","",samples_file[1]), n_sample_sets),
+                           "_",seq_len(n_sample_sets),".csv")
   }
 
   if(missing(min_period)|missing(max_period)){
@@ -46,7 +67,9 @@ case_control_sampling <- function(data_dir, samples_file = "sample_data.csv", mi
   print(timing)
   print("-------------------------")
 
-  for(i in seq_along(n_control)){
+
+
+  for(i in sampling_value){
 
     print("Starting the sampling")
     timing <- system.time({
@@ -54,7 +77,10 @@ case_control_sampling <- function(data_dir, samples_file = "sample_data.csv", mi
       mclapply(j,
                FUN = case_control_func,
                data_address=data_address,
-               n_control=n_control[i],
+               n_control=sampling_value,
+               p_control=sampling_value,
+               sample_all_periods=sample_all_periods,
+               case_util_fun = case_util_fun,
                data_dir=data_dir,
                name_csv = samples_file,
                numCores=1,
@@ -79,25 +105,30 @@ case_control_sampling <- function(data_dir, samples_file = "sample_data.csv", mi
 #' @param numCores Number of cores for parallel programming
 #' @param name_csv File name for the sampled data csv file
 #' @param data_dir Directory to write sampled data csv to
+#' @param p_control Proportion of controls to select
+#' @param case_util_fun The case_util function to use, `case_util_p` or `case_util_n`.
+#' @param sample_all_periods Sample controls in all periods (TRUE) or only when there is a case in the period (FALSE)?
 #'
-
-case_control_func <- function(period_num, data_address, n_control=5,
+case_control_func <- function(period_num,
+                              data_address,
+                              n_control = NULL,
+                              p_control = NULL,
+                              sample_all_periods,
+                              case_util_fun,
                               data_dir="~/rds/hpc-work/",
                               name_csv = "sample_data.csv",
-                              numCores=NA){
-
+                              numCores=NA
+){
   d_period = data_address[bigmemory::mwhich(data_address, c("for_period"), c(period_num), c('eq')),]
   d_period = as.data.table(d_period)
   d = split(d_period, d_period$followup_time)
 
+  case_util_fun <- match.fun(case_util_fun)
+
   if(numCores == 1) {
-    # cl <- makeCluster(numCores)
-    # clusterExport(cl, "n_control", envir=environment())
-    # m = parLapply(cl, d, case_util, n_control)
-    # stopCluster(cl)
-    m = lapply(d, case_util, n_control)
+    m = lapply(d, case_util_fun, n_control=n_control, p_control=p_control, sample_all_periods=sample_all_periods)
   } else {
-    m = mclapply(d, case_util, n_control=n_control,
+    m = mclapply(d, case_util_fun, n_control=n_control, p_control=p_control, sample_all_periods=sample_all_periods,
                  mc.cores=numCores)
   }
 
@@ -117,19 +148,38 @@ case_control_func <- function(period_num, data_address, n_control=5,
 #' @param samples_file Name of output csv files for each case-control sample. eg `paste0("samples_",seq_along(n_control),"_1x",n_control,".csv")`
 #' @param infile_pattern Name of trial dataset csv files. This is passed to the `pattern` argument of `dir()`
 #' @param subset_condition Expression used to `subset` the trial data before sampling
+#' @param p_control Proportion of controls to select
+#' @param sample_all_periods Sample controls in all periods (TRUE) or only when there is a case in the period (FALSE)?
 #'
 #' @return A vector of file paths of the sampled data
 #'
 #' @export
 #'
-case_control_sampling_trials <- function(data_dir, n_control, numCores, samples_file = "sample_data.csv", infile_pattern = "trial_", subset_condition){
+case_control_sampling_trials <- function(data_dir,
+                                         n_control = NULL,
+                                         p_control = NULL,
+                                         sample_all_periods,
+                                         numCores,
+                                         samples_file = "sample_data.csv",
+                                         infile_pattern = "trial_",
+                                         subset_condition){
 
   trial_files <- dir(path=data_dir, pattern = infile_pattern, full.names = TRUE)
 
-  if(length(samples_file) != length(n_control)){
+  if (!is.null(p_control)) {
+    n_sample_sets <- length(p_control)
+    case_util_fun <- case_util_p
+    sampling_value <- p_control
+  }  else if (!is.null(n_control)) {
+    n_sample_sets <- length(n_control)
+    case_util_fun <- case_util_n
+    sampling_value <- n_control
+  }
+
+  if(length(samples_file) != n_sample_sets){
     warning("Number of filenames and number of samples are not equal. Using first specified name and counter.")
-    samples_file <- paste0(rep(sub(".csv","",samples_file[1]), length(n_control)),
-                           "_",seq_along(n_control),".csv")
+    samples_file <- paste0(rep(sub(".csv","",samples_file[1]), n_sample_sets),
+                           "_",seq_len(n_sample_sets),".csv")
   }
 
   if(!missing(subset_condition)) subset_cond <- substitute(subset_condition)
@@ -142,8 +192,8 @@ case_control_sampling_trials <- function(data_dir, n_control, numCores, samples_
 
     d <- split(d_period, d_period$followup_time)
 
-    all_samples <- lapply(n_control, function(nc){
-      m <- lapply(d, case_util, n_control=nc)
+    all_samples <- lapply(sampling_value, function(nc){
+      m <- lapply(d, case_util_fun, n_control=nc, p_control=nc, sample_all_periods=sample_all_periods)
       rbindlist(m)
     })
 
@@ -171,10 +221,11 @@ case_control_sampling_trials <- function(data_dir, n_control, numCores, samples_
 #'
 #' @param data Data to sample from
 #' @param n_control Number of controls for each case
+#' @param ... ignored
 #'
 #' @return A data frame with the cases and sampled controls
 
-case_util <- function(data, n_control=5){
+case_util_n <- function(data, n_control=5, ...){
   ### cases occurred at each period and follow-up visit
   casedatajk<-data[data$outcome==1, ]
   ### controls (still under follow-up and events haven't occurred) at each period and follow-up visit
@@ -193,10 +244,37 @@ case_util <- function(data, n_control=5){
     }
 
     # sampling weights
-    casedatajk$samplew<-rep(1,ncase)
-    controlselect$samplew<-rep(ncontrol/(ncase*5), ncase*5)
+    casedatajk$sample_weight<-rep(1,ncase)
+    controlselect$sample_weight<-rep(ncontrol/(ncase*n_control), ncase*n_control)
 
     dataall<-rbind(casedatajk, controlselect) ## append sampled data
+  }
+  return(dataall)
+}
+
+#' Sample cases utility function
+#'
+#' @param data Data to sample from
+#' @param p_control Proportion of controls to select
+#' @param sample_all_periods Sample controls in all periods (TRUE) or only when there is a case in the period (FALSE)?
+#' @param ... ignored
+#'
+#' @return A data frame with the cases and sampled controls
+case_util_p <- function(data, p_control = 0.01, sample_all_periods = FALSE, ...){
+  sample_weight <- NULL
+
+  ### cases occurred at each period and follow-up visit
+  cases <- which(data$outcome==1)
+  ncase <- length(cases)
+  dataall <- NULL
+
+  if(ncase > 0 | sample_all_periods){
+    ### controls (still under follow-up and events haven't occurred) at each period and follow-up visit
+    controls <- which(data$outcome==0)
+    n_sample <- ceiling(length(controls) * p_control)
+    controlselect <- sample(controls, size = n_sample)
+    dataall <- data[c(cases, controlselect), ]
+    dataall <- dataall[, sample_weight := c(rep(1, length(cases)), rep(1/p_control, n_sample))]
   }
   return(dataall)
 }

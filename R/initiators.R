@@ -50,7 +50,9 @@
 #' @param where_case List of where conditions used in subsetting the data used in final analysis
 #' @param run_base_model Run the model with no conditions Defaults to 1
 #' @param case_control Run the case control sampling or not Defaults to 0
-#' @param n_control Number of controls used in case control sampling Defaults to 5
+#' @param n_control Number of controls used in case control sampling. Not compatible with `p_control`. If `p_control` is specified, `n_control` has no effect.
+#' @param p_control Proportion of control to sample. If `p_control` is specified, `n_control` has no effect.
+#' @param sample_all_periods Sample a proportion of controls even if there are no cases in that period. Useful when estimating the baseline hazard.
 #' @param data_dir Direction to save data
 #' @param numCores Number of cores for parallel programming (default value is maximum cores and parallel programming)
 #' @param chunk_expansion Do the expansion in chunks (and in parallel if numCores > 1). Turn this off if you have enough memory to expand the whole dataset at once. (default TRUE)
@@ -121,7 +123,9 @@ initiators <- function(data_path,
                        where_case = NA,
                        run_base_model = 1,
                        case_control = 0,
-                       n_control = 5,
+                       n_control,
+                       p_control,
+                       sample_all_periods = FALSE,
                        data_dir,
                        numCores = NA,
                        chunk_expansion = TRUE,
@@ -184,30 +188,56 @@ initiators <- function(data_path,
 
   analysis_data_path <- prep_result$absolutePath
 
-  # Case-control sampling
-  if (case_control == 1 | prep_result$N >= 2^31 - 1) {
+  # Sampling contols ----------
+  if (prep_result$N >= 2^31 -1) {
+    warning("Expanded data is too large for model fitting. Case-control sampling will be applied.")
+    case_control <- 1
+  }
+
+  if (case_control == 1) {
+    if (file.exists(file.path(data_dir, "temp_data.csv"))) file.remove(file.path(data_dir, "temp_data.csv"))
+
     if (isFALSE(separate_files)) {
-      if (prep_result$N >= 2^31 -1) message("Expanded data is too large for model fitting. Case-control sampling will be applied.")
-      sample_data_path <- case_control_sampling(
-        data_dir = data_dir,
-        samples_file = "temp_data.csv",
-        min_period = prep_result$min_period,
-        max_period = prep_result$max_period,
-        n_control = n_control,
-        numCores=numCores)
+      if (missing(p_control) & !missing(n_control)) {
+        # sample using fixed n cases:controls ratio
+        sample_data_path <- case_control_sampling(
+          data_dir = data_dir,
+          samples_file = "temp_data.csv",
+          min_period = prep_result$min_period,
+          max_period = prep_result$max_period,
+          sample_all_periods = sample_all_periods,
+          n_control = n_control,
+          numCores=numCores)
+      } else {
+        # set p_control if missing
+        if (missing(p_control)) p_control <- 0.01
+        # sample a proportion of controls
+        sample_data_path <- case_control_sampling(
+          data_dir = data_dir,
+          samples_file = "temp_data.csv",
+          min_period = prep_result$min_period,
+          max_period = prep_result$max_period,
+          p_control = p_control,
+          sample_all_periods = sample_all_periods,
+          numCores=numCores)
+      }
     } else if (isTRUE(separate_files)) {
       sample_data_path <- case_control_sampling_trials(
         data_dir = data_dir,
         n_control = n_control,
         numCores = numCores,
         samples_file = "temp_data.csv",
-        infile_pattern = "trial_"
+        infile_pattern = "trial_",
+        sample_all_periods = sample_all_periods
       )
     }
     analysis_data_path <- normalizePath(sample_data_path)
+    use_sample_weights <- TRUE
+  } else {
+    use_sample_weights <- FALSE
   }
 
-
+  # Splines ------
   # Add splines to data if requested
   add_splines(
     data_path = analysis_data_path,
@@ -238,7 +268,8 @@ initiators <- function(data_path,
     run_base_model = run_base_model,
     absolutePath = analysis_data_path,
     numCores = numCores,
-    glm_function = glm_function
+    glm_function = glm_function,
+    use_sample_weights = use_sample_weights
   )
 
   return(list(model = model_full))

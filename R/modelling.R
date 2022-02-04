@@ -23,6 +23,7 @@
 #' @param absolutePath Direction to where the data for modelling is saved
 #' @param numCores Number of cores for parallel programming (default value is maximum cores and parallel programming)
 #' @param glm_function Which glm function to use for the final model from `stats` or `parglm` packages
+#' @param use_sample_weights Set model weights to `sample_weight * weight`.
 #' data_modelling()
 #'
 #' @details The class variables paramers (`outcomeClass`,`class_switchn`,`class_switchd`,`class_censen`,`class_censed`)
@@ -58,11 +59,11 @@ data_modelling <- function(outcomeCov_var = NA,
                            absolutePath,
                            numCores = NA,
                            glm_function = c('parglm','glm'),
-                           use_sample_weights = 0
+                           use_sample_weights = TRUE
 ) {
 
   # Dummy variables used in data.table calls declared to prevent package check NOTES:
-  weight <- NULL
+  weight <- sample_weight <- NULL
 
 
   glm_function <- match.arg(glm_function)
@@ -108,6 +109,18 @@ data_modelling <- function(outcomeCov_var = NA,
             value = do.call("factor", c(x = list(temp_data[[this_var]]), outcomeClass[[this_var]])))
       }
     }
+  }
+
+
+  # adjust weights if necessary
+  if (use_sample_weights){
+    if (!"sample_weight" %in% colnames(use_sample_weights)) {
+      warning("'sample_weight' column not found in data. Using sample weights = 1.")
+      temp_data[, weight := weight]
+    } else {
+      temp_data[, weight := weight * sample_weight]
+    }
+
   }
 
 
