@@ -93,13 +93,13 @@
       <p>The abstract of the article.</p>
     </div>
     
-<div class="section level1">
-<h1 id="introduction">Introduction<a class="anchor" aria-label="anchor" href="#introduction"></a>
-</h1>
-<p>This template demonstrates some of the basic LaTeX that you need to know to create a JSS article.</p>
 <div class="section level2">
-<h2 id="code-formatting">Code formatting<a class="anchor" aria-label="anchor" href="#code-formatting"></a>
+<h2 id="introduction">Introduction<a class="anchor" aria-label="anchor" href="#introduction"></a>
 </h2>
+<p>This template demonstrates some of the basic LaTeX that you need to know to create a JSS article.</p>
+<div class="section level3">
+<h3 id="code-formatting">Code formatting<a class="anchor" aria-label="anchor" href="#code-formatting"></a>
+</h3>
 <p>In general, don’t use Markdown, but use the more precise LaTeX commands instead:</p>
 <ul>
 <li>
@@ -109,17 +109,17 @@
 <p>If you want to use LaTeX commands in headers, you need to provide a <code>short-title</code> attribute. You can also provide a custom identifier if necessary. See the header of Section  for example.</p>
 </div>
 </div>
-<div class="section level1" short-title="R code">
-<h1 id="r-code"> code<a class="anchor" aria-label="anchor" href="#r-code"></a>
-</h1>
+<div class="section level2" short-title="R code">
+<h2 id="r-code"> code<a class="anchor" aria-label="anchor" href="#r-code"></a>
+</h2>
 <p>Can be inserted in regular R markdown blocks.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">x</span> <span class="op">&lt;-</span> <span class="fl">1</span><span class="op">:</span><span class="fl">10</span>
 <span class="va">x</span></code></pre></div>
 <pre><code><span class="co">##  [1]  1  2  3  4  5  6  7  8  9 10</span></code></pre>
-<div class="section level2" short-title="Features specific to rticles">
-<h2 id="features-specific-to">Features specific to <a class="anchor" aria-label="anchor" href="#features-specific-to"></a>
-</h2>
+<div class="section level3" short-title="Features specific to rticles">
+<h3 id="features-specific-to">Features specific to <a class="anchor" aria-label="anchor" href="#features-specific-to"></a>
+</h3>
 <ul>
 <li>Adding short titles to section headers is a feature specific to  (implemented via a Pandoc Lua filter). This feature is currently not supported by Pandoc and we will update this template if <a href="https://github.com/jgm/pandoc/issues/4409" class="external-link">it is officially supported in the future</a>.</li>
 <li>Using the <code>\AND</code> syntax in the <code>author</code> field to add authors on a new line. This is a specific to the <code><a href="https://rdrr.io/pkg/rticles/man/jss_article.html" class="external-link">rticles::jss_article</a></code> format.</li>
@@ -145,7 +145,7 @@
 
 <div class="pkgdown">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.0.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.</p>
 </div>
 
       </footer>
