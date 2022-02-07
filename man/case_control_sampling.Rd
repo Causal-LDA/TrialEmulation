@@ -9,7 +9,9 @@ case_control_sampling(
   samples_file = "sample_data.csv",
   min_period,
   max_period,
-  n_control,
+  n_control = NULL,
+  p_control = NULL,
+  sample_all_periods,
   numCores = 1
 )
 }
@@ -23,6 +25,10 @@ case_control_sampling(
 \item{max_period}{Last trial period to sample from}
 
 \item{n_control}{Number of controls for each case to sample}
+
+\item{p_control}{Proportion of controls to select}
+
+\item{sample_all_periods}{Sample controls in all periods (TRUE) or only when there is a case in the period (FALSE)?}
 
 \item{numCores}{Number of cores used by mclapply for sampling from each trial}
 }

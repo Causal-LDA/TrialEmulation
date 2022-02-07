@@ -7,7 +7,10 @@
 case_control_func(
   period_num,
   data_address,
-  n_control = 5,
+  n_control = NULL,
+  p_control = NULL,
+  sample_all_periods,
+  case_util_fun,
   data_dir = "~/rds/hpc-work/",
   name_csv = "sample_data.csv",
   numCores = NA
@@ -19,6 +22,12 @@ case_control_func(
 \item{data_address}{A data.table which is the extended version of input data}
 
 \item{n_control}{Number of controls in the case control sampling Defaults to 5}
+
+\item{p_control}{Proportion of controls to select}
+
+\item{sample_all_periods}{Sample controls in all periods (TRUE) or only when there is a case in the period (FALSE)?}
+
+\item{case_util_fun}{The case_util function to use, \code{case_util_p} or \code{case_util_n}.}
 
 \item{data_dir}{Directory to write sampled data csv to}
 
