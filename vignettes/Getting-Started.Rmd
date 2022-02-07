@@ -12,6 +12,9 @@ knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>"
 )
+
+library(bigmemory)
+options(bigmemory.default.shared = FALSE)
 ```
 
 This package implements methods to analyse a sequence of target trials.
