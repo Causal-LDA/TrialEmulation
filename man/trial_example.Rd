@@ -24,6 +24,7 @@ A data frame with 48400 rows and 11 variables:
 trial_example
 }
 \description{
-A dataset containing the treatment, outcomes and other attributes of 503 patients for randomised trial emulation. See \code{vignette("Getting-Started")}
+A dataset containing the treatment, outcomes and other attributes of 503 patients for randomised trial emulation.
+See \code{vignette("Getting-Started")}
 }
 \keyword{datasets}
