@@ -1,6 +1,7 @@
 #' Example of longitundinal data for randomised trial emulation
 #'
-#' A dataset containing the treatment, outcomes and other attributes of 503 patients for randomised trial emulation. See `vignette("Getting-Started")`
+#' A dataset containing the treatment, outcomes and other attributes of 503 patients for randomised trial emulation.
+#' See `vignette("Getting-Started")`
 #'
 #'
 #' @format A data frame with 48400 rows and 11 variables:
@@ -19,3 +20,20 @@
 #' }
 #'
 "trial_example"
+
+#' Example of expanded longitundinal data for randomised trial emulation
+#'
+#' This is the expanded dataset created in the `vignette("Getting-Started")` known as `switch_data`.
+#'
+#' @format A data frame with 48400 rows and 11 variables:
+#' \describe{
+#'   \item{id}{patient identifier}
+#'   \item{for_period}{trial start time period}
+#'   \item{followup_time}{follow up time within trial}
+#'   \item{outcome}{indicator for outcome in this period, 1=event occurred, 0=no event}
+#'   \item{treatment}{indicator for receiving treatment in this period, 1=treatment, 0=no treatment}
+#'   \item{assigned_treatment}{indicator for assigned treatment at baseline of the trial, 1=treatment, 0=no treatment}
+#'   \item{weight}{weights for use with model fitting}
+#' }
+#'
+"vignette_switch_data"
