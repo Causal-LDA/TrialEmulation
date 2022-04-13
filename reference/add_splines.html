@@ -57,13 +57,15 @@
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">add_splines</span><span class="op">(</span><span class="va">data_path</span>, <span class="va">period_spline</span>, <span class="va">followup_spline</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">add_splines</span><span class="op">(</span><span class="va">data_path</span>, out_path <span class="op">=</span> <span class="va">data_path</span>, <span class="va">period_spline</span>, <span class="va">followup_spline</span><span class="op">)</span></code></pre></div>
     </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>data_path</dt>
 <dd><p>Path to expanded data csv file which has columns <code>for_period</code> and <code>followup_time</code>.</p></dd>
+<dt>out_path</dt>
+<dd><p>Path to write data csv with added splines. Defaults to overwriting data_path.</p></dd>
 <dt>period_spline</dt>
 <dd><p>Named list of arguments for <code>ns</code> for periods spline (column <code>for_period</code>)</p></dd>
 <dt>followup_spline</dt>
@@ -71,7 +73,8 @@
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>Overwrites data_path with new csv with spline basis columns.</p>
+    <p>Returns a list containing the the first rows of the <code>ns</code> objects.
+Writes the data with the spline basis columns to <code>out_path</code>.</p>
     </div>
 
   </div>
