@@ -1,7 +1,7 @@
 #' Example of longitundinal data for randomised trial emulation
 #'
 #' A dataset containing the treatment, outcomes and other attributes of 503 patients for randomised trial emulation.
-#' See `vignette("Getting-Started")`
+#' See `vignette("Getting-Started")`.
 #'
 #'
 #' @format A data frame with 48400 rows and 11 variables:
