@@ -25,6 +25,6 @@ trial_example
 }
 \description{
 A dataset containing the treatment, outcomes and other attributes of 503 patients for randomised trial emulation.
-See \code{vignette("Getting-Started")}
+See \code{vignette("Getting-Started")}.
 }
 \keyword{datasets}

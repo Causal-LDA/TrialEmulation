@@ -4,17 +4,20 @@
 \alias{add_splines}
 \title{Add splines to expanded data}
 \usage{
-add_splines(data_path, period_spline, followup_spline)
+add_splines(data_path, out_path = data_path, period_spline, followup_spline)
 }
 \arguments{
 \item{data_path}{Path to expanded data csv file which has columns \code{for_period} and \code{followup_time}.}
+
+\item{out_path}{Path to write data csv with added splines. Defaults to overwriting data_path.}
 
 \item{period_spline}{Named list of arguments for \code{ns} for periods spline (column \code{for_period})}
 
 \item{followup_spline}{Named list of arguments for \code{ns} for follow up time (column \code{follow_time})}
 }
 \value{
-Overwrites data_path with new csv with spline basis columns.
+Returns a list containing the the first rows of the \code{ns} objects.
+Writes the data with the spline basis columns to \code{out_path}.
 }
 \description{
 Add natural spline basis columns to the expanded data for period and follow up time.

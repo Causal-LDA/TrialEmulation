@@ -6,13 +6,15 @@ test_that("adding splines works as expected", {
   write.csv(vignette_switch_data[1:10, ], file = csv_path, row.names = FALSE)
 
   expect_silent(
-    add_splines(
+    result <- add_splines(
       csv_path,
       period_spline = list(df = 3),
       followup_spline = list(df = 2)
     )
   )
   result_csv <- read.csv(csv_path)
+  unlink(file.path(tmp, "splines_test"), recursive = TRUE)
+
   expected <- data.frame(
     for_period = c(261L, 261L, 262L, 261L, 262L, 263L, 261L, 262L, 263L, 264L),
     followup_time = c(0L, 1L, 0L, 2L, 1L, 0L, 3L, 2L, 1L, 0L),
@@ -35,5 +37,25 @@ test_that("adding splines works as expected", {
     expected
   )
 
-  unlink(file.path(tmp, "splines_test"), recursive = TRUE)
+  expected_attributes_for_period <- list(
+    degree = 3L,
+    knots = c(`33.33333%` = 261, `66.66667%` = 262),
+    Boundary.knots = c(261L, 264L),
+    intercept = FALSE,
+    class = c("ns", "basis", "matrix"),
+    dim = c(10L, 3L),
+    dimnames = list(NULL, c("1", "2", "3"))
+  )
+  expect_identical(attributes(result$for_period), expected_attributes_for_period)
+
+  expected_attributes_followup_time <- list(
+    degree = 3L,
+    knots = c(`50%` = 1),
+    Boundary.knots = c(0L, 3L),
+    intercept = FALSE,
+    class = c("ns", "basis", "matrix"),
+    dim = c(10L, 2L),
+    dimnames = list(NULL, c("1", "2"))
+  )
+  expect_identical(attributes(result$followup_time), expected_attributes_followup_time)
 })
