@@ -3,16 +3,19 @@
 #' Add natural spline basis columns to the expanded data for period and follow up time.
 #'
 #' @param data_path Path to expanded data csv file which has columns `for_period` and `followup_time`.
+#' @param out_path Path to write data csv with added splines. Defaults to overwriting data_path.
 #' @param period_spline Named list of arguments for `ns` for periods spline (column `for_period`)
 #' @param followup_spline Named list of arguments for `ns` for follow up time (column `follow_time`)
 #'
-#' @return Overwrites data_path with new csv with spline basis columns.
+#' @return Returns a list containing the the first rows of the `ns` objects.
+#' Writes the data with the spline basis columns to `out_path`.
 #' @export
 #' @import assertthat
 #'
-add_splines <- function(data_path, period_spline, followup_spline){
+add_splines <- function(data_path, out_path = data_path, period_spline, followup_spline){
 
   assert_that(is.readable(data_path))
+  assert_that(is.string(out_path))
 
   attempt_period <- attempt_followup <- FALSE
 
@@ -44,22 +47,31 @@ add_splines <- function(data_path, period_spline, followup_spline){
   }
   rm(data_head)
 
-  # Process data if we need to
-  if(isTRUE(attempt_period) | isTRUE(attempt_followup)){
-    data <- fread(data_path, header = TRUE, sep = ",")
+  return_splines <- list(for_period = NA, followup_time = NA)
 
+  # Create splines for the followup_time and for_period as required.
+    if(isTRUE(attempt_period) | isTRUE(attempt_followup)){
+
+    data <- fread(data_path, header = TRUE, sep = ",")
     if(isTRUE(attempt_period)){
       temp <- do.call("ns", c(x = list(data[["for_period"]]), period_spline))
       for(i in 1:ncol(temp)){
         data[, paste0("period_base_", i)] <- temp[, i]
       }
+      return_splines$for_period <- temp[1:10, ]
+      mostattributes(return_splines$for_period) <- attributes(temp)
     }
+
     if(isTRUE(attempt_followup)){
       temp <- do.call("ns", c(x = list(data[["followup_time"]]), followup_spline))
       for(i in 1:ncol(temp)){
         data[, paste0("followup_base_", i)] <- temp[, i]
       }
+      return_splines$followup_time <- temp[1:10, ]
+      mostattributes(return_splines$followup_time) <- attributes(temp)
     }
-    fwrite(data, data_path, row.names=FALSE)
+    fwrite(data, file = out_path, row.names = FALSE)
+
+    return_splines
   }
 }
