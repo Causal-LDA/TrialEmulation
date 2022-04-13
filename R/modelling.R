@@ -114,7 +114,7 @@ data_modelling <- function(outcomeCov_var = NA,
 
   # adjust weights if necessary
   if (use_sample_weights){
-    if (!"sample_weight" %in% colnames(use_sample_weights)) {
+    if (!"sample_weight" %in% colnames(temp_data)) {
       warning("'sample_weight' column not found in data. Using sample weights = 1.")
       temp_data[, weight := weight]
     } else {
