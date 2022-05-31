@@ -115,8 +115,6 @@ robust_calculation <- function(model, data_id){
              type = NULL, sandwich = TRUE, fix = FALSE)
   #v = cluster.vcov(model.full, cluster=temp_data[, id], parallel=4)
   se = sqrt(diag(v))
-  print("-------------------------------------------------------")
-  print("Robust standard error:")
   output <- data.table(names = names(model$coefficients),
                        estimate = est_temp,
                        robust_se = se[names(est_temp)])
