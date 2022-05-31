@@ -44,6 +44,7 @@
 #' @param chunk_expansion Do the expansion in chunks (and in parallel if numCores > 1). Turn this off if you have enough memory to expand the whole dataset at once. (default TRUE)
 #' @param chunk_size Number of ids to process at once for the chunk expansion (default 500). Larger chunk_sizes may be faster but require more memory.
 #' @param separate_files Write to one file or one per trial (default FALSE)
+#' @param quiet Don't print progress messages.
 #' data_preparation()
 #' @export
 #'
@@ -94,7 +95,8 @@ data_preparation <- function(data_path,
                              numCores = NA,
                              chunk_expansion = TRUE,
                              chunk_size = 500,
-                             separate_files = FALSE) {
+                             separate_files = FALSE,
+                             quiet = FALSE) {
 
 
 
@@ -252,7 +254,7 @@ data_preparation <- function(data_path,
     keeplist <- c(keeplist, "assigned_treatment")
   }
 
-  print("Start data manipulation")
+  h_quiet_print(quiet, "Start data manipulation")
   timing = system.time({
     sw_data <-
       data_manipulation(NA, absolutePath, keeplist,
@@ -269,13 +271,13 @@ data_preparation <- function(data_path,
                         eligible_wts_1, lag_p_nosw, where_var, data_dir,
                         numCores)
   })
-  print("Finish data manipulation")
-  print("Processing time of data manipulation:")
-  print(timing)
-  print("----------------------------")
+  h_quiet_print(quiet, "Finish data manipulation")
+  h_quiet_print(quiet, "Processing time of data manipulation:")
+  h_quiet_print(quiet, timing)
+  h_quiet_print(quiet, "----------------------------")
   absolutePath <- normalizePath(file.path(data_dir, "sw_data.csv"))
 
-  print("Start data extension")
+  h_quiet_print(quiet, "Start data extension")
   timing = system.time({
     df <- data.frame(matrix(ncol = length(keeplist), nrow = 0))
     colnames(df) <- keeplist
@@ -294,7 +296,7 @@ data_preparation <- function(data_path,
           gc()
           file.remove(file.path(data_dir, "switch_data.csv"))
           write.csv(df, file.path(data_dir, "switch_data.csv"), row.names=FALSE)
-          print(paste0("The memory is not enough to do the data extention without data division so performed in chunks with numCores=1 and chunk_size=",chunk_size,"!"))
+          warning(paste0("The memory is not enough to do the data extention without data division so performed in chunks with numCores=1 and chunk_size=",chunk_size,"!"))
           # data = tryCatch({
           #   suppressWarnings(bigmemory::read.big.matrix(absolutePath, header = TRUE, type="double"))
           # })
@@ -324,12 +326,12 @@ data_preparation <- function(data_path,
 
 
   })
-  print("Finish data extension")
-  print("Processing time of data extension:")
-  print(timing)
-  print("----------------------------")
+  h_quiet_print(quiet, "Finish data extension")
+  h_quiet_print(quiet, "Processing time of data extension:")
+  h_quiet_print(quiet, timing)
+  h_quiet_print(quiet, "----------------------------")
 
-  print(paste0("Number of observations in expanded data: ",manipulate$N))
+  h_quiet_print(quiet, paste0("Number of observations in expanded data: ",manipulate$N))
 
   rm(sw_data)
   gc()
