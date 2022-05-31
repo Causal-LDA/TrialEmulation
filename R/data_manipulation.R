@@ -262,15 +262,15 @@ data_extension <- function(data_path, keeplist, outcomeCov_var=NA,
   if(missing(sw_data)){
     sw_data <- fread(data_path, header = TRUE, sep = ",")
   }
-  max_id = max(sw_data[, id])
-  maxperiod = max(sw_data[, period])
-  minperiod = min(sw_data[, period])
+  max_id <- max(sw_data[, id])
+  maxperiod <- max(sw_data[, period])
+  minperiod <- min(sw_data[, period])
 
   if(is.na(first_period)){
-    first_period = minperiod
+    minperiod <- first_period
   }
   if(is.na(last_period)){
-    last_period = maxperiod
+    maxperiod <- last_period
   }
   range = (maxperiod - minperiod) + 1
 

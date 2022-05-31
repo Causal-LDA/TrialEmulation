@@ -1,8 +1,8 @@
 # data_modelling ----
 test_that("data_modelling can be quiet", {
-  working_dir <- tempdir()
+  working_dir <- tempdir(check = TRUE)
   data_path <- file.path(working_dir, "switch_data.R")
-  data.table::fwrite(vignette_switch_data, file.path(working_dir, "switch_data.R"))
+  data.table::fwrite(vignette_switch_data, data_path)
   expect_silent(
     result <- data_modelling(
       outcomeCov_var = c("catvarA", "catvarB", "catvarC","nvarA","nvarB","nvarC"),
@@ -14,12 +14,13 @@ test_that("data_modelling can be quiet", {
       quiet = TRUE
     )
   )
+  unlink(data_path)
 })
 
 test_that("data_modelling gives expected results in example data", {
-  working_dir <- tempdir()
-  data_path <- file.path(working_dir, "switch_data.R")
-  data.table::fwrite(vignette_switch_data, file.path(working_dir, "switch_data.R"))
+  working_dir <- tempdir(check = TRUE)
+  data_path <- file.path(working_dir, "switch_data.csv")
+  data.table::fwrite(vignette_switch_data, data_path)
   result <- data_modelling(
     outcomeCov_var = c("catvarA", "catvarB", "catvarC","nvarA","nvarB","nvarC"),
     model_var = "assigned_treatment",
@@ -29,7 +30,7 @@ test_that("data_modelling gives expected results in example data", {
     use_sample_weights = FALSE,
     quiet = TRUE
   )
-
+  unlink(data_path)
   expect_class(result$model, "glm")
   expected_coefs <- c(`(Intercept)` = -6.17184262601338, assigned_treatment = -0.118265495621331,
                       for_period = 0.00325072039757488, followup_time = 0.00168035277357471)
