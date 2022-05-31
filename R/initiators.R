@@ -59,6 +59,7 @@
 #' @param chunk_size Number of ids to process at once for the chunk expansion (default 500). Larger chunk_sizes may be faster but require more memory.
 #' @param separate_files Write to one file or one per trial (default FALSE)
 #' @param glm_function Which glm function to use for the final model from `stats` or `parglm` packages
+#' @param quiet Don't print progress messages.
 #'
 #' @details The class variables paramers (`outcomeClass`,`class_switchn`,`class_switchd`,`class_censen`,`class_censed`)
 #' can be given as a character vector which will construct factors using `as.factor` or as a named list with the arguments for factor
@@ -131,13 +132,16 @@ initiators <- function(data_path,
                        chunk_expansion = TRUE,
                        chunk_size = 500,
                        separate_files = FALSE,
-                       glm_function = "parglm") {
+                       glm_function = "parglm",
+                       quiet = FALSE) {
 
 
   # Check parameters
   if (isTRUE(separate_files) & case_control != 1) stop("Separate trial files without case-control sampling is not possible with initiators()")
   if (!dir.exists(data_dir)) stop(paste0("Specified data_dir does not exist: ", data_dir))
   if (!file.exists(data_path)) stop(paste0("Specified data_path does not exist: ", data_path))
+
+  assert_flag(quiet)
 
   # Prepare variables, calculate weights and expand data
   prep_result <- data_preparation(
@@ -183,7 +187,8 @@ initiators <- function(data_path,
     numCores = numCores,
     chunk_expansion = chunk_expansion,
     chunk_size = chunk_size,
-    separate_files = separate_files
+    separate_files = separate_files,
+    quiet = quiet
   )
 
   analysis_data_path <- prep_result$absolutePath
@@ -269,7 +274,8 @@ initiators <- function(data_path,
     absolutePath = analysis_data_path,
     numCores = numCores,
     glm_function = glm_function,
-    use_sample_weights = use_sample_weights
+    use_sample_weights = use_sample_weights,
+    quiet = quiet
   )
 
   return(list(model = model_full))

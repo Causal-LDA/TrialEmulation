@@ -62,7 +62,8 @@ initiators(
   chunk_expansion = TRUE,
   chunk_size = 500,
   separate_files = FALSE,
-  glm_function = "parglm"
+  glm_function = "parglm",
+  quiet = FALSE
 )
 }
 \arguments{
@@ -181,6 +182,8 @@ initiators(
 \item{separate_files}{Write to one file or one per trial (default FALSE)}
 
 \item{glm_function}{Which glm function to use for the final model from \code{stats} or \code{parglm} packages}
+
+\item{quiet}{Don't print progress messages.}
 }
 \description{
 This function analyses observational longitudinal data to estimate the effect of interventions sustained over time. This emulates the design of a hypothetical randomized trial.

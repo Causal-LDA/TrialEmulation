@@ -97,10 +97,7 @@ data_preparation <- function(data_path,
                              chunk_size = 500,
                              separate_files = FALSE,
                              quiet = FALSE) {
-
-
-
-
+  assert_flag(quiet)
 
   # outcomeCov_var needs to have outcomeCov
   if(any(!is.na(outcomeCov_var)) & any(is.na(outcomeCov))){

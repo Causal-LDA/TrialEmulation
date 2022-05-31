@@ -63,7 +63,7 @@ data_modelling <- function(outcomeCov_var = NA,
                            use_sample_weights = TRUE,
                            quiet = FALSE
 ) {
-
+  assert_flag(quiet)
 
   # Dummy variables used in data.table calls declared to prevent package check NOTES:
   weight <- sample_weight <- NULL
