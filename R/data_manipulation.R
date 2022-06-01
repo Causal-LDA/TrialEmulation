@@ -36,6 +36,7 @@
 #' @param where_var Variables used in where conditions used in subsetting the data used in final analysis (where_case), the variables not included in the final model
 #' @param data_dir Direction to save data
 #' @param numCores Number of cores to be used for fitting weights (passed to `weight_func`)
+#' @param quiet Don't print progress messages.
 #' data_manipulation()
 
 data_manipulation <- function(data_address, data_path, keeplist,
@@ -54,7 +55,10 @@ data_manipulation <- function(data_address, data_path, keeplist,
                               eligible_wts_0=NA, eligible_wts_1=NA,
                               lag_p_nosw=1, where_var=NA,
                               data_dir="~/rds/hpc-work/",
-                              numCores=NA){
+                              numCores=NA,
+                              quiet = FALSE){
+
+  assert_directory_exists(data_dir)
 
   # Dummy variables used in data.table calls declared to prevent package check NOTES:
   time_of_event <- am_1 <- cumA <- regime_start <- time_on_regime <- time_on_regime2 <-
@@ -152,7 +156,8 @@ data_manipulation <- function(data_address, data_path, keeplist,
                           cense, pool_cense, cov_censed,
                           model_censed, class_censed, cov_censen,
                           model_censen, class_censen, include_regime_length,
-                          numCores, data_dir)
+                          numCores, data_dir,
+                          quiet = quiet)
   }else if(use_weight == 0){
     sw_data[, wt := 1]
   }
@@ -262,15 +267,15 @@ data_extension <- function(data_path, keeplist, outcomeCov_var=NA,
   if(missing(sw_data)){
     sw_data <- fread(data_path, header = TRUE, sep = ",")
   }
-  max_id = max(sw_data[, id])
-  maxperiod = max(sw_data[, period])
-  minperiod = min(sw_data[, period])
+  max_id <- max(sw_data[, id])
+  maxperiod <- max(sw_data[, period])
+  minperiod <- min(sw_data[, period])
 
   if(is.na(first_period)){
-    first_period = minperiod
+    minperiod <- first_period
   }
   if(is.na(last_period)){
-    last_period = maxperiod
+    maxperiod <- last_period
   }
   range = (maxperiod - minperiod) + 1
 

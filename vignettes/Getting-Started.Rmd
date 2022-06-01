@@ -58,7 +58,7 @@ data("trial_example")
 # for the purposes of the vignette, we use a temporary directory, however it may be useful to use a permanent location in order to inspect the outputs later
 working_dir <- file.path(tempdir(),"trial_emu") 
 dir.create(working_dir)
-data_path <- file.path(working_dir,"trial_example.csv")
+data_path <- file.path(working_dir, "trial_example.csv")
 write.csv(trial_example, file=data_path)
 ```
 
@@ -89,6 +89,20 @@ list.files(working_dir)
  
 
 Instead of using `initiators()` it is possible to run each step individually with `data_preparation()`, `data_modelling()` etc.
+
+```{r, eval = FALSE}
+model_result <- data_modelling(
+  outcomeCov_var = c("catvarA", "catvarB", "catvarC","nvarA","nvarB","nvarC"),
+  model_var = "assigned_treatment",
+  include_followup_time_case = "linear",
+  include_expansion_time_case = "linear",
+  absolutePath = file.path(working_dir, "switch_data.csv"),
+  use_sample_weights = FALSE,
+  quiet = TRUE
+)
+```
+
+
 
 ```{r, echo=FALSE}
 # clean up

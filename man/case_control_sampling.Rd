@@ -12,7 +12,8 @@ case_control_sampling(
   n_control = NULL,
   p_control = NULL,
   sample_all_periods,
-  numCores = 1
+  numCores = 1,
+  quiet = FALSE
 )
 }
 \arguments{
@@ -31,6 +32,8 @@ case_control_sampling(
 \item{sample_all_periods}{Sample controls in all periods (TRUE) or only when there is a case in the period (FALSE)?}
 
 \item{numCores}{Number of cores used by mclapply for sampling from each trial}
+
+\item{quiet}{Don't print progress messages.}
 }
 \description{
 Case-control sampling from extended data

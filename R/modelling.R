@@ -24,18 +24,19 @@
 #' @param numCores Number of cores for parallel programming (default value is maximum cores and parallel programming)
 #' @param glm_function Which glm function to use for the final model from `stats` or `parglm` packages
 #' @param use_sample_weights Set model weights to `sample_weight * weight`.
+#' @param quiet Don't print progress messages.
 #' data_modelling()
 #'
-#' @details The class variables paramers (`outcomeClass`,`class_switchn`,`class_switchd`,`class_censen`,`class_censed`)
-#' can be given as a character vector which will construct factors using `as.factor` or as a named list with the arguments for factor
-#' eg `list(risk_cat=list(levels = c(1,2,3,0), age_cat=list(levels=c(1,2,3),labels=c("50-60","60-70","70+")`
+#' @details The class variables parameters (`outcomeClass`,`class_switchn`,
+#'  `class_switchd`,`class_censen`,`class_censed`) can be given as a character
+#'  vector which will construct factors using `as.factor` or as a named list
+#'  with the arguments for factor e.g.
+#'  `list(risk_cat=list(levels = c(1,2,3,0), age_cat=list(levels=c(1,2,3),labels=c("50-60","60-70","70+")`
 #'
 #' @export
 #' @importFrom splines ns
 #' @importFrom stats as.formula binomial pnorm quantile relevel
 #' @importFrom utils write.csv
-
-
 
 data_modelling <- function(outcomeCov_var = NA,
                            outcomeCov = NA,
@@ -59,8 +60,10 @@ data_modelling <- function(outcomeCov_var = NA,
                            absolutePath,
                            numCores = NA,
                            glm_function = c('parglm','glm'),
-                           use_sample_weights = TRUE
+                           use_sample_weights = TRUE,
+                           quiet = FALSE
 ) {
+  assert_flag(quiet)
 
   # Dummy variables used in data.table calls declared to prevent package check NOTES:
   weight <- sample_weight <- NULL
@@ -206,15 +209,15 @@ data_modelling <- function(outcomeCov_var = NA,
       }
 
       for(i in 1:length(where_case)){
-        print(paste("Analysis with", where_case[i], sep=" "))
-        print(summary(m[i]$model))
-        print(paste("Analysis with", where_case[i], "using robust variance", sep=" "))
-        print(m[i]$output)
+        h_quiet_print(quiet, paste("Analysis with", where_case[i], sep=" "))
+        h_quiet_print(quiet, summary(m[i]$model))
+        h_quiet_print(quiet, paste("Analysis with", where_case[i], "using robust variance", sep=" "))
+        h_quiet_print(quiet, m[i]$output)
       }
     })
-    print("------------------------------------")
-    print("Processing time of modeling for where case analysis in total parallel:")
-    print(timing)
+    h_quiet_print(quiet, "------------------------------------")
+    h_quiet_print(quiet, "Processing time of modeling for where case analysis in total parallel:")
+    h_quiet_print(quiet, timing)
   }
 
   if(run_base_model == 1){
@@ -240,21 +243,23 @@ data_modelling <- function(outcomeCov_var = NA,
                                 family=binomial(link = "logit"))
       }
     })
-    print("Base Analysis")
-    print(summary(model.full))
-    print("-------------------------------------------------")
-    print("Processing time of modeling for base analysis:")
-    print(timing)
+    h_quiet_print(quiet, "Base Analysis")
+    h_quiet_print(quiet, summary(model.full))
+    h_quiet_print(quiet, "-------------------------------------------------")
+    h_quiet_print(quiet, "Processing time of modeling for base analysis:")
+    h_quiet_print(quiet, timing)
 
-    print("Base Analysis with robust variance")
+    h_quiet_print(quiet, "Base Analysis with robust variance")
     timing = system.time({
-      out = robust_calculation(model.full, temp_data[["id"]])
+      h_quiet_print(quiet, "-------------------------------------------------------")
+      h_quiet_print(quiet, "Robust standard error:")
+      robust_model = robust_calculation(model.full, temp_data[["id"]])
     })
-    print(out)
-    print("----------------------------------------------")
-    print("Processing time of getting the output and sandwich with reduced switch data:")
-    print(timing)
+    h_quiet_print(quiet, robust_model)
+    h_quiet_print(quiet, "----------------------------------------------")
+    h_quiet_print(quiet, "Processing time of getting the output and sandwich with reduced switch data:")
+    h_quiet_print(quiet, timing)
   }
 
-  return(list(model = model.full, robust = out))
+  return(list(model = model.full, robust = robust_model))
 }

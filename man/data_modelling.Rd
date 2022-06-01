@@ -27,7 +27,8 @@ data_modelling(
   absolutePath,
   numCores = NA,
   glm_function = c("parglm", "glm"),
-  use_sample_weights = TRUE
+  use_sample_weights = TRUE,
+  quiet = FALSE
 )
 }
 \arguments{
@@ -75,14 +76,18 @@ data_modelling(
 
 \item{glm_function}{Which glm function to use for the final model from \code{stats} or \code{parglm} packages}
 
-\item{use_sample_weights}{Set model weights to \code{sample_weight * weight}.
+\item{use_sample_weights}{Set model weights to \code{sample_weight * weight}.}
+
+\item{quiet}{Don't print progress messages.
 data_modelling()}
 }
 \description{
 This function do the modelling.
 }
 \details{
-The class variables paramers (\code{outcomeClass},\code{class_switchn},\code{class_switchd},\code{class_censen},\code{class_censed})
-can be given as a character vector which will construct factors using \code{as.factor} or as a named list with the arguments for factor
-eg \verb{list(risk_cat=list(levels = c(1,2,3,0), age_cat=list(levels=c(1,2,3),labels=c("50-60","60-70","70+")}
+The class variables parameters (\code{outcomeClass},\code{class_switchn},
+\code{class_switchd},\code{class_censen},\code{class_censed}) can be given as a character
+vector which will construct factors using \code{as.factor} or as a named list
+with the arguments for factor e.g.
+\verb{list(risk_cat=list(levels = c(1,2,3,0), age_cat=list(levels=c(1,2,3),labels=c("50-60","60-70","70+")}
 }

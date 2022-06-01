@@ -39,7 +39,8 @@ data_manipulation(
   lag_p_nosw = 1,
   where_var = NA,
   data_dir = "~/rds/hpc-work/",
-  numCores = NA
+  numCores = NA,
+  quiet = FALSE
 )
 }
 \arguments{
@@ -111,7 +112,9 @@ data_manipulation(
 
 \item{data_dir}{Direction to save data}
 
-\item{numCores}{Number of cores to be used for fitting weights (passed to \code{weight_func})
+\item{numCores}{Number of cores to be used for fitting weights (passed to \code{weight_func})}
+
+\item{quiet}{Don't print progress messages.
 data_manipulation()}
 }
 \description{

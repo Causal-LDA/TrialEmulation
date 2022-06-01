@@ -47,7 +47,8 @@ data_preparation(
   numCores = NA,
   chunk_expansion = TRUE,
   chunk_size = 500,
-  separate_files = FALSE
+  separate_files = FALSE,
+  quiet = FALSE
 )
 }
 \arguments{
@@ -135,7 +136,9 @@ data_preparation(
 
 \item{chunk_size}{Number of ids to process at once for the chunk expansion (default 500). Larger chunk_sizes may be faster but require more memory.}
 
-\item{separate_files}{Write to one file or one per trial (default FALSE)
+\item{separate_files}{Write to one file or one per trial (default FALSE)}
+
+\item{quiet}{Don't print progress messages.
 data_preparation()}
 }
 \description{

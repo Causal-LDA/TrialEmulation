@@ -9,6 +9,7 @@
 #' @param samples_file CSV file name for the  sampled data. Should be the same length as n_control.
 #' @param p_control Proportion of controls to select
 #' @param sample_all_periods Sample controls in all periods (TRUE) or only when there is a case in the period (FALSE)?
+#' @param quiet Don't print progress messages.
 #'
 #' @export
 #'
@@ -19,10 +20,11 @@ case_control_sampling <- function(data_dir,
                                   n_control = NULL,
                                   p_control = NULL,
                                   sample_all_periods,
-                                  numCores=1
+                                  numCores=1,
+                                  quiet = FALSE
 ){
 
-  print("Starting case-control sampling function")
+  h_quiet_print(quiet, "Starting case-control sampling function")
 
   if (!is.null(p_control)) {
     n_sample_sets <- length(p_control)
@@ -42,36 +44,36 @@ case_control_sampling <- function(data_dir,
 
   if(missing(min_period)|missing(max_period)){
     # get the periods
-    print("Getting the periods")
+    h_quiet_print(quiet, "Getting the periods")
     timing <- system.time({
       small_data <- fread(normalizePath(file.path(data_dir, "sw_data.csv")))
       max_period = max(small_data[, "period"])
       min_period = min(small_data[, "period"])
     })
     rm(small_data)
-    print("Finished getting the periods")
-    print(timing)
-    print("-------------------------")
+    h_quiet_print(quiet, "Finished getting the periods")
+    h_quiet_print(quiet, timing)
+    h_quiet_print(quiet, "-------------------------")
   }
 
 
   # read the data:
-  print("Reading the expanded data")
+  h_quiet_print(quiet, "Reading the expanded data")
   timing <- system.time({
     absolutePath <- normalizePath(file.path(data_dir, "switch_data.csv"))
     data_address = tryCatch({
       suppressWarnings(out <- bigmemory::read.big.matrix(absolutePath, header = TRUE, shared=FALSE, type="double"))
     })
   })
-  print("Finished reading the expanded data")
-  print(timing)
-  print("-------------------------")
+  h_quiet_print(quiet, "Finished reading the expanded data")
+  h_quiet_print(quiet, timing)
+  h_quiet_print(quiet, "-------------------------")
 
 
 
   for(i in sampling_value){
 
-    print("Starting the sampling")
+    h_quiet_print(quiet, "Starting the sampling")
     timing <- system.time({
       j = seq(min_period, max_period, 1)
       mclapply(j,
@@ -86,9 +88,9 @@ case_control_sampling <- function(data_dir,
                numCores=1,
                mc.cores=numCores)
     })
-    print("Finished sampling")
-    print(timing)
-    print("-------------------------")
+    h_quiet_print(quiet, "Finished sampling")
+    h_quiet_print(quiet, timing)
+    h_quiet_print(quiet, "-------------------------")
   }
 
   return(file.path(data_dir,samples_file))
