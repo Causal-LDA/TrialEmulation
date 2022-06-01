@@ -80,7 +80,8 @@
   <span class="va">absolutePath</span>,
   numCores <span class="op">=</span> <span class="cn">NA</span>,
   glm_function <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"parglm"</span>, <span class="st">"glm"</span><span class="op">)</span>,
-  use_sample_weights <span class="op">=</span> <span class="cn">TRUE</span>
+  use_sample_weights <span class="op">=</span> <span class="cn">TRUE</span>,
+  quiet <span class="op">=</span> <span class="cn">FALSE</span>
 <span class="op">)</span></code></pre></div>
     </div>
 
@@ -131,14 +132,18 @@
 <dt>glm_function</dt>
 <dd><p>Which glm function to use for the final model from <code>stats</code> or <code>parglm</code> packages</p></dd>
 <dt>use_sample_weights</dt>
-<dd><p>Set model weights to <code>sample_weight * weight</code>.
+<dd><p>Set model weights to <code>sample_weight * weight</code>.</p></dd>
+<dt>quiet</dt>
+<dd><p>Don't print progress messages.
 data_modelling()</p></dd>
 </dl></div>
     <div id="details">
     <h2>Details</h2>
-    <p>The class variables paramers (<code>outcomeClass</code>,<code>class_switchn</code>,<code>class_switchd</code>,<code>class_censen</code>,<code>class_censed</code>)
-can be given as a character vector which will construct factors using <code>as.factor</code> or as a named list with the arguments for factor
-eg <code>list(risk_cat=list(levels = c(1,2,3,0), age_cat=list(levels=c(1,2,3),labels=c("50-60","60-70","70+")</code></p>
+    <p>The class variables parameters (<code>outcomeClass</code>,<code>class_switchn</code>,
+<code>class_switchd</code>,<code>class_censen</code>,<code>class_censed</code>) can be given as a character
+vector which will construct factors using <code>as.factor</code> or as a named list
+with the arguments for factor e.g.
+<code>list(risk_cat=list(levels = c(1,2,3,0), age_cat=list(levels=c(1,2,3),labels=c("50-60","60-70","70+")</code></p>
     </div>
 
   </div>
@@ -153,7 +158,7 @@ eg <code>list(risk_cat=list(levels = c(1,2,3,0), age_cat=list(levels=c(1,2,3),la
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
 </div>
 
       </footer></div>

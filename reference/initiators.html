@@ -115,7 +115,8 @@
   chunk_expansion <span class="op">=</span> <span class="cn">TRUE</span>,
   chunk_size <span class="op">=</span> <span class="fl">500</span>,
   separate_files <span class="op">=</span> <span class="cn">FALSE</span>,
-  glm_function <span class="op">=</span> <span class="st">"parglm"</span>
+  glm_function <span class="op">=</span> <span class="st">"parglm"</span>,
+  quiet <span class="op">=</span> <span class="cn">FALSE</span>
 <span class="op">)</span></code></pre></div>
     </div>
 
@@ -237,6 +238,8 @@
 <dd><p>Write to one file or one per trial (default FALSE)</p></dd>
 <dt>glm_function</dt>
 <dd><p>Which glm function to use for the final model from <code>stats</code> or <code>parglm</code> packages</p></dd>
+<dt>quiet</dt>
+<dd><p>Don't print progress messages.</p></dd>
 </dl></div>
     <div id="details">
     <h2>Details</h2>
@@ -258,7 +261,7 @@ eg <code>list(risk_cat=list(levels = c(1,2,3,0), age_cat=list(levels=c(1,2,3),la
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
 </div>
 
       </footer></div>
