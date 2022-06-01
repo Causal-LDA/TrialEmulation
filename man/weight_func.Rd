@@ -24,7 +24,8 @@ weight_func(
   class_censen = NA,
   include_regime_length = 0,
   numCores = NA,
-  save_dir
+  save_dir,
+  quiet = FALSE
 )
 }
 \arguments{
@@ -67,6 +68,8 @@ weight_func(
 \item{numCores}{Number of cores for parallel programming}
 
 \item{save_dir}{Directory to save tidy weight model summaries in as 'weight_models.rda'}
+
+\item{quiet}{Don't print progress messages.}
 }
 \description{
 This function performs the calculation for weight of the data

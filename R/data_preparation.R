@@ -266,7 +266,8 @@ data_preparation <- function(data_path,
                         class_censen,
                         include_regime_length, eligible_wts_0,
                         eligible_wts_1, lag_p_nosw, where_var, data_dir,
-                        numCores)
+                        numCores,
+                        quiet = quiet)
   })
   h_quiet_print(quiet, "Finish data manipulation")
   h_quiet_print(quiet, "Processing time of data manipulation:")
