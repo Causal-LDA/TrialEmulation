@@ -2,7 +2,7 @@
 % Please edit documentation in R/robust.R
 \name{robust_calculation}
 \alias{robust_calculation}
-\title{Robust Calculation Function}
+\title{Robust Variance Calculation}
 \usage{
 robust_calculation(model, data_id)
 }
