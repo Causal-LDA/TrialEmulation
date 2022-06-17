@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">RandomisedTrialsEmulation</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.1.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.1.3</span>
       </span>
     </div>
 
@@ -101,77 +101,148 @@
     <h2>Arguments</h2>
     <dl><dt>data_address</dt>
 <dd><p>Address for data read with bigmemory</p></dd>
+
+
 <dt>data_path</dt>
 <dd><p>Path of the csv file</p></dd>
+
+
 <dt>keeplist</dt>
 <dd><p>A list contains names of variables used in final model</p></dd>
+
+
 <dt>treatment</dt>
 <dd><p>Name of the data column for treatment feature Defaults to treatment</p></dd>
+
+
 <dt>id</dt>
 <dd><p>Name of the data column for id feature Defaults to id</p></dd>
+
+
 <dt>period</dt>
 <dd><p>Name of the data column for period feature Defaults to period</p></dd>
+
+
 <dt>outcome</dt>
 <dd><p>Name of the data column for outcome feature Defaults to outcome</p></dd>
+
+
 <dt>eligible</dt>
 <dd><p>Indicator of whether or not an observation is eligible to be expanded about Defaults to eligible</p></dd>
+
+
 <dt>outcomeCov_var</dt>
 <dd><p>A list of individual baseline variables used in final model</p></dd>
+
+
 <dt>cov_switchn</dt>
 <dd><p>List of covariates to be used in logistic model for switching probabilities for numerator model</p></dd>
+
+
 <dt>model_switchn</dt>
 <dd><p>List of models (functions) to use the covariates from cov_switchn</p></dd>
+
+
 <dt>class_switchn</dt>
 <dd><p>Class variables used in logistic model for nominator model</p></dd>
+
+
 <dt>cov_switchd</dt>
 <dd><p>List of covariates to be used in logistic model for switching probabilities for denominator model</p></dd>
+
+
 <dt>model_switchd</dt>
 <dd><p>List of models (functions) to use the covariates from cov_switchd</p></dd>
+
+
 <dt>class_switchd</dt>
 <dd><p>Class variables used in logistic model for denominator model</p></dd>
+
+
 <dt>first_period</dt>
 <dd><p>First period value to start expanding about</p></dd>
+
+
 <dt>last_period</dt>
 <dd><p>Last period value to expand about</p></dd>
+
+
 <dt>use_weight</dt>
 <dd><p>Use weights in analysis. If 0 then no weights will be calculated</p></dd>
+
+
 <dt>use_censor</dt>
 <dd><p>Use censoring for per-protocol analysis - censor person-times once a person-trial stops taking the initial treatment value</p></dd>
+
+
 <dt>check_missing</dt>
 <dd><p>Check for missing values in final model when use_censor=1 (Not added yet!)</p></dd>
+
+
 <dt>cense</dt>
 <dd><p>Censoring variable</p></dd>
+
+
 <dt>pool_cense</dt>
 <dd><p>Pool the numerator and denominator models (0: split models by previous treatment Am1 = 0 and Am1 = 1 as in treatment models and 1: pool all observations together into a single numerator and denominator model) Defaults to 0</p></dd>
+
+
 <dt>cov_censed</dt>
 <dd><p>List of covariates to be used in logistic model for censoring weights in denominator model</p></dd>
+
+
 <dt>model_censed</dt>
 <dd><p>List of models (functions) to use the covariates from cov_censed</p></dd>
+
+
 <dt>class_censed</dt>
 <dd><p>Class variables used in censoring logistic regression in denominator model</p></dd>
+
+
 <dt>cov_censen</dt>
 <dd><p>List of covariates to be used in logistic model for censoring weights in numerator model</p></dd>
+
+
 <dt>model_censen</dt>
 <dd><p>List of models (functions) to use the covariates from cov_censen</p></dd>
+
+
 <dt>class_censen</dt>
 <dd><p>Class variables used in censoring logistic regression in numerator model</p></dd>
+
+
 <dt>include_regime_length</dt>
 <dd><p>If defined as 1 a new variable (time_on_regime) is added to dataset - This variable stores the duration of time that the patient has been on the current treatment value</p></dd>
+
+
 <dt>eligible_wts_0</dt>
 <dd><p>Eligibility criteria used in weights for model condition Am1 = 0</p></dd>
+
+
 <dt>eligible_wts_1</dt>
 <dd><p>Eligibility criteria used in weights for model condition Am1 = 1</p></dd>
+
+
 <dt>lag_p_nosw</dt>
 <dd><p>when 1 this will set the first weight to be 1 and use p_nosw_d and p_nosw_n at followup-time (t-1) for calculating the weights at followup-time t - can be set to 0 which will increase the maximum and variance of weights (Defaults to 1)</p></dd>
+
+
 <dt>where_var</dt>
 <dd><p>Variables used in where conditions used in subsetting the data used in final analysis (where_case), the variables not included in the final model</p></dd>
+
+
 <dt>data_dir</dt>
 <dd><p>Direction to save data</p></dd>
+
+
 <dt>numCores</dt>
 <dd><p>Number of cores to be used for fitting weights (passed to <code>weight_func</code>)</p></dd>
+
+
 <dt>quiet</dt>
 <dd><p>Don't print progress messages.
 data_manipulation()</p></dd>
+
 </dl></div>
 
   </div>
@@ -186,7 +257,7 @@ data_manipulation()</p></dd>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.4.</p>
 </div>
 
       </footer></div>

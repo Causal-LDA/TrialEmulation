@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">RandomisedTrialsEmulation</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.1.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.1.3</span>
       </span>
     </div>
 
@@ -89,53 +89,100 @@
     <h2>Arguments</h2>
     <dl><dt>outcomeCov_var</dt>
 <dd><p>List of individual baseline variables used in final model</p></dd>
+
+
 <dt>outcomeCov</dt>
 <dd><p>List of functions of baseline covariates used in final model</p></dd>
+
+
 <dt>outcomeClass</dt>
 <dd><p>Categorical variables used in the final model</p></dd>
+
+
 <dt>model_var</dt>
 <dd><p>List of Variables of interest to be used in final model</p></dd>
+
+
 <dt>first_followup</dt>
 <dd><p>First follow-up period</p></dd>
+
+
 <dt>last_followup</dt>
 <dd><p>Last follow-up period</p></dd>
+
+
 <dt>use_weight</dt>
 <dd><p>Use weights in analysis. If 0 then no weights will be calculated</p></dd>
+
+
 <dt>run_unweighted_analysis</dt>
 <dd><p>Run the final model with no weights when use_weights = 1</p></dd>
+
+
 <dt>run_weighted_analysis</dt>
 <dd><p>Run the final model with original weights</p></dd>
+
+
 <dt>run_p99_analysis</dt>
 <dd><p>Run the final model with truncating the weights at the 1st and 99th percentile</p></dd>
+
+
 <dt>run_user_limits_analysis</dt>
 <dd><p>Run the final model with truncating the weights using user defined limits</p></dd>
+
+
 <dt>lower_weight</dt>
 <dd><p>Use lower weight as minimum possible weight</p></dd>
+
+
 <dt>upper_weight</dt>
 <dd><p>Use upper weight as maximum possible weight</p></dd>
+
+
 <dt>use_censor</dt>
 <dd><p>Use censoring for per-protocol analysis - censor person-times once a person-trial stops taking the initial treatment value</p></dd>
+
+
 <dt>check_missing</dt>
 <dd><p>Check for missing values in final model when use_censor=1 (Not added yet!)</p></dd>
+
+
 <dt>include_followup_time_case</dt>
 <dd><p>The model to include follow up time in outcome model. This has 3 options c("none","linear","quadratic","spline"). The data should contain the corresponding columns: "followup_time","followup_time2" or "followup_base".</p></dd>
+
+
 <dt>include_expansion_time_case</dt>
 <dd><p>The model to include for_period in outcome model. This has 3 options c("none","linear","quadratic","spline").  The data should contain the corresponding columns: "for_period","for_period2" or "period_base".</p></dd>
+
+
 <dt>where_case</dt>
 <dd><p>List of where conditions used in subsetting the data used in final analysis</p></dd>
+
+
 <dt>run_base_model</dt>
 <dd><p>Run the model with no conditions Defaults to 1</p></dd>
+
+
 <dt>absolutePath</dt>
 <dd><p>Direction to where the data for modelling is saved</p></dd>
+
+
 <dt>numCores</dt>
 <dd><p>Number of cores for parallel programming (default value is maximum cores and parallel programming)</p></dd>
+
+
 <dt>glm_function</dt>
 <dd><p>Which glm function to use for the final model from <code>stats</code> or <code>parglm</code> packages</p></dd>
+
+
 <dt>use_sample_weights</dt>
 <dd><p>Set model weights to <code>sample_weight * weight</code>.</p></dd>
+
+
 <dt>quiet</dt>
 <dd><p>Don't print progress messages.
 data_modelling()</p></dd>
+
 </dl></div>
     <div id="details">
     <h2>Details</h2>
@@ -158,7 +205,7 @@ with the arguments for factor e.g.
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.4.</p>
 </div>
 
       </footer></div>

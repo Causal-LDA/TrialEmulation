@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">RandomisedTrialsEmulation</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.1.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.1.3</span>
       </span>
     </div>
 
@@ -86,46 +86,87 @@
     <h2>Arguments</h2>
     <dl><dt>sw_data</dt>
 <dd><p>A data.table</p></dd>
+
+
 <dt>cov_switchn</dt>
 <dd><p>List of covariates to be used in logistic model for switching probabilities for numerator model</p></dd>
+
+
 <dt>model_switchn</dt>
 <dd><p>List of models (functions) to use the covariates from cov_switchn</p></dd>
+
+
 <dt>class_switchn</dt>
 <dd><p>Class variables used in logistic model for nominator model</p></dd>
+
+
 <dt>cov_switchd</dt>
 <dd><p>List of covariates to be used in logistic model for switching probabilities for denominator model</p></dd>
+
+
 <dt>model_switchd</dt>
 <dd><p>List of models (functions) to use the covariates from cov_switchd</p></dd>
+
+
 <dt>class_switchd</dt>
 <dd><p>Class variables used in logistic model for denominator model</p></dd>
+
+
 <dt>eligible_wts_0</dt>
 <dd><p>Eligibility criteria used in weights for model condition Am1 = 0</p></dd>
+
+
 <dt>eligible_wts_1</dt>
 <dd><p>Eligibility criteria used in weights for model condition Am1 = 1</p></dd>
+
+
 <dt>cense</dt>
 <dd><p>Censoring variable</p></dd>
+
+
 <dt>pool_cense</dt>
 <dd><p>Pool the numerator and denominator models (0: split models by previous treatment Am1 = 0 and Am1 = 1 as in treatment models and 1: pool all observations together into a single numerator and denominator model) Defaults to 0</p></dd>
+
+
 <dt>cov_censed</dt>
 <dd><p>List of covariates to be used in logistic model for censoring weights in denominator model</p></dd>
+
+
 <dt>model_censed</dt>
 <dd><p>List of models (functions) to use the covariates from cov_censed</p></dd>
+
+
 <dt>class_censed</dt>
 <dd><p>Class variables used in censoring logistic regression in denominator model</p></dd>
+
+
 <dt>cov_censen</dt>
 <dd><p>List of covariates to be used in logistic model for censoring weights in numerator model</p></dd>
+
+
 <dt>model_censen</dt>
 <dd><p>List of models (functions) to use the covariates from cov_censen</p></dd>
+
+
 <dt>class_censen</dt>
 <dd><p>Class variables used in censoring logistic regression in numerator model</p></dd>
+
+
 <dt>include_regime_length</dt>
 <dd><p>If defined as 1 a new variable (time_on_regime) is added to dataset - This variable stores the duration of time that the patient has been on the current treatment value</p></dd>
+
+
 <dt>numCores</dt>
 <dd><p>Number of cores for parallel programming</p></dd>
+
+
 <dt>save_dir</dt>
 <dd><p>Directory to save tidy weight model summaries in as 'weight_models.rda'</p></dd>
+
+
 <dt>quiet</dt>
 <dd><p>Don't print progress messages.</p></dd>
+
 </dl></div>
 
   </div>
@@ -140,7 +181,7 @@
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.4.</p>
 </div>
 
       </footer></div>
