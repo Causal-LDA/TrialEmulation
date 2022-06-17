@@ -25,7 +25,7 @@
 #'
 #' This is the expanded dataset created in the `vignette("Getting-Started")` known as `switch_data`.
 #'
-#' @format A data frame with 48400 rows and 11 variables:
+#' @format A data frame with 1939053 rows and 7 variables:
 #' \describe{
 #'   \item{id}{patient identifier}
 #'   \item{for_period}{trial start time period}
