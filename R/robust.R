@@ -14,25 +14,25 @@ robust_calculation <- function(model, data_id) {
   # Dummy variables used in data.table calls declared to prevent package check NOTES:
   lb <- estimate <- robust_se <- ub <- z <- p_value <- NULL
 
-  est_temp <- model$coefficients
-  v <- sandwich::vcovCL(
+  var_matrix <- sandwich::vcovCL(
     model,
     cluster = data_id,
     type = NULL,
     sandwich = TRUE,
     fix = FALSE
   )
+  se <- sqrt(diag(var_matrix))
 
-  se <- sqrt(diag(v))
+  est_temp <- model$coefficients
   output <- data.table(
-    names = names(model$coefficients),
+    names = names(est_temp),
     estimate = est_temp,
     robust_se = se[names(est_temp)]
   )
-
   output[, lb := estimate - (1.96 * robust_se)]
   output[, ub := estimate + (1.96 * robust_se)]
   output[, z := estimate / robust_se]
   output[, p_value := format.pval(2 * (1 - pnorm(abs(z))), eps = 0.001)]
-  return(list(summary = output, matrix = v))
+
+  list(summary = output, matrix = var_matrix)
 }
