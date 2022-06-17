@@ -100,32 +100,6 @@ lr <- function(l){
               output=out))
 }
 
-#' Robust Calculation Funstion
-#'
-#' This function performs the calculation with Robust Standard Errors
-#' @param model The Logistic Regression model
-#' @param data_id Values of id column of the data (ie `data[, id]`)
-
-robust_calculation <- function(model, data_id){
-  # Dummy variables used in data.table calls declared to prevent package check NOTES:
-  lb <- estimate <- robust_se <- ub <- z <- p_value <- NULL
-
-  est_temp = model$coefficients
-  v = sandwich::vcovCL(model, cluster = data_id,
-             type = NULL, sandwich = TRUE, fix = FALSE)
-  #v = cluster.vcov(model.full, cluster=temp_data[, id], parallel=4)
-  se = sqrt(diag(v))
-  output <- data.table(names = names(model$coefficients),
-                       estimate = est_temp,
-                       robust_se = se[names(est_temp)])
-
-
-  output[, lb := estimate - (1.96 * robust_se)]
-  output[, ub := estimate + (1.96 * robust_se)]
-  output[, z := estimate/robust_se]
-  output[, p_value := format.pval(2*(1-pnorm(abs(z))), eps=0.001)]
-  return(output)
-}
 
 #' Expand Function
 #'
