@@ -64,19 +64,21 @@ write.csv(trial_example, file=data_path)
 
 Call the `initiators()` function to run the complete analysis:
 ```{r}
-initiators(data_path = data_path,
-           id="id",
-           period = "period",
-           eligible = "eligible",
-           treatment = "treatment",
-           outcome = "outcome",
-           model_var = "assigned_treatment",
-           outcomeCov_var = c("catvarA", "catvarB", "catvarC","nvarA","nvarB","nvarC"),
-           # outcomeClass = c("catvarA", "catvarB", "catvarC"),
-           numCores = 1,
-           data_dir = working_dir,
-           use_censor = 0,
-           use_weight = 0)
+result <-
+  initiators(data_path = data_path,
+             id="id",
+             period = "period",
+             eligible = "eligible",
+             treatment = "treatment",
+             outcome = "outcome",
+             model_var = "assigned_treatment",
+             outcomeCov_var = c("catvarA", "catvarB", "catvarC","nvarA","nvarB","nvarC"),
+             outcomeCov =  c("catvarA", "catvarB", "catvarC","nvarA","nvarB","nvarC"),
+             outcomeClass = c("catvarA", "catvarB", "catvarC"),
+             numCores = 1,
+             data_dir = working_dir,
+             use_censor = 0,
+             use_weight = 0)
 ```
 
 `initiators()` creates a few additional data files, depending on the selected options
