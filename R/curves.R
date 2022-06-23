@@ -24,6 +24,7 @@ h_extract_baseline <- function(trial_file, baseline_file, quiet = TRUE){
 #' @return a list with estimated cumulative incidence curves for `assigned_treatment`
 #' equal to 0 and 1.
 #' @export
+#' @importFrom stats predict
 #'
 #' @examples
 predict_survival <- function(model, predict_followup) {
