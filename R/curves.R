@@ -10,6 +10,9 @@
 #' @examples
 #'
 h_extract_baseline <- function(trial_file, baseline_file, quiet = TRUE){
+  # Dummy assignments for data.table
+  followup_time <- NULL
+
   if (file.exists(trial_file)){
     h_quiet_print("Extracting baseline observations from ", trial_file)
     fwrite(fread(trial_file)[followup_time == 0,], file = baseline_file)
@@ -18,9 +21,10 @@ h_extract_baseline <- function(trial_file, baseline_file, quiet = TRUE){
 
 #' Predict Cumulative Incidence
 #'
-#' @param object the result from `initiators` or a `glm` object.
+#' @param object The result from `initiators`. Either object or model must be specified.
+#' @param model A `glm` object.
 #' @param predict_followup a vector of follow up times to predict values for.
-#' @param data `data.frame` to predict survival for. Extracted from `object` if not provided.
+#' @param newdata `data.frame` to predict survival for. Extracted from `model`/`object` if not provided.
 #'
 #' @return a list with estimated cumulative incidence curves for `assigned_treatment`
 #' equal to 0 and 1.
@@ -28,9 +32,14 @@ h_extract_baseline <- function(trial_file, baseline_file, quiet = TRUE){
 #' @importFrom stats predict
 #'
 #' @examples
-predict_survival <- function(model, predict_followup, newdata) {
+predict_survival <- function(object, model, predict_followup, newdata) {
+  if (missing(model) & missing(object)) stop("Either model or object must be specified.")
+  if(missing(model)) model <- object$model
   assert_class(model, "glm")
   assert_numeric(predict_followup, lower = 0, min.len = 1, any.missing = FALSE)
+
+  # Dummy assignments for data.table
+  assigned_treatment <- NULL
 
   if (missing(newdata)) newdata <- as.data.table(model$data)
 
