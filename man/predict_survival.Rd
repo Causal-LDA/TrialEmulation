@@ -4,12 +4,14 @@
 \alias{predict_survival}
 \title{Predict Cumulative Incidence}
 \usage{
-predict_survival(model, predict_followup)
+predict_survival(model, predict_followup, newdata)
 }
 \arguments{
 \item{predict_followup}{a vector of follow up times to predict values for.}
 
 \item{object}{the result from \code{initiators} or a \code{glm} object.}
+
+\item{data}{\code{data.frame} to predict survival for. Extracted from \code{object} if not provided.}
 }
 \value{
 a list with estimated cumulative incidence curves for \code{assigned_treatment}

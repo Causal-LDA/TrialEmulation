@@ -20,6 +20,7 @@ h_extract_baseline <- function(trial_file, baseline_file, quiet = TRUE){
 #'
 #' @param object the result from `initiators` or a `glm` object.
 #' @param predict_followup a vector of follow up times to predict values for.
+#' @param data `data.frame` to predict survival for. Extracted from `object` if not provided.
 #'
 #' @return a list with estimated cumulative incidence curves for `assigned_treatment`
 #' equal to 0 and 1.
@@ -27,11 +28,13 @@ h_extract_baseline <- function(trial_file, baseline_file, quiet = TRUE){
 #' @importFrom stats predict
 #'
 #' @examples
-predict_survival <- function(model, predict_followup) {
+predict_survival <- function(model, predict_followup, newdata) {
   assert_class(model, "glm")
   assert_numeric(predict_followup, lower = 0, min.len = 1, any.missing = FALSE)
 
-  baseline <- model$data[model$data$followup_time == 0,]
+  if (missing(newdata)) newdata <- as.data.table(model$data)
+
+  baseline <- newdata[newdata$followup_time == 0,]
   expanded <- baseline[rep(1:nrow(baseline), times = length(predict_followup)), ]
   expanded$followup_time <- rep(predict_followup, each = nrow(baseline))
 
@@ -53,16 +56,6 @@ predict_survival <- function(model, predict_followup) {
     ci_1 = sum_up_CI(surv$pred_1)
   )
 }
-
-#
-# ps <- predict_survival(result$model, c(1:5))
-# ps[, cumprod := cumprod(1-predicted), by = c("id", "for_period")]
-# library(dplyr)
-# ps %>% arrange(id, for_period, followup_time)
-#
-# library(ggplot2)
-# ggplot(ps, aes(x = followup_time, y = cumprod, group = interaction(id, for_period))) + geom_line()
-
 
 #' Calculate Cumulative Incidence
 #'
@@ -92,38 +85,16 @@ CI_up_to <- function(p_mat, t = ncol(p_mat)){
 
 #' Helper to Calculate CI
 #'
-#' @param p_mat
+#' @param p_mat_list A list of probability matrices with rows for each subject and followup time as the columns.
 #'
 #' @return
 #' @export
 #'
 #' @examples
-sum_up_CI <- function(p_mat){
-  mat <- vapply(p_mat, CI_up_to, numeric(ncol(p_mat[[1]])))
-  total_n <- vapply(p_mat, nrow, integer(1L))
+sum_up_CI <- function(p_mat_list){
+  mat <- vapply(p_mat_list, CI_up_to, numeric(ncol(p_mat_list[[1]])))
+  total_n <- vapply(p_mat_list, nrow, integer(1L))
   result <- rowSums(mat) / sum(total_n)
   assert_monotonic(result)
   result
 }
-
-
-
-#' Calculate Cumulative Incidence for Initiators Results
-#'
-#' @param object result of `initiators()`
-#'
-#' @return Cumulative incidence curves for the two treatment arms.
-#' @export
-#'
-#' @examples
-initiators_ci <- function(object, follow_up) {
-  if (missing(follow_up)) {
-    follow_up <- seq_len(max(object$model$data$followup_time))
-  }
-  surv <- predict_survival(object$model, follow_up)
-  list(
-    ci_0 = sum_up_CI(surv$pred_0),
-    ci_1 = sum_up_CI(surv$pred_1)
-  )
-}
-

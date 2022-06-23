@@ -4,10 +4,10 @@
 \alias{sum_up_CI}
 \title{Helper to Calculate CI}
 \usage{
-sum_up_CI(p_mat)
+sum_up_CI(p_mat_list)
 }
 \arguments{
-\item{p_mat}{}
+\item{p_mat_list}{A list of probability matrices with rows for each subject and followup time as the columns.}
 }
 \description{
 Helper to Calculate CI
