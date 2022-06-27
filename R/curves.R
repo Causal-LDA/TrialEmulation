@@ -43,16 +43,16 @@ predict_survival <- function(object, model, predict_followup, newdata) {
 
   if (missing(newdata)) newdata <- as.data.table(model$data)
 
-  baseline <- newdata[newdata$followup_time == 0,]
+  baseline <- newdata[newdata$followup_time == 0, ]
   expanded <- baseline[rep(1:nrow(baseline), times = length(predict_followup)), ]
   expanded$followup_time <- rep(predict_followup, each = nrow(baseline))
 
   pred_0 <- predict(model, newdata = expanded[, assigned_treatment := 0], type = "response")
   pred_1 <- predict(model, newdata = expanded[, assigned_treatment := 1], type = "response")
-  expanded$pred_0 <- pred_0
-  expanded$pred_1 <- pred_1
 
-  preds <- expanded[, c("id", "followup_time", "for_period", "pred_0", "pred_1")]
+  preds <- expanded[, c("id", "followup_time", "for_period")]
+  preds$pred_0 <- pred_0
+  preds$pred_1 <- pred_1
   setorderv(preds, cols = c("for_period", "followup_time", "id"))
 
   surv <- list(
@@ -66,12 +66,43 @@ predict_survival <- function(object, model, predict_followup, newdata) {
   )
 }
 
+
+#' Helper to Calculate CI
+#'
+#' @param p_mat_list A list of probability matrices with rows for each subject and followup time as the columns.
+#'
+#' @return A vector of cumulative incidences.
+#' @export
+#'
+#' @examples
+#' surv_prob_list <- list(
+#'  trial_1 = matrix(
+#'   c(0.1, 0.1, 0.1,
+#'    0.5, 0.2, 0.1),
+#'   nrow = 2, byrow = TRUE),
+#'  trial_2 = matrix(
+#'  c(0.15, 0.15, 0.15,
+#'   0.45, 0.25, 0.1),
+#'   nrow = 2, byrow = TRUE)
+#' )
+#' sum_up_CI(surv_prob_list)
+sum_up_CI <- function(p_mat_list){
+  cols <- unqiue(vapply(p_mat_list, ncol, integer(1L)))
+  assert_integer(cols, len = 1, lower = 1)
+
+  ci_mat <- vapply(p_mat_list, CI_up_to, numeric(cols))
+  total_n <- sum(vapply(p_mat_list, nrow, integer(1L)))
+  result <- rowSums(ci_mat) / total_n
+  assert_monotonic(result)
+  result
+}
+
+
 #' Calculate Cumulative Incidence
 #'
 #' @param p_mat Probabilty matrix with rows for each subject and followup time as the columns.
-#' @param t Number of time periods to use. Must not be more than `ncol(p_mat)`
 #'
-#' @return A vector of length `t` containing the cumulative incidence values.
+#' @return A vector containing the cumulative incidence values.
 #' @export
 #'
 #' @examples
@@ -80,32 +111,13 @@ predict_survival <- function(object, model, predict_followup, newdata) {
 #'   0.5, 0.2, 0.1),
 #'   nrow = 2, byrow = TRUE)
 #' CI_up_to(surv_prob)
-CI_up_to <- function(p_mat, t = ncol(p_mat)){
-  assert_integerish(t, lower = 1, upper = ncol(p_mat))
+CI_up_to <- function(p_mat){
   assert_matrix(p_mat, mode = "numeric")
 
-  seq <- seq_len(t)
-  prod_term <- apply(1 - cbind(0, p_mat)[, seq], 1, cumprod)
-  sum_term <- prod_term * t(p_mat[, seq])
+  prod_term <- apply(1 - cbind(0, p_mat), 1, cumprod)
+  sum_term <- prod_term * t(p_mat)
   cumsum_term <- apply(sum_term, 2, cumsum)
   result <- rowSums(cumsum_term)
-  assert_monotonic(result)
-  result
-}
-
-
-#' Helper to Calculate CI
-#'
-#' @param p_mat_list A list of probability matrices with rows for each subject and followup time as the columns.
-#'
-#' @return
-#' @export
-#'
-#' @examples
-sum_up_CI <- function(p_mat_list){
-  mat <- vapply(p_mat_list, CI_up_to, numeric(ncol(p_mat_list[[1]])))
-  total_n <- vapply(p_mat_list, nrow, integer(1L))
-  result <- rowSums(mat) / sum(total_n)
   assert_monotonic(result)
   result
 }
