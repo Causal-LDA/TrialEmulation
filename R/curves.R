@@ -71,20 +71,22 @@ predict_survival <- function(object, model, predict_followup, newdata) {
 #' @param p_mat Probabilty matrix with rows for each subject and followup time as the columns.
 #' @param t Number of time periods to use. Must not be more than `ncol(p_mat)`
 #'
-#' @return
+#' @return A vector of length `t` containing the cumulative incidence values.
 #' @export
 #'
 #' @examples
+#' surv_prob <- matrix(
+#' c(0.1, 0.1, 0.1,
+#'   0.5, 0.2, 0.1),
+#'   nrow = 2, byrow = TRUE)
+#' CI_up_to(surv_prob)
 CI_up_to <- function(p_mat, t = ncol(p_mat)){
-  assert_integerish(t, lower = 2, upper = ncol(p_mat))
+  assert_integerish(t, lower = 1, upper = ncol(p_mat))
   assert_matrix(p_mat, mode = "numeric")
 
   seq <- seq_len(t)
-  p_term <- apply(1 - rbind(0, p_mat)[, seq], 1, cumprod)
-
-  p_term <- apply(1-p_mat[, seq_len(t-1)], 1, cumprod)
-  prod_term <- rbind(1, p_term)
-  sum_term <- prod_term * t(p_mat[, seq_len(t)])
+  prod_term <- apply(1 - cbind(0, p_mat)[, seq], 1, cumprod)
+  sum_term <- prod_term * t(p_mat[, seq])
   cumsum_term <- apply(sum_term, 2, cumsum)
   result <- rowSums(cumsum_term)
   assert_monotonic(result)
