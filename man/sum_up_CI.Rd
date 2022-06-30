@@ -9,6 +9,22 @@ sum_up_CI(p_mat_list)
 \arguments{
 \item{p_mat_list}{A list of probability matrices with rows for each subject and followup time as the columns.}
 }
+\value{
+A vector of cumulative incidences.
+}
 \description{
 Helper to Calculate CI
+}
+\examples{
+surv_prob_list <- list(
+ trial_1 = matrix(
+  c(0.1, 0.1, 0.1,
+   0.5, 0.2, 0.1),
+  nrow = 2, byrow = TRUE),
+ trial_2 = matrix(
+ c(0.15, 0.15, 0.15,
+  0.45, 0.25, 0.1),
+  nrow = 2, byrow = TRUE)
+)
+sum_up_CI(surv_prob_list)
 }

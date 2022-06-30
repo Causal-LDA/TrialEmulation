@@ -55,15 +55,12 @@ predict_survival <- function(object, model, predict_followup, newdata) {
   preds$pred_1 <- pred_1
   setorderv(preds, cols = c("for_period", "followup_time", "id"))
 
-  surv <- list(
-    pred_0 = lapply(split(preds$pred_0, preds$for_period), matrix, ncol = length(predict_followup)),
-    pred_1 = lapply(split(preds$pred_1, preds$for_period), matrix, ncol = length(predict_followup))
+  pred_trt <- list(
+    trt_0 = tapply(preds$pred_0, preds$for_period, matrix, ncol = length(predict_followup)),
+    trt_1 = tapply(preds$pred_1, preds$for_period, matrix, ncol = length(predict_followup))
   )
 
-  list(
-    ci_0 = sum_up_CI(surv$pred_0),
-    ci_1 = sum_up_CI(surv$pred_1)
-  )
+  lapply(pred_trt, sum_up_CI)
 }
 
 
@@ -111,13 +108,21 @@ sum_up_CI <- function(p_mat_list){
 #'   0.5, 0.2, 0.1),
 #'   nrow = 2, byrow = TRUE)
 #' CI_up_to(surv_prob)
+#' Survival_up_to(surv_prob)
 CI_up_to <- function(p_mat){
   assert_matrix(p_mat, mode = "numeric")
 
-  prod_term <- apply(1 - cbind(0, p_mat), 1, cumprod)
+  prod_term <- apply(1 - cbind(0, p_mat)[, -ncol(p_mat)], 1, cumprod)
   sum_term <- prod_term * t(p_mat)
   cumsum_term <- apply(sum_term, 2, cumsum)
   result <- rowSums(cumsum_term)
   assert_monotonic(result)
+  result
+}
+
+Survival_up_to <- function(p_mat){
+  assert_matrix(p_mat, mode = "numeric")
+  result <- c(1, rowMeans(apply(1 - p_mat, 1, cumprod)))
+  assert_monotonic(result, increasing = FALSE)
   result
 }

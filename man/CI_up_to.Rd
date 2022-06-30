@@ -4,13 +4,21 @@
 \alias{CI_up_to}
 \title{Calculate Cumulative Incidence}
 \usage{
-CI_up_to(p_mat, t = ncol(p_mat))
+CI_up_to(p_mat)
 }
 \arguments{
 \item{p_mat}{Probabilty matrix with rows for each subject and followup time as the columns.}
-
-\item{t}{Number of time periods to use. Must not be more than \code{ncol(p_mat)}}
+}
+\value{
+A vector containing the cumulative incidence values.
 }
 \description{
 Calculate Cumulative Incidence
+}
+\examples{
+surv_prob <- matrix(
+c(0.1, 0.1, 0.1,
+  0.5, 0.2, 0.1),
+  nrow = 2, byrow = TRUE)
+CI_up_to(surv_prob)
 }
