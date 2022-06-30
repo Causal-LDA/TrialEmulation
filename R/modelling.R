@@ -38,6 +38,7 @@
 #' @importFrom stats as.formula binomial pnorm quantile relevel
 #' @importFrom utils write.csv
 
+# CCS: Add param switch_data. AbsolutePath is now NA
 data_modelling <- function(outcomeCov_var = NA,
                            outcomeCov = NA,
                            outcomeClass = NA,
@@ -61,7 +62,8 @@ data_modelling <- function(outcomeCov_var = NA,
                            numCores = NA,
                            glm_function = c('parglm','glm'),
                            use_sample_weights = TRUE,
-                           quiet = FALSE
+                           quiet = FALSE,
+                           switch_data
 ) {
   assert_flag(quiet)
 
@@ -78,19 +80,24 @@ data_modelling <- function(outcomeCov_var = NA,
     if(is.na(first_followup)) first_followup <- 0
     if(is.na(last_followup)) last_followup <- Inf
 
+    # CCS: This branch not currently used by our code
+    
     data = tryCatch({
       suppressWarnings(bigmemory::read.big.matrix(absolutePath, header=TRUE, shared=FALSE, type="double"))
     })
     #subset the data
     temp_data = data[bigmemory::mwhich(data, c("followup_time", "followup_time"), c(first_followup, last_followup), c('ge', 'le'), 'AND'), ]
     temp_data = as.data.table(temp_data)
-    rm(data)
-    gc()
+    # CCS
+    #rm(data)
+    #gc()
   } else {
     #read data directly as data.table
-    temp_data <- fread(absolutePath)
+    # CCS: No need for the read
+    #temp_data <- fread(absolutePath)
   }
 
+  # CCS: switch_data was read in as temp_data. Perform rename throughout rest of function
 
   # Process class variables into factors
   if(any(!is.na(outcomeClass))){
@@ -103,13 +110,13 @@ data_modelling <- function(outcomeCov_var = NA,
       # variable name provided only
       if(is.character(outcomeClass[[i]])) {
         this_var <- outcomeClass[[i]]
-        set(temp_data, j = this_var, value = as.factor(temp_data[[this_var]]))
+        set(switch_data, j = this_var, value = as.factor(switch_data[[this_var]]))
       }
       # named list provided
       if(is.list(outcomeClass[[i]])){
         this_var <- names(outcomeClass[i])
-        set(temp_data, j = this_var,
-            value = do.call("factor", c(x = list(temp_data[[this_var]]), outcomeClass[[this_var]])))
+        set(switch_data, j = this_var,
+            value = do.call("factor", c(x = list(switch_data[[this_var]]), outcomeClass[[this_var]])))
       }
     }
   }
@@ -117,11 +124,11 @@ data_modelling <- function(outcomeCov_var = NA,
 
   # adjust weights if necessary
   if (use_sample_weights){
-    if (!"sample_weight" %in% colnames(temp_data)) {
+    if (!"sample_weight" %in% colnames(switch_data)) {
       warning("'sample_weight' column not found in data. Using sample weights = 1.")
-      temp_data[, weight := weight]
+      switch_data[, weight := weight]
     } else {
-      temp_data[, weight := weight * sample_weight]
+      switch_data[, weight := weight * sample_weight]
     }
 
   }
@@ -154,9 +161,9 @@ data_modelling <- function(outcomeCov_var = NA,
       vars <- c(vars, "for_period2")
     }
     if("spline" %in% include_expansion_time_case){
-      idx <- grepl("period_base", colnames(temp_data))
+      idx <- grepl("period_base", colnames(switch_data))
       if(any(idx)){
-        vars <- c(vars, colnames(temp_data)[idx])
+        vars <- c(vars, colnames(switch_data)[idx])
       } else if(!any(idx)) {
         warning("Splines specified for period but not 'period_base' columns found (include_expansion_time_case).")
       }
@@ -172,9 +179,9 @@ data_modelling <- function(outcomeCov_var = NA,
       vars <- c(vars, "followup_time2")
     }
     if("spline" %in% include_followup_time_case){
-      idx <- grepl("followup_base", colnames(temp_data))
+      idx <- grepl("followup_base", colnames(switch_data))
       if(any(idx)){
-        vars <- c(vars, colnames(temp_data)[idx])
+        vars <- c(vars, colnames(switch_data)[idx])
       } else if(!any(idx)) {
         warning("Splines specified for follow-up but not 'followup_base' columns found (include_followup_time_case).")
       }
@@ -197,7 +204,7 @@ data_modelling <- function(outcomeCov_var = NA,
     timing = system.time({
       d = list()
       for(i in 1:length(where_case)){
-        d[[i]] = list(temp_data[eval(parse(text = where_case[i]))], regform)
+        d[[i]] = list(switch_data[eval(parse(text = where_case[i]))], regform)
       }
       if(numCores == 1) {
         #cl <- makeCluster(numCores)
@@ -223,23 +230,23 @@ data_modelling <- function(outcomeCov_var = NA,
   if(run_base_model == 1){
     if(use_weight == 1){
       if(run_p99_analysis == 1){
-        temp_data = p99_weight(temp_data)
+        switch_data = p99_weight(switch_data)
       }else if(run_user_limits_analysis == 1){
-        temp_data = limit_weight(temp_data, lower_weight, upper_weight)
+        switch_data = limit_weight(switch_data, lower_weight, upper_weight)
       }else if(run_unweighted_analysis == 1){
-        temp_data[, weight] = 1
+        switch_data[, weight] = 1
       }
     }
 
     timing = system.time({
       if(glm_function == "parglm"){
-        model.full = parglm::parglm(as.formula(regform), data=temp_data,
-                                    weights=temp_data[, weight],
+        model.full = parglm::parglm(as.formula(regform), data=switch_data,
+                                    weights=switch_data[, weight],
                                     family=binomial(link = "logit"),
                                     control=parglm::parglm.control(nthreads = 4, method='FAST'))
       } else if (glm_function == "glm"){
-        model.full = stats::glm(as.formula(regform), data=temp_data,
-                                weights=temp_data[, weight],
+        model.full = stats::glm(as.formula(regform), data=switch_data,
+                                weights=switch_data[, weight],
                                 family=binomial(link = "logit"))
       }
     })
@@ -253,7 +260,7 @@ data_modelling <- function(outcomeCov_var = NA,
     timing = system.time({
       h_quiet_print(quiet, "-------------------------------------------------------")
       h_quiet_print(quiet, "Robust standard error:")
-      robust_model = robust_calculation(model.full, temp_data[["id"]])
+      robust_model = robust_calculation(model.full, switch_data[["id"]])
     })
     h_quiet_print(quiet, robust_model)
     h_quiet_print(quiet, "----------------------------------------------")
@@ -261,5 +268,5 @@ data_modelling <- function(outcomeCov_var = NA,
     h_quiet_print(quiet, timing)
   }
 
-  return(list(model = model.full, robust = robust_model))
+  return(list(model = model.full, robust = robust_model, switch_data = switch_data))
 }

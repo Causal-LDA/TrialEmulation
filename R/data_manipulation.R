@@ -39,6 +39,8 @@
 #' @param quiet Don't print progress messages.
 #' data_manipulation()
 
+
+# CCS: data_address is NA. data_path is data.frame, passed to read_data to select cols.
 data_manipulation <- function(data_address, data_path, keeplist,
                               treatment="treatment", id="id",
                               period="period", outcome="outcome",
@@ -58,7 +60,7 @@ data_manipulation <- function(data_address, data_path, keeplist,
                               numCores=NA,
                               quiet = FALSE){
 
-  assert_directory_exists(data_dir)
+  #assert_directory_exists(data_dir)
 
   # Dummy variables used in data.table calls declared to prevent package check NOTES:
   time_of_event <- am_1 <- cumA <- regime_start <- time_on_regime <- time_on_regime2 <-
@@ -88,48 +90,53 @@ data_manipulation <- function(data_address, data_path, keeplist,
     datatable <- datatable[after_event==FALSE] # keep all which are _not_ after the outcome event
   }
 
+  # CCS: For some reason a temp_data was used here, before it is copied
+  # to sw_data. There should be no need for the copy. Repace temp_data with sw_data
+  
   # temp_data <- copy(datatable) # TODO check if this code is used
-  temp_data <- datatable[, .SD[.N], by=id]
-  temp_data[, time_of_event := 9999]
-  temp_data[(!is.na(outcome) & outcome == 1),
+  sw_data <- datatable[, .SD[.N], by=id]
+  sw_data[, time_of_event := 9999]
+  sw_data[(!is.na(outcome) & outcome == 1),
             time_of_event := as.double(period)]
-  temp_data = temp_data[, list(id, time_of_event)]
-  datatable = datatable[temp_data, on="id"]
+  sw_data = sw_data[, list(id, time_of_event)]
+  datatable = datatable[sw_data, on="id"]
 
-  temp_data = datatable[, first:=!duplicated(datatable[, id])]
+  sw_data = datatable[, first:=!duplicated(datatable[, id])]
 
-  rm(datatable)
-  gc()
+  # CCS
+  #rm(datatable)
+  #gc()
 
-  temp_data = temp_data[, am_1 := c(NA, treatment[-.N])]
-  temp_data[first == TRUE, cumA := 0]
-  temp_data[first == TRUE, am_1 := 0]
-  temp_data[first == TRUE, switch := 0]
-  temp_data[first == TRUE, regime_start := period]
-  temp_data[first == TRUE, time_on_regime := 0]
-  temp_data[first == TRUE, time_on_regime2 := 0]
+  sw_data = sw_data[, am_1 := c(NA, treatment[-.N])]
+  sw_data[first == TRUE, cumA := 0]
+  sw_data[first == TRUE, am_1 := 0]
+  sw_data[first == TRUE, switch := 0]
+  sw_data[first == TRUE, regime_start := period]
+  sw_data[first == TRUE, time_on_regime := 0]
+  sw_data[first == TRUE, time_on_regime2 := 0]
 
-  temp_data[(first == FALSE & am_1 != treatment), switch := 1 ]
-  temp_data[(first == FALSE & am_1 == treatment), switch := 0 ]
+  sw_data[(first == FALSE & am_1 != treatment), switch := 1 ]
+  sw_data[(first == FALSE & am_1 == treatment), switch := 0 ]
 
-  temp_data[(first == FALSE & switch == 1), regime_start := period]
-  temp_data[, regime_start_shift := regime_start[1], list(cumsum(!is.na(regime_start)))]
-  temp_data[(first == FALSE & switch == 0), regime_start := regime_start_shift]
+  sw_data[(first == FALSE & switch == 1), regime_start := period]
+  sw_data[, regime_start_shift := regime_start[1], list(cumsum(!is.na(regime_start)))]
+  sw_data[(first == FALSE & switch == 0), regime_start := regime_start_shift]
 
-  temp_data[, regime_start_shift := shift(regime_start)]
-  temp_data[first == FALSE, time_on_regime := period -
+  sw_data[, regime_start_shift := shift(regime_start)]
+  sw_data[first == FALSE, time_on_regime := period -
               as.double(regime_start_shift)]
-  temp_data[first == FALSE, time_on_regime2 := time_on_regime ** 2]
+  sw_data[first == FALSE, time_on_regime2 := time_on_regime ** 2]
 
-  temp_data[first == TRUE, cumA := cumA + treatment]
-  temp_data[first == FALSE, cumA := treatment]
-  temp_data[, cumA := cumsum(cumA), by=id]
-  temp_data[, regime_start_shift := NULL]
+  sw_data[first == TRUE, cumA := cumA + treatment]
+  sw_data[first == FALSE, cumA := treatment]
+  sw_data[, cumA := cumsum(cumA), by=id]
+  sw_data[, regime_start_shift := NULL]
 
 
-  sw_data <- copy(temp_data)
-  rm(temp_data)
-  gc()
+  # CCS
+  #sw_data <- copy(temp_data)
+  #rm(temp_data)
+  #gc()
 
   if(use_censor == 1){
     sw_data[, started0 := as.numeric(NA)]
@@ -162,7 +169,7 @@ data_manipulation <- function(data_address, data_path, keeplist,
     sw_data[, wt := 1]
   }
 
-  fwrite(sw_data, file.path(data_dir, "sw_data.csv"), row.names=FALSE)
+  #fwrite(sw_data, file.path(data_dir, "sw_data.csv"), row.names=FALSE)
   setkeyv(sw_data, cols = "id")
   sw_data
 }
@@ -222,7 +229,8 @@ data_extension_parallel <- function(data_address, keeplist, outcomeCov_var=NA,
                 maxperiod=maxperiod, minperiod=minperiod,
                 lag_p_nosw=lag_p_nosw, keeplist=keeplist, data_dir=data_dir,
                 mc.cores=numCores, separate_files=separate_files)
-  gc()
+  # CCS
+  #gc()
 
   return(list(min_period = minperiod,
               max_period = maxperiod,
@@ -253,6 +261,7 @@ data_extension_parallel <- function(data_address, keeplist, outcomeCov_var=NA,
 #' @param separate_files Write to one file or one per trial (default FALSE)
 #' data_extension()
 
+# CCS: Function already provides an sw_data param. Use that. data_path is NA.
 data_extension <- function(data_path, keeplist, outcomeCov_var=NA,
                            first_period=NA, last_period=NA,
                            use_censor=0,
@@ -264,31 +273,38 @@ data_extension <- function(data_path, keeplist, outcomeCov_var=NA,
   # Dummy variables used in data.table calls declared to prevent package check NOTES:
   id <- period <- NULL
 
-  if(missing(sw_data)){
-    sw_data <- fread(data_path, header = TRUE, sep = ",")
-  }
+  # CCS
+  #if(missing(sw_data)){
+  #  sw_data <- fread(data_path, header = TRUE, sep = ",")
+  #}
   max_id <- max(sw_data[, id])
   maxperiod <- max(sw_data[, period])
   minperiod <- min(sw_data[, period])
 
-  if(is.na(first_period)){
-    minperiod <- first_period
-  }
-  if(is.na(last_period)){
-    maxperiod <- last_period
-  }
+  # CCS: This looks like a bug. Ignore these tests.
+  #if(is.na(first_period)){
+  #  minperiod <- first_period
+  #}
+  #if(is.na(last_period)){
+  #  maxperiod <- last_period
+  #}
   range = (maxperiod - minperiod) + 1
 
-  N <- expand(sw_data, outcomeCov_var, where_var, use_censor,
+  # CCS: This function previously returned N = nrow(switch_data)
+  switch_data <- expand(sw_data, outcomeCov_var, where_var, use_censor,
               followup_spline, period_spline,
               maxperiod, minperiod,lag_p_nosw,
               keeplist, data_dir, separate_files)
 
-  rm(sw_data)
-  gc()
+  # CCS
+  #rm(sw_data)
+  #gc()
+  # CCS: Modify returned list by adding switch_data
   return(list(min_period = minperiod,
               max_period = maxperiod,
               range =  range,
-              N = N,
-              path = file.path(data_dir,"switch_data.csv")))
+              switch_data = switch_data,
+              N = nrow(switch_data)
+              ))
+              #path = file.path(data_dir,"switch_data.csv"))) #CCS
 }

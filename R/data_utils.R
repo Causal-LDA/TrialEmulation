@@ -20,6 +20,8 @@
 #' @param where_var Variables used in where conditions used in subsetting the data used in final analysis (where_case), the variables not included in the final model
 #' read_data()
 
+
+# CCS: data_address is NA, data_path is data.frame
 read_data <- function(data_address, data_path=NA, id_num=NA,
                       id="id",
                       period="period",
@@ -65,11 +67,16 @@ read_data <- function(data_address, data_path=NA, id_num=NA,
   }
   covs <- covs[!duplicated(covs)]
   cols = c(id, period, treatment, outcome, eligible, covs)
-  if(!is.na(id_num) & bigmemory::is.big.matrix(data_address)){
-    data_new = as.data.table(data_address[bigmemory::mwhich(data_address, c("id"), c(id_num), c('eq')),])
-  }else{
-    data_new = fread(data_path, header = TRUE, sep = ",", select = cols)
-  }
+
+  # CCS: Replace read with:
+  setDT(data_path)
+  data_new = data_path[, ..cols]
+  
+  #if(!is.na(id_num) & bigmemory::is.big.matrix(data_address)){
+  #  data_new = as.data.table(data_address[bigmemory::mwhich(data_address, c("id"), c(id_num), c('eq')),])
+  #}else{
+  #  data_new = fread(data_path, header = TRUE, sep = ",", select = cols)
+  #}
 
   if(!eligible %in% colnames(data_new)){
     warning(paste0("Eligibility variable not found in data: ",eligible))
@@ -77,7 +84,8 @@ read_data <- function(data_address, data_path=NA, id_num=NA,
     data_new[, (eligible) := 1]
   }
 
-  data_new = subset(data_new, select=cols)
+  # CCS
+  #data_new = subset(data_new, select=cols)
 
   tryCatch({
     suppressWarnings(setnames(data_new,
@@ -90,7 +98,8 @@ read_data <- function(data_address, data_path=NA, id_num=NA,
   if(any(!is.na(eligible_wts_1))){
     setnames(data_new, c(eligible_wts_1), c("eligible_wts_1"))
   }
-  rm(covs, cols)
+  # ccs
+  #rm(covs, cols)
   data_new = data_new[order(id, period)]
   return(data_new)
 }
@@ -290,10 +299,11 @@ weight_func <- function(sw_data, cov_switchn=NA, model_switchn=NA,
 
 
   # -------------- Combine results --------------------
-  if(!missing(save_dir)){
-    save(weight_models, file = file.path(save_dir,"weight_models.rda"))
-  }
-  rm(weight_models)
+  # CCS: Output only
+  #if(!missing(save_dir)){
+  #  save(weight_models, file = file.path(save_dir,"weight_models.rda"))
+  #}
+  #rm(weight_models)
 
   switch_0 = switch_d0[switch_n0, on = list(id=id, period=period,
                                          eligible0=eligible0)]
@@ -509,9 +519,12 @@ cens_models <- list()
     new_data[, wtC := pC_n/pC_d]
   }
   new_data[, wt := wt * wtC]
-  sw_data <- new_data
-  rm(new_data)
-  gc()
-  return(sw_data)
+
+  # CCS: No need to copy to sw_data
+  #sw_data <- new_data
+  #rm(new_data)
+  #gc()
+  #return(sw_data)
+  return(new_data)
 }
 

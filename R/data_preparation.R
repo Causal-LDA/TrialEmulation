@@ -53,6 +53,7 @@
 #' eg `list(risk_cat=list(levels = c(1,2,3,0), age_cat=list(levels=c(1,2,3),labels=c("50-60","60-70","70+")`
 
 
+# CCS: data_path is now data.frame
 data_preparation <- function(data_path,
                              id = "id",
                              period = "period",
@@ -188,8 +189,9 @@ data_preparation <- function(data_path,
   }
 
 
-  if(!file.exists(data_path)) stop(paste0("'data_path' file not found: ", data_path))
-  absolutePath <- normalizePath(data_path)
+  # CCS
+  #if(!file.exists(data_path)) stop(paste0("'data_path' file not found: ", data_path))
+  #absolutePath <- normalizePath(data_path)
 
   # data = tryCatch({
   #   suppressWarnings(out <- bigmemory::read.big.matrix(absolutePath, header = TRUE, type="double"))
@@ -253,8 +255,9 @@ data_preparation <- function(data_path,
 
   h_quiet_print(quiet, "Start data manipulation")
   timing = system.time({
+    # CCS: Change par 2 from absolutePath to data_path
     sw_data <-
-      data_manipulation(NA, absolutePath, keeplist,
+      data_manipulation(NA, data_path, keeplist,
                         treatment, id, period, outcome, eligible,
                         outcomeCov_var,
                         cov_switchn, model_switchn, class_switchn,
@@ -273,51 +276,60 @@ data_preparation <- function(data_path,
   h_quiet_print(quiet, "Processing time of data manipulation:")
   h_quiet_print(quiet, timing)
   h_quiet_print(quiet, "----------------------------")
-  absolutePath <- normalizePath(file.path(data_dir, "sw_data.csv"))
+  # CCS
+  #absolutePath <- normalizePath(file.path(data_dir, "sw_data.csv"))
 
   h_quiet_print(quiet, "Start data extension")
   timing = system.time({
-    df <- data.frame(matrix(ncol = length(keeplist), nrow = 0))
-    colnames(df) <- keeplist
+    # CCS: Don't use switch_data.csv
+    #df <- data.frame(matrix(ncol = length(keeplist), nrow = 0))
+    #colnames(df) <- keeplist
 
-    write.csv(df, file.path(data_dir, "switch_data.csv"), row.names=FALSE)
+    #write.csv(df, file.path(data_dir, "switch_data.csv"), row.names=FALSE)
 
-    if(!chunk_expansion && numCores == 1){
-      #doesn't want to do chunks or parallel threads, but might have to do chunks if not enough memory
-      manipulate = tryCatch(
-        data_extension(absolutePath, keeplist, outcomeCov_var,
-                       first_period, last_period, use_censor, lag_p_nosw,
-                       where_var, followup_spline, period_spline,
-                       data_dir),
 
-        error = function(err){
-          gc()
-          file.remove(file.path(data_dir, "switch_data.csv"))
-          write.csv(df, file.path(data_dir, "switch_data.csv"), row.names=FALSE)
-          warning(paste0("The memory is not enough to do the data extention without data division so performed in chunks with numCores=1 and chunk_size=",chunk_size,"!"))
-          # data = tryCatch({
-          #   suppressWarnings(bigmemory::read.big.matrix(absolutePath, header = TRUE, type="double"))
-          # })
-          data_extension_parallel(sw_data, keeplist, outcomeCov_var,
-                                  first_period, last_period, use_censor, lag_p_nosw,
-                                  where_var, followup_spline,
-                                  period_spline, data_dir, numCores,
-                                  chunk_size, separate_files)
-        }
-      )
-    }else{
-      # data = tryCatch({
-      #   suppressWarnings(bigmemory::read.big.matrix(absolutePath, header = TRUE, type="double"))
-      # })
+    # CCS: Force use of single-core version
+    manipulate = data_extension(data_path = NA, keeplist, outcomeCov_var,
+                   first_period, last_period, use_censor, lag_p_nosw,
+                   where_var, followup_spline, period_spline,
+                   data_dir, sw_data = sw_data)
 
-      manipulate = data_extension_parallel(sw_data, keeplist,
-                                           outcomeCov_var,
-                                           first_period, last_period,
-                                           use_censor, lag_p_nosw,
-                                           where_var, followup_spline,
-                                           period_spline, data_dir,
-                                           numCores, chunk_size, separate_files)
-    }
+    ## if(!chunk_expansion && numCores == 1){
+    ##   #doesn't want to do chunks or parallel threads, but might have to do chunks if not enough memory
+    ##   manipulate = tryCatch(
+    ##     data_extension(absolutePath, keeplist, outcomeCov_var,
+    ##                    first_period, last_period, use_censor, lag_p_nosw,
+    ##                    where_var, followup_spline, period_spline,
+    ##                    data_dir),
+
+    ##     error = function(err){
+    ##       gc()
+    ##       file.remove(file.path(data_dir, "switch_data.csv"))
+    ##       write.csv(df, file.path(data_dir, "switch_data.csv"), row.names=FALSE)
+    ##       warning(paste0("The memory is not enough to do the data extention without data division so performed in chunks with numCores=1 and chunk_size=",chunk_size,"!"))
+    ##       # data = tryCatch({
+    ##       #   suppressWarnings(bigmemory::read.big.matrix(absolutePath, header = TRUE, type="double"))
+    ##       # })
+    ##       data_extension_parallel(sw_data, keeplist, outcomeCov_var,
+    ##                               first_period, last_period, use_censor, lag_p_nosw,
+    ##                               where_var, followup_spline,
+    ##                               period_spline, data_dir, numCores,
+    ##                               chunk_size, separate_files)
+    ##     }
+    ##   )
+    ## }else{
+    ##   # data = tryCatch({
+    ##   #   suppressWarnings(bigmemory::read.big.matrix(absolutePath, header = TRUE, type="double"))
+    ##   # })
+
+    ##   manipulate = data_extension_parallel(sw_data, keeplist,
+    ##                                        outcomeCov_var,
+    ##                                        first_period, last_period,
+    ##                                        use_censor, lag_p_nosw,
+    ##                                        where_var, followup_spline,
+    ##                                        period_spline, data_dir,
+    ##                                        numCores, chunk_size, separate_files)
+    ## }
 
 
 
@@ -331,8 +343,9 @@ data_preparation <- function(data_path,
 
   h_quiet_print(quiet, paste0("Number of observations in expanded data: ",manipulate$N))
 
-  rm(sw_data)
-  gc()
+  # CCS
+  #rm(sw_data)
+  #gc()
 
 
   #
@@ -344,9 +357,12 @@ data_preparation <- function(data_path,
   #   }
   #
 
-  return(list(absolutePath = manipulate$path,
-              N = manipulate$N,
-              range = manipulate$range,
-              min_period = manipulate$min_period,
-              max_period = manipulate$max_period))
+  # CCS: Change return type
+  manipulate
+  
+  #return(list(absolutePath = manipulate$path,
+  #            N = manipulate$N,
+  #            range = manipulate$range,
+  #            min_period = manipulate$min_period,
+  #            max_period = manipulate$max_period))
 }

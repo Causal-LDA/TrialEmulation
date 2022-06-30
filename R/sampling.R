@@ -139,7 +139,8 @@ case_control_func <- function(period_num,
     fwrite(new_d, file.path(data_dir, name_csv), append=TRUE, row.names=FALSE)
   }
   rm(d_period, d, m, new_d)
-  gc()
+  # CCS
+  #gc()
 }
 
 #' Case-control sampling from extended data in separate trial csvs
@@ -236,7 +237,7 @@ case_util_n <- function(data, n_control=5, ...){
   ncase<-dim(casedatajk)[1]  ## number of cases
   ncontrol<-dim(controldatajk)[1]  ## number of potential controls
   if(ncase>0){
-
+print("sampling 2")
     if(ncontrol >= n_control*ncase) {
       controlselect <- controldatajk[sample(1:ncontrol, n_control*ncase),] ## sample 5 controls for each case without replacement
     } else{
@@ -264,7 +265,7 @@ case_util_n <- function(data, n_control=5, ...){
 #' @return A data frame with the cases and sampled controls
 case_util_p <- function(data, p_control = 0.01, sample_all_periods = FALSE, ...){
   sample_weight <- NULL
-
+print("sampling 1")
   ### cases occurred at each period and follow-up visit
   cases <- which(data$outcome==1)
   ncase <- length(cases)

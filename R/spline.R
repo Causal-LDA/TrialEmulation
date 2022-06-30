@@ -12,10 +12,14 @@
 #' @export
 #' @import assertthat
 #'
-add_splines <- function(data_path, out_path = data_path, period_spline, followup_spline){
 
-  assert_that(is.readable(data_path))
-  assert_that(is.string(out_path))
+# CCS: First param data_path is now switch_data. Return type changed.
+# out_path was set to data_path as default
+add_splines <- function(switch_data, out_path = NA, period_spline, followup_spline){
+
+  # CCS:
+  #assert_that(is.readable(data_path))
+  #assert_that(is.string(out_path))
 
   attempt_period <- attempt_followup <- FALSE
 
@@ -34,44 +38,52 @@ add_splines <- function(data_path, out_path = data_path, period_spline, followup
   }
 
   # Check columns exist in data
-  data_head <- fread(data_path, header=TRUE, sep = ",", nrows = 10)
+  # CCS: Just use full data.table here
+  #data_head <- fread(data_path, header=TRUE, sep = ",", nrows = 10)
 
   if(isTRUE(attempt_period)) {
-    assert_that("for_period" %in% colnames(data_head),
+    assert_that("for_period" %in% colnames(switch_data), #CCS
                 msg = "Spline specified for period but data does not have for_period column.")
   }
 
   if(isTRUE(attempt_followup)) {
-    assert_that("followup_time" %in% colnames(data_head),
+    assert_that("followup_time" %in% colnames(switch_data), #CCS
                 msg = "Spline specified for follow-up time but data does not have followup_time column.")
   }
-  rm(data_head)
+  #rm(data_head)
 
   return_splines <- list(for_period = NA, followup_time = NA)
 
   # Create splines for the followup_time and for_period as required.
     if(isTRUE(attempt_period) | isTRUE(attempt_followup)){
 
-    data <- fread(data_path, header = TRUE, sep = ",")
+      # CCS: data renamed switch_data
+    #data <- fread(data_path, header = TRUE, sep = ",")
     if(isTRUE(attempt_period)){
-      temp <- do.call("ns", c(x = list(data[["for_period"]]), period_spline))
+      temp <- do.call("ns", c(x = list(switch_data[["for_period"]]), period_spline))
       for(i in 1:ncol(temp)){
-        data[, paste0("period_base_", i)] <- temp[, i]
+        switch_data[, paste0("period_base_", i)] <- temp[, i]
       }
       return_splines$for_period <- temp[1:10, ]
       mostattributes(return_splines$for_period) <- attributes(temp)
     }
 
     if(isTRUE(attempt_followup)){
-      temp <- do.call("ns", c(x = list(data[["followup_time"]]), followup_spline))
+      temp <- do.call("ns", c(x = list(switch_data[["followup_time"]]), followup_spline))
       for(i in 1:ncol(temp)){
-        data[, paste0("followup_base_", i)] <- temp[, i]
+        switch_data[, paste0("followup_base_", i)] <- temp[, i]
       }
       return_splines$followup_time <- temp[1:10, ]
       mostattributes(return_splines$followup_time) <- attributes(temp)
     }
-    fwrite(data, file = out_path, row.names = FALSE)
+      # CCS
+      #fwrite(data, file = out_path, row.names = FALSE)
 
-    return_splines
-  }
+      # CCS: The current return value of return_splines is ignored.
+      # So don't both returning this. Instead, return switch_data.
+      #return_splines
+      
+    }
+  ## CCS
+  switch_data
 }

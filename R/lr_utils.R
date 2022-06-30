@@ -119,6 +119,7 @@ lr <- function(l){
 #' @importFrom splines ns
 #' @import data.table
 
+# CCS: Have changed return type of this function
 expand <- function(sw_data,
                    outcomeCov_var, where_var, use_censor,
                    followup_spline=NA,
@@ -209,7 +210,6 @@ expand <- function(sw_data,
   }else{
     switch_data[, treatment := init]
   }
-
   switch_data[expand == 1, expand := expand_func(.SD, maxperiod, minperiod), by=id]
 
   if(lag_p_nosw == 1){
@@ -234,21 +234,24 @@ expand <- function(sw_data,
   switch_data = switch_data[expand == 1]
   switch_data = switch_data[, keeplist, with=FALSE]
 
-  if(!separate_files){
-    fwrite(switch_data, file.path(data_dir, "switch_data.csv"), append=TRUE, row.names=FALSE)
-  } else if(separate_files) {
-    for(p in unique(switch_data[,"for_period"])[[1]]){
-      fwrite(switch_data[for_period==p,], file.path(data_dir, paste0("trial_",p,".csv")), append=TRUE, row.names=FALSE)
-    }
-  }
+  # CCS: This writes switch_data. Instead, return the switch_data object
+  #if(!separate_files){
+  #  fwrite(switch_data, file.path(data_dir, "switch_data.csv"), append=TRUE, row.names=FALSE)
+  #} else if(separate_files) {
+  #  for(p in unique(switch_data[,"for_period"])[[1]]){
+  #    fwrite(switch_data[for_period==p,], file.path(data_dir, paste0("trial_",p,".csv")), append=TRUE, row.names=FALSE)
+  #  }
+  #}
 
-  N <- nrow(switch_data)
+  # CCS
+  #N <- nrow(switch_data)
 
-  rm(temp_data, switch_data)
+  #rm(temp_data, switch_data)
 
-  gc()
+  #gc()
 
-  N
+  #N
+  switch_data
 }
 
 
@@ -270,6 +273,7 @@ expand <- function(sw_data,
 #' @param separate_files Write to one file or one per trial (default FALSE)
 #' @import data.table
 
+# CCS: This is called from within mclapply. We can ignore for now.
 expand_switch <- function(id_num, data_address,
                           outcomeCov_var, where_var,
                           use_censor, followup_spline, period_spline,
@@ -291,7 +295,8 @@ expand_switch <- function(id_num, data_address,
   N <- expand(sw_data, outcomeCov_var, where_var, use_censor,
               followup_spline, period_spline, maxperiod, minperiod,
          lag_p_nosw, keeplist, data_dir, separate_files)
-  rm(sw_data)
-  gc()
+  # CCS
+  #rm(sw_data)
+  #gc()
   N
 }

@@ -74,7 +74,7 @@
 #' @importFrom Rcpp sourceCpp
 #' @useDynLib RandomisedTrialsEmulation
 
-
+# CCS: data_path is now data.frame
 initiators <- function(data_path,
                        id = "id",
                        period = "period",
@@ -132,15 +132,24 @@ initiators <- function(data_path,
                        chunk_expansion = TRUE,
                        chunk_size = 500,
                        separate_files = FALSE,
-                       glm_function = "parglm",
+                       # CCS: Change default from parglm to glm
+                       glm_function = "glm",
                        quiet = FALSE) {
 
 
   # Check parameters
   if (isTRUE(separate_files) & case_control != 1) stop("Separate trial files without case-control sampling is not possible with initiators()")
-  if (!dir.exists(data_dir)) stop(paste0("Specified data_dir does not exist: ", data_dir))
-  if (!file.exists(data_path)) stop(paste0("Specified data_path does not exist: ", data_path))
+  # CCS
+  #if (!dir.exists(data_dir)) stop(paste0("Specified data_dir does not exist: ", data_dir))
+  #if (!file.exists(data_path)) stop(paste0("Specified data_path does not exist: ", data_path))
 
+
+  # CCS: Some basic checks
+  if (numCores != 1)
+    stop("CCS Modified Version: numCores must be 1")
+  if (case_control == 1)
+    stop("CCS Modified Verson: caseControl must be 0")
+  
   assert_flag(quiet)
 
   # Prepare variables, calculate weights and expand data
@@ -191,13 +200,16 @@ initiators <- function(data_path,
     quiet = quiet
   )
 
-  analysis_data_path <- prep_result$absolutePath
+  # CCS
+  # This used to return switch_data.csv
+  #analysis_data_path <- prep_result$absolutePath
 
   # Sampling contols ----------
-  if (prep_result$N >= 2^31 -1) {
-    warning("Expanded data is too large for model fitting. Case-control sampling will be applied.")
-    case_control <- 1
-  }
+  # CCS: Not supported
+  #if (prep_result$N >= 2^31 -1) {
+  #  warning("Expanded data is too large for model fitting. Case-control sampling will be applied.")
+  #  case_control <- 1
+  #}
 
   if (case_control == 1) {
     if (file.exists(file.path(data_dir, "temp_data.csv"))) file.remove(file.path(data_dir, "temp_data.csv"))
@@ -241,15 +253,15 @@ initiators <- function(data_path,
   } else {
     use_sample_weights <- FALSE
   }
-
-  # Splines ------
+ # Splines ------
   # Add splines to data if requested
-  add_splines(
-    data_path = analysis_data_path,
+  # CCS: Function now expects switch_data and returns modified version
+  switch_data <- add_splines(
+    #data_path = analysis_data_path,
+    prep_result$switch_data,
     period_spline = period_spline,
     followup_spline = followup_spline
   )
-
   # Fit final models and robust variance estimates
   model_full <- data_modelling(
     outcomeCov_var = outcomeCov_var,
@@ -271,12 +283,14 @@ initiators <- function(data_path,
     include_expansion_time_case = include_expansion_time_case,
     where_case = where_case,
     run_base_model = run_base_model,
-    absolutePath = analysis_data_path,
+    # CCS
+    #absolutePath = analysis_data_path,
     numCores = numCores,
     glm_function = glm_function,
     use_sample_weights = use_sample_weights,
-    quiet = quiet
+    quiet = quiet,
+    # CCS:
+    switch_data = switch_data
   )
-
   return(list(model = model_full))
 }
