@@ -4,14 +4,14 @@
 \alias{predict_survival}
 \title{Predict Cumulative Incidence}
 \usage{
-predict_survival(object, model, predict_followup, newdata)
+predict_survival(object, model, predict_times, newdata)
 }
 \arguments{
 \item{object}{The result from \code{initiators}. Either object or model must be specified.}
 
 \item{model}{A \code{glm} object.}
 
-\item{predict_followup}{a vector of follow up times to predict values for.}
+\item{predict_times}{a vector of follow up times to predict values for.}
 
 \item{newdata}{\code{data.frame} to predict survival for. Extracted from \code{model}/\code{object} if not provided.}
 }
@@ -21,4 +21,32 @@ equal to 0 and 1.
 }
 \description{
 Predict Cumulative Incidence
+}
+\examples{
+\donttest{
+data("trial_example")
+working_dir <- file.path(tempdir(),"trial_emu")
+dir.create(working_dir)
+data_path <- file.path(working_dir, "trial_example.csv")
+write.csv(trial_example, file=data_path)
+
+i <- initiators(
+  data_path = data_path,
+  id="id",
+  period = "period",
+  eligible = "eligible",
+  treatment = "treatment",
+  outcome = "outcome",
+  model_var = "assigned_treatment",
+  outcomeCov_var = c("catvarA", "catvarB", "catvarC","nvarA","nvarB","nvarC"),
+  outcomeClass = c("catvarA", "catvarB", "catvarC"),
+  numCores = 1,
+  data_dir = working_dir,
+  use_censor = 0,
+  use_weight = 0
+)
+
+predict_survival(i, predict_times = c(1,2,3,4,5))
+}
+
 }

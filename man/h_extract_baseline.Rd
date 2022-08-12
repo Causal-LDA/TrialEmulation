@@ -16,3 +16,6 @@ h_extract_baseline(trial_file, baseline_file, quiet = TRUE)
 \description{
 Extract Baseline Observations
 }
+\details{
+Reads \code{trial_file} and saves the observations with \code{followup_time == 0} to \code{baseline_file} csv.
+}
