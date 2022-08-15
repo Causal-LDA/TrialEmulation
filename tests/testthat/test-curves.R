@@ -32,20 +32,20 @@ test_that("h_extract_baseline works works as expected", {
 
 test_that("predict_survival works as expected", {
   data("trial_example")
-  working_dir <- file.path(tempdir(check = TRUE),"trial_emu")
+  working_dir <- file.path(tempdir(check = TRUE), "trial_emu")
   dir.create(working_dir)
   data_path <- file.path(working_dir, "trial_example.csv")
-  write.csv(trial_example, file=data_path)
+  write.csv(trial_example, file = data_path)
 
   object <- initiators(
     data_path = data_path,
-    id="id",
+    id = "id",
     period = "period",
     eligible = "eligible",
     treatment = "treatment",
     outcome = "outcome",
     model_var = "assigned_treatment",
-    outcomeCov_var = c("catvarA", "catvarB", "catvarC","nvarA","nvarB","nvarC"),
+    outcomeCov_var = c("catvarA", "catvarB", "catvarC", "nvarA", "nvarB", "nvarC"),
     outcomeClass = c("catvarA", "catvarB", "catvarC"),
     numCores = 1,
     data_dir = working_dir,
@@ -54,11 +54,12 @@ test_that("predict_survival works as expected", {
   )
   unlink(working_dir, recursive = TRUE)
 
-  result <- predict_survival(object, predict_times = c(1,2,3,4,5))
+  result <- predict_survival(object, predict_times = c(1, 2, 3, 4, 5))
   expect_equal(
     result,
-    list(trt_0 = c(0.0046116860163616, 0.00920812980216914, 0.0137893511435993, 0.0183553699381658, 0.022906168015916),
-         trt_1 = c(0.0040995719909165, 0.00818786323810003, 0.0122648798970051, 0.0163306282196357, 0.020385084310349)
+    list(
+      trt_0 = c(0.0046116860163616, 0.00920812980216914, 0.0137893511435993, 0.0183553699381658, 0.022906168015916),
+      trt_1 = c(0.0040995719909165, 0.00818786323810003, 0.0122648798970051, 0.0163306282196357, 0.020385084310349)
     )
   )
 })
