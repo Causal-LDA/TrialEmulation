@@ -19,10 +19,16 @@
     <loc>/index.html</loc>
   </url>
   <url>
+    <loc>/reference/CI_up_to.html</loc>
+  </url>
+  <url>
     <loc>/reference/RandomisedTrialsEmulation-package.html</loc>
   </url>
   <url>
     <loc>/reference/add_splines.html</loc>
+  </url>
+  <url>
+    <loc>/reference/assert_monotonic.html</loc>
   </url>
   <url>
     <loc>/reference/case_control_func.html</loc>
@@ -73,6 +79,9 @@
     <loc>/reference/for_period_func.html</loc>
   </url>
   <url>
+    <loc>/reference/h_extract_baseline.html</loc>
+  </url>
+  <url>
     <loc>/reference/h_quiet_print.html</loc>
   </url>
   <url>
@@ -91,10 +100,16 @@
     <loc>/reference/p99_weight.html</loc>
   </url>
   <url>
+    <loc>/reference/predict_survival.html</loc>
+  </url>
+  <url>
     <loc>/reference/read_data.html</loc>
   </url>
   <url>
     <loc>/reference/robust_calculation.html</loc>
+  </url>
+  <url>
+    <loc>/reference/sum_up_CI.html</loc>
   </url>
   <url>
     <loc>/reference/trial_example.html</loc>
