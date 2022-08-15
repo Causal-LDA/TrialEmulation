@@ -7,7 +7,8 @@
 sum_up_ci(p_mat_list)
 }
 \arguments{
-\item{p_mat_list}{A list of probability matrices with rows for each subject and followup time as the columns.}
+\item{p_mat_list}{A list of probability matrices with rows for each subject and followup time as the columns.
+All matrices must have the followup times (i.e. same number of columns).}
 }
 \value{
 A vector of cumulative incidences.

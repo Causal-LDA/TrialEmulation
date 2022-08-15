@@ -92,6 +92,7 @@ predict_survival <- function(object, model, predict_times, newdata) {
 #' Helper to Calculate CI
 #'
 #' @param p_mat_list A list of probability matrices with rows for each subject and followup time as the columns.
+#' All matrices must have the followup times (i.e. same number of columns).
 #'
 #' @return A vector of cumulative incidences.
 #' @export
@@ -134,7 +135,6 @@ sum_up_ci <- function(p_mat_list){
 #'  nrow = 2,
 #'  byrow = TRUE)
 #' ci_up_to(surv_prob)
-#' survival_up_to(surv_prob)
 ci_up_to <- function(p_mat){
   assert_matrix(p_mat, mode = "numeric")
 

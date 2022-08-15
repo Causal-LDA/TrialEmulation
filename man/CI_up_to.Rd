@@ -25,5 +25,4 @@ surv_prob <- matrix(
  nrow = 2,
  byrow = TRUE)
 ci_up_to(surv_prob)
-survival_up_to(surv_prob)
 }
