@@ -1,7 +1,9 @@
-^renv$
-^renv\.lock$
+.lintr
 ^.*\.Rproj$
 ^\.Rproj\.user$
 ^\.github$
-^testing$
+^\.pre-commit-config\.yaml$
 ^design$
+^renv$
+^renv\.lock$
+^testing$
