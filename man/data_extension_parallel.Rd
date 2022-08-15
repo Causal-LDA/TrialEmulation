@@ -32,11 +32,15 @@ data_extension_parallel(
 
 \item{last_period}{Last period value to expand about}
 
-\item{use_censor}{Use censoring for per-protocol analysis - censor person-times once a person-trial stops taking the initial treatment value}
+\item{use_censor}{Use censoring for per-protocol analysis - censor person-times once a person-trial stops taking the
+initial treatment value}
 
-\item{lag_p_nosw}{when 1 this will set the first weight to be 1 and use p_nosw_d and p_nosw_n at followup-time (t-1) for calculating the weights at followup-time t - can be set to 0 which will increase the maximum and variance of weights (Defaults to 1)}
+\item{lag_p_nosw}{when 1 this will set the first weight to be 1 and use \code{p_nosw_d} and \code{p_nosw_n}
+at followup-time (t-1) for calculating the weights at followup-time t - can be set to 0 which will increase
+the maximum and variance of weights (Defaults to 1).}
 
-\item{where_var}{Variables used in where conditions used in subsetting the data used in final analysis (where_case), the variables not included in the final model}
+\item{where_var}{Variables used in where conditions used in subsetting the data used in final analysis (where_case),
+the variables not included in the final model}
 
 \item{followup_spline}{The spline model for followup time when choose "spline" in the include_followup_time_case}
 

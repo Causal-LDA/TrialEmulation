@@ -2,7 +2,7 @@
 % Please edit documentation in R/data_preparation.R
 \name{data_preparation}
 \alias{data_preparation}
-\title{Data preparation Function}
+\title{Data Preparation Function}
 \usage{
 data_preparation(
   data_path,
@@ -90,13 +90,16 @@ data_preparation(
 
 \item{use_weight}{Use weights in analysis. If 0 then no weights will be calculated}
 
-\item{use_censor}{Use censoring for per-protocol analysis - censor person-times once a person-trial stops taking the initial treatment value}
+\item{use_censor}{Use censoring for per-protocol analysis - censor person-times once a person-trial stops taking
+the initial treatment value}
 
 \item{check_missing}{Check for missing values in final model when use_censor=1 (Not added yet!)}
 
 \item{cense}{Censoring variable}
 
-\item{pool_cense}{Pool the numerator and denominator models (0: split models by previous treatment Am1 = 0 and Am1 = 1 as in treatment models and 1: pool all observations together into a single numerator and denominator model) Defaults to 0}
+\item{pool_cense}{Pool the numerator and denominator models (0: split models by previous treatment \code{Am1 = 0}
+and Am1 = 1 as in treatment models and 1: pool all observations together into a single numerator and
+denominator model) Defaults to 0}
 
 \item{cov_censed}{List of covariates to be used in logistic model for censoring weights in denominator model}
 
@@ -110,31 +113,41 @@ data_preparation(
 
 \item{class_censen}{Class variables used in censoring logistic regression in numerator model}
 
-\item{include_followup_time_case}{The model to include follow up time in outcome model. This has 3 options c("linear","quadratic","spline").}
+\item{include_followup_time_case}{The model to include follow up time in outcome model.
+This has 3 options c("linear","quadratic","spline").}
 
-\item{include_expansion_time_case}{The model to include for_period in outcome model. This has 3 options c("linear","quadratic","spline")}
+\item{include_expansion_time_case}{The model to include for_period in outcome model.
+This has 3 options c("linear","quadratic","spline")}
 
-\item{followup_spline}{The parameters for spline model for followup time when choose "spline" in the include_followup_time_case (ex. list(df=2))}
+\item{followup_spline}{The parameters for spline model for followup time when choose "spline" in the
+include_followup_time_case (ex. list(df=2))}
 
-\item{period_spline}{The parameters for spline model for for_period when choose "spline" in the include_expansion_time_case (ex. list(df=3))}
+\item{period_spline}{The parameters for spline model for for_period when choose "spline" in the
+include_expansion_time_case (ex. list(df=3))}
 
-\item{include_regime_length}{If defined as 1 a new variable (time_on_regime) is added to dataset - This variable stores the duration of time that the patient has been on the current treatment value}
+\item{include_regime_length}{If defined as 1 a new variable (time_on_regime) is added to dataset.
+This variable stores the duration of time that the patient has been on the current treatment value}
 
 \item{eligible_wts_0}{Eligibility criteria used in weights for model condition Am1 = 0}
 
 \item{eligible_wts_1}{Eligibility criteria used in weights for model condition Am1 = 1}
 
-\item{lag_p_nosw}{When 1 this will set the first weight to be 1 and use p_nosw_d and p_nosw_n at followup-time (t-1) for calculating the weights at followup-time t - can be set to 0 which will increase the maximum and variance of weights (Defaults to 1)}
+\item{lag_p_nosw}{When 1 this will set the first weight to be 1 and use p_nosw_d and p_nosw_n at followup-time (t-1)
+for calculating the weights at followup-time t - can be set to 0 which will increase the maximum and variance
+of weights (Defaults to 1)}
 
-\item{where_var}{List of variables used in where conditions used in subsetting the data used in final analysis (where_case), the variables not included in the final model}
+\item{where_var}{List of variables used in where conditions used in subsetting the data used in final analysis
+(where_case), the variables not included in the final model}
 
 \item{data_dir}{Direction to save data}
 
 \item{numCores}{Number of cores for parallel programming (default value is maximum cores and parallel programming)}
 
-\item{chunk_expansion}{Do the expansion in chunks (and in parallel if numCores > 1). Turn this off if you have enough memory to expand the whole dataset at once. (default TRUE)}
+\item{chunk_expansion}{Do the expansion in chunks (and in parallel if numCores > 1). Turn this off if you have
+enough memory to expand the whole dataset at once. (default TRUE)}
 
-\item{chunk_size}{Number of ids to process at once for the chunk expansion (default 500). Larger chunk_sizes may be faster but require more memory.}
+\item{chunk_size}{Number of ids to process at once for the chunk expansion (default 500). Larger chunk_sizes may be
+faster but require more memory.}
 
 \item{separate_files}{Write to one file or one per trial (default FALSE)}
 
@@ -145,7 +158,8 @@ data_preparation()}
 This function prepare the data for modelling.
 }
 \details{
-The class variables paramers (\code{outcomeClass},\code{class_switchn},\code{class_switchd},\code{class_censen},\code{class_censed})
-can be given as a character vector which will construct factors using \code{as.factor} or as a named list with the arguments for factor
-eg \verb{list(risk_cat=list(levels = c(1,2,3,0), age_cat=list(levels=c(1,2,3),labels=c("50-60","60-70","70+")}
+The class variables parameters (\code{outcomeClass},\code{class_switchn},\code{class_switchd},\code{class_censen},
+\code{class_censed}) can be given as a character vector which will construct factors using \code{as.factor} or as a named list
+with the arguments for factor e.g.
+\verb{list(risk_cat=list(levels = c(1,2,3,0), age_cat=list(levels=c(1,2,3),labels=c("50-60","60-70","70+")}
 }

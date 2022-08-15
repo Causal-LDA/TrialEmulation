@@ -25,20 +25,20 @@ Predict Cumulative Incidence
 \examples{
 \donttest{
 data("trial_example")
-working_dir <- file.path(tempdir(),"trial_emu")
+working_dir <- file.path(tempdir(), "trial_emu")
 dir.create(working_dir)
 data_path <- file.path(working_dir, "trial_example.csv")
-write.csv(trial_example, file=data_path)
+write.csv(trial_example, file = data_path)
 
 i <- initiators(
   data_path = data_path,
-  id="id",
+  id = "id",
   period = "period",
   eligible = "eligible",
   treatment = "treatment",
   outcome = "outcome",
   model_var = "assigned_treatment",
-  outcomeCov_var = c("catvarA", "catvarB", "catvarC","nvarA","nvarB","nvarC"),
+  outcomeCov_var = c("catvarA", "catvarB", "catvarC", "nvarA", "nvarB", "nvarC"),
   outcomeClass = c("catvarA", "catvarB", "catvarC"),
   numCores = 1,
   data_dir = working_dir,
@@ -46,7 +46,7 @@ i <- initiators(
   use_weight = 0
 )
 
-predict_survival(i, predict_times = c(1,2,3,4,5))
+predict_survival(i, predict_times = c(1, 2, 3, 4, 5))
 }
 
 }

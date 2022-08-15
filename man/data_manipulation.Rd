@@ -80,13 +80,16 @@ data_manipulation(
 
 \item{use_weight}{Use weights in analysis. If 0 then no weights will be calculated}
 
-\item{use_censor}{Use censoring for per-protocol analysis - censor person-times once a person-trial stops taking the initial treatment value}
+\item{use_censor}{Use censoring for per-protocol analysis - censor person-times once a person-trial stops taking the
+initial treatment value}
 
-\item{check_missing}{Check for missing values in final model when use_censor=1 (Not added yet!)}
+\item{check_missing}{Check for missing values in final model when \code{use_censor=1} (Not added yet!)}
 
 \item{cense}{Censoring variable}
 
-\item{pool_cense}{Pool the numerator and denominator models (0: split models by previous treatment Am1 = 0 and Am1 = 1 as in treatment models and 1: pool all observations together into a single numerator and denominator model) Defaults to 0}
+\item{pool_cense}{Pool the numerator and denominator models (\code{0}: split models by previous treatment \code{Am1 = 0}
+and \code{Am1 = 1} as in treatment models and \code{1}: pool all observations together into a single numerator and denominator
+model) Defaults to \code{0}}
 
 \item{cov_censed}{List of covariates to be used in logistic model for censoring weights in denominator model}
 
@@ -100,22 +103,25 @@ data_manipulation(
 
 \item{class_censen}{Class variables used in censoring logistic regression in numerator model}
 
-\item{include_regime_length}{If defined as 1 a new variable (time_on_regime) is added to dataset - This variable stores the duration of time that the patient has been on the current treatment value}
+\item{include_regime_length}{If defined as \code{1} a new variable (time_on_regime) is added to dataset.
+This variable stores the duration of time that the patient has been on the current treatment value}
 
-\item{eligible_wts_0}{Eligibility criteria used in weights for model condition Am1 = 0}
+\item{eligible_wts_0}{Eligibility criteria used in weights for model condition \code{Am1 = 0}}
 
-\item{eligible_wts_1}{Eligibility criteria used in weights for model condition Am1 = 1}
+\item{eligible_wts_1}{Eligibility criteria used in weights for model condition \code{Am1 = 1}}
 
-\item{lag_p_nosw}{when 1 this will set the first weight to be 1 and use p_nosw_d and p_nosw_n at followup-time (t-1) for calculating the weights at followup-time t - can be set to 0 which will increase the maximum and variance of weights (Defaults to 1)}
+\item{lag_p_nosw}{when \code{1} this will set the first weight to be 1 and use \code{p_nosw_d} and \code{p_nosw_n} at followup-time
+(t-1) for calculating the weights at followup-time t.
+Can be set to \code{0} which will increase the maximum and variance of weights (Defaults to 1)}
 
-\item{where_var}{Variables used in where conditions used in subsetting the data used in final analysis (where_case), the variables not included in the final model}
+\item{where_var}{Variables used in where conditions used in subsetting the data used in final analysis (where_case),
+the variables not included in the final model}
 
 \item{data_dir}{Direction to save data}
 
 \item{numCores}{Number of cores to be used for fitting weights (passed to \code{weight_func})}
 
-\item{quiet}{Don't print progress messages.
-data_manipulation()}
+\item{quiet}{Don't print progress messages.}
 }
 \description{
 This function takes the data and all the variables and do the extension preprocess and weight calculation
