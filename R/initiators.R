@@ -244,7 +244,7 @@ initiators <- function(data_path,
 
   # Splines ------
   # Add splines to data if requested
-  add_splines(
+  spline_object <- add_splines(
     data_path = analysis_data_path,
     period_spline = period_spline,
     followup_spline = followup_spline
@@ -278,5 +278,27 @@ initiators <- function(data_path,
     quiet = quiet
   )
 
-  return(list(model = model_full))
-}
+  data_files <- list(
+    raw = data_path,
+    analysis = analysis_data_path
+  )
+
+  data_prep <- list(
+    splines = spline_object,
+    outcomeClass = outcomeClass,
+    class_switchn = class_switchn,
+    class_switchd = class_switchd,
+    class_censen = class_censen,
+    class_censed = class_censed
+    )
+
+  specification <- list(
+    data_files = data_files,
+    data_prep = data_prep
+  )
+
+  return(c(
+    model_full,
+    specification = specification
+  ))
+ }
