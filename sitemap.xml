@@ -19,9 +19,6 @@
     <loc>/index.html</loc>
   </url>
   <url>
-    <loc>/reference/CI_up_to.html</loc>
-  </url>
-  <url>
     <loc>/reference/RandomisedTrialsEmulation-package.html</loc>
   </url>
   <url>
@@ -47,6 +44,9 @@
   </url>
   <url>
     <loc>/reference/censor_func.html</loc>
+  </url>
+  <url>
+    <loc>/reference/ci_up_to.html</loc>
   </url>
   <url>
     <loc>/reference/data_extension.html</loc>
@@ -109,7 +109,7 @@
     <loc>/reference/robust_calculation.html</loc>
   </url>
   <url>
-    <loc>/reference/sum_up_CI.html</loc>
+    <loc>/reference/sum_up_ci.html</loc>
   </url>
   <url>
     <loc>/reference/trial_example.html</loc>

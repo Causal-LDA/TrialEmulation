@@ -100,11 +100,11 @@
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>data_address</dt>
-<dd><p>Address for data read with bigmemory</p></dd>
+<dd><p>Address for data read with <code>bigmemory</code></p></dd>
 
 
 <dt>data_path</dt>
-<dd><p>Path of the csv file</p></dd>
+<dd><p>Path of the <code>csv</code> file</p></dd>
 
 
 <dt>keeplist</dt>
@@ -140,7 +140,7 @@
 
 
 <dt>model_switchn</dt>
-<dd><p>List of models (functions) to use the covariates from cov_switchn</p></dd>
+<dd><p>List of models (functions) to use the covariates from <code>cov_switchn</code></p></dd>
 
 
 <dt>class_switchn</dt>
@@ -152,7 +152,7 @@
 
 
 <dt>model_switchd</dt>
-<dd><p>List of models (functions) to use the covariates from cov_switchd</p></dd>
+<dd><p>List of models (functions) to use the covariates from <code>cov_switchd</code></p></dd>
 
 
 <dt>class_switchd</dt>
@@ -172,11 +172,12 @@
 
 
 <dt>use_censor</dt>
-<dd><p>Use censoring for per-protocol analysis - censor person-times once a person-trial stops taking the initial treatment value</p></dd>
+<dd><p>Use censoring for per-protocol analysis - censor person-times once a person-trial stops taking the
+initial treatment value</p></dd>
 
 
 <dt>check_missing</dt>
-<dd><p>Check for missing values in final model when use_censor=1 (Not added yet!)</p></dd>
+<dd><p>Check for missing values in final model when <code>use_censor=1</code> (Not added yet!)</p></dd>
 
 
 <dt>cense</dt>
@@ -184,7 +185,9 @@
 
 
 <dt>pool_cense</dt>
-<dd><p>Pool the numerator and denominator models (0: split models by previous treatment Am1 = 0 and Am1 = 1 as in treatment models and 1: pool all observations together into a single numerator and denominator model) Defaults to 0</p></dd>
+<dd><p>Pool the numerator and denominator models (<code>0</code>: split models by previous treatment <code>Am1 = 0</code>
+and <code>Am1 = 1</code> as in treatment models and <code>1</code>: pool all observations together into a single numerator and denominator
+model) Defaults to <code>0</code></p></dd>
 
 
 <dt>cov_censed</dt>
@@ -192,7 +195,7 @@
 
 
 <dt>model_censed</dt>
-<dd><p>List of models (functions) to use the covariates from cov_censed</p></dd>
+<dd><p>List of models (functions) to use the covariates from <code>cov_censed</code></p></dd>
 
 
 <dt>class_censed</dt>
@@ -204,7 +207,7 @@
 
 
 <dt>model_censen</dt>
-<dd><p>List of models (functions) to use the covariates from cov_censen</p></dd>
+<dd><p>List of models (functions) to use the covariates from <code>cov_censen</code></p></dd>
 
 
 <dt>class_censen</dt>
@@ -212,23 +215,27 @@
 
 
 <dt>include_regime_length</dt>
-<dd><p>If defined as 1 a new variable (time_on_regime) is added to dataset - This variable stores the duration of time that the patient has been on the current treatment value</p></dd>
+<dd><p>If defined as <code>1</code> a new variable (<code>time_on_regime</code>) is added to dataset.
+This variable stores the duration of time that the patient has been on the current treatment value</p></dd>
 
 
 <dt>eligible_wts_0</dt>
-<dd><p>Eligibility criteria used in weights for model condition Am1 = 0</p></dd>
+<dd><p>Eligibility criteria used in weights for model condition <code>Am1 = 0</code></p></dd>
 
 
 <dt>eligible_wts_1</dt>
-<dd><p>Eligibility criteria used in weights for model condition Am1 = 1</p></dd>
+<dd><p>Eligibility criteria used in weights for model condition <code>Am1 = 1</code></p></dd>
 
 
 <dt>lag_p_nosw</dt>
-<dd><p>when 1 this will set the first weight to be 1 and use p_nosw_d and p_nosw_n at followup-time (t-1) for calculating the weights at followup-time t - can be set to 0 which will increase the maximum and variance of weights (Defaults to 1)</p></dd>
+<dd><p>when <code>1</code> this will set the first weight to be 1 and use <code>p_nosw_d</code> and <code>p_nosw_n</code> at follow-up time
+(t-1) for calculating the weights at follow-up time t.
+Can be set to <code>0</code> which will increase the maximum and variance of weights (Defaults to 1)</p></dd>
 
 
 <dt>where_var</dt>
-<dd><p>Variables used in where conditions used in subsetting the data used in final analysis (where_case), the variables not included in the final model</p></dd>
+<dd><p>Variables used in where conditions used in subsetting the data
+used in final analysis (<code>where_case</code>), the variables are not included in the final model.</p></dd>
 
 
 <dt>data_dir</dt>
@@ -240,8 +247,7 @@
 
 
 <dt>quiet</dt>
-<dd><p>Don't print progress messages.
-data_manipulation()</p></dd>
+<dd><p>Don't print progress messages.</p></dd>
 
 </dl></div>
 

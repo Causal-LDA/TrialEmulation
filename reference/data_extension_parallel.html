@@ -78,7 +78,7 @@
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>data_address</dt>
-<dd><p>Address for data read with bigmemory</p></dd>
+<dd><p>Address for data read with <code>bigmemory</code></p></dd>
 
 
 <dt>keeplist</dt>
@@ -98,23 +98,27 @@
 
 
 <dt>use_censor</dt>
-<dd><p>Use censoring for per-protocol analysis - censor person-times once a person-trial stops taking the initial treatment value</p></dd>
+<dd><p>Use censoring for per-protocol analysis - censor person-times once a person-trial stops taking the
+initial treatment value</p></dd>
 
 
 <dt>lag_p_nosw</dt>
-<dd><p>when 1 this will set the first weight to be 1 and use p_nosw_d and p_nosw_n at followup-time (t-1) for calculating the weights at followup-time t - can be set to 0 which will increase the maximum and variance of weights (Defaults to 1)</p></dd>
+<dd><p>when 1 this will set the first weight to be 1 and use <code>p_nosw_d</code> and <code>p_nosw_n</code>
+at follow-up time (t-1) for calculating the weights at follow-up time t - can be set to 0 which will increase
+the maximum and variance of weights (Defaults to 1).</p></dd>
 
 
 <dt>where_var</dt>
-<dd><p>Variables used in where conditions used in subsetting the data used in final analysis (where_case), the variables not included in the final model</p></dd>
+<dd><p>Variables used in where conditions used in subsetting the data used in final analysis (where_case),
+the variables not included in the final model</p></dd>
 
 
 <dt>followup_spline</dt>
-<dd><p>The spline model for followup time when choose "spline" in the include_followup_time_case</p></dd>
+<dd><p>The spline model for <code>followup_time</code> when <code>include_followup_time_case = "spline"</code></p></dd>
 
 
 <dt>period_spline</dt>
-<dd><p>The spline model for for_period when choose "spline" in the include_expansion_time_case</p></dd>
+<dd><p>The spline model for <code>for_period</code> when <code>include_expansion_time_case = "spline"</code></p></dd>
 
 
 <dt>data_dir</dt>
@@ -130,8 +134,7 @@
 
 
 <dt>separate_files</dt>
-<dd><p>Write to one file or one per trial (default FALSE)
-data_extension_parallel()</p></dd>
+<dd><p>Write to one file or one per trial (default FALSE)</p></dd>
 
 </dl></div>
 
