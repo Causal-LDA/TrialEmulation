@@ -18,14 +18,20 @@ Helper to Calculate CI
 }
 \examples{
 surv_prob_list <- list(
- trial_1 = matrix(
-  c(0.1, 0.1, 0.1,
-   0.5, 0.2, 0.1),
-  nrow = 2, byrow = TRUE),
- trial_2 = matrix(
- c(0.15, 0.15, 0.15,
-  0.45, 0.25, 0.1),
-  nrow = 2, byrow = TRUE)
+  trial_1 = matrix(
+    c(
+      0.1, 0.1, 0.1,
+      0.5, 0.2, 0.1
+    ),
+    nrow = 2, byrow = TRUE
+  ),
+  trial_2 = matrix(
+    c(
+      0.15, 0.15, 0.15,
+      0.45, 0.25, 0.1
+    ),
+    nrow = 2, byrow = TRUE
+  )
 )
 sum_up_ci(surv_prob_list)
 }

@@ -1,6 +1,6 @@
 #' `RandomisedTrialsEmulation` Package
 #'
-#' `RandomisedTrialsEmulation` facilitates preprocessing and analyzing observational data
+#' `RandomisedTrialsEmulation` facilitates preprocessing and analysing observational data
 #' an emulated a randomised trial.
 "_PACKAGE"
 

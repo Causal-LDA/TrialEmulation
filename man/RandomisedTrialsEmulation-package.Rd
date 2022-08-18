@@ -6,7 +6,7 @@
 \alias{RandomisedTrialsEmulation-package}
 \title{\code{RandomisedTrialsEmulation} Package}
 \description{
-\code{RandomisedTrialsEmulation} facilitates preprocessing and analyzing observational data
+\code{RandomisedTrialsEmulation} facilitates preprocessing and analysing observational data
 an emulated a randomised trial.
 }
 \author{

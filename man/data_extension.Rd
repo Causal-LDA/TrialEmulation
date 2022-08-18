@@ -5,7 +5,7 @@
 \title{Data Extension Function}
 \usage{
 data_extension(
-  data_path,
+  sw_data,
   keeplist,
   outcomeCov_var = NA,
   first_period = NA,
@@ -16,12 +16,11 @@ data_extension(
   followup_spline = NA,
   period_spline = NA,
   data_dir = "~/rds/hpc-work/",
-  separate_files = FALSE,
-  sw_data
+  separate_files = FALSE
 )
 }
 \arguments{
-\item{data_path}{data path}
+\item{sw_data}{A \code{data.frame} or similar}
 
 \item{keeplist}{A list contains names of variables used in final model}
 
@@ -31,23 +30,25 @@ data_extension(
 
 \item{last_period}{Last period value to expand about}
 
-\item{use_censor}{Use censoring for per-protocol analysis - censor person-times once a person-trial stops taking the initial treatment value}
+\item{use_censor}{Use censoring for per-protocol analysis - censor person-times once a person-trial stops
+taking the initial treatment value}
 
-\item{lag_p_nosw}{when 1 this will set the first weight to be 1 and use p_nosw_d and p_nosw_n at followup-time (t-1) for calculating the weights at followup-time t - can be set to 0 which will increase the maximum and variance of weights (Defaults to 1)}
+\item{lag_p_nosw}{when 1 this will set the first weight to be 1 and use \code{p_nosw_d} and \code{p_nosw_n} at
+follow-up time (t-1) for calculating the weights at follow-up time t - can be set to 0 which will increase
+the maximum and variance of weights (Defaults to 1)}
 
-\item{where_var}{Variables used in where conditions used in subsetting the data used in final analysis (where_case), the variables not included in the final model}
+\item{where_var}{Variables used in where conditions used in subsetting the data used in final
+analysis (\code{where_case}), the variables are not included in the final model.}
 
-\item{followup_spline}{The spline model for followup time when choose "spline" in the include_followup_time_case}
+\item{followup_spline}{The spline model for follow-up time when \code{include_followup_time_case = "spline"}}
 
-\item{period_spline}{The spline model for for_period when choose "spline" in the include_expansion_time_case}
+\item{period_spline}{The spline model for \code{for_period} when choose \code{include_expansion_time_case = "spline"}}
 
 \item{data_dir}{Direction to save data}
 
-\item{separate_files}{Write to one file or one per trial (default FALSE)
+\item{separate_files}{Write to one file or one per trial (default \code{FALSE})
 data_extension()}
-
-\item{sw_data}{A data.frame or similar}
 }
 \description{
-This function takes the data and all the variables and expand it
+Expands the longitudinal data into a sequence of trials.
 }

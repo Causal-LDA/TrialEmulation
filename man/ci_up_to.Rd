@@ -20,9 +20,12 @@ Calculate Cumulative Incidence and Survival
 }
 \examples{
 surv_prob <- matrix(
- c(0.1, 0.1, 0.1,
-   0.5, 0.2, 0.1),
- nrow = 2,
- byrow = TRUE)
+  c(
+    0.1, 0.1, 0.1,
+    0.5, 0.2, 0.1
+  ),
+  nrow = 2,
+  byrow = TRUE
+)
 ci_up_to(surv_prob)
 }
