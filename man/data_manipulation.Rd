@@ -44,9 +44,9 @@ data_manipulation(
 )
 }
 \arguments{
-\item{data_address}{Address for data read with bigmemory}
+\item{data_address}{Address for data read with \code{bigmemory}}
 
-\item{data_path}{Path of the csv file}
+\item{data_path}{Path of the \code{csv} file}
 
 \item{keeplist}{A list contains names of variables used in final model}
 
@@ -64,13 +64,13 @@ data_manipulation(
 
 \item{cov_switchn}{List of covariates to be used in logistic model for switching probabilities for numerator model}
 
-\item{model_switchn}{List of models (functions) to use the covariates from cov_switchn}
+\item{model_switchn}{List of models (functions) to use the covariates from \code{cov_switchn}}
 
 \item{class_switchn}{Class variables used in logistic model for nominator model}
 
 \item{cov_switchd}{List of covariates to be used in logistic model for switching probabilities for denominator model}
 
-\item{model_switchd}{List of models (functions) to use the covariates from cov_switchd}
+\item{model_switchd}{List of models (functions) to use the covariates from \code{cov_switchd}}
 
 \item{class_switchd}{Class variables used in logistic model for denominator model}
 
@@ -93,29 +93,29 @@ model) Defaults to \code{0}}
 
 \item{cov_censed}{List of covariates to be used in logistic model for censoring weights in denominator model}
 
-\item{model_censed}{List of models (functions) to use the covariates from cov_censed}
+\item{model_censed}{List of models (functions) to use the covariates from \code{cov_censed}}
 
 \item{class_censed}{Class variables used in censoring logistic regression in denominator model}
 
 \item{cov_censen}{List of covariates to be used in logistic model for censoring weights in numerator model}
 
-\item{model_censen}{List of models (functions) to use the covariates from cov_censen}
+\item{model_censen}{List of models (functions) to use the covariates from \code{cov_censen}}
 
 \item{class_censen}{Class variables used in censoring logistic regression in numerator model}
 
-\item{include_regime_length}{If defined as \code{1} a new variable (time_on_regime) is added to dataset.
+\item{include_regime_length}{If defined as \code{1} a new variable (\code{time_on_regime}) is added to dataset.
 This variable stores the duration of time that the patient has been on the current treatment value}
 
 \item{eligible_wts_0}{Eligibility criteria used in weights for model condition \code{Am1 = 0}}
 
 \item{eligible_wts_1}{Eligibility criteria used in weights for model condition \code{Am1 = 1}}
 
-\item{lag_p_nosw}{when \code{1} this will set the first weight to be 1 and use \code{p_nosw_d} and \code{p_nosw_n} at followup-time
-(t-1) for calculating the weights at followup-time t.
+\item{lag_p_nosw}{when \code{1} this will set the first weight to be 1 and use \code{p_nosw_d} and \code{p_nosw_n} at follow-up time
+(t-1) for calculating the weights at follow-up time t.
 Can be set to \code{0} which will increase the maximum and variance of weights (Defaults to 1)}
 
-\item{where_var}{Variables used in where conditions used in subsetting the data used in final analysis (where_case),
-the variables not included in the final model}
+\item{where_var}{Variables used in where conditions used in subsetting the data
+used in final analysis (\code{where_case}), the variables are not included in the final model.}
 
 \item{data_dir}{Direction to save data}
 

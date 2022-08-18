@@ -1,8 +1,8 @@
 #' Data Manipulation Function
 #'
 #' This function takes the data and all the variables and do the extension preprocess and weight calculation
-#' @param data_address Address for data read with bigmemory
-#' @param data_path Path of the csv file
+#' @param data_address Address for data read with `bigmemory`
+#' @param data_path Path of the `csv` file
 #' @param keeplist A list contains names of variables used in final model
 #' @param treatment Name of the data column for treatment feature Defaults to treatment
 #' @param id Name of the data column for id feature Defaults to id
@@ -11,10 +11,10 @@
 #' @param eligible Indicator of whether or not an observation is eligible to be expanded about Defaults to eligible
 #' @param outcomeCov_var A list of individual baseline variables used in final model
 #' @param cov_switchn List of covariates to be used in logistic model for switching probabilities for numerator model
-#' @param model_switchn List of models (functions) to use the covariates from cov_switchn
+#' @param model_switchn List of models (functions) to use the covariates from `cov_switchn`
 #' @param class_switchn Class variables used in logistic model for nominator model
 #' @param cov_switchd List of covariates to be used in logistic model for switching probabilities for denominator model
-#' @param model_switchd List of models (functions) to use the covariates from cov_switchd
+#' @param model_switchd List of models (functions) to use the covariates from `cov_switchd`
 #' @param class_switchd Class variables used in logistic model for denominator model
 #' @param first_period First period value to start expanding about
 #' @param last_period Last period value to expand about
@@ -27,20 +27,20 @@
 #'  and `Am1 = 1` as in treatment models and `1`: pool all observations together into a single numerator and denominator
 #'  model) Defaults to `0`
 #' @param cov_censed List of covariates to be used in logistic model for censoring weights in denominator model
-#' @param model_censed List of models (functions) to use the covariates from cov_censed
+#' @param model_censed List of models (functions) to use the covariates from `cov_censed`
 #' @param class_censed Class variables used in censoring logistic regression in denominator model
 #' @param cov_censen List of covariates to be used in logistic model for censoring weights in numerator model
-#' @param model_censen List of models (functions) to use the covariates from cov_censen
+#' @param model_censen List of models (functions) to use the covariates from `cov_censen`
 #' @param class_censen Class variables used in censoring logistic regression in numerator model
-#' @param include_regime_length If defined as `1` a new variable (time_on_regime) is added to dataset.
+#' @param include_regime_length If defined as `1` a new variable (`time_on_regime`) is added to dataset.
 #'  This variable stores the duration of time that the patient has been on the current treatment value
 #' @param eligible_wts_0 Eligibility criteria used in weights for model condition `Am1 = 0`
 #' @param eligible_wts_1 Eligibility criteria used in weights for model condition `Am1 = 1`
-#' @param lag_p_nosw when `1` this will set the first weight to be 1 and use `p_nosw_d` and `p_nosw_n` at followup-time
-#'  (t-1) for calculating the weights at followup-time t.
+#' @param lag_p_nosw when `1` this will set the first weight to be 1 and use `p_nosw_d` and `p_nosw_n` at follow-up time
+#'  (t-1) for calculating the weights at follow-up time t.
 #'  Can be set to `0` which will increase the maximum and variance of weights (Defaults to 1)
-#' @param where_var Variables used in where conditions used in subsetting the data used in final analysis (where_case),
-#'  the variables not included in the final model
+#' @param where_var Variables used in where conditions used in subsetting the data
+#'  used in final analysis (`where_case`), the variables are not included in the final model.
 #' @param data_dir Direction to save data
 #' @param numCores Number of cores to be used for fitting weights (passed to `weight_func`)
 #' @param quiet Don't print progress messages.
@@ -84,13 +84,13 @@ data_manipulation <- function(data_address, data_path, keeplist,
   len_id <- length(unique(datatable[, id]))
 
   datatable[, after_eligibility := period >= .SD[eligible == 1, min(period, Inf)], by = id]
-  if (any(datatable$after_eligibitliy == FALSE)) {
+  if (any(datatable[, "after_eligibility"] == FALSE)) {
     warning("Observations before trial eligibility were removed")
     datatable <- datatable[after_eligibility == TRUE]
   }
 
   datatable[, after_event := period > .SD[outcome == 1, min(period, Inf)], by = id]
-  if (any(datatable$after_event == TRUE)) {
+  if (any(datatable[, "after_event"] == TRUE)) {
     warning("Observations after the outcome occured were removed")
     datatable <- datatable[after_event == FALSE] # keep all which are _not_ after the outcome event
   }
@@ -167,7 +167,7 @@ data_manipulation <- function(data_address, data_path, keeplist,
 #' Data Extension in Parallel Function
 #'
 #' This function takes the data and all the variables and expand it using parallel computing
-#' @param data_address Address for data read with bigmemory
+#' @param data_address Address for data read with `bigmemory`
 #' @param keeplist A list contains names of variables used in final model
 #' @param outcomeCov_var A list of individual baseline variables used in final model
 #' @param first_period First period value to start expanding about
@@ -175,17 +175,16 @@ data_manipulation <- function(data_address, data_path, keeplist,
 #' @param use_censor Use censoring for per-protocol analysis - censor person-times once a person-trial stops taking the
 #' initial treatment value
 #' @param lag_p_nosw when 1 this will set the first weight to be 1 and use `p_nosw_d` and `p_nosw_n`
-#'  at followup-time (t-1) for calculating the weights at followup-time t - can be set to 0 which will increase
+#'  at follow-up time (t-1) for calculating the weights at follow-up time t - can be set to 0 which will increase
 #'  the maximum and variance of weights (Defaults to 1).
 #' @param where_var Variables used in where conditions used in subsetting the data used in final analysis (where_case),
 #'  the variables not included in the final model
-#' @param followup_spline The spline model for followup time when choose "spline" in the include_followup_time_case
-#' @param period_spline The spline model for for_period when choose "spline" in the include_expansion_time_case
+#' @param followup_spline The spline model for `followup_time` when `include_followup_time_case = "spline"`
+#' @param period_spline The spline model for `for_period` when `include_expansion_time_case = "spline"`
 #' @param data_dir Direction to save data
 #' @param numCores Number of cores for parallel programming
 #' @param chunk_size Number of ids to expand in each chunk
 #' @param separate_files Write to one file or one per trial (default FALSE)
-#' data_extension_parallel()
 
 data_extension_parallel <- function(data_address, keeplist, outcomeCov_var = NA,
                                     first_period = NA, last_period = NA,
@@ -212,7 +211,7 @@ data_extension_parallel <- function(data_address, keeplist, outcomeCov_var = NA,
   } else if (is.data.frame(data_address)) {
     all_ids <- unique(data_address$id)
   } else {
-    stop("Unknown data_adress object!")
+    stop("Unknown data_address object!")
   }
 
   j <- split(all_ids, ceiling(seq_along(all_ids) / chunk_size))
@@ -242,8 +241,9 @@ data_extension_parallel <- function(data_address, keeplist, outcomeCov_var = NA,
 
 #' Data Extension Function
 #'
-#' This function takes the data and all the variables and expand it
-#' @param sw_data A data.frame or similar
+#' Expands the longitudinal data into a sequence of trials.
+#'
+#' @param sw_data A `data.frame` or similar
 #' @param keeplist A list contains names of variables used in final model
 #' @param outcomeCov_var A list of individual baseline variables used in final model
 #' @param first_period First period value to start expanding about
@@ -251,14 +251,14 @@ data_extension_parallel <- function(data_address, keeplist, outcomeCov_var = NA,
 #' @param use_censor Use censoring for per-protocol analysis - censor person-times once a person-trial stops
 #'  taking the initial treatment value
 #' @param lag_p_nosw when 1 this will set the first weight to be 1 and use `p_nosw_d` and `p_nosw_n` at
-#' followup-time (t-1) for calculating the weights at followup-time t - can be set to 0 which will increase
+#' follow-up time (t-1) for calculating the weights at follow-up time t - can be set to 0 which will increase
 #'  the maximum and variance of weights (Defaults to 1)
-#' @param where_var Variables used in where conditions used in subsetting the data used in final analysis (where_case),
-#' the variables not included in the final model
-#' @param followup_spline The spline model for followup time when choose "spline" in the include_followup_time_case
-#' @param period_spline The spline model for for_period when choose "spline" in the include_expansion_time_case
+#' @param where_var Variables used in where conditions used in subsetting the data used in final
+#'  analysis (`where_case`), the variables are not included in the final model.
+#' @param followup_spline The spline model for follow-up time when `include_followup_time_case = "spline"`
+#' @param period_spline The spline model for `for_period` when choose `include_expansion_time_case = "spline"`
 #' @param data_dir Direction to save data
-#' @param separate_files Write to one file or one per trial (default FALSE)
+#' @param separate_files Write to one file or one per trial (default `FALSE`)
 #' data_extension()
 
 data_extension <- function(sw_data, keeplist, outcomeCov_var = NA,

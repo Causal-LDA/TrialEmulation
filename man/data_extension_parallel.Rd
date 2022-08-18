@@ -22,7 +22,7 @@ data_extension_parallel(
 )
 }
 \arguments{
-\item{data_address}{Address for data read with bigmemory}
+\item{data_address}{Address for data read with \code{bigmemory}}
 
 \item{keeplist}{A list contains names of variables used in final model}
 
@@ -36,15 +36,15 @@ data_extension_parallel(
 initial treatment value}
 
 \item{lag_p_nosw}{when 1 this will set the first weight to be 1 and use \code{p_nosw_d} and \code{p_nosw_n}
-at followup-time (t-1) for calculating the weights at followup-time t - can be set to 0 which will increase
+at follow-up time (t-1) for calculating the weights at follow-up time t - can be set to 0 which will increase
 the maximum and variance of weights (Defaults to 1).}
 
 \item{where_var}{Variables used in where conditions used in subsetting the data used in final analysis (where_case),
 the variables not included in the final model}
 
-\item{followup_spline}{The spline model for followup time when choose "spline" in the include_followup_time_case}
+\item{followup_spline}{The spline model for \code{followup_time} when \code{include_followup_time_case = "spline"}}
 
-\item{period_spline}{The spline model for for_period when choose "spline" in the include_expansion_time_case}
+\item{period_spline}{The spline model for \code{for_period} when \code{include_expansion_time_case = "spline"}}
 
 \item{data_dir}{Direction to save data}
 
@@ -52,8 +52,7 @@ the variables not included in the final model}
 
 \item{chunk_size}{Number of ids to expand in each chunk}
 
-\item{separate_files}{Write to one file or one per trial (default FALSE)
-data_extension_parallel()}
+\item{separate_files}{Write to one file or one per trial (default FALSE)}
 }
 \description{
 This function takes the data and all the variables and expand it using parallel computing

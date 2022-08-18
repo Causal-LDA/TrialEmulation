@@ -16,7 +16,10 @@ Authors@R: c(
                role = "aut",
                email = "li.su@mrc-bsu.cam.ac.uk")
      )
-Description: This R package is is designed to estimate intention-to-treat and per-protocol effects in emulated trials using electronic health records. The package applies the randomized clinical trials design and analysis to an observational setting.
+Description: This R package is is designed to estimate intention-to-treat and
+ per-protocol effects in emulated trials using electronic health records. The
+ package applies the randomized clinical trials design and analysis to an 
+ observational setting.
 License: GPL (>= 3)
 Encoding: UTF-8
 LazyData: true
@@ -45,3 +48,4 @@ VignetteBuilder: knitr
 Depends: 
     R (>= 3.5.0)
 Config/testthat/edition: 3
+Language: en-GB
