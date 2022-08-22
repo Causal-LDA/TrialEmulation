@@ -1,19 +1,17 @@
 # data_preparation ----
 test_that("data_preparation works as expected", {
   working_dir <- tempdir(check = TRUE)
-  data_path <- file.path(working_dir, "trial_example.csv")
-  data.table::fwrite(trial_example, data_path)
 
   result <- data_preparation(
-    data_path = data_path,
+    data = trial_example,
     data_dir = working_dir,
-    id="id",
+    id = "id",
     period = "period",
     eligible = "eligible",
     treatment = "treatment",
     outcome = "outcome",
     model_var = "assigned_treatment",
-    outcomeCov_var = c("catvarA", "catvarB", "catvarC","nvarA","nvarB","nvarC"),
+    outcomeCov_var = c("catvarA", "catvarB", "catvarC", "nvarA", "nvarB", "nvarC"),
     numCores = 1
   )
 
@@ -36,14 +34,12 @@ test_that("data_preparation works as expected", {
 # data_preparation ----
 test_that("data_preparation can be quiet", {
   working_dir <- tempdir(check = TRUE)
-  data_path <- file.path(working_dir, "trial_example.csv")
-  data.table::fwrite(trial_example, data_path)
 
   expect_silent(
     result <- data_preparation(
-      data_path = data_path,
+      data = trial_example,
       data_dir = working_dir,
-      id="id",
+      id = "id",
       period = "period",
       eligible = "eligible",
       treatment = "treatment",

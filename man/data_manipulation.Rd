@@ -5,9 +5,7 @@
 \title{Data Manipulation Function}
 \usage{
 data_manipulation(
-  data_address,
-  data_path,
-  keeplist,
+  data,
   treatment = "treatment",
   id = "id",
   period = "period",
@@ -44,11 +42,7 @@ data_manipulation(
 )
 }
 \arguments{
-\item{data_address}{Address for data read with \code{bigmemory}}
-
-\item{data_path}{Path of the \code{csv} file}
-
-\item{keeplist}{A list contains names of variables used in final model}
+\item{data}{A \code{data.frame} containing all the required columns.}
 
 \item{treatment}{Name of the data column for treatment feature Defaults to treatment}
 
@@ -124,5 +118,5 @@ used in final analysis (\code{where_case}), the variables are not included in th
 \item{quiet}{Don't print progress messages.}
 }
 \description{
-This function takes the data and all the variables and do the extension preprocess and weight calculation
+This function takes the data and all the variables and does the extension preprocessing and weight calculation.
 }

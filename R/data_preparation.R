@@ -1,7 +1,7 @@
 #' Data Preparation Function
 #'
 #' This function prepare the data for modelling.
-#' @param data_path The path to csv file
+#' @param data A `data.frame` containing all the required columns.
 #' @param id Name of the data column for id feature Defaults to id
 #' @param period Name of the data column for period feature Defaults to period
 #' @param treatment Name of the data column for treatment feature Defaults to treatment
@@ -65,7 +65,7 @@
 #' `class_censed`) can be given as a character vector which will construct factors using `as.factor` or as a named list
 #' with the arguments for factor e.g.
 #' `list(risk_cat=list(levels = c(1,2,3,0), age_cat=list(levels=c(1,2,3),labels=c("50-60","60-70","70+")`
-data_preparation <- function(data_path,
+data_preparation <- function(data,
                              id = "id",
                              period = "period",
                              treatment = "treatment",
@@ -199,10 +199,6 @@ data_preparation <- function(data_path,
     numCores <- 1
   }
 
-
-  if (!file.exists(data_path)) stop(paste0("'data_path' file not found: ", data_path))
-  absolutePath <- normalizePath(data_path)
-
   keeplist <- c(
     "id", "for_period", "followup_time", "outcome",
     "weight", "treatment"
@@ -246,7 +242,7 @@ data_preparation <- function(data_path,
   h_quiet_print(quiet, "Start data manipulation")
   timing <- system.time({
     sw_data <- data_manipulation(
-      NA, absolutePath, keeplist,
+      data,
       treatment, id, period, outcome, eligible,
       outcomeCov_var,
       cov_switchn, model_switchn, class_switchn,

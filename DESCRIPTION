@@ -36,7 +36,7 @@ Imports:
     doParallel,
     foreach,
     sandwich,
-    broom,
+    broom (>= 0.7.10),
     assertthat,
     checkmate
 Suggests: 

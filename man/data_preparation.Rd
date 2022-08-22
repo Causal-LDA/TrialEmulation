@@ -5,7 +5,7 @@
 \title{Data Preparation Function}
 \usage{
 data_preparation(
-  data_path,
+  data,
   id = "id",
   period = "period",
   treatment = "treatment",
@@ -52,7 +52,7 @@ data_preparation(
 )
 }
 \arguments{
-\item{data_path}{The path to csv file}
+\item{data}{A \code{data.frame} containing all the required columns.}
 
 \item{id}{Name of the data column for id feature Defaults to id}
 

@@ -31,14 +31,10 @@ test_that("h_extract_baseline works works as expected", {
 })
 
 test_that("predict_survival works as expected", {
-  data("trial_example")
-  working_dir <- file.path(tempdir(check = TRUE), "trial_emu")
-  dir.create(working_dir)
-  data_path <- file.path(working_dir, "trial_example.csv")
-  write.csv(trial_example, file = data_path)
+  temp_dir <- tempdir(check = TRUE)
 
   object <- initiators(
-    data_path = data_path,
+    data = RandomisedTrialsEmulation::trial_example,
     id = "id",
     period = "period",
     eligible = "eligible",
@@ -48,11 +44,11 @@ test_that("predict_survival works as expected", {
     outcomeCov_var = c("catvarA", "catvarB", "catvarC", "nvarA", "nvarB", "nvarC"),
     outcomeClass = c("catvarA", "catvarB", "catvarC"),
     numCores = 1,
-    data_dir = working_dir,
+    data_dir = temp_dir,
     use_censor = 0,
     use_weight = 0
   )
-  unlink(working_dir, recursive = TRUE)
+  unlink(temp_dir, recursive = TRUE)
 
   result <- predict_survival(object, predict_times = c(1, 2, 3, 4, 5))
   expect_equal(
