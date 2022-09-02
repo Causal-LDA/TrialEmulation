@@ -33,7 +33,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">RandomisedTrialsEmulation</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.1.3</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.1.9</span>
       </span>
     </div>
 
@@ -107,39 +107,40 @@
 <code class="sourceCode R"><span><span class="co"># Prepare the example data</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"trial_example"</span><span class="op">)</span></span>
 <span></span>
-<span><span class="co"># for the purposes of the vignette, we use a temporary directory, however it may be useful to use a permanent location in order to inspect the outputs later</span></span>
-<span><span class="va">working_dir</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span>,<span class="st">"trial_emu"</span><span class="op">)</span> </span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/files2.html" class="external-link">dir.create</a></span><span class="op">(</span><span class="va">working_dir</span><span class="op">)</span></span>
-<span><span class="va">data_path</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">working_dir</span>, <span class="st">"trial_example.csv"</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/utils/write.table.html" class="external-link">write.csv</a></span><span class="op">(</span><span class="va">trial_example</span>, file<span class="op">=</span><span class="va">data_path</span><span class="op">)</span></span></code></pre></div>
+<span><span class="co"># for the purposes of the vignette, we use a temporary directory, however it may be useful to use a permanent location</span></span>
+<span><span class="co"># in order to inspect the outputs later</span></span>
+<span><span class="va">working_dir</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span>, <span class="st">"trial_emu"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/files2.html" class="external-link">dir.create</a></span><span class="op">(</span><span class="va">working_dir</span><span class="op">)</span></span></code></pre></div>
 <p>Call the <code><a href="../reference/initiators.html">initiators()</a></code> function to run the complete analysis:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">result</span> <span class="op">&lt;-</span></span>
-<span>  <span class="fu"><a href="../reference/initiators.html">initiators</a></span><span class="op">(</span>data_path <span class="op">=</span> <span class="va">data_path</span>,</span>
-<span>             id<span class="op">=</span><span class="st">"id"</span>,</span>
-<span>             period <span class="op">=</span> <span class="st">"period"</span>,</span>
-<span>             eligible <span class="op">=</span> <span class="st">"eligible"</span>,</span>
-<span>             treatment <span class="op">=</span> <span class="st">"treatment"</span>,</span>
-<span>             outcome <span class="op">=</span> <span class="st">"outcome"</span>,</span>
-<span>             model_var <span class="op">=</span> <span class="st">"assigned_treatment"</span>,</span>
-<span>             outcomeCov_var <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"catvarA"</span>, <span class="st">"catvarB"</span>, <span class="st">"catvarC"</span>,<span class="st">"nvarA"</span>,<span class="st">"nvarB"</span>,<span class="st">"nvarC"</span><span class="op">)</span>,</span>
-<span>             outcomeCov <span class="op">=</span>  <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"catvarA"</span>, <span class="st">"catvarB"</span>, <span class="st">"catvarC"</span>,<span class="st">"nvarA"</span>,<span class="st">"nvarB"</span>,<span class="st">"nvarC"</span><span class="op">)</span>,</span>
-<span>             outcomeClass <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"catvarA"</span>, <span class="st">"catvarB"</span>, <span class="st">"catvarC"</span><span class="op">)</span>,</span>
-<span>             numCores <span class="op">=</span> <span class="fl">1</span>,</span>
-<span>             data_dir <span class="op">=</span> <span class="va">working_dir</span>,</span>
-<span>             use_censor <span class="op">=</span> <span class="fl">0</span>,</span>
-<span>             use_weight <span class="op">=</span> <span class="fl">0</span><span class="op">)</span></span>
+<span>  <span class="fu"><a href="../reference/initiators.html">initiators</a></span><span class="op">(</span></span>
+<span>    data <span class="op">=</span> <span class="va">trial_example</span>,</span>
+<span>    id <span class="op">=</span> <span class="st">"id"</span>,</span>
+<span>    period <span class="op">=</span> <span class="st">"period"</span>,</span>
+<span>    eligible <span class="op">=</span> <span class="st">"eligible"</span>,</span>
+<span>    treatment <span class="op">=</span> <span class="st">"treatment"</span>,</span>
+<span>    outcome <span class="op">=</span> <span class="st">"outcome"</span>,</span>
+<span>    model_var <span class="op">=</span> <span class="st">"assigned_treatment"</span>,</span>
+<span>    outcomeCov_var <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"catvarA"</span>, <span class="st">"catvarB"</span>, <span class="st">"catvarC"</span>, <span class="st">"nvarA"</span>, <span class="st">"nvarB"</span>, <span class="st">"nvarC"</span><span class="op">)</span>,</span>
+<span>    outcomeCov <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"catvarA"</span>, <span class="st">"catvarB"</span>, <span class="st">"catvarC"</span>, <span class="st">"nvarA"</span>, <span class="st">"nvarB"</span>, <span class="st">"nvarC"</span><span class="op">)</span>,</span>
+<span>    outcomeClass <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"catvarA"</span>, <span class="st">"catvarB"</span>, <span class="st">"catvarC"</span><span class="op">)</span>,</span>
+<span>    numCores <span class="op">=</span> <span class="fl">1</span>,</span>
+<span>    data_dir <span class="op">=</span> <span class="va">working_dir</span>,</span>
+<span>    use_censor <span class="op">=</span> <span class="fl">0</span>,</span>
+<span>    use_weight <span class="op">=</span> <span class="fl">0</span></span>
+<span>  <span class="op">)</span></span>
 <span><span class="co">#&gt; [1] "Start data manipulation"</span></span>
 <span><span class="co">#&gt; [1] "Finish data manipulation"</span></span>
 <span><span class="co">#&gt; [1] "Processing time of data manipulation:"</span></span>
 <span><span class="co">#&gt;    user  system elapsed </span></span>
-<span><span class="co">#&gt;   0.700   0.021   0.720 </span></span>
+<span><span class="co">#&gt;   0.673   0.028   0.701 </span></span>
 <span><span class="co">#&gt; [1] "----------------------------"</span></span>
 <span><span class="co">#&gt; [1] "Start data extension"</span></span>
 <span><span class="co">#&gt; [1] "Finish data extension"</span></span>
 <span><span class="co">#&gt; [1] "Processing time of data extension:"</span></span>
 <span><span class="co">#&gt;    user  system elapsed </span></span>
-<span><span class="co">#&gt;   5.704   1.096   6.802 </span></span>
+<span><span class="co">#&gt;   5.266   0.996   6.262 </span></span>
 <span><span class="co">#&gt; [1] "----------------------------"</span></span>
 <span><span class="co">#&gt; [1] "Number of observations in expanded data: 1939053"</span></span>
 <span><span class="co">#&gt; [1] "Base Analysis"</span></span>
@@ -187,7 +188,7 @@
 <span><span class="co">#&gt; [1] "-------------------------------------------------"</span></span>
 <span><span class="co">#&gt; [1] "Processing time of modeling for base analysis:"</span></span>
 <span><span class="co">#&gt;    user  system elapsed </span></span>
-<span><span class="co">#&gt;  17.845   0.354  10.936 </span></span>
+<span><span class="co">#&gt;  14.818   0.363   9.259 </span></span>
 <span><span class="co">#&gt; [1] "Base Analysis with robust variance"</span></span>
 <span><span class="co">#&gt; [1] "-------------------------------------------------------"</span></span>
 <span><span class="co">#&gt; [1] "Robust standard error:"</span></span>
@@ -331,11 +332,11 @@
 <span><span class="co">#&gt; [1] "----------------------------------------------"</span></span>
 <span><span class="co">#&gt; [1] "Processing time of getting the output and sandwich with reduced switch data:"</span></span>
 <span><span class="co">#&gt;    user  system elapsed </span></span>
-<span><span class="co">#&gt;   2.753   0.372   3.126</span></span></code></pre></div>
+<span><span class="co">#&gt;   2.369   0.416   2.789</span></span></code></pre></div>
 <p><code><a href="../reference/initiators.html">initiators()</a></code> creates a few additional data files, depending on the selected options</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/list.files.html" class="external-link">list.files</a></span><span class="op">(</span><span class="va">working_dir</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] "switch_data.csv"   "trial_example.csv"</span></span></code></pre></div>
+<span><span class="co">#&gt; [1] "switch_data.csv"</span></span></code></pre></div>
 <ul>
 <li>
 <code>sw_data</code> is created in the first step and contains all the necessary variables for the next steps</li>
@@ -345,7 +346,7 @@
 <p>Instead of using <code><a href="../reference/initiators.html">initiators()</a></code> it is possible to run each step individually with <code><a href="../reference/data_preparation.html">data_preparation()</a></code>, <code><a href="../reference/data_modelling.html">data_modelling()</a></code> etc.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">model_result</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/data_modelling.html">data_modelling</a></span><span class="op">(</span></span>
-<span>  outcomeCov_var <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"catvarA"</span>, <span class="st">"catvarB"</span>, <span class="st">"catvarC"</span>,<span class="st">"nvarA"</span>,<span class="st">"nvarB"</span>,<span class="st">"nvarC"</span><span class="op">)</span>,</span>
+<span>  outcomeCov_var <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"catvarA"</span>, <span class="st">"catvarB"</span>, <span class="st">"catvarC"</span>, <span class="st">"nvarA"</span>, <span class="st">"nvarB"</span>, <span class="st">"nvarC"</span><span class="op">)</span>,</span>
 <span>  model_var <span class="op">=</span> <span class="st">"assigned_treatment"</span>,</span>
 <span>  include_followup_time_case <span class="op">=</span> <span class="st">"linear"</span>,</span>
 <span>  include_expansion_time_case <span class="op">=</span> <span class="st">"linear"</span>,</span>

@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">RandomisedTrialsEmulation</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.1.3</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.1.9</span>
       </span>
     </div>
 
@@ -125,7 +125,9 @@
 
 
 <dt>pool_cense</dt>
-<dd><p>Pool the numerator and denominator models (0: split models by previous treatment Am1 = 0 and Am1 = 1 as in treatment models and 1: pool all observations together into a single numerator and denominator model) Defaults to 0</p></dd>
+<dd><p>Pool the numerator and denominator models (0: split models by previous treatment Am1 = 0 and
+Am1 = 1 as in treatment models and 1: pool all observations together into a single numerator and denominator model)
+Defaults to 0</p></dd>
 
 
 <dt>cov_censed</dt>
@@ -153,11 +155,12 @@
 
 
 <dt>include_regime_length</dt>
-<dd><p>If defined as 1 a new variable (time_on_regime) is added to dataset - This variable stores the duration of time that the patient has been on the current treatment value</p></dd>
+<dd><p>If defined as 1 a new variable (time_on_regime) is added to dataset.
+This variable stores the duration of time that the patient has been on the current treatment value</p></dd>
 
 
 <dt>numCores</dt>
-<dd><p>Number of cores for parallel programming</p></dd>
+<dd><p>Number of cores for parallel programming (default value is maximum cores and parallel programming)</p></dd>
 
 
 <dt>save_dir</dt>
