@@ -44,3 +44,4 @@ testing/
 .DS_Store
 
 renv/
+.Rprofile
