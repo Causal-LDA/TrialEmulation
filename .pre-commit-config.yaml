@@ -25,6 +25,7 @@ repos:
           .*\.Rds|
           .*\.Rproj|
           .*\.sh|
+          .*\.cpp|
           (.*/|)\.gitignore|
           (.*/|)\.gitlab-ci\.yml|
           (.*/|)\.lintr|

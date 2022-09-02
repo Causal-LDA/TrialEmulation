@@ -5,9 +5,7 @@
 \title{Data Manipulation Function}
 \usage{
 data_manipulation(
-  data_address,
-  data_path,
-  keeplist,
+  data,
   treatment = "treatment",
   id = "id",
   period = "period",
@@ -44,11 +42,7 @@ data_manipulation(
 )
 }
 \arguments{
-\item{data_address}{Address for data read with \code{bigmemory}}
-
-\item{data_path}{Path of the \code{csv} file}
-
-\item{keeplist}{A list contains names of variables used in final model}
+\item{data}{A \code{data.frame} containing all the required columns.}
 
 \item{treatment}{Name of the data column for treatment feature Defaults to treatment}
 
@@ -60,17 +54,17 @@ data_manipulation(
 
 \item{eligible}{Indicator of whether or not an observation is eligible to be expanded about Defaults to eligible}
 
-\item{outcomeCov_var}{A list of individual baseline variables used in final model}
+\item{outcomeCov_var}{List of individual baseline variables used in final model}
 
 \item{cov_switchn}{List of covariates to be used in logistic model for switching probabilities for numerator model}
 
-\item{model_switchn}{List of models (functions) to use the covariates from \code{cov_switchn}}
+\item{model_switchn}{List of models (functions) to use the covariates from cov_switchn}
 
 \item{class_switchn}{Class variables used in logistic model for nominator model}
 
 \item{cov_switchd}{List of covariates to be used in logistic model for switching probabilities for denominator model}
 
-\item{model_switchd}{List of models (functions) to use the covariates from \code{cov_switchd}}
+\item{model_switchd}{List of models (functions) to use the covariates from cov_switchd}
 
 \item{class_switchd}{Class variables used in logistic model for denominator model}
 
@@ -83,39 +77,39 @@ data_manipulation(
 \item{use_censor}{Use censoring for per-protocol analysis - censor person-times once a person-trial stops taking the
 initial treatment value}
 
-\item{check_missing}{Check for missing values in final model when \code{use_censor=1} (Not added yet!)}
+\item{check_missing}{Check for missing values in final model when use_censor=1 (Not added yet!)}
 
 \item{cense}{Censoring variable}
 
-\item{pool_cense}{Pool the numerator and denominator models (\code{0}: split models by previous treatment \code{Am1 = 0}
-and \code{Am1 = 1} as in treatment models and \code{1}: pool all observations together into a single numerator and denominator
-model) Defaults to \code{0}}
+\item{pool_cense}{Pool the numerator and denominator models (0: split models by previous treatment Am1 = 0 and
+Am1 = 1 as in treatment models and 1: pool all observations together into a single numerator and denominator model)
+Defaults to 0}
 
 \item{cov_censed}{List of covariates to be used in logistic model for censoring weights in denominator model}
 
-\item{model_censed}{List of models (functions) to use the covariates from \code{cov_censed}}
+\item{model_censed}{List of models (functions) to use the covariates from cov_censed}
 
 \item{class_censed}{Class variables used in censoring logistic regression in denominator model}
 
 \item{cov_censen}{List of covariates to be used in logistic model for censoring weights in numerator model}
 
-\item{model_censen}{List of models (functions) to use the covariates from \code{cov_censen}}
+\item{model_censen}{List of models (functions) to use the covariates from cov_censen}
 
 \item{class_censen}{Class variables used in censoring logistic regression in numerator model}
 
-\item{include_regime_length}{If defined as \code{1} a new variable (\code{time_on_regime}) is added to dataset.
+\item{include_regime_length}{If defined as 1 a new variable (time_on_regime) is added to dataset.
 This variable stores the duration of time that the patient has been on the current treatment value}
 
-\item{eligible_wts_0}{Eligibility criteria used in weights for model condition \code{Am1 = 0}}
+\item{eligible_wts_0}{Eligibility criteria used in weights for model condition Am1 = 0}
 
-\item{eligible_wts_1}{Eligibility criteria used in weights for model condition \code{Am1 = 1}}
+\item{eligible_wts_1}{Eligibility criteria used in weights for model condition Am1 = 1}
 
-\item{lag_p_nosw}{when \code{1} this will set the first weight to be 1 and use \code{p_nosw_d} and \code{p_nosw_n} at follow-up time
-(t-1) for calculating the weights at follow-up time t.
-Can be set to \code{0} which will increase the maximum and variance of weights (Defaults to 1)}
+\item{lag_p_nosw}{When 1 this will set the first weight to be 1 and use p_nosw_d and p_nosw_n at followup-time (t-1)
+for calculating the weights at followup-time t - can be set to 0 which will increase the maximum and variance of
+weights (Defaults to 1)}
 
-\item{where_var}{Variables used in where conditions used in subsetting the data
-used in final analysis (\code{where_case}), the variables are not included in the final model.}
+\item{where_var}{List of variables used in where conditions used in subsetting the data used in final analysis
+(where_case), the variables not included in the final model}
 
 \item{data_dir}{Direction to save data}
 
@@ -124,5 +118,5 @@ used in final analysis (\code{where_case}), the variables are not included in th
 \item{quiet}{Don't print progress messages.}
 }
 \description{
-This function takes the data and all the variables and do the extension preprocess and weight calculation
+This function takes the data and all the variables and does the extension preprocessing and weight calculation.
 }

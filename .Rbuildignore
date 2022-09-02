@@ -1,3 +1,4 @@
+.Rprofile
 .lintr
 ^.*\.Rproj$
 ^\.Rproj\.user$

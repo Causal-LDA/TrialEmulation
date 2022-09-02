@@ -1,71 +1,14 @@
 #' Data Preparation Function
 #'
 #' This function prepare the data for modelling.
-#' @param data_path The path to csv file
-#' @param id Name of the data column for id feature Defaults to id
-#' @param period Name of the data column for period feature Defaults to period
-#' @param treatment Name of the data column for treatment feature Defaults to treatment
-#' @param outcome Name of the data column for outcome feature Defaults to outcome
-#' @param eligible Indicator of whether or not an observation is eligible to be expanded about Defaults to eligible
-#' @param outcomeCov_var List of individual baseline variables used in final model
-#' @param outcomeCov List of functions of baseline covariates used in final model
-#' @param outcomeClass Categorical variables used in the final model
-#' @param model_var List of Variables of interest to be used in final model
-#' @param cov_switchn List of covariates to be used in logistic model for switching probabilities for numerator model
-#' @param model_switchn List of models (functions) to use the covariates from cov_switchn
-#' @param class_switchn Class variables used in logistic model for nominator model
-#' @param cov_switchd List of covariates to be used in logistic model for switching probabilities for denominator model
-#' @param model_switchd List of models (functions) to use the covariates from cov_switchd
-#' @param class_switchd Class variables used in logistic model for denominator model
-#' @param first_period First period value to start expanding about
-#' @param last_period Last period value to expand about
-#' @param use_weight Use weights in analysis. If 0 then no weights will be calculated
-#' @param use_censor Use censoring for per-protocol analysis - censor person-times once a person-trial stops taking
-#' the initial treatment value
-#' @param check_missing Check for missing values in final model when use_censor=1 (Not added yet!)
-#' @param cense Censoring variable
-#' @param pool_cense Pool the numerator and denominator models (0: split models by previous treatment `Am1 = 0`
-#' and Am1 = 1 as in treatment models and 1: pool all observations together into a single numerator and
-#' denominator model) Defaults to 0
-#' @param cov_censed List of covariates to be used in logistic model for censoring weights in denominator model
-#' @param model_censed List of models (functions) to use the covariates from cov_censed
-#' @param class_censed Class variables used in censoring logistic regression in denominator model
-#' @param cov_censen List of covariates to be used in logistic model for censoring weights in numerator model
-#' @param model_censen List of models (functions) to use the covariates from cov_censen
-#' @param class_censen Class variables used in censoring logistic regression in numerator model
-#' @param include_followup_time_case The model to include follow up time in outcome model.
-#'  This has 3 options c("linear","quadratic","spline").
-#' @param include_expansion_time_case The model to include for_period in outcome model.
-#'  This has 3 options c("linear","quadratic","spline")
-#' @param followup_spline The parameters for spline model for followup time when choose "spline" in the
-#' include_followup_time_case (ex. list(df=2))
-#' @param period_spline The parameters for spline model for for_period when choose "spline" in the
-#' include_expansion_time_case (ex. list(df=3))
-#' @param include_regime_length If defined as 1 a new variable (time_on_regime) is added to dataset.
-#' This variable stores the duration of time that the patient has been on the current treatment value
-#' @param eligible_wts_0 Eligibility criteria used in weights for model condition Am1 = 0
-#' @param eligible_wts_1 Eligibility criteria used in weights for model condition Am1 = 1
-#' @param lag_p_nosw When 1 this will set the first weight to be 1 and use p_nosw_d and p_nosw_n at followup-time (t-1)
-#' for calculating the weights at followup-time t - can be set to 0 which will increase the maximum and variance
-#' of weights (Defaults to 1)
-#' @param where_var List of variables used in where conditions used in subsetting the data used in final analysis
-#'  (where_case), the variables not included in the final model
-#' @param data_dir Direction to save data
-#' @param numCores Number of cores for parallel programming (default value is maximum cores and parallel programming)
-#' @param chunk_expansion Do the expansion in chunks (and in parallel if numCores > 1). Turn this off if you have
-#'  enough memory to expand the whole dataset at once. (default TRUE)
-#' @param chunk_size Number of ids to process at once for the chunk expansion (default 500). Larger chunk_sizes may be
-#'  faster but require more memory.
-#' @param separate_files Write to one file or one per trial (default FALSE)
-#' @param quiet Don't print progress messages.
-#' data_preparation()
+#' @inheritParams initiators
 #' @export
 #'
 #' @details The class variables parameters (`outcomeClass`,`class_switchn`,`class_switchd`,`class_censen`,
 #' `class_censed`) can be given as a character vector which will construct factors using `as.factor` or as a named list
 #' with the arguments for factor e.g.
 #' `list(risk_cat=list(levels = c(1,2,3,0), age_cat=list(levels=c(1,2,3),labels=c("50-60","60-70","70+")`
-data_preparation <- function(data_path,
+data_preparation <- function(data,
                              id = "id",
                              period = "period",
                              treatment = "treatment",
@@ -199,10 +142,6 @@ data_preparation <- function(data_path,
     numCores <- 1
   }
 
-
-  if (!file.exists(data_path)) stop(paste0("'data_path' file not found: ", data_path))
-  absolutePath <- normalizePath(data_path)
-
   keeplist <- c(
     "id", "for_period", "followup_time", "outcome",
     "weight", "treatment"
@@ -246,7 +185,7 @@ data_preparation <- function(data_path,
   h_quiet_print(quiet, "Start data manipulation")
   timing <- system.time({
     sw_data <- data_manipulation(
-      NA, absolutePath, keeplist,
+      data,
       treatment, id, period, outcome, eligible,
       outcomeCov_var,
       cov_switchn, model_switchn, class_switchn,

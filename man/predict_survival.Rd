@@ -28,10 +28,9 @@ data("trial_example")
 working_dir <- file.path(tempdir(), "trial_emu")
 dir.create(working_dir)
 data_path <- file.path(working_dir, "trial_example.csv")
-write.csv(trial_example, file = data_path)
 
 i <- initiators(
-  data_path = data_path,
+  data = trial_example,
   id = "id",
   period = "period",
   eligible = "eligible",
