@@ -1,11 +1,14 @@
 test_that("data_manipulation works as expected with default options", {
-  result <- withr::with_tempdir({
-    dat_dir <- getwd()
-    data_manipulation(
-      trial_example,
-      data_dir = dat_dir
-    )
-  })
+  result <- withr::with_tempdir(
+    {
+      dat_dir <- getwd()
+      data_manipulation(
+        trial_example,
+        data_dir = dat_dir
+      )
+    },
+    tmpdir = tempdir(check = TRUE)
+  )
   expect_data_table(
     result,
     key = "id",

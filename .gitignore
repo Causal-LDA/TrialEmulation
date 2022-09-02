@@ -42,3 +42,5 @@ inst/doc
 testing/
 
 .DS_Store
+
+renv/

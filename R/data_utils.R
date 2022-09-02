@@ -94,29 +94,8 @@ for_period_func <- function(x) {
 #'
 #' This function performs the calculation for weight of the data
 #' @param sw_data A data.table
-#' @param cov_switchn List of covariates to be used in logistic model for switching probabilities for numerator model
-#' @param model_switchn List of models (functions) to use the covariates from cov_switchn
-#' @param class_switchn Class variables used in logistic model for nominator model
-#' @param cov_switchd List of covariates to be used in logistic model for switching probabilities for denominator model
-#' @param model_switchd List of models (functions) to use the covariates from cov_switchd
-#' @param class_switchd Class variables used in logistic model for denominator model
-#' @param eligible_wts_0 Eligibility criteria used in weights for model condition Am1 = 0
-#' @param eligible_wts_1 Eligibility criteria used in weights for model condition Am1 = 1
-#' @param cense Censoring variable
-#' @param pool_cense Pool the numerator and denominator models (0: split models by previous treatment Am1 = 0 and
-#' Am1 = 1 as in treatment models and 1: pool all observations together into a single numerator and denominator model)
-#'  Defaults to 0
-#' @param cov_censed List of covariates to be used in logistic model for censoring weights in denominator model
-#' @param model_censed List of models (functions) to use the covariates from cov_censed
-#' @param class_censed Class variables used in censoring logistic regression in denominator model
-#' @param cov_censen List of covariates to be used in logistic model for censoring weights in numerator model
-#' @param model_censen List of models (functions) to use the covariates from cov_censen
-#' @param class_censen Class variables used in censoring logistic regression in numerator model
-#' @param include_regime_length If defined as 1 a new variable (time_on_regime) is added to dataset - This variable
-#'  stores the duration of time that the patient has been on the current treatment value
-#' @param numCores Number of cores for parallel programming
 #' @param save_dir Directory to save tidy weight model summaries in as 'weight_models.rda'
-#' @param quiet Don't print progress messages.
+#' @inheritParams initiators
 #'
 weight_func <- function(sw_data, cov_switchn = NA, model_switchn = NA,
                         class_switchn = NA, cov_switchd = NA,
@@ -132,6 +111,7 @@ weight_func <- function(sw_data, cov_switchn = NA, model_switchn = NA,
     treatment <- wt <- wtC <- p0_n <- p0_d <- p1_n <- p1_d <- pC_n0 <- pC_d0 <-
     pC_n1 <- pC_d1 <- pC_n <- pC_d <- NULL
 
+  if (!missing(save_dir)) assert_directory_exists(save_dir)
 
   if (include_regime_length == 1) {
     model_switchd <- c(model_switchd[!is.na(model_switchd)], c("time_on_regime", "time_on_regime2"))
@@ -198,7 +178,6 @@ weight_func <- function(sw_data, cov_switchn = NA, model_switchn = NA,
     period = model1$data[, period]
   )
 
-  model1$method <- "glm.fit" # TODO remove when bug is fixed in broom
   weight_models$switch_d0 <- broom::tidy(model1)
   weight_models$switch_d0_statistics <- broom::glance(model1)
   rm(model1)
@@ -221,7 +200,6 @@ weight_func <- function(sw_data, cov_switchn = NA, model_switchn = NA,
     period = model2$data[, period]
   )
 
-  model2$method <- "glm.fit" # TODO remove when bug is fixed in broom
   weight_models$switch_n0 <- broom::tidy(model2)
   weight_models$switch_n0_statistics <- broom::glance(model2)
   rm(model2)
@@ -243,7 +221,6 @@ weight_func <- function(sw_data, cov_switchn = NA, model_switchn = NA,
     period = model3$data[, period]
   )
 
-  model3$method <- "glm.fit" # TODO remove when bug is fixed in broom
   weight_models$switch_d1 <- broom::tidy(model3)
   weight_models$switch_statistics <- broom::glance(model3)
   rm(model3)
@@ -264,7 +241,6 @@ weight_func <- function(sw_data, cov_switchn = NA, model_switchn = NA,
     period = model4$data[, period]
   )
 
-  model4$method <- "glm.fit" # TODO remove when bug is fixed in broom
   weight_models$switch_n1 <- broom::tidy(model4)
   weight_models$switch_n1_statistics <- broom::glance(model4)
 
@@ -361,7 +337,6 @@ weight_func <- function(sw_data, cov_switchn = NA, model_switchn = NA,
         period = model1.cense$data[, period]
       )
 
-      model1.cense$method <- "glm.fit" # TODO remove when bug is fixed in broom
       cens_models$cens_pool_d <- broom::tidy(model1.cense)
       cens_models$cens_pool_d_statistics <- broom::glance(model1.cense)
 
@@ -378,7 +353,6 @@ weight_func <- function(sw_data, cov_switchn = NA, model_switchn = NA,
         period = model2.cense$data[, period]
       )
 
-      model2.cense$method <- "glm.fit" # TODO remove when bug is fixed in broom
       cens_models$cens_pool_n <- broom::tidy(model2.cense)
       cens_models$cens_pool_n_statistics <- broom::glance(model2.cense)
 
@@ -408,7 +382,6 @@ weight_func <- function(sw_data, cov_switchn = NA, model_switchn = NA,
         period = model1.cense$data[, period]
       )
 
-      model1.cense$method <- "glm.fit" # TODO remove when bug is fixed in broom
       cens_models$cens_d0 <- broom::tidy(model1.cense)
       cens_models$cens_d0_statistics <- broom::glance(model1.cense)
 
@@ -424,7 +397,6 @@ weight_func <- function(sw_data, cov_switchn = NA, model_switchn = NA,
         period = model2.cense$data[, period]
       )
 
-      model2.cense$method <- "glm.fit" # TODO remove when bug is fixed in broom
       cens_models$cens_n0 <- broom::tidy(model2.cense)
       cens_models$cens_n0_statistics <- broom::glance(model2.cense)
 
@@ -440,7 +412,6 @@ weight_func <- function(sw_data, cov_switchn = NA, model_switchn = NA,
         period = model3.cense$data[, period]
       )
 
-      model3.cense$method <- "glm.fit" # TODO remove when bug is fixed in broom
       cens_models$cens_d1 <- broom::tidy(model3.cense)
       cens_models$cens_d1_statistics <- broom::glance(model3.cense)
 
@@ -456,7 +427,6 @@ weight_func <- function(sw_data, cov_switchn = NA, model_switchn = NA,
         period = model4.cense$data[, period]
       )
 
-      model4.cense$method <- "glm.fit" # TODO remove when bug is fixed in broom
       cens_models$cens_n1 <- broom::tidy(model4.cense)
       cens_models$cens_n1_statistics <- broom::glance(model4.cense)
 
@@ -538,8 +508,6 @@ weight_func <- function(sw_data, cov_switchn = NA, model_switchn = NA,
     new_data[, wtC := pC_n / pC_d]
   }
   new_data[, wt := wt * wtC]
-  sw_data <- new_data
-  rm(new_data)
-  gc()
-  return(sw_data)
+
+  return(new_data)
 }

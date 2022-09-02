@@ -1,6 +1,6 @@
 Package: RandomisedTrialsEmulation
 Title: Design and analysis of target trial emulation on observational data
-Version: 0.0.1.3
+Version: 0.0.1.9
 Authors@R: c(
         person(given = "Roonak",
                family = "Rezvani",

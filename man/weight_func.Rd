@@ -65,10 +65,10 @@ Defaults to 0}
 
 \item{class_censen}{Class variables used in censoring logistic regression in numerator model}
 
-\item{include_regime_length}{If defined as 1 a new variable (time_on_regime) is added to dataset - This variable
-stores the duration of time that the patient has been on the current treatment value}
+\item{include_regime_length}{If defined as 1 a new variable (time_on_regime) is added to dataset.
+This variable stores the duration of time that the patient has been on the current treatment value}
 
-\item{numCores}{Number of cores for parallel programming}
+\item{numCores}{Number of cores for parallel programming (default value is maximum cores and parallel programming)}
 
 \item{save_dir}{Directory to save tidy weight model summaries in as 'weight_models.rda'}
 

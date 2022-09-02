@@ -2,47 +2,8 @@
 #'
 #' This function takes the data and all the variables and does the extension preprocessing and weight calculation.
 #'
-#' @param data A `data.frame` containing all the required columns.
-#' @param treatment Name of the data column for treatment feature Defaults to treatment
-#' @param id Name of the data column for id feature Defaults to id
-#' @param period Name of the data column for period feature Defaults to period
-#' @param outcome Name of the data column for outcome feature Defaults to outcome
-#' @param eligible Indicator of whether or not an observation is eligible to be expanded about Defaults to eligible
-#' @param outcomeCov_var A list of individual baseline variables used in final model
-#' @param cov_switchn List of covariates to be used in logistic model for switching probabilities for numerator model
-#' @param model_switchn List of models (functions) to use the covariates from `cov_switchn`
-#' @param class_switchn Class variables used in logistic model for nominator model
-#' @param cov_switchd List of covariates to be used in logistic model for switching probabilities for denominator model
-#' @param model_switchd List of models (functions) to use the covariates from `cov_switchd`
-#' @param class_switchd Class variables used in logistic model for denominator model
-#' @param first_period First period value to start expanding about
-#' @param last_period Last period value to expand about
-#' @param use_weight Use weights in analysis. If 0 then no weights will be calculated
-#' @param use_censor Use censoring for per-protocol analysis - censor person-times once a person-trial stops taking the
-#' initial treatment value
-#' @param check_missing Check for missing values in final model when `use_censor=1` (Not added yet!)
-#' @param cense Censoring variable
-#' @param pool_cense Pool the numerator and denominator models (`0`: split models by previous treatment `Am1 = 0`
-#'  and `Am1 = 1` as in treatment models and `1`: pool all observations together into a single numerator and denominator
-#'  model) Defaults to `0`
-#' @param cov_censed List of covariates to be used in logistic model for censoring weights in denominator model
-#' @param model_censed List of models (functions) to use the covariates from `cov_censed`
-#' @param class_censed Class variables used in censoring logistic regression in denominator model
-#' @param cov_censen List of covariates to be used in logistic model for censoring weights in numerator model
-#' @param model_censen List of models (functions) to use the covariates from `cov_censen`
-#' @param class_censen Class variables used in censoring logistic regression in numerator model
-#' @param include_regime_length If defined as `1` a new variable (`time_on_regime`) is added to dataset.
-#'  This variable stores the duration of time that the patient has been on the current treatment value
-#' @param eligible_wts_0 Eligibility criteria used in weights for model condition `Am1 = 0`
-#' @param eligible_wts_1 Eligibility criteria used in weights for model condition `Am1 = 1`
-#' @param lag_p_nosw when `1` this will set the first weight to be 1 and use `p_nosw_d` and `p_nosw_n` at follow-up time
-#'  (t-1) for calculating the weights at follow-up time t.
-#'  Can be set to `0` which will increase the maximum and variance of weights (Defaults to 1)
-#' @param where_var Variables used in where conditions used in subsetting the data
-#'  used in final analysis (`where_case`), the variables are not included in the final model.
-#' @param data_dir Direction to save data
 #' @param numCores Number of cores to be used for fitting weights (passed to `weight_func`)
-#' @param quiet Don't print progress messages.
+#' @inheritParams initiators
 
 data_manipulation <- function(data,
                               treatment = "treatment", id = "id",
@@ -62,8 +23,6 @@ data_manipulation <- function(data,
                               data_dir = "~/rds/hpc-work/",
                               numCores = NA,
                               quiet = FALSE) {
-  assert_directory_exists(data_dir)
-
   # Dummy variables used in data.table calls declared to prevent package check NOTES:
   time_of_event <- am_1 <- cumA <- regime_start <- time_on_regime <- time_on_regime2 <-
     regime_start_shift <- started0 <- started1 <- stop0 <- stop1 <- eligible0_sw <-
