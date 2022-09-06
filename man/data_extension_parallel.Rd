@@ -5,7 +5,7 @@
 \title{Data Extension in Parallel Function}
 \usage{
 data_extension_parallel(
-  data_address,
+  data,
   keeplist,
   outcomeCov_var = NA,
   first_period = NA,
@@ -13,16 +13,12 @@ data_extension_parallel(
   use_censor = 0,
   lag_p_nosw = 1,
   where_var = NA,
-  followup_spline = NA,
-  period_spline = NA,
   data_dir = "~/rds/hpc-work/",
-  numCores = NA,
-  chunk_size = 200,
-  separate_files = FALSE
+  chunk_size = 200
 )
 }
 \arguments{
-\item{data_address}{Address for data read with \code{bigmemory}}
+\item{data}{A \code{data.table} to be expanded}
 
 \item{keeplist}{A list contains names of variables used in final model}
 
@@ -42,15 +38,11 @@ the maximum and variance of weights (Defaults to 1).}
 \item{where_var}{Variables used in where conditions used in subsetting the data used in final analysis (where_case),
 the variables not included in the final model}
 
-\item{followup_spline}{The spline model for \code{followup_time} when \code{include_followup_time_case = "spline"}}
-
-\item{period_spline}{The spline model for \code{for_period} when \code{include_expansion_time_case = "spline"}}
-
 \item{data_dir}{Direction to save data}
 
-\item{numCores}{Number of cores for parallel programming}
-
 \item{chunk_size}{Number of ids to expand in each chunk}
+
+\item{numCores}{Number of cores for parallel programming}
 
 \item{separate_files}{Write to one file or one per trial (default FALSE)}
 }

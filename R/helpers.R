@@ -9,7 +9,7 @@
 #' @examples
 #' h_quiet_print(quiet = FALSE, "loud hello")
 #' h_quiet_print(quiet = TRUE, "quiet hello")
-h_quiet_print <- function(quiet, ...){
+h_quiet_print <- function(quiet, ...) {
   if (isFALSE(quiet)) {
     print(...)
   }
@@ -27,9 +27,44 @@ h_quiet_print <- function(quiet, ...){
 #' assert_monotonic(1:3)
 #' assert_monotonic(c(0.02, 0.0187, 0.005), FALSE)
 assert_monotonic <- function(x, increasing = TRUE) {
-  if (isTRUE(increasing) & !all(x == cummax(x))) {
+  if (isTRUE(increasing) && !all(x == cummax(x))) {
     stop("Not monotonically increasing")
-  } else if (isFALSE(increasing) & !all(x == cummin(x))) {
+  } else if (isFALSE(increasing) && !all(x == cummin(x))) {
     stop("Not monotonically decreasing")
   }
+}
+
+
+#' Coerce to a Formula with RHS only
+#'
+#' @param x A formula or character vector.
+#'
+#' @return A formula
+#'
+#' @examples
+#' as_formula(c("age", "sex"))
+as_formula <- function(x) {
+  assert_multi_class(x, classes = c("formula", "character"))
+  if (test_string(x, pattern = "~")) {
+    x <- as.formula(x)
+  } else if (is.character(x)) {
+    x <- formula(paste("~", paste(x, collapse = " + ")))
+  }
+  formula.tools::lhs(x) <- NULL
+  x
+}
+
+#' Add RHS Parts of Formulas
+#'
+#' @param f1 formula to extract right side
+#' @param f2 formula to extract right side
+#'
+#' @return A formula of the form `~ rhs(f1) + rhs(f2)`
+#' @export
+#'
+#' @examples
+#' add_rhs(~ a + b, z ~ c + log(d))
+#' # ~ a + b + c + log(d)
+add_rhs <- function(f1, f2) {
+  update(f1, substitute(~ . + add, list(add = formula.tools::rhs(f2))))
 }

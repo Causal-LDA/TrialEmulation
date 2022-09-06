@@ -14,16 +14,10 @@ data_preparation <- function(data,
                              treatment = "treatment",
                              outcome = "outcome",
                              eligible = "eligible",
-                             outcomeCov_var = NA,
-                             outcomeCov = NA,
-                             outcomeClass = NA,
-                             model_var = NA,
-                             cov_switchn = NA,
-                             model_switchn = NA,
-                             class_switchn = NA,
-                             cov_switchd = NA,
-                             model_switchd = NA,
-                             class_switchd = NA,
+                             outcome_cov = ~1,
+                             model_var = NULL,
+                             switch_n_cov = ~1,
+                             switch_d_cov = ~1,
                              first_period = NA,
                              last_period = NA,
                              use_weight = 0,
@@ -31,223 +25,104 @@ data_preparation <- function(data,
                              check_missing = 0,
                              cense = NA,
                              pool_cense = 0,
-                             cov_censed = NA,
-                             model_censed = NA,
-                             class_censed = NA,
-                             cov_censen = NA,
-                             model_censen = NA,
-                             class_censen = NA,
-                             include_followup_time_case = "linear",
-                             include_expansion_time_case = "linear",
-                             followup_spline = NA,
-                             period_spline = NA,
-                             include_regime_length = 0,
+                             cense_d_cov = ~1,
+                             cense_n_cov = ~1,
+                             include_followup_time_case = ~ followup_time + I(followup_time^2),
+                             include_expansion_time_case = ~ for_period + I(for_period^2),
+                             include_regime_length = FALSE,
                              eligible_wts_0 = NA,
                              eligible_wts_1 = NA,
                              lag_p_nosw = 1,
-                             where_var = NA,
+                             where_var = NULL,
                              data_dir,
-                             numCores = NA,
-                             chunk_expansion = TRUE,
+                             numCores = 1,
                              chunk_size = 500,
                              separate_files = FALSE,
                              quiet = FALSE) {
   assert_flag(quiet)
+  assert_flag(separate_files)
+  outcome_cov <- as_formula(outcome_cov)
+  switch_n_cov <- as_formula(switch_n_cov)
+  switch_d_cov <- as_formula(switch_d_cov)
+  cense_d_cov <- as_formula(cense_d_cov)
+  cense_n_cov <- as_formula(cense_n_cov)
+  include_followup_time_case <- as_formula(include_followup_time_case)
+  include_expansion_time_case <- as_formula(include_expansion_time_case)
 
-  # outcomeCov_var needs to have outcomeCov
-  if (any(!is.na(outcomeCov_var)) && any(is.na(outcomeCov))) {
-    outcomeCov_var <- NA
-  }
-  # outcomeClass needs to be with outcomeCov and outcomeCov_var
-  if (any(!is.na(outcomeClass))) {
-    if (any(is.na(outcomeCov))) {
-      outcomeClass <- NA
-      outcomeCov_var <- NA
-    }
-    if (any(is.na(outcomeCov_var))) {
-      outcomeClass <- NA
-      outcomeCov <- NA
-    }
-  }
-
-  # cov_switchn needs to have model_switchn
-  if (any(!is.na(cov_switchn)) && any(is.na(model_switchn))) {
-    cov_switchn <- NA
-  }
-  # class_switchn needs to be with cov_switchn and model_switchn
-  if (any(!is.na(class_switchn))) {
-    if (any(is.na(model_switchn))) {
-      class_switchn <- NA
-      cov_switchn <- NA
-    }
-    if (any(is.na(cov_switchn))) {
-      class_switchn <- NA
-      model_switchn <- NA
-    }
-  }
-
-  # cov_switchd needs to have model_switchd
-  if (any(!is.na(cov_switchd)) && any(is.na(model_switchd))) {
-    cov_switchd <- NA
-  }
-  # class_switchd needs to be with cov_switchd and model_switchd
-  if (any(!is.na(class_switchd))) {
-    if (any(is.na(model_switchd))) {
-      class_switchd <- NA
-      cov_switchd <- NA
-    }
-    if (any(is.na(cov_switchd))) {
-      class_switchd <- NA
-      model_switchd <- NA
-    }
-  }
-
-  # cov_censed needs to have model_censed
-  if (any(!is.na(cov_censed)) && any(is.na(model_censed))) {
-    cov_censed <- NA
-  }
-  # class_censed needs to be with cov_censed and model_censed
-  if (any(!is.na(class_censed))) {
-    if (any(is.na(model_censed))) {
-      class_censed <- NA
-      cov_censed <- NA
-    }
-    if (any(is.na(cov_censed))) {
-      class_censed <- NA
-      model_censed <- NA
-    }
-  }
-
-  # cov_censen needs to have model_censen
-  if (any(!is.na(cov_censen)) && any(is.na(model_censen))) {
-    cov_censen <- NA
-  }
-  # class_censen needs to be with cov_censen and model_censen
-  if (any(!is.na(class_censen))) {
-    if (any(is.na(model_censen))) {
-      class_censen <- NA
-      cov_censen <- NA
-    }
-    if (any(is.na(cov_censen))) {
-      class_censen <- NA
-      model_censen <- NA
-    }
-  }
-
-  if (is.na(numCores)) {
-    numCores <- max(1, detectCores() / 2)
-  }
-
-  if (.Platform$OS.type == "windows") {
-    numCores <- 1
-  }
-
-  keeplist <- c(
-    "id", "for_period", "followup_time", "outcome",
-    "weight", "treatment"
+  data <- select_data_cols(
+    data,
+    id = id,
+    period = period,
+    outcome = outcome,
+    eligible = eligible,
+    eligible_wts_0 = eligible_wts_0,
+    eligible_wts_1 = eligible_wts_1,
+    formula_vars = unlist(lapply(list(outcome_cov, switch_n_cov, switch_d_cov, cense_n_cov, cense_n_cov), all.vars)),
+    cense = cense,
+    where_var = where_var
   )
-  if ("quadratic" %in% include_expansion_time_case) {
-    keeplist <- c(keeplist, "for_period2")
-  }
-
-  if ("quadratic" %in% include_followup_time_case) {
-    keeplist <- c(keeplist, "followup_time2")
-  }
-
-  if (any(!is.na(outcomeCov_var))) {
-    keeplist <- c(keeplist, outcomeCov_var)
-  }
-  if (any(!is.na(where_var))) {
-    keeplist <- c(keeplist, where_var)
-  }
-  if (any(!is.na(model_var))) {
-    # if the model_var is not empty, we use the information provided by user
-    keeplist <- c(keeplist, model_var)
-  } else {
-    # if the model_var is empty, we provide the needed variables based on analysis type
-    if (use_censor == 0) {
-      if (use_weight == 0) {
-        # for ITT analysis
-        keeplist <- c(keeplist, "assigned_treatment")
-      } else {
-        # for as treated analysis
-        keeplist <- c(keeplist, c("dose", "dose2"))
-      }
-    } else {
-      # for per-protocol analysis
-      keeplist <- c(keeplist, "assigned_treatment")
-    }
-  }
-  if (!"assigned_treatment" %in% keeplist) {
-    keeplist <- c(keeplist, "assigned_treatment")
-  }
 
   h_quiet_print(quiet, "Start data manipulation")
   timing <- system.time({
-    sw_data <- data_manipulation(
-      data,
-      treatment, id, period, outcome, eligible,
-      outcomeCov_var,
-      cov_switchn, model_switchn, class_switchn,
-      cov_switchd, model_switchd, class_switchd,
-      first_period, last_period,
-      use_weight, use_censor, check_missing,
-      cense, pool_cense, cov_censed, model_censed,
-      class_censed, cov_censen, model_censen,
-      class_censen,
-      include_regime_length, eligible_wts_0,
-      eligible_wts_1, lag_p_nosw, where_var, data_dir,
-      numCores,
-      quiet = quiet
-    )
+    data <- data_manipulation(data, use_censor = use_censor)
   })
   h_quiet_print(quiet, "Finish data manipulation")
   h_quiet_print(quiet, "Processing time of data manipulation:")
   h_quiet_print(quiet, timing)
   h_quiet_print(quiet, "----------------------------")
 
+  if (use_weight == 1) {
+    data <- weight_func(
+      data = data,
+      model_switchn = switch_n_cov,
+      model_switchd = switch_d_cov,
+      eligible_wts_0 = eligible_wts_0,
+      eligible_wts_1 = eligible_wts_1,
+      cense = cense,
+      pool_cense = pool_cense,
+      model_censed = cense_d_cov,
+      model_censen = cense_n_cov,
+      include_regime_length = include_regime_length,
+      numCores = numCores,
+      data_dir = data_dir,
+      quiet = quiet
+    )
+  } else if (use_weight == 0) {
+    data[, wt := 1]
+  }
+
+  keeplist <- c(
+    "id", "for_period", "followup_time", "outcome",
+    "weight", "treatment", "assigned_treatment", "dose",
+    where_var, all.vars(outcome_cov), all.vars(model_var)
+  )
+
   h_quiet_print(quiet, "Start data extension")
   timing <- system.time({
-    df <- data.frame(matrix(ncol = length(keeplist), nrow = 0))
-    colnames(df) <- keeplist
-
-    write.csv(df, file.path(data_dir, "switch_data.csv"), row.names = FALSE)
-
-    if (!chunk_expansion && numCores == 1) {
-      # doesn't want to do chunks or parallel threads, but might have to do chunks if not enough memory
-      manipulate <- tryCatch(
-        data_extension(
-          sw_data = sw_data, keeplist, outcomeCov_var,
-          first_period, last_period, use_censor, lag_p_nosw,
-          where_var, followup_spline, period_spline,
-          data_dir
-        ),
-        error = function(err) {
-          gc()
-          file.remove(file.path(data_dir, "switch_data.csv"))
-          write.csv(df, file.path(data_dir, "switch_data.csv"), row.names = FALSE)
-          warning(paste0(
-            "The memory is not enough to do the data extention without data division so performed",
-            "in chunks with numCores=1 and chunk_size=", chunk_size, "!"
-          ))
-          data_extension_parallel(
-            sw_data, keeplist, outcomeCov_var,
-            first_period, last_period, use_censor, lag_p_nosw,
-            where_var, followup_spline,
-            period_spline, data_dir, numCores,
-            chunk_size, separate_files
-          )
-        }
+    if (!separate_files) {
+      extended_data <- data_extension(
+        data = data,
+        keeplist,
+        outcomeCov_var = all.vars(outcome_cov),
+        first_period,
+        last_period,
+        use_censor,
+        lag_p_nosw,
+        where_var = where_var
       )
     } else {
-      manipulate <- data_extension_parallel(
-        sw_data, keeplist,
-        outcomeCov_var,
-        first_period, last_period,
-        use_censor, lag_p_nosw,
-        where_var, followup_spline,
-        period_spline, data_dir,
-        numCores, chunk_size, separate_files
+      extended_data <- data_extension_parallel(
+        data = data,
+        keeplist,
+        outcomeCov_var = all.vars(outcome_cov),
+        first_period,
+        last_period,
+        use_censor,
+        lag_p_nosw,
+        where_var = where_var,
+        data_dir,
+        numCores,
+        chunk_size
       )
     }
   })
@@ -256,16 +131,7 @@ data_preparation <- function(data,
   h_quiet_print(quiet, timing)
   h_quiet_print(quiet, "----------------------------")
 
-  h_quiet_print(quiet, paste0("Number of observations in expanded data: ", manipulate$N))
+  h_quiet_print(quiet, paste0("Number of observations in expanded data: ", extended_data$N))
 
-  rm(sw_data)
-  gc()
-
-  return(list(
-    absolutePath = manipulate$path,
-    N = manipulate$N,
-    range = manipulate$range,
-    min_period = manipulate$min_period,
-    max_period = manipulate$max_period
-  ))
+  return(extended_data)
 }

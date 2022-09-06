@@ -11,7 +11,9 @@
 #' @param outcomeCov_var List of individual baseline variables used in final model
 #' @param outcomeCov List of functions of baseline covariates used in final model
 #' @param outcomeClass Categorical variables used in the final model
-#' @param model_var List of Variables of interest to be used in final model
+#' @param model_var List of Variables of interest to be used in final model.
+#'   Derived variables to use in outcome models. Typically `assigned_treatment` for ITT and per-protocol,
+#'   and `dose + dose^2` for as-treated.
 #' @param cov_switchn List of covariates to be used in logistic model for switching probabilities for numerator model
 #' @param model_switchn List of models (functions) to use the covariates from cov_switchn
 #' @param class_switchn Class variables used in logistic model for nominator model

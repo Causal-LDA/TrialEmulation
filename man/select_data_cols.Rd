@@ -11,15 +11,11 @@ select_data_cols(
   treatment = "treatment",
   outcome = "outcome",
   eligible = "eligible",
-  eligible_wts_0 = NA,
-  eligible_wts_1 = NA,
-  outcomeCov_var = NA,
-  cov_switchn = NA,
-  cov_switchd = NA,
-  cov_censed = NA,
-  cov_censen = NA,
-  cense = NA,
-  where_var = NA
+  eligible_wts_0,
+  eligible_wts_1,
+  formula_vars,
+  cense,
+  where_var
 )
 }
 \arguments{
@@ -40,20 +36,12 @@ Defaults to "eligible".}
 
 \item{eligible_wts_1}{Eligibility criteria used in weights for model condition Am1 = 1}
 
-\item{outcomeCov_var}{List of individual baseline variables used in final model}
-
-\item{cov_switchn}{Covariates to be used in logistic model for switching probabilities for numerator model}
-
-\item{cov_switchd}{Covariates to be used in logistic model for switching probabilities for denominator model}
-
-\item{cov_censed}{Covariates to be used in logistic model for censoring weights for denominator model}
-
-\item{cov_censen}{Covariates to be used in logistic model for censoring weights for nominator model}
+\item{formula_vars}{Variables used in outcome or weight models.
+the variables not included in the final model.}
 
 \item{cense}{Censoring variable}
 
-\item{where_var}{Variables used in where conditions used in subsetting the data used in final analysis (where_case),
-the variables not included in the final model.}
+\item{where_var}{Variables used in where conditions used in subsetting the data used in final analysis (where_case),}
 }
 \description{
 Select the required columns from the data and rename
