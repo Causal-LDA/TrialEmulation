@@ -11,7 +11,9 @@ test_that("data_preparation works as expected", {
     treatment = "treatment",
     outcome = "outcome",
     model_var = "assigned_treatment",
+    outcomeCov = c("catvarA", "catvarB", "catvarC", "nvarA", "nvarB", "nvarC"),
     outcomeCov_var = c("catvarA", "catvarB", "catvarC", "nvarA", "nvarB", "nvarC"),
+    outcomeClass = c("catvarA", "catvarB", "catvarC"),
     numCores = 1
   )
 
