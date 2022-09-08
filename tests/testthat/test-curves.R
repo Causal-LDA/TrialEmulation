@@ -41,6 +41,7 @@ test_that("predict_survival works as expected", {
     treatment = "treatment",
     outcome = "outcome",
     model_var = "assigned_treatment",
+    outcomeCov = c("catvarA", "catvarB", "catvarC", "nvarA", "nvarB", "nvarC"),
     outcomeCov_var = c("catvarA", "catvarB", "catvarC", "nvarA", "nvarB", "nvarC"),
     outcomeClass = c("catvarA", "catvarB", "catvarC"),
     numCores = 1,
@@ -54,8 +55,8 @@ test_that("predict_survival works as expected", {
   expect_equal(
     result,
     list(
-      trt_0 = c(0.0046116860163616, 0.00920812980216914, 0.0137893511435993, 0.0183553699381658, 0.022906168015916),
-      trt_1 = c(0.0040995719909165, 0.00818786323810003, 0.0122648798970051, 0.0163306282196357, 0.020385084310349)
+      trt_0 = c(0.00468820988443441, 0.00934429889707655, 0.0139688804282337, 0.0185625375205256, 0.0231257743083843),
+      trt_1 = c(0.00359094291314119, 0.00716409318950961, 0.0107197162554207, 0.0142580669986666, 0.0177793599907887)
     )
   )
 })
