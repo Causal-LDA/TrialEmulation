@@ -205,7 +205,7 @@ expand <- function(sw_data,
   switch_data[, time_of_event := sw_data[rep(1:.N, period + 1), time_of_event]]
   switch_data[, weight0 := sw_data[rep(1:.N, period + 1), weight0]]
   switch_data[, for_period := for_period_func(sw_data)]
-  switch_data[, index := seq_along(switch_data)]
+  switch_data[, index := seq_len(.N)]
   switch_data <- switch_data[temp_data, on = list(id = id, for_period = period)]
   setorder(switch_data, index)
 
