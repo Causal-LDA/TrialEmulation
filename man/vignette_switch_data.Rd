@@ -14,6 +14,12 @@ A data frame with 1939053 rows and 7 variables:
 \item{treatment}{indicator for receiving treatment in this period, 1=treatment, 0=no treatment}
 \item{assigned_treatment}{indicator for assigned treatment at baseline of the trial, 1=treatment, 0=no treatment}
 \item{weight}{weights for use with model fitting}
+\item{catvarA}{A categorical variable relating to treatment and the outcome}
+\item{catvarB}{A categorical variable relating to treatment and the outcome}
+\item{catvarC}{A categorical variable relating to treatment and the outcome}
+\item{nvarA}{A numerical variable relating to treatment and the outcome}
+\item{nvarB}{A numerical variable relating to treatment and the outcome}
+\item{nvarC}{A numerical variable relating to treatment and the outcome}
 }
 }
 \usage{
