@@ -47,7 +47,8 @@ test_that("predict_survival works as expected", {
     numCores = 1,
     data_dir = temp_dir,
     use_censor = 0,
-    use_weight = 0
+    use_weight = 0,
+    quiet = TRUE
   )
   unlink(temp_dir, recursive = TRUE)
 
