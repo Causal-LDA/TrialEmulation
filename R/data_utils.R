@@ -107,8 +107,8 @@ weight_func <- function(sw_data,
   if (!missing(save_dir)) assert_directory_exists(save_dir)
 
   if (include_regime_length == 1) {
-    model_switchd <- update.formula(model_switchd, ~ . + time_on_regime + time_on_regime2)
-    model_switchn <- update.formula(model_switchn, ~ . + time_on_regime + time_on_regime2)
+    model_switchd <- update.formula(model_switchd, ~ . + time_on_regime + I(time_on_regime^2))
+    model_switchn <- update.formula(model_switchn, ~ . + time_on_regime + I(time_on_regime^2))
   }
 
   ## ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

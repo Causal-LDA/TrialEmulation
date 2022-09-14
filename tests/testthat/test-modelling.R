@@ -1,36 +1,30 @@
 # data_modelling ----
 test_that("data_modelling can be quiet", {
-  working_dir <- tempdir(check = TRUE)
-  data_path <- file.path(working_dir, "switch_data.R")
-  data.table::fwrite(vignette_switch_data, data_path)
+  data <- vignette_switch_data
   expect_silent(
     result <- data_modelling(
-      outcomeCov_var = c("catvarA", "catvarB", "catvarC", "nvarA", "nvarB", "nvarC"),
+      data,
+      outcome_cov = c("catvarA", "nvarA"),
       model_var = "assigned_treatment",
-      include_followup_time_case = "linear",
-      include_expansion_time_case = "linear",
-      absolutePath = data_path,
+      include_followup_time_case = ~followup_time,
+      include_expansion_time_case = ~for_period,
       use_sample_weights = FALSE,
       quiet = TRUE
     )
   )
-  unlink(data_path)
 })
 
 test_that("data_modelling gives expected results in example data", {
-  working_dir <- tempdir(check = TRUE)
-  data_path <- file.path(working_dir, "switch_data.csv")
-  data.table::fwrite(vignette_switch_data, data_path)
+  data <- vignette_switch_data
   result <- data_modelling(
-    outcomeCov = c("catvarA", "catvarB", "catvarC", "nvarA", "nvarB", "nvarC"),
+    data,
+    outcome_cov = c("catvarA", "catvarB", "catvarC", "nvarA", "nvarB", "nvarC"),
     model_var = "assigned_treatment",
-    include_followup_time_case = "linear",
-    include_expansion_time_case = "linear",
-    absolutePath = data_path,
+    include_followup_time_case = ~followup_time,
+    include_expansion_time_case = ~for_period,
     use_sample_weights = FALSE,
     quiet = TRUE
   )
-  unlink(data_path)
   expect_class(result$model, "glm")
   expected_coefs <- c(
     `(Intercept)` = -3.44513044265409,

@@ -31,26 +31,27 @@ test_that("h_extract_baseline works works as expected", {
 })
 
 test_that("predict_survival works as expected", {
-  temp_dir <- tempdir(check = TRUE)
+  trial_ex <- RandomisedTrialsEmulation::trial_example
+  trial_ex$catvarA <- as.factor(trial_ex$catvarA)
+  trial_ex$catvarB <- as.factor(trial_ex$catvarB)
+  trial_ex$catvarC <- as.factor(trial_ex$catvarC)
 
-  object <- initiators(
-    data = RandomisedTrialsEmulation::trial_example,
+  object <- initiators_analysis(
+    data = trial_ex,
     id = "id",
     period = "period",
     eligible = "eligible",
     treatment = "treatment",
     outcome = "outcome",
     model_var = "assigned_treatment",
-    outcomeCov = c("catvarA", "catvarB", "catvarC", "nvarA", "nvarB", "nvarC"),
-    outcomeCov_var = c("catvarA", "catvarB", "catvarC", "nvarA", "nvarB", "nvarC"),
-    outcomeClass = c("catvarA", "catvarB", "catvarC"),
+    outcome_cov = c("catvarA", "catvarB", "catvarC", "nvarA", "nvarB", "nvarC"),
+    include_followup_time_case = ~followup_time,
+    include_expansion_time_case = ~for_period,
     numCores = 1,
-    data_dir = temp_dir,
     use_censor = 0,
     use_weight = 0,
     quiet = TRUE
   )
-  unlink(temp_dir, recursive = TRUE)
 
   result <- predict_survival(object, predict_times = c(1, 2, 3, 4, 5))
   expect_equal(

@@ -173,7 +173,7 @@ initiators_analysis <- function(data,
     numCores = numCores,
     chunk_size = chunk_size,
     separate_files = separate_files,
-    quiet = FALSE
+    quiet = quiet
   )
 
   # Fit final models and robust variance estimates

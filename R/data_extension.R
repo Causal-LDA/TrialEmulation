@@ -156,8 +156,8 @@ expand <- function(sw_data,
   # Dummy variables used in data.table calls declared to prevent package check NOTES:
   id <- period <- wtprod <- elgcount <- treat <- dosesum <- eligible <- treatment <- treatment_new <-
     weight0 <- wt <- cumA <- init <- init_shift <- period_new <- cumA_new <- switch_new <-
-    outcome_new <- outcome <- time_of_event <- for_period <- index <- for_period2 <-
-    followup_time <- followup_time2 <- dose <- dose2 <- weight <- case <- NULL
+    outcome_new <- outcome <- time_of_event <- for_period <- index <-
+    followup_time <- dose <- weight <- case <- NULL
 
   temp_data <- data.table(
     id = sw_data[, id],
@@ -213,7 +213,6 @@ expand <- function(sw_data,
 
   if (use_censor == 0) {
     switch_data[, dose := cumA_new - dosesum + treat]
-    switch_data[, dose2 := dose**2]
   } else {
     switch_data[, treatment := init]
   }

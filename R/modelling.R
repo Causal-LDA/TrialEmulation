@@ -60,10 +60,7 @@ data_modelling <- function(data,
     }
   }
 
-  model_formula <- add_rhs(
-    add_rhs(outcome ~ 1, outcome_cov),
-    add_rhs(include_followup_time_case, include_expansion_time_case)
-  )
+  model_formula <- outcome ~ 1
 
   if (!is.null(model_var)) {
     # if the model_var is not empty, we use the information provided by user
@@ -83,6 +80,11 @@ data_modelling <- function(data,
       model_formula <- add_rhs(model_formula, ~assigned_treatment)
     }
   }
+
+  model_formula <- Reduce(
+    add_rhs,
+    c(model_formula, include_expansion_time_case, include_followup_time_case, outcome_cov)
+  )
 
   if (any(!is.na(where_case))) {
     timing <- system.time({
@@ -123,7 +125,7 @@ data_modelling <- function(data,
       if (glm_function == "parglm") {
         model.full <- parglm::parglm(model_formula,
           data = data,
-          weights = data[, weight],
+          weights = data[, "weight"],
           family = binomial(link = "logit"),
           control = parglm::parglm.control(nthreads = 4, method = "FAST")
         )
