@@ -41,10 +41,6 @@ the variables not included in the final model}
 \item{data_dir}{Direction to save data}
 
 \item{chunk_size}{Number of ids to expand in each chunk}
-
-\item{numCores}{Number of cores for parallel programming}
-
-\item{separate_files}{Write to one file or one per trial (default FALSE)}
 }
 \description{
 This function takes the data and all the variables and expand it using parallel computing

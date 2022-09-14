@@ -40,7 +40,7 @@ assert_monotonic <- function(x, increasing = TRUE) {
 #' @param x A formula or character vector.
 #'
 #' @return A formula
-#'
+#' @noRd
 #' @examples
 #' as_formula(c("age", "sex"))
 as_formula <- function(x) {

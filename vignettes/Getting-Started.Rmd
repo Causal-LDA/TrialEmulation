@@ -178,10 +178,12 @@ summary(model_result$model)
 ```
 
 We can also use this object to predict cumulative incidence curves and use these for treatment comparisons.
-Here we use the patients who were in the first trial as the target population.
+Here we use the patients who were in the first trial as the target population. To get the data in the right format,
+we can use the `data_template` returned by `data_preparation()`.
 
 ```{r}
-new_data <- data.table::fread(file.path(working_dir, "trial_1.csv"), colClasses = prep_data$col_classes)
+new_data <- data.table::fread(file.path(working_dir, "trial_1.csv"))
+new_data <- rbind(data.table::as.data.table(prep_data$data_template), new_data)
 model_preds <- predict_survival(model = model_result$model, predict_times = c(1:40), newdata = new_data)
 ```
 

@@ -14,9 +14,7 @@
 #' @param where_var Variables used in where conditions used in subsetting the data used in final analysis (where_case),
 #'  the variables not included in the final model
 #' @param data_dir Direction to save data
-#' @param numCores Number of cores for parallel programming
 #' @param chunk_size Number of ids to expand in each chunk
-#' @param separate_files Write to one file or one per trial (default FALSE)
 
 data_extension_parallel <- function(data,
                                     keeplist,
@@ -78,7 +76,7 @@ data_extension_parallel <- function(data,
 #'
 #' Expands the longitudinal data into a sequence of trials.
 #'
-#' @param sw_data A `data.frame` or similar
+#' @param data A `data.frame` or similar
 #' @param keeplist A list contains names of variables used in final model
 #' @param outcomeCov_var A list of individual baseline variables used in final model
 #' @param first_period First period value to start expanding about

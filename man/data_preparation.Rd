@@ -110,11 +110,6 @@ weights (Defaults to 1)}
 
 \item{numCores}{Number of cores for parallel programming (default value is maximum cores and parallel programming)}
 
-\item{chunk_size}{Number of ids to process at once for the chunk expansion (default 500). Larger chunk_sizes
-may be faster but require more memory.}
-
-\item{separate_files}{Write to one file or one per trial (default FALSE)}
-
 \item{quiet}{Don't print progress messages.}
 }
 \description{

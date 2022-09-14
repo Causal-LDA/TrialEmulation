@@ -16,6 +16,8 @@ data_extension(
 )
 }
 \arguments{
+\item{data}{A \code{data.frame} or similar}
+
 \item{keeplist}{A list contains names of variables used in final model}
 
 \item{outcomeCov_var}{A list of individual baseline variables used in final model}
@@ -33,8 +35,6 @@ the maximum and variance of weights (Defaults to 1)}
 
 \item{where_var}{Variables used in where conditions used in subsetting the data used in final
 analysis (\code{where_case}), the variables are not included in the final model.}
-
-\item{sw_data}{A \code{data.frame} or similar}
 }
 \description{
 Expands the longitudinal data into a sequence of trials.

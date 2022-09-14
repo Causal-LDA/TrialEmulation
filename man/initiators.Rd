@@ -142,24 +142,6 @@ weights (Defaults to 1)}
 \item{glm_function}{Which glm function to use for the final model from \code{stats} or \code{parglm} packages}
 
 \item{quiet}{Don't print progress messages.}
-
-\item{case_control}{Run the case control sampling or not Defaults to 0}
-
-\item{n_control}{Number of controls used in case control sampling. Not compatible with \code{p_control}. If \code{p_control}
-is specified, \code{n_control} has no effect.}
-
-\item{p_control}{Proportion of control to sample. If \code{p_control} is specified, \code{n_control} has no effect.}
-
-\item{sample_all_periods}{Sample a proportion of controls even if there are no cases in that period. Useful when
-estimating the baseline hazard.}
-
-\item{chunk_expansion}{Do the expansion in chunks (and in parallel if numCores > 1). Turn this off if you have
-enough memory to expand the whole dataset at once. (default TRUE)}
-
-\item{chunk_size}{Number of ids to process at once for the chunk expansion (default 500). Larger chunk_sizes
-may be faster but require more memory.}
-
-\item{separate_files}{Write to one file or one per trial (default FALSE)}
 }
 \description{
 An all-in-one analysis using a sequence of target trials. This provides a simplified
@@ -170,6 +152,4 @@ The class variables paramers (\code{outcomeClass},\code{class_switchn},\code{cla
 can be given as a character vector which will construct factors using \code{as.factor} or as a named list with
 the arguments for factor
 eg \verb{list(risk_cat=list(levels = c(1,2,3,0), age_cat=list(levels=c(1,2,3),labels=c("50-60","60-70","70+")}
-
-initiators()
 }

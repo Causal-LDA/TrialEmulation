@@ -6,8 +6,8 @@
 \usage{
 weight_func(
   sw_data,
-  model_switchn = NA,
-  model_switchd = NA,
+  switch_n_cov = NA,
+  switch_d_cov = NA,
   eligible_wts_0 = NA,
   eligible_wts_1 = NA,
   cense = NA,
@@ -21,6 +21,12 @@ weight_func(
 }
 \arguments{
 \item{sw_data}{A data.table}
+
+\item{switch_n_cov}{A RHS formula for modelling probability of switching treatment. Used in the numerator of weight
+calculation.}
+
+\item{switch_d_cov}{A RHS formula for modelling probability of switching treatment. Used in the denominator of weight
+calculation.}
 
 \item{eligible_wts_0}{Eligibility criteria used in weights for model condition Am1 = 0}
 

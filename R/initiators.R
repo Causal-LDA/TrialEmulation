@@ -47,19 +47,8 @@
 #' (where_case), the variables not included in the final model
 #' @param where_case List of where conditions used in subsetting the data used in final analysis
 #' @param run_base_model Run the model with no conditions Defaults to 1
-#' @param case_control Run the case control sampling or not Defaults to 0
-#' @param n_control Number of controls used in case control sampling. Not compatible with `p_control`. If `p_control`
-#'  is specified, `n_control` has no effect.
-#' @param p_control Proportion of control to sample. If `p_control` is specified, `n_control` has no effect.
-#' @param sample_all_periods Sample a proportion of controls even if there are no cases in that period. Useful when
-#' estimating the baseline hazard.
 #' @param data_dir Direction to save data
 #' @param numCores Number of cores for parallel programming (default value is maximum cores and parallel programming)
-#' @param chunk_expansion Do the expansion in chunks (and in parallel if numCores > 1). Turn this off if you have
-#' enough memory to expand the whole dataset at once. (default TRUE)
-#' @param chunk_size Number of ids to process at once for the chunk expansion (default 500). Larger chunk_sizes
-#' may be faster but require more memory.
-#' @param separate_files Write to one file or one per trial (default FALSE)
 #' @param glm_function Which glm function to use for the final model from `stats` or `parglm` packages
 #' @param quiet Don't print progress messages.
 #' @param switch_n_cov A RHS formula for modelling probability of switching treatment. Used in the numerator of weight
@@ -76,10 +65,7 @@
 #' the arguments for factor
 #' eg `list(risk_cat=list(levels = c(1,2,3,0), age_cat=list(levels=c(1,2,3),labels=c("50-60","60-70","70+")`
 #'
-#' initiators()
 #' @export
-#' @import foreach
-#' @import doParallel
 #' @import parallel
 #' @import data.table
 #' @importFrom Rcpp sourceCpp

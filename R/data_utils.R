@@ -88,8 +88,8 @@ for_period_func <- function(x) {
 #' @inheritParams initiators
 #'
 weight_func <- function(sw_data,
-                        model_switchn = NA,
-                        model_switchd = NA,
+                        switch_n_cov = NA,
+                        switch_d_cov = NA,
                         eligible_wts_0 = NA,
                         eligible_wts_1 = NA,
                         cense = NA,
@@ -106,12 +106,12 @@ weight_func <- function(sw_data,
 
   if (!missing(save_dir)) assert_directory_exists(save_dir)
 
-  model_switchd <- update.formula(model_switchd, treatment ~ .)
-  model_switchn <- update.formula(model_switchn, treatment ~ .)
+  switch_d_cov <- update.formula(switch_d_cov, treatment ~ .)
+  switch_n_cov <- update.formula(switch_n_cov, treatment ~ .)
 
   if (include_regime_length == 1) {
-    model_switchd <- update.formula(model_switchd, ~ . + time_on_regime + I(time_on_regime^2))
-    model_switchn <- update.formula(model_switchn, ~ . + time_on_regime + I(time_on_regime^2))
+    switch_d_cov <- update.formula(switch_d_cov, ~ . + time_on_regime + I(time_on_regime^2))
+    switch_n_cov <- update.formula(switch_n_cov, ~ . + time_on_regime + I(time_on_regime^2))
   }
 
   ## ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -127,7 +127,7 @@ weight_func <- function(sw_data,
 
   model1 <- weight_lr(
     sw_data[if (any(!is.na(eligible_wts_0))) (eligible0 == 1 & eligible_wts_0 == 1) else eligible0 == 1],
-    model_switchd
+    switch_d_cov
   )
 
   h_quiet_print(quiet, summary(model1))
@@ -148,7 +148,7 @@ weight_func <- function(sw_data,
 
   model2 <- weight_lr(
     sw_data[if (any(!is.na(eligible_wts_0))) (eligible0 == 1 & eligible_wts_0 == 1) else eligible0 == 1],
-    model_switchn,
+    switch_n_cov,
   )
 
   h_quiet_print(quiet, summary(model2))
@@ -168,7 +168,7 @@ weight_func <- function(sw_data,
   h_quiet_print(quiet, "P(treatment=1 | treatment=1) for denominator")
   model3 <- weight_lr(
     sw_data[if (any(!is.na(eligible_wts_1))) (eligible1 == 1 & eligible_wts_1 == 1) else eligible1 == 1],
-    model_switchd
+    switch_d_cov
   )
 
   h_quiet_print(quiet, summary(model3))
@@ -187,7 +187,7 @@ weight_func <- function(sw_data,
   h_quiet_print(quiet, "P(treatment=1 | treatment=1) for numerator")
   model4 <- weight_lr(
     sw_data[if (any(!is.na(eligible_wts_1))) (eligible1 == 1 & eligible_wts_1 == 1) else eligible1 == 1],
-    model_switchn
+    switch_n_cov
   )
 
   h_quiet_print(quiet, summary(model4))
