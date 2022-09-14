@@ -73,7 +73,7 @@ data_preparation <- function(data,
 
   if (use_weight == 1) {
     data <- weight_func(
-      data = data,
+      sw_data = data,
       model_switchn = switch_n_cov,
       model_switchd = switch_d_cov,
       eligible_wts_0 = eligible_wts_0,
@@ -83,18 +83,17 @@ data_preparation <- function(data,
       model_censed = cense_d_cov,
       model_censen = cense_n_cov,
       include_regime_length = include_regime_length,
-      numCores = numCores,
-      data_dir = data_dir,
+      save_dir = data_dir,
       quiet = quiet
     )
   } else if (use_weight == 0) {
     data[, wt := 1]
   }
 
+  keep_dose <- if (use_censor == 0) "dose" else NULL
   keeplist <- c(
-    "id", "for_period", "followup_time", "outcome",
-    "weight", "treatment", "assigned_treatment", "dose",
-    where_var, all.vars(outcome_cov), all.vars(model_var)
+    "id", "for_period", "followup_time", "outcome", "weight", "treatment", "assigned_treatment",
+    where_var, all.vars(outcome_cov), all.vars(model_var), keep_dose
   )
 
   h_quiet_print(quiet, "Start data extension")
@@ -113,16 +112,15 @@ data_preparation <- function(data,
     } else {
       extended_data <- data_extension_parallel(
         data = data,
-        keeplist,
+        keeplist = keeplist,
         outcomeCov_var = all.vars(outcome_cov),
-        first_period,
-        last_period,
-        use_censor,
-        lag_p_nosw,
+        first_period = first_period,
+        last_period = last_period,
+        use_censor = use_censor,
+        lag_p_nosw = lag_p_nosw,
         where_var = where_var,
-        data_dir,
-        numCores,
-        chunk_size
+        data_dir = data_dir,
+        chunk_size = chunk_size
       )
     }
   })

@@ -1,7 +1,7 @@
 #' Data modelling Function
 #'
 #' This function do the modelling.
-#' @inheritParams initiators_analysis
+#' @inheritParams initiators
 #'
 #' @details The class variables parameters (`outcomeClass`,`class_switchn`,
 #'  `class_switchd`,`class_censen`,`class_censed`) can be given as a character

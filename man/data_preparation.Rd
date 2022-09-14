@@ -51,9 +51,17 @@ data_preparation(
 
 \item{eligible}{Indicator of whether or not an observation is eligible to be expanded about Defaults to eligible}
 
+\item{outcome_cov}{A RHS formula with baseline covariates to adjust in final model}
+
 \item{model_var}{List of Variables of interest to be used in final model.
 Derived variables to use in outcome models. Typically \code{assigned_treatment} for ITT and per-protocol,
-and \code{dose + dose^2} for as-treated.}
+and \code{dose + dose^2} for as-treated. \code{time_on_regime}? TODO check what else is derived}
+
+\item{switch_n_cov}{A RHS formula for modelling probability of switching treatment. Used in the numerator of weight
+calculation.}
+
+\item{switch_d_cov}{A RHS formula for modelling probability of switching treatment. Used in the denominator of weight
+calculation.}
 
 \item{first_period}{First period value to start expanding about}
 
@@ -71,6 +79,12 @@ initial treatment value}
 \item{pool_cense}{Pool the numerator and denominator models (0: split models by previous treatment Am1 = 0 and
 Am1 = 1 as in treatment models and 1: pool all observations together into a single numerator and denominator model)
 Defaults to 0}
+
+\item{cense_d_cov}{A RHS formula for modelling probability of being censored. Used in the numerator of weight
+calculation.}
+
+\item{cense_n_cov}{A RHS formula for modelling probability of being censored. Used in the denominator of weight
+calculation.}
 
 \item{include_followup_time_case}{The model to include follow up time in outcome model.
 This has 3 options c("linear","quadratic","spline")}

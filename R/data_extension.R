@@ -51,9 +51,7 @@ data_extension_parallel <- function(data,
       maxperiod = maxperiod,
       minperiod = minperiod,
       lag_p_nosw = lag_p_nosw,
-      keeplist = keeplist,
-      data_dir = data_dir,
-      separate_files = separate_files
+      keeplist = keeplist
     )
     N <- N + nrow(switch_data)
     for (p in unique(switch_data[, "for_period"])[[1]]) {
@@ -71,7 +69,8 @@ data_extension_parallel <- function(data,
     min_period = minperiod,
     max_period = maxperiod,
     range = range,
-    N = N
+    N = N,
+    col_classes = vapply(switch_data, class, character(1L))
   ))
 }
 
@@ -146,13 +145,16 @@ data_extension <- function(data, keeplist, outcomeCov_var = NA,
 #' weights (Defaults to 1)
 #' @param keeplist A list contains names of variables used in final model
 #'
-#' @importFrom splines ns
 #' @import data.table
 
 expand <- function(sw_data,
-                   outcomeCov_var, where_var, use_censor,
-                   maxperiod, minperiod,
-                   lag_p_nosw, keeplist) {
+                   outcomeCov_var,
+                   where_var,
+                   use_censor,
+                   maxperiod,
+                   minperiod,
+                   lag_p_nosw,
+                   keeplist) {
   # Dummy variables used in data.table calls declared to prevent package check NOTES:
   id <- period <- wtprod <- elgcount <- treat <- dosesum <- eligible <- treatment <- treatment_new <-
     weight0 <- wt <- cumA <- init <- init_shift <- period_new <- cumA_new <- switch_new <-

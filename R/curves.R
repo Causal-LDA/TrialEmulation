@@ -146,7 +146,7 @@ sum_up_ci <- function(p_mat_list) {
 ci_up_to <- function(p_mat) {
   assert_matrix(p_mat, mode = "numeric")
 
-  prod_term <- apply(1 - cbind(0, p_mat)[, -ncol(p_mat)], 1, cumprod)
+  prod_term <- apply(1 - cbind(0, p_mat)[, -ncol(p_mat), drop = FALSE], 1, cumprod)
   sum_term <- prod_term * t(p_mat)
   cumsum_term <- apply(sum_term, 2, cumsum)
   result <- rowSums(cumsum_term)

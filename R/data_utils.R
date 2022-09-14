@@ -106,6 +106,9 @@ weight_func <- function(sw_data,
 
   if (!missing(save_dir)) assert_directory_exists(save_dir)
 
+  model_switchd <- update.formula(model_switchd, treatment ~ .)
+  model_switchn <- update.formula(model_switchn, treatment ~ .)
+
   if (include_regime_length == 1) {
     model_switchd <- update.formula(model_switchd, ~ . + time_on_regime + I(time_on_regime^2))
     model_switchn <- update.formula(model_switchn, ~ . + time_on_regime + I(time_on_regime^2))
@@ -218,8 +221,8 @@ weight_func <- function(sw_data,
 
   rm(switch_d0, switch_d1, switch_n0, switch_n1)
 
+  sw_data <- merge.data.table(sw_data, switch_0, by = c("id", "period"), all = TRUE)
   sw_data <- merge.data.table(sw_data, switch_1, by = c("id", "period"), all = TRUE)
-  sw_data <- merge.data.table(sw_data, switch_2, by = c("id", "period"), all = TRUE)
 
   rm(switch_1, switch_0)
 
@@ -232,6 +235,9 @@ weight_func <- function(sw_data,
   # Censoring weights --------------------
   ## ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   cens_models <- list()
+
+  update.formula(model_censed, 1 - cense ~ .)
+  update.formula(model_censen, 1 - cense ~ .)
 
   if (!is.na(cense)) {
     if (pool_cense == 1) {

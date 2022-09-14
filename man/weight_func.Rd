@@ -22,10 +22,6 @@ weight_func(
 \arguments{
 \item{sw_data}{A data.table}
 
-\item{model_switchn}{List of models (functions) to use the covariates from cov_switchn}
-
-\item{model_switchd}{List of models (functions) to use the covariates from cov_switchd}
-
 \item{eligible_wts_0}{Eligibility criteria used in weights for model condition Am1 = 0}
 
 \item{eligible_wts_1}{Eligibility criteria used in weights for model condition Am1 = 1}
@@ -35,10 +31,6 @@ weight_func(
 \item{pool_cense}{Pool the numerator and denominator models (0: split models by previous treatment Am1 = 0 and
 Am1 = 1 as in treatment models and 1: pool all observations together into a single numerator and denominator model)
 Defaults to 0}
-
-\item{model_censed}{List of models (functions) to use the covariates from cov_censed}
-
-\item{model_censen}{List of models (functions) to use the covariates from cov_censen}
 
 \item{include_regime_length}{If defined as 1 a new variable (time_on_regime) is added to dataset.
 This variable stores the duration of time that the patient has been on the current treatment value}

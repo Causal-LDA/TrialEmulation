@@ -36,7 +36,7 @@ test_that("predict_survival works as expected", {
   trial_ex$catvarB <- as.factor(trial_ex$catvarB)
   trial_ex$catvarC <- as.factor(trial_ex$catvarC)
 
-  object <- initiators_analysis(
+  object <- initiators(
     data = trial_ex,
     id = "id",
     period = "period",

@@ -2,21 +2,19 @@
 % Please edit documentation in R/sampling.R
 \name{case_control_sampling_trials}
 \alias{case_control_sampling_trials}
-\title{Case-control sampling from extended data in separate trial csvs}
+\title{Case-control sampling from extended data in separate trial CSVs}
 \usage{
 case_control_sampling_trials(
-  data_dir,
+  data_prep,
   n_control = NULL,
   p_control = NULL,
   sample_all_periods,
-  numCores,
-  samples_file = "sample_data.csv",
-  infile_pattern = "trial_",
-  subset_condition
+  subset_condition,
+  mc_cores = 1
 )
 }
 \arguments{
-\item{data_dir}{Directory containing trial-level extended data}
+\item{data_prep}{Result from \code{\link[=data_preparation]{data_preparation()}}}
 
 \item{n_control}{Number of controls to sample per case}
 
@@ -24,17 +22,13 @@ case_control_sampling_trials(
 
 \item{sample_all_periods}{Sample controls in all periods (TRUE) or only when there is a case in the period (FALSE)?}
 
-\item{numCores}{Number of cores for parallel processing}
-
-\item{samples_file}{Name of output csv files for each case-control sample. eg \code{paste0("samples_",seq_along(n_control),"_1x",n_control,".csv")}}
-
-\item{infile_pattern}{Name of trial dataset csv files. This is passed to the \code{pattern} argument of \code{dir()}}
-
 \item{subset_condition}{Expression used to \code{subset} the trial data before sampling}
+
+\item{mc_cores}{Number of cores for parallel processing with mclapply if \code{mc_cores > 1}.}
 }
 \value{
-A vector of file paths of the sampled data
+A \code{data.frame} or a \code{\link[=split]{split()}} \code{data.frame} if  \code{length(n_control) > 1} or \code{length(p_control) > 1}.
 }
 \description{
-Case-control sampling from extended data in separate trial csvs
+Case-control sampling from extended data in separate trial CSVs
 }

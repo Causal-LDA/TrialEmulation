@@ -12,9 +12,6 @@ knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>"
 )
-
-library(bigmemory)
-options(bigmemory.default.shared = FALSE)
 ```
 
 This package implements methods to analyse a sequence of target trials.
@@ -35,10 +32,7 @@ library(RandomisedTrialsEmulation)
 
 There is an all-in-one function `initators()` which does all of the steps with one function call.
 
-Currently, datasets are handled with csv files[^csv]. 
-
-To get started a longitudinal dataset must be created and saved as a csv.
-This should have:
+To get started a longitudinal dataset must be created containing:
 
  * time period
  * patient identifier
@@ -48,67 +42,156 @@ This should have:
  * other covariates relating to treatment, outcome, or censoring to be used in the models for weights or the outcome
  
 
-[^csv]: Saving the data to disk as csv allows us to use various techniques when the expanded data set becomes very 
-large and no longer fit easily in memory.
-
-
 ```{r}
 # Prepare the example data
 data("trial_example")
 
-# for the purposes of the vignette, we use a temporary directory, however it may be useful to use a permanent location
-# in order to inspect the outputs later
-working_dir <- file.path(tempdir(), "trial_emu")
-dir.create(working_dir)
+trial_example$catvarA <- as.factor(trial_example$catvarA)
+trial_example$catvarB <- as.factor(trial_example$catvarB)
+trial_example$catvarC <- as.factor(trial_example$catvarC)
+
+head(trial_example)
 ```
 
 Call the `initiators()` function to run the complete analysis:
 ```{r}
-result <-
-  initiators(
-    data = trial_example,
-    id = "id",
-    period = "period",
-    eligible = "eligible",
-    treatment = "treatment",
-    outcome = "outcome",
-    model_var = "assigned_treatment",
-    outcomeCov_var = c("catvarA", "catvarB", "catvarC", "nvarA", "nvarB", "nvarC"),
-    outcomeCov = c("catvarA", "catvarB", "catvarC", "nvarA", "nvarB", "nvarC"),
-    outcomeClass = c("catvarA", "catvarB", "catvarC"),
-    numCores = 1,
-    data_dir = working_dir,
-    use_censor = 0,
-    use_weight = 0
-  )
-```
-
-`initiators()` creates a few additional data files, depending on the selected options
-```{r}
-list.files(working_dir)
-```
- 
- * `switch_data` is the extended data
- 
-
-Instead of using `initiators()` it is possible to run each step individually with `data_preparation()`,
-`data_modelling()` etc.
-
-```{r, eval = FALSE}
-model_result <- data_modelling(
-  outcomeCov_var = c("catvarA", "catvarB", "catvarC", "nvarA", "nvarB", "nvarC"),
+result <- initiators(
+  data = trial_example,
+  id = "id",
+  period = "period",
+  eligible = "eligible",
+  treatment = "treatment",
+  outcome = "outcome",
   model_var = "assigned_treatment",
-  include_followup_time_case = "linear",
-  include_expansion_time_case = "linear",
-  absolutePath = file.path(working_dir, "switch_data.csv"),
-  use_sample_weights = FALSE,
-  quiet = TRUE
+  outcome_cov = c("catvarA", "catvarB", "catvarC", "nvarA", "nvarB", "nvarC"),
+  use_censor = 0,
+  use_weight = 0
 )
 ```
 
+By default, this returns the final `glm` model object and the results using the sandwich estimator.
+```{r}
+summary(result$model)
+```
+
+```{r}
+result$robust$summary
+```
+
+Also the sandwich variance-covariance matrix.
+```{r}
+result$robust$matrix
+```
+
+
+# Flexible Analysis
+
+To gain complete control over the analysis and to inspect the intermediate objects, it can
+be useful to run the the data preparation and modelling steps separately.
+
+This also allows for processing of very large data sets, by doing the data preparation in chunks and then
+sampling from the expanded trial data.
+
+```{r}
+# for the purposes of the vignette, we use a temporary directory, however it may be useful to use a permanent location
+# in order to inspect the outputs later
+working_dir <- file.path(tempdir(TRUE), "trial_emu")
+if (!dir.exists(working_dir)) dir.create(working_dir)
+```
+
+```{r}
+prep_data <- data_preparation(
+  data = trial_example,
+  id = "id",
+  period = "period",
+  eligible = "eligible",
+  treatment = "treatment",
+  outcome = "outcome",
+  model_var = "assigned_treatment",
+  outcome_cov = c("catvarA", "catvarB", "catvarC", "nvarA", "nvarB", "nvarC"),
+  numCores = 1,
+  data_dir = working_dir,
+  use_censor = 1,
+  use_weight = 1,
+  chunk_size = 500,
+  separate_files = TRUE,
+  switch_n_cov = ~ nvarA + nvarB
+)
+```
+
+We can access the summaries of the weight models to inspect how the IP weights have been calculated. 
+```{r}
+load(file.path(working_dir, "weight_models.rda"))
+
+str(weight_models, max.level = 1)
+weight_models$switch_n0
+weight_models$switch_n0_statistics
+```
+
+Here we see the expanded trial files:
+```{r}
+list.files(working_dir, pattern = "trial_")
+```
+
+Each of these csv files contains the data for the trial starting at period `_i`.
+To create a manageable dataset for the final analysis we can sample from these trials.
+
+```{r}
+sampled_data <- case_control_sampling_trials(prep_data, p_control = 0.1, sample_all_periods = TRUE)
+str(sampled_data)
+```
+You should confirm the data has the correct format, including factor levels here.
+You could also manipulate and derive new variables before proceeding with the modelling.
+It is also possible to specify formulas in `data_modelling` to include, for example, splines with
+`ns()`.
+
+Now we can fit the model with the `data_modelling()` function. Since we have sampled from the data, 
+we should make use of the `use_sample_weights` option to get correct survival estimates.
+
+```{r}
+model_result <- data_modelling(
+  data = sampled_data,
+  outcome_cov = c("catvarA", "catvarB", "catvarC", "nvarA", "nvarB", "nvarC"),
+  model_var = "assigned_treatment",
+  use_weight = 1,
+  use_censor = 0,
+  glm_function = "glm",
+  use_sample_weights = TRUE
+)
+```
+
+The result is the same type as the previous result from the simple `initiators` function, 
+containing the `glm` object and the sandwich results.
+
+```{r}
+str(model_result, max.level = 1)
+```
+
+```{r}
+summary(model_result$model)
+```
+
+We can also use this object to predict cumulative incidence curves and use these for treatment comparisons.
+Here we use the patients who were in the first trial as the target population.
+
+```{r}
+new_data <- data.table::fread(file.path(working_dir, "trial_1.csv"), colClasses = prep_data$col_classes)
+model_preds <- predict_survival(model = model_result$model, predict_times = c(1:40), newdata = new_data)
+```
+
+We can easily compare the curves visually.
+
+```{r}
+plot(model_preds$trt_0, ty = "l", ylab = "Cumulative Incidence", xlab = "Follow-up Time")
+lines(model_preds$trt_1, col = 2)
+```
+
+```{r}
+plot(model_preds$trt_1 - model_preds$trt_0, ty = "l", ylab = "Cumulative Incidence Difference", xlab = "Follow-up Time")
+```
 
 
 ```{r, echo=FALSE}
 # clean up
-unlink(working_dir)
+unlink(working_dir, recursive = TRUE)
 ```
