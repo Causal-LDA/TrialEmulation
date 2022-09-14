@@ -136,12 +136,18 @@ list.files(working_dir, pattern = "trial_")
 Each of these csv files contains the data for the trial starting at period `_i`.
 To create a manageable dataset for the final analysis we can sample from these trials.
 
+Here we sample 10% of the patients at each follow-up time in each trial without an event. All 
+observations with events are included.
 ```{r}
 sampled_data <- case_control_sampling_trials(prep_data, p_control = 0.1, sample_all_periods = TRUE)
 str(sampled_data)
 ```
-You should confirm the data has the correct format, including factor levels here.
-You could also manipulate and derive new variables before proceeding with the modelling.
+
+Before proceeding with the modelling, it is possible to manipulate and derive new variables and adjust factor levels
+in the `data.frame`. You can also specify transformations in a formula to `outcome_cov`, 
+`include_followup_time_case` or `include_expansion_time_case`, such as `~ ns(for_period)` or 
+`~ I(nvarA^2) + nvarC > 50 + catvarA:nvarC`.
+
 It is also possible to specify formulas in `data_modelling` to include, for example, splines with
 `ns()`.
 

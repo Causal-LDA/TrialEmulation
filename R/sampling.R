@@ -178,10 +178,10 @@ case_control_sampling_trials <- function(data_prep,
   }
 
   if (!missing(subset_condition)) subset_cond <- substitute(subset_condition)
-
+  template <- as.data.table(data_prep$data_template)
   # function used in lapply to read in a trial file and call sampling function
   trial_fun <- function(trial_file) {
-    d_period <- fread(input = trial_file, colClasses = data_prep$col_classes)
+    d_period <- rbind(template, fread(input = trial_file))
 
     if (exists("subset_cond")) d_period <- subset(d_period, eval(subset_cond))
 

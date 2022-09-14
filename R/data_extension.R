@@ -70,7 +70,7 @@ data_extension_parallel <- function(data,
     max_period = maxperiod,
     range = range,
     N = N,
-    col_classes = vapply(switch_data, class, character(1L))
+    data_template = as.data.frame(switch_data[0, ])
   ))
 }
 
