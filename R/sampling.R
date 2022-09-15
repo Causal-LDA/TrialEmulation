@@ -160,6 +160,9 @@ case_control_sampling_trials <- function(data_prep,
                                          sample_all_periods,
                                          subset_condition,
                                          mc_cores = 1) {
+  # data.table columns
+  .id <- NULL
+
   trial_files <- data_prep$data
   exists <- vapply(trial_files, test_file_exists, logical(1L))
   if (any(!exists)) {

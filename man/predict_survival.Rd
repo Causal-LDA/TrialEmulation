@@ -23,12 +23,8 @@ equal to 0 and 1.
 Predict Cumulative Incidence
 }
 \examples{
-\donttest{
 data("trial_example")
-working_dir <- file.path(tempdir(), "trial_emu")
-dir.create(working_dir)
-data_path <- file.path(working_dir, "trial_example.csv")
-
+trial_example$catvarA <- factor(trial_example$catvarA)
 i <- initiators(
   data = trial_example,
   id = "id",
@@ -36,16 +32,12 @@ i <- initiators(
   eligible = "eligible",
   treatment = "treatment",
   outcome = "outcome",
-  model_var = "assigned_treatment",
-  outcomeCov_var = c("catvarA", "catvarB", "catvarC", "nvarA", "nvarB", "nvarC"),
-  outcomeClass = c("catvarA", "catvarB", "catvarC"),
-  numCores = 1,
-  data_dir = working_dir,
+  outcome_cov = c("catvarA", "nvarA"),
   use_censor = 0,
-  use_weight = 0
+  use_weight = 0,
+  last_period = 10
 )
 
 predict_survival(i, predict_times = c(1, 2, 3, 4, 5))
-}
 
 }

@@ -1,5 +1,6 @@
 # data_preparation ----
 test_that("data_preparation works as expected", {
+  data("trial_example")
   result <- data_preparation(
     data = trial_example,
     id = "id",
@@ -20,7 +21,7 @@ test_that("data_preparation works as expected", {
 
   result_pat_1 <- as.data.frame(result$data[result$data$id == 1, ])
   expected_pat_1 <- vignette_switch_data[vignette_switch_data$id == 1, ]
-  expect_identical(result_pat_1, expected_pat_1)
+  expect_equal(result_pat_1, expected_pat_1)
 })
 
 # data_preparation ----

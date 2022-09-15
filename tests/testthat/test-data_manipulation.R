@@ -1,12 +1,12 @@
 test_that("data_manipulation works as expected with no censoring", {
-  object <- setDT(trial_example)
+  object <- as.data.table(trial_example)
   result <- data_manipulation(object, use_censor = 0)
 
   expect_data_table(
     result,
     key = "id",
     nrow = 48400,
-    ncol = 23
+    ncol = 20
   )
   expect_set_equal(
     colnames(result),
@@ -21,7 +21,7 @@ test_that("data_manipulation works as expected with no censoring", {
 })
 
 test_that("data_manipulation works as expected with censoring", {
-  object <- setDT(trial_example)
+  object <- as.data.table(trial_example)
   result <- data_manipulation(object, use_censor = 1)
 
   expect_data_table(

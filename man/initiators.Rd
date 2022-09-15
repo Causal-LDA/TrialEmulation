@@ -147,9 +147,3 @@ weights (Defaults to 1)}
 An all-in-one analysis using a sequence of target trials. This provides a simplified
 interface to the main working functions \code{\link[=data_preparation]{data_preparation()}} and \code{\link[=data_modelling]{data_modelling()}}.
 }
-\details{
-The class variables paramers (\code{outcomeClass},\code{class_switchn},\code{class_switchd},\code{class_censen},\code{class_censed})
-can be given as a character vector which will construct factors using \code{as.factor} or as a named list with
-the arguments for factor
-eg \verb{list(risk_cat=list(levels = c(1,2,3,0), age_cat=list(levels=c(1,2,3),labels=c("50-60","60-70","70+")}
-}

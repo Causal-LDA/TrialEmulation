@@ -110,14 +110,18 @@ weights (Defaults to 1)}
 
 \item{numCores}{Number of cores for parallel programming (default value is maximum cores and parallel programming)}
 
+\item{chunk_size}{Number of patients to process in one chunk when \code{separate_files = TRUE}}
+
+\item{separate_files}{Save expanded data in separate CSV files for each trial.}
+
 \item{quiet}{Don't print progress messages.}
 }
 \description{
 This function prepare the data for modelling.
 }
 \details{
-The class variables parameters (\code{outcomeClass},\code{class_switchn},\code{class_switchd},\code{class_censen},
-\code{class_censed}) can be given as a character vector which will construct factors using \code{as.factor} or as a named list
-with the arguments for factor e.g.
-\verb{list(risk_cat=list(levels = c(1,2,3,0), age_cat=list(levels=c(1,2,3),labels=c("50-60","60-70","70+")}
+The arguments \code{chunk_size} and \code{separate_files} allow for processing of large datasets that
+would not fit in memory once expanded. When \code{separate_files = TRUE}, the input data are processed
+in chunks of patients and saved into separate files for each trial starting period. These separate
+files can be sampled to create the dataset for the modelling.
 }

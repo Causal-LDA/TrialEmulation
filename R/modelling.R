@@ -1,6 +1,8 @@
 #' Data modelling Function
 #'
 #' This function do the modelling.
+#' @param use_sample_weights Use sample weights in addition to IP weights. `data` must contain a column `sample_weight`.
+#' The weights used in the model are calculated as `weight = weight * sample_weight`.
 #' @inheritParams initiators
 #'
 #' @details The class variables parameters (`outcomeClass`,`class_switchn`,
@@ -42,11 +44,11 @@ data_modelling <- function(data,
   glm_function <- match.arg(glm_function)
 
   # Dummy variables used in data.table calls declared to prevent package check NOTES:
-  weight <- sample_weight <- NULL
+  weight <- sample_weight <- followup_time <- NULL
 
   # if there are any limits on the follow up
   if (!is.na(first_followup) || !is.na(last_followup)) {
-    data <- data[follow_time >= max(0, first_followup, na.rm = TRUE) &
+    data <- data[followup_time >= max(0, first_followup, na.rm = TRUE) &
       followup_time <= min(Inf, last_followup, na.rm = TRUE), ]
   }
 

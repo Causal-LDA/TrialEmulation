@@ -39,7 +39,7 @@ select_data_cols <- function(data,
   cols <- cols[!is.na(cols)]
   assert_subset(cols, colnames(data))
 
-  data_new <- setDT(data)[, ..cols]
+  data_new <- setDT(data)[, cols, with = FALSE]
 
   setnames(
     data_new,
@@ -94,8 +94,8 @@ weight_func <- function(sw_data,
                         eligible_wts_1 = NA,
                         cense = NA,
                         pool_cense = 0,
-                        model_censed = NA,
-                        model_censen = NA,
+                        cense_d_cov = NA,
+                        cense_n_cov = NA,
                         include_regime_length = 0,
                         save_dir,
                         quiet = FALSE) {
@@ -236,15 +236,15 @@ weight_func <- function(sw_data,
   ## ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   cens_models <- list()
 
-  update.formula(model_censed, 1 - cense ~ .)
-  update.formula(model_censen, 1 - cense ~ .)
+  update.formula(cense_d_cov, 1 - cense ~ .)
+  update.formula(cense_n_cov, 1 - cense ~ .)
 
   if (!is.na(cense)) {
     if (pool_cense == 1) {
       # -------------------- denominator -------------------------
       h_quiet_print(quiet, "Model for P(cense = 0 |  X ) for denominator")
       # -----------------------------------------------------------
-      model1.cense <- weight_lr(sw_data, model_censed)
+      model1.cense <- weight_lr(sw_data, cense_d_cov)
       h_quiet_print(quiet, summary(model1.cense))
       cense_d0 <- data.table(
         pC_d = model1.cense$fitted.values,
@@ -260,7 +260,7 @@ weight_func <- function(sw_data,
       # --------------------- numerator ---------------------------
       h_quiet_print(quiet, "Model for P(cense = 0 |  X ) for numerator")
       # ---------------------------------------------------------
-      model2.cense <- weight_lr(sw_data, model_censen)
+      model2.cense <- weight_lr(sw_data, cense_n_cov)
       h_quiet_print(quiet, summary(model2.cense))
       cense_n0 <- data.table(
         pC_n = model2.cense$fitted.values,
@@ -283,7 +283,7 @@ weight_func <- function(sw_data,
       h_quiet_print(quiet, "Model for P(cense = 0 |  X, Am1=0) for denominator")
       # ---------------------- eligible0 ---------------------------
 
-      model1.cense <- weight_lr(sw_data[eligible0 == 1], model_censed)
+      model1.cense <- weight_lr(sw_data[eligible0 == 1], cense_d_cov)
       h_quiet_print(quiet, summary(model1.cense))
       cense_d0 <- data.table(
         pC_d0 = model1.cense$fitted.values,
@@ -298,7 +298,7 @@ weight_func <- function(sw_data,
       # -------------------------- numerator ----------------------
       h_quiet_print(quiet, "Model for P(cense = 0 |  X, Am1=0) for numerator")
       #--------------------------- eligible0 -----------------------
-      model2.cense <- weight_lr(sw_data[eligible0 == 1], model_censen)
+      model2.cense <- weight_lr(sw_data[eligible0 == 1], cense_n_cov)
       h_quiet_print(quiet, summary(model2.cense))
       cense_n0 <- data.table(
         pC_n0 = model2.cense$fitted.values,
@@ -313,7 +313,7 @@ weight_func <- function(sw_data,
       # ------------------------- denominator ---------------------
       h_quiet_print(quiet, "Model for P(cense = 0 |  X, Am1=1) for denominator")
       # ------------------------ eligible1 -------------------------
-      model3.cense <- weight_lr(sw_data[eligible1 == 1], model_censed)
+      model3.cense <- weight_lr(sw_data[eligible1 == 1], cense_d_cov)
       h_quiet_print(quiet, summary(model3.cense))
       cense_d1 <- data.table(
         pC_d1 = model3.cense$fitted.values,
@@ -328,7 +328,7 @@ weight_func <- function(sw_data,
       # ------------------------ numerator -------------------------
       h_quiet_print(quiet, "Model for P(cense = 0 |  X, Am1=1) for numerator")
       # ------------------------- eligible1 -----------------------
-      model4.cense <- weight_lr(sw_data[eligible1 == 1], model_censen)
+      model4.cense <- weight_lr(sw_data[eligible1 == 1], cense_n_cov)
       h_quiet_print(quiet, summary(model4.cense))
       cense_n1 <- data.frame(
         pC_n1 = model4.cense$fitted.values,

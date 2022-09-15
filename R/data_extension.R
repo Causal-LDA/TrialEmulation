@@ -26,6 +26,9 @@ data_extension_parallel <- function(data,
                                     where_var = NA,
                                     data_dir = "~/rds/hpc-work/",
                                     chunk_size = 200) {
+  # data.table notes:
+  for_period <- NULL
+
   maxperiod <- max(data[, "period"])
   minperiod <- min(data[, "period"])
 

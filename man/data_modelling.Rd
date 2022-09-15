@@ -75,6 +75,9 @@ This has 3 options c("linear","quadratic","spline")}
 
 \item{glm_function}{Which glm function to use for the final model from \code{stats} or \code{parglm} packages}
 
+\item{use_sample_weights}{Use sample weights in addition to IP weights. \code{data} must contain a column \code{sample_weight}.
+The weights used in the model are calculated as \code{weight = weight * sample_weight}.}
+
 \item{quiet}{Don't print progress messages.}
 }
 \description{

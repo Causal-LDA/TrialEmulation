@@ -60,18 +60,7 @@
 #' @param cense_n_cov A RHS formula for modelling probability of being censored. Used in the denominator of weight
 #' calculation.
 #'
-#' @details The class variables paramers (`outcomeClass`,`class_switchn`,`class_switchd`,`class_censen`,`class_censed`)
-#' can be given as a character vector which will construct factors using `as.factor` or as a named list with
-#' the arguments for factor
-#' eg `list(risk_cat=list(levels = c(1,2,3,0), age_cat=list(levels=c(1,2,3),labels=c("50-60","60-70","70+")`
-#'
 #' @export
-#' @import parallel
-#' @import data.table
-#' @importFrom Rcpp sourceCpp
-#' @useDynLib RandomisedTrialsEmulation
-
-
 initiators <- function(data,
                        id = "id",
                        period = "period",
@@ -147,7 +136,6 @@ initiators <- function(data,
     where_var = where_var,
     data_dir = data_dir,
     numCores = numCores,
-    chunk_size = chunk_size,
     separate_files = FALSE,
     quiet = quiet
   )

@@ -61,10 +61,9 @@ as_formula <- function(x) {
 #'
 #' @return A formula of the form `~ rhs(f1) + rhs(f2)`
 #' @export
-#'
 #' @examples
 #' add_rhs(~ a + b, z ~ c + log(d))
 #' # ~ a + b + c + log(d)
 add_rhs <- function(f1, f2) {
-  update(f1, substitute(~ . + add, list(add = formula.tools::rhs(f2))))
+  update.formula(f1, substitute(~ . + add, list(add = formula.tools::rhs(f2))))
 }

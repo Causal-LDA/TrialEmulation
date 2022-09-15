@@ -2,12 +2,15 @@
 #'
 #' This function prepare the data for modelling.
 #' @inheritParams initiators
+#' @param chunk_size Number of patients to process in one chunk when `separate_files = TRUE`
+#' @param separate_files Save expanded data in separate CSV files for each trial.
 #' @export
 #'
-#' @details The class variables parameters (`outcomeClass`,`class_switchn`,`class_switchd`,`class_censen`,
-#' `class_censed`) can be given as a character vector which will construct factors using `as.factor` or as a named list
-#' with the arguments for factor e.g.
-#' `list(risk_cat=list(levels = c(1,2,3,0), age_cat=list(levels=c(1,2,3),labels=c("50-60","60-70","70+")`
+#' @details
+#' The arguments `chunk_size` and `separate_files` allow for processing of large datasets that
+#' would not fit in memory once expanded. When `separate_files = TRUE`, the input data are processed
+#' in chunks of patients and saved into separate files for each trial starting period. These separate
+#' files can be sampled to create the dataset for the modelling.
 data_preparation <- function(data,
                              id = "id",
                              period = "period",
@@ -49,6 +52,14 @@ data_preparation <- function(data,
   include_followup_time_case <- as_formula(include_followup_time_case)
   include_expansion_time_case <- as_formula(include_expansion_time_case)
 
+  model_var <- if (!is.null(model_var)) {
+    as_formula(model_var)
+  } else if (use_censor == 0 && use_weight == 1) {
+    ~dose
+  } else {
+    ~assigned_treatment
+  }
+
   data <- select_data_cols(
     data,
     id = id,
@@ -74,26 +85,25 @@ data_preparation <- function(data,
   if (use_weight == 1) {
     data <- weight_func(
       sw_data = data,
-      model_switchn = switch_n_cov,
-      model_switchd = switch_d_cov,
+      switch_n_cov = switch_n_cov,
+      switch_d_cov = switch_d_cov,
       eligible_wts_0 = eligible_wts_0,
       eligible_wts_1 = eligible_wts_1,
       cense = cense,
       pool_cense = pool_cense,
-      model_censed = cense_d_cov,
-      model_censen = cense_n_cov,
+      cense_d_cov = cense_d_cov,
+      cense_n_cov = cense_n_cov,
       include_regime_length = include_regime_length,
       save_dir = data_dir,
       quiet = quiet
     )
   } else if (use_weight == 0) {
-    data[, wt := 1]
+    set(data, j = "wt", value = 1)
   }
 
-  keep_dose <- if (use_censor == 0) "dose" else NULL
   keeplist <- c(
-    "id", "for_period", "followup_time", "outcome", "weight", "treatment", "assigned_treatment",
-    where_var, all.vars(outcome_cov), all.vars(model_var), keep_dose
+    "id", "for_period", "followup_time", "outcome", "weight", "treatment",
+    where_var, all.vars(outcome_cov), all.vars(model_var)
   )
 
   h_quiet_print(quiet, "Start data extension")
