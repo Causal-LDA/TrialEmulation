@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">RandomisedTrialsEmulation</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.1.9</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.2.0</span>
       </span>
     </div>
 
@@ -59,24 +59,15 @@
     <div id="ref-usage">
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">weight_func</span><span class="op">(</span></span>
 <span>  <span class="va">sw_data</span>,</span>
-<span>  cov_switchn <span class="op">=</span> <span class="cn">NA</span>,</span>
-<span>  model_switchn <span class="op">=</span> <span class="cn">NA</span>,</span>
-<span>  class_switchn <span class="op">=</span> <span class="cn">NA</span>,</span>
-<span>  cov_switchd <span class="op">=</span> <span class="cn">NA</span>,</span>
-<span>  model_switchd <span class="op">=</span> <span class="cn">NA</span>,</span>
-<span>  class_switchd <span class="op">=</span> <span class="cn">NA</span>,</span>
+<span>  switch_n_cov <span class="op">=</span> <span class="cn">NA</span>,</span>
+<span>  switch_d_cov <span class="op">=</span> <span class="cn">NA</span>,</span>
 <span>  eligible_wts_0 <span class="op">=</span> <span class="cn">NA</span>,</span>
 <span>  eligible_wts_1 <span class="op">=</span> <span class="cn">NA</span>,</span>
 <span>  cense <span class="op">=</span> <span class="cn">NA</span>,</span>
 <span>  pool_cense <span class="op">=</span> <span class="fl">0</span>,</span>
-<span>  cov_censed <span class="op">=</span> <span class="cn">NA</span>,</span>
-<span>  model_censed <span class="op">=</span> <span class="cn">NA</span>,</span>
-<span>  class_censed <span class="op">=</span> <span class="cn">NA</span>,</span>
-<span>  cov_censen <span class="op">=</span> <span class="cn">NA</span>,</span>
-<span>  model_censen <span class="op">=</span> <span class="cn">NA</span>,</span>
-<span>  class_censen <span class="op">=</span> <span class="cn">NA</span>,</span>
+<span>  cense_d_cov <span class="op">=</span> <span class="cn">NA</span>,</span>
+<span>  cense_n_cov <span class="op">=</span> <span class="cn">NA</span>,</span>
 <span>  include_regime_length <span class="op">=</span> <span class="fl">0</span>,</span>
-<span>  numCores <span class="op">=</span> <span class="cn">NA</span>,</span>
 <span>  <span class="va">save_dir</span>,</span>
 <span>  quiet <span class="op">=</span> <span class="cn">FALSE</span></span>
 <span><span class="op">)</span></span></code></pre></div>
@@ -88,28 +79,14 @@
 <dd><p>A data.table</p></dd>
 
 
-<dt>cov_switchn</dt>
-<dd><p>List of covariates to be used in logistic model for switching probabilities for numerator model</p></dd>
+<dt>switch_n_cov</dt>
+<dd><p>A RHS formula for modelling probability of switching treatment. Used in the numerator of weight
+calculation.</p></dd>
 
 
-<dt>model_switchn</dt>
-<dd><p>List of models (functions) to use the covariates from cov_switchn</p></dd>
-
-
-<dt>class_switchn</dt>
-<dd><p>Class variables used in logistic model for nominator model</p></dd>
-
-
-<dt>cov_switchd</dt>
-<dd><p>List of covariates to be used in logistic model for switching probabilities for denominator model</p></dd>
-
-
-<dt>model_switchd</dt>
-<dd><p>List of models (functions) to use the covariates from cov_switchd</p></dd>
-
-
-<dt>class_switchd</dt>
-<dd><p>Class variables used in logistic model for denominator model</p></dd>
+<dt>switch_d_cov</dt>
+<dd><p>A RHS formula for modelling probability of switching treatment. Used in the denominator of weight
+calculation.</p></dd>
 
 
 <dt>eligible_wts_0</dt>
@@ -130,37 +107,19 @@ Am1 = 1 as in treatment models and 1: pool all observations together into a sing
 Defaults to 0</p></dd>
 
 
-<dt>cov_censed</dt>
-<dd><p>List of covariates to be used in logistic model for censoring weights in denominator model</p></dd>
+<dt>cense_d_cov</dt>
+<dd><p>A RHS formula for modelling probability of being censored. Used in the numerator of weight
+calculation.</p></dd>
 
 
-<dt>model_censed</dt>
-<dd><p>List of models (functions) to use the covariates from cov_censed</p></dd>
-
-
-<dt>class_censed</dt>
-<dd><p>Class variables used in censoring logistic regression in denominator model</p></dd>
-
-
-<dt>cov_censen</dt>
-<dd><p>List of covariates to be used in logistic model for censoring weights in numerator model</p></dd>
-
-
-<dt>model_censen</dt>
-<dd><p>List of models (functions) to use the covariates from cov_censen</p></dd>
-
-
-<dt>class_censen</dt>
-<dd><p>Class variables used in censoring logistic regression in numerator model</p></dd>
+<dt>cense_n_cov</dt>
+<dd><p>A RHS formula for modelling probability of being censored. Used in the denominator of weight
+calculation.</p></dd>
 
 
 <dt>include_regime_length</dt>
 <dd><p>If defined as 1 a new variable (time_on_regime) is added to dataset.
 This variable stores the duration of time that the patient has been on the current treatment value</p></dd>
-
-
-<dt>numCores</dt>
-<dd><p>Number of cores for parallel programming (default value is maximum cores and parallel programming)</p></dd>
 
 
 <dt>save_dir</dt>

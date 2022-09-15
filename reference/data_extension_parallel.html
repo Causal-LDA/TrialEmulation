@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">RandomisedTrialsEmulation</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.1.9</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.2.0</span>
       </span>
     </div>
 
@@ -58,7 +58,7 @@
 
     <div id="ref-usage">
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">data_extension_parallel</span><span class="op">(</span></span>
-<span>  <span class="va">data_address</span>,</span>
+<span>  <span class="va">data</span>,</span>
 <span>  <span class="va">keeplist</span>,</span>
 <span>  outcomeCov_var <span class="op">=</span> <span class="cn">NA</span>,</span>
 <span>  first_period <span class="op">=</span> <span class="cn">NA</span>,</span>
@@ -66,19 +66,15 @@
 <span>  use_censor <span class="op">=</span> <span class="fl">0</span>,</span>
 <span>  lag_p_nosw <span class="op">=</span> <span class="fl">1</span>,</span>
 <span>  where_var <span class="op">=</span> <span class="cn">NA</span>,</span>
-<span>  followup_spline <span class="op">=</span> <span class="cn">NA</span>,</span>
-<span>  period_spline <span class="op">=</span> <span class="cn">NA</span>,</span>
 <span>  data_dir <span class="op">=</span> <span class="st">"~/rds/hpc-work/"</span>,</span>
-<span>  numCores <span class="op">=</span> <span class="cn">NA</span>,</span>
-<span>  chunk_size <span class="op">=</span> <span class="fl">200</span>,</span>
-<span>  separate_files <span class="op">=</span> <span class="cn">FALSE</span></span>
+<span>  chunk_size <span class="op">=</span> <span class="fl">200</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
-    <dl><dt>data_address</dt>
-<dd><p>Address for data read with <code>bigmemory</code></p></dd>
+    <dl><dt>data</dt>
+<dd><p>A <code>data.table</code> to be expanded</p></dd>
 
 
 <dt>keeplist</dt>
@@ -113,28 +109,12 @@ the maximum and variance of weights (Defaults to 1).</p></dd>
 the variables not included in the final model</p></dd>
 
 
-<dt>followup_spline</dt>
-<dd><p>The spline model for <code>followup_time</code> when <code>include_followup_time_case = "spline"</code></p></dd>
-
-
-<dt>period_spline</dt>
-<dd><p>The spline model for <code>for_period</code> when <code>include_expansion_time_case = "spline"</code></p></dd>
-
-
 <dt>data_dir</dt>
 <dd><p>Direction to save data</p></dd>
 
 
-<dt>numCores</dt>
-<dd><p>Number of cores for parallel programming</p></dd>
-
-
 <dt>chunk_size</dt>
 <dd><p>Number of ids to expand in each chunk</p></dd>
-
-
-<dt>separate_files</dt>
-<dd><p>Write to one file or one per trial (default FALSE)</p></dd>
 
 </dl></div>
 

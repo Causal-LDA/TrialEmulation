@@ -22,7 +22,7 @@
     <loc>/reference/RandomisedTrialsEmulation-package.html</loc>
   </url>
   <url>
-    <loc>/reference/add_splines.html</loc>
+    <loc>/reference/add_rhs.html</loc>
   </url>
   <url>
     <loc>/reference/assert_monotonic.html</loc>
@@ -68,9 +68,6 @@
   </url>
   <url>
     <loc>/reference/expand_func.html</loc>
-  </url>
-  <url>
-    <loc>/reference/expand_switch.html</loc>
   </url>
   <url>
     <loc>/reference/f.html</loc>

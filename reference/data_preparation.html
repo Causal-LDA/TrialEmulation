@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">RandomisedTrialsEmulation</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.1.9</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.2.0</span>
       </span>
     </div>
 
@@ -64,16 +64,10 @@
 <span>  treatment <span class="op">=</span> <span class="st">"treatment"</span>,</span>
 <span>  outcome <span class="op">=</span> <span class="st">"outcome"</span>,</span>
 <span>  eligible <span class="op">=</span> <span class="st">"eligible"</span>,</span>
-<span>  outcomeCov_var <span class="op">=</span> <span class="cn">NA</span>,</span>
-<span>  outcomeCov <span class="op">=</span> <span class="cn">NA</span>,</span>
-<span>  outcomeClass <span class="op">=</span> <span class="cn">NA</span>,</span>
-<span>  model_var <span class="op">=</span> <span class="cn">NA</span>,</span>
-<span>  cov_switchn <span class="op">=</span> <span class="cn">NA</span>,</span>
-<span>  model_switchn <span class="op">=</span> <span class="cn">NA</span>,</span>
-<span>  class_switchn <span class="op">=</span> <span class="cn">NA</span>,</span>
-<span>  cov_switchd <span class="op">=</span> <span class="cn">NA</span>,</span>
-<span>  model_switchd <span class="op">=</span> <span class="cn">NA</span>,</span>
-<span>  class_switchd <span class="op">=</span> <span class="cn">NA</span>,</span>
+<span>  outcome_cov <span class="op">=</span> <span class="op">~</span><span class="fl">1</span>,</span>
+<span>  model_var <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  switch_n_cov <span class="op">=</span> <span class="op">~</span><span class="fl">1</span>,</span>
+<span>  switch_d_cov <span class="op">=</span> <span class="op">~</span><span class="fl">1</span>,</span>
 <span>  first_period <span class="op">=</span> <span class="cn">NA</span>,</span>
 <span>  last_period <span class="op">=</span> <span class="cn">NA</span>,</span>
 <span>  use_weight <span class="op">=</span> <span class="fl">0</span>,</span>
@@ -81,24 +75,17 @@
 <span>  check_missing <span class="op">=</span> <span class="fl">0</span>,</span>
 <span>  cense <span class="op">=</span> <span class="cn">NA</span>,</span>
 <span>  pool_cense <span class="op">=</span> <span class="fl">0</span>,</span>
-<span>  cov_censed <span class="op">=</span> <span class="cn">NA</span>,</span>
-<span>  model_censed <span class="op">=</span> <span class="cn">NA</span>,</span>
-<span>  class_censed <span class="op">=</span> <span class="cn">NA</span>,</span>
-<span>  cov_censen <span class="op">=</span> <span class="cn">NA</span>,</span>
-<span>  model_censen <span class="op">=</span> <span class="cn">NA</span>,</span>
-<span>  class_censen <span class="op">=</span> <span class="cn">NA</span>,</span>
-<span>  include_followup_time_case <span class="op">=</span> <span class="st">"linear"</span>,</span>
-<span>  include_expansion_time_case <span class="op">=</span> <span class="st">"linear"</span>,</span>
-<span>  followup_spline <span class="op">=</span> <span class="cn">NA</span>,</span>
-<span>  period_spline <span class="op">=</span> <span class="cn">NA</span>,</span>
-<span>  include_regime_length <span class="op">=</span> <span class="fl">0</span>,</span>
+<span>  cense_d_cov <span class="op">=</span> <span class="op">~</span><span class="fl">1</span>,</span>
+<span>  cense_n_cov <span class="op">=</span> <span class="op">~</span><span class="fl">1</span>,</span>
+<span>  include_followup_time_case <span class="op">=</span> <span class="op">~</span><span class="va">followup_time</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/r/base/AsIs.html" class="external-link">I</a></span><span class="op">(</span><span class="va">followup_time</span><span class="op">^</span><span class="fl">2</span><span class="op">)</span>,</span>
+<span>  include_expansion_time_case <span class="op">=</span> <span class="op">~</span><span class="va">for_period</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/r/base/AsIs.html" class="external-link">I</a></span><span class="op">(</span><span class="va">for_period</span><span class="op">^</span><span class="fl">2</span><span class="op">)</span>,</span>
+<span>  include_regime_length <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  eligible_wts_0 <span class="op">=</span> <span class="cn">NA</span>,</span>
 <span>  eligible_wts_1 <span class="op">=</span> <span class="cn">NA</span>,</span>
 <span>  lag_p_nosw <span class="op">=</span> <span class="fl">1</span>,</span>
-<span>  where_var <span class="op">=</span> <span class="cn">NA</span>,</span>
+<span>  where_var <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  <span class="va">data_dir</span>,</span>
-<span>  numCores <span class="op">=</span> <span class="cn">NA</span>,</span>
-<span>  chunk_expansion <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  numCores <span class="op">=</span> <span class="fl">1</span>,</span>
 <span>  chunk_size <span class="op">=</span> <span class="fl">500</span>,</span>
 <span>  separate_files <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  quiet <span class="op">=</span> <span class="cn">FALSE</span></span>
@@ -131,44 +118,24 @@
 <dd><p>Indicator of whether or not an observation is eligible to be expanded about Defaults to eligible</p></dd>
 
 
-<dt>outcomeCov_var</dt>
-<dd><p>List of individual baseline variables used in final model</p></dd>
-
-
-<dt>outcomeCov</dt>
-<dd><p>List of functions of baseline covariates used in final model</p></dd>
-
-
-<dt>outcomeClass</dt>
-<dd><p>Categorical variables used in the final model</p></dd>
+<dt>outcome_cov</dt>
+<dd><p>A RHS formula with baseline covariates to adjust in final model</p></dd>
 
 
 <dt>model_var</dt>
-<dd><p>List of Variables of interest to be used in final model</p></dd>
+<dd><p>List of Variables of interest to be used in final model.
+Derived variables to use in outcome models. Typically <code>assigned_treatment</code> for ITT and per-protocol,
+and <code>dose + dose^2</code> for as-treated. <code>time_on_regime</code>? TODO check what else is derived</p></dd>
 
 
-<dt>cov_switchn</dt>
-<dd><p>List of covariates to be used in logistic model for switching probabilities for numerator model</p></dd>
+<dt>switch_n_cov</dt>
+<dd><p>A RHS formula for modelling probability of switching treatment. Used in the numerator of weight
+calculation.</p></dd>
 
 
-<dt>model_switchn</dt>
-<dd><p>List of models (functions) to use the covariates from cov_switchn</p></dd>
-
-
-<dt>class_switchn</dt>
-<dd><p>Class variables used in logistic model for nominator model</p></dd>
-
-
-<dt>cov_switchd</dt>
-<dd><p>List of covariates to be used in logistic model for switching probabilities for denominator model</p></dd>
-
-
-<dt>model_switchd</dt>
-<dd><p>List of models (functions) to use the covariates from cov_switchd</p></dd>
-
-
-<dt>class_switchd</dt>
-<dd><p>Class variables used in logistic model for denominator model</p></dd>
+<dt>switch_d_cov</dt>
+<dd><p>A RHS formula for modelling probability of switching treatment. Used in the denominator of weight
+calculation.</p></dd>
 
 
 <dt>first_period</dt>
@@ -202,28 +169,14 @@ Am1 = 1 as in treatment models and 1: pool all observations together into a sing
 Defaults to 0</p></dd>
 
 
-<dt>cov_censed</dt>
-<dd><p>List of covariates to be used in logistic model for censoring weights in denominator model</p></dd>
+<dt>cense_d_cov</dt>
+<dd><p>A RHS formula for modelling probability of being censored. Used in the numerator of weight
+calculation.</p></dd>
 
 
-<dt>model_censed</dt>
-<dd><p>List of models (functions) to use the covariates from cov_censed</p></dd>
-
-
-<dt>class_censed</dt>
-<dd><p>Class variables used in censoring logistic regression in denominator model</p></dd>
-
-
-<dt>cov_censen</dt>
-<dd><p>List of covariates to be used in logistic model for censoring weights in numerator model</p></dd>
-
-
-<dt>model_censen</dt>
-<dd><p>List of models (functions) to use the covariates from cov_censen</p></dd>
-
-
-<dt>class_censen</dt>
-<dd><p>Class variables used in censoring logistic regression in numerator model</p></dd>
+<dt>cense_n_cov</dt>
+<dd><p>A RHS formula for modelling probability of being censored. Used in the denominator of weight
+calculation.</p></dd>
 
 
 <dt>include_followup_time_case</dt>
@@ -234,16 +187,6 @@ This has 3 options c("linear","quadratic","spline")</p></dd>
 <dt>include_expansion_time_case</dt>
 <dd><p>The model to include for_period in outcome model.
 This has 3 options c("linear","quadratic","spline")</p></dd>
-
-
-<dt>followup_spline</dt>
-<dd><p>The parameters for spline model for followup time when choose "spline" in the
-include_followup_time_case (ex. list(df=2))</p></dd>
-
-
-<dt>period_spline</dt>
-<dd><p>The parameters for spline model for for_period when choose "spline" in the
-include_expansion_time_case (ex. list(df=3))</p></dd>
 
 
 <dt>include_regime_length</dt>
@@ -278,18 +221,12 @@ weights (Defaults to 1)</p></dd>
 <dd><p>Number of cores for parallel programming (default value is maximum cores and parallel programming)</p></dd>
 
 
-<dt>chunk_expansion</dt>
-<dd><p>Do the expansion in chunks (and in parallel if numCores &gt; 1). Turn this off if you have
-enough memory to expand the whole dataset at once. (default TRUE)</p></dd>
-
-
 <dt>chunk_size</dt>
-<dd><p>Number of ids to process at once for the chunk expansion (default 500). Larger chunk_sizes
-may be faster but require more memory.</p></dd>
+<dd><p>Number of patients to process in one chunk when <code>separate_files = TRUE</code></p></dd>
 
 
 <dt>separate_files</dt>
-<dd><p>Write to one file or one per trial (default FALSE)</p></dd>
+<dd><p>Save expanded data in separate CSV files for each trial.</p></dd>
 
 
 <dt>quiet</dt>
@@ -298,10 +235,10 @@ may be faster but require more memory.</p></dd>
 </dl></div>
     <div id="details">
     <h2>Details</h2>
-    <p>The class variables parameters (<code>outcomeClass</code>,<code>class_switchn</code>,<code>class_switchd</code>,<code>class_censen</code>,
-<code>class_censed</code>) can be given as a character vector which will construct factors using <code>as.factor</code> or as a named list
-with the arguments for factor e.g.
-<code>list(risk_cat=list(levels = c(1,2,3,0), age_cat=list(levels=c(1,2,3),labels=c("50-60","60-70","70+")</code></p>
+    <p>The arguments <code>chunk_size</code> and <code>separate_files</code> allow for processing of large datasets that
+would not fit in memory once expanded. When <code>separate_files = TRUE</code>, the input data are processed
+in chunks of patients and saved into separate files for each trial starting period. These separate
+files can be sampled to create the dataset for the modelling.</p>
     </div>
 
   </div>

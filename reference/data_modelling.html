@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">RandomisedTrialsEmulation</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.1.9</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.2.0</span>
       </span>
     </div>
 
@@ -58,9 +58,8 @@
 
     <div id="ref-usage">
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">data_modelling</span><span class="op">(</span></span>
-<span>  outcomeCov_var <span class="op">=</span> <span class="cn">NA</span>,</span>
-<span>  outcomeCov <span class="op">=</span> <span class="cn">NA</span>,</span>
-<span>  outcomeClass <span class="op">=</span> <span class="cn">NA</span>,</span>
+<span>  <span class="va">data</span>,</span>
+<span>  outcome_cov <span class="op">=</span> <span class="op">~</span><span class="fl">1</span>,</span>
 <span>  model_var <span class="op">=</span> <span class="cn">NA</span>,</span>
 <span>  first_followup <span class="op">=</span> <span class="cn">NA</span>,</span>
 <span>  last_followup <span class="op">=</span> <span class="cn">NA</span>,</span>
@@ -73,11 +72,10 @@
 <span>  upper_weight <span class="op">=</span> <span class="cn">NA</span>,</span>
 <span>  use_censor <span class="op">=</span> <span class="fl">0</span>,</span>
 <span>  check_missing <span class="op">=</span> <span class="fl">0</span>,</span>
-<span>  include_followup_time_case <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"linear"</span>, <span class="st">"quadratic"</span>, <span class="st">"spline"</span><span class="op">)</span>,</span>
-<span>  include_expansion_time_case <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"linear"</span>, <span class="st">"quadratic"</span>, <span class="st">"spline"</span><span class="op">)</span>,</span>
+<span>  include_followup_time_case <span class="op">=</span> <span class="op">~</span><span class="va">followup_time</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/r/base/AsIs.html" class="external-link">I</a></span><span class="op">(</span><span class="va">followup_time</span><span class="op">^</span><span class="fl">2</span><span class="op">)</span>,</span>
+<span>  include_expansion_time_case <span class="op">=</span> <span class="op">~</span><span class="va">for_period</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/r/base/AsIs.html" class="external-link">I</a></span><span class="op">(</span><span class="va">for_period</span><span class="op">^</span><span class="fl">2</span><span class="op">)</span>,</span>
 <span>  where_case <span class="op">=</span> <span class="cn">NA</span>,</span>
 <span>  run_base_model <span class="op">=</span> <span class="fl">1</span>,</span>
-<span>  <span class="va">absolutePath</span>,</span>
 <span>  numCores <span class="op">=</span> <span class="cn">NA</span>,</span>
 <span>  glm_function <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"parglm"</span>, <span class="st">"glm"</span><span class="op">)</span>,</span>
 <span>  use_sample_weights <span class="op">=</span> <span class="cn">TRUE</span>,</span>
@@ -87,20 +85,18 @@
 
     <div id="arguments">
     <h2>Arguments</h2>
-    <dl><dt>outcomeCov_var</dt>
-<dd><p>List of individual baseline variables used in final model</p></dd>
+    <dl><dt>data</dt>
+<dd><p>A <code>data.frame</code> containing all the required columns.</p></dd>
 
 
-<dt>outcomeCov</dt>
-<dd><p>List of functions of baseline covariates used in final model</p></dd>
-
-
-<dt>outcomeClass</dt>
-<dd><p>Categorical variables used in the final model</p></dd>
+<dt>outcome_cov</dt>
+<dd><p>A RHS formula with baseline covariates to adjust in final model</p></dd>
 
 
 <dt>model_var</dt>
-<dd><p>List of Variables of interest to be used in final model</p></dd>
+<dd><p>List of Variables of interest to be used in final model.
+Derived variables to use in outcome models. Typically <code>assigned_treatment</code> for ITT and per-protocol,
+and <code>dose + dose^2</code> for as-treated. <code>time_on_regime</code>? TODO check what else is derived</p></dd>
 
 
 <dt>first_followup</dt>
@@ -140,7 +136,8 @@
 
 
 <dt>use_censor</dt>
-<dd><p>Use censoring for per-protocol analysis - censor person-times once a person-trial stops taking the initial treatment value</p></dd>
+<dd><p>Use censoring for per-protocol analysis - censor person-times once a person-trial stops taking the
+initial treatment value</p></dd>
 
 
 <dt>check_missing</dt>
@@ -148,11 +145,13 @@
 
 
 <dt>include_followup_time_case</dt>
-<dd><p>The model to include follow up time in outcome model. This has 3 options c("none","linear","quadratic","spline"). The data should contain the corresponding columns: "followup_time","followup_time2" or "followup_base".</p></dd>
+<dd><p>The model to include follow up time in outcome model.
+This has 3 options c("linear","quadratic","spline")</p></dd>
 
 
 <dt>include_expansion_time_case</dt>
-<dd><p>The model to include for_period in outcome model. This has 3 options c("none","linear","quadratic","spline").  The data should contain the corresponding columns: "for_period","for_period2" or "period_base".</p></dd>
+<dd><p>The model to include for_period in outcome model.
+This has 3 options c("linear","quadratic","spline")</p></dd>
 
 
 <dt>where_case</dt>
@@ -161,10 +160,6 @@
 
 <dt>run_base_model</dt>
 <dd><p>Run the model with no conditions Defaults to 1</p></dd>
-
-
-<dt>absolutePath</dt>
-<dd><p>Direction to where the data for modelling is saved</p></dd>
 
 
 <dt>numCores</dt>
@@ -176,12 +171,12 @@
 
 
 <dt>use_sample_weights</dt>
-<dd><p>Set model weights to <code>sample_weight * weight</code>.</p></dd>
+<dd><p>Use sample weights in addition to IP weights. <code>data</code> must contain a column <code>sample_weight</code>.
+The weights used in the model are calculated as <code>weight = weight * sample_weight</code>.</p></dd>
 
 
 <dt>quiet</dt>
-<dd><p>Don't print progress messages.
-data_modelling()</p></dd>
+<dd><p>Don't print progress messages.</p></dd>
 
 </dl></div>
     <div id="details">

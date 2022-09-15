@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">RandomisedTrialsEmulation</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.1.9</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.2.0</span>
       </span>
     </div>
 
@@ -64,15 +64,11 @@
 <span>  treatment <span class="op">=</span> <span class="st">"treatment"</span>,</span>
 <span>  outcome <span class="op">=</span> <span class="st">"outcome"</span>,</span>
 <span>  eligible <span class="op">=</span> <span class="st">"eligible"</span>,</span>
-<span>  eligible_wts_0 <span class="op">=</span> <span class="cn">NA</span>,</span>
-<span>  eligible_wts_1 <span class="op">=</span> <span class="cn">NA</span>,</span>
-<span>  outcomeCov_var <span class="op">=</span> <span class="cn">NA</span>,</span>
-<span>  cov_switchn <span class="op">=</span> <span class="cn">NA</span>,</span>
-<span>  cov_switchd <span class="op">=</span> <span class="cn">NA</span>,</span>
-<span>  cov_censed <span class="op">=</span> <span class="cn">NA</span>,</span>
-<span>  cov_censen <span class="op">=</span> <span class="cn">NA</span>,</span>
-<span>  cense <span class="op">=</span> <span class="cn">NA</span>,</span>
-<span>  where_var <span class="op">=</span> <span class="cn">NA</span></span>
+<span>  <span class="va">eligible_wts_0</span>,</span>
+<span>  <span class="va">eligible_wts_1</span>,</span>
+<span>  <span class="va">formula_vars</span>,</span>
+<span>  <span class="va">cense</span>,</span>
+<span>  <span class="va">where_var</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
@@ -111,24 +107,9 @@ Defaults to "eligible".</p></dd>
 <dd><p>Eligibility criteria used in weights for model condition Am1 = 1</p></dd>
 
 
-<dt>outcomeCov_var</dt>
-<dd><p>List of individual baseline variables used in final model</p></dd>
-
-
-<dt>cov_switchn</dt>
-<dd><p>Covariates to be used in logistic model for switching probabilities for numerator model</p></dd>
-
-
-<dt>cov_switchd</dt>
-<dd><p>Covariates to be used in logistic model for switching probabilities for denominator model</p></dd>
-
-
-<dt>cov_censed</dt>
-<dd><p>Covariates to be used in logistic model for censoring weights for denominator model</p></dd>
-
-
-<dt>cov_censen</dt>
-<dd><p>Covariates to be used in logistic model for censoring weights for nominator model</p></dd>
+<dt>formula_vars</dt>
+<dd><p>Variables used in outcome or weight models.
+the variables not included in the final model.</p></dd>
 
 
 <dt>cense</dt>
@@ -136,8 +117,7 @@ Defaults to "eligible".</p></dd>
 
 
 <dt>where_var</dt>
-<dd><p>Variables used in where conditions used in subsetting the data used in final analysis (where_case),
-the variables not included in the final model.</p></dd>
+<dd><p>Variables used in where conditions used in subsetting the data used in final analysis (where_case),</p></dd>
 
 </dl></div>
 
