@@ -2,7 +2,7 @@
 % Please edit documentation in R/initiators.R
 \name{initiators}
 \alias{initiators}
-\title{INITIATORS Function}
+\title{Initiators Analysis}
 \usage{
 initiators(
   data,
@@ -11,16 +11,10 @@ initiators(
   treatment = "treatment",
   outcome = "outcome",
   eligible = "eligible",
-  outcomeCov_var = NA,
-  outcomeCov = NA,
-  outcomeClass = NA,
-  model_var = NA,
-  cov_switchn = NA,
-  model_switchn = NA,
-  class_switchn = NA,
-  cov_switchd = NA,
-  model_switchd = NA,
-  class_switchd = NA,
+  outcome_cov = ~1,
+  model_var = NULL,
+  switch_n_cov = ~1,
+  switch_d_cov = ~1,
   first_period = NA,
   last_period = NA,
   first_followup = NA,
@@ -36,33 +30,20 @@ initiators(
   check_missing = 0,
   cense = NA,
   pool_cense = 0,
-  cov_censed = NA,
-  model_censed = NA,
-  class_censed = NA,
-  cov_censen = NA,
-  model_censen = NA,
-  class_censen = NA,
-  include_followup_time_case = "linear",
-  include_expansion_time_case = "linear",
-  followup_spline = NA,
-  period_spline = NA,
+  cense_d_cov = ~1,
+  cense_n_cov = ~1,
+  include_followup_time_case = ~followup_time + I(followup_time^2),
+  include_expansion_time_case = ~for_period + I(for_period^2),
   include_regime_length = 0,
   eligible_wts_0 = NA,
   eligible_wts_1 = NA,
   lag_p_nosw = 1,
-  where_var = NA,
+  where_var = NULL,
   where_case = NA,
   run_base_model = 1,
-  case_control = 0,
-  n_control,
-  p_control,
-  sample_all_periods = FALSE,
   data_dir,
   numCores = NA,
-  chunk_expansion = TRUE,
-  chunk_size = 500,
-  separate_files = FALSE,
-  glm_function = "parglm",
+  glm_function = "glm",
   quiet = FALSE
 )
 }
@@ -79,25 +60,17 @@ initiators(
 
 \item{eligible}{Indicator of whether or not an observation is eligible to be expanded about Defaults to eligible}
 
-\item{outcomeCov_var}{List of individual baseline variables used in final model}
+\item{outcome_cov}{A RHS formula with baseline covariates to adjust in final model}
 
-\item{outcomeCov}{List of functions of baseline covariates used in final model}
+\item{model_var}{List of Variables of interest to be used in final model.
+Derived variables to use in outcome models. Typically \code{assigned_treatment} for ITT and per-protocol,
+and \code{dose + dose^2} for as-treated. \code{time_on_regime}? TODO check what else is derived}
 
-\item{outcomeClass}{Categorical variables used in the final model}
+\item{switch_n_cov}{A RHS formula for modelling probability of switching treatment. Used in the numerator of weight
+calculation.}
 
-\item{model_var}{List of Variables of interest to be used in final model}
-
-\item{cov_switchn}{List of covariates to be used in logistic model for switching probabilities for numerator model}
-
-\item{model_switchn}{List of models (functions) to use the covariates from cov_switchn}
-
-\item{class_switchn}{Class variables used in logistic model for nominator model}
-
-\item{cov_switchd}{List of covariates to be used in logistic model for switching probabilities for denominator model}
-
-\item{model_switchd}{List of models (functions) to use the covariates from cov_switchd}
-
-\item{class_switchd}{Class variables used in logistic model for denominator model}
+\item{switch_d_cov}{A RHS formula for modelling probability of switching treatment. Used in the denominator of weight
+calculation.}
 
 \item{first_period}{First period value to start expanding about}
 
@@ -132,29 +105,17 @@ initial treatment value}
 Am1 = 1 as in treatment models and 1: pool all observations together into a single numerator and denominator model)
 Defaults to 0}
 
-\item{cov_censed}{List of covariates to be used in logistic model for censoring weights in denominator model}
+\item{cense_d_cov}{A RHS formula for modelling probability of being censored. Used in the numerator of weight
+calculation.}
 
-\item{model_censed}{List of models (functions) to use the covariates from cov_censed}
-
-\item{class_censed}{Class variables used in censoring logistic regression in denominator model}
-
-\item{cov_censen}{List of covariates to be used in logistic model for censoring weights in numerator model}
-
-\item{model_censen}{List of models (functions) to use the covariates from cov_censen}
-
-\item{class_censen}{Class variables used in censoring logistic regression in numerator model}
+\item{cense_n_cov}{A RHS formula for modelling probability of being censored. Used in the denominator of weight
+calculation.}
 
 \item{include_followup_time_case}{The model to include follow up time in outcome model.
 This has 3 options c("linear","quadratic","spline")}
 
 \item{include_expansion_time_case}{The model to include for_period in outcome model.
 This has 3 options c("linear","quadratic","spline")}
-
-\item{followup_spline}{The parameters for spline model for followup time when choose "spline" in the
-include_followup_time_case (ex. list(df=2))}
-
-\item{period_spline}{The parameters for spline model for for_period when choose "spline" in the
-include_expansion_time_case (ex. list(df=3))}
 
 \item{include_regime_length}{If defined as 1 a new variable (time_on_regime) is added to dataset.
 This variable stores the duration of time that the patient has been on the current treatment value}
@@ -174,41 +135,15 @@ weights (Defaults to 1)}
 
 \item{run_base_model}{Run the model with no conditions Defaults to 1}
 
-\item{case_control}{Run the case control sampling or not Defaults to 0}
-
-\item{n_control}{Number of controls used in case control sampling. Not compatible with \code{p_control}. If \code{p_control}
-is specified, \code{n_control} has no effect.}
-
-\item{p_control}{Proportion of control to sample. If \code{p_control} is specified, \code{n_control} has no effect.}
-
-\item{sample_all_periods}{Sample a proportion of controls even if there are no cases in that period. Useful when
-estimating the baseline hazard.}
-
 \item{data_dir}{Direction to save data}
 
 \item{numCores}{Number of cores for parallel programming (default value is maximum cores and parallel programming)}
-
-\item{chunk_expansion}{Do the expansion in chunks (and in parallel if numCores > 1). Turn this off if you have
-enough memory to expand the whole dataset at once. (default TRUE)}
-
-\item{chunk_size}{Number of ids to process at once for the chunk expansion (default 500). Larger chunk_sizes
-may be faster but require more memory.}
-
-\item{separate_files}{Write to one file or one per trial (default FALSE)}
 
 \item{glm_function}{Which glm function to use for the final model from \code{stats} or \code{parglm} packages}
 
 \item{quiet}{Don't print progress messages.}
 }
 \description{
-This function analyses observational longitudinal data to estimate the effect of interventions sustained over time.
-This emulates the design of a hypothetical randomized trial.
-}
-\details{
-The class variables paramers (\code{outcomeClass},\code{class_switchn},\code{class_switchd},\code{class_censen},\code{class_censed})
-can be given as a character vector which will construct factors using \code{as.factor} or as a named list with
-the arguments for factor
-eg \verb{list(risk_cat=list(levels = c(1,2,3,0), age_cat=list(levels=c(1,2,3),labels=c("50-60","60-70","70+")}
-
-initiators()
+An all-in-one analysis using a sequence of target trials. This provides a simplified
+interface to the main working functions \code{\link[=data_preparation]{data_preparation()}} and \code{\link[=data_modelling]{data_modelling()}}.
 }

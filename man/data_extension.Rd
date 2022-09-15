@@ -5,22 +5,18 @@
 \title{Data Extension Function}
 \usage{
 data_extension(
-  sw_data,
+  data,
   keeplist,
   outcomeCov_var = NA,
   first_period = NA,
   last_period = NA,
   use_censor = 0,
   lag_p_nosw = 1,
-  where_var = NA,
-  followup_spline = NA,
-  period_spline = NA,
-  data_dir = "~/rds/hpc-work/",
-  separate_files = FALSE
+  where_var = NA
 )
 }
 \arguments{
-\item{sw_data}{A \code{data.frame} or similar}
+\item{data}{A \code{data.frame} or similar}
 
 \item{keeplist}{A list contains names of variables used in final model}
 
@@ -39,15 +35,6 @@ the maximum and variance of weights (Defaults to 1)}
 
 \item{where_var}{Variables used in where conditions used in subsetting the data used in final
 analysis (\code{where_case}), the variables are not included in the final model.}
-
-\item{followup_spline}{The spline model for follow-up time when \code{include_followup_time_case = "spline"}}
-
-\item{period_spline}{The spline model for \code{for_period} when choose \code{include_expansion_time_case = "spline"}}
-
-\item{data_dir}{Direction to save data}
-
-\item{separate_files}{Write to one file or one per trial (default \code{FALSE})
-data_extension()}
 }
 \description{
 Expands the longitudinal data into a sequence of trials.

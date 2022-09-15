@@ -14,5 +14,6 @@ weight_lr(data, formula, class_var)
 \item{class_var}{categorical variables to be converted to factors}
 }
 \description{
-This function get the information needed for performing Logistic Regression in the weight calculation process using parglm
+This function get the information needed for performing Logistic Regression in the weight calculation process
+using parglm
 }

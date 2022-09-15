@@ -1,6 +1,6 @@
 Package: RandomisedTrialsEmulation
 Title: Design and analysis of target trial emulation on observational data
-Version: 0.0.1.9
+Version: 0.0.2.0
 Authors@R: c(
         person(given = "Roonak",
                family = "Rezvani",
@@ -30,7 +30,7 @@ LinkingTo:
 Imports: 
     Rcpp,
     bigmemory,
-    data.table (>= 1.9.8), 
+    data.table (>= 1.9.8),
     parglm,
     parallel,
     doParallel,
@@ -38,7 +38,8 @@ Imports:
     sandwich,
     broom (>= 0.7.10),
     assertthat,
-    checkmate
+    checkmate,
+    formula.tools
 Suggests: 
     rmarkdown,
     knitr,

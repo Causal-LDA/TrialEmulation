@@ -31,12 +31,8 @@ h_extract_baseline <- function(trial_file, baseline_file, quiet = TRUE) {
 #' @importFrom stats predict
 #'
 #' @examples
-#' \donttest{
 #' data("trial_example")
-#' working_dir <- file.path(tempdir(), "trial_emu")
-#' dir.create(working_dir)
-#' data_path <- file.path(working_dir, "trial_example.csv")
-#'
+#' trial_example$catvarA <- factor(trial_example$catvarA)
 #' i <- initiators(
 #'   data = trial_example,
 #'   id = "id",
@@ -44,17 +40,13 @@ h_extract_baseline <- function(trial_file, baseline_file, quiet = TRUE) {
 #'   eligible = "eligible",
 #'   treatment = "treatment",
 #'   outcome = "outcome",
-#'   model_var = "assigned_treatment",
-#'   outcomeCov_var = c("catvarA", "catvarB", "catvarC", "nvarA", "nvarB", "nvarC"),
-#'   outcomeClass = c("catvarA", "catvarB", "catvarC"),
-#'   numCores = 1,
-#'   data_dir = working_dir,
+#'   outcome_cov = c("catvarA", "nvarA"),
 #'   use_censor = 0,
-#'   use_weight = 0
+#'   use_weight = 0,
+#'   last_period = 10
 #' )
 #'
 #' predict_survival(i, predict_times = c(1, 2, 3, 4, 5))
-#' }
 #'
 predict_survival <- function(object, model, predict_times, newdata) {
   if (missing(model) && missing(object)) stop("Either model or object must be specified.")
@@ -146,7 +138,7 @@ sum_up_ci <- function(p_mat_list) {
 ci_up_to <- function(p_mat) {
   assert_matrix(p_mat, mode = "numeric")
 
-  prod_term <- apply(1 - cbind(0, p_mat)[, -ncol(p_mat)], 1, cumprod)
+  prod_term <- apply(1 - cbind(0, p_mat)[, -ncol(p_mat), drop = FALSE], 1, cumprod)
   sum_term <- prod_term * t(p_mat)
   cumsum_term <- apply(sum_term, 2, cumsum)
   result <- rowSums(cumsum_term)

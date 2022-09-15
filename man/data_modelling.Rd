@@ -5,9 +5,8 @@
 \title{Data modelling Function}
 \usage{
 data_modelling(
-  outcomeCov_var = NA,
-  outcomeCov = NA,
-  outcomeClass = NA,
+  data,
+  outcome_cov = ~1,
   model_var = NA,
   first_followup = NA,
   last_followup = NA,
@@ -20,11 +19,10 @@ data_modelling(
   upper_weight = NA,
   use_censor = 0,
   check_missing = 0,
-  include_followup_time_case = c("linear", "quadratic", "spline"),
-  include_expansion_time_case = c("linear", "quadratic", "spline"),
+  include_followup_time_case = ~followup_time + I(followup_time^2),
+  include_expansion_time_case = ~for_period + I(for_period^2),
   where_case = NA,
   run_base_model = 1,
-  absolutePath,
   numCores = NA,
   glm_function = c("parglm", "glm"),
   use_sample_weights = TRUE,
@@ -32,13 +30,13 @@ data_modelling(
 )
 }
 \arguments{
-\item{outcomeCov_var}{List of individual baseline variables used in final model}
+\item{data}{A \code{data.frame} containing all the required columns.}
 
-\item{outcomeCov}{List of functions of baseline covariates used in final model}
+\item{outcome_cov}{A RHS formula with baseline covariates to adjust in final model}
 
-\item{outcomeClass}{Categorical variables used in the final model}
-
-\item{model_var}{List of Variables of interest to be used in final model}
+\item{model_var}{List of Variables of interest to be used in final model.
+Derived variables to use in outcome models. Typically \code{assigned_treatment} for ITT and per-protocol,
+and \code{dose + dose^2} for as-treated. \code{time_on_regime}? TODO check what else is derived}
 
 \item{first_followup}{First follow-up period}
 
@@ -58,28 +56,29 @@ data_modelling(
 
 \item{upper_weight}{Use upper weight as maximum possible weight}
 
-\item{use_censor}{Use censoring for per-protocol analysis - censor person-times once a person-trial stops taking the initial treatment value}
+\item{use_censor}{Use censoring for per-protocol analysis - censor person-times once a person-trial stops taking the
+initial treatment value}
 
 \item{check_missing}{Check for missing values in final model when use_censor=1 (Not added yet!)}
 
-\item{include_followup_time_case}{The model to include follow up time in outcome model. This has 3 options c("none","linear","quadratic","spline"). The data should contain the corresponding columns: "followup_time","followup_time2" or "followup_base".}
+\item{include_followup_time_case}{The model to include follow up time in outcome model.
+This has 3 options c("linear","quadratic","spline")}
 
-\item{include_expansion_time_case}{The model to include for_period in outcome model. This has 3 options c("none","linear","quadratic","spline").  The data should contain the corresponding columns: "for_period","for_period2" or "period_base".}
+\item{include_expansion_time_case}{The model to include for_period in outcome model.
+This has 3 options c("linear","quadratic","spline")}
 
 \item{where_case}{List of where conditions used in subsetting the data used in final analysis}
 
 \item{run_base_model}{Run the model with no conditions Defaults to 1}
 
-\item{absolutePath}{Direction to where the data for modelling is saved}
-
 \item{numCores}{Number of cores for parallel programming (default value is maximum cores and parallel programming)}
 
 \item{glm_function}{Which glm function to use for the final model from \code{stats} or \code{parglm} packages}
 
-\item{use_sample_weights}{Set model weights to \code{sample_weight * weight}.}
+\item{use_sample_weights}{Use sample weights in addition to IP weights. \code{data} must contain a column \code{sample_weight}.
+The weights used in the model are calculated as \code{weight = weight * sample_weight}.}
 
-\item{quiet}{Don't print progress messages.
-data_modelling()}
+\item{quiet}{Don't print progress messages.}
 }
 \description{
 This function do the modelling.

@@ -6,24 +6,15 @@
 \usage{
 weight_func(
   sw_data,
-  cov_switchn = NA,
-  model_switchn = NA,
-  class_switchn = NA,
-  cov_switchd = NA,
-  model_switchd = NA,
-  class_switchd = NA,
+  switch_n_cov = NA,
+  switch_d_cov = NA,
   eligible_wts_0 = NA,
   eligible_wts_1 = NA,
   cense = NA,
   pool_cense = 0,
-  cov_censed = NA,
-  model_censed = NA,
-  class_censed = NA,
-  cov_censen = NA,
-  model_censen = NA,
-  class_censen = NA,
+  cense_d_cov = NA,
+  cense_n_cov = NA,
   include_regime_length = 0,
-  numCores = NA,
   save_dir,
   quiet = FALSE
 )
@@ -31,17 +22,11 @@ weight_func(
 \arguments{
 \item{sw_data}{A data.table}
 
-\item{cov_switchn}{List of covariates to be used in logistic model for switching probabilities for numerator model}
+\item{switch_n_cov}{A RHS formula for modelling probability of switching treatment. Used in the numerator of weight
+calculation.}
 
-\item{model_switchn}{List of models (functions) to use the covariates from cov_switchn}
-
-\item{class_switchn}{Class variables used in logistic model for nominator model}
-
-\item{cov_switchd}{List of covariates to be used in logistic model for switching probabilities for denominator model}
-
-\item{model_switchd}{List of models (functions) to use the covariates from cov_switchd}
-
-\item{class_switchd}{Class variables used in logistic model for denominator model}
+\item{switch_d_cov}{A RHS formula for modelling probability of switching treatment. Used in the denominator of weight
+calculation.}
 
 \item{eligible_wts_0}{Eligibility criteria used in weights for model condition Am1 = 0}
 
@@ -53,22 +38,14 @@ weight_func(
 Am1 = 1 as in treatment models and 1: pool all observations together into a single numerator and denominator model)
 Defaults to 0}
 
-\item{cov_censed}{List of covariates to be used in logistic model for censoring weights in denominator model}
+\item{cense_d_cov}{A RHS formula for modelling probability of being censored. Used in the numerator of weight
+calculation.}
 
-\item{model_censed}{List of models (functions) to use the covariates from cov_censed}
-
-\item{class_censed}{Class variables used in censoring logistic regression in denominator model}
-
-\item{cov_censen}{List of covariates to be used in logistic model for censoring weights in numerator model}
-
-\item{model_censen}{List of models (functions) to use the covariates from cov_censen}
-
-\item{class_censen}{Class variables used in censoring logistic regression in numerator model}
+\item{cense_n_cov}{A RHS formula for modelling probability of being censored. Used in the denominator of weight
+calculation.}
 
 \item{include_regime_length}{If defined as 1 a new variable (time_on_regime) is added to dataset.
 This variable stores the duration of time that the patient has been on the current treatment value}
-
-\item{numCores}{Number of cores for parallel programming (default value is maximum cores and parallel programming)}
 
 \item{save_dir}{Directory to save tidy weight model summaries in as 'weight_models.rda'}
 

@@ -11,13 +11,9 @@
 #' Defaults to "eligible".
 #' @param eligible_wts_0 Eligibility criteria used in weights for model condition Am1 = 0
 #' @param eligible_wts_1 Eligibility criteria used in weights for model condition Am1 = 1
-#' @param outcomeCov_var List of individual baseline variables used in final model
-#' @param cov_switchn Covariates to be used in logistic model for switching probabilities for numerator model
-#' @param cov_switchd Covariates to be used in logistic model for switching probabilities for denominator model
-#' @param cov_censed Covariates to be used in logistic model for censoring weights for denominator model
-#' @param cov_censen Covariates to be used in logistic model for censoring weights for nominator model
 #' @param cense Censoring variable
 #' @param where_var Variables used in where conditions used in subsetting the data used in final analysis (where_case),
+#' @param formula_vars Variables used in outcome or weight models.
 #'  the variables not included in the final model.
 select_data_cols <- function(data,
                              id = "id",
@@ -25,31 +21,25 @@ select_data_cols <- function(data,
                              treatment = "treatment",
                              outcome = "outcome",
                              eligible = "eligible",
-                             eligible_wts_0 = NA,
-                             eligible_wts_1 = NA,
-                             outcomeCov_var = NA,
-                             cov_switchn = NA,
-                             cov_switchd = NA,
-                             cov_censed = NA,
-                             cov_censen = NA,
-                             cense = NA,
-                             where_var = NA) {
-  covs <- unique(c(
-    eligible_wts_0, eligible_wts_1, outcomeCov_var, cov_switchd,
-    cov_switchn, cov_censed, cov_censen, cense, where_var
-  ))
-  covs <- covs[!is.na(covs)]
-  assert_subset(covs, colnames(data))
-
+                             eligible_wts_0,
+                             eligible_wts_1,
+                             formula_vars,
+                             cense,
+                             where_var) {
   if (!eligible %in% colnames(data)) {
     warning(paste0("Eligibility variable not found in data: ", eligible))
     warning("Eligibility set to 1 for all patients for all periods")
     data[eligible] <- 1
   }
-  cols <- c(id, period, treatment, outcome, eligible, covs)
+
+  cols <- unique(c(
+    eligible_wts_0, eligible_wts_1, formula_vars, cense, where_var,
+    id, period, treatment, outcome, eligible
+  ))
+  cols <- cols[!is.na(cols)]
   assert_subset(cols, colnames(data))
 
-  data_new <- as.data.table(data[, cols])
+  data_new <- setDT(data)[, cols, with = FALSE]
 
   setnames(
     data_new,
@@ -57,8 +47,8 @@ select_data_cols <- function(data,
     new = c("id", "period", "outcome", "eligible", "treatment")
   )
 
-  if (!is.na(eligible_wts_0)) setnames(data_new, c(eligible_wts_0), c("eligible_wts_0"))
-  if (!is.na(eligible_wts_1)) setnames(data_new, c(eligible_wts_1), c("eligible_wts_1"))
+  if (test_string(eligible_wts_0)) setnames(data_new, c(eligible_wts_0), c("eligible_wts_0"))
+  if (test_string(eligible_wts_1)) setnames(data_new, c(eligible_wts_1), c("eligible_wts_1"))
 
   data_new[order(id, period)]
 }
@@ -97,15 +87,18 @@ for_period_func <- function(x) {
 #' @param save_dir Directory to save tidy weight model summaries in as 'weight_models.rda'
 #' @inheritParams initiators
 #'
-weight_func <- function(sw_data, cov_switchn = NA, model_switchn = NA,
-                        class_switchn = NA, cov_switchd = NA,
-                        model_switchd = NA, class_switchd = NA,
-                        eligible_wts_0 = NA, eligible_wts_1 = NA,
-                        cense = NA, pool_cense = 0, cov_censed = NA,
-                        model_censed = NA, class_censed = NA,
-                        cov_censen = NA, model_censen = NA, class_censen = NA,
+weight_func <- function(sw_data,
+                        switch_n_cov = NA,
+                        switch_d_cov = NA,
+                        eligible_wts_0 = NA,
+                        eligible_wts_1 = NA,
+                        cense = NA,
+                        pool_cense = 0,
+                        cense_d_cov = NA,
+                        cense_n_cov = NA,
                         include_regime_length = 0,
-                        numCores = NA, save_dir, quiet = FALSE) {
+                        save_dir,
+                        quiet = FALSE) {
   # Dummy variables used in data.table calls declared to prevent package check NOTES:
   eligible0 <- eligible1 <- id <- period <- eligible0.y <- eligible1.y <- am_1 <-
     treatment <- wt <- wtC <- p0_n <- p0_d <- p1_n <- p1_d <- pC_n0 <- pC_d0 <-
@@ -113,50 +106,18 @@ weight_func <- function(sw_data, cov_switchn = NA, model_switchn = NA,
 
   if (!missing(save_dir)) assert_directory_exists(save_dir)
 
+  switch_d_cov <- update.formula(switch_d_cov, treatment ~ .)
+  switch_n_cov <- update.formula(switch_n_cov, treatment ~ .)
+
   if (include_regime_length == 1) {
-    model_switchd <- c(model_switchd[!is.na(model_switchd)], c("time_on_regime", "time_on_regime2"))
-    model_switchn <- c(model_switchn[!is.na(model_switchn)], c("time_on_regime", "time_on_regime2"))
+    switch_d_cov <- update.formula(switch_d_cov, ~ . + time_on_regime + I(time_on_regime^2))
+    switch_n_cov <- update.formula(switch_n_cov, ~ . + time_on_regime + I(time_on_regime^2))
   }
 
   ## ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   # Switching weights --------------------
   ## ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-  # ------------------- eligible0 == 1 --------------------
-  # --------------- denominator ------------------
-  if (any(!is.na(model_switchd))) {
-    len_d <- length(model_switchd)
-    regformd <- paste(
-      paste("treatment", "~"),
-      paste(
-        paste(model_switchd, collapse = "+"),
-        sep = "+"
-      )
-    )
-  } else {
-    len_d <- 0
-    regformd <- paste(
-      paste("treatment", "~"),
-      "1"
-    )
-  }
-
-  if (any(!is.na(model_switchn))) {
-    len_n <- length(model_switchn)
-    regformn <- paste(
-      paste("treatment", "~"),
-      paste(
-        paste(model_switchn, collapse = "+"),
-        sep = "+"
-      )
-    )
-  } else {
-    len_n <- 0
-    regformn <- paste(
-      paste("treatment", "~"),
-      "1"
-    )
-  }
 
   # Fit the models for the weights in the four scenarios
   weight_models <- list()
@@ -166,8 +127,7 @@ weight_func <- function(sw_data, cov_switchn = NA, model_switchn = NA,
 
   model1 <- weight_lr(
     sw_data[if (any(!is.na(eligible_wts_0))) (eligible0 == 1 & eligible_wts_0 == 1) else eligible0 == 1],
-    regformd,
-    class_switchd
+    switch_d_cov
   )
 
   h_quiet_print(quiet, summary(model1))
@@ -188,8 +148,7 @@ weight_func <- function(sw_data, cov_switchn = NA, model_switchn = NA,
 
   model2 <- weight_lr(
     sw_data[if (any(!is.na(eligible_wts_0))) (eligible0 == 1 & eligible_wts_0 == 1) else eligible0 == 1],
-    regformn,
-    class_switchn
+    switch_n_cov,
   )
 
   h_quiet_print(quiet, summary(model2))
@@ -209,8 +168,7 @@ weight_func <- function(sw_data, cov_switchn = NA, model_switchn = NA,
   h_quiet_print(quiet, "P(treatment=1 | treatment=1) for denominator")
   model3 <- weight_lr(
     sw_data[if (any(!is.na(eligible_wts_1))) (eligible1 == 1 & eligible_wts_1 == 1) else eligible1 == 1],
-    regformd,
-    class_switchd
+    switch_d_cov
   )
 
   h_quiet_print(quiet, summary(model3))
@@ -229,8 +187,7 @@ weight_func <- function(sw_data, cov_switchn = NA, model_switchn = NA,
   h_quiet_print(quiet, "P(treatment=1 | treatment=1) for numerator")
   model4 <- weight_lr(
     sw_data[if (any(!is.na(eligible_wts_1))) (eligible1 == 1 & eligible_wts_1 == 1) else eligible1 == 1],
-    regformn,
-    class_switchn
+    switch_n_cov
   )
 
   h_quiet_print(quiet, summary(model4))
@@ -264,26 +221,14 @@ weight_func <- function(sw_data, cov_switchn = NA, model_switchn = NA,
 
   rm(switch_d0, switch_d1, switch_n0, switch_n1)
 
-  new_data <- Reduce(
-    function(x, y) {
-      merge(x, y,
-        by = c("id", "period"),
-        all = TRUE
-      )
-    },
-    list(sw_data, switch_1, switch_0)
-  )
+  sw_data <- merge.data.table(sw_data, switch_0, by = c("id", "period"), all = TRUE)
+  sw_data <- merge.data.table(sw_data, switch_1, by = c("id", "period"), all = TRUE)
 
   rm(switch_1, switch_0)
 
-  # TODO Can we remove sw_data here?
-
-  new_data[, eligible0.y := NULL]
-  new_data[, eligible1.y := NULL]
-  setnames(
-    new_data, c("eligible0.x", "eligible1.x"),
-    c("eligible0", "eligible1")
-  )
+  sw_data[, eligible0.y := NULL]
+  sw_data[, eligible1.y := NULL]
+  setnames(sw_data, c("eligible0.x", "eligible1.x"), c("eligible0", "eligible1"))
 
 
   ## ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -291,45 +236,15 @@ weight_func <- function(sw_data, cov_switchn = NA, model_switchn = NA,
   ## ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   cens_models <- list()
 
-  if (!is.na(cense)) {
-    if (any(!is.na(model_censed))) {
-      regformd <- paste(
-        paste("1", "-"),
-        paste(eval(cense), "~"),
-        paste(
-          paste(model_censed, collapse = "+"),
-          sep = "+"
-        )
-      )
-    } else {
-      regformd <- paste(
-        paste("1", "-"),
-        paste(eval(cense), "~"),
-        "1"
-      )
-    }
-    if (any(!is.na(model_censen))) {
-      regformn <- paste(
-        paste("1", "-"),
-        paste(eval(cense), "~"),
-        paste(
-          paste(model_censen, collapse = "+"),
-          sep = "+"
-        )
-      )
-    } else {
-      regformn <- paste(
-        paste("1", "-"),
-        paste(eval(cense), "~"),
-        "1"
-      )
-    }
+  update.formula(cense_d_cov, 1 - cense ~ .)
+  update.formula(cense_n_cov, 1 - cense ~ .)
 
+  if (!is.na(cense)) {
     if (pool_cense == 1) {
       # -------------------- denominator -------------------------
       h_quiet_print(quiet, "Model for P(cense = 0 |  X ) for denominator")
       # -----------------------------------------------------------
-      model1.cense <- weight_lr(new_data, regformd, class_censed)
+      model1.cense <- weight_lr(sw_data, cense_d_cov)
       h_quiet_print(quiet, summary(model1.cense))
       cense_d0 <- data.table(
         pC_d = model1.cense$fitted.values,
@@ -345,7 +260,7 @@ weight_func <- function(sw_data, cov_switchn = NA, model_switchn = NA,
       # --------------------- numerator ---------------------------
       h_quiet_print(quiet, "Model for P(cense = 0 |  X ) for numerator")
       # ---------------------------------------------------------
-      model2.cense <- weight_lr(new_data, regformn, class_censen)
+      model2.cense <- weight_lr(sw_data, cense_n_cov)
       h_quiet_print(quiet, summary(model2.cense))
       cense_n0 <- data.table(
         pC_n = model2.cense$fitted.values,
@@ -357,15 +272,9 @@ weight_func <- function(sw_data, cov_switchn = NA, model_switchn = NA,
       cens_models$cens_pool_n_statistics <- broom::glance(model2.cense)
 
       rm(model2.cense)
-      new_data <- Reduce(
-        function(x, y) {
-          merge(x, y,
-            by = c("id", "period"),
-            all.x = TRUE, all.y = TRUE
-          )
-        },
-        list(new_data, cense_d0, cense_n0)
-      )
+      sw_data <- merge.data.table(sw_data, cense_d0, by = c("id", "period"), all = TRUE)
+      sw_data <- merge.data.table(sw_data, cense_n0, by = c("id", "period"), all = TRUE)
+
       rm(cense_d0, cense_n0)
     } else {
       # when pool_cense != 1
@@ -374,7 +283,7 @@ weight_func <- function(sw_data, cov_switchn = NA, model_switchn = NA,
       h_quiet_print(quiet, "Model for P(cense = 0 |  X, Am1=0) for denominator")
       # ---------------------- eligible0 ---------------------------
 
-      model1.cense <- weight_lr(new_data[eligible0 == 1], regformd, class_censed)
+      model1.cense <- weight_lr(sw_data[eligible0 == 1], cense_d_cov)
       h_quiet_print(quiet, summary(model1.cense))
       cense_d0 <- data.table(
         pC_d0 = model1.cense$fitted.values,
@@ -389,7 +298,7 @@ weight_func <- function(sw_data, cov_switchn = NA, model_switchn = NA,
       # -------------------------- numerator ----------------------
       h_quiet_print(quiet, "Model for P(cense = 0 |  X, Am1=0) for numerator")
       #--------------------------- eligible0 -----------------------
-      model2.cense <- weight_lr(new_data[eligible0 == 1], regformn, class_censen)
+      model2.cense <- weight_lr(sw_data[eligible0 == 1], cense_n_cov)
       h_quiet_print(quiet, summary(model2.cense))
       cense_n0 <- data.table(
         pC_n0 = model2.cense$fitted.values,
@@ -401,10 +310,10 @@ weight_func <- function(sw_data, cov_switchn = NA, model_switchn = NA,
       cens_models$cens_n0_statistics <- broom::glance(model2.cense)
 
       rm(model2.cense)
-      # ------------------------- denomirator ---------------------
+      # ------------------------- denominator ---------------------
       h_quiet_print(quiet, "Model for P(cense = 0 |  X, Am1=1) for denominator")
       # ------------------------ eligible1 -------------------------
-      model3.cense <- weight_lr(new_data[eligible1 == 1], regformd, class_censed)
+      model3.cense <- weight_lr(sw_data[eligible1 == 1], cense_d_cov)
       h_quiet_print(quiet, summary(model3.cense))
       cense_d1 <- data.table(
         pC_d1 = model3.cense$fitted.values,
@@ -419,7 +328,7 @@ weight_func <- function(sw_data, cov_switchn = NA, model_switchn = NA,
       # ------------------------ numerator -------------------------
       h_quiet_print(quiet, "Model for P(cense = 0 |  X, Am1=1) for numerator")
       # ------------------------- eligible1 -----------------------
-      model4.cense <- weight_lr(new_data[eligible1 == 1], regformn, class_censen)
+      model4.cense <- weight_lr(sw_data[eligible1 == 1], cense_n_cov)
       h_quiet_print(quiet, summary(model4.cense))
       cense_n1 <- data.frame(
         pC_n1 = model4.cense$fitted.values,
@@ -442,72 +351,66 @@ weight_func <- function(sw_data, cov_switchn = NA, model_switchn = NA,
       cense_1 <- cense_d1[cense_n1, on = list(id = id, period = period)]
       rm(cense_n1, cense_d1, cense_n0, cense_d0)
 
-      new_data <- Reduce(
-        function(x, y) {
-          merge(x, y,
-            by = c("id", "period"),
-            all.x = TRUE, all.y = TRUE
-          )
-        },
-        list(new_data, cense_0, cense_1)
-      )
+      sw_data <- merge.data.table(sw_data, cense_0, by = c("id", "period"), all = TRUE)
+      sw_data <- merge.data.table(sw_data, cense_1, by = c("id", "period"), all = TRUE)
+
       rm(cense_0, cense_1)
     }
   }
   # wt and wtC calculation
   if (any(!is.na(eligible_wts_0))) {
-    new_data[
+    sw_data[
       (am_1 == 0 & eligible_wts_0 == 1 & treatment == 0 & !is.na(p0_n) & !is.na(p0_d)),
       wt := (1.0 - p0_n) / (1.0 - p0_d)
     ]
-    new_data[
+    sw_data[
       (am_1 == 0 & eligible_wts_0 == 1 & treatment == 1 & !is.na(p0_n) & !is.na(p0_d)),
       wt := p0_n / p0_d
     ]
-    new_data[(am_1 == 0 & eligible_wts_0 == 0), wt := 1.0]
+    sw_data[(am_1 == 0 & eligible_wts_0 == 0), wt := 1.0]
   } else {
-    new_data[
+    sw_data[
       (am_1 == 0 & treatment == 0 & !is.na(p0_n) & !is.na(p0_d)),
       wt := (1.0 - p0_n) / (1.0 - p0_d)
     ]
-    new_data[
+    sw_data[
       (am_1 == 0 & treatment == 1 & !is.na(p0_n) & !is.na(p0_d)),
       wt := p0_n / p0_d
     ]
   }
   if (any(!is.na(eligible_wts_1))) {
-    new_data[
+    sw_data[
       (am_1 == 1 & eligible_wts_1 == 1 & treatment == 0 & !is.na(p1_n) & !is.na(p1_d)),
       wt := (1.0 - p1_n) / (1.0 - p1_d)
     ]
-    new_data[
+    sw_data[
       (am_1 == 1 & eligible_wts_1 == 1 & treatment == 1 & !is.na(p1_n) & !is.na(p1_d)),
       wt := p1_n / p1_d
     ]
-    new_data[(am_1 == 1 & eligible_wts_1 == 0), wt := 1.0]
+    sw_data[(am_1 == 1 & eligible_wts_1 == 0), wt := 1.0]
   } else {
-    new_data[
+    sw_data[
       (am_1 == 1 & treatment == 0 & !is.na(p1_n) & !is.na(p1_d)),
       wt := (1.0 - p1_n) / (1.0 - p1_d)
     ]
-    new_data[
+    sw_data[
       (am_1 == 1 & treatment == 1 & !is.na(p1_n) & !is.na(p1_d)),
       wt := p1_n / p1_d
     ]
   }
 
   if (is.na(cense)) {
-    new_data[, wtC := 1.0]
+    sw_data[, wtC := 1.0]
   } else {
     if (pool_cense == 0) {
-      new_data[am_1 == 0, `:=`(pC_n = pC_n0, pC_d = pC_d0)]
-      new_data[am_1 == 1, `:=`(pC_n = pC_n1, pC_d = pC_d1)]
+      sw_data[am_1 == 0, `:=`(pC_n = pC_n0, pC_d = pC_d0)]
+      sw_data[am_1 == 1, `:=`(pC_n = pC_n1, pC_d = pC_d1)]
     }
-    new_data[is.na(pC_d), pC_d := 1]
-    new_data[is.na(pC_n), pC_n := 1]
-    new_data[, wtC := pC_n / pC_d]
+    sw_data[is.na(pC_d), pC_d := 1]
+    sw_data[is.na(pC_n), pC_n := 1]
+    sw_data[, wtC := pC_n / pC_d]
   }
-  new_data[, wt := wt * wtC]
+  sw_data[, wt := wt * wtC]
 
-  return(new_data)
+  return(sw_data)
 }

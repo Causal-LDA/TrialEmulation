@@ -1,23 +1,19 @@
-#' INITIATORS Function
+#' Initiators Analysis
 #'
-#' This function analyses observational longitudinal data to estimate the effect of interventions sustained over time.
-#'  This emulates the design of a hypothetical randomized trial.
+#' An all-in-one analysis using a sequence of target trials. This provides a simplified
+#' interface to the main working functions [`data_preparation()`] and [`data_modelling()`].
+#'
 #' @param data A `data.frame` containing all the required columns.
 #' @param id Name of the data column for id feature Defaults to id
 #' @param period Name of the data column for period feature Defaults to period
 #' @param treatment Name of the data column for treatment feature Defaults to treatment
 #' @param outcome Name of the data column for outcome feature Defaults to outcome
 #' @param eligible Indicator of whether or not an observation is eligible to be expanded about Defaults to eligible
-#' @param outcomeCov_var List of individual baseline variables used in final model
-#' @param outcomeCov List of functions of baseline covariates used in final model
-#' @param outcomeClass Categorical variables used in the final model
-#' @param model_var List of Variables of interest to be used in final model
-#' @param cov_switchn List of covariates to be used in logistic model for switching probabilities for numerator model
-#' @param model_switchn List of models (functions) to use the covariates from cov_switchn
-#' @param class_switchn Class variables used in logistic model for nominator model
-#' @param cov_switchd List of covariates to be used in logistic model for switching probabilities for denominator model
-#' @param model_switchd List of models (functions) to use the covariates from cov_switchd
-#' @param class_switchd Class variables used in logistic model for denominator model
+#' @param outcome_cov A RHS formula with baseline covariates to adjust in final model
+#' @param model_var List of Variables of interest to be used in final model.
+#'   Derived variables to use in outcome models. Typically `assigned_treatment` for ITT and per-protocol,
+#'   and `dose + dose^2` for as-treated. `time_on_regime`? TODO check what else is derived
+#'
 #' @param first_period First period value to start expanding about
 #' @param last_period Last period value to expand about
 #' @param first_followup First follow-up period
@@ -36,20 +32,10 @@
 #' @param pool_cense Pool the numerator and denominator models (0: split models by previous treatment Am1 = 0 and
 #' Am1 = 1 as in treatment models and 1: pool all observations together into a single numerator and denominator model)
 #'  Defaults to 0
-#' @param cov_censed List of covariates to be used in logistic model for censoring weights in denominator model
-#' @param model_censed List of models (functions) to use the covariates from cov_censed
-#' @param class_censed Class variables used in censoring logistic regression in denominator model
-#' @param cov_censen List of covariates to be used in logistic model for censoring weights in numerator model
-#' @param model_censen List of models (functions) to use the covariates from cov_censen
-#' @param class_censen Class variables used in censoring logistic regression in numerator model
 #' @param include_followup_time_case The model to include follow up time in outcome model.
 #' This has 3 options c("linear","quadratic","spline")
 #' @param include_expansion_time_case The model to include for_period in outcome model.
 #'  This has 3 options c("linear","quadratic","spline")
-#' @param followup_spline The parameters for spline model for followup time when choose "spline" in the
-#' include_followup_time_case (ex. list(df=2))
-#' @param period_spline The parameters for spline model for for_period when choose "spline" in the
-#' include_expansion_time_case (ex. list(df=3))
 #' @param include_regime_length If defined as 1 a new variable (time_on_regime) is added to dataset.
 #'  This variable stores the duration of time that the patient has been on the current treatment value
 #' @param eligible_wts_0 Eligibility criteria used in weights for model condition Am1 = 0
@@ -61,53 +47,30 @@
 #' (where_case), the variables not included in the final model
 #' @param where_case List of where conditions used in subsetting the data used in final analysis
 #' @param run_base_model Run the model with no conditions Defaults to 1
-#' @param case_control Run the case control sampling or not Defaults to 0
-#' @param n_control Number of controls used in case control sampling. Not compatible with `p_control`. If `p_control`
-#'  is specified, `n_control` has no effect.
-#' @param p_control Proportion of control to sample. If `p_control` is specified, `n_control` has no effect.
-#' @param sample_all_periods Sample a proportion of controls even if there are no cases in that period. Useful when
-#' estimating the baseline hazard.
 #' @param data_dir Direction to save data
 #' @param numCores Number of cores for parallel programming (default value is maximum cores and parallel programming)
-#' @param chunk_expansion Do the expansion in chunks (and in parallel if numCores > 1). Turn this off if you have
-#' enough memory to expand the whole dataset at once. (default TRUE)
-#' @param chunk_size Number of ids to process at once for the chunk expansion (default 500). Larger chunk_sizes
-#' may be faster but require more memory.
-#' @param separate_files Write to one file or one per trial (default FALSE)
 #' @param glm_function Which glm function to use for the final model from `stats` or `parglm` packages
 #' @param quiet Don't print progress messages.
+#' @param switch_n_cov A RHS formula for modelling probability of switching treatment. Used in the numerator of weight
+#' calculation.
+#' @param switch_d_cov A RHS formula for modelling probability of switching treatment. Used in the denominator of weight
+#' calculation.
+#' @param cense_d_cov A RHS formula for modelling probability of being censored. Used in the numerator of weight
+#' calculation.
+#' @param cense_n_cov A RHS formula for modelling probability of being censored. Used in the denominator of weight
+#' calculation.
 #'
-#' @details The class variables paramers (`outcomeClass`,`class_switchn`,`class_switchd`,`class_censen`,`class_censed`)
-#' can be given as a character vector which will construct factors using `as.factor` or as a named list with
-#' the arguments for factor
-#' eg `list(risk_cat=list(levels = c(1,2,3,0), age_cat=list(levels=c(1,2,3),labels=c("50-60","60-70","70+")`
-#'
-#' initiators()
 #' @export
-#' @import foreach
-#' @import doParallel
-#' @import parallel
-#' @import data.table
-#' @importFrom Rcpp sourceCpp
-#' @useDynLib RandomisedTrialsEmulation
-
-
 initiators <- function(data,
                        id = "id",
                        period = "period",
                        treatment = "treatment",
                        outcome = "outcome",
                        eligible = "eligible",
-                       outcomeCov_var = NA,
-                       outcomeCov = NA,
-                       outcomeClass = NA,
-                       model_var = NA,
-                       cov_switchn = NA,
-                       model_switchn = NA,
-                       class_switchn = NA,
-                       cov_switchd = NA,
-                       model_switchd = NA,
-                       class_switchd = NA,
+                       outcome_cov = ~1,
+                       model_var = NULL,
+                       switch_n_cov = ~1,
+                       switch_d_cov = ~1,
                        first_period = NA,
                        last_period = NA,
                        first_followup = NA,
@@ -123,41 +86,25 @@ initiators <- function(data,
                        check_missing = 0,
                        cense = NA,
                        pool_cense = 0,
-                       cov_censed = NA,
-                       model_censed = NA,
-                       class_censed = NA,
-                       cov_censen = NA,
-                       model_censen = NA,
-                       class_censen = NA,
-                       include_followup_time_case = "linear",
-                       include_expansion_time_case = "linear",
-                       followup_spline = NA,
-                       period_spline = NA,
+                       cense_d_cov = ~1,
+                       cense_n_cov = ~1,
+                       include_followup_time_case = ~ followup_time + I(followup_time^2),
+                       include_expansion_time_case = ~ for_period + I(for_period^2),
                        include_regime_length = 0,
                        eligible_wts_0 = NA,
                        eligible_wts_1 = NA,
                        lag_p_nosw = 1,
-                       where_var = NA,
+                       where_var = NULL,
                        where_case = NA,
                        run_base_model = 1,
-                       case_control = 0,
-                       n_control,
-                       p_control,
-                       sample_all_periods = FALSE,
                        data_dir,
                        numCores = NA,
-                       chunk_expansion = TRUE,
-                       chunk_size = 500,
-                       separate_files = FALSE,
-                       glm_function = "parglm",
+                       glm_function = "glm",
                        quiet = FALSE) {
   # Check parameters
-  if (isTRUE(separate_files) && case_control != 1) {
-    stop("Separate trial files without case-control sampling is not possible with initiators()")
+  if (!missing(data_dir)) {
+    if (!dir.exists(data_dir)) stop(paste0("Specified data_dir does not exist: ", data_dir))
   }
-  if (!dir.exists(data_dir)) stop(paste0("Specified data_dir does not exist: ", data_dir))
-
-  assert_flag(quiet)
 
   # Prepare variables, calculate weights and expand data
   prep_result <- data_preparation(
@@ -167,16 +114,10 @@ initiators <- function(data,
     treatment = treatment,
     outcome = outcome,
     eligible = eligible,
-    outcomeCov_var = outcomeCov_var,
-    outcomeCov = outcomeCov,
-    outcomeClass = outcomeClass,
+    outcome_cov = outcome_cov,
     model_var = model_var,
-    cov_switchn = cov_switchn,
-    model_switchn = model_switchn,
-    class_switchn = class_switchn,
-    cov_switchd = cov_switchd,
-    model_switchd = model_switchd,
-    class_switchd = class_switchd,
+    switch_n_cov = switch_n_cov,
+    switch_d_cov = switch_d_cov,
     first_period = first_period,
     last_period = last_period,
     use_weight = use_weight,
@@ -184,16 +125,10 @@ initiators <- function(data,
     check_missing = check_missing,
     cense = cense,
     pool_cense = pool_cense,
-    cov_censed = cov_censed,
-    model_censed = model_censed,
-    class_censed = class_censed,
-    cov_censen = cov_censen,
-    model_censen = model_censen,
-    class_censen = class_censen,
+    cense_d_cov = cense_d_cov,
+    cense_n_cov = cense_n_cov,
     include_followup_time_case = include_followup_time_case,
     include_expansion_time_case = include_expansion_time_case,
-    followup_spline = followup_spline,
-    period_spline = period_spline,
     include_regime_length = include_regime_length,
     eligible_wts_0 = eligible_wts_0,
     eligible_wts_1 = eligible_wts_1,
@@ -201,78 +136,14 @@ initiators <- function(data,
     where_var = where_var,
     data_dir = data_dir,
     numCores = numCores,
-    chunk_expansion = chunk_expansion,
-    chunk_size = chunk_size,
-    separate_files = separate_files,
+    separate_files = FALSE,
     quiet = quiet
-  )
-
-  analysis_data_path <- prep_result$absolutePath
-
-  # Sampling contols ----------
-  if (prep_result$N >= 2^31 - 1) {
-    warning("Expanded data is too large for model fitting. Case-control sampling will be applied.")
-    case_control <- 1
-  }
-
-  if (case_control == 1) {
-    if (file.exists(file.path(data_dir, "temp_data.csv"))) file.remove(file.path(data_dir, "temp_data.csv"))
-
-    if (isFALSE(separate_files)) {
-      if (missing(p_control) && !missing(n_control)) {
-        # sample using fixed n cases:controls ratio
-        sample_data_path <- case_control_sampling(
-          data_dir = data_dir,
-          samples_file = "temp_data.csv",
-          min_period = prep_result$min_period,
-          max_period = prep_result$max_period,
-          sample_all_periods = sample_all_periods,
-          n_control = n_control,
-          numCores = numCores
-        )
-      } else {
-        # set p_control if missing
-        if (missing(p_control)) p_control <- 0.01
-        # sample a proportion of controls
-        sample_data_path <- case_control_sampling(
-          data_dir = data_dir,
-          samples_file = "temp_data.csv",
-          min_period = prep_result$min_period,
-          max_period = prep_result$max_period,
-          p_control = p_control,
-          sample_all_periods = sample_all_periods,
-          numCores = numCores
-        )
-      }
-    } else if (isTRUE(separate_files)) {
-      sample_data_path <- case_control_sampling_trials(
-        data_dir = data_dir,
-        n_control = n_control,
-        numCores = numCores,
-        samples_file = "temp_data.csv",
-        infile_pattern = "trial_",
-        sample_all_periods = sample_all_periods
-      )
-    }
-    analysis_data_path <- normalizePath(sample_data_path)
-    use_sample_weights <- TRUE
-  } else {
-    use_sample_weights <- FALSE
-  }
-
-  # Splines ------
-  # Add splines to data if requested
-  spline_object <- add_splines(
-    data_path = analysis_data_path,
-    period_spline = period_spline,
-    followup_spline = followup_spline
   )
 
   # Fit final models and robust variance estimates
   model_full <- data_modelling(
-    outcomeCov_var = outcomeCov_var,
-    outcomeCov = outcomeCov,
-    outcomeClass = outcomeClass,
+    data = prep_result$data,
+    outcome_cov = outcome_cov,
     model_var = model_var,
     first_followup = first_followup,
     last_followup = last_followup,
@@ -289,33 +160,11 @@ initiators <- function(data,
     include_expansion_time_case = include_expansion_time_case,
     where_case = where_case,
     run_base_model = run_base_model,
-    absolutePath = analysis_data_path,
     numCores = numCores,
-    glm_function = glm_function,
-    use_sample_weights = use_sample_weights,
+    glm_function = "glm",
+    use_sample_weights = FALSE,
     quiet = quiet
   )
 
-  data_files <- list(
-    analysis = analysis_data_path
-  )
-
-  data_prep <- list(
-    splines = spline_object,
-    outcomeClass = outcomeClass,
-    class_switchn = class_switchn,
-    class_switchd = class_switchd,
-    class_censen = class_censen,
-    class_censed = class_censed
-  )
-
-  specification <- list(
-    data_files = data_files,
-    data_prep = data_prep
-  )
-
-  return(c(
-    model_full,
-    specification = specification
-  ))
+  model_full
 }
