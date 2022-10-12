@@ -1,8 +1,8 @@
-pandoc: 2.7.3
+pandoc: 2.14.2
 pkgdown: 2.0.6
 pkgdown_sha: ~
 articles:
   Getting-Started: Getting-Started.html
   MyJSSArticle: JSS_Rmd/MyJSSArticle.html
-last_built: 2022-10-12T09:08Z
+last_built: 2022-10-12T12:33Z
 
