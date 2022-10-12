@@ -75,7 +75,7 @@ for_period_func <- function(x) {
   # Dummy variables used in data.table calls declared to prevent package check NOTES:
   period <- id <- for_period <- NULL
 
-  x_new <- x[rep(1:.N, period + 1), list(id, period)]
+  x_new <- x[rep(seq_len(.N), period + 1), list(id, period)]
   x_new[, for_period := f(.BY), by = list(id, period)]
   return(x_new[, for_period])
 }
@@ -234,12 +234,11 @@ weight_func <- function(sw_data,
   ## ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   # Censoring weights --------------------
   ## ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  cens_models <- list()
-
-  update.formula(cense_d_cov, 1 - cense ~ .)
-  update.formula(cense_n_cov, 1 - cense ~ .)
-
   if (!is.na(cense)) {
+    cens_models <- list()
+    cense_d_cov <- update(cense_d_cov, paste("1 -", cense, "~ ."))
+    cense_n_cov <- update(cense_n_cov, paste("1 -", cense, "~ ."))
+
     if (pool_cense == 1) {
       # -------------------- denominator -------------------------
       h_quiet_print(quiet, "Model for P(cense = 0 |  X ) for denominator")
