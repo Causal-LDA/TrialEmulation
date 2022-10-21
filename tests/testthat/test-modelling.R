@@ -56,3 +56,37 @@ test_that("data_modelling gives expected results in example data", {
 
   expect_matrix(result$robust$matrix, nrows = 10, ncols = 10, any.missing = FALSE)
 })
+
+
+test_that("data_modelling works with data.tables and weights", {
+  data <- setDT(vignette_switch_data)[]
+
+  expect_silent(
+    result_parglm <- data_modelling(
+      data,
+      outcome_cov = c("catvarA", "nvarA"),
+      model_var = "assigned_treatment",
+      include_followup_time_case = ~followup_time,
+      include_expansion_time_case = ~for_period,
+      use_sample_weights = FALSE,
+      use_weight = 1,
+      glm_function = "parglm",
+      quiet = TRUE
+    )
+  )
+
+  expect_silent(
+    result_glm <- data_modelling(
+      data,
+      outcome_cov = c("catvarA", "nvarA"),
+      model_var = "assigned_treatment",
+      include_followup_time_case = ~followup_time,
+      include_expansion_time_case = ~for_period,
+      use_sample_weights = FALSE,
+      use_weight = 1,
+      glm_function = "glm",
+      quiet = TRUE
+    )
+  )
+  expect_equal(result_glm$model$coefficients, result_parglm$model$coefficients)
+})
