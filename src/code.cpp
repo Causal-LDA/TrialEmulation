@@ -1,30 +1,30 @@
 #include <Rcpp.h>
 using namespace Rcpp;
 
-//' @title Expand Function
-//' @name expand_func
-//' @description Expand the periods iteratively in C++
-//'
-//' @param d A dataframe with for_period, period_new and switch_new columns
-//' @param first_period First period value to start expanding about
-
-// [[Rcpp::export(expand_func)]]
-Rcpp::IntegerVector expand_func(Rcpp::DataFrame& d, int last_period, int first_period){
-  int n = d.nrows();
-  Rcpp::IntegerVector ex (last_period+1, 1);
-  Rcpp::IntegerVector expand (n, 1);
-  Rcpp::IntegerVector t_period = d["for_period"];
-  Rcpp::IntegerVector t_new = d["period_new"];
-  Rcpp::IntegerVector t_switch = d["switch_new"];
-  for(int i=0; i<n; i++){
-    expand[i] = ex[t_period[i]];
-    if(t_period[i] == t_new[i] && t_switch[i] == 1){
-      Rcpp::IntegerVector idx = seq(first_period, t_period[i]);
-      ex[idx] = 0;
-    }
-  }
-  return expand;
-}
+// //' @title Expand Function
+// //' @name expand_func
+// //' @description Expand the periods iteratively in C++
+// //'
+// //' @param d A dataframe with for_period, period_new and switch_new columns
+// //' @param first_period First period value to start expanding about
+//
+// // [[Rcpp::export(expand_func)]]
+// Rcpp::IntegerVector expand_func(Rcpp::DataFrame& d, int last_period, int first_period){
+//   int n = d.nrows();
+//   Rcpp::IntegerVector ex (last_period+1, 1);
+//   Rcpp::IntegerVector expand (n, 1);
+//   Rcpp::IntegerVector t_period = d["for_period"];
+//   Rcpp::IntegerVector t_new = d["period_new"];
+//   Rcpp::IntegerVector t_switch = d["switch_new"];
+//   for(int i=0; i<n; i++){
+//     expand[i] = ex[t_period[i]];
+//     if(t_period[i] == t_new[i] && t_switch[i] == 1){
+//       Rcpp::IntegerVector idx = seq(first_period, t_period[i]);
+//       ex[idx] = 0;
+//     }
+//   }
+//   return expand;
+// }
 
 //' @title Censoring Function in C++
 //' @name censor_func

@@ -10,19 +10,6 @@ Rcpp::Rostream<true>&  Rcpp::Rcout = Rcpp::Rcpp_cout_get();
 Rcpp::Rostream<false>& Rcpp::Rcerr = Rcpp::Rcpp_cerr_get();
 #endif
 
-// expand_func
-Rcpp::IntegerVector expand_func(Rcpp::DataFrame& d, int last_period, int first_period);
-RcppExport SEXP _RandomisedTrialsEmulation_expand_func(SEXP dSEXP, SEXP last_periodSEXP, SEXP first_periodSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< Rcpp::DataFrame& >::type d(dSEXP);
-    Rcpp::traits::input_parameter< int >::type last_period(last_periodSEXP);
-    Rcpp::traits::input_parameter< int >::type first_period(first_periodSEXP);
-    rcpp_result_gen = Rcpp::wrap(expand_func(d, last_period, first_period));
-    return rcpp_result_gen;
-END_RCPP
-}
 // censor_func
 Rcpp::DataFrame censor_func(Rcpp::DataFrame& sw_data);
 RcppExport SEXP _RandomisedTrialsEmulation_censor_func(SEXP sw_dataSEXP) {
@@ -36,7 +23,6 @@ END_RCPP
 }
 
 static const R_CallMethodDef CallEntries[] = {
-    {"_RandomisedTrialsEmulation_expand_func", (DL_FUNC) &_RandomisedTrialsEmulation_expand_func, 3},
     {"_RandomisedTrialsEmulation_censor_func", (DL_FUNC) &_RandomisedTrialsEmulation_censor_func, 1},
     {NULL, NULL, 0}
 };

@@ -223,7 +223,10 @@ expand <- function(sw_data,
   }
 
   switch_data[followup_time == 0, switch_new := 0]
-  switch_data[expand == 1, expand := check_expand_switch(.SD), by = c("id", "for_period")]
+  switch_data[expand == 1,
+    expand := expand_until_switch(switch_new, .N),
+    by = c("id", "for_period")
+  ]
 
   if (lag_p_nosw == 1) {
     switch_data[, weight := (weight0 / wtprod)]
@@ -255,16 +258,15 @@ expand <- function(sw_data,
 #'
 #' Check if patients have switched treatment in eligible trials
 #' and set `expand = 0`.
-#' @param d `data.frame` containing `period_new`
+#' @param s numeric vector where `1` indicates a treatment switch in that period
+#' @param n length of s
 #'
-#' @return New `expand` values
-check_expand_switch <- function(d) {
-  n <- nrow(d)
-  expand <- rep(1, n)
-  switch_i <- match(1, d$switch_new)
-
-  if (!is.na(switch_i)) {
-    expand[switch_i:n] <- 0
+#' @return Vector of indicator values up until first switch.
+expand_until_switch <- function(s, n) {
+  first_switch <- match(1, s)
+  if (!is.na(first_switch)) {
+    rep(c(1, 0), times = c(first_switch - 1, n - first_switch + 1))
+  } else {
+    rep(1, n)
   }
-  expand
 }
