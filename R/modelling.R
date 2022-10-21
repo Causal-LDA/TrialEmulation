@@ -127,14 +127,14 @@ data_modelling <- function(data,
       if (glm_function == "parglm") {
         model.full <- parglm::parglm(model_formula,
           data = data,
-          weights = data[, "weight"],
+          weights = data[["weight"]],
           family = binomial(link = "logit"),
           control = parglm::parglm.control(nthreads = 4, method = "FAST")
         )
       } else if (glm_function == "glm") {
         model.full <- stats::glm(model_formula,
           data = data,
-          weights = data[, weight],
+          weights = data[["weight"]],
           family = binomial(link = "logit")
         )
       }
