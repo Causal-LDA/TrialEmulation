@@ -108,20 +108,20 @@
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Finish data manipulation"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Processing time of data manipulation:"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    user  system elapsed </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   0.528   0.044   0.573 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   0.539   0.028   0.569 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "----------------------------"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Start data extension"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Finish data extension"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Processing time of data extension:"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    user  system elapsed </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   4.079   0.564   4.645 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   3.997   0.567   4.566 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "----------------------------"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Number of observations in expanded data: 1939053"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Base Analysis"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Call:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> stats::glm(formula = model_formula, family = binomial(link = "logit"), </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     data = data, weights = data[, weight])</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     data = data, weights = data[["weight"]])</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Deviance Residuals: </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     Min       1Q   Median       3Q      Max  </span>
@@ -154,7 +154,7 @@
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "-------------------------------------------------"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Processing time of modeling for base analysis:"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    user  system elapsed </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  16.689   1.128  17.868 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  16.633   1.020  17.690 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Base Analysis with robust variance"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "-------------------------------------------------------"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Robust standard error:"</span>
@@ -237,7 +237,7 @@
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "----------------------------------------------"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Processing time of getting the output and sandwich with reduced switch data:"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    user  system elapsed </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   1.105   0.116   1.222 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   1.093   0.128   1.221 </span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu">predict_survival</span><span class="op">(</span><span class="va">i</span>, predict_times <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span>, <span class="fl">3</span>, <span class="fl">4</span>, <span class="fl">5</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $trt_0</span>
