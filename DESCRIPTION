@@ -33,17 +33,13 @@ Imports:
     data.table (>= 1.9.8),
     parglm,
     parallel,
-    doParallel,
-    foreach,
     sandwich,
     broom (>= 0.7.10),
-    assertthat,
     checkmate,
     formula.tools
 Suggests: 
     rmarkdown,
     knitr,
-    rticles,
     testthat (>= 3.0.0),
     withr
 VignetteBuilder: knitr

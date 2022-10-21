@@ -193,22 +193,24 @@ expand <- function(sw_data,
     temp_data[, eval(where_var) := sw_data[, where_var, with = FALSE]]
   }
 
-  switch_data <- data.table(id = sw_data[, id])
-  switch_data <- switch_data[rep(1:.N, sw_data[, period] + 1)]
-  switch_data[, period_new := sw_data[rep(1:.N, period + 1), period]]
-  switch_data[, cumA_new := sw_data[rep(1:.N, period + 1), cumA]]
-  switch_data[, treatment_new := shift(sw_data[rep(1:.N, period + 1), treatment])]
+  expand_index <- rep(seq_len(nrow(sw_data)), sw_data[, period] + 1)
+
+  switch_data <- data.table(id = sw_data[expand_index, id])
+  switch_data[, period_new := sw_data[expand_index, period]]
+  switch_data[, cumA_new := sw_data[expand_index, cumA]]
+  switch_data[, treatment_new := shift(sw_data[expand_index, treatment])]
   switch_data[1, "treatment_new"] <- sw_data[1, treatment]
   if (use_censor == 1) {
-    switch_data[, switch_new := sw_data[rep(1:.N, period + 1), switch]]
+    switch_data[, switch_new := sw_data[expand_index, switch]]
   } else {
     switch_data[, switch_new := 0]
   }
-  switch_data[, outcome_new := sw_data[rep(1:.N, period + 1), outcome]]
-  switch_data[, time_of_event := sw_data[rep(1:.N, period + 1), time_of_event]]
-  switch_data[, weight0 := sw_data[rep(1:.N, period + 1), weight0]]
+  switch_data[, outcome_new := sw_data[expand_index, outcome]]
+  switch_data[, time_of_event := sw_data[expand_index, time_of_event]]
+  switch_data[, weight0 := sw_data[expand_index, weight0]]
   switch_data[, for_period := for_period_func(sw_data)]
   switch_data[, index := seq_len(.N)]
+
   switch_data <- switch_data[temp_data, on = list(id = id, for_period = period)]
   setorder(switch_data, index)
 
@@ -220,7 +222,11 @@ expand <- function(sw_data,
     switch_data[, treatment := init]
   }
 
-  switch_data[expand == 1, expand := expand_func(.SD, maxperiod, minperiod), by = id]
+  switch_data[followup_time == 0, switch_new := 0]
+  switch_data[expand == 1,
+    expand := expand_until_switch(switch_new, .N),
+    by = c("id", "for_period")
+  ]
 
   if (lag_p_nosw == 1) {
     switch_data[, weight := (weight0 / wtprod)]
@@ -229,6 +235,7 @@ expand <- function(sw_data,
     wtprod_shift <- shift(switch_data[, wtprod])
     switch_data[for_period != 0, weight := (weight0 / wtprod_shift)]
   }
+
   switch_data[, case := 0]
   if (use_censor == 0) {
     switch_data[(time_of_event == period_new & outcome_new == 1), case := 1]
@@ -245,4 +252,21 @@ expand <- function(sw_data,
   switch_data <- switch_data[, keeplist, with = FALSE]
 
   switch_data
+}
+
+#' Check Expand Flag After Treatment Switch
+#'
+#' Check if patients have switched treatment in eligible trials
+#' and set `expand = 0`.
+#' @param s numeric vector where `1` indicates a treatment switch in that period
+#' @param n length of s
+#'
+#' @return Vector of indicator values up until first switch.
+expand_until_switch <- function(s, n) {
+  first_switch <- match(1, s)
+  if (!is.na(first_switch)) {
+    rep(c(1, 0), times = c(first_switch - 1, n - first_switch + 1))
+  } else {
+    rep(1, n)
+  }
 }
