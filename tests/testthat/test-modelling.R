@@ -59,7 +59,7 @@ test_that("data_modelling gives expected results in example data", {
 
 
 test_that("data_modelling works with data.tables and weights", {
-  data <- setDT(vignette_switch_data)[]
+  data <- setDT(vignette_switch_data)
 
   expect_silent(
     result_parglm <- data_modelling(
