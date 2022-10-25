@@ -172,7 +172,7 @@ test_that("data extensions works as expected with first and last periods", {
 
 
 test_that("data extensions works as expected with separate_files=TRUE", {
-  data <- readRDS(test_path("data/pre_data_extension.RDS"))
+  data <- readRDS(test_path("data/pre_data_extension.rds"))
   temp_path <- tempdir(check = TRUE)
   all_dir <- file.path(temp_path, "all")
   dir.create(all_dir)
