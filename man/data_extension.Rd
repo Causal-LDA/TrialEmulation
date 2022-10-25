@@ -2,7 +2,7 @@
 % Please edit documentation in R/data_extension.R
 \name{data_extension}
 \alias{data_extension}
-\title{Data Extension Function}
+\title{Data Extension}
 \usage{
 data_extension(
   data,
@@ -12,11 +12,14 @@ data_extension(
   last_period = NA,
   use_censor = 0,
   lag_p_nosw = 1,
-  where_var = NA
+  where_var = NA,
+  data_dir = "~/rds/hpc-work/",
+  separate_files = FALSE,
+  chunk_size = 200
 )
 }
 \arguments{
-\item{data}{A \code{data.frame} or similar}
+\item{data}{A \code{data.table} to be expanded}
 
 \item{keeplist}{A list contains names of variables used in final model}
 
@@ -26,15 +29,21 @@ data_extension(
 
 \item{last_period}{Last period value to expand about}
 
-\item{use_censor}{Use censoring for per-protocol analysis - censor person-times once a person-trial stops
-taking the initial treatment value}
+\item{use_censor}{Use censoring for per-protocol analysis - censor person-times once a person-trial stops taking the
+initial treatment value}
 
-\item{lag_p_nosw}{when 1 this will set the first weight to be 1 and use \code{p_nosw_d} and \code{p_nosw_n} at
-follow-up time (t-1) for calculating the weights at follow-up time t - can be set to 0 which will increase
-the maximum and variance of weights (Defaults to 1)}
+\item{lag_p_nosw}{when 1 this will set the first weight to be 1 and use \code{p_nosw_d} and \code{p_nosw_n}
+at follow-up time (t-1) for calculating the weights at follow-up time t - can be set to 0 which will increase
+the maximum and variance of weights (Defaults to 1).}
 
-\item{where_var}{Variables used in where conditions used in subsetting the data used in final
-analysis (\code{where_case}), the variables are not included in the final model.}
+\item{where_var}{Variables used in where conditions used in subsetting the data used in final analysis (where_case),
+the variables not included in the final model}
+
+\item{data_dir}{Direction to save data}
+
+\item{separate_files}{Save expanded data in separate CSV files for each trial.}
+
+\item{chunk_size}{Number of ids to expand in each chunk}
 }
 \description{
 Expands the longitudinal data into a sequence of trials.

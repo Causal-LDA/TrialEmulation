@@ -17,14 +17,14 @@ data_manipulation <- function(data, use_censor = 1) {
   len_id <- length(unique(data[, id]))
 
   data[, after_eligibility := period >= .SD[eligible == 1, min(period, Inf)], by = id]
-  if (any(data[, "after_eligibility"] == FALSE)) {
+  if (any(data[["after_eligibility"]] == FALSE)) {
     warning("Observations before trial eligibility were removed")
     data <- data[after_eligibility == TRUE]
   }
   data[, after_eligibility := NULL]
 
   data[, after_event := period > .SD[outcome == 1, min(period, Inf)], by = id]
-  if (any(data[, "after_event"] == TRUE)) {
+  if (any(data[["after_event"]] == TRUE)) {
     warning("Observations after the outcome occured were removed")
     data <- data[after_event == FALSE] # keep all which are _not_ after the outcome event
   }

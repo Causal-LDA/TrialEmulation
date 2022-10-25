@@ -109,31 +109,19 @@ data_preparation <- function(data,
 
   h_quiet_print(quiet, "Start data extension")
   timing <- system.time({
-    if (!separate_files) {
-      extended_data <- data_extension(
-        data = data,
-        keeplist,
-        outcomeCov_var = all.vars(outcome_cov),
-        first_period,
-        last_period,
-        use_censor,
-        lag_p_nosw,
-        where_var = where_var
-      )
-    } else {
-      extended_data <- data_extension_parallel(
-        data = data,
-        keeplist = keeplist,
-        outcomeCov_var = all.vars(outcome_cov),
-        first_period = first_period,
-        last_period = last_period,
-        use_censor = use_censor,
-        lag_p_nosw = lag_p_nosw,
-        where_var = where_var,
-        data_dir = data_dir,
-        chunk_size = chunk_size
-      )
-    }
+    extended_data <- data_extension(
+      data = data,
+      keeplist = keeplist,
+      outcomeCov_var = all.vars(outcome_cov),
+      first_period = first_period,
+      last_period = last_period,
+      use_censor = use_censor,
+      lag_p_nosw = lag_p_nosw,
+      where_var = where_var,
+      separate_files = separate_files,
+      data_dir = data_dir,
+      chunk_size = chunk_size
+    )
   })
   h_quiet_print(quiet, "Finish data extension")
   h_quiet_print(quiet, "Processing time of data extension:")

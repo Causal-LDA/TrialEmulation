@@ -47,8 +47,8 @@ case_control_sampling <- function(data_dir,
     h_quiet_print(quiet, "Getting the periods")
     timing <- system.time({
       small_data <- fread(normalizePath(file.path(data_dir, "sw_data.csv")))
-      max_period <- max(small_data[, "period"])
-      min_period <- min(small_data[, "period"])
+      max_period <- max(small_data[["period"]])
+      min_period <- min(small_data[["period"]])
     })
     rm(small_data)
     h_quiet_print(quiet, "Finished getting the periods")

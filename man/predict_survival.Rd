@@ -24,7 +24,6 @@ Predict Cumulative Incidence
 }
 \examples{
 data("trial_example")
-trial_example$catvarA <- factor(trial_example$catvarA)
 i <- initiators(
   data = trial_example,
   id = "id",
@@ -32,10 +31,11 @@ i <- initiators(
   eligible = "eligible",
   treatment = "treatment",
   outcome = "outcome",
-  outcome_cov = c("catvarA", "nvarA"),
+  outcome_cov = ~ nvarA + nvarB,
+  include_followup_time_case = ~followup_time,
+  include_expansion_time_case = ~for_period,
   use_censor = 0,
-  use_weight = 0,
-  last_period = 10
+  use_weight = 0
 )
 
 predict_survival(i, predict_times = c(1, 2, 3, 4, 5))
