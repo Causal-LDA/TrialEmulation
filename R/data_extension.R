@@ -1,6 +1,7 @@
-#' Data Extension in Parallel Function
+#' Data Extension
 #'
-#' This function takes the data and all the variables and expand it using parallel computing
+#' Expands the longitudinal data into a sequence of trials.
+#'
 #' @param data A `data.table` to be expanded
 #' @param keeplist A list contains names of variables used in final model
 #' @param outcomeCov_var A list of individual baseline variables used in final model
@@ -14,120 +15,80 @@
 #' @param where_var Variables used in where conditions used in subsetting the data used in final analysis (where_case),
 #'  the variables not included in the final model
 #' @param data_dir Direction to save data
+#' @param separate_files Save expanded data in separate CSV files for each trial.
 #' @param chunk_size Number of ids to expand in each chunk
 
-data_extension_parallel <- function(data,
-                                    keeplist,
-                                    outcomeCov_var = NA,
-                                    first_period = NA,
-                                    last_period = NA,
-                                    use_censor = 0,
-                                    lag_p_nosw = 1,
-                                    where_var = NA,
-                                    data_dir = "~/rds/hpc-work/",
-                                    chunk_size = 200) {
+data_extension <- function(data,
+                           keeplist,
+                           outcomeCov_var = NA,
+                           first_period = NA,
+                           last_period = NA,
+                           use_censor = 0,
+                           lag_p_nosw = 1,
+                           where_var = NA,
+                           data_dir = "~/rds/hpc-work/",
+                           separate_files = FALSE,
+                           chunk_size = 200) {
   # data.table notes:
   for_period <- NULL
 
-  maxperiod <- max(data[, "period"])
-  minperiod <- min(data[, "period"])
+  if (isTRUE(separate_files)) assert_directory_exists(data_dir)
 
-  if (is.na(first_period)) {
-    first_period <- minperiod
-  }
-  if (is.na(last_period)) {
-    last_period <- maxperiod
-  }
-  range <- (maxperiod - minperiod) + 1
-  all_ids <- unique(data$id)
-  ids_split <- split(all_ids, ceiling(seq_along(all_ids) / chunk_size))
-  N <- 0
+  if (is.na(first_period)) first_period <- min(data[["period"]])
+  if (is.na(last_period)) last_period <- max(data[["period"]])
 
-  for (ids in ids_split) {
+  if (isTRUE(separate_files)) {
+    all_ids <- unique(data$id)
+    ids_split <- split(all_ids, ceiling(seq_along(all_ids) / chunk_size))
+    N <- 0
+    for (ids in ids_split) {
+      switch_data <- expand(
+        sw_data = data[list(ids), ],
+        outcomeCov_var = outcomeCov_var,
+        where_var = where_var,
+        use_censor = use_censor,
+        minperiod = first_period,
+        maxperiod = last_period,
+        lag_p_nosw = lag_p_nosw,
+        keeplist = keeplist
+      )
+      N <- N + nrow(switch_data)
+      for (p in unique(switch_data[["for_period"]])) {
+        file_p <- file.path(data_dir, paste0("trial_", p, ".csv"))
+        fwrite(switch_data[for_period == p, ], file_p, append = TRUE)
+      }
+    }
+    files <- file.path(data_dir, paste0("trial_", first_period:last_period, ".csv"))
+    list(
+      data = files[file.exists(files)],
+      min_period = first_period,
+      max_period = last_period,
+      range = 1 + last_period - first_period,
+      N = N,
+      data_template = as.data.frame(switch_data[0, ])
+    )
+  } else {
     switch_data <- expand(
-      sw_data = data[list(ids), ],
+      sw_data = data,
       outcomeCov_var = outcomeCov_var,
       where_var = where_var,
       use_censor = use_censor,
-      maxperiod = maxperiod,
-      minperiod = minperiod,
+      minperiod = first_period,
+      maxperiod = last_period,
       lag_p_nosw = lag_p_nosw,
       keeplist = keeplist
     )
-    N <- N + nrow(switch_data)
-    for (p in unique(switch_data[, "for_period"])[[1]]) {
-      fwrite(
-        switch_data[for_period == p, ],
-        file.path(data_dir, paste0("trial_", p, ".csv")),
-        append = TRUE,
-        row.names = FALSE
-      )
-    }
-  }
-
-  return(list(
-    data = file.path(data_dir, paste0("trial_", first_period:last_period, ".csv")),
-    min_period = minperiod,
-    max_period = maxperiod,
-    range = range,
-    N = N,
-    data_template = as.data.frame(switch_data[0, ])
-  ))
-}
-
-#' Data Extension Function
-#'
-#' Expands the longitudinal data into a sequence of trials.
-#'
-#' @param data A `data.frame` or similar
-#' @param keeplist A list contains names of variables used in final model
-#' @param outcomeCov_var A list of individual baseline variables used in final model
-#' @param first_period First period value to start expanding about
-#' @param last_period Last period value to expand about
-#' @param use_censor Use censoring for per-protocol analysis - censor person-times once a person-trial stops
-#'  taking the initial treatment value
-#' @param lag_p_nosw when 1 this will set the first weight to be 1 and use `p_nosw_d` and `p_nosw_n` at
-#' follow-up time (t-1) for calculating the weights at follow-up time t - can be set to 0 which will increase
-#'  the maximum and variance of weights (Defaults to 1)
-#' @param where_var Variables used in where conditions used in subsetting the data used in final
-#'  analysis (`where_case`), the variables are not included in the final model.
-data_extension <- function(data, keeplist, outcomeCov_var = NA,
-                           first_period = NA, last_period = NA,
-                           use_censor = 0,
-                           lag_p_nosw = 1, where_var = NA) {
-  # Dummy variables used in data.table calls declared to prevent package check NOTES:
-  id <- period <- NULL
-
-  assert_data_frame(data)
-
-  max_id <- max(data[, id])
-  maxperiod <- max(data[, period])
-  minperiod <- min(data[, period])
-
-  if (!is.na(first_period)) {
-    minperiod <- first_period
-  }
-  if (!is.na(last_period)) {
-    maxperiod <- last_period
-  }
-  range <- (maxperiod - minperiod) + 1
-
-  switch_data <- expand(
-    data, outcomeCov_var, where_var, use_censor,
-    maxperiod, minperiod, lag_p_nosw,
-    keeplist
-  )
-
-  return(
     list(
       data = switch_data,
-      min_period = minperiod,
-      max_period = maxperiod,
-      range = range,
-      N = nrow(switch_data)
+      min_period = first_period,
+      max_period = last_period,
+      range = 1 + last_period - first_period,
+      N = nrow(switch_data),
+      data_template = as.data.frame(switch_data[0, ])
     )
-  )
+  }
 }
+
 
 #' Expand Function
 #'
@@ -169,9 +130,10 @@ expand <- function(sw_data,
   )
   temp_data[, wtprod := 1.0, by = id][, elgcount := 0.0, by = id][, expand := 0.0, by = id]
   temp_data[, treat := 0.0, by = id][, dosesum := 0.0, by = id]
-  temp_data[(sw_data[, eligible] == 1 & !is.na(sw_data[, treatment])),
-    expand := 1,
-    by = id
+  temp_data[(sw_data[, eligible] == 1 & !is.na(sw_data[, treatment])) &
+    minperiod <= period & period <= maxperiod,
+  expand := 1,
+  by = id
   ]
   sw_data[first == TRUE, weight0 := 1.0]
   sw_data[, weight0 := cumprod(wt), by = id]

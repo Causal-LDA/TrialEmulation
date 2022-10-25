@@ -42,6 +42,7 @@ repos:
           (.*/|)WORDLIST|
           \.github/workflows/.*|
           data/.*|
+          tests/testthat/data/.*
           )$
     -   id: lintr
     -   id: readme-rmd-rendered
@@ -53,7 +54,7 @@ repos:
     rev: v4.3.0
     hooks:
     -   id: check-added-large-files
-        args: ['--maxkb=200']
+        args: ['--maxkb=300']
     -   id: file-contents-sorter
         files: '^\.Rbuildignore$'
     -   id: end-of-file-fixer
@@ -65,7 +66,7 @@ repos:
         entry: Cannot commit .Rhistory, .RData, .Rds or .rds.
         language: fail
         files: '\.(Rhistory|RData|Rds|rds)$'
-        # `exclude: <regex>` to allow committing specific files
+        exclude: 'tests/testthat/data/.*'
 
 ci:
     autoupdate_schedule: monthly
