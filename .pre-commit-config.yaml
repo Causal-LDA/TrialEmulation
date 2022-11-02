@@ -58,7 +58,11 @@ repos:
     -   id: file-contents-sorter
         files: '^\.Rbuildignore$'
     -   id: end-of-file-fixer
-        exclude: '\.Rd'
+        exclude: >
+          (?x)^(
+          .*\.Rd|
+          tests/testthat/_snaps/.*
+          )$
 -   repo: local
     hooks:
     -   id: forbid-to-commit
