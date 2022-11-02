@@ -19,6 +19,8 @@
 #' @param first_followup First follow-up period
 #' @param last_followup Last follow-up period
 #' @param use_weight Use weights in analysis. If 0 then no weights will be calculated
+#' @param save_weight_models Save weight models. Specify `"tidy"` to save summaries produced by `broom` package,
+#'  `"object"` to save `glm` model objects, or `"no"` to save nothing.
 #' @param run_unweighted_analysis Run the final model with no weights when use_weights = 1
 #' @param run_weighted_analysis Run the final model with original weights
 #' @param run_p99_analysis Run the final model with truncating the weights at the 1st and 99th percentile
@@ -32,10 +34,8 @@
 #' @param pool_cense Pool the numerator and denominator models (0: split models by previous treatment Am1 = 0 and
 #' Am1 = 1 as in treatment models and 1: pool all observations together into a single numerator and denominator model)
 #'  Defaults to 0
-#' @param include_followup_time_case The model to include follow up time in outcome model.
-#' This has 3 options c("linear","quadratic","spline")
-#' @param include_expansion_time_case The model to include for_period in outcome model.
-#'  This has 3 options c("linear","quadratic","spline")
+#' @param include_followup_time_case The model to include `followup_time` in outcome model, specified as a RHS formula.
+#' @param include_expansion_time_case The model to include `for_period` in outcome model, specified as a RHS formula.
 #' @param include_regime_length If defined as 1 a new variable (time_on_regime) is added to dataset.
 #'  This variable stores the duration of time that the patient has been on the current treatment value
 #' @param eligible_wts_0 Eligibility criteria used in weights for model condition Am1 = 0
@@ -76,6 +76,7 @@ initiators <- function(data,
                        first_followup = NA,
                        last_followup = NA,
                        use_weight = 0,
+                       save_weight_models = c("tidy", "object", "no"),
                        run_unweighted_analysis = 0,
                        run_weighted_analysis = 1,
                        run_p99_analysis = 0,
@@ -135,6 +136,7 @@ initiators <- function(data,
     lag_p_nosw = lag_p_nosw,
     where_var = where_var,
     data_dir = data_dir,
+    save_weight_models = save_weight_models,
     numCores = numCores,
     separate_files = FALSE,
     quiet = quiet

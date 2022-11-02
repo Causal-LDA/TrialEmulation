@@ -34,10 +34,12 @@ i <- initiators(
   outcome_cov = ~ nvarA + nvarB,
   include_followup_time_case = ~followup_time,
   include_expansion_time_case = ~for_period,
+  last_followup = 30,
+  last_period = 30,
   use_censor = 0,
   use_weight = 0
 )
 
-predict_survival(i, predict_times = c(1, 2, 3, 4, 5))
+predict_survival(i, predict_times = seq(1, 20, by = 2))
 
 }

@@ -97,6 +97,7 @@ weight_func <- function(sw_data,
                         cense_d_cov = NA,
                         cense_n_cov = NA,
                         include_regime_length = 0,
+                        save_weight_models = "tidy",
                         save_dir,
                         quiet = FALSE) {
   # Dummy variables used in data.table calls declared to prevent package check NOTES:
@@ -104,7 +105,9 @@ weight_func <- function(sw_data,
     treatment <- wt <- wtC <- p0_n <- p0_d <- p1_n <- p1_d <- pC_n0 <- pC_d0 <-
     pC_n1 <- pC_d1 <- pC_n <- pC_d <- NULL
 
-  if (!missing(save_dir)) assert_directory_exists(save_dir)
+  save_tidy <- ("tidy" %in% save_weight_models)
+  save_object <- ("object" %in% save_weight_models)
+  if (save_tidy || save_object) assert_directory_exists(save_dir)
 
   switch_d_cov <- update.formula(switch_d_cov, treatment ~ .)
   switch_n_cov <- update.formula(switch_n_cov, treatment ~ .)
@@ -138,8 +141,12 @@ weight_func <- function(sw_data,
     period = model1$data[, period]
   )
 
-  weight_models$switch_d0 <- broom::tidy(model1)
-  weight_models$switch_d0_statistics <- broom::glance(model1)
+  if (save_tidy) {
+    weight_models$switch_d0 <- broom::tidy(model1)
+    weight_models$switch_d0_statistics <- broom::glance(model1)
+  } else if (save_object) {
+    saveRDS(model1, file = file.path(save_dir, "weight_model_switch_d0.rds"))
+  }
   rm(model1)
 
   # -------------- numerator --------------------
@@ -159,8 +166,12 @@ weight_func <- function(sw_data,
     period = model2$data[, period]
   )
 
-  weight_models$switch_n0 <- broom::tidy(model2)
-  weight_models$switch_n0_statistics <- broom::glance(model2)
+  if (save_tidy) {
+    weight_models$switch_n0 <- broom::tidy(model2)
+    weight_models$switch_n0_statistics <- broom::glance(model2)
+  } else if (save_object) {
+    saveRDS(model2, file = file.path(save_dir, "weight_model_switch_n0.rds"))
+  }
   rm(model2)
 
   # ------------------- eligible1 == 1 --------------------
@@ -179,8 +190,12 @@ weight_func <- function(sw_data,
     period = model3$data[, period]
   )
 
-  weight_models$switch_d1 <- broom::tidy(model3)
-  weight_models$switch_statistics <- broom::glance(model3)
+  if (save_tidy) {
+    weight_models$switch_d1 <- broom::tidy(model3)
+    weight_models$switch_statistics <- broom::glance(model3)
+  } else if (save_object) {
+    saveRDS(model3, file = file.path(save_dir, "weight_model_switch_d1.rds"))
+  }
   rm(model3)
 
   # -------------------- numerator ---------------------------
@@ -198,15 +213,19 @@ weight_func <- function(sw_data,
     period = model4$data[, period]
   )
 
-  weight_models$switch_n1 <- broom::tidy(model4)
-  weight_models$switch_n1_statistics <- broom::glance(model4)
 
+  if (save_tidy) {
+    weight_models$switch_n1 <- broom::tidy(model4)
+    weight_models$switch_n1_statistics <- broom::glance(model4)
+  } else if (save_object) {
+    saveRDS(model4, file = file.path(save_dir, "weight_model_switch_n1.rds"))
+  }
   rm(model4)
 
 
   # -------------- Combine results --------------------
-  if (!missing(save_dir)) {
-    save(weight_models, file = file.path(save_dir, "weight_models.rda"))
+  if (save_tidy) {
+    save(weight_models, file = file.path(save_dir, "tidy_weight_models.rda"))
   }
   rm(weight_models)
 
@@ -251,9 +270,12 @@ weight_func <- function(sw_data,
         period = model1.cense$data[, period]
       )
 
-      cens_models$cens_pool_d <- broom::tidy(model1.cense)
-      cens_models$cens_pool_d_statistics <- broom::glance(model1.cense)
-
+      if (save_tidy) {
+        cens_models$cens_pool_d <- broom::tidy(model1.cense)
+        cens_models$cens_pool_d_statistics <- broom::glance(model1.cense)
+      } else if (save_object) {
+        saveRDS(model1.cense, file = file.path(save_dir, "cense_model_pool_d.rds"))
+      }
       rm(model1.cense)
 
       # --------------------- numerator ---------------------------
@@ -267,9 +289,12 @@ weight_func <- function(sw_data,
         period = model2.cense$data[, period]
       )
 
-      cens_models$cens_pool_n <- broom::tidy(model2.cense)
-      cens_models$cens_pool_n_statistics <- broom::glance(model2.cense)
-
+      if (save_tidy) {
+        cens_models$cens_pool_n <- broom::tidy(model2.cense)
+        cens_models$cens_pool_n_statistics <- broom::glance(model2.cense)
+      } else if (save_object) {
+        saveRDS(model2.cense, file = file.path(save_dir, "cense_model_pool_n.rds"))
+      }
       rm(model2.cense)
       sw_data <- merge.data.table(sw_data, cense_d0, by = c("id", "period"), all = TRUE)
       sw_data <- merge.data.table(sw_data, cense_n0, by = c("id", "period"), all = TRUE)
@@ -290,9 +315,12 @@ weight_func <- function(sw_data,
         period = model1.cense$data[, period]
       )
 
-      cens_models$cens_d0 <- broom::tidy(model1.cense)
-      cens_models$cens_d0_statistics <- broom::glance(model1.cense)
-
+      if (save_tidy) {
+        cens_models$cens_d0 <- broom::tidy(model1.cense)
+        cens_models$cens_d0_statistics <- broom::glance(model1.cense)
+      } else if (save_object) {
+        saveRDS(model1.cense, file = file.path(save_dir, "cense_model_d0.rds"))
+      }
       rm(model1.cense)
       # -------------------------- numerator ----------------------
       h_quiet_print(quiet, "Model for P(cense = 0 |  X, Am1=0) for numerator")
@@ -305,9 +333,12 @@ weight_func <- function(sw_data,
         period = model2.cense$data[, period]
       )
 
-      cens_models$cens_n0 <- broom::tidy(model2.cense)
-      cens_models$cens_n0_statistics <- broom::glance(model2.cense)
-
+      if (save_tidy) {
+        cens_models$cens_n0 <- broom::tidy(model2.cense)
+        cens_models$cens_n0_statistics <- broom::glance(model2.cense)
+      } else if (save_object) {
+        saveRDS(model2.cense, file = file.path(save_dir, "cense_model_n0.rds"))
+      }
       rm(model2.cense)
       # ------------------------- denominator ---------------------
       h_quiet_print(quiet, "Model for P(cense = 0 |  X, Am1=1) for denominator")
@@ -320,9 +351,12 @@ weight_func <- function(sw_data,
         period = model3.cense$data[, period]
       )
 
-      cens_models$cens_d1 <- broom::tidy(model3.cense)
-      cens_models$cens_d1_statistics <- broom::glance(model3.cense)
-
+      if (save_tidy) {
+        cens_models$cens_d1 <- broom::tidy(model3.cense)
+        cens_models$cens_d1_statistics <- broom::glance(model3.cense)
+      } else if (save_object) {
+        saveRDS(model3.cense, file = file.path(save_dir, "cense_model_d1.rds"))
+      }
       rm(model3.cense)
       # ------------------------ numerator -------------------------
       h_quiet_print(quiet, "Model for P(cense = 0 |  X, Am1=1) for numerator")
@@ -335,14 +369,17 @@ weight_func <- function(sw_data,
         period = model4.cense$data[, period]
       )
 
-      cens_models$cens_n1 <- broom::tidy(model4.cense)
-      cens_models$cens_n1_statistics <- broom::glance(model4.cense)
-
+      if (save_tidy) {
+        cens_models$cens_n1 <- broom::tidy(model4.cense)
+        cens_models$cens_n1_statistics <- broom::glance(model4.cense)
+      } else if (save_object) {
+        saveRDS(model4.cense, file = file.path(save_dir, "cense_model_n1.rds"))
+      }
       rm(model4.cense)
 
       # combine ------------------------------
-      if (!missing(save_dir)) {
-        save(cens_models, file = file.path(save_dir, "cens_models.rda"))
+      if (save_tidy) {
+        save(cens_models, file = file.path(save_dir, "tidy_cens_models.rda"))
       }
       rm(cens_models)
 

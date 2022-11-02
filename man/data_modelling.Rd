@@ -61,11 +61,9 @@ initial treatment value}
 
 \item{check_missing}{Check for missing values in final model when use_censor=1 (Not added yet!)}
 
-\item{include_followup_time_case}{The model to include follow up time in outcome model.
-This has 3 options c("linear","quadratic","spline")}
+\item{include_followup_time_case}{The model to include \code{followup_time} in outcome model, specified as a RHS formula.}
 
-\item{include_expansion_time_case}{The model to include for_period in outcome model.
-This has 3 options c("linear","quadratic","spline")}
+\item{include_expansion_time_case}{The model to include \code{for_period} in outcome model, specified as a RHS formula.}
 
 \item{where_case}{List of where conditions used in subsetting the data used in final analysis}
 

@@ -42,7 +42,7 @@ To get started a longitudinal dataset must be created containing:
  * other covariates relating to treatment, outcome, or censoring to be used in the models for weights or the outcome
  
 
-```{r}
+```{r data}
 # Prepare the example data
 data("trial_example")
 
@@ -54,7 +54,7 @@ head(trial_example)
 ```
 
 Call the `initiators()` function to run the complete analysis:
-```{r}
+```{r initiators}
 result <- initiators(
   data = trial_example,
   id = "id",
@@ -70,16 +70,16 @@ result <- initiators(
 ```
 
 By default, this returns the final `glm` model object and the results using the sandwich estimator.
-```{r}
+```{r init_summary}
 summary(result$model)
 ```
 
-```{r}
+```{r init_robust_summary}
 result$robust$summary
 ```
 
 Also the sandwich variance-covariance matrix.
-```{r}
+```{r robust_matrix}
 result$robust$matrix
 ```
 
@@ -111,6 +111,7 @@ prep_data <- data_preparation(
   outcome_cov = c("catvarA", "catvarB", "catvarC", "nvarA", "nvarB", "nvarC"),
   numCores = 1,
   data_dir = working_dir,
+  save_weight_models = "tidy",
   use_censor = 1,
   use_weight = 1,
   chunk_size = 500,
@@ -119,9 +120,9 @@ prep_data <- data_preparation(
 )
 ```
 
-We can access the summaries of the weight models to inspect how the IP weights have been calculated. 
+We have saved the summaries of the weight models, so can inspect how the IP weights have been calculated. 
 ```{r}
-load(file.path(working_dir, "weight_models.rda"))
+load(file.path(working_dir, "tidy_weight_models.rda"))
 
 str(weight_models, max.level = 1)
 weight_models$switch_n0

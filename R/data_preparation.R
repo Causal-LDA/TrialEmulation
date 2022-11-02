@@ -38,12 +38,15 @@ data_preparation <- function(data,
                              lag_p_nosw = 1,
                              where_var = NULL,
                              data_dir,
+                             save_weight_models = c("tidy", "object", "no"),
                              numCores = 1,
                              chunk_size = 500,
                              separate_files = FALSE,
                              quiet = FALSE) {
   assert_flag(quiet)
   assert_flag(separate_files)
+  save_weight_models <- match.arg(save_weight_models)
+
   outcome_cov <- as_formula(outcome_cov)
   switch_n_cov <- as_formula(switch_n_cov)
   switch_d_cov <- as_formula(switch_d_cov)
@@ -95,6 +98,7 @@ data_preparation <- function(data,
       cense_d_cov = cense_d_cov,
       cense_n_cov = cense_n_cov,
       include_regime_length = include_regime_length,
+      save_weight_models = save_weight_models,
       save_dir = data_dir,
       quiet = quiet
     )
