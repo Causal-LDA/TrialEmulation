@@ -32,7 +32,7 @@ data_preparation(
   lag_p_nosw = 1,
   where_var = NULL,
   data_dir,
-  save_weight_models = c("tidy", "object", "no"),
+  save_weight_models = FALSE,
   numCores = 1,
   chunk_size = 500,
   separate_files = FALSE,
@@ -107,8 +107,7 @@ weights (Defaults to 1)}
 
 \item{data_dir}{Direction to save data}
 
-\item{save_weight_models}{Save weight models. Specify \code{"tidy"} to save summaries produced by \code{broom} package,
-\code{"object"} to save \code{glm} model objects, or \code{"no"} to save nothing.}
+\item{save_weight_models}{Save weight models objects in \code{data_dir}.}
 
 \item{numCores}{Number of cores for parallel programming (default value is maximum cores and parallel programming)}
 

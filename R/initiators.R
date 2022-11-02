@@ -19,8 +19,7 @@
 #' @param first_followup First follow-up period
 #' @param last_followup Last follow-up period
 #' @param use_weight Use weights in analysis. If 0 then no weights will be calculated
-#' @param save_weight_models Save weight models. Specify `"tidy"` to save summaries produced by `broom` package,
-#'  `"object"` to save `glm` model objects, or `"no"` to save nothing.
+#' @param save_weight_models Save weight models objects in `data_dir`.
 #' @param run_unweighted_analysis Run the final model with no weights when use_weights = 1
 #' @param run_weighted_analysis Run the final model with original weights
 #' @param run_p99_analysis Run the final model with truncating the weights at the 1st and 99th percentile
@@ -76,7 +75,7 @@ initiators <- function(data,
                        first_followup = NA,
                        last_followup = NA,
                        use_weight = 0,
-                       save_weight_models = c("tidy", "object", "no"),
+                       save_weight_models = FALSE,
                        run_unweighted_analysis = 0,
                        run_weighted_analysis = 1,
                        run_p99_analysis = 0,

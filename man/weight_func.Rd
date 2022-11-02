@@ -15,7 +15,7 @@ weight_func(
   cense_d_cov = NA,
   cense_n_cov = NA,
   include_regime_length = 0,
-  save_weight_models = "tidy",
+  save_weight_models = FALSE,
   save_dir,
   quiet = FALSE
 )
@@ -48,8 +48,7 @@ calculation.}
 \item{include_regime_length}{If defined as 1 a new variable (time_on_regime) is added to dataset.
 This variable stores the duration of time that the patient has been on the current treatment value}
 
-\item{save_weight_models}{Save weight models. Specify \code{"tidy"} to save summaries produced by \code{broom} package,
-\code{"object"} to save \code{glm} model objects, or \code{"no"} to save nothing.}
+\item{save_weight_models}{Save weight models objects in \code{data_dir}.}
 
 \item{save_dir}{Directory to save tidy weight model summaries in as 'weight_models.rda'}
 

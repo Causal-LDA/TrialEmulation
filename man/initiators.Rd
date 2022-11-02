@@ -20,7 +20,7 @@ initiators(
   first_followup = NA,
   last_followup = NA,
   use_weight = 0,
-  save_weight_models = c("tidy", "object", "no"),
+  save_weight_models = FALSE,
   run_unweighted_analysis = 0,
   run_weighted_analysis = 1,
   run_p99_analysis = 0,
@@ -83,8 +83,7 @@ calculation.}
 
 \item{use_weight}{Use weights in analysis. If 0 then no weights will be calculated}
 
-\item{save_weight_models}{Save weight models. Specify \code{"tidy"} to save summaries produced by \code{broom} package,
-\code{"object"} to save \code{glm} model objects, or \code{"no"} to save nothing.}
+\item{save_weight_models}{Save weight models objects in \code{data_dir}.}
 
 \item{run_unweighted_analysis}{Run the final model with no weights when use_weights = 1}
 

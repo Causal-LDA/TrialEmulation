@@ -12,32 +12,27 @@ test_that("weight_func works as expected", {
       pool_cense = 0,
       cense_d_cov = ~ X1 + X2 + X3 + X4 + age_s,
       cense_n_cov = ~ X3 + X4,
-      save_weight_models = "tidy",
+      save_weight_models = FALSE,
       save_dir = save_dir
     )
   )
 
-  expect_names(colnames(result), must.include = c(
+  expect_names(colnames(result$data), must.include = c(
     "p0_d", "p0_n", "p1_d", "p1_n", "pC_d0", "pC_n0",
     "pC_d1", "pC_n1", "wt", "pC_n", "pC_d", "wtC"
   ))
-  expect_equal(sum(result$wt), 5124.4538)
-  expect_equal(sum(result$wtC), 5127.7397)
+  expect_equal(sum(result$data$wt), 5124.4538)
+  expect_equal(sum(result$data$wtC), 5127.7397)
 
-  expect_file_exists(file.path(save_dir, "tidy_cens_models.rda"))
-  expect_file_exists(file.path(save_dir, "tidy_weight_models.rda"))
-
-  load(file.path(save_dir, "tidy_cens_models.rda"))
-  expect_list(cens_models, types = "data.frame", any.missing = FALSE, len = 8)
+  expect_list(result$censor_models, types = "data.frame", any.missing = FALSE, len = 8)
   expect_equal(
-    cens_models$cens_d0$estimate,
+    result$censor_models$cens_d0$estimate,
     c(0.900038686916255, 0.588866421245376, -0.464693730180448, 0.32342303175603, -0.25226496458668, 0.9730384163288)
   )
 
-  load(file.path(save_dir, "tidy_weight_models.rda"))
-  expect_list(weight_models, types = "data.frame", any.missing = FALSE, len = 8)
+  expect_list(result$switch_models, types = "data.frame", any.missing = FALSE, len = 8)
   expect_equal(
-    weight_models$switch_d0$estimate,
+    result$switch_models$switch_d0$estimate,
     c(-0.52632937, 0.35856345, 0.42935005)
   )
 })
@@ -51,27 +46,18 @@ test_that("weight_func works saves model objects", {
   save_dir <- withr::local_tempdir(pattern = "weights", tempdir(TRUE))
   expect_true(dir.exists(save_dir))
 
-  expect_snapshot(
-    result <- weight_func(
-      sw_data = data,
-      switch_n_cov = ~1,
-      switch_d_cov = ~ X1 + X2,
-      cense = "C",
-      pool_cense = 0,
-      cense_d_cov = ~ X1 + X2 + X3 + X4 + age_s,
-      cense_n_cov = ~ X3 + X4,
-      save_weight_models = "object",
-      save_dir = save_dir
-    )
+  result <- weight_func(
+    sw_data = data,
+    switch_n_cov = ~1,
+    switch_d_cov = ~ X1 + X2,
+    cense = "C",
+    pool_cense = 0,
+    cense_d_cov = ~ X1 + X2 + X3 + X4 + age_s,
+    cense_n_cov = ~ X3 + X4,
+    save_weight_models = TRUE,
+    save_dir = save_dir,
+    quiet = TRUE
   )
-
-  expect_data_frame(result, nrow = 5003, ncol = 32)
-  expect_names(colnames(result), must.include = c(
-    "p0_d", "p0_n", "p1_d", "p1_n", "pC_d0", "pC_n0",
-    "pC_d1", "pC_n1", "wt", "pC_n", "pC_d", "wtC"
-  ))
-  expect_equal(sum(result$wt), 5124.4538)
-  expect_equal(sum(result$wtC), 5127.7397)
 
   expect_file_exists(file.path(
     save_dir,
