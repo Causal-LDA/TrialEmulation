@@ -34,9 +34,6 @@
   <ul class="dropdown-menu" role="menu"><li>
       <a href="../articles/Getting-Started.html">Getting-Started</a>
     </li>
-    <li>
-      <a href="../articles/JSS_Rmd/MyJSSArticle.html">A Capitalized Title: Something about a Package \pkg{foo}</a>
-    </li>
   </ul></li>
       </ul><ul class="nav navbar-nav navbar-right"></ul></div><!--/.nav-collapse -->
   </div><!--/.container -->
@@ -85,6 +82,7 @@
 <span>  lag_p_nosw <span class="op">=</span> <span class="fl">1</span>,</span>
 <span>  where_var <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  <span class="va">data_dir</span>,</span>
+<span>  save_weight_models <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  numCores <span class="op">=</span> <span class="fl">1</span>,</span>
 <span>  chunk_size <span class="op">=</span> <span class="fl">500</span>,</span>
 <span>  separate_files <span class="op">=</span> <span class="cn">FALSE</span>,</span>
@@ -180,13 +178,11 @@ calculation.</p></dd>
 
 
 <dt>include_followup_time_case</dt>
-<dd><p>The model to include follow up time in outcome model.
-This has 3 options c("linear","quadratic","spline")</p></dd>
+<dd><p>The model to include <code>followup_time</code> in outcome model, specified as a RHS formula.</p></dd>
 
 
 <dt>include_expansion_time_case</dt>
-<dd><p>The model to include for_period in outcome model.
-This has 3 options c("linear","quadratic","spline")</p></dd>
+<dd><p>The model to include <code>for_period</code> in outcome model, specified as a RHS formula.</p></dd>
 
 
 <dt>include_regime_length</dt>
@@ -215,6 +211,10 @@ weights (Defaults to 1)</p></dd>
 
 <dt>data_dir</dt>
 <dd><p>Direction to save data</p></dd>
+
+
+<dt>save_weight_models</dt>
+<dd><p>Save weight models objects in <code>data_dir</code>.</p></dd>
 
 
 <dt>numCores</dt>

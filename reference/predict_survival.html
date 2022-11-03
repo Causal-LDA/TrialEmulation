@@ -34,9 +34,6 @@
   <ul class="dropdown-menu" role="menu"><li>
       <a href="../articles/Getting-Started.html">Getting-Started</a>
     </li>
-    <li>
-      <a href="../articles/JSS_Rmd/MyJSSArticle.html">A Capitalized Title: Something about a Package \pkg{foo}</a>
-    </li>
   </ul></li>
       </ul><ul class="nav navbar-nav navbar-right"></ul></div><!--/.nav-collapse -->
   </div><!--/.container -->
@@ -101,6 +98,8 @@
 <span class="r-in"><span>  outcome_cov <span class="op">=</span> <span class="op">~</span> <span class="va">nvarA</span> <span class="op">+</span> <span class="va">nvarB</span>,</span></span>
 <span class="r-in"><span>  include_followup_time_case <span class="op">=</span> <span class="op">~</span><span class="va">followup_time</span>,</span></span>
 <span class="r-in"><span>  include_expansion_time_case <span class="op">=</span> <span class="op">~</span><span class="va">for_period</span>,</span></span>
+<span class="r-in"><span>  last_followup <span class="op">=</span> <span class="fl">30</span>,</span></span>
+<span class="r-in"><span>  last_period <span class="op">=</span> <span class="fl">30</span>,</span></span>
 <span class="r-in"><span>  use_censor <span class="op">=</span> <span class="fl">0</span>,</span></span>
 <span class="r-in"><span>  use_weight <span class="op">=</span> <span class="fl">0</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
@@ -108,15 +107,15 @@
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Finish data manipulation"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Processing time of data manipulation:"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    user  system elapsed </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   0.798   0.036   0.835 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   0.710   0.020   0.731 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "----------------------------"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Start data extension"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Finish data extension"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Processing time of data extension:"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    user  system elapsed </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   5.533   0.932   6.470 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   4.385   0.779   5.164 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "----------------------------"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Number of observations in expanded data: 1939053"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Number of observations in expanded data: 62981"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Base Analysis"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Call:</span>
@@ -125,77 +124,72 @@
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Deviance Residuals: </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     Min       1Q   Median       3Q      Max  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> -0.1674  -0.1030  -0.0936  -0.0846   3.9909  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> -0.7239  -0.0704  -0.0496  -0.0349   3.4643  </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Coefficients:</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                      Estimate Std. Error  z value Pr(&gt;|z|)    </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> (Intercept)        -6.1262440  0.0410124 -149.375  &lt; 2e-16 ***</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> assigned_treatment -0.1075790  0.0456392   -2.357   0.0184 *  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> for_period          0.0028291  0.0001622   17.442  &lt; 2e-16 ***</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> followup_time       0.0018381  0.0002072    8.871  &lt; 2e-16 ***</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> nvarA              -0.0888642  0.0078490  -11.322  &lt; 2e-16 ***</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> nvarB               0.0026266  0.0003355    7.830 4.89e-15 ***</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Coefficients: (2 not defined because of singularities)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                    Estimate Std. Error z value Pr(&gt;|z|)    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> (Intercept)        -9.08925    0.86878 -10.462  &lt; 2e-16 ***</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> assigned_treatment       NA         NA      NA       NA    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> for_period          0.06736    0.02850   2.364  0.01810 *  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> followup_time       0.08673    0.02859   3.034  0.00242 ** </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> nvarA                    NA         NA      NA       NA    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> nvarB               0.27146    0.04545   5.973 2.33e-09 ***</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ---</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> (Dispersion parameter for binomial family taken to be 1)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     Null deviance: 111015  on 1939052  degrees of freedom</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Residual deviance: 110337  on 1939047  degrees of freedom</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> AIC: 110349</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     Null deviance: 339.02  on 10321  degrees of freedom</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Residual deviance: 297.34  on 10318  degrees of freedom</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> AIC: 305.34</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Number of Fisher Scoring iterations: 8</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Number of Fisher Scoring iterations: 10</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "-------------------------------------------------"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Processing time of modeling for base analysis:"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    user  system elapsed </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   8.707   0.620   9.346 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   0.044   0.000   0.066 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Base Analysis with robust variance"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "-------------------------------------------------------"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Robust standard error:"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $summary</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                 names     estimate   robust_se            lb           ub</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1:        (Intercept) -6.126244017 0.349021029 -6.8103252335 -5.442162801</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2: assigned_treatment -0.107578959 0.284636807 -0.6654671013  0.450309184</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3:         for_period  0.002829084 0.001390631  0.0001034467  0.005554721</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4:      followup_time  0.001838060 0.001574489 -0.0012479376  0.004924058</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5:              nvarA -0.088864172 0.044069742 -0.1752408667 -0.002487477</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6:              nvarB  0.002626638 0.002579021 -0.0024282444  0.007681519</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>              z  p_value</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1: -17.5526502  &lt; 0.001</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2:  -0.3779517 0.705466</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3:   2.0343883 0.041912</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4:   1.1674013 0.243048</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5:  -2.0164441 0.043754</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6:   1.0184629 0.308458</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                 names    estimate   robust_se           lb         ub         z</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1:        (Intercept) -9.08925010 1.094800661 -11.23505939 -6.9434408 -8.302196</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2: assigned_treatment          NA          NA           NA         NA        NA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3:         for_period  0.06736140 0.009018218   0.04968569  0.0850371  7.469479</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4:      followup_time  0.08673203 0.011261909   0.06465869  0.1088054  7.701362</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5:              nvarA          NA          NA           NA         NA        NA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6:              nvarB  0.27146319 0.065525936   0.14303235  0.3998940  4.142836</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    p_value</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1: &lt; 0.001</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2:      NA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3: &lt; 0.001</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4: &lt; 0.001</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5:      NA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6: &lt; 0.001</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $matrix</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                      (Intercept) assigned_treatment    for_period followup_time</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> (Intercept)         1.218157e-01       9.892543e-03 -4.359254e-04 -3.574788e-04</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> assigned_treatment  9.892543e-03       8.101811e-02 -7.316514e-05 -1.732816e-05</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> for_period         -4.359254e-04      -7.316514e-05  1.933855e-06  1.001547e-06</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> followup_time      -3.574788e-04      -1.732816e-05  1.001547e-06  2.479014e-06</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> nvarA              -7.630632e-04      -3.040433e-04  5.395890e-06 -8.778899e-06</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> nvarB               5.400284e-05       8.693986e-06 -1.270698e-06  4.129122e-07</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                            nvarA         nvarB</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> (Intercept)        -7.630632e-04  5.400284e-05</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> assigned_treatment -3.040433e-04  8.693986e-06</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> for_period          5.395890e-06 -1.270698e-06</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> followup_time      -8.778899e-06  4.129122e-07</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> nvarA               1.942142e-03 -3.236873e-05</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> nvarB              -3.236873e-05  6.651351e-06</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                (Intercept)    for_period followup_time         nvarB</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> (Intercept)    1.198588486  3.101343e-03 -7.147419e-03 -0.0707206360</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> for_period     0.003101343  8.132826e-05  9.855856e-07 -0.0002751808</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> followup_time -0.007147419  9.855856e-07  1.268306e-04  0.0003897522</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> nvarB         -0.070720636 -2.751808e-04  3.897522e-04  0.0042936482</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "----------------------------------------------"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Processing time of getting the output and sandwich with reduced switch data:"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    user  system elapsed </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   1.036   0.125   1.161 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   0.050   0.000   0.051 </span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="fu">predict_survival</span><span class="op">(</span><span class="va">i</span>, predict_times <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span>, <span class="fl">3</span>, <span class="fl">4</span>, <span class="fl">5</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">predict_survival</span><span class="op">(</span><span class="va">i</span>, predict_times <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">20</span>, by <span class="op">=</span> <span class="fl">2</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>prediction from a rank-deficient fit may be misleading</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>prediction from a rank-deficient fit may be misleading</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $trt_0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0.004593707 0.009172633 0.013736793 0.018286204 0.022820838</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [1] 0.001581042 0.003267886 0.005052393 0.006928112 0.008892979 0.010952155</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [7] 0.013120567 0.015424805 0.017904216 0.020585237</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $trt_1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0.004127296 0.008243429 0.012348403 0.016442222 0.020524854</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [1] 0.001581042 0.003267886 0.005052393 0.006928112 0.008892979 0.010952155</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [7] 0.013120567 0.015424805 0.017904216 0.020585237</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span></span></span>
 </code></pre></div>

@@ -34,9 +34,6 @@
   <ul class="dropdown-menu" role="menu"><li>
       <a href="../articles/Getting-Started.html">Getting-Started</a>
     </li>
-    <li>
-      <a href="../articles/JSS_Rmd/MyJSSArticle.html">A Capitalized Title: Something about a Package \pkg{foo}</a>
-    </li>
   </ul></li>
       </ul><ul class="nav navbar-nav navbar-right"></ul></div><!--/.nav-collapse -->
   </div><!--/.container -->
@@ -68,6 +65,7 @@
 <span>  cense_d_cov <span class="op">=</span> <span class="cn">NA</span>,</span>
 <span>  cense_n_cov <span class="op">=</span> <span class="cn">NA</span>,</span>
 <span>  include_regime_length <span class="op">=</span> <span class="fl">0</span>,</span>
+<span>  save_weight_models <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  <span class="va">save_dir</span>,</span>
 <span>  quiet <span class="op">=</span> <span class="cn">FALSE</span></span>
 <span><span class="op">)</span></span></code></pre></div>
@@ -120,6 +118,10 @@ calculation.</p></dd>
 <dt>include_regime_length</dt>
 <dd><p>If defined as 1 a new variable (time_on_regime) is added to dataset.
 This variable stores the duration of time that the patient has been on the current treatment value</p></dd>
+
+
+<dt>save_weight_models</dt>
+<dd><p>Save weight models objects in <code>data_dir</code>.</p></dd>
 
 
 <dt>save_dir</dt>

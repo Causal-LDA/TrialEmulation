@@ -35,9 +35,6 @@ interface to the main working functions data_preparation() and data_modelling().
   <ul class="dropdown-menu" role="menu"><li>
       <a href="../articles/Getting-Started.html">Getting-Started</a>
     </li>
-    <li>
-      <a href="../articles/JSS_Rmd/MyJSSArticle.html">A Capitalized Title: Something about a Package \pkg{foo}</a>
-    </li>
   </ul></li>
       </ul><ul class="nav navbar-nav navbar-right"></ul></div><!--/.nav-collapse -->
   </div><!--/.container -->
@@ -75,6 +72,7 @@ interface to the main working functions <code><a href="data_preparation.html">da
 <span>  first_followup <span class="op">=</span> <span class="cn">NA</span>,</span>
 <span>  last_followup <span class="op">=</span> <span class="cn">NA</span>,</span>
 <span>  use_weight <span class="op">=</span> <span class="fl">0</span>,</span>
+<span>  save_weight_models <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  run_unweighted_analysis <span class="op">=</span> <span class="fl">0</span>,</span>
 <span>  run_weighted_analysis <span class="op">=</span> <span class="fl">1</span>,</span>
 <span>  run_p99_analysis <span class="op">=</span> <span class="fl">0</span>,</span>
@@ -169,6 +167,10 @@ calculation.</p></dd>
 <dd><p>Use weights in analysis. If 0 then no weights will be calculated</p></dd>
 
 
+<dt>save_weight_models</dt>
+<dd><p>Save weight models objects in <code>data_dir</code>.</p></dd>
+
+
 <dt>run_unweighted_analysis</dt>
 <dd><p>Run the final model with no weights when use_weights = 1</p></dd>
 
@@ -223,13 +225,11 @@ calculation.</p></dd>
 
 
 <dt>include_followup_time_case</dt>
-<dd><p>The model to include follow up time in outcome model.
-This has 3 options c("linear","quadratic","spline")</p></dd>
+<dd><p>The model to include <code>followup_time</code> in outcome model, specified as a RHS formula.</p></dd>
 
 
 <dt>include_expansion_time_case</dt>
-<dd><p>The model to include for_period in outcome model.
-This has 3 options c("linear","quadratic","spline")</p></dd>
+<dd><p>The model to include <code>for_period</code> in outcome model, specified as a RHS formula.</p></dd>
 
 
 <dt>include_regime_length</dt>

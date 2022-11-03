@@ -34,9 +34,6 @@
   <ul class="dropdown-menu" role="menu"><li>
       <a href="../articles/Getting-Started.html">Getting-Started</a>
     </li>
-    <li>
-      <a href="../articles/JSS_Rmd/MyJSSArticle.html">A Capitalized Title: Something about a Package \pkg{foo}</a>
-    </li>
   </ul></li>
       </ul><ul class="nav navbar-nav navbar-right"></ul></div><!--/.nav-collapse -->
   </div><!--/.container -->
@@ -145,13 +142,11 @@ initial treatment value</p></dd>
 
 
 <dt>include_followup_time_case</dt>
-<dd><p>The model to include follow up time in outcome model.
-This has 3 options c("linear","quadratic","spline")</p></dd>
+<dd><p>The model to include <code>followup_time</code> in outcome model, specified as a RHS formula.</p></dd>
 
 
 <dt>include_expansion_time_case</dt>
-<dd><p>The model to include for_period in outcome model.
-This has 3 options c("linear","quadratic","spline")</p></dd>
+<dd><p>The model to include <code>for_period</code> in outcome model, specified as a RHS formula.</p></dd>
 
 
 <dt>where_case</dt>
