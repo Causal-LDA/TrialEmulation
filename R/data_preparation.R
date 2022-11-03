@@ -38,12 +38,15 @@ data_preparation <- function(data,
                              lag_p_nosw = 1,
                              where_var = NULL,
                              data_dir,
+                             save_weight_models = FALSE,
                              numCores = 1,
                              chunk_size = 500,
                              separate_files = FALSE,
                              quiet = FALSE) {
   assert_flag(quiet)
   assert_flag(separate_files)
+  assert_flag(save_weight_models)
+
   outcome_cov <- as_formula(outcome_cov)
   switch_n_cov <- as_formula(switch_n_cov)
   switch_d_cov <- as_formula(switch_d_cov)
@@ -84,7 +87,7 @@ data_preparation <- function(data,
   h_quiet_print(quiet, "----------------------------")
 
   if (use_weight == 1) {
-    data <- weight_func(
+    weight_result <- weight_func(
       sw_data = data,
       switch_n_cov = switch_n_cov,
       switch_d_cov = switch_d_cov,
@@ -95,9 +98,11 @@ data_preparation <- function(data,
       cense_d_cov = cense_d_cov,
       cense_n_cov = cense_n_cov,
       include_regime_length = include_regime_length,
+      save_weight_models = save_weight_models,
       save_dir = data_dir,
       quiet = quiet
     )
+    data <- weight_result$data
   } else if (use_weight == 0) {
     set(data, j = "wt", value = 1)
   }
@@ -109,7 +114,7 @@ data_preparation <- function(data,
 
   h_quiet_print(quiet, "Start data extension")
   timing <- system.time({
-    extended_data <- data_extension(
+    result <- data_extension(
       data = data,
       keeplist = keeplist,
       outcomeCov_var = all.vars(outcome_cov),
@@ -128,7 +133,10 @@ data_preparation <- function(data,
   h_quiet_print(quiet, timing)
   h_quiet_print(quiet, "----------------------------")
 
-  h_quiet_print(quiet, paste0("Number of observations in expanded data: ", extended_data$N))
+  h_quiet_print(quiet, paste0("Number of observations in expanded data: ", result$N))
 
-  return(extended_data)
+  result$switch_models <- if (use_weight) weight_result$switch_models else NULL
+  result$censor_models <- if (use_weight) weight_result$censor_models else NULL
+
+  return(result)
 }

@@ -20,6 +20,7 @@ initiators(
   first_followup = NA,
   last_followup = NA,
   use_weight = 0,
+  save_weight_models = FALSE,
   run_unweighted_analysis = 0,
   run_weighted_analysis = 1,
   run_p99_analysis = 0,
@@ -82,6 +83,8 @@ calculation.}
 
 \item{use_weight}{Use weights in analysis. If 0 then no weights will be calculated}
 
+\item{save_weight_models}{Save weight models objects in \code{data_dir}.}
+
 \item{run_unweighted_analysis}{Run the final model with no weights when use_weights = 1}
 
 \item{run_weighted_analysis}{Run the final model with original weights}
@@ -111,11 +114,9 @@ calculation.}
 \item{cense_n_cov}{A RHS formula for modelling probability of being censored. Used in the denominator of weight
 calculation.}
 
-\item{include_followup_time_case}{The model to include follow up time in outcome model.
-This has 3 options c("linear","quadratic","spline")}
+\item{include_followup_time_case}{The model to include \code{followup_time} in outcome model, specified as a RHS formula.}
 
-\item{include_expansion_time_case}{The model to include for_period in outcome model.
-This has 3 options c("linear","quadratic","spline")}
+\item{include_expansion_time_case}{The model to include \code{for_period} in outcome model, specified as a RHS formula.}
 
 \item{include_regime_length}{If defined as 1 a new variable (time_on_regime) is added to dataset.
 This variable stores the duration of time that the patient has been on the current treatment value}

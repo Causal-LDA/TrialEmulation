@@ -42,11 +42,13 @@ h_extract_baseline <- function(trial_file, baseline_file, quiet = TRUE) {
 #'   outcome_cov = ~ nvarA + nvarB,
 #'   include_followup_time_case = ~followup_time,
 #'   include_expansion_time_case = ~for_period,
+#'   last_followup = 30,
+#'   last_period = 30,
 #'   use_censor = 0,
 #'   use_weight = 0
 #' )
 #'
-#' predict_survival(i, predict_times = c(1, 2, 3, 4, 5))
+#' predict_survival(i, predict_times = seq(1, 20, by = 2))
 #'
 predict_survival <- function(object, model, predict_times, newdata) {
   if (missing(model) && missing(object)) stop("Either model or object must be specified.")

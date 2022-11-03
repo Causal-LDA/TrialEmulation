@@ -32,6 +32,7 @@ data_preparation(
   lag_p_nosw = 1,
   where_var = NULL,
   data_dir,
+  save_weight_models = FALSE,
   numCores = 1,
   chunk_size = 500,
   separate_files = FALSE,
@@ -86,11 +87,9 @@ calculation.}
 \item{cense_n_cov}{A RHS formula for modelling probability of being censored. Used in the denominator of weight
 calculation.}
 
-\item{include_followup_time_case}{The model to include follow up time in outcome model.
-This has 3 options c("linear","quadratic","spline")}
+\item{include_followup_time_case}{The model to include \code{followup_time} in outcome model, specified as a RHS formula.}
 
-\item{include_expansion_time_case}{The model to include for_period in outcome model.
-This has 3 options c("linear","quadratic","spline")}
+\item{include_expansion_time_case}{The model to include \code{for_period} in outcome model, specified as a RHS formula.}
 
 \item{include_regime_length}{If defined as 1 a new variable (time_on_regime) is added to dataset.
 This variable stores the duration of time that the patient has been on the current treatment value}
@@ -107,6 +106,8 @@ weights (Defaults to 1)}
 (where_case), the variables not included in the final model}
 
 \item{data_dir}{Direction to save data}
+
+\item{save_weight_models}{Save weight models objects in \code{data_dir}.}
 
 \item{numCores}{Number of cores for parallel programming (default value is maximum cores and parallel programming)}
 
