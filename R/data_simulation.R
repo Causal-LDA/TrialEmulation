@@ -10,6 +10,8 @@
 #' @param all_control (TRUE/FALSE)= enforcing non-treatments/control as if in an RCT
 #' @param censor (TRUE/FALSE)= adding dependent censoring or not
 #'
+#' @importFrom stats ave rbinom rnorm
+#'
 #' @noRd
 data_gen_censored <- function(ns,
                               nv,

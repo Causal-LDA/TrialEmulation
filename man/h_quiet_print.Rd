@@ -4,10 +4,12 @@
 \alias{h_quiet_print}
 \title{Conditional Printing}
 \usage{
-h_quiet_print(quiet, ...)
+h_quiet_print(quiet, x, ...)
 }
 \arguments{
 \item{quiet}{(\code{logical}) Messages printed if \code{FALSE}}
+
+\item{x}{Object to print.}
 
 \item{...}{Passed to \code{print} function.}
 }
