@@ -39,7 +39,7 @@ the maximum and variance of weights (Defaults to 1).}
 \item{where_var}{Variables used in where conditions used in subsetting the data used in final analysis (where_case),
 the variables not included in the final model}
 
-\item{data_dir}{Direction to save data}
+\item{data_dir}{Directory to save data}
 
 \item{separate_files}{Save expanded data in separate CSV files for each trial.}
 

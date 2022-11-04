@@ -4,6 +4,10 @@
 #' @inheritParams initiators
 #' @param chunk_size Number of patients to process in one chunk when `separate_files = TRUE`
 #' @param separate_files Save expanded data in separate CSV files for each trial.
+#' @param data_dir Directory to model objects when `save_weight_models=TRUE` and
+#'   expanded data as `trial_i.csv`s if `separate_files = TRUE`.
+#'   If the specified directory does not exist it will be created. If the directory
+#'   already contains trial files an error will occur, other files may be overwritten.
 #' @export
 #'
 #' @details
@@ -45,6 +49,21 @@ data_preparation <- function(data,
   assert_flag(quiet)
   assert_flag(separate_files)
   assert_flag(save_weight_models)
+
+  if (isTRUE(separate_files)) {
+    if (test_directory_exists(data_dir)) {
+      if (length(list.files(data_dir, pattern = "trial_.*csv"))) {
+        stop("trial_*.csv files already exist in ", data_dir, ". Remove them or specify a different `data_dir`.")
+      }
+      if (length(list.files(data_dir, ".*model.*rds"))) {
+        warning(data_dir, " contains model rds files. These may be overwritten.")
+      }
+    } else {
+      if (!dir.create(data_dir)) {
+        stop(data_dir, " could not be created.")
+      }
+    }
+  }
 
   outcome_cov <- as_formula(outcome_cov)
   switch_n_cov <- as_formula(switch_n_cov)

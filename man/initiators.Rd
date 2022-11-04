@@ -126,7 +126,7 @@ weights (Defaults to 1)}
 
 \item{where_case}{List of where conditions used in subsetting the data used in final analysis}
 
-\item{data_dir}{Direction to save data}
+\item{data_dir}{Directory to save model objects in.}
 
 \item{glm_function}{Which glm function to use for the final model from \code{stats} or \code{parglm} packages}
 
