@@ -18,7 +18,6 @@ data_modelling(
   include_followup_time_case = ~followup_time + I(followup_time^2),
   include_expansion_time_case = ~for_period + I(for_period^2),
   where_case = NA,
-  numCores = NA,
   glm_function = c("parglm", "glm"),
   use_sample_weights = TRUE,
   quiet = FALSE
@@ -59,8 +58,6 @@ initial treatment value}
 \item{include_expansion_time_case}{The model to include \code{for_period} in outcome model, specified as a RHS formula.}
 
 \item{where_case}{List of where conditions used in subsetting the data used in final analysis}
-
-\item{numCores}{Number of cores for parallel programming (default value is maximum cores and parallel programming)}
 
 \item{glm_function}{Which glm function to use for the final model from \code{stats} or \code{parglm} packages}
 

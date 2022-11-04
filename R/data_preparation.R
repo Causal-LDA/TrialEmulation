@@ -39,7 +39,6 @@ data_preparation <- function(data,
                              where_var = NULL,
                              data_dir,
                              save_weight_models = FALSE,
-                             numCores = 1,
                              chunk_size = 500,
                              separate_files = FALSE,
                              quiet = FALSE) {

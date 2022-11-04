@@ -33,7 +33,6 @@ data_preparation(
   where_var = NULL,
   data_dir,
   save_weight_models = FALSE,
-  numCores = 1,
   chunk_size = 500,
   separate_files = FALSE,
   quiet = FALSE
@@ -108,8 +107,6 @@ weights (Defaults to 1)}
 \item{data_dir}{Direction to save data}
 
 \item{save_weight_models}{Save weight models objects in \code{data_dir}.}
-
-\item{numCores}{Number of cores for parallel programming (default value is maximum cores and parallel programming)}
 
 \item{chunk_size}{Number of patients to process in one chunk when \code{separate_files = TRUE}}
 

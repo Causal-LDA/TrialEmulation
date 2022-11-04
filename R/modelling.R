@@ -28,7 +28,6 @@ data_modelling <- function(data,
                            include_followup_time_case = ~ followup_time + I(followup_time^2),
                            include_expansion_time_case = ~ for_period + I(for_period^2),
                            where_case = NA,
-                           numCores = NA,
                            glm_function = c("parglm", "glm"),
                            use_sample_weights = TRUE,
                            quiet = FALSE) {
