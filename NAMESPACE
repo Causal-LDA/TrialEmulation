@@ -2,7 +2,6 @@
 
 export(add_rhs)
 export(assert_monotonic)
-export(case_control_sampling)
 export(case_control_sampling_trials)
 export(ci_up_to)
 export(data_modelling)

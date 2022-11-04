@@ -9,8 +9,7 @@ case_control_sampling_trials(
   n_control = NULL,
   p_control = NULL,
   sample_all_periods,
-  subset_condition,
-  mc_cores = 1
+  subset_condition
 )
 }
 \arguments{
@@ -23,8 +22,6 @@ case_control_sampling_trials(
 \item{sample_all_periods}{Sample controls in all periods (TRUE) or only when there is a case in the period (FALSE)?}
 
 \item{subset_condition}{Expression used to \code{subset} the trial data before sampling}
-
-\item{mc_cores}{Number of cores for parallel processing with mclapply if \code{mc_cores > 1}.}
 }
 \value{
 A \code{data.frame} or a \code{\link[=split]{split()}} \code{data.frame} if  \code{length(n_control) > 1} or \code{length(p_control) > 1}.
