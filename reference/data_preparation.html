@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">RandomisedTrialsEmulation</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.2.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.2.2</span>
       </span>
     </div>
 
@@ -212,7 +212,10 @@ weights (Defaults to 1)</p></dd>
 
 
 <dt>data_dir</dt>
-<dd><p>Direction to save data</p></dd>
+<dd><p>Directory to model objects when <code>save_weight_models=TRUE</code> and
+expanded data as <code>trial_i.csv</code>s if <code>separate_files = TRUE</code>.
+If the specified directory does not exist it will be created. If the directory
+already contains trial files an error will occur, other files may be overwritten.</p></dd>
 
 
 <dt>save_weight_models</dt>
