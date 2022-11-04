@@ -1,49 +1,41 @@
 Package: RandomisedTrialsEmulation
 Title: Design and analysis of target trial emulation on observational data
-Version: 0.0.2.0
+Version: 0.0.2.1
 Authors@R: c(
-        person(given = "Roonak",
-               family = "Rezvani",
-               role = c("aut","cre"),
-               email = c("roonak.r74@gmail.com"),
-               comment = c(ORCID = "0000-0001-5580-5058")),
-        person(given = "Isaac",
-               family = "Gravestock",
-               role = "aut",
-               email = "isaac.gravestock@roche.com"),
-        person(given = "Li",
-               family = "Su",
-               role = "aut",
-               email = "li.su@mrc-bsu.cam.ac.uk")
-     )
-Description: This R package is is designed to estimate intention-to-treat and
- per-protocol effects in emulated trials using electronic health records. The
- package applies the randomized clinical trials design and analysis to an 
- observational setting.
+    person("Roonak", "Rezvani", , "roonak.r74@gmail.com", role = c("aut", "cre"),
+           comment = c(ORCID = "0000-0001-5580-5058")),
+    person("Isaac", "Gravestock", , "isaac.gravestock@roche.com", role = "aut"),
+    person("Li", "Su", , "li.su@mrc-bsu.cam.ac.uk", role = "aut")
+  )
+Description: This R package is is designed to estimate intention-to-treat
+    and per-protocol effects in emulated trials using electronic health
+    records. The package applies the randomized clinical trials design and
+    analysis to an observational setting.
 License: GPL (>= 3)
+Depends: 
+    R (>= 3.5.0)
+Imports: 
+    bigmemory,
+    broom (>= 0.7.10),
+    checkmate,
+    data.table (>= 1.9.8),
+    formula.tools,
+    parallel,
+    parglm,
+    Rcpp,
+    sandwich
+Suggests: 
+    knitr,
+    rmarkdown,
+    testthat (>= 3.0.0),
+    withr
+LinkingTo: 
+    Rcpp
+VignetteBuilder: 
+    knitr
+Config/testthat/edition: 3
 Encoding: UTF-8
+Language: en-GB
 LazyData: true
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.2.1
-LinkingTo: 
-    Rcpp
-Imports: 
-    Rcpp,
-    bigmemory,
-    data.table (>= 1.9.8),
-    parglm,
-    parallel,
-    sandwich,
-    broom (>= 0.7.10),
-    checkmate,
-    formula.tools
-Suggests: 
-    rmarkdown,
-    knitr,
-    testthat (>= 3.0.0),
-    withr
-VignetteBuilder: knitr
-Depends: 
-    R (>= 3.5.0)
-Config/testthat/edition: 3
-Language: en-GB
