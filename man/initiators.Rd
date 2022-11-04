@@ -38,7 +38,6 @@ initiators(
   where_var = NULL,
   where_case = NA,
   data_dir,
-  numCores = NA,
   glm_function = "glm",
   quiet = FALSE
 )
@@ -128,8 +127,6 @@ weights (Defaults to 1)}
 \item{where_case}{List of where conditions used in subsetting the data used in final analysis}
 
 \item{data_dir}{Direction to save data}
-
-\item{numCores}{Number of cores for parallel programming (default value is maximum cores and parallel programming)}
 
 \item{glm_function}{Which glm function to use for the final model from \code{stats} or \code{parglm} packages}
 

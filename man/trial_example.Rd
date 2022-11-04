@@ -3,7 +3,7 @@
 \docType{data}
 \name{trial_example}
 \alias{trial_example}
-\title{Example of longitundinal data for randomised trial emulation}
+\title{Example of longitudinal data for randomised trial emulation}
 \format{
 A data frame with 48400 rows and 11 variables:
 \describe{

@@ -15,12 +15,10 @@ License: GPL (>= 3)
 Depends: 
     R (>= 3.5.0)
 Imports: 
-    bigmemory,
     broom (>= 0.7.10),
     checkmate,
     data.table (>= 1.9.8),
     formula.tools,
-    parallel,
     parglm,
     Rcpp,
     sandwich

@@ -46,7 +46,6 @@
 #' (where_case), the variables not included in the final model
 #' @param where_case List of where conditions used in subsetting the data used in final analysis
 #' @param data_dir Direction to save data
-#' @param numCores Number of cores for parallel programming (default value is maximum cores and parallel programming)
 #' @param glm_function Which glm function to use for the final model from `stats` or `parglm` packages
 #' @param quiet Don't print progress messages.
 #' @param switch_n_cov A RHS formula for modelling probability of switching treatment. Used in the numerator of weight
@@ -101,7 +100,6 @@ initiators <- function(data,
                        where_var = NULL,
                        where_case = NA,
                        data_dir,
-                       numCores = NA,
                        glm_function = "glm",
                        quiet = FALSE) {
   # Check parameters
@@ -139,7 +137,6 @@ initiators <- function(data,
     where_var = where_var,
     data_dir = data_dir,
     save_weight_models = save_weight_models,
-    numCores = numCores,
     separate_files = FALSE,
     quiet = quiet
   )
@@ -159,7 +156,6 @@ initiators <- function(data,
     include_followup_time_case = include_followup_time_case,
     include_expansion_time_case = include_expansion_time_case,
     where_case = where_case,
-    numCores = numCores,
     glm_function = "glm",
     use_sample_weights = FALSE,
     quiet = quiet

@@ -47,7 +47,6 @@ test_that("predict_survival works as expected", {
     outcome_cov = c("catvarA", "catvarB", "catvarC", "nvarA", "nvarB", "nvarC"),
     include_followup_time_case = ~followup_time,
     include_expansion_time_case = ~for_period,
-    numCores = 1,
     use_censor = 0,
     use_weight = 0,
     quiet = TRUE

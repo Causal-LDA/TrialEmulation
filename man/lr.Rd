@@ -7,7 +7,7 @@
 lr(l)
 }
 \arguments{
-\item{l}{A list contains the data with categorical feature determind if needed and logistic regression formula}
+\item{l}{A list contains the data and logistic regression formula}
 }
 \description{
 This function get the information needed for performing Logistic Regression for final model

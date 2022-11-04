@@ -9,8 +9,7 @@ test_that("data_preparation works as expected", {
     treatment = "treatment",
     outcome = "outcome",
     model_var = "assigned_treatment",
-    outcome_cov = c("catvarA", "catvarB", "catvarC", "nvarA", "nvarB", "nvarC"),
-    numCores = 1
+    outcome_cov = c("catvarA", "catvarB", "catvarC", "nvarA", "nvarB", "nvarC")
   )
 
   expect_identical(result$N, 1939053L)
@@ -38,7 +37,6 @@ test_that("data_preparation can be quiet", {
       outcome_cov = "catvarA",
       first_period = 1,
       last_period = 5,
-      numCores = 1,
       quiet = TRUE
     )
   )
