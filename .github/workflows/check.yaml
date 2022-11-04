@@ -76,7 +76,7 @@ jobs:
     name: Style Check 👗
     uses: insightsengineering/r.pkg.template/.github/workflows/style.yaml@main
     with:
-      auto-update: true
+      auto-update: false
   grammar:
     if: github.event_name == 'pull_request'
     name: Grammar Check 🔤
