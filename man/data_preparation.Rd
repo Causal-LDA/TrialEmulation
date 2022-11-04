@@ -104,7 +104,10 @@ weights (Defaults to 1)}
 \item{where_var}{List of variables used in where conditions used in subsetting the data used in final analysis
 (where_case), the variables not included in the final model}
 
-\item{data_dir}{Direction to save data}
+\item{data_dir}{Directory to model objects when \code{save_weight_models=TRUE} and
+expanded data as \code{trial_i.csv}s if \code{separate_files = TRUE}.
+If the specified directory does not exist it will be created. If the directory
+already contains trial files an error will occur, other files may be overwritten.}
 
 \item{save_weight_models}{Save weight models objects in \code{data_dir}.}
 

@@ -14,7 +14,7 @@
 #'  the maximum and variance of weights (Defaults to 1).
 #' @param where_var Variables used in where conditions used in subsetting the data used in final analysis (where_case),
 #'  the variables not included in the final model
-#' @param data_dir Direction to save data
+#' @param data_dir Directory to save data
 #' @param separate_files Save expanded data in separate CSV files for each trial.
 #' @param chunk_size Number of ids to expand in each chunk
 
@@ -130,10 +130,11 @@ expand <- function(sw_data,
   )
   temp_data[, wtprod := 1.0, by = id][, elgcount := 0.0, by = id][, expand := 0.0, by = id]
   temp_data[, treat := 0.0, by = id][, dosesum := 0.0, by = id]
-  temp_data[(sw_data[, eligible] == 1 & !is.na(sw_data[, treatment])) &
-    minperiod <= period & period <= maxperiod,
-  expand := 1,
-  by = id
+  temp_data[
+    (sw_data[, eligible] == 1 & !is.na(sw_data[, treatment])) &
+      minperiod <= period & period <= maxperiod,
+    expand := 1,
+    by = id
   ]
   sw_data[first == TRUE, weight0 := 1.0]
   sw_data[, weight0 := cumprod(wt), by = id]

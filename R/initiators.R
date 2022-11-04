@@ -45,7 +45,7 @@
 #' @param where_var List of variables used in where conditions used in subsetting the data used in final analysis
 #' (where_case), the variables not included in the final model
 #' @param where_case List of where conditions used in subsetting the data used in final analysis
-#' @param data_dir Direction to save data
+#' @param data_dir Directory to save model objects in.
 #' @param glm_function Which glm function to use for the final model from `stats` or `parglm` packages
 #' @param quiet Don't print progress messages.
 #' @param switch_n_cov A RHS formula for modelling probability of switching treatment. Used in the numerator of weight
