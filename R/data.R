@@ -1,4 +1,4 @@
-#' Example of longitundinal data for randomised trial emulation
+#' Example of longitudinal data for randomised trial emulation
 #'
 #' A dataset containing the treatment, outcomes and other attributes of 503 patients for randomised trial emulation.
 #' See `vignette("Getting-Started")`.
@@ -21,7 +21,7 @@
 #'
 "trial_example"
 
-#' Example of expanded longitundinal data for randomised trial emulation
+#' Example of expanded longitudinal data for randomised trial emulation
 #'
 #' This is the expanded dataset created in the `vignette("Getting-Started")` known as `switch_data`.
 #'

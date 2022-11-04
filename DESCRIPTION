@@ -19,7 +19,6 @@ Imports:
     checkmate,
     data.table (>= 1.9.8),
     formula.tools,
-    parallel,
     parglm,
     Rcpp,
     sandwich

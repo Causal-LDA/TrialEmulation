@@ -19,7 +19,7 @@ h_quiet_print <- function(quiet, x, ...) {
 #' Assert Monotonicity
 #'
 #' @param x numeric vector
-#' @param increasing Test for increasong or decreasing.
+#' @param increasing Test for increasing or decreasing.
 #'
 #' @return Nothing if check is successful, error otherwise.
 #' @export

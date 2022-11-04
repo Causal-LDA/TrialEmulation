@@ -3,7 +3,7 @@
 \docType{data}
 \name{vignette_switch_data}
 \alias{vignette_switch_data}
-\title{Example of expanded longitundinal data for randomised trial emulation}
+\title{Example of expanded longitudinal data for randomised trial emulation}
 \format{
 A data frame with 1939053 rows and 7 variables:
 \describe{

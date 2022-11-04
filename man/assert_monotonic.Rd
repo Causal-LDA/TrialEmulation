@@ -9,7 +9,7 @@ assert_monotonic(x, increasing = TRUE)
 \arguments{
 \item{x}{numeric vector}
 
-\item{increasing}{Test for increasong or decreasing.}
+\item{increasing}{Test for increasing or decreasing.}
 }
 \value{
 Nothing if check is successful, error otherwise.

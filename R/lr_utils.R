@@ -84,8 +84,8 @@ weight_lr <- function(data, formula, class_var) {
 #' Logistic Regression Function
 #'
 #' This function get the information needed for performing Logistic Regression for final model
-#' @param l A list contains the data with categorical feature determind if needed and logistic regression formula
-
+#' @param l A list contains the data and logistic regression formula
+#'
 lr <- function(l) {
   # Dummy variables used in data.table calls declared to prevent package check NOTES:
   weight <- id <- NULL
