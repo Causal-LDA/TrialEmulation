@@ -130,10 +130,11 @@ expand <- function(sw_data,
   )
   temp_data[, wtprod := 1.0, by = id][, elgcount := 0.0, by = id][, expand := 0.0, by = id]
   temp_data[, treat := 0.0, by = id][, dosesum := 0.0, by = id]
-  temp_data[(sw_data[, eligible] == 1 & !is.na(sw_data[, treatment])) &
-    minperiod <= period & period <= maxperiod,
-  expand := 1,
-  by = id
+  temp_data[
+    (sw_data[, eligible] == 1 & !is.na(sw_data[, treatment])) &
+      minperiod <= period & period <= maxperiod,
+    expand := 1,
+    by = id
   ]
   sw_data[first == TRUE, weight0 := 1.0]
   sw_data[, weight0 := cumprod(wt), by = id]
