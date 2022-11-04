@@ -11,18 +11,13 @@ data_modelling(
   first_followup = NA,
   last_followup = NA,
   use_weight = 0,
-  run_unweighted_analysis = 0,
-  run_weighted_analysis = 1,
-  run_p99_analysis = 0,
-  run_user_limits_analysis = 0,
-  lower_weight = NA,
-  upper_weight = NA,
+  analysis_weights = c("asis", "unweighted", "p99", "weight_limits"),
+  weight_limits = c(0, Inf),
   use_censor = 0,
   check_missing = 0,
   include_followup_time_case = ~followup_time + I(followup_time^2),
   include_expansion_time_case = ~for_period + I(for_period^2),
   where_case = NA,
-  run_base_model = 1,
   numCores = NA,
   glm_function = c("parglm", "glm"),
   use_sample_weights = TRUE,
@@ -42,19 +37,17 @@ and \code{dose + dose^2} for as-treated. \code{time_on_regime}? TODO check what 
 
 \item{last_followup}{Last follow-up period}
 
-\item{use_weight}{Use weights in analysis. If 0 then no weights will be calculated}
+\item{use_weight}{Use weights in analysis. If 0 then no weights will be calculated.}
 
-\item{run_unweighted_analysis}{Run the final model with no weights when use_weights = 1}
+\item{analysis_weights}{One of
+\itemize{
+\item \code{"asis"}: use the weights as calculated
+\item \code{"p99"}: truncate weights at the 1st and 99th percentiles
+\item \code{"weight_limits"}: truncate weights at the values specified in \code{weight_limits}
+\item \code{"unweighted"}: set all analysis weights to 1, even with \code{use_weights = 1}
+}}
 
-\item{run_weighted_analysis}{Run the final model with original weights}
-
-\item{run_p99_analysis}{Run the final model with truncating the weights at the 1st and 99th percentile}
-
-\item{run_user_limits_analysis}{Run the final model with truncating the weights using user defined limits}
-
-\item{lower_weight}{Use lower weight as minimum possible weight}
-
-\item{upper_weight}{Use upper weight as maximum possible weight}
+\item{weight_limits}{Lower and upper limits to truncate weights, given as \code{c(lower, upper)}}
 
 \item{use_censor}{Use censoring for per-protocol analysis - censor person-times once a person-trial stops taking the
 initial treatment value}
@@ -66,8 +59,6 @@ initial treatment value}
 \item{include_expansion_time_case}{The model to include \code{for_period} in outcome model, specified as a RHS formula.}
 
 \item{where_case}{List of where conditions used in subsetting the data used in final analysis}
-
-\item{run_base_model}{Run the model with no conditions Defaults to 1}
 
 \item{numCores}{Number of cores for parallel programming (default value is maximum cores and parallel programming)}
 

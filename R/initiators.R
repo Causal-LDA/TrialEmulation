@@ -18,14 +18,14 @@
 #' @param last_period Last period value to expand about
 #' @param first_followup First follow-up period
 #' @param last_followup Last follow-up period
-#' @param use_weight Use weights in analysis. If 0 then no weights will be calculated
+#' @param use_weight Use weights in analysis. If 0 then no weights will be calculated.
 #' @param save_weight_models Save weight models objects in `data_dir`.
-#' @param run_unweighted_analysis Run the final model with no weights when use_weights = 1
-#' @param run_weighted_analysis Run the final model with original weights
-#' @param run_p99_analysis Run the final model with truncating the weights at the 1st and 99th percentile
-#' @param run_user_limits_analysis Run the final model with truncating the weights using user defined limits
-#' @param lower_weight Use lower weight as minimum possible weight
-#' @param upper_weight Use upper weight as maximum possible weight
+#' @param analysis_weights One of
+#'  * `"asis"`: use the weights as calculated
+#'  * `"p99"`: truncate weights at the 1st and 99th percentiles
+#'  * `"weight_limits"`: truncate weights at the values specified in `weight_limits`
+#'  * `"unweighted"`: set all analysis weights to 1, even with `use_weights = 1`
+#' @param weight_limits Lower and upper limits to truncate weights, given as `c(lower, upper)`
 #' @param use_censor Use censoring for per-protocol analysis - censor person-times once a person-trial stops taking the
 #'  initial treatment value
 #' @param check_missing Check for missing values in final model when use_censor=1 (Not added yet!)
@@ -45,7 +45,6 @@
 #' @param where_var List of variables used in where conditions used in subsetting the data used in final analysis
 #' (where_case), the variables not included in the final model
 #' @param where_case List of where conditions used in subsetting the data used in final analysis
-#' @param run_base_model Run the model with no conditions Defaults to 1
 #' @param data_dir Direction to save data
 #' @param numCores Number of cores for parallel programming (default value is maximum cores and parallel programming)
 #' @param glm_function Which glm function to use for the final model from `stats` or `parglm` packages
@@ -58,6 +57,15 @@
 #' calculation.
 #' @param cense_n_cov A RHS formula for modelling probability of being censored. Used in the denominator of weight
 #' calculation.
+#'
+#' @details
+#' If `model_var = NULL` the package will add some terms to the outcome model:
+#'
+#'  * if `use_censor = 0` and `use_weight = 0`, an as-treated analysis will be done the outcome model will have
+#'  `~ dose + I(dose^2)` terms added
+#'  * if `use_censor = 1`, a per-protocol analysis will be done with an `~assigned_treatment` term added
+#'  * if `use_censor = 0` and `use_weight = 1`, an intention to treat analysis will be done with an
+#'   `~assigned_treatment` term added
 #'
 #' @export
 initiators <- function(data,
@@ -76,12 +84,8 @@ initiators <- function(data,
                        last_followup = NA,
                        use_weight = 0,
                        save_weight_models = FALSE,
-                       run_unweighted_analysis = 0,
-                       run_weighted_analysis = 1,
-                       run_p99_analysis = 0,
-                       run_user_limits_analysis = 0,
-                       lower_weight = NA,
-                       upper_weight = NA,
+                       analysis_weights = c("asis", "unweighted", "p99", "weight_limits"),
+                       weight_limits = c(0, Inf),
                        use_censor = 0,
                        check_missing = 0,
                        cense = NA,
@@ -96,7 +100,6 @@ initiators <- function(data,
                        lag_p_nosw = 1,
                        where_var = NULL,
                        where_case = NA,
-                       run_base_model = 1,
                        data_dir,
                        numCores = NA,
                        glm_function = "glm",
@@ -149,18 +152,13 @@ initiators <- function(data,
     first_followup = first_followup,
     last_followup = last_followup,
     use_weight = use_weight,
-    run_unweighted_analysis = run_unweighted_analysis,
-    run_weighted_analysis = run_weighted_analysis,
-    run_p99_analysis = run_p99_analysis,
-    run_user_limits_analysis = run_user_limits_analysis,
-    lower_weight = lower_weight,
-    upper_weight = upper_weight,
+    analysis_weights = analysis_weights,
+    weight_limits = weight_limits,
     use_censor = use_censor,
     check_missing = check_missing,
     include_followup_time_case = include_followup_time_case,
     include_expansion_time_case = include_expansion_time_case,
     where_case = where_case,
-    run_base_model = run_base_model,
     numCores = numCores,
     glm_function = "glm",
     use_sample_weights = FALSE,

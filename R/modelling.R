@@ -21,18 +21,13 @@ data_modelling <- function(data,
                            first_followup = NA,
                            last_followup = NA,
                            use_weight = 0,
-                           run_unweighted_analysis = 0,
-                           run_weighted_analysis = 1,
-                           run_p99_analysis = 0,
-                           run_user_limits_analysis = 0,
-                           lower_weight = NA,
-                           upper_weight = NA,
+                           analysis_weights = c("asis", "unweighted", "p99", "weight_limits"),
+                           weight_limits = c(0, Inf),
                            use_censor = 0,
                            check_missing = 0,
                            include_followup_time_case = ~ followup_time + I(followup_time^2),
                            include_expansion_time_case = ~ for_period + I(for_period^2),
                            where_case = NA,
-                           run_base_model = 1,
                            numCores = NA,
                            glm_function = c("parglm", "glm"),
                            use_sample_weights = TRUE,
@@ -42,6 +37,8 @@ data_modelling <- function(data,
   include_followup_time_case <- as_formula(include_followup_time_case)
   include_expansion_time_case <- as_formula(include_expansion_time_case)
   glm_function <- match.arg(glm_function)
+  analysis_weights <- match.arg(analysis_weights)
+  assert_numeric(weight_limits, len = 2, lower = 0, upper = Inf)
 
   # Dummy variables used in data.table calls declared to prevent package check NOTES:
   weight <- sample_weight <- followup_time <- NULL
@@ -89,73 +86,56 @@ data_modelling <- function(data,
   )
 
   if (any(!is.na(where_case))) {
-    timing <- system.time({
-      d <- list()
-      for (i in seq_along(where_case)) {
-        d[[i]] <- list(data[eval(parse(text = where_case[i]))], model_formula)
-      }
-      if (numCores == 1) {
-        m <- lapply(d, lr)
-      } else {
-        m <- mclapply(d, lr, mc.cores = numCores)
-      }
-
-      for (i in seq_along(where_case)) {
-        h_quiet_print(quiet, paste("Analysis with", where_case[i], sep = " "))
-        h_quiet_print(quiet, summary(m[i]$model))
-        h_quiet_print(quiet, paste("Analysis with", where_case[i], "using robust variance", sep = " "))
-        h_quiet_print(quiet, m[i]$output)
-      }
-    })
-    h_quiet_print(quiet, "------------------------------------")
-    h_quiet_print(quiet, "Processing time of modeling for where case analysis in total parallel:")
-    h_quiet_print(quiet, timing)
-  }
-
-  if (run_base_model == 1) {
-    if (use_weight == 1) {
-      if (run_p99_analysis == 1) {
-        data <- p99_weight(data)
-      } else if (run_user_limits_analysis == 1) {
-        data <- limit_weight(data, lower_weight, upper_weight)
-      } else if (run_unweighted_analysis == 1) {
-        data[, weight] <- 1
-      }
+    h_quiet_print(quiet, paste("Subsetting data with", toString(where_case), sep = " "))
+    for (i in seq_along(where_case)) {
+      data <- data[eval(parse(text = where_case[i]))]
     }
-
-    timing <- system.time({
-      if (glm_function == "parglm") {
-        model.full <- parglm::parglm(model_formula,
-          data = data,
-          weights = data[["weight"]],
-          family = binomial(link = "logit"),
-          control = parglm::parglm.control(nthreads = 4, method = "FAST")
-        )
-      } else if (glm_function == "glm") {
-        model.full <- stats::glm(model_formula,
-          data = data,
-          weights = data[["weight"]],
-          family = binomial(link = "logit")
-        )
-      }
-    })
-    h_quiet_print(quiet, "Base Analysis")
-    h_quiet_print(quiet, summary(model.full))
-    h_quiet_print(quiet, "-------------------------------------------------")
-    h_quiet_print(quiet, "Processing time of modeling for base analysis:")
-    h_quiet_print(quiet, timing)
-
-    h_quiet_print(quiet, "Base Analysis with robust variance")
-    timing <- system.time({
-      h_quiet_print(quiet, "-------------------------------------------------------")
-      h_quiet_print(quiet, "Robust standard error:")
-      robust_model <- robust_calculation(model.full, data[["id"]])
-    })
-    h_quiet_print(quiet, robust_model)
-    h_quiet_print(quiet, "----------------------------------------------")
-    h_quiet_print(quiet, "Processing time of getting the output and sandwich with reduced switch data:")
-    h_quiet_print(quiet, timing)
   }
+
+
+
+  if (analysis_weights == "asis") {
+    # no change
+  } else if (analysis_weights == "p99") {
+    data <- p99_weight(data)
+  } else if (analysis_weights == "weight_limits") {
+    data <- limit_weight(data, weight_limits[1], weight_limits[2])
+  } else if (analysis_weights == "unweighted") {
+    data[["weight"]] <- 1
+  }
+  if (use_weight == 0) data[["weight"]] <- 1
+
+  timing <- system.time({
+    if (glm_function == "parglm") {
+      model.full <- parglm::parglm(model_formula,
+        data = data,
+        weights = data[["weight"]],
+        family = binomial(link = "logit"),
+        control = parglm::parglm.control(nthreads = 4, method = "FAST")
+      )
+    } else if (glm_function == "glm") {
+      model.full <- stats::glm(model_formula,
+        data = data,
+        weights = data[["weight"]],
+        family = binomial(link = "logit")
+      )
+    }
+  })
+  h_quiet_print(quiet, "Base Analysis")
+  h_quiet_print(quiet, summary(model.full))
+  h_quiet_print(quiet, "-------------------------------------------------")
+  h_quiet_print(quiet, "Processing time of modeling for base analysis:")
+  h_quiet_print(quiet, timing)
+
+  h_quiet_print(quiet, "Base Analysis with robust variance")
+  timing <- system.time({
+    h_quiet_print(quiet, "-------------------------------------------------------")
+    h_quiet_print(quiet, "Robust standard error:")
+    robust_model <- robust_calculation(model.full, data[["id"]])
+  })
+  h_quiet_print(quiet, "----------------------------------------------")
+  h_quiet_print(quiet, "Processing time of getting the output and sandwich with reduced switch data:")
+  h_quiet_print(quiet, timing)
 
   return(list(model = model.full, robust = robust_model))
 }

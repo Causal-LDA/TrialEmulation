@@ -68,7 +68,7 @@ calculation.}
 
 \item{last_period}{Last period value to expand about}
 
-\item{use_weight}{Use weights in analysis. If 0 then no weights will be calculated}
+\item{use_weight}{Use weights in analysis. If 0 then no weights will be calculated.}
 
 \item{use_censor}{Use censoring for per-protocol analysis - censor person-times once a person-trial stops taking the
 initial treatment value}

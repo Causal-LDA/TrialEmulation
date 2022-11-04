@@ -6,6 +6,7 @@
 #' @param ... Passed to `print` function.
 #'
 #' @return Value of `print(...)` or `NULL`
+#' @noRd
 #' @examples
 #' h_quiet_print(quiet = FALSE, "loud hello")
 #' h_quiet_print(quiet = TRUE, "quiet hello")
