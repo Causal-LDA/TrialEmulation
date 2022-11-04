@@ -14,7 +14,7 @@
 #'  the maximum and variance of weights (Defaults to 1).
 #' @param where_var Variables used in where conditions used in subsetting the data used in final analysis (where_case),
 #'  the variables not included in the final model
-#' @param data_dir Direction to save data
+#' @param data_dir Directory to save data
 #' @param separate_files Save expanded data in separate CSV files for each trial.
 #' @param chunk_size Number of ids to expand in each chunk
 
