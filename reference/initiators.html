@@ -73,12 +73,8 @@ interface to the main working functions <code><a href="data_preparation.html">da
 <span>  last_followup <span class="op">=</span> <span class="cn">NA</span>,</span>
 <span>  use_weight <span class="op">=</span> <span class="fl">0</span>,</span>
 <span>  save_weight_models <span class="op">=</span> <span class="cn">FALSE</span>,</span>
-<span>  run_unweighted_analysis <span class="op">=</span> <span class="fl">0</span>,</span>
-<span>  run_weighted_analysis <span class="op">=</span> <span class="fl">1</span>,</span>
-<span>  run_p99_analysis <span class="op">=</span> <span class="fl">0</span>,</span>
-<span>  run_user_limits_analysis <span class="op">=</span> <span class="fl">0</span>,</span>
-<span>  lower_weight <span class="op">=</span> <span class="cn">NA</span>,</span>
-<span>  upper_weight <span class="op">=</span> <span class="cn">NA</span>,</span>
+<span>  analysis_weights <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"asis"</span>, <span class="st">"unweighted"</span>, <span class="st">"p99"</span>, <span class="st">"weight_limits"</span><span class="op">)</span>,</span>
+<span>  weight_limits <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="cn">Inf</span><span class="op">)</span>,</span>
 <span>  use_censor <span class="op">=</span> <span class="fl">0</span>,</span>
 <span>  check_missing <span class="op">=</span> <span class="fl">0</span>,</span>
 <span>  cense <span class="op">=</span> <span class="cn">NA</span>,</span>
@@ -93,7 +89,6 @@ interface to the main working functions <code><a href="data_preparation.html">da
 <span>  lag_p_nosw <span class="op">=</span> <span class="fl">1</span>,</span>
 <span>  where_var <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  where_case <span class="op">=</span> <span class="cn">NA</span>,</span>
-<span>  run_base_model <span class="op">=</span> <span class="fl">1</span>,</span>
 <span>  <span class="va">data_dir</span>,</span>
 <span>  numCores <span class="op">=</span> <span class="cn">NA</span>,</span>
 <span>  glm_function <span class="op">=</span> <span class="st">"glm"</span>,</span>
@@ -164,35 +159,23 @@ calculation.</p></dd>
 
 
 <dt>use_weight</dt>
-<dd><p>Use weights in analysis. If 0 then no weights will be calculated</p></dd>
+<dd><p>Use weights in analysis. If 0 then no weights will be calculated.</p></dd>
 
 
 <dt>save_weight_models</dt>
 <dd><p>Save weight models objects in <code>data_dir</code>.</p></dd>
 
 
-<dt>run_unweighted_analysis</dt>
-<dd><p>Run the final model with no weights when use_weights = 1</p></dd>
+<dt>analysis_weights</dt>
+<dd><p>One of</p><ul><li><p><code>"asis"</code>: use the weights as calculated</p></li>
+<li><p><code>"p99"</code>: truncate weights at the 1st and 99th percentiles</p></li>
+<li><p><code>"weight_limits"</code>: truncate weights at the values specified in <code>weight_limits</code></p></li>
+<li><p><code>"unweighted"</code>: set all analysis weights to 1, even with <code>use_weights = 1</code></p></li>
+</ul></dd>
 
 
-<dt>run_weighted_analysis</dt>
-<dd><p>Run the final model with original weights</p></dd>
-
-
-<dt>run_p99_analysis</dt>
-<dd><p>Run the final model with truncating the weights at the 1st and 99th percentile</p></dd>
-
-
-<dt>run_user_limits_analysis</dt>
-<dd><p>Run the final model with truncating the weights using user defined limits</p></dd>
-
-
-<dt>lower_weight</dt>
-<dd><p>Use lower weight as minimum possible weight</p></dd>
-
-
-<dt>upper_weight</dt>
-<dd><p>Use upper weight as maximum possible weight</p></dd>
+<dt>weight_limits</dt>
+<dd><p>Lower and upper limits to truncate weights, given as <code>c(lower, upper)</code></p></dd>
 
 
 <dt>use_censor</dt>
@@ -260,10 +243,6 @@ weights (Defaults to 1)</p></dd>
 <dd><p>List of where conditions used in subsetting the data used in final analysis</p></dd>
 
 
-<dt>run_base_model</dt>
-<dd><p>Run the model with no conditions Defaults to 1</p></dd>
-
-
 <dt>data_dir</dt>
 <dd><p>Direction to save data</p></dd>
 
@@ -280,6 +259,14 @@ weights (Defaults to 1)</p></dd>
 <dd><p>Don't print progress messages.</p></dd>
 
 </dl></div>
+    <div id="details">
+    <h2>Details</h2>
+    <p>If <code>model_var = NULL</code> the package will add some terms to the outcome model:</p><ul><li><p>if <code>use_censor = 0</code> and <code>use_weight = 0</code>, an as-treated analysis will be done the outcome model will have
+<code>~ dose + I(dose^2)</code> terms added</p></li>
+<li><p>if <code>use_censor = 1</code>, a per-protocol analysis will be done with an <code>~assigned_treatment</code> term added</p></li>
+<li><p>if <code>use_censor = 0</code> and <code>use_weight = 1</code>, an intention to treat analysis will be done with an
+<code>~assigned_treatment</code> term added</p></li>
+</ul></div>
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
