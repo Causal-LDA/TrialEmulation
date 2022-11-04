@@ -21,12 +21,8 @@ initiators(
   last_followup = NA,
   use_weight = 0,
   save_weight_models = FALSE,
-  run_unweighted_analysis = 0,
-  run_weighted_analysis = 1,
-  run_p99_analysis = 0,
-  run_user_limits_analysis = 0,
-  lower_weight = NA,
-  upper_weight = NA,
+  analysis_weights = c("asis", "unweighted", "p99", "weight_limits"),
+  weight_limits = c(0, Inf),
   use_censor = 0,
   check_missing = 0,
   cense = NA,
@@ -41,7 +37,6 @@ initiators(
   lag_p_nosw = 1,
   where_var = NULL,
   where_case = NA,
-  run_base_model = 1,
   data_dir,
   numCores = NA,
   glm_function = "glm",
@@ -81,21 +76,19 @@ calculation.}
 
 \item{last_followup}{Last follow-up period}
 
-\item{use_weight}{Use weights in analysis. If 0 then no weights will be calculated}
+\item{use_weight}{Use weights in analysis. If 0 then no weights will be calculated.}
 
 \item{save_weight_models}{Save weight models objects in \code{data_dir}.}
 
-\item{run_unweighted_analysis}{Run the final model with no weights when use_weights = 1}
+\item{analysis_weights}{One of
+\itemize{
+\item \code{"asis"}: use the weights as calculated
+\item \code{"p99"}: truncate weights at the 1st and 99th percentiles
+\item \code{"weight_limits"}: truncate weights at the values specified in \code{weight_limits}
+\item \code{"unweighted"}: set all analysis weights to 1, even with \code{use_weights = 1}
+}}
 
-\item{run_weighted_analysis}{Run the final model with original weights}
-
-\item{run_p99_analysis}{Run the final model with truncating the weights at the 1st and 99th percentile}
-
-\item{run_user_limits_analysis}{Run the final model with truncating the weights using user defined limits}
-
-\item{lower_weight}{Use lower weight as minimum possible weight}
-
-\item{upper_weight}{Use upper weight as maximum possible weight}
+\item{weight_limits}{Lower and upper limits to truncate weights, given as \code{c(lower, upper)}}
 
 \item{use_censor}{Use censoring for per-protocol analysis - censor person-times once a person-trial stops taking the
 initial treatment value}
@@ -134,8 +127,6 @@ weights (Defaults to 1)}
 
 \item{where_case}{List of where conditions used in subsetting the data used in final analysis}
 
-\item{run_base_model}{Run the model with no conditions Defaults to 1}
-
 \item{data_dir}{Direction to save data}
 
 \item{numCores}{Number of cores for parallel programming (default value is maximum cores and parallel programming)}
@@ -147,4 +138,14 @@ weights (Defaults to 1)}
 \description{
 An all-in-one analysis using a sequence of target trials. This provides a simplified
 interface to the main working functions \code{\link[=data_preparation]{data_preparation()}} and \code{\link[=data_modelling]{data_modelling()}}.
+}
+\details{
+If \code{model_var = NULL} the package will add some terms to the outcome model:
+\itemize{
+\item if \code{use_censor = 0} and \code{use_weight = 0}, an as-treated analysis will be done the outcome model will have
+\code{~ dose + I(dose^2)} terms added
+\item if \code{use_censor = 1}, a per-protocol analysis will be done with an \code{~assigned_treatment} term added
+\item if \code{use_censor = 0} and \code{use_weight = 1}, an intention to treat analysis will be done with an
+\code{~assigned_treatment} term added
+}
 }

@@ -95,7 +95,7 @@ lr <- function(l) {
 
   model <- parglm::parglm(as.formula(regf),
     data = d,
-    weights = d[, weight],
+    weights = d[["weight"]],
     family = binomial(link = "logit"),
     control = parglm::parglm.control(nthreads = 4, method = "FAST")
   )
