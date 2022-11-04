@@ -50,20 +50,7 @@ data_preparation <- function(data,
   assert_flag(separate_files)
   assert_flag(save_weight_models)
 
-  if (isTRUE(separate_files)) {
-    if (test_directory_exists(data_dir)) {
-      if (length(list.files(data_dir, pattern = "trial_.*csv"))) {
-        stop("trial_*.csv files already exist in ", data_dir, ". Remove them or specify a different `data_dir`.")
-      }
-      if (length(list.files(data_dir, ".*model.*rds"))) {
-        warning(data_dir, " contains model rds files. These may be overwritten.")
-      }
-    } else {
-      if (!dir.create(data_dir)) {
-        stop(data_dir, " could not be created.")
-      }
-    }
-  }
+  if (isTRUE(separate_files)) check_data_dir(data_dir)
 
   outcome_cov <- as_formula(outcome_cov)
   switch_n_cov <- as_formula(switch_n_cov)
@@ -157,4 +144,24 @@ data_preparation <- function(data,
   result$censor_models <- if (use_weight) weight_result$censor_models else NULL
 
   return(result)
+}
+
+
+#' Check for valid data_dir and create if necessary
+#'
+#' @param data_dir Directory to check
+#' @noRd
+check_data_dir <- function(data_dir) {
+  if (test_directory_exists(data_dir)) {
+    if (length(list.files(data_dir, pattern = "trial_.*csv"))) {
+      stop("trial_*.csv files already exist in ", data_dir, ". Remove them or specify a different `data_dir`.")
+    }
+    if (length(list.files(data_dir, ".*model.*rds"))) {
+      warning(data_dir, " contains model rds files. These may be overwritten.")
+    }
+  } else {
+    if (!dir.create(data_dir)) {
+      stop(data_dir, " could not be created.")
+    }
+  }
 }

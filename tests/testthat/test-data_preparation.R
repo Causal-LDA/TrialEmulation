@@ -69,27 +69,12 @@ test_that("data_preparation gives an error for existing trial files", {
 })
 
 
-test_that("data_preparation gives a warning for existing model files", {
+test_that("check_data_dir gives a warning for existing model files", {
   save_dir <- withr::local_tempdir(pattern = "duplicates", tempdir(TRUE))
-
   saveRDS(list(data = "dummy data"), file = file.path(save_dir, "cense_model_n0.rds"))
 
   expect_warning(
-    data_preparation(
-      data = trial_example[1:10, ],
-      id = "id",
-      period = "period",
-      eligible = "eligible",
-      treatment = "treatment",
-      outcome = "outcome",
-      model_var = "assigned_treatment",
-      outcome_cov = "catvarA",
-      first_period = 1,
-      last_period = 5,
-      quiet = TRUE,
-      separate_files = TRUE,
-      data_dir = save_dir
-    ),
+    check_data_dir(data_dir = save_dir),
     "contains model rds files. These may be overwritten."
   )
 })
