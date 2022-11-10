@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">RandomisedTrialsEmulation</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.2.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.2.3</span>
       </span>
     </div>
 
@@ -106,20 +106,22 @@
 <span class="r-in"><span>  use_censor <span class="op">=</span> <span class="fl">0</span>,</span></span>
 <span class="r-in"><span>  use_weight <span class="op">=</span> <span class="fl">0</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Start data manipulation"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Finish data manipulation"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Processing time of data manipulation:"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    user  system elapsed </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   0.662   0.056   0.718 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "----------------------------"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Start data extension"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Finish data extension"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Processing time of data extension:"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    user  system elapsed </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   4.148   0.836   4.986 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "----------------------------"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Number of observations in expanded data: 62981"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Base Analysis"</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Starting data manipulation</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Finished data manipulation</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Processing time of data manipulation: 0.6 s</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> ------------------------------------------------------------</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Starting data extension</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Finish data extension</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Processing time of data extension: 4.3 s</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> ------------------------------------------------------------</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Summary of extended data:</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Number of observations: 62981</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> ------------------------------------------------------------</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Preparing for model fitting</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> ------------------------------------------------------------</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Fitting outcome model</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Processing time of fitting outcome model: 0.0 s</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> summary(model)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Call:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> stats::glm(formula = model_formula, family = binomial(link = "logit"), </span>
@@ -148,17 +150,18 @@
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Number of Fisher Scoring iterations: 10</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "-------------------------------------------------"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Processing time of modeling for base analysis:"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    user  system elapsed </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   0.039   0.004   0.079 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Base Analysis with robust variance"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "-------------------------------------------------------"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Robust standard error:"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "----------------------------------------------"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Processing time of getting the output and sandwich with reduced switch data:"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    user  system elapsed </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   0.048   0.004   0.053 </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> ------------------------------------------------------------</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Calculating robust variance</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Processing time of calculating robust variance: 0.0 s</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Summary with robust standard error:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                names estimate robust_se       lb     ub     z p_value</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1        (Intercept)  -9.0893   1.09480 -11.2351 -6.943 -8.30  &lt;1e-04</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2 assigned_treatment       NA        NA       NA     NA    NA      NA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3         for_period   0.0674   0.00902   0.0497  0.085  7.47  &lt;1e-04</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4      followup_time   0.0867   0.01126   0.0647  0.109  7.70  &lt;1e-04</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5              nvarA       NA        NA       NA     NA    NA      NA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6              nvarB   0.2715   0.06553   0.1430  0.400  4.14  &lt;1e-04</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> ------------------------------------------------------------</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu">predict_survival</span><span class="op">(</span><span class="va">i</span>, predict_times <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">20</span>, by <span class="op">=</span> <span class="fl">2</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>prediction from a rank-deficient fit may be misleading</span>
