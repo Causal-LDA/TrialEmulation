@@ -9,5 +9,5 @@
 NULL
 
 censor_func <- function(sw_data) {
-  .Call("_RandomisedTrialsEmulation_censor_func", PACKAGE = "RandomisedTrialsEmulation", sw_data)
+    .Call('_RandomisedTrialsEmulation_censor_func', PACKAGE = 'RandomisedTrialsEmulation', sw_data)
 }
