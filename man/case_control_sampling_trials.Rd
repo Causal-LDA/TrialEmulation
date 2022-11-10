@@ -2,30 +2,38 @@
 % Please edit documentation in R/sampling.R
 \name{case_control_sampling_trials}
 \alias{case_control_sampling_trials}
-\title{Case-control sampling from extended data in separate trial CSVs}
+\title{Case-control sampling from extended data}
 \usage{
 case_control_sampling_trials(
   data_prep,
-  n_control = NULL,
   p_control = NULL,
-  sample_all_periods,
+  sample_all_times = FALSE,
   subset_condition
 )
 }
 \arguments{
 \item{data_prep}{Result from \code{\link[=data_preparation]{data_preparation()}}}
 
-\item{n_control}{Number of controls to sample per case}
-
 \item{p_control}{Proportion of controls to select}
 
-\item{sample_all_periods}{Sample controls in all periods (TRUE) or only when there is a case in the period (FALSE)?}
+\item{sample_all_times}{Sample controls at all follow up times (TRUE) or only
+when there is a case at that follow up times (FALSE)?}
 
 \item{subset_condition}{Expression used to \code{subset} the trial data before sampling}
 }
 \value{
-A \code{data.frame} or a \code{\link[=split]{split()}} \code{data.frame} if  \code{length(n_control) > 1} or \code{length(p_control) > 1}.
+A \code{data.frame} or a \code{\link[=split]{split()}} \code{data.frame} if  \code{length(p_control) > 1}.
 }
 \description{
-Case-control sampling from extended data in separate trial CSVs
+Case-control sampling from extended data
+}
+\examples{
+dat <- trial_example[trial_example$id < 200, ]
+expanded_data <- data_preparation(
+  data = dat,
+  outcome_cov = c("nvarA", "nvarB", "nvarC"),
+  first_period = 260,
+  last_period = 280
+)
+samples <- case_control_sampling_trials(expanded_data, p_control = 0.01, sample_all_time = FALSE)
 }

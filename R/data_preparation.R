@@ -143,6 +143,7 @@ data_preparation <- function(data,
   result$switch_models <- if (use_weight) weight_result$switch_models else NULL
   result$censor_models <- if (use_weight) weight_result$censor_models else NULL
 
+  class(result) <- c(ifelse(separate_files, "RTE_data_prep_sep", "RTE_data_prep_dt"), "RTE_data_prep")
   return(result)
 }
 
