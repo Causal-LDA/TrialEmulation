@@ -89,7 +89,7 @@ data_modelling <- function(data,
   if (any(!is.na(where_case))) {
     quiet_msg(quiet, paste("Subsetting data with", toString(where_case), sep = " "))
     for (i in seq_along(where_case)) {
-      data <- data[eval(parse(text = where_case[i]))]
+      data <- data[eval(parse(text = where_case[i])), ]
     }
   }
 
