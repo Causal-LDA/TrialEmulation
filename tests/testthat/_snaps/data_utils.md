@@ -4,8 +4,9 @@
       result <- weight_func(sw_data = data, switch_n_cov = ~1, switch_d_cov = ~ X1 +
         X2, cense = "C", pool_cense = 0, cense_d_cov = ~ X1 + X2 + X3 + X4 + age_s,
       cense_n_cov = ~ X3 + X4, save_weight_models = FALSE, save_dir = save_dir)
+    Message <simpleMessage>
+      P(treatment=1 | treatment=0) for denominator
     Output
-      [1] "P(treatment=1 | treatment=0) for denominator"
       
       Call:
       glm(formula = as.formula(formula), family = binomial(link = "logit"), 
@@ -32,7 +33,9 @@
       
       Number of Fisher Scoring iterations: 4
       
-      [1] "P(treatment=1 | treatment=0) for numerator"
+    Message <simpleMessage>
+      P(treatment=1 | treatment=0) for numerator
+    Output
       
       Call:
       glm(formula = as.formula(formula), family = binomial(link = "logit"), 
@@ -57,7 +60,9 @@
       
       Number of Fisher Scoring iterations: 4
       
-      [1] "P(treatment=1 | treatment=1) for denominator"
+    Message <simpleMessage>
+      P(treatment=1 | treatment=1) for denominator
+    Output
       
       Call:
       glm(formula = as.formula(formula), family = binomial(link = "logit"), 
@@ -84,7 +89,9 @@
       
       Number of Fisher Scoring iterations: 4
       
-      [1] "P(treatment=1 | treatment=1) for numerator"
+    Message <simpleMessage>
+      P(treatment=1 | treatment=1) for numerator
+    Output
       
       Call:
       glm(formula = as.formula(formula), family = binomial(link = "logit"), 
@@ -109,7 +116,9 @@
       
       Number of Fisher Scoring iterations: 4
       
-      [1] "Model for P(cense = 0 |  X, Am1=0) for denominator"
+    Message <simpleMessage>
+      Model for P(cense = 0 |  X, Am1=0) for denominator
+    Output
       
       Call:
       glm(formula = as.formula(formula), family = binomial(link = "logit"), 
@@ -139,7 +148,9 @@
       
       Number of Fisher Scoring iterations: 5
       
-      [1] "Model for P(cense = 0 |  X, Am1=0) for numerator"
+    Message <simpleMessage>
+      Model for P(cense = 0 |  X, Am1=0) for numerator
+    Output
       
       Call:
       glm(formula = as.formula(formula), family = binomial(link = "logit"), 
@@ -166,7 +177,9 @@
       
       Number of Fisher Scoring iterations: 4
       
-      [1] "Model for P(cense = 0 |  X, Am1=1) for denominator"
+    Message <simpleMessage>
+      Model for P(cense = 0 |  X, Am1=1) for denominator
+    Output
       
       Call:
       glm(formula = as.formula(formula), family = binomial(link = "logit"), 
@@ -196,7 +209,9 @@
       
       Number of Fisher Scoring iterations: 6
       
-      [1] "Model for P(cense = 0 |  X, Am1=1) for numerator"
+    Message <simpleMessage>
+      Model for P(cense = 0 |  X, Am1=1) for numerator
+    Output
       
       Call:
       glm(formula = as.formula(formula), family = binomial(link = "logit"), 

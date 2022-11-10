@@ -82,14 +82,13 @@ data_preparation <- function(data,
     where_var = where_var
   )
 
-  h_quiet_print(quiet, "Start data manipulation")
+  quiet_msg(quiet, "Starting data manipulation")
   timing <- system.time({
     data <- data_manipulation(data, use_censor = use_censor)
   })
-  h_quiet_print(quiet, "Finish data manipulation")
-  h_quiet_print(quiet, "Processing time of data manipulation:")
-  h_quiet_print(quiet, timing)
-  h_quiet_print(quiet, "----------------------------")
+  quiet_msg(quiet, "Finished data manipulation")
+  quiet_msg_time(quiet, "Processing time of data manipulation: ", timing)
+  quiet_line(quiet)
 
   if (use_weight == 1) {
     weight_result <- weight_func(
@@ -117,7 +116,7 @@ data_preparation <- function(data,
     where_var, all.vars(outcome_cov), all.vars(model_var)
   )
 
-  h_quiet_print(quiet, "Start data extension")
+  quiet_msg(quiet, "Starting data extension")
   timing <- system.time({
     result <- data_extension(
       data = data,
@@ -133,12 +132,13 @@ data_preparation <- function(data,
       chunk_size = chunk_size
     )
   })
-  h_quiet_print(quiet, "Finish data extension")
-  h_quiet_print(quiet, "Processing time of data extension:")
-  h_quiet_print(quiet, timing)
-  h_quiet_print(quiet, "----------------------------")
+  quiet_msg(quiet, "Finish data extension")
+  quiet_msg_time(quiet, "Processing time of data extension: ", timing)
+  quiet_line(quiet)
 
-  h_quiet_print(quiet, paste0("Number of observations in expanded data: ", result$N))
+  quiet_msg(quiet, "Summary of extended data:")
+  quiet_msg(quiet, paste0("Number of observations: ", result$N))
+  quiet_line(quiet)
 
   result$switch_models <- if (use_weight) weight_result$switch_models else NULL
   result$censor_models <- if (use_weight) weight_result$censor_models else NULL

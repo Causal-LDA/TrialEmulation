@@ -8,12 +8,47 @@
 #' @return Value of `print(...)` or `NULL`
 #' @noRd
 #' @examples
-#' h_quiet_print(quiet = FALSE, "loud hello")
-#' h_quiet_print(quiet = TRUE, "quiet hello")
-h_quiet_print <- function(quiet, x, ...) {
+#' quiet_print(quiet = FALSE, "loud hello")
+#' quiet_print(quiet = TRUE, "quiet hello")
+quiet_print <- function(quiet, x, ...) {
   if (isFALSE(quiet)) {
     print(x, ...)
   }
+}
+
+
+#' Conditional Messages
+#'
+#' @param quiet (`logical`) Messages printed if `FALSE`
+#' @param x Object to print.
+#' @param ... Passed to `message` function.
+#'
+#' @noRd
+quiet_msg <- function(quiet, x, ...) {
+  if (isFALSE(quiet)) {
+    message(x, ...)
+  }
+}
+
+#' Print a line
+#'
+#' @param quiet Print if `TRUE `
+#' @noRd
+quiet_line <- function(quiet) {
+  quiet_msg(quiet, paste0(strrep("-", 0.75 * getOption("width")), "\n"))
+}
+
+#' Print with timing statement
+#'
+#' @param quiet Print if `TRUE `,
+#' @param x Message to print
+#' @param proc_time Result of `system.time()`. Elapsed time will be extracted,
+#' formatted for printing and `paste0()`ed to `x`.
+#' @noRd
+quiet_msg_time <- function(quiet, msg, proc_time) {
+  time <- proc_time["elapsed"]
+  time <- if (time < 10) sprintf("%0.1f s", time) else sprintf("%.5g s", time)
+  quiet_msg(quiet, paste0(msg, time))
 }
 
 #' Assert Monotonicity
