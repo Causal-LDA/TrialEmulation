@@ -22,17 +22,17 @@ robust_calculation <- function(model, data_id) {
     fix = FALSE
   )
   se <- sqrt(diag(var_matrix))
-
   est_temp <- model$coefficients
-  output <- data.table(
-    names = names(est_temp),
-    estimate = est_temp,
-    robust_se = se[names(est_temp)]
-  )
-  output[, lb := estimate - (1.96 * robust_se)]
-  output[, ub := estimate + (1.96 * robust_se)]
-  output[, z := estimate / robust_se]
-  output[, p_value := format.pval(2 * (1 - pnorm(abs(z))), eps = 0.001)]
 
-  list(summary = output, matrix = var_matrix)
+  output <- data.frame(names = names(est_temp))
+  output$estimate <- est_temp
+  output$robust_se <- se[names(est_temp)]
+  output$lb <- output$estimate - (1.96 * output$robust_se)
+  output$ub <- output$estimate + (1.96 * output$robust_se)
+  output$z <- output$estimate / output$robust_se
+  output$p_value <- format.pval(2 * (1 - pnorm(abs(output$z))), digits = 3, eps = 0.0001)
+
+  result <- list(summary = output, matrix = var_matrix)
+  class(result) <- "RTE_robust"
+  result
 }
