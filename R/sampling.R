@@ -40,8 +40,7 @@ case_control_sampling_trials <- function(data_prep,
   }
 }
 
-#' Sample utility for data_preparation result with separate_files = TRUE
-#' @noRD
+# Sample utility for data_preparation result with separate_files = TRUE
 sample_data_prep_sep <- function(data_prep,
                                  p_control,
                                  sample_all_times,
@@ -62,10 +61,7 @@ sample_data_prep_sep <- function(data_prep,
   })
 }
 
-
-
-#' Sample utility for data_preparation result with separate_files = TRUE
-#' @noRD
+# Sample utility for data_preparation result with separate_files = TRUE
 sample_data_prep_dt <- function(data_prep,
                                 p_control,
                                 sample_all_times,
