@@ -173,11 +173,8 @@ test_that("data extensions works as expected with first and last periods", {
 
 test_that("data extensions works as expected with separate_files=TRUE", {
   data <- readRDS(test_path("data/pre_data_extension.rds"))
-  temp_path <- tempdir(check = TRUE)
-  all_dir <- file.path(temp_path, "all")
-  dir.create(all_dir)
-  subset_dir <- file.path(temp_path, "subset")
-  dir.create(subset_dir)
+  all_dir <- withr::local_tempdir(pattern = "all", tempdir(TRUE))
+  subset_dir <- withr::local_tempdir(pattern = "subset", tempdir(TRUE))
 
   result_limited <- data_extension(
     data = data,
@@ -244,7 +241,4 @@ test_that("data extensions works as expected with separate_files=TRUE", {
   )
   data.table::setorderv(expected_limited$data, c("for_period", "id", "followup_time"))
   expect_equal(as.data.frame(result_trials)$weight, as.data.frame(expected_limited$data)$weight)
-
-  unlink(all_dir, recursive = TRUE)
-  unlink(subset_dir, recursive = TRUE)
 })

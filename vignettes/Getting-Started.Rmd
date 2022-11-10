@@ -144,7 +144,7 @@ To create a manageable dataset for the final analysis we can sample from these t
 Here we sample 10% of the patients at each follow-up time in each trial without an event. All 
 observations with events are included.
 ```{r sample}
-sampled_data <- case_control_sampling_trials(prep_data, p_control = 0.1, sample_all_periods = TRUE)
+sampled_data <- case_control_sampling_trials(prep_data, p_control = 0.1, sample_all_times = TRUE)
 str(sampled_data)
 ```
 

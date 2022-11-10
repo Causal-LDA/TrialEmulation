@@ -124,14 +124,14 @@ weight_func <- function(sw_data,
   weight_models <- list()
   # ------------------- eligible0 == 1 --------------------
   # --------------- denominator ------------------
-  h_quiet_print(quiet, "P(treatment=1 | treatment=0) for denominator")
+  quiet_msg(quiet, "P(treatment=1 | treatment=0) for denominator")
 
   model1 <- weight_lr(
     sw_data[if (any(!is.na(eligible_wts_0))) (eligible0 == 1 & eligible_wts_0 == 1) else eligible0 == 1],
     switch_d_cov
   )
 
-  h_quiet_print(quiet, summary(model1))
+  quiet_print(quiet, summary(model1))
   switch_d0 <- data.table(
     p0_d = model1$fitted.values,
     eligible0 = unlist(model1$data$eligible0),
@@ -148,14 +148,14 @@ weight_func <- function(sw_data,
 
   # -------------- numerator --------------------
 
-  h_quiet_print(quiet, "P(treatment=1 | treatment=0) for numerator")
+  quiet_msg(quiet, "P(treatment=1 | treatment=0) for numerator")
 
   model2 <- weight_lr(
     sw_data[if (any(!is.na(eligible_wts_0))) (eligible0 == 1 & eligible_wts_0 == 1) else eligible0 == 1],
     switch_n_cov,
   )
 
-  h_quiet_print(quiet, summary(model2))
+  quiet_print(quiet, summary(model2))
   switch_n0 <- data.table(
     p0_n = model2$fitted.values,
     eligible0 = unlist(model2$data$eligible0),
@@ -172,13 +172,13 @@ weight_func <- function(sw_data,
 
   # ------------------- eligible1 == 1 --------------------
   # --------------- denominator ------------------
-  h_quiet_print(quiet, "P(treatment=1 | treatment=1) for denominator")
+  quiet_msg(quiet, "P(treatment=1 | treatment=1) for denominator")
   model3 <- weight_lr(
     sw_data[if (any(!is.na(eligible_wts_1))) (eligible1 == 1 & eligible_wts_1 == 1) else eligible1 == 1],
     switch_d_cov
   )
 
-  h_quiet_print(quiet, summary(model3))
+  quiet_print(quiet, summary(model3))
   switch_d1 <- data.table(
     p1_d = model3$fitted.values,
     eligible1 = unlist(model3$data$eligible1),
@@ -194,13 +194,13 @@ weight_func <- function(sw_data,
   rm(model3)
 
   # -------------------- numerator ---------------------------
-  h_quiet_print(quiet, "P(treatment=1 | treatment=1) for numerator")
+  quiet_msg(quiet, "P(treatment=1 | treatment=1) for numerator")
   model4 <- weight_lr(
     sw_data[if (any(!is.na(eligible_wts_1))) (eligible1 == 1 & eligible_wts_1 == 1) else eligible1 == 1],
     switch_n_cov
   )
 
-  h_quiet_print(quiet, summary(model4))
+  quiet_print(quiet, summary(model4))
   switch_n1 <- data.table(
     p1_n = model4$fitted.values,
     eligible1 = unlist(model4$data$eligible1),
@@ -248,10 +248,10 @@ weight_func <- function(sw_data,
 
     if (pool_cense == 1) {
       # -------------------- denominator -------------------------
-      h_quiet_print(quiet, "Model for P(cense = 0 |  X ) for denominator")
+      quiet_msg(quiet, "Model for P(cense = 0 |  X ) for denominator")
       # -----------------------------------------------------------
       model1.cense <- weight_lr(sw_data, cense_d_cov)
-      h_quiet_print(quiet, summary(model1.cense))
+      quiet_print(quiet, summary(model1.cense))
       cense_d0 <- data.table(
         pC_d = model1.cense$fitted.values,
         id = model1.cense$data[, id],
@@ -266,10 +266,10 @@ weight_func <- function(sw_data,
       rm(model1.cense)
 
       # --------------------- numerator ---------------------------
-      h_quiet_print(quiet, "Model for P(cense = 0 |  X ) for numerator")
+      quiet_msg(quiet, "Model for P(cense = 0 |  X ) for numerator")
       # ---------------------------------------------------------
       model2.cense <- weight_lr(sw_data, cense_n_cov)
-      h_quiet_print(quiet, summary(model2.cense))
+      quiet_print(quiet, summary(model2.cense))
       cense_n0 <- data.table(
         pC_n = model2.cense$fitted.values,
         id = model2.cense$data[, id],
@@ -290,11 +290,11 @@ weight_func <- function(sw_data,
       # when pool_cense != 1
 
       # ---------------------- denominator -----------------------
-      h_quiet_print(quiet, "Model for P(cense = 0 |  X, Am1=0) for denominator")
+      quiet_msg(quiet, "Model for P(cense = 0 |  X, Am1=0) for denominator")
       # ---------------------- eligible0 ---------------------------
 
       model1.cense <- weight_lr(sw_data[eligible0 == 1], cense_d_cov)
-      h_quiet_print(quiet, summary(model1.cense))
+      quiet_print(quiet, summary(model1.cense))
       cense_d0 <- data.table(
         pC_d0 = model1.cense$fitted.values,
         id = model1.cense$data[, id],
@@ -309,10 +309,10 @@ weight_func <- function(sw_data,
       }
       rm(model1.cense)
       # -------------------------- numerator ----------------------
-      h_quiet_print(quiet, "Model for P(cense = 0 |  X, Am1=0) for numerator")
+      quiet_msg(quiet, "Model for P(cense = 0 |  X, Am1=0) for numerator")
       #--------------------------- eligible0 -----------------------
       model2.cense <- weight_lr(sw_data[eligible0 == 1], cense_n_cov)
-      h_quiet_print(quiet, summary(model2.cense))
+      quiet_print(quiet, summary(model2.cense))
       cense_n0 <- data.table(
         pC_n0 = model2.cense$fitted.values,
         id = model2.cense$data[, id],
@@ -326,10 +326,10 @@ weight_func <- function(sw_data,
       }
       rm(model2.cense)
       # ------------------------- denominator ---------------------
-      h_quiet_print(quiet, "Model for P(cense = 0 |  X, Am1=1) for denominator")
+      quiet_msg(quiet, "Model for P(cense = 0 |  X, Am1=1) for denominator")
       # ------------------------ eligible1 -------------------------
       model3.cense <- weight_lr(sw_data[eligible1 == 1], cense_d_cov)
-      h_quiet_print(quiet, summary(model3.cense))
+      quiet_print(quiet, summary(model3.cense))
       cense_d1 <- data.table(
         pC_d1 = model3.cense$fitted.values,
         id = model3.cense$data[, id],
@@ -343,10 +343,10 @@ weight_func <- function(sw_data,
       }
       rm(model3.cense)
       # ------------------------ numerator -------------------------
-      h_quiet_print(quiet, "Model for P(cense = 0 |  X, Am1=1) for numerator")
+      quiet_msg(quiet, "Model for P(cense = 0 |  X, Am1=1) for numerator")
       # ------------------------- eligible1 -----------------------
       model4.cense <- weight_lr(sw_data[eligible1 == 1], cense_n_cov)
-      h_quiet_print(quiet, summary(model4.cense))
+      quiet_print(quiet, summary(model4.cense))
       cense_n1 <- data.frame(
         pC_n1 = model4.cense$fitted.values,
         id = model4.cense$data[, id],

@@ -48,6 +48,8 @@ data_modelling <- function(data,
       followup_time <= min(Inf, last_followup, na.rm = TRUE), ]
   }
 
+  quiet_msg(quiet, "Preparing for model fitting")
+
   # adjust weights if necessary
   if (use_sample_weights) {
     if (!"sample_weight" %in% colnames(data)) {
@@ -85,13 +87,11 @@ data_modelling <- function(data,
   )
 
   if (any(!is.na(where_case))) {
-    h_quiet_print(quiet, paste("Subsetting data with", toString(where_case), sep = " "))
+    quiet_msg(quiet, paste("Subsetting data with", toString(where_case), sep = " "))
     for (i in seq_along(where_case)) {
-      data <- data[eval(parse(text = where_case[i]))]
+      data <- data[eval(parse(text = where_case[i])), ]
     }
   }
-
-
 
   if (analysis_weights == "asis") {
     # no change
@@ -104,6 +104,8 @@ data_modelling <- function(data,
   }
   if (use_weight == 0) data[["weight"]] <- 1
 
+  quiet_line(quiet)
+  quiet_msg(quiet, "Fitting outcome model")
   timing <- system.time({
     if (glm_function == "parglm") {
       model.full <- parglm::parglm(model_formula,
@@ -120,21 +122,22 @@ data_modelling <- function(data,
       )
     }
   })
-  h_quiet_print(quiet, "Base Analysis")
-  h_quiet_print(quiet, summary(model.full))
-  h_quiet_print(quiet, "-------------------------------------------------")
-  h_quiet_print(quiet, "Processing time of modeling for base analysis:")
-  h_quiet_print(quiet, timing)
 
-  h_quiet_print(quiet, "Base Analysis with robust variance")
+  quiet_msg_time(quiet, "Processing time of fitting outcome model: ", timing)
+  quiet_msg(quiet, "summary(model)")
+  quiet_print(quiet, summary(model.full))
+  quiet_line(quiet)
+
+  quiet_msg(quiet, "Calculating robust variance")
   timing <- system.time({
-    h_quiet_print(quiet, "-------------------------------------------------------")
-    h_quiet_print(quiet, "Robust standard error:")
     robust_model <- robust_calculation(model.full, data[["id"]])
   })
-  h_quiet_print(quiet, "----------------------------------------------")
-  h_quiet_print(quiet, "Processing time of getting the output and sandwich with reduced switch data:")
-  h_quiet_print(quiet, timing)
+  quiet_msg_time(quiet, "Processing time of calculating robust variance: ", timing)
+  quiet_msg(quiet, "Summary with robust standard error:")
+  quiet_print(quiet, format.data.frame(robust_model$summary, digits = 3))
+  quiet_line(quiet)
 
-  return(list(model = model.full, robust = robust_model))
+  result <- list(model = model.full, robust = robust_model)
+  class(result) <- "RTE_model"
+  result
 }

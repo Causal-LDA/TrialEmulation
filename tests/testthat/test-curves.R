@@ -1,13 +1,15 @@
 test_that("h_extract_baseline works works as expected", {
+  save_dir <- withr::local_tempdir(pattern = "curve", tempdir(TRUE))
+
   trial_file <- tempfile(
     "trial_data",
-    tmpdir = tempdir(check = TRUE),
+    tmpdir = save_dir,
     fileext = ".csv"
   )
 
   baseline_file <- tempfile(
     "baseline_file",
-    tmpdir = tempdir(check = TRUE),
+    tmpdir = save_dir,
     fileext = ".csv"
   )
 

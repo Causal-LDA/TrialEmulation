@@ -13,7 +13,7 @@ h_extract_baseline <- function(trial_file, baseline_file, quiet = TRUE) {
   followup_time <- NULL
 
   if (file.exists(trial_file)) {
-    h_quiet_print("Extracting baseline observations from ", trial_file)
+    quiet_msg("Extracting baseline observations from ", trial_file)
     fwrite(fread(trial_file)[followup_time == 0, ], file = baseline_file)
   }
 }
