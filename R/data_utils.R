@@ -155,7 +155,7 @@ weight_func <- function(sw_data,
     switch_n_cov,
   )
 
-  quiet_msg(quiet, summary(model2))
+  quiet_print(quiet, summary(model2))
   switch_n0 <- data.table(
     p0_n = model2$fitted.values,
     eligible0 = unlist(model2$data$eligible0),
@@ -178,7 +178,7 @@ weight_func <- function(sw_data,
     switch_d_cov
   )
 
-  quiet_msg(quiet, summary(model3))
+  quiet_print(quiet, summary(model3))
   switch_d1 <- data.table(
     p1_d = model3$fitted.values,
     eligible1 = unlist(model3$data$eligible1),
@@ -200,7 +200,7 @@ weight_func <- function(sw_data,
     switch_n_cov
   )
 
-  quiet_msg(quiet, summary(model4))
+  quiet_print(quiet, summary(model4))
   switch_n1 <- data.table(
     p1_n = model4$fitted.values,
     eligible1 = unlist(model4$data$eligible1),
