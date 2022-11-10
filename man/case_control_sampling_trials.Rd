@@ -8,21 +8,27 @@ case_control_sampling_trials(
   data_prep,
   p_control = NULL,
   sample_all_times = FALSE,
-  subset_condition
+  subset_condition,
+  sort = FALSE
 )
 }
 \arguments{
-\item{data_prep}{Result from \code{\link[=data_preparation]{data_preparation()}}}
+\item{data_prep}{Result from \code{\link[=data_preparation]{data_preparation()}}.}
 
-\item{p_control}{Proportion of controls to select}
+\item{p_control}{Proportion of controls to select at each follow-up time of each trial.}
 
 \item{sample_all_times}{Sample controls at all follow up times (TRUE) or only
-when there is a case at that follow up times (FALSE)?}
+when there is a case at that follow up time (FALSE)?}
 
-\item{subset_condition}{Expression used to \code{subset} the trial data before sampling}
+\item{subset_condition}{Expression used to \code{\link[=subset]{subset()}} the trial data before sampling.}
+
+\item{sort}{Sort data before sampling. This ensures results are identical between data prepared with
+\code{separate_files} TRUE and FALSE.}
 }
 \value{
-A \code{data.frame} or a \code{\link[=split]{split()}} \code{data.frame} if  \code{length(p_control) > 1}.
+A \code{data.frame} or a \code{\link[=split]{split()}} \code{data.frame} if  \code{length(p_control) > 1}. An additional column
+containing sample weights will be added to the result. These can be included in the models fit with
+\code{\link[=data_modelling]{data_modelling()}}.
 }
 \description{
 Case-control sampling from extended data

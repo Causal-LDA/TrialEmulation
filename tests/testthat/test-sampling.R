@@ -91,7 +91,7 @@ test_that("sample_from_period works as expected with multiple proportions", {
 
 test_that("case_control_sampling_trials works with separate_files = TRUE", {
   set.seed(1001)
-  save_dir <- withr::local_tempdir(pattern = "duplicates", tempdir(TRUE))
+  save_dir <- withr::local_tempdir(pattern = "sampling", tempdir(TRUE))
   dat <- trial_example[trial_example$id < 200, ]
   expanded_data <- data_preparation(
     data = dat,
@@ -125,7 +125,7 @@ test_that("case_control_sampling_trials works with separate_files = FALSE", {
 
 
 test_that("case_control_sampling_trials works with separate_files = TRUE is reproducible", {
-  save_dir <- withr::local_tempdir(pattern = "duplicates", tempdir(TRUE))
+  save_dir <- withr::local_tempdir(pattern = "sampling", tempdir(TRUE))
   dat <- trial_example[trial_example$id < 200, ]
   expanded_data <- data_preparation(
     data = dat,
@@ -147,7 +147,7 @@ test_that("case_control_sampling_trials works with separate_files = TRUE is repr
 
 
 test_that("case_control_sampling_trials works with subsetting", {
-  save_dir <- withr::local_tempdir(pattern = "duplicates", tempdir(TRUE))
+  save_dir <- withr::local_tempdir(pattern = "sampling", tempdir(TRUE))
   dat <- trial_example[trial_example$id < 200, ]
   expanded_data <- data_preparation(
     data = dat,
@@ -167,4 +167,94 @@ test_that("case_control_sampling_trials works with subsetting", {
   )
 
   expect_true(all(samples$nvarC > 75))
+})
+
+
+
+test_that("case_control_sampling_trials gives errors for arguments", {
+  expect_error(
+    case_control_sampling_trials(
+      trial_example,
+      p_control = 0.01,
+      sample_all_time = FALSE,
+      subset_condition = nvarC > 75
+    ),
+    "Unknown data_prep object"
+  )
+
+  expect_error(
+    case_control_sampling_trials(
+      trial_example,
+      p_control = "a",
+      sample_all_time = FALSE,
+      subset_condition = nvarC > 75
+    ),
+    "Must be of type 'numeric'"
+  )
+
+  expect_error(
+    case_control_sampling_trials(
+      trial_example,
+      p_control = 0.5,
+      sample_all_time = NULL,
+      subset_condition = nvarC > 75
+    ),
+    "Must be of type 'logical flag'"
+  )
+})
+
+
+test_that("case_control_sampling_trials works with multiple p_control", {
+  dat <- trial_example[trial_example$id < 200, ]
+  expanded_data <- data_preparation(
+    data = dat,
+    data_dir = save_dir,
+    outcome_cov = c("nvarA", "nvarB", "nvarC"),
+    first_period = 260,
+    last_period = 280,
+    separate_files = FALSE,
+    quiet = TRUE
+  )
+  set.seed(2090)
+  samples <- case_control_sampling_trials(
+    expanded_data,
+    p_control = c(0.01, 0.1),
+    sample_all_time = FALSE
+  )
+  expect_list(samples, types = "data.frame", len = 2)
+  expect_data_frame(samples[[1]], nrow = 435, ncol = 11)
+  expect_data_frame(samples[[2]], nrow = 697, ncol = 11)
+})
+
+
+test_that("case_control_sampling_trials works with sort = TRUE", {
+  save_dir <- withr::local_tempdir(pattern = "sampling", tempdir(TRUE))
+  dat <- trial_example[trial_example$id < 200, ]
+
+  expanded_data_t <- data_preparation(
+    data = dat,
+    data_dir = save_dir,
+    outcome_cov = c("nvarA", "nvarB", "nvarC"),
+    first_period = 260,
+    last_period = 280,
+    separate_files = TRUE,
+    quiet = TRUE
+  )
+
+  expanded_data_f <- data_preparation(
+    data = dat,
+    data_dir = save_dir,
+    outcome_cov = c("nvarA", "nvarB", "nvarC"),
+    first_period = 260,
+    last_period = 280,
+    separate_files = FALSE,
+    quiet = TRUE
+  )
+  set.seed(9999)
+  samples_t <- case_control_sampling_trials(expanded_data_t, p_control = 0.01, sample_all_time = FALSE, sort = TRUE)
+
+  set.seed(9999)
+  samples_f <- case_control_sampling_trials(expanded_data_f, p_control = 0.01, sample_all_time = FALSE, sort = TRUE)
+
+  expect_identical(samples_f, samples_t)
 })

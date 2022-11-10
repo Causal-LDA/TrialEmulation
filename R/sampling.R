@@ -1,12 +1,16 @@
 #' Case-control sampling from extended data
 #'
-#' @param data_prep Result from [data_preparation()]
-#' @param p_control Proportion of controls to select
-#' @param subset_condition Expression used to `subset` the trial data before sampling
+#' @param data_prep Result from [data_preparation()].
+#' @param p_control Proportion of controls to select at each follow-up time of each trial.
+#' @param subset_condition Expression used to [subset()] the trial data before sampling.
 #' @param sample_all_times Sample controls at all follow up times (TRUE) or only
-#' when there is a case at that follow up times (FALSE)?
+#' when there is a case at that follow up time (FALSE)?
+#' @param sort Sort data before sampling. This ensures results are identical between data prepared with
+#' `separate_files` TRUE and FALSE.
 #'
-#' @return A `data.frame` or a [split()] `data.frame` if  `length(p_control) > 1`.
+#' @return A `data.frame` or a [split()] `data.frame` if  `length(p_control) > 1`. An additional column
+#' containing sample weights will be added to the result. These can be included in the models fit with
+#' [data_modelling()].
 #' @export
 #' @examples
 #' dat <- trial_example[trial_example$id < 200, ]
@@ -20,15 +24,19 @@
 case_control_sampling_trials <- function(data_prep,
                                          p_control = NULL,
                                          sample_all_times = FALSE,
-                                         subset_condition) {
+                                         subset_condition,
+                                         sort = FALSE) {
+  assert_flag(sample_all_times)
+  assert_numeric(p_control, lower = 0, upper = 1, min.len = 1)
+
   if (use_subset <- !missing(subset_condition)) {
     subset_expr <- substitute(subset_condition)
   }
 
   if (inherits(data_prep, "RTE_data_prep_sep")) {
-    trial_samples <- sample_data_prep_sep(data_prep, p_control, sample_all_times, use_subset, subset_expr)
+    trial_samples <- sample_data_prep_sep(data_prep, p_control, sample_all_times, use_subset, subset_expr, sort)
   } else if (inherits(data_prep, "RTE_data_prep_dt")) {
-    trial_samples <- sample_data_prep_dt(data_prep, p_control, sample_all_times, use_subset, subset_expr)
+    trial_samples <- sample_data_prep_dt(data_prep, p_control, sample_all_times, use_subset, subset_expr, sort)
   } else {
     stop("Unknown data_prep object.")
   }
@@ -45,7 +53,8 @@ sample_data_prep_sep <- function(data_prep,
                                  p_control,
                                  sample_all_times,
                                  use_subset,
-                                 subset_expr) {
+                                 subset_expr,
+                                 sort) {
   trial_files <- data_prep$data
   exists <- vapply(trial_files, test_file_exists, logical(1L))
   if (any(!exists)) {
@@ -57,7 +66,7 @@ sample_data_prep_sep <- function(data_prep,
 
   lapply(trial_files, function(trial_file) {
     period_data <- rbind(template, fread(input = trial_file))
-    sample_from_period(period_data, p_control, use_subset, subset_expr, sample_all_times)
+    sample_from_period(period_data, p_control, use_subset, subset_expr, sample_all_times, sort)
   })
 }
 
@@ -66,9 +75,18 @@ sample_data_prep_dt <- function(data_prep,
                                 p_control,
                                 sample_all_times,
                                 use_subset,
-                                subset_expr) {
-  lapply(split(data_prep$data, by = "for_period"), function(period_data) {
-    sample_from_period(period_data, p_control, use_subset, subset_expr, sample_all_times)
+                                subset_expr,
+                                sort) {
+  periods <- sort(unique(data_prep$data$for_period))
+  lapply(periods, function(t) {
+    sample_from_period(
+      data_prep$data[data_prep$data$for_period == t, ],
+      p_control,
+      use_subset,
+      subset_expr,
+      sample_all_times,
+      sort
+    )
   })
 }
 
@@ -82,11 +100,13 @@ sample_data_prep_dt <- function(data_prep,
 #' @param subset_expr if `use_subset` is `TRUE` an expression
 #' @param sample_all_times Sample controls at all follow up times (TRUE) or only
 #' when there is a case at that follow up times (FALSE)?
+#' @param sort Sort data before subsetting for reproducibility.
 #'
-#' @return A data.frame containing sampled data for each follow up time. Contains column "Sample_id
+#' @return A data.frame containing sampled data for each follow up time. Contains column "sample_id"
 #' @noRd
-sample_from_period <- function(period_data, p_control, use_subset, subset_expr, sample_all_times) {
+sample_from_period <- function(period_data, p_control, use_subset, subset_expr, sample_all_times, sort = FALSE) {
   if (use_subset) period_data <- subset(period_data, eval(subset_expr))
+  if (isTRUE(sort)) setorderv(period_data, c("followup_time", "id"))
   followup_split <- split(period_data, by = "followup_time")
 
   all_samples <- lapply(p_control, function(p) {
