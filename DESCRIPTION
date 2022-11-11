@@ -1,6 +1,6 @@
 Package: RandomisedTrialsEmulation
 Title: Design and analysis of target trial emulation on observational data
-Version: 0.0.2.5
+Version: 0.0.2.6
 Authors@R: c(
     person("Roonak", "Rezvani", , "roonak.r74@gmail.com", role = c("aut", "cre"),
            comment = c(ORCID = "0000-0001-5580-5058")),
