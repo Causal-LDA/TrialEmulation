@@ -103,3 +103,23 @@ as_formula <- function(x) {
 add_rhs <- function(f1, f2) {
   update.formula(f1, substitute(~ . + add, list(add = formula.tools::rhs(f2))))
 }
+
+#' Extract Baseline Observations
+#'
+#' @param trial_file Path to an expanded trial csv file
+#' @param baseline_file Path to csv to save baseline observations
+#' @param quiet Don't print progress messages.
+#'
+#' @details
+#' Reads `trial_file` and saves the observations with `followup_time == 0` to `baseline_file` csv.
+#'
+#' @export
+extract_baseline <- function(trial_file, baseline_file, quiet = TRUE) {
+  # Dummy assignments for data.table
+  followup_time <- NULL
+
+  if (file.exists(trial_file)) {
+    quiet_msg("Extracting baseline observations from ", trial_file)
+    fwrite(fread(trial_file)[followup_time == 0, ], file = baseline_file)
+  }
+}

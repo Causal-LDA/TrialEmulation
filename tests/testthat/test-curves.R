@@ -1,38 +1,5 @@
-test_that("h_extract_baseline works works as expected", {
-  save_dir <- withr::local_tempdir(pattern = "curve", tempdir(TRUE))
 
-  trial_file <- tempfile(
-    "trial_data",
-    tmpdir = save_dir,
-    fileext = ".csv"
-  )
-
-  baseline_file <- tempfile(
-    "baseline_file",
-    tmpdir = save_dir,
-    fileext = ".csv"
-  )
-
-  object <- data.frame(
-    id = c(1, 1, 1, 2, 2, 3, 3, 3),
-    followup_time = c(0, 1, 2, 0, 1, 0, 1, 2),
-    outcome = c(0, 0, 1, 0, 1, 0, 0, 1)
-  )
-  write.csv(object, trial_file, row.names = FALSE)
-
-  h_extract_baseline(trial_file, baseline_file)
-
-  result <- read.csv(baseline_file, row.names = NULL)
-  expected <- data.frame(
-    id = c(1, 2, 3),
-    followup_time = c(0, 0, 0),
-    outcome = c(0, 0, 0)
-  )
-
-  expect_equal(result, expected)
-})
-
-test_that("predict_survival works as expected", {
+test_that("predict_cum_inc works as expected", {
   trial_ex <- RandomisedTrialsEmulation::trial_example
   trial_ex$catvarA <- as.factor(trial_ex$catvarA)
   trial_ex$catvarB <- as.factor(trial_ex$catvarB)
@@ -54,7 +21,7 @@ test_that("predict_survival works as expected", {
     quiet = TRUE
   )
 
-  result <- predict_survival(object, predict_times = c(1, 2, 3, 4, 5))
+  result <- predict_cum_inc(object, predict_times = c(1, 2, 3, 4, 5))
   expect_equal(
     result,
     list(
@@ -64,7 +31,7 @@ test_that("predict_survival works as expected", {
   )
 })
 
-test_that("sum_up_ci works as expected", {
+test_that("sum_up_cum_inc works as expected", {
   object <- list(
     trial_1 = matrix(
       c(
@@ -83,17 +50,17 @@ test_that("sum_up_ci works as expected", {
       byrow = TRUE
     )
   )
-  result <- sum_up_ci(object)
+  result <- sum_up_cum_inc(object)
   expect_equal(result, c(0.3000000, 0.4137500, 0.48471875))
 })
 
-test_that("ci_up_to works as expected", {
+test_that("cum_inc_up_to works as expected", {
   object <- matrix(
     c(0.1, 0.1, 0.1, 0.5, 0.2, 0.1),
     nrow = 2,
     byrow = TRUE
   )
-  result <- ci_up_to(object)
+  result <- cum_inc_up_to(object)
   expect_equal(result, c(0.600, 0.790, 0.916))
 })
 

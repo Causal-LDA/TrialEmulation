@@ -24,3 +24,37 @@ test_that("quiet_msg_time works as expected", {
     paste0("time: ", expected_time)
   )
 })
+
+test_that("extract_baseline works works as expected", {
+  save_dir <- withr::local_tempdir(pattern = "curve", tempdir(TRUE))
+
+  trial_file <- tempfile(
+    "trial_data",
+    tmpdir = save_dir,
+    fileext = ".csv"
+  )
+
+  baseline_file <- tempfile(
+    "baseline_file",
+    tmpdir = save_dir,
+    fileext = ".csv"
+  )
+
+  object <- data.frame(
+    id = c(1, 1, 1, 2, 2, 3, 3, 3),
+    followup_time = c(0, 1, 2, 0, 1, 0, 1, 2),
+    outcome = c(0, 0, 1, 0, 1, 0, 0, 1)
+  )
+  write.csv(object, trial_file, row.names = FALSE)
+
+  extract_baseline(trial_file, baseline_file)
+
+  result <- read.csv(baseline_file, row.names = NULL)
+  expected <- data.frame(
+    id = c(1, 2, 3),
+    followup_time = c(0, 0, 0),
+    outcome = c(0, 0, 0)
+  )
+
+  expect_equal(result, expected)
+})
