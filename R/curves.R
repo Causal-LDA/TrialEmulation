@@ -11,7 +11,7 @@
 #'
 #' @return A list of two data frames containing the cumulative incidences for each of the assigned treatment options.
 #' @export
-#'
+#' @importFrom stats .checkMFClasses coef delete.response model.frame model.matrix terms
 #' @examples
 #' model <- initiators(
 #'   data = trial_example,
