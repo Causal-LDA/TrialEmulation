@@ -20,10 +20,10 @@
 #'   first_period = 260,
 #'   last_period = 280
 #' )
-#' samples <- case_control_sampling_trials(expanded_data, p_control = 0.01, sample_all_time = FALSE)
+#' samples <- case_control_sampling_trials(expanded_data, p_control = 0.01, sample_all_time = TRUE)
 case_control_sampling_trials <- function(data_prep,
                                          p_control = NULL,
-                                         sample_all_times = FALSE,
+                                         sample_all_times = TRUE,
                                          subset_condition,
                                          sort = FALSE) {
   assert_flag(sample_all_times)
@@ -128,7 +128,7 @@ sample_from_period <- function(period_data, p_control, use_subset, subset_expr, 
 #'
 #' @return A data frame with the cases and the sampled controls
 #' @noRd
-do_sampling <- function(data, p_control = 0.01, sample_all_times = FALSE) {
+do_sampling <- function(data, p_control = 0.01, sample_all_times = TRUE) {
   sample_weight <- NULL
 
   ### cases occurred at each period and follow-up visit
