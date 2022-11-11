@@ -20,7 +20,7 @@
 #'
 #' predicted_ci <- predict(model, predict_times = 1:30, samples = 20)
 #'
-#' plot_data <- rbindlist(predicted_ci, idcol = "Treatment")
+#' plot_data <- data.table::rbindlist(predicted_ci, idcol = "Treatment")
 #' ggplot2::ggplot(plot_data, aes(x = followup_time, y = mean, colour = Treatment)) +
 #'   geom_point() +
 #'   geom_errorbar(aes(ymin = `2.5%`, ymax = `97.5%`))
