@@ -161,8 +161,7 @@ expand <- function(sw_data,
   switch_data <- data.table(id = sw_data[expand_index, id])
   switch_data[, period_new := sw_data[expand_index, period]]
   switch_data[, cumA_new := sw_data[expand_index, cumA]]
-  switch_data[, treatment_new := shift(sw_data[expand_index, treatment])]
-  switch_data[1, "treatment_new"] <- sw_data[1, treatment]
+  switch_data[, treatment_new := sw_data[expand_index, treatment]]
   if (use_censor == 1) {
     switch_data[, switch_new := sw_data[expand_index, switch]]
   } else {
@@ -181,8 +180,6 @@ expand <- function(sw_data,
 
   if (use_censor == 0) {
     switch_data[, dose := cumA_new - dosesum + treat]
-  } else {
-    switch_data[, treatment := init]
   }
 
   switch_data[followup_time == 0, switch_new := 0]

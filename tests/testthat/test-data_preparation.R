@@ -78,3 +78,30 @@ test_that("check_data_dir gives a warning for existing model files", {
     "contains model rds files. These may be overwritten."
   )
 })
+
+test_that("data_preparation has correct values for 'treatment'", {
+  set.seed(2002211011)
+  simdata_censored <- data_gen_censored(1000, 10)
+  prep_PP_data <- data_preparation(
+    data = simdata_censored,
+    id = "ID",
+    period = "t",
+    treatment = "A",
+    outcome = "Y",
+    eligible = "eligible",
+    outcome_cov = ~X1,
+    model_var = "assigned_treatment",
+    separate_files = FALSE,
+    quiet = TRUE
+  )
+
+  prep_PP_data$data[, t := for_period + followup_time]
+  compare <- merge(
+    x = prep_PP_data$data[, c("id", "t", "treatment", "outcome")],
+    y = simdata_censored[, c("ID", "t", "A", "Y")],
+    by.x = c("id", "t"),
+    by.y = c("ID", "t")
+  )
+  expect_equal(compare$treatment, compare$A)
+  expect_equal(compare$outcome, compare$Y)
+})
