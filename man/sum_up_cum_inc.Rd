@@ -2,7 +2,7 @@
 % Please edit documentation in R/curves.R
 \name{sum_up_cum_inc}
 \alias{sum_up_cum_inc}
-\title{Helper to Calculate CI}
+\title{Helper to Calculate Cumulative Incidence}
 \usage{
 sum_up_cum_inc(p_mat_list)
 }
@@ -14,7 +14,7 @@ All matrices must have the followup times (i.e. same number of columns).}
 A vector of cumulative incidences.
 }
 \description{
-Helper to Calculate CI
+Helper to Calculate Cumulative Incidence
 }
 \examples{
 surv_prob_list <- list(
@@ -33,5 +33,5 @@ surv_prob_list <- list(
     nrow = 2, byrow = TRUE
   )
 )
-sum_up_ci(surv_prob_list)
+sum_up_cum_inc(surv_prob_list)
 }

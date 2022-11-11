@@ -2,25 +2,16 @@
 % Please edit documentation in R/curves.R
 \name{predict.RTE_model}
 \alias{predict.RTE_model}
-\title{Predict Cumulative Incidence or Survival with Confidence Intervals}
+\title{Predict Cumulative Incidence with Confidence Intervals}
 \usage{
-\method{predict}{RTE_model}(
-  object,
-  newdata,
-  followup_time,
-  type = c("cum_inc", "surv"),
-  conf_int = TRUE,
-  samples = 100
-)
+\method{predict}{RTE_model}(object, newdata, predict_times, conf_int = TRUE, samples = 100)
 }
 \arguments{
-\item{object}{Object from \code{\link[=data_modelling]{data_modelling()}}}
+\item{object}{Object from \code{\link[=data_modelling]{data_modelling()}} or \code{\link[=initiators]{initiators()}}.}
 
 \item{newdata}{Baseline trial data to predict cumulative incidence or survival for.}
 
-\item{followup_time}{Follow-up times to predict. Any times given in newdata will be ignored.}
-
-\item{type}{Predict cumulative incidence ("cum_inc") or survival ("surv").}
+\item{predict_times}{Follow-up times to predict. Any times given in newdata will be ignored.}
 
 \item{conf_int}{Calculate a confidence interval using coefficient samples from a multivariate normal distribution
 based on the robust covariance matrix.}
@@ -28,8 +19,21 @@ based on the robust covariance matrix.}
 \item{samples}{The number of samples of the coefficients for prediction models.}
 }
 \value{
-A list of predictions
+A list of two data frames containing the cumulative incidences for each of the assigned treatment options.
 }
 \description{
-Predict Cumulative Incidence or Survival with Confidence Intervals
+Predict Cumulative Incidence with Confidence Intervals
+}
+\examples{
+model <- initiators(
+  data = trial_example,
+  outcome_cov = c("catvarA", "catvarB", "catvarC", "nvarA", "nvarB", "nvarC"),
+)
+predicted_ci <- predict(model, predict_times = 1:30, samples = 20)
+ggplot2::ggplot(
+  rbindlist(predicted_ci, idcol = "Treatment"),
+  aes(x = followup_time, y = mean, colour = Treatment)
+) +
+  geom_point() +
+  geom_errorbar(aes(ymin = `2.5\%`, ymax = `97.5\%`))
 }
