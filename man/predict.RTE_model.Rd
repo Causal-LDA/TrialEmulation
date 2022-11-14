@@ -30,10 +30,24 @@ model <- initiators(
   outcome_cov = c("catvarA", "catvarB", "catvarC", "nvarA", "nvarB", "nvarC"),
 )
 
-predicted_ci <- predict(model, predict_times = 1:30, samples = 20)
+predicted_ci <- predict(model, predict_times = 0:30, samples = 20)
 
-plot_data <- data.table::rbindlist(predicted_ci, idcol = "Treatment")
-ggplot2::ggplot(plot_data, aes(x = followup_time, y = mean, colour = Treatment)) +
-  geom_point() +
-  geom_errorbar(aes(ymin = `2.5\%`, ymax = `97.5\%`))
+# Plot the cumulative incidence curves for each treatment
+plot(predicted_ci[[1]]$followup_time, predicted_ci[[1]]$estimate, type = 'l',
+ xlab = "Follow-up Time", ylab = "Cumulative Incidence")
+lines(predicted_ci[[1]]$followup_time, predicted_ci[[1]]$`2.5\%`, lty = 2)
+lines(predicted_ci[[1]]$followup_time, predicted_ci[[1]]$`97.5\%`, lty = 2)
+
+lines(predicted_ci[[2]]$followup_time, predicted_ci[[2]]$estimate, type = 'l', col = 2)
+lines(predicted_ci[[2]]$followup_time, predicted_ci[[2]]$`2.5\%`, lty = 2, col = 2)
+lines(predicted_ci[[2]]$followup_time, predicted_ci[[2]]$`97.5\%`, lty = 2, col = 2)
+legend("topleft", title = "Assigned Treatment", legend = c("0", "1"), col = 1:2, lty = 1)
+
+# Plot the difference in cumulative incidence over follow up
+plot(predicted_ci[[3]]$followup_time, predicted_ci[[3]]$estimate, type = 'l',
+ xlab = "Follow-up Time", ylab = "Difference in Cumulative Incidence",
+ ylim = c(-0.1, 0.1))
+lines(predicted_ci[[3]]$followup_time, predicted_ci[[3]]$`2.5\%`, lty = 2)
+lines(predicted_ci[[3]]$followup_time, predicted_ci[[3]]$`97.5\%`, lty = 2)
+
 }

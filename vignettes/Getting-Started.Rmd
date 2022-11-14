@@ -189,7 +189,7 @@ we can use the `data_template` returned by `data_preparation()`.
 ```{r predict}
 new_data <- data.table::fread(file.path(working_dir, "trial_1.csv"))
 new_data <- rbind(data.table::as.data.table(prep_data$data_template), new_data)
-model_preds <- predict_cum_inc(model = model_result$model, predict_times = c(1:40), newdata = new_data)
+model_preds <- predict_cum_inc(model = model_result$model, predict_times = c(0:40), newdata = new_data)
 ```
 
 We can easily compare the curves visually.
@@ -201,6 +201,19 @@ lines(model_preds$trt_1, col = 2)
 
 ```{r plot_cuminc_diff}
 plot(model_preds$trt_1 - model_preds$trt_0, ty = "l", ylab = "Cumulative Incidence Difference", xlab = "Follow-up Time")
+```
+
+
+```{r}
+model_preds_new <- predict(model_result, predict_times = c(0:40), newdata = new_data)
+plot(
+  model_preds_new$difference$followup_time,
+  model_preds_new$difference$estimate,
+  ty = "l", ylab = "Cumulative Incidence Difference",
+  xlab = "Follow-up Time"
+)
+lines(model_preds_new$difference$followup_time, model_preds_new$difference$`2.5%`, lty = 2)
+lines(model_preds_new$difference$followup_time, model_preds_new$difference$`97.5%`, lty = 2)
 ```
 
 

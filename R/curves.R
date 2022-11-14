@@ -18,12 +18,30 @@
 #'   outcome_cov = c("catvarA", "catvarB", "catvarC", "nvarA", "nvarB", "nvarC"),
 #' )
 #'
-#' predicted_ci <- predict(model, predict_times = 1:30, samples = 20)
+#' predicted_ci <- predict(model, predict_times = 0:30, samples = 20)
 #'
-#' plot_data <- data.table::rbindlist(predicted_ci, idcol = "Treatment")
-#' ggplot2::ggplot(plot_data, aes(x = followup_time, y = mean, colour = Treatment)) +
-#'   geom_point() +
-#'   geom_errorbar(aes(ymin = `2.5%`, ymax = `97.5%`))
+#' # Plot the cumulative incidence curves for each treatment
+#' plot(predicted_ci[[1]]$followup_time, predicted_ci[[1]]$estimate,
+#'   type = "l",
+#'   xlab = "Follow-up Time", ylab = "Cumulative Incidence"
+#' )
+#' lines(predicted_ci[[1]]$followup_time, predicted_ci[[1]]$`2.5%`, lty = 2)
+#' lines(predicted_ci[[1]]$followup_time, predicted_ci[[1]]$`97.5%`, lty = 2)
+#'
+#' lines(predicted_ci[[2]]$followup_time, predicted_ci[[2]]$estimate, type = "l", col = 2)
+#' lines(predicted_ci[[2]]$followup_time, predicted_ci[[2]]$`2.5%`, lty = 2, col = 2)
+#' lines(predicted_ci[[2]]$followup_time, predicted_ci[[2]]$`97.5%`, lty = 2, col = 2)
+#' legend("topleft", title = "Assigned Treatment", legend = c("0", "1"), col = 1:2, lty = 1)
+#'
+#' # Plot the difference in cumulative incidence over follow up
+#' plot(predicted_ci[[3]]$followup_time, predicted_ci[[3]]$estimate,
+#'   type = "l",
+#'   xlab = "Follow-up Time", ylab = "Difference in Cumulative Incidence",
+#'   ylim = c(-0.1, 0.1)
+#' )
+#' lines(predicted_ci[[3]]$followup_time, predicted_ci[[3]]$`2.5%`, lty = 2)
+#' lines(predicted_ci[[3]]$followup_time, predicted_ci[[3]]$`97.5%`, lty = 2)
+#'
 predict.RTE_model <- function(object,
                               newdata,
                               predict_times,
@@ -31,35 +49,14 @@ predict.RTE_model <- function(object,
                               samples = 100) {
   assert_class(object$model, "glm")
   model <- object$model
-  required_vars <- setdiff(all.vars(model$formula), "outcome")
 
   assert_integerish(predict_times, lower = 0, min.len = 1)
   assert_flag(conf_int)
   assert_int(samples, lower = 1)
 
-  if (missing(newdata)) {
-    newdata <- model$data[, required_vars, with = FALSE]
-    newdata <- newdata[newdata$followup_time == 0, ]
-  } else {
-    assert_data_frame(newdata, min.rows = 1)
-    assert_names(colnames(newdata), must.include = required_vars)
-    newdata <- data.table(newdata)[, required_vars, with = FALSE]
-    newdata <- newdata[newdata$followup_time == 0, ]
-    col_attr_model <- lapply(model$data[, required_vars, with = FALSE], attributes)
-    col_attr_newdata <- lapply(newdata, attributes)
-    if (!isTRUE(all_eq <- all.equal(col_attr_model, col_attr_newdata))) {
-      warning("Attributes of newdata are do not match data used for fitting: ", all_eq)
-      message("Attempting to fix.")
-      newdata <- rbind(model$data[0, required_vars, with = FALSE], newdata)
-    }
-  }
-
-  n_baseline <- nrow(newdata)
-  newdata <- newdata[rep(seq_len(n_baseline), each = length(predict_times)), ]
-  newdata$followup_time <- rep(predict_times, times = n_baseline)
+  newdata <- check_newdata(newdata, model, predict_times)
 
   coefs_mat <- matrix(coef(model), nrow = 1)
-
   if (conf_int) {
     if (!test_matrix(object$robust$matrix, nrow = ncol(coefs_mat), ncol = ncol(coefs_mat))) {
       stop("Valid covariance matrix not found in object$robust$matrix.")
@@ -91,18 +88,65 @@ predict.RTE_model <- function(object,
     }
   )
 
-  lapply(results, function(trt_list) {
+  treatment_stats <- lapply(results, function(trt_list) {
     cum_inc_matrix <- matrix(unlist(trt_list), ncol = length(trt_list))
-    quantiles <- apply(cum_inc_matrix, 1, quantile, probs = c(0.025, 0.5, 0.975))
+    quantiles <- apply(cum_inc_matrix, 1, quantile, probs = c(0.025, 0.975))
     data.frame(
       followup_time = predict_times,
-      mean = rowMeans(cum_inc_matrix),
-      median = quantiles[2, ],
+      estimate = cum_inc_matrix[, 1],
       `2.5%` = quantiles[1, ],
-      `97.5%` = quantiles[3, ],
+      `97.5%` = quantiles[2, ],
       check.names = FALSE
     )
   })
+
+  diff_mat <- matrix(unlist(results[[2]]), ncol = length(results[[2]])) -
+    matrix(unlist(results[[1]]), ncol = length(results[[2]]))
+  quantiles <- apply(diff_mat, 1, quantile, probs = c(0.025, 0.975))
+  difference_stats <- data.frame(
+    followup_time = predict_times,
+    estimate = diff_mat[, 1],
+    `2.5%` = quantiles[1, ],
+    `97.5%` = quantiles[2, ],
+    check.names = FALSE
+  )
+
+  c(treatment_stats, difference = list(difference_stats))
+}
+
+
+
+#' Check Data used for Prediction
+#'
+#' @param newdata new data to predict, or missing.
+#' @param model glm model object.
+#' @param predict_times times to predict to add to resulting newdata.
+#' @noRd
+#' @return A `newdata` data.frame
+check_newdata <- function(newdata, model, predict_times) {
+  required_vars <- setdiff(all.vars(model$formula), "outcome")
+  if (missing(newdata)) {
+    newdata <- model$data[, required_vars, with = FALSE]
+    newdata <- newdata[newdata$followup_time == 0, ]
+  } else {
+    assert_data_frame(newdata, min.rows = 1)
+    assert_names(colnames(newdata), must.include = required_vars)
+    newdata <- data.table(newdata)[, required_vars, with = FALSE]
+    newdata <- newdata[newdata$followup_time == 0, ]
+    col_attr_model <- lapply(model$data[, required_vars, with = FALSE], attributes)
+    col_attr_newdata <- lapply(newdata, attributes)
+    if (!isTRUE(all_eq <- all.equal(col_attr_model, col_attr_newdata))) {
+      warning("Attributes of newdata are do not match data used for fitting: ", all_eq)
+      message("Attempting to fix.")
+      newdata <- rbind(model$data[0, required_vars, with = FALSE], newdata)
+    }
+  }
+
+  n_baseline <- nrow(newdata)
+  newdata <- newdata[rep(seq_len(n_baseline), times = length(predict_times)), ]
+  newdata$followup_time <- rep(predict_times, each = n_baseline)
+
+  newdata
 }
 
 #' Predict Cumulative Incidence
