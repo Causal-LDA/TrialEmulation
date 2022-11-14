@@ -4,10 +4,13 @@
 #'
 #' @param object Object from [data_modelling()] or [initiators()].
 #' @param newdata Baseline trial data to predict cumulative incidence or survival for.
+#' @param type Type of values to calculate. The default is cumulative incidence (`"cum_inc"`). Other options may be
+#'  supported in future.
 #' @param predict_times Follow-up times to predict. Any times given in newdata will be ignored.
 #' @param conf_int Calculate a confidence interval using coefficient samples from a multivariate normal distribution
 #' based on the robust covariance matrix.
 #' @param samples The number of samples of the coefficients for prediction models.
+#' @param ... Further arguments passed to or from other methods.
 #'
 #' @return A list of two data frames containing the cumulative incidences for each of the assigned treatment options.
 #' @export
@@ -46,7 +49,9 @@ predict.RTE_model <- function(object,
                               newdata,
                               predict_times,
                               conf_int = TRUE,
-                              samples = 100) {
+                              samples = 100,
+                              type = "cum_inc",
+                              ...) {
   assert_class(object$model, "glm")
   model <- object$model
 
@@ -58,7 +63,7 @@ predict.RTE_model <- function(object,
 
   coefs_mat <- matrix(coef(model), nrow = 1)
   if (conf_int) {
-    if (!test_matrix(object$robust$matrix, nrow = ncol(coefs_mat), ncol = ncol(coefs_mat))) {
+    if (!test_matrix(object$robust$matrix, nrows = ncol(coefs_mat), ncols = ncol(coefs_mat))) {
       stop("Valid covariance matrix not found in object$robust$matrix.")
     }
     coefs_mat <- rbind(
@@ -93,7 +98,7 @@ predict.RTE_model <- function(object,
     quantiles <- apply(cum_inc_matrix, 1, quantile, probs = c(0.025, 0.975))
     data.frame(
       followup_time = predict_times,
-      estimate = cum_inc_matrix[, 1],
+      cum_inc = cum_inc_matrix[, 1],
       `2.5%` = quantiles[1, ],
       `97.5%` = quantiles[2, ],
       check.names = FALSE
@@ -105,7 +110,7 @@ predict.RTE_model <- function(object,
   quantiles <- apply(diff_mat, 1, quantile, probs = c(0.025, 0.975))
   difference_stats <- data.frame(
     followup_time = predict_times,
-    estimate = diff_mat[, 1],
+    cum_inc_diff = diff_mat[, 1],
     `2.5%` = quantiles[1, ],
     `97.5%` = quantiles[2, ],
     check.names = FALSE

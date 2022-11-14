@@ -4,7 +4,15 @@
 \alias{predict.RTE_model}
 \title{Predict Cumulative Incidence with Confidence Intervals}
 \usage{
-\method{predict}{RTE_model}(object, newdata, predict_times, conf_int = TRUE, samples = 100)
+\method{predict}{RTE_model}(
+  object,
+  newdata,
+  predict_times,
+  conf_int = TRUE,
+  samples = 100,
+  type = "cum_inc",
+  ...
+)
 }
 \arguments{
 \item{object}{Object from \code{\link[=data_modelling]{data_modelling()}} or \code{\link[=initiators]{initiators()}}.}
@@ -17,6 +25,11 @@
 based on the robust covariance matrix.}
 
 \item{samples}{The number of samples of the coefficients for prediction models.}
+
+\item{type}{Type of values to calculate. The default is cumulative incidence (\code{"cum_inc"}). Other options may be
+supported in future.}
+
+\item{...}{Further arguments passed to or from other methods.}
 }
 \value{
 A list of two data frames containing the cumulative incidences for each of the assigned treatment options.

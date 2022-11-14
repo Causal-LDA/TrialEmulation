@@ -195,12 +195,13 @@ model_preds <- predict_cum_inc(model = model_result$model, predict_times = c(0:4
 We can easily compare the curves visually.
 
 ```{r plot_cuminc}
-plot(model_preds$trt_0, ty = "l", ylab = "Cumulative Incidence", xlab = "Follow-up Time")
-lines(model_preds$trt_1, col = 2)
+plot(c(0:40), model_preds$trt_0, ty = "l", ylab = "Cumulative Incidence", xlab = "Follow-up Time")
+lines(c(0:40), model_preds$trt_1, col = 2)
 ```
 
 ```{r plot_cuminc_diff}
-plot(model_preds$trt_1 - model_preds$trt_0, ty = "l", ylab = "Cumulative Incidence Difference", xlab = "Follow-up Time")
+ci_differences <- model_preds$trt_1 - model_preds$trt_0
+plot(c(0:40), ci_differences, ty = "l", ylab = "Cumulative Incidence Difference", xlab = "Follow-up Time")
 ```
 
 
