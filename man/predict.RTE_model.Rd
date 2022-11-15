@@ -10,14 +10,15 @@
   predict_times,
   conf_int = TRUE,
   samples = 100,
-  type = "cum_inc",
+  type = c("cum_inc", "survival", "response"),
   ...
 )
 }
 \arguments{
 \item{object}{Object from \code{\link[=data_modelling]{data_modelling()}} or \code{\link[=initiators]{initiators()}}.}
 
-\item{newdata}{Baseline trial data to predict cumulative incidence or survival for.}
+\item{newdata}{Baseline trial data to predict cumulative incidence or survival for. If \code{newdata} contains
+rows with \code{followup_time > 0} these will be removed.}
 
 \item{predict_times}{Follow-up times to predict. Any times given in newdata will be ignored.}
 

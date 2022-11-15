@@ -3,7 +3,8 @@
 #' Predict Cumulative Incidence with Confidence Intervals
 #'
 #' @param object Object from [data_modelling()] or [initiators()].
-#' @param newdata Baseline trial data to predict cumulative incidence or survival for.
+#' @param newdata Baseline trial data to predict cumulative incidence or survival for. If `newdata` contains
+#' rows with `followup_time > 0` these will be removed.
 #' @param type Type of values to calculate. The default is cumulative incidence (`"cum_inc"`). Other options may be
 #'  supported in future.
 #' @param predict_times Follow-up times to predict. Any times given in newdata will be ignored.
@@ -50,73 +51,61 @@ predict.RTE_model <- function(object,
                               predict_times,
                               conf_int = TRUE,
                               samples = 100,
-                              type = "cum_inc",
+                              type = c("cum_inc", "survival", "response"),
                               ...) {
   assert_class(object$model, "glm")
   model <- object$model
-
+  type <- match.arg(type)
   assert_integerish(predict_times, lower = 0, min.len = 1)
   assert_flag(conf_int)
   assert_int(samples, lower = 1)
 
-  newdata <- check_newdata(newdata, model, predict_times)
-
   coefs_mat <- matrix(coef(model), nrow = 1)
   if (conf_int) {
-    if (!test_matrix(object$robust$matrix, nrows = ncol(coefs_mat), ncols = ncol(coefs_mat))) {
-      stop("Valid covariance matrix not found in object$robust$matrix.")
-    }
-    coefs_mat <- rbind(
-      coefs_mat,
-      MASS::mvrnorm(n = samples, mu = coef(model), Sigma = object$robust$matrix)
-    )
+    assert_matrix(object$robust$matrix, nrows = ncol(coefs_mat), ncols = ncol(coefs_mat))
+    coefs_mat <- rbind(coefs_mat, MASS::mvrnorm(n = samples, mu = coef(model), Sigma = object$robust$matrix))
   }
 
+  newdata <- check_newdata(newdata, model, predict_times)
   model_terms <- delete.response(terms(model))
   model_frame <- model.frame(model_terms, newdata, xlev = model$xlevels)
   if (!is.null(data_classes <- attr(model_terms, "dataClasses"))) .checkMFClasses(data_classes, model_frame)
   model_matrix <- model.matrix(model_terms, model_frame, contrasts.arg = model$contrasts)
-  treatment_col <- which(colnames(model_matrix) == "assigned_treatment")
 
-  results <- lapply(
+  pred_fun <- if (type == "survival") {
+    calculate_survival
+  } else if (type == "cum_inc") {
+    calculate_cum_inc
+  } else if (type == "response") {
+    function(x) x
+  }
+
+  pred_list <- lapply(
     c(assigned_treatment_0 = 0, assigned_treatment_1 = 1),
-    function(treat) {
-      model_matrix[, treatment_col] <- treat
-      pred_list <- lapply(seq_len(nrow(coefs_mat)), function(coef_i) {
-        sum_up_cum_inc(
-          list(matrix(
-            model$family$linkinv(model_matrix %*% t(coefs_mat[coef_i, , drop = FALSE])),
-            ncol = length(predict_times)
-          ))
-        )
-      })
+    calculate_predictions,
+    model_matrix = model_matrix,
+    pred_fun = pred_fun,
+    coefs_mat = coefs_mat,
+    linkinv = model$family$linkinv,
+    matrix_n_col = length(predict_times)
+  )
+
+  if (type %in% c("cum_inc", "survival")) {
+    pred_list$difference <- pred_list$assigned_treatment_1 - pred_list$assigned_treatment_0
+  }
+
+  mapply(
+    pred_matrix = pred_list,
+    col_names = if (type == "response") rep(type, 2) else paste0(type, c("", "", "_diff")),
+    SIMPLIFY = FALSE,
+    FUN = function(pred_matrix, col_names) {
+      quantiles <- apply(pred_matrix, 1, quantile, probs = c(0.025, 0.975))
+      setNames(
+        data.frame(predict_times, pred_matrix[, 1], quantiles[1, ], quantiles[2, ]),
+        c("followup_time", col_names, "2.5%", "97.5%")
+      )
     }
   )
-
-  treatment_stats <- lapply(results, function(trt_list) {
-    cum_inc_matrix <- matrix(unlist(trt_list), ncol = length(trt_list))
-    quantiles <- apply(cum_inc_matrix, 1, quantile, probs = c(0.025, 0.975))
-    data.frame(
-      followup_time = predict_times,
-      cum_inc = cum_inc_matrix[, 1],
-      `2.5%` = quantiles[1, ],
-      `97.5%` = quantiles[2, ],
-      check.names = FALSE
-    )
-  })
-
-  diff_mat <- matrix(unlist(results[[2]]), ncol = length(results[[2]])) -
-    matrix(unlist(results[[1]]), ncol = length(results[[2]]))
-  quantiles <- apply(diff_mat, 1, quantile, probs = c(0.025, 0.975))
-  difference_stats <- data.frame(
-    followup_time = predict_times,
-    cum_inc_diff = diff_mat[, 1],
-    `2.5%` = quantiles[1, ],
-    `97.5%` = quantiles[2, ],
-    check.names = FALSE
-  )
-
-  c(treatment_stats, difference = list(difference_stats))
 }
 
 
@@ -284,6 +273,7 @@ cum_inc_up_to <- function(p_mat) {
   result
 }
 
+
 #' @rdname cum_inc_up_to
 #' @export
 survival_up_to <- function(p_mat) {
@@ -291,4 +281,28 @@ survival_up_to <- function(p_mat) {
   result <- c(1, rowMeans(apply(1 - p_mat, 1, cumprod)))
   assert_monotonic(result, increasing = FALSE)
   result
+}
+
+
+calculate_survival <- function(p_mat) {
+  assert_matrix(p_mat, mode = "numeric")
+  result <- rowMeans(apply(1 - p_mat, 1, cumprod))
+  assert_monotonic(result, increasing = FALSE)
+  result
+}
+
+calculate_cum_inc <- function(p_mat) {
+  assert_matrix(p_mat, mode = "numeric")
+  result <- 1 - calculate_survival(p_mat)
+  assert_monotonic(result)
+  result
+}
+
+calculate_predictions <- function(model_matrix, treatment_value, pred_fun, coefs_mat, linkinv, matrix_n_col) {
+  treatment_col <- which(colnames(model_matrix) == "assigned_treatment")
+  model_matrix[, treatment_col] <- treatment_value
+  pred_list <- lapply(seq_len(nrow(coefs_mat)), function(coef_i) {
+    pred_fun(matrix(linkinv(model_matrix %*% t(coefs_mat[coef_i, , drop = FALSE])), ncol = matrix_n_col))
+  })
+  matrix(unlist(pred_list), ncol = length(pred_list))
 }
