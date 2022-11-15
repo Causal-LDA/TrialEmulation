@@ -189,32 +189,22 @@ we can use the `data_template` returned by `data_preparation()`.
 ```{r predict}
 new_data <- data.table::fread(file.path(working_dir, "trial_1.csv"))
 new_data <- rbind(data.table::as.data.table(prep_data$data_template), new_data)
-model_preds <- predict_cum_inc(model = model_result$model, predict_times = c(0:40), newdata = new_data)
+model_preds <- predict(model_result, predict_times = c(0:40), newdata = new_data, type = "cum_inc")
 ```
 
-We can easily compare the curves visually.
-
-```{r plot_cuminc}
-plot(c(0:40), model_preds$trt_0, ty = "l", ylab = "Cumulative Incidence", xlab = "Follow-up Time")
-lines(c(0:40), model_preds$trt_1, col = 2)
-```
-
-```{r plot_cuminc_diff}
-ci_differences <- model_preds$trt_1 - model_preds$trt_0
-plot(c(0:40), ci_differences, ty = "l", ylab = "Cumulative Incidence Difference", xlab = "Follow-up Time")
-```
-
+The `predict` function returns a list of 3 data frames: predictions for assigned treatment 0, for assigned treatment 1
+and for the difference. It possible to change the type of predicted values, either cumulative incidence or survival.
 
 ```{r}
-model_preds_new <- predict(model_result, predict_times = c(0:40), newdata = new_data)
 plot(
-  model_preds_new$difference$followup_time,
-  model_preds_new$difference$estimate,
+  model_preds$difference$followup_time,
+  model_preds$difference$cum_inc_diff,
   ty = "l", ylab = "Cumulative Incidence Difference",
-  xlab = "Follow-up Time"
+  xlab = "Follow-up Time",
+  ylim = c(-0.15, 0.02)
 )
-lines(model_preds_new$difference$followup_time, model_preds_new$difference$`2.5%`, lty = 2)
-lines(model_preds_new$difference$followup_time, model_preds_new$difference$`97.5%`, lty = 2)
+lines(model_preds$difference$followup_time, model_preds$difference$`2.5%`, lty = 2)
+lines(model_preds$difference$followup_time, model_preds$difference$`97.5%`, lty = 2)
 ```
 
 

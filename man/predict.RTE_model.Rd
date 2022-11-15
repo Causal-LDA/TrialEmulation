@@ -10,7 +10,7 @@
   predict_times,
   conf_int = TRUE,
   samples = 100,
-  type = c("cum_inc", "survival", "response"),
+  type = c("cum_inc", "survival"),
   ...
 )
 }
