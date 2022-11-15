@@ -21,7 +21,8 @@ Imports:
     formula.tools,
     parglm,
     Rcpp,
-    sandwich
+    sandwich,
+    MASS
 Suggests: 
     knitr,
     rmarkdown,

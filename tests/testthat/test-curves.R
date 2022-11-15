@@ -1,38 +1,5 @@
-test_that("h_extract_baseline works works as expected", {
-  save_dir <- withr::local_tempdir(pattern = "curve", tempdir(TRUE))
 
-  trial_file <- tempfile(
-    "trial_data",
-    tmpdir = save_dir,
-    fileext = ".csv"
-  )
-
-  baseline_file <- tempfile(
-    "baseline_file",
-    tmpdir = save_dir,
-    fileext = ".csv"
-  )
-
-  object <- data.frame(
-    id = c(1, 1, 1, 2, 2, 3, 3, 3),
-    followup_time = c(0, 1, 2, 0, 1, 0, 1, 2),
-    outcome = c(0, 0, 1, 0, 1, 0, 0, 1)
-  )
-  write.csv(object, trial_file, row.names = FALSE)
-
-  h_extract_baseline(trial_file, baseline_file)
-
-  result <- read.csv(baseline_file, row.names = NULL)
-  expected <- data.frame(
-    id = c(1, 2, 3),
-    followup_time = c(0, 0, 0),
-    outcome = c(0, 0, 0)
-  )
-
-  expect_equal(result, expected)
-})
-
-test_that("predict_survival works as expected", {
+test_that("predict.RTE_model works as expected", {
   trial_ex <- RandomisedTrialsEmulation::trial_example
   trial_ex$catvarA <- as.factor(trial_ex$catvarA)
   trial_ex$catvarB <- as.factor(trial_ex$catvarB)
@@ -54,55 +21,42 @@ test_that("predict_survival works as expected", {
     quiet = TRUE
   )
 
-  result <- predict_survival(object, predict_times = c(1, 2, 3, 4, 5))
-  expect_equal(
-    result,
-    list(
-      trt_0 = c(0.00468820988443441, 0.00934429889707655, 0.0139688804282337, 0.0185625375205256, 0.0231257743083843),
-      trt_1 = c(0.00359094291314119, 0.00716409318950961, 0.0107197162554207, 0.0142580669986666, 0.0177793599907887)
-    )
+  set.seed(100)
+  result <- predict(object, predict_times = 0:5, conf_int = FALSE)
+  expect_list(result, "data.frame", any.missing = FALSE, len = 3)
+  expect_snapshot_value(result, style = "json2", tolerance = 1e-06)
+
+  set.seed(200)
+  surv_result <- predict(object, predict_times = 0:8, conf_int = TRUE, type = "survival", samples = 5)
+  expect_list(result, "data.frame", any.missing = FALSE, len = 3)
+  expect_snapshot_value(result, style = "json2", tolerance = 1e-06)
+
+  set.seed(300)
+  new_data <- vignette_switch_data[vignette_switch_data$followup_time == 0 & vignette_switch_data$for_period == 300, ]
+  expect_warning(
+    result_newdata <- predict(object, newdata = new_data, predict_times = 0:8, conf_int = TRUE, samples = 5),
+    "Attributes of newdata do not match data used for fitting. Attempting to fix."
   )
+  expect_list(result_newdata, "data.frame", any.missing = FALSE, len = 3)
+  expect_snapshot_value(result_newdata, style = "json2", tolerance = 1e-06)
 })
 
-test_that("sum_up_ci works as expected", {
-  object <- list(
-    trial_1 = matrix(
-      c(
-        0.1, 0.1, 0.1,
-        0.5, 0.2, 0.1
-      ),
-      nrow = 2,
-      byrow = TRUE
-    ),
-    trial_2 = matrix(
-      c(
-        0.15, 0.15, 0.15,
-        0.45, 0.25, 0.1
-      ),
-      nrow = 2,
-      byrow = TRUE
-    )
-  )
-  result <- sum_up_ci(object)
-  expect_equal(result, c(0.3000000, 0.4137500, 0.48471875))
-})
-
-test_that("ci_up_to works as expected", {
+test_that("calculate_cum_inc works as expected", {
   object <- matrix(
     c(0.1, 0.1, 0.1, 0.5, 0.2, 0.1),
     nrow = 2,
     byrow = TRUE
   )
-  result <- ci_up_to(object)
-  expect_equal(result, c(0.600, 0.790, 0.916))
+  result <- calculate_cum_inc(object)
+  expect_equal(result, c(0.3000, 0.3950, 0.4555))
 })
 
-test_that("survival_up_to works as expected", {
+test_that("calculate_survival works as expected", {
   object <- matrix(
     c(0.1, 0.1, 0.1, 0.5, 0.2, 0.1),
     nrow = 2,
     byrow = TRUE
   )
-  result <- survival_up_to(object)
-  expect_equal(result, c(1.0000, 0.7000, 0.6050, 0.5445))
+  result <- calculate_survival(object)
+  expect_equal(result, c(0.7000, 0.6050, 0.5445))
 })

@@ -141,7 +141,7 @@ list.files(working_dir, pattern = "trial_")
 Each of these csv files contains the data for the trial starting at period `_i`.
 To create a manageable dataset for the final analysis we can sample from these trials.
 
-Here we sample 10% of the patients at each follow-up time in each trial without an event. All 
+Here we sample 10% of the patients without an event at each follow-up time in each trial. All 
 observations with events are included.
 ```{r sample}
 sampled_data <- case_control_sampling_trials(prep_data, p_control = 0.1, sample_all_times = TRUE)
@@ -189,18 +189,22 @@ we can use the `data_template` returned by `data_preparation()`.
 ```{r predict}
 new_data <- data.table::fread(file.path(working_dir, "trial_1.csv"))
 new_data <- rbind(data.table::as.data.table(prep_data$data_template), new_data)
-model_preds <- predict_survival(model = model_result$model, predict_times = c(1:40), newdata = new_data)
+model_preds <- predict(model_result, predict_times = c(0:40), newdata = new_data, type = "cum_inc")
 ```
 
-We can easily compare the curves visually.
+The `predict` function returns a list of 3 data frames: predictions for assigned treatment 0, for assigned treatment 1
+and for the difference. It possible to change the type of predicted values, either cumulative incidence or survival.
 
-```{r plot_cuminc}
-plot(model_preds$trt_0, ty = "l", ylab = "Cumulative Incidence", xlab = "Follow-up Time")
-lines(model_preds$trt_1, col = 2)
-```
-
-```{r plot_cuminc_diff}
-plot(model_preds$trt_1 - model_preds$trt_0, ty = "l", ylab = "Cumulative Incidence Difference", xlab = "Follow-up Time")
+```{r}
+plot(
+  model_preds$difference$followup_time,
+  model_preds$difference$cum_inc_diff,
+  ty = "l", ylab = "Cumulative Incidence Difference",
+  xlab = "Follow-up Time",
+  ylim = c(-0.15, 0.02)
+)
+lines(model_preds$difference$followup_time, model_preds$difference$`2.5%`, lty = 2)
+lines(model_preds$difference$followup_time, model_preds$difference$`97.5%`, lty = 2)
 ```
 
 
