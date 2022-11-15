@@ -30,6 +30,14 @@ test_that("predict.RTE_model works as expected", {
   surv_result <- predict(object, predict_times = 0:8, conf_int = TRUE, type = "survival", samples = 5)
   expect_list(result, "data.frame", any.missing = FALSE, len = 3)
   expect_snapshot_value(result, style = "json2", tolerance = 1e-06)
+
+  new_data <- vignette_switch_data[vignette_switch_data$followup_time == 0 & vignette_switch_data$for_period == 300, ]
+  expect_warning(
+    result_newdata <- predict(object, newdata = new_data, predict_times = 0:8, conf_int = TRUE, samples = 5),
+    "Attributes of newdata do not match data used for fitting. Attempting to fix."
+  )
+  expect_list(result_newdata, "data.frame", any.missing = FALSE, len = 3)
+  expect_snapshot_value(result_newdata, style = "json2", tolerance = 1e-06)
 })
 
 test_that("calculate_cum_inc works as expected", {

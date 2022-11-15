@@ -1,6 +1,7 @@
 .Rprofile
 .lintr
 ^.*\.Rproj$
+^.DS_Store
 ^\.Rproj\.user$
 ^\.github$
 ^\.pre-commit-config\.yaml$

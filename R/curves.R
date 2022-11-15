@@ -129,9 +129,16 @@ check_newdata <- function(newdata, model, predict_times) {
     col_attr_model <- lapply(model$data[, required_vars, with = FALSE], attributes)
     col_attr_newdata <- lapply(newdata, attributes)
     if (!isTRUE(all_eq <- all.equal(col_attr_model, col_attr_newdata))) {
-      warning("Attributes of newdata are do not match data used for fitting: ", all_eq)
-      message("Attempting to fix.")
+      warning("Attributes of newdata do not match data used for fitting. Attempting to fix.")
       newdata <- rbind(model$data[0, required_vars, with = FALSE], newdata)
+      fixed <- all.equal(
+        lapply(model$data[, required_vars, with = FALSE], attributes),
+        lapply(newdata, attributes)
+      )
+      if (!fixed) {
+        print(fixed)
+        stop("Attributes do not match.")
+      }
     }
   }
 
