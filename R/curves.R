@@ -15,7 +15,7 @@
 #' @return A list of three data frames containing the cumulative incidences for each of the assigned treatment options
 #'  and the difference between them.
 #' @export
-#' @importFrom stats .checkMFClasses coef delete.response model.frame model.matrix terms
+#' @importFrom stats .checkMFClasses coef delete.response model.frame model.matrix terms setNames
 #' @examples
 #' model <- initiators(
 #'   data = trial_example,
@@ -158,7 +158,7 @@ check_newdata <- function(newdata, model, predict_times) {
 #'   nrow = 2,
 #'   byrow = TRUE
 #' )
-#' calculate_cum_inc(surv_prob)
+#' RandomisedTrialsEmulation:::calculate_cum_inc(surv_prob)
 calculate_cum_inc <- function(p_mat) {
   assert_matrix(p_mat, mode = "numeric")
   result <- 1 - calculate_survival(p_mat)
@@ -168,7 +168,7 @@ calculate_cum_inc <- function(p_mat) {
 
 #' @rdname calculate_cum_inc
 #' @examples
-#' calculate_survival(surv_prob)
+#' RandomisedTrialsEmulation:::calculate_survival(surv_prob)
 calculate_survival <- function(p_mat) {
   assert_matrix(p_mat, mode = "numeric")
   result <- rowMeans(apply(1 - p_mat, 1, cumprod))
