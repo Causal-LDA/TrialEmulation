@@ -31,6 +31,7 @@ test_that("predict.RTE_model works as expected", {
   expect_list(result, "data.frame", any.missing = FALSE, len = 3)
   expect_snapshot_value(result, style = "json2", tolerance = 1e-06)
 
+  set.seed(300)
   new_data <- vignette_switch_data[vignette_switch_data$followup_time == 0 & vignette_switch_data$for_period == 300, ]
   expect_warning(
     result_newdata <- predict(object, newdata = new_data, predict_times = 0:8, conf_int = TRUE, samples = 5),
