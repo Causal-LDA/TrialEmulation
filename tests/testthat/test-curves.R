@@ -50,7 +50,7 @@ test_that("predict.RTE_model works with newdata", {
   )
 
   set.seed(300)
-  expect_snapshot_value(MASS::mvrnorm(5, object$model$coefficients, object$robust$matrix))
+  expect_snapshot_value(mvtnorm::rmvnorm(n = 5, mean = object$model$coefficients, sigma = object$robust$matrix))
 
   set.seed(300)
   expect_warning(
