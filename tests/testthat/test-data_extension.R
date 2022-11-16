@@ -81,7 +81,6 @@ test_that("expand works as expected", {
       "id", "for_period", "followup_time", "outcome", "weight", "treatment",
       "X1", "X2", "X3", "X4", "age_s", "assigned_treatment"
     ),
-    lag_p_nosw = 1,
     maxperiod = 9L,
     minperiod = 0L,
     outcomeCov_var = c("X1", "X2", "X3", "X4", "age_s"),
@@ -132,7 +131,6 @@ test_that("data extensions works as expected with first and last periods", {
     first_period = 2,
     last_period = 8,
     use_censor = 1,
-    lag_p_nosw = 1,
     where_var = NULL,
     separate_files = FALSE
   )
@@ -145,7 +143,6 @@ test_that("data extensions works as expected with first and last periods", {
     ),
     outcomeCov_var = c("X1", "X2", "X3", "X4", "age_s"),
     use_censor = 1,
-    lag_p_nosw = 1,
     where_var = NULL,
     separate_files = FALSE
   )
@@ -186,7 +183,6 @@ test_that("data extensions works as expected with separate_files=TRUE", {
     first_period = 2,
     last_period = 8,
     use_censor = 1,
-    lag_p_nosw = 1,
     where_var = NULL,
     separate_files = TRUE,
     data_dir = subset_dir
@@ -200,7 +196,6 @@ test_that("data extensions works as expected with separate_files=TRUE", {
     ),
     outcomeCov_var = c("X1", "X2", "X3", "X4", "age_s"),
     use_censor = 1,
-    lag_p_nosw = 1,
     where_var = NULL,
     separate_files = TRUE,
     data_dir = all_dir
@@ -235,7 +230,6 @@ test_that("data extensions works as expected with separate_files=TRUE", {
     first_period = 2,
     last_period = 8,
     use_censor = 1,
-    lag_p_nosw = 1,
     where_var = NULL,
     separate_files = FALSE
   )

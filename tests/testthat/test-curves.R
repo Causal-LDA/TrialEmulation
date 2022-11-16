@@ -30,15 +30,38 @@ test_that("predict.RTE_model works as expected", {
   surv_result <- predict(object, predict_times = 0:8, conf_int = TRUE, type = "survival", samples = 5)
   expect_list(result, "data.frame", any.missing = FALSE, len = 3)
   expect_snapshot_value(result, style = "json2", tolerance = 1e-06)
+})
+
+test_that("predict.RTE_model works with newdata", {
+  data <- as.data.table(RandomisedTrialsEmulation::vignette_switch_data)
+  new_data <- data[data$followup_time == 0 & data$for_period == 300, ]
+  data$catvarA <- factor(data$catvarA)
+
+  object <- data_modelling(
+    data,
+    outcome_cov = ~ catvarA + nvarA,
+    model_var = "assigned_treatment",
+    include_followup_time_case = ~followup_time,
+    include_expansion_time_case = ~for_period,
+    use_sample_weights = FALSE,
+    use_weight = 1,
+    glm_function = "glm",
+    quiet = TRUE
+  )
 
   set.seed(300)
-  new_data <- vignette_switch_data[vignette_switch_data$followup_time == 0 & vignette_switch_data$for_period == 300, ]
+  expect_snapshot_value(
+    mvtnorm::rmvnorm(n = 5, mean = object$model$coefficients, sigma = object$robust$matrix),
+    style = "json2"
+  )
+
+  set.seed(300)
   expect_warning(
     result_newdata <- predict(object, newdata = new_data, predict_times = 0:8, conf_int = TRUE, samples = 5),
     "Attributes of newdata do not match data used for fitting. Attempting to fix."
   )
   expect_list(result_newdata, "data.frame", any.missing = FALSE, len = 3)
-  expect_snapshot_value(result_newdata, style = "json2", tolerance = 1e-06)
+  expect_snapshot_value(result_newdata, style = "json2", tolerance = 1e-05)
 })
 
 test_that("calculate_cum_inc works as expected", {

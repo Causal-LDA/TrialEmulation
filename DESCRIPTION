@@ -22,7 +22,7 @@ Imports:
     parglm,
     Rcpp,
     sandwich,
-    MASS
+    mvtnorm
 Suggests: 
     knitr,
     rmarkdown,

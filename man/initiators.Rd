@@ -34,7 +34,6 @@ initiators(
   include_regime_length = 0,
   eligible_wts_0 = NA,
   eligible_wts_1 = NA,
-  lag_p_nosw = 1,
   where_var = NULL,
   where_case = NA,
   data_dir,
@@ -116,10 +115,6 @@ This variable stores the duration of time that the patient has been on the curre
 \item{eligible_wts_0}{Eligibility criteria used in weights for model condition Am1 = 0}
 
 \item{eligible_wts_1}{Eligibility criteria used in weights for model condition Am1 = 1}
-
-\item{lag_p_nosw}{When 1 this will set the first weight to be 1 and use p_nosw_d and p_nosw_n at followup-time (t-1)
-for calculating the weights at followup-time t - can be set to 0 which will increase the maximum and variance of
-weights (Defaults to 1)}
 
 \item{where_var}{List of variables used in where conditions used in subsetting the data used in final analysis
 (where_case), the variables not included in the final model}

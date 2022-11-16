@@ -63,7 +63,7 @@ predict.RTE_model <- function(object,
   coefs_mat <- matrix(coef(model), nrow = 1)
   if (conf_int) {
     assert_matrix(object$robust$matrix, nrows = ncol(coefs_mat), ncols = ncol(coefs_mat))
-    coefs_mat <- rbind(coefs_mat, MASS::mvrnorm(n = samples, mu = coef(model), Sigma = object$robust$matrix))
+    coefs_mat <- rbind(coefs_mat, mvtnorm::rmvnorm(n = samples, mean = coef(model), sigma = object$robust$matrix))
   }
 
   newdata <- check_newdata(newdata, model, predict_times)

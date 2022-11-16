@@ -11,7 +11,6 @@ data_extension(
   first_period = NA,
   last_period = NA,
   use_censor = 0,
-  lag_p_nosw = 1,
   where_var = NA,
   data_dir = "~/rds/hpc-work/",
   separate_files = FALSE,
@@ -31,10 +30,6 @@ data_extension(
 
 \item{use_censor}{Use censoring for per-protocol analysis - censor person-times once a person-trial stops taking the
 initial treatment value}
-
-\item{lag_p_nosw}{when 1 this will set the first weight to be 1 and use \code{p_nosw_d} and \code{p_nosw_n}
-at follow-up time (t-1) for calculating the weights at follow-up time t - can be set to 0 which will increase
-the maximum and variance of weights (Defaults to 1).}
 
 \item{where_var}{Variables used in where conditions used in subsetting the data used in final analysis (where_case),
 the variables not included in the final model}
