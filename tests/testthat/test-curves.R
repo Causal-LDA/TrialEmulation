@@ -50,6 +50,9 @@ test_that("predict.RTE_model works with newdata", {
   )
 
   set.seed(300)
+  expect_snapshot_value(MASS::mvrnorm(5, object$model$coefficients, object$robust$matrix))
+
+  set.seed(300)
   expect_warning(
     result_newdata <- predict(object, newdata = new_data, predict_times = 0:8, conf_int = TRUE, samples = 5),
     "Attributes of newdata do not match data used for fitting. Attempting to fix."
