@@ -18,7 +18,7 @@ interface to the main working functions data_preparation() and data_modelling().
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">RandomisedTrialsEmulation</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.2.6</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.2.7</span>
       </span>
     </div>
 
@@ -89,7 +89,6 @@ interface to the main working functions <code><a href="data_preparation.html">da
 <span>  include_regime_length <span class="op">=</span> <span class="fl">0</span>,</span>
 <span>  eligible_wts_0 <span class="op">=</span> <span class="cn">NA</span>,</span>
 <span>  eligible_wts_1 <span class="op">=</span> <span class="cn">NA</span>,</span>
-<span>  lag_p_nosw <span class="op">=</span> <span class="fl">1</span>,</span>
 <span>  where_var <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  where_case <span class="op">=</span> <span class="cn">NA</span>,</span>
 <span>  <span class="va">data_dir</span>,</span>
@@ -228,12 +227,6 @@ This variable stores the duration of time that the patient has been on the curre
 
 <dt>eligible_wts_1</dt>
 <dd><p>Eligibility criteria used in weights for model condition Am1 = 1</p></dd>
-
-
-<dt>lag_p_nosw</dt>
-<dd><p>When 1 this will set the first weight to be 1 and use p_nosw_d and p_nosw_n at followup-time (t-1)
-for calculating the weights at followup-time t - can be set to 0 which will increase the maximum and variance of
-weights (Defaults to 1)</p></dd>
 
 
 <dt>where_var</dt>
