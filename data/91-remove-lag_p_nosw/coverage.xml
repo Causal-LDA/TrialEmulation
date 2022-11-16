@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage line-rate="0.848513902205177" branch-rate="0" lines-covered="885" lines-valid="1043" branches-covered="0" branches-valid="0" complexity="0" version="3.6.1" timestamp="2022-11-16 16:35:18">
+<coverage line-rate="0.848513902205177" branch-rate="0" lines-covered="885" lines-valid="1043" branches-covered="0" branches-valid="0" complexity="0" version="3.6.1" timestamp="2022-11-16 17:02:34">
   <sources/>
   <packages>
     <package name="RandomisedTrialsEmulation" line-rate="0.848513902205177" branch-rate="0" complexity="0">
