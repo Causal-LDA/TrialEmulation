@@ -11,7 +11,6 @@ expand(
   use_censor,
   maxperiod,
   minperiod,
-  lag_p_nosw,
   keeplist
 )
 }
@@ -29,10 +28,6 @@ initial treatment value}
 \item{maxperiod}{Maximum period}
 
 \item{minperiod}{Minimum period}
-
-\item{lag_p_nosw}{when 1 this will set the first weight to be 1 and use p_nosw_d and p_nosw_n at followup-time (t-1)
-for calculating the weights at followup-time t - can be set to 0 which will increase the maximum and variance of
-weights (Defaults to 1)}
 
 \item{keeplist}{A list contains names of variables used in final model}
 }
