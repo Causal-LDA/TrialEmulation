@@ -73,6 +73,7 @@ test_that("data_modelling works with data.tables and weights", {
       use_sample_weights = FALSE,
       use_weight = 1,
       glm_function = "parglm",
+      control = parglm.control(nthreads = 2, method = "FAST"),
       quiet = TRUE
     )
   )

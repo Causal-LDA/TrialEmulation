@@ -113,7 +113,6 @@ data_modelling <- function(data,
       formula = model_formula,
       data = data,
       weights = data[["weight"]],
-      family = binomial(link = "logit"),
       ...
     )
   })

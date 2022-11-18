@@ -36,81 +36,41 @@ limit_weight <- function(switch_data, lower_limit, upper_limit) {
 }
 
 
-#' Title
+#' Fit a GLM
 #'
-#' @param formula
-#' @param data
-#' @param family
+#' @param formula the model formula.
+#' @param data a data frame or similar.
 #' @param ...
-#' @param glm_function
+#' @param glm_function The glm function to call given as a string, such as `"glm"` or `"parglm"`.
 #' @noRd
 #' @import parglm
-fit_glm <- function(formula, data, family = binomial(link = "logit"), ..., glm_function = "glm") {
-  this_call <- match.call(expand.dots = TRUE)
-
-  if (glm_function == "parglm") {
-    # nthreads_arg <- ...elt(which(...names() == "nthreads"))
-    # control_arg <- ...elt(which(...names() == "control"))
-    # if (is.null(this_call$nthreads) && is.null(this_call$control$nthreads)) {
-    #   warning(
-    #   "Argument glm_function = \"parglm\" but no `nthreads` specified.\n",
-    #   "Using default `control = parglm.control(nthreads = 4, method = \"FAST\")`"
-    #   )
-    this_call$control <- parglm::parglm.control(nthreads = 4, method = "FAST")
-    # }
-  }
-  # browser()
+#'
+#' If no family is specified `binomial("logit")` will be used. If `glm_function = "parglm"` is specified
+#' but no `nthreads`, `control`, or `method`, then the default is used
+#' `control = parglm.control(nthreads = 4, method = \"FAST\")`.
+#'
+fit_glm <- function(formula, data, weights, ..., glm_function = "glm") {
+  this_call <- match.call(expand.dots = FALSE)
+  dots <- list(...)
+  this_call$`...` <- NULL
   this_call$glm_function <- NULL
+  if (is.null(this_call$family)) this_call$family <- quote(binomial(link = "logit"))
   this_call$formula <- formula
   this_call$data <- quote(data)
-  this_call[[1]] <- call(glm_function)[[1]]
 
+
+  if (glm_function == "parglm") {
+    if (!any(c("nthreads", "control", "method") %in% names(dots))) {
+      warning(
+        "Argument glm_function = \"parglm\" but no `nthreads`, `method` or `control` specified.\n",
+        "Using `control = parglm.control(nthreads = 4, method = \"FAST\")`"
+      )
+      this_call$control <- parglm::parglm.control(nthreads = 4, method = "FAST")
+    }
+  }
+  this_call[[1]] <- call(glm_function)[[1]]
+  for (i in names(dots)) {
+    this_call[[i]] <- dots[[i]]
+  }
   eval(this_call)
 }
-
-#'
-#' #' Weight Logistic Regression Function
-#' #'
-#' #' This function get the information needed for performing Logistic Regression in the weight calculation process
-#' #' using parglm
-#' #'
-#' #' @param data data
-#' #' @param formula model formula for `parglm`
-#'
-#' weight_lr <- function(data, formula) {
-#'   model <- parglm::parglm(as.formula(formula),
-#'     data = data,
-#'     family = binomial(link = "logit"),
-#'     control = parglm::parglm.control(nthreads = 4, method = "FAST")
-#'   )
-#'   return(model)
-#' }
-#'
-#'
-#'
-#' #' Logistic Regression Function
-#' #'
-#' #' This function get the information needed for performing Logistic Regression for final model
-#' #' @param l A list contains the data and logistic regression formula
-#' #'
-#' lr <- function(l) {
-#'   # Dummy variables used in data.table calls declared to prevent package check NOTES:
-#'   weight <- id <- NULL
-#'
-#'   d <- l[[1]]
-#'   regf <- l[[2]]
-#'
-#'   model <- parglm::parglm(as.formula(regf),
-#'     data = d,
-#'     weights = d[["weight"]],
-#'     family = binomial(link = "logit"),
-#'     control = parglm::parglm.control(nthreads = 4, method = "FAST")
-#'   )
-#'
-#'   out <- robust_calculation(model, d[, id])
-#'
-#'   return(list(
-#'     model = model,
-#'     output = out
-#'   ))
-#' }
