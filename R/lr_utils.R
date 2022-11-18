@@ -40,11 +40,12 @@ limit_weight <- function(switch_data, lower_limit, upper_limit) {
 #'
 #' @param formula the model formula.
 #' @param data a data frame or similar.
-#' @param ...
+#' @param ... Other arguments for glm
 #' @param glm_function The glm function to call given as a string, such as `"glm"` or `"parglm"`.
 #' @noRd
 #' @import parglm
 #'
+#' @details
 #' If no family is specified `binomial("logit")` will be used. If `glm_function = "parglm"` is specified
 #' but no `nthreads`, `control`, or `method`, then the default is used
 #' `control = parglm.control(nthreads = 4, method = \"FAST\")`.
