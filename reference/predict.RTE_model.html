@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">RandomisedTrialsEmulation</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.2.7</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.2.8</span>
       </span>
     </div>
 
@@ -117,11 +117,11 @@ and the difference between them.</p>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Starting data manipulation</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Finished data manipulation</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Processing time of data manipulation: 0.5 s</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Processing time of data manipulation: 1.0 s</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> ------------------------------------------------------------</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Starting data extension</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Finish data extension</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Processing time of data extension: 4.2 s</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Processing time of data extension: 6.6 s</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> ------------------------------------------------------------</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Summary of extended data:</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Number of observations: 1939053</span>
@@ -129,11 +129,13 @@ and the difference between them.</p>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Preparing for model fitting</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> ------------------------------------------------------------</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Fitting outcome model</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Processing time of fitting outcome model: 11.399 s</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Processing time of fitting outcome model: 15.268 s</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> summary(model)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Call:</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> stats::glm(formula = model_formula, family = binomial(link = "logit"), </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> glm(formula = outcome ~ assigned_treatment + for_period + I(for_period^2) + </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     followup_time + I(followup_time^2) + catvarA + catvarB + </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     catvarC + nvarA + nvarB + nvarC, family = binomial(link = "logit"), </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     data = data, weights = data[["weight"]])</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Deviance Residuals: </span>
@@ -167,7 +169,7 @@ and the difference between them.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> ------------------------------------------------------------</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Calculating robust variance</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Processing time of calculating robust variance: 1.4 s</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Processing time of calculating robust variance: 1.8 s</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Summary with robust standard error:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                 names  estimate robust_se        lb        ub      z p_value</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1         (Intercept) -3.46e+00  6.57e-01 -4.74e+00 -2.17e+00 -5.263  &lt;1e-04</span>

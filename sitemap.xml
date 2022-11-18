@@ -76,9 +76,6 @@
     <loc>/reference/limit_weight.html</loc>
   </url>
   <url>
-    <loc>/reference/lr.html</loc>
-  </url>
-  <url>
     <loc>/reference/p99_weight.html</loc>
   </url>
   <url>
@@ -98,8 +95,5 @@
   </url>
   <url>
     <loc>/reference/weight_func.html</loc>
-  </url>
-  <url>
-    <loc>/reference/weight_lr.html</loc>
   </url>
 </urlset>

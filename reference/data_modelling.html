@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">RandomisedTrialsEmulation</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.2.7</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.2.8</span>
       </span>
     </div>
 
@@ -71,9 +71,10 @@
 <span>  include_followup_time_case <span class="op">=</span> <span class="op">~</span><span class="va">followup_time</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/r/base/AsIs.html" class="external-link">I</a></span><span class="op">(</span><span class="va">followup_time</span><span class="op">^</span><span class="fl">2</span><span class="op">)</span>,</span>
 <span>  include_expansion_time_case <span class="op">=</span> <span class="op">~</span><span class="va">for_period</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/r/base/AsIs.html" class="external-link">I</a></span><span class="op">(</span><span class="va">for_period</span><span class="op">^</span><span class="fl">2</span><span class="op">)</span>,</span>
 <span>  where_case <span class="op">=</span> <span class="cn">NA</span>,</span>
-<span>  glm_function <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"parglm"</span>, <span class="st">"glm"</span><span class="op">)</span>,</span>
+<span>  glm_function <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"glm"</span>, <span class="st">"parglm"</span><span class="op">)</span>,</span>
 <span>  use_sample_weights <span class="op">=</span> <span class="cn">TRUE</span>,</span>
-<span>  quiet <span class="op">=</span> <span class="cn">FALSE</span></span>
+<span>  quiet <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  <span class="va">...</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
@@ -149,6 +150,11 @@ The weights used in the model are calculated as <code>weight = weight * sample_w
 
 <dt>quiet</dt>
 <dd><p>Don't print progress messages.</p></dd>
+
+
+<dt>...</dt>
+<dd><p>Additional arguments passed to <code>glm_function</code>. This may be used to specify initial parameter estimates
+or arguments to <code>control</code>. See <a href="https://rdrr.io/r/stats/glm.html" class="external-link">stats::glm</a>, <a href="https://rdrr.io/pkg/parglm/man/parglm.html" class="external-link">parglm::parglm</a> and <code><a href="https://rdrr.io/pkg/parglm/man/parglm.control.html" class="external-link">parglm::parglm.control()</a></code> for more information.</p></dd>
 
 </dl></div>
     <div id="details">
