@@ -9,7 +9,8 @@ test_that("data_modelling can be quiet", {
       include_followup_time_case = ~followup_time,
       include_expansion_time_case = ~for_period,
       use_sample_weights = FALSE,
-      quiet = TRUE
+      quiet = TRUE,
+      glm_function = "glm"
     )
   )
 })
@@ -23,7 +24,9 @@ test_that("data_modelling gives expected results in example data", {
     include_followup_time_case = ~followup_time,
     include_expansion_time_case = ~for_period,
     use_sample_weights = FALSE,
-    quiet = TRUE
+    quiet = TRUE,
+    glm_function = "parglm",
+    control = parglm.control()
   )
   expect_class(result$model, "glm")
   expected_coefs <- c(

@@ -99,7 +99,9 @@ weight_func <- function(sw_data,
                         include_regime_length = 0,
                         save_weight_models = FALSE,
                         save_dir,
-                        quiet = FALSE) {
+                        quiet = FALSE,
+                        glm_function = "glm",
+                        ...) {
   # Dummy variables used in data.table calls declared to prevent package check NOTES:
   eligible0 <- eligible1 <- id <- period <- eligible0.y <- eligible1.y <- am_1 <-
     treatment <- wt <- wtC <- p0_n <- p0_d <- p1_n <- p1_d <- pC_n0 <- pC_d0 <-
@@ -126,9 +128,11 @@ weight_func <- function(sw_data,
   # --------------- denominator ------------------
   quiet_msg(quiet, "P(treatment=1 | treatment=0) for denominator")
 
-  model1 <- weight_lr(
-    sw_data[if (any(!is.na(eligible_wts_0))) (eligible0 == 1 & eligible_wts_0 == 1) else eligible0 == 1],
-    switch_d_cov
+  model1 <- fit_glm(
+    data = sw_data[if (any(!is.na(eligible_wts_0))) (eligible0 == 1 & eligible_wts_0 == 1) else eligible0 == 1],
+    formula = switch_d_cov,
+    ...,
+    glm_function = glm_function
   )
 
   quiet_print(quiet, summary(model1))
@@ -150,9 +154,11 @@ weight_func <- function(sw_data,
 
   quiet_msg(quiet, "P(treatment=1 | treatment=0) for numerator")
 
-  model2 <- weight_lr(
-    sw_data[if (any(!is.na(eligible_wts_0))) (eligible0 == 1 & eligible_wts_0 == 1) else eligible0 == 1],
-    switch_n_cov,
+  model2 <- fit_glm(
+    data = sw_data[if (any(!is.na(eligible_wts_0))) (eligible0 == 1 & eligible_wts_0 == 1) else eligible0 == 1],
+    formula = switch_n_cov,
+    ...,
+    glm_function = glm_function
   )
 
   quiet_print(quiet, summary(model2))
@@ -173,9 +179,11 @@ weight_func <- function(sw_data,
   # ------------------- eligible1 == 1 --------------------
   # --------------- denominator ------------------
   quiet_msg(quiet, "P(treatment=1 | treatment=1) for denominator")
-  model3 <- weight_lr(
-    sw_data[if (any(!is.na(eligible_wts_1))) (eligible1 == 1 & eligible_wts_1 == 1) else eligible1 == 1],
-    switch_d_cov
+  model3 <- fit_glm(
+    data = sw_data[if (any(!is.na(eligible_wts_1))) (eligible1 == 1 & eligible_wts_1 == 1) else eligible1 == 1],
+    formula = switch_d_cov,
+    ...,
+    glm_function = glm_function
   )
 
   quiet_print(quiet, summary(model3))
@@ -195,9 +203,11 @@ weight_func <- function(sw_data,
 
   # -------------------- numerator ---------------------------
   quiet_msg(quiet, "P(treatment=1 | treatment=1) for numerator")
-  model4 <- weight_lr(
-    sw_data[if (any(!is.na(eligible_wts_1))) (eligible1 == 1 & eligible_wts_1 == 1) else eligible1 == 1],
-    switch_n_cov
+  model4 <- fit_glm(
+    data = sw_data[if (any(!is.na(eligible_wts_1))) (eligible1 == 1 & eligible_wts_1 == 1) else eligible1 == 1],
+    formula = switch_n_cov,
+    ...,
+    glm_function = glm_function
   )
 
   quiet_print(quiet, summary(model4))
@@ -250,7 +260,12 @@ weight_func <- function(sw_data,
       # -------------------- denominator -------------------------
       quiet_msg(quiet, "Model for P(cense = 0 |  X ) for denominator")
       # -----------------------------------------------------------
-      model1.cense <- weight_lr(sw_data, cense_d_cov)
+      model1.cense <- fit_glm(
+        data = sw_data,
+        formula = cense_d_cov,
+        ...,
+        glm_function = glm_function
+      )
       quiet_print(quiet, summary(model1.cense))
       cense_d0 <- data.table(
         pC_d = model1.cense$fitted.values,
@@ -268,7 +283,12 @@ weight_func <- function(sw_data,
       # --------------------- numerator ---------------------------
       quiet_msg(quiet, "Model for P(cense = 0 |  X ) for numerator")
       # ---------------------------------------------------------
-      model2.cense <- weight_lr(sw_data, cense_n_cov)
+      model2.cense <- fit_glm(
+        data = sw_data,
+        formula = cense_n_cov,
+        ...,
+        glm_function = glm_function
+      )
       quiet_print(quiet, summary(model2.cense))
       cense_n0 <- data.table(
         pC_n = model2.cense$fitted.values,
@@ -293,7 +313,12 @@ weight_func <- function(sw_data,
       quiet_msg(quiet, "Model for P(cense = 0 |  X, Am1=0) for denominator")
       # ---------------------- eligible0 ---------------------------
 
-      model1.cense <- weight_lr(sw_data[eligible0 == 1], cense_d_cov)
+      model1.cense <- fit_glm(
+        data = sw_data[eligible0 == 1],
+        formula = cense_d_cov,
+        ...,
+        glm_function = glm_function
+      )
       quiet_print(quiet, summary(model1.cense))
       cense_d0 <- data.table(
         pC_d0 = model1.cense$fitted.values,
@@ -311,7 +336,12 @@ weight_func <- function(sw_data,
       # -------------------------- numerator ----------------------
       quiet_msg(quiet, "Model for P(cense = 0 |  X, Am1=0) for numerator")
       #--------------------------- eligible0 -----------------------
-      model2.cense <- weight_lr(sw_data[eligible0 == 1], cense_n_cov)
+      model2.cense <- fit_glm(
+        data = sw_data[eligible0 == 1],
+        formula = cense_n_cov,
+        ...,
+        glm_function = glm_function
+      )
       quiet_print(quiet, summary(model2.cense))
       cense_n0 <- data.table(
         pC_n0 = model2.cense$fitted.values,
@@ -328,7 +358,12 @@ weight_func <- function(sw_data,
       # ------------------------- denominator ---------------------
       quiet_msg(quiet, "Model for P(cense = 0 |  X, Am1=1) for denominator")
       # ------------------------ eligible1 -------------------------
-      model3.cense <- weight_lr(sw_data[eligible1 == 1], cense_d_cov)
+      model3.cense <- fit_glm(
+        data = sw_data[eligible1 == 1],
+        formula = cense_d_cov,
+        ...,
+        glm_function = glm_function
+      )
       quiet_print(quiet, summary(model3.cense))
       cense_d1 <- data.table(
         pC_d1 = model3.cense$fitted.values,
@@ -345,7 +380,12 @@ weight_func <- function(sw_data,
       # ------------------------ numerator -------------------------
       quiet_msg(quiet, "Model for P(cense = 0 |  X, Am1=1) for numerator")
       # ------------------------- eligible1 -----------------------
-      model4.cense <- weight_lr(sw_data[eligible1 == 1], cense_n_cov)
+      model4.cense <- fit_glm(
+        data = sw_data[eligible1 == 1],
+        formula = cense_n_cov,
+        ...,
+        glm_function = glm_function
+      )
       quiet_print(quiet, summary(model4.cense))
       cense_n1 <- data.frame(
         pC_n1 = model4.cense$fitted.values,

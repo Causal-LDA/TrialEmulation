@@ -32,9 +32,11 @@ data_preparation(
   where_var = NULL,
   data_dir,
   save_weight_models = FALSE,
+  glm_function = "glm",
   chunk_size = 500,
   separate_files = FALSE,
-  quiet = FALSE
+  quiet = FALSE,
+  ...
 )
 }
 \arguments{
@@ -106,11 +108,16 @@ already contains trial files an error will occur, other files may be overwritten
 
 \item{save_weight_models}{Save weight models objects in \code{data_dir}.}
 
+\item{glm_function}{Which glm function to use for the final model from \code{stats} or \code{parglm} packages}
+
 \item{chunk_size}{Number of patients to process in one chunk when \code{separate_files = TRUE}}
 
 \item{separate_files}{Save expanded data in separate CSV files for each trial.}
 
 \item{quiet}{Don't print progress messages.}
+
+\item{...}{Additional arguments passed to \code{glm_function}. This may be used to specify initial parameter estimates
+or arguments to \code{control}. See \link[stats:glm]{stats::glm}, \link[parglm:parglm]{parglm::parglm} and \code{\link[parglm:parglm.control]{parglm::parglm.control()}} for more information.}
 }
 \description{
 This function prepare the data for modelling.

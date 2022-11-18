@@ -17,7 +17,9 @@ weight_func(
   include_regime_length = 0,
   save_weight_models = FALSE,
   save_dir,
-  quiet = FALSE
+  quiet = FALSE,
+  glm_function = "glm",
+  ...
 )
 }
 \arguments{
@@ -53,6 +55,11 @@ This variable stores the duration of time that the patient has been on the curre
 \item{save_dir}{Directory to save tidy weight model summaries in as 'weight_models.rda'}
 
 \item{quiet}{Don't print progress messages.}
+
+\item{glm_function}{Which glm function to use for the final model from \code{stats} or \code{parglm} packages}
+
+\item{...}{Additional arguments passed to \code{glm_function}. This may be used to specify initial parameter estimates
+or arguments to \code{control}. See \link[stats:glm]{stats::glm}, \link[parglm:parglm]{parglm::parglm} and \code{\link[parglm:parglm.control]{parglm::parglm.control()}} for more information.}
 }
 \description{
 This function performs the calculation for weight of the data

@@ -38,7 +38,8 @@ initiators(
   where_case = NA,
   data_dir,
   glm_function = "glm",
-  quiet = FALSE
+  quiet = FALSE,
+  ...
 )
 }
 \arguments{
@@ -126,6 +127,9 @@ This variable stores the duration of time that the patient has been on the curre
 \item{glm_function}{Which glm function to use for the final model from \code{stats} or \code{parglm} packages}
 
 \item{quiet}{Don't print progress messages.}
+
+\item{...}{Additional arguments passed to \code{glm_function}. This may be used to specify initial parameter estimates
+or arguments to \code{control}. See \link[stats:glm]{stats::glm}, \link[parglm:parglm]{parglm::parglm} and \code{\link[parglm:parglm.control]{parglm::parglm.control()}} for more information.}
 }
 \description{
 An all-in-one analysis using a sequence of target trials. This provides a simplified
