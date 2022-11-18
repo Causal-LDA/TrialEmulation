@@ -42,9 +42,11 @@ data_preparation <- function(data,
                              where_var = NULL,
                              data_dir,
                              save_weight_models = FALSE,
+                             glm_function = "glm",
                              chunk_size = 500,
                              separate_files = FALSE,
-                             quiet = FALSE) {
+                             quiet = FALSE,
+                             ...) {
   assert_flag(quiet)
   assert_flag(separate_files)
   assert_flag(save_weight_models)
@@ -103,7 +105,9 @@ data_preparation <- function(data,
       include_regime_length = include_regime_length,
       save_weight_models = save_weight_models,
       save_dir = data_dir,
-      quiet = quiet
+      quiet = quiet,
+      glm_function = glm_function,
+      ...
     )
     data <- weight_result$data
   } else if (use_weight == 0) {

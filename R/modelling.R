@@ -28,9 +28,10 @@ data_modelling <- function(data,
                            include_followup_time_case = ~ followup_time + I(followup_time^2),
                            include_expansion_time_case = ~ for_period + I(for_period^2),
                            where_case = NA,
-                           glm_function = c("parglm", "glm"),
+                           glm_function = c("glm", "parglm"),
                            use_sample_weights = TRUE,
-                           quiet = FALSE) {
+                           quiet = FALSE,
+                           ...) {
   assert_flag(quiet)
   outcome_cov <- as_formula(outcome_cov)
   include_followup_time_case <- as_formula(include_followup_time_case)
@@ -107,20 +108,13 @@ data_modelling <- function(data,
   quiet_line(quiet)
   quiet_msg(quiet, "Fitting outcome model")
   timing <- system.time({
-    if (glm_function == "parglm") {
-      model.full <- parglm::parglm(model_formula,
-        data = data,
-        weights = data[["weight"]],
-        family = binomial(link = "logit"),
-        control = parglm::parglm.control(nthreads = 4, method = "FAST")
-      )
-    } else if (glm_function == "glm") {
-      model.full <- stats::glm(model_formula,
-        data = data,
-        weights = data[["weight"]],
-        family = binomial(link = "logit")
-      )
-    }
+    model.full <- fit_glm(
+      glm_function = glm_function,
+      formula = model_formula,
+      data = data,
+      weights = data[["weight"]],
+      ...
+    )
   })
 
   quiet_msg_time(quiet, "Processing time of fitting outcome model: ", timing)

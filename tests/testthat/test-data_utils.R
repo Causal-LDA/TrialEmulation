@@ -13,7 +13,9 @@ test_that("weight_func works as expected", {
       cense_d_cov = ~ X1 + X2 + X3 + X4 + age_s,
       cense_n_cov = ~ X3 + X4,
       save_weight_models = FALSE,
-      save_dir = save_dir
+      save_dir = save_dir,
+      glm_function = "parglm",
+      control = parglm.control(nthreads = 2, method = "FAST")
     )
   )
 

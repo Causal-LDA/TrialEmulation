@@ -18,9 +18,10 @@ data_modelling(
   include_followup_time_case = ~followup_time + I(followup_time^2),
   include_expansion_time_case = ~for_period + I(for_period^2),
   where_case = NA,
-  glm_function = c("parglm", "glm"),
+  glm_function = c("glm", "parglm"),
   use_sample_weights = TRUE,
-  quiet = FALSE
+  quiet = FALSE,
+  ...
 )
 }
 \arguments{
@@ -65,6 +66,9 @@ initial treatment value}
 The weights used in the model are calculated as \code{weight = weight * sample_weight}.}
 
 \item{quiet}{Don't print progress messages.}
+
+\item{...}{Additional arguments passed to \code{glm_function}. This may be used to specify initial parameter estimates
+or arguments to \code{control}. See \link[stats:glm]{stats::glm}, \link[parglm:parglm]{parglm::parglm} and \code{\link[parglm:parglm.control]{parglm::parglm.control()}} for more information.}
 }
 \description{
 This function do the modelling.

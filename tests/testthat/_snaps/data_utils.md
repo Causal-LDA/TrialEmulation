@@ -3,15 +3,17 @@
     Code
       result <- weight_func(sw_data = data, switch_n_cov = ~1, switch_d_cov = ~ X1 +
         X2, cense = "C", pool_cense = 0, cense_d_cov = ~ X1 + X2 + X3 + X4 + age_s,
-      cense_n_cov = ~ X3 + X4, save_weight_models = FALSE, save_dir = save_dir)
+      cense_n_cov = ~ X3 + X4, save_weight_models = FALSE, save_dir = save_dir,
+      glm_function = "parglm", control = parglm.control(nthreads = 2, method = "FAST"))
     Message <simpleMessage>
       P(treatment=1 | treatment=0) for denominator
     Output
       
       Call:
-      glm(formula = as.formula(formula), family = binomial(link = "logit"), 
-          data = data, control = parglm::parglm.control(nthreads = 4, 
-              method = "FAST"), method = parglm::parglm.fit, singular.ok = FALSE)
+      glm(formula = treatment ~ X1 + X2, family = binomial(link = "logit"), 
+          data = data, control = list(epsilon = 1e-08, maxit = 25, 
+              trace = FALSE, nthreads = 2, block_size = NULL, method = "FAST"), 
+          method = parglm::parglm.fit, singular.ok = FALSE)
       
       Deviance Residuals: 
           Min       1Q   Median       3Q      Max  
@@ -38,9 +40,10 @@
     Output
       
       Call:
-      glm(formula = as.formula(formula), family = binomial(link = "logit"), 
-          data = data, control = parglm::parglm.control(nthreads = 4, 
-              method = "FAST"), method = parglm::parglm.fit, singular.ok = FALSE)
+      glm(formula = treatment ~ 1, family = binomial(link = "logit"), 
+          data = data, control = list(epsilon = 1e-08, maxit = 25, 
+              trace = FALSE, nthreads = 2, block_size = NULL, method = "FAST"), 
+          method = parglm::parglm.fit, singular.ok = FALSE)
       
       Deviance Residuals: 
          Min      1Q  Median      3Q     Max  
@@ -65,9 +68,10 @@
     Output
       
       Call:
-      glm(formula = as.formula(formula), family = binomial(link = "logit"), 
-          data = data, control = parglm::parglm.control(nthreads = 4, 
-              method = "FAST"), method = parglm::parglm.fit, singular.ok = FALSE)
+      glm(formula = treatment ~ X1 + X2, family = binomial(link = "logit"), 
+          data = data, control = list(epsilon = 1e-08, maxit = 25, 
+              trace = FALSE, nthreads = 2, block_size = NULL, method = "FAST"), 
+          method = parglm::parglm.fit, singular.ok = FALSE)
       
       Deviance Residuals: 
           Min       1Q   Median       3Q      Max  
@@ -94,9 +98,10 @@
     Output
       
       Call:
-      glm(formula = as.formula(formula), family = binomial(link = "logit"), 
-          data = data, control = parglm::parglm.control(nthreads = 4, 
-              method = "FAST"), method = parglm::parglm.fit, singular.ok = FALSE)
+      glm(formula = treatment ~ 1, family = binomial(link = "logit"), 
+          data = data, control = list(epsilon = 1e-08, maxit = 25, 
+              trace = FALSE, nthreads = 2, block_size = NULL, method = "FAST"), 
+          method = parglm::parglm.fit, singular.ok = FALSE)
       
       Deviance Residuals: 
           Min       1Q   Median       3Q      Max  
@@ -121,9 +126,10 @@
     Output
       
       Call:
-      glm(formula = as.formula(formula), family = binomial(link = "logit"), 
-          data = data, control = parglm::parglm.control(nthreads = 4, 
-              method = "FAST"), method = parglm::parglm.fit, singular.ok = FALSE)
+      glm(formula = 1 - C ~ X1 + X2 + X3 + X4 + age_s, family = binomial(link = "logit"), 
+          data = data, control = list(epsilon = 1e-08, maxit = 25, 
+              trace = FALSE, nthreads = 2, block_size = NULL, method = "FAST"), 
+          method = parglm::parglm.fit, singular.ok = FALSE)
       
       Deviance Residuals: 
           Min       1Q   Median       3Q      Max  
@@ -153,9 +159,10 @@
     Output
       
       Call:
-      glm(formula = as.formula(formula), family = binomial(link = "logit"), 
-          data = data, control = parglm::parglm.control(nthreads = 4, 
-              method = "FAST"), method = parglm::parglm.fit, singular.ok = FALSE)
+      glm(formula = 1 - C ~ X3 + X4, family = binomial(link = "logit"), 
+          data = data, control = list(epsilon = 1e-08, maxit = 25, 
+              trace = FALSE, nthreads = 2, block_size = NULL, method = "FAST"), 
+          method = parglm::parglm.fit, singular.ok = FALSE)
       
       Deviance Residuals: 
           Min       1Q   Median       3Q      Max  
@@ -182,9 +189,10 @@
     Output
       
       Call:
-      glm(formula = as.formula(formula), family = binomial(link = "logit"), 
-          data = data, control = parglm::parglm.control(nthreads = 4, 
-              method = "FAST"), method = parglm::parglm.fit, singular.ok = FALSE)
+      glm(formula = 1 - C ~ X1 + X2 + X3 + X4 + age_s, family = binomial(link = "logit"), 
+          data = data, control = list(epsilon = 1e-08, maxit = 25, 
+              trace = FALSE, nthreads = 2, block_size = NULL, method = "FAST"), 
+          method = parglm::parglm.fit, singular.ok = FALSE)
       
       Deviance Residuals: 
           Min       1Q   Median       3Q      Max  
@@ -214,9 +222,10 @@
     Output
       
       Call:
-      glm(formula = as.formula(formula), family = binomial(link = "logit"), 
-          data = data, control = parglm::parglm.control(nthreads = 4, 
-              method = "FAST"), method = parglm::parglm.fit, singular.ok = FALSE)
+      glm(formula = 1 - C ~ X3 + X4, family = binomial(link = "logit"), 
+          data = data, control = list(epsilon = 1e-08, maxit = 25, 
+              trace = FALSE, nthreads = 2, block_size = NULL, method = "FAST"), 
+          method = parglm::parglm.fit, singular.ok = FALSE)
       
       Deviance Residuals: 
           Min       1Q   Median       3Q      Max  

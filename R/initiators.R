@@ -53,6 +53,8 @@
 #' calculation.
 #' @param cense_n_cov A RHS formula for modelling probability of being censored. Used in the denominator of weight
 #' calculation.
+#' @param ... Additional arguments passed to `glm_function`. This may be used to specify initial parameter estimates
+#' or arguments to `control`. See [stats::glm], [parglm::parglm] and [parglm::parglm.control()] for more information.
 #'
 #' @details
 #' If `model_var = NULL` the package will add some terms to the outcome model:
@@ -97,7 +99,8 @@ initiators <- function(data,
                        where_case = NA,
                        data_dir,
                        glm_function = "glm",
-                       quiet = FALSE) {
+                       quiet = FALSE,
+                       ...) {
   # Check parameters
   if (!missing(data_dir)) {
     if (!dir.exists(data_dir)) stop(paste0("Specified data_dir does not exist: ", data_dir))
@@ -133,7 +136,8 @@ initiators <- function(data,
     data_dir = data_dir,
     save_weight_models = save_weight_models,
     separate_files = FALSE,
-    quiet = quiet
+    quiet = quiet,
+    ...
   )
 
   # Fit final models and robust variance estimates
@@ -153,7 +157,8 @@ initiators <- function(data,
     where_case = where_case,
     glm_function = "glm",
     use_sample_weights = FALSE,
-    quiet = quiet
+    quiet = quiet,
+    ...
   )
 
   model_full
