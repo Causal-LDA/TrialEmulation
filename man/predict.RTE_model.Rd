@@ -39,28 +39,38 @@ and the difference between them.
 Predict Cumulative Incidence with Confidence Intervals
 }
 \examples{
-model <- initiators(
-  data = trial_example,
-  outcome_cov = c("catvarA", "catvarB", "catvarC", "nvarA", "nvarB", "nvarC"),
+
+data("vignette_switch_data")
+data_subset <- vignette_switch_data[vignette_switch_data$for_period > 200 & vignette_switch_data$for_period < 300, ]
+model <- data_modelling(
+  data = data_subset,
+  outcome_cov = c("catvarA", "nvarA"),
+  last_followup = 40,
+  model_var = "assigned_treatment",
+  include_followup_time_case = ~followup_time,
+  include_expansion_time_case = ~for_period,
+  use_sample_weights = FALSE,
+  quiet = TRUE,
+  glm_function = "glm"
 )
 
-predicted_ci <- predict(model, predict_times = 0:30, samples = 20)
+predicted_ci <- predict(model, predict_times = 0:30, samples = 10)
 
 # Plot the cumulative incidence curves for each treatment
-plot(predicted_ci[[1]]$followup_time, predicted_ci[[1]]$estimate,
+plot(predicted_ci[[1]]$followup_time, predicted_ci[[1]]$cum_inc,
   type = "l",
   xlab = "Follow-up Time", ylab = "Cumulative Incidence"
 )
 lines(predicted_ci[[1]]$followup_time, predicted_ci[[1]]$`2.5\%`, lty = 2)
 lines(predicted_ci[[1]]$followup_time, predicted_ci[[1]]$`97.5\%`, lty = 2)
 
-lines(predicted_ci[[2]]$followup_time, predicted_ci[[2]]$estimate, type = "l", col = 2)
+lines(predicted_ci[[2]]$followup_time, predicted_ci[[2]]$cum_inc, type = "l", col = 2)
 lines(predicted_ci[[2]]$followup_time, predicted_ci[[2]]$`2.5\%`, lty = 2, col = 2)
 lines(predicted_ci[[2]]$followup_time, predicted_ci[[2]]$`97.5\%`, lty = 2, col = 2)
 legend("topleft", title = "Assigned Treatment", legend = c("0", "1"), col = 1:2, lty = 1)
 
 # Plot the difference in cumulative incidence over follow up
-plot(predicted_ci[[3]]$followup_time, predicted_ci[[3]]$estimate,
+plot(predicted_ci[[3]]$followup_time, predicted_ci[[3]]$cum_inc_diff,
   type = "l",
   xlab = "Follow-up Time", ylab = "Difference in Cumulative Incidence",
   ylim = c(-0.1, 0.1)
