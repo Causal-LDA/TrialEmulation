@@ -1,5 +1,5 @@
 test_that("do_sampling works as expected when case exist", {
-  data <- as.data.table(RandomisedTrialsEmulation::vignette_switch_data)[for_period == 272 & followup_time == 5]
+  data <- as.data.table(TrialEmulation::vignette_switch_data)[for_period == 272 & followup_time == 5]
   set.seed(100)
   sample1 <- do_sampling(data, p_control = 0.1, sample_all_times = FALSE)
   expect_snapshot_value(as.data.frame(sample1), style = "json2")
@@ -9,7 +9,7 @@ test_that("do_sampling works as expected when case exist", {
 })
 
 test_that("do_sampling works as expected when no cases exist", {
-  data <- as.data.table(RandomisedTrialsEmulation::vignette_switch_data)[for_period == 5 & followup_time == 5]
+  data <- as.data.table(TrialEmulation::vignette_switch_data)[for_period == 5 & followup_time == 5]
   set.seed(1100)
   result_null <- do_sampling(data, p_control = 0.1, sample_all_times = FALSE)
   expect_null(result_null)
@@ -19,7 +19,7 @@ test_that("do_sampling works as expected when no cases exist", {
 })
 
 test_that("sample_from_period works as expected", {
-  data <- as.data.table(RandomisedTrialsEmulation::vignette_switch_data)[for_period == 272]
+  data <- as.data.table(TrialEmulation::vignette_switch_data)[for_period == 272]
   set.seed(651)
   result <- sample_from_period(period_data = data, p_control = 0.01, use_subset = FALSE, sample_all_times = FALSE)
   expect_data_frame(result, nrow = 58, ncol = 15)
@@ -37,7 +37,7 @@ test_that("sample_from_period works as expected", {
 })
 
 test_that("sample_from_period works as expected when sampling all times", {
-  data <- as.data.table(RandomisedTrialsEmulation::vignette_switch_data)[for_period == 272]
+  data <- as.data.table(TrialEmulation::vignette_switch_data)[for_period == 272]
   set.seed(651)
 
   result <- sample_from_period(period_data = data, p_control = 0.01, use_subset = FALSE, sample_all_times = TRUE)
@@ -59,7 +59,7 @@ test_that("sample_from_period works as expected when sampling all times", {
 })
 
 test_that("sample_from_period works as expected with multiple proportions", {
-  data <- as.data.table(RandomisedTrialsEmulation::vignette_switch_data)[for_period == 272]
+  data <- as.data.table(TrialEmulation::vignette_switch_data)[for_period == 272]
   set.seed(209)
   result <- sample_from_period(
     period_data = data,

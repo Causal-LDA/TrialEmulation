@@ -10,11 +10,11 @@
 an emulated a randomised trial.
 }
 \author{
-\strong{Maintainer}: Roonak Rezvani \email{roonak.r74@gmail.com} (\href{https://orcid.org/0000-0001-5580-5058}{ORCID})
+\strong{Maintainer}: Isaac Gravestock \email{isaac.gravestock@roche.com}
 
 Authors:
 \itemize{
-  \item Isaac Gravestock \email{isaac.gravestock@roche.com}
+  \item Roonak Rezvani \email{roonak.r74@gmail.com} (\href{https://orcid.org/0000-0001-5580-5058}{ORCID}) (Original package author)
   \item Li Su \email{li.su@mrc-bsu.cam.ac.uk}
 }
 

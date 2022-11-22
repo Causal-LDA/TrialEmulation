@@ -2,10 +2,10 @@ Package: TrialEmulation
 Title: Design and analysis of target trial emulation on observational data
 Version: 0.0.2.9
 Authors@R: c(
-    person("Roonak", "Rezvani", , "roonak.r74@gmail.com", role = c("aut", "cre"),
-           comment = c(ORCID = "0000-0001-5580-5058")),
-    person("Isaac", "Gravestock", , "isaac.gravestock@roche.com", role = "aut"),
-    person("Li", "Su", , "li.su@mrc-bsu.cam.ac.uk", role = "aut")
+    person("Roonak", "Rezvani", email = "roonak.r74@gmail.com", role = "aut",
+           comment = c(ORCID = "0000-0001-5580-5058", "Original package author")),
+    person("Isaac", "Gravestock", email = "isaac.gravestock@roche.com", role = c("aut", "cre")),
+    person("Li", "Su", email = "li.su@mrc-bsu.cam.ac.uk", role = "aut")
   )
 Description: This R package is is designed to estimate intention-to-treat
     and per-protocol effects in emulated trials using electronic health
