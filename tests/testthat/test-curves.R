@@ -1,6 +1,6 @@
 
 test_that("predict.RTE_model works as expected", {
-  trial_ex <- RandomisedTrialsEmulation::trial_example
+  trial_ex <- TrialEmulation::trial_example
   trial_ex$catvarA <- as.factor(trial_ex$catvarA)
   trial_ex$catvarB <- as.factor(trial_ex$catvarB)
   trial_ex$catvarC <- as.factor(trial_ex$catvarC)
@@ -33,7 +33,7 @@ test_that("predict.RTE_model works as expected", {
 })
 
 test_that("predict.RTE_model works with newdata", {
-  data <- as.data.table(RandomisedTrialsEmulation::vignette_switch_data)
+  data <- as.data.table(TrialEmulation::vignette_switch_data)
   new_data <- data[data$followup_time == 0 & data$for_period == 300, ]
   data$catvarA <- factor(data$catvarA)
 

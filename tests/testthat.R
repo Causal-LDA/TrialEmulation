@@ -1,4 +1,4 @@
 library(testthat)
-library(RandomisedTrialsEmulation)
+library(TrialEmulation)
 
-test_check("RandomisedTrialsEmulation")
+test_check("TrialEmulation")

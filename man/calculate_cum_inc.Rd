@@ -27,6 +27,6 @@ surv_prob <- matrix(
   nrow = 2,
   byrow = TRUE
 )
-RandomisedTrialsEmulation:::calculate_cum_inc(surv_prob)
-RandomisedTrialsEmulation:::calculate_survival(surv_prob)
+TrialEmulation:::calculate_cum_inc(surv_prob)
+TrialEmulation:::calculate_survival(surv_prob)
 }

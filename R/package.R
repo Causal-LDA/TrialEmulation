@@ -1,6 +1,6 @@
-#' `RandomisedTrialsEmulation` Package
+#' `TrialEmulation` Package
 #'
-#' `RandomisedTrialsEmulation` facilitates preprocessing and analysing observational data
+#' `TrialEmulation` facilitates preprocessing and analysing observational data
 #' an emulated a randomised trial.
 "_PACKAGE"
 
@@ -8,6 +8,6 @@
 #' @importFrom stats formula update update.formula as.formula glm
 #' @import data.table
 #' @importFrom Rcpp sourceCpp
-#' @useDynLib RandomisedTrialsEmulation
+#' @useDynLib TrialEmulation
 
 NULL

@@ -165,7 +165,7 @@ check_newdata <- function(newdata, model, predict_times) {
 #'   nrow = 2,
 #'   byrow = TRUE
 #' )
-#' RandomisedTrialsEmulation:::calculate_cum_inc(surv_prob)
+#' TrialEmulation:::calculate_cum_inc(surv_prob)
 calculate_cum_inc <- function(p_mat) {
   assert_matrix(p_mat, mode = "numeric")
   result <- 1 - calculate_survival(p_mat)
@@ -175,7 +175,7 @@ calculate_cum_inc <- function(p_mat) {
 
 #' @rdname calculate_cum_inc
 #' @examples
-#' RandomisedTrialsEmulation:::calculate_survival(surv_prob)
+#' TrialEmulation:::calculate_survival(surv_prob)
 calculate_survival <- function(p_mat) {
   assert_matrix(p_mat, mode = "numeric")
   result <- rowMeans(apply(1 - p_mat, 1, cumprod))

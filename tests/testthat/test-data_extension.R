@@ -121,7 +121,7 @@ test_that("expand works as expected", {
 test_that("data extensions works as expected with first and last periods", {
   data <- readRDS(test_path("data/pre_data_extension.rds"))
 
-  result_limited <- RandomisedTrialsEmulation:::data_extension(
+  result_limited <- TrialEmulation:::data_extension(
     data = data,
     keeplist = c(
       "id", "for_period", "followup_time", "outcome", "weight", "treatment",
@@ -135,7 +135,7 @@ test_that("data extensions works as expected with first and last periods", {
     separate_files = FALSE
   )
 
-  result <- RandomisedTrialsEmulation:::data_extension(
+  result <- TrialEmulation:::data_extension(
     data = data,
     keeplist = c(
       "id", "for_period", "followup_time", "outcome", "weight", "treatment",
@@ -220,7 +220,7 @@ test_that("data extensions works as expected with separate_files=TRUE", {
     lapply(result_limited$data, data.table::fread)
   ))
 
-  expected_limited <- RandomisedTrialsEmulation:::data_extension(
+  expected_limited <- TrialEmulation:::data_extension(
     data = data,
     keeplist = c(
       "id", "for_period", "followup_time", "outcome", "weight", "treatment",
