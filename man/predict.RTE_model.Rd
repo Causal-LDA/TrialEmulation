@@ -41,7 +41,8 @@ Predict Cumulative Incidence with Confidence Intervals
 \examples{
 
 data("vignette_switch_data")
-data_subset <- vignette_switch_data[vignette_switch_data$for_period > 200 & vignette_switch_data$for_period < 300, ]
+data_subset <- vignette_switch_data[vignette_switch_data$for_period > 200 &
+  vignette_switch_data$for_period < 300, ]
 model <- data_modelling(
   data = data_subset,
   outcome_cov = c("catvarA", "nvarA"),
