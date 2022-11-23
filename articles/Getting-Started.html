@@ -5,14 +5,14 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Getting-Started • RandomisedTrialsEmulation</title>
+<title>Getting-Started • TrialEmulation</title>
 <!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script><!-- Bootstrap --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha256-bZLfwXAP04zRMK2BjiO8iu9pf4FbLqX6zitd+tIvLhE=" crossorigin="anonymous">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script><!-- bootstrap-toc --><link rel="stylesheet" href="../bootstrap-toc.css">
 <script src="../bootstrap-toc.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
 <!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
 <script src="../pkgdown.js"></script><meta property="og:title" content="Getting-Started">
-<meta property="og:description" content="RandomisedTrialsEmulation">
+<meta property="og:description" content="TrialEmulation">
 <!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
@@ -32,8 +32,8 @@
         <span class="icon-bar"></span>
       </button>
       <span class="navbar-brand">
-        <a class="navbar-link" href="../index.html">RandomisedTrialsEmulation</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.2.8</span>
+        <a class="navbar-link" href="../index.html">TrialEmulation</a>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.2.9</span>
       </span>
     </div>
 
@@ -94,7 +94,7 @@ trial period</li>
 <p>Some of the functions are inspired by the <a href="https://causalab.sph.harvard.edu/software/" class="external-link">INITIATORS SAS
 macro</a>.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">RandomisedTrialsEmulation</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">TrialEmulation</span><span class="op">)</span></span></code></pre></div>
 <p>There is an all-in-one function <code>initators()</code> which does
 all of the steps with one function call.</p>
 <p>To get started a longitudinal dataset must be created containing:</p>
@@ -147,11 +147,11 @@ analysis:</p>
 <span><span class="op">)</span></span>
 <span><span class="co">#&gt; Starting data manipulation</span></span>
 <span><span class="co">#&gt; Finished data manipulation</span></span>
-<span><span class="co">#&gt; Processing time of data manipulation: 0.9 s</span></span>
+<span><span class="co">#&gt; Processing time of data manipulation: 0.8 s</span></span>
 <span><span class="co">#&gt; ------------------------------------------------------------</span></span>
 <span><span class="co">#&gt; Starting data extension</span></span>
 <span><span class="co">#&gt; Finish data extension</span></span>
-<span><span class="co">#&gt; Processing time of data extension: 7.6 s</span></span>
+<span><span class="co">#&gt; Processing time of data extension: 6.9 s</span></span>
 <span><span class="co">#&gt; ------------------------------------------------------------</span></span>
 <span><span class="co">#&gt; Summary of extended data:</span></span>
 <span><span class="co">#&gt; Number of observations: 1939053</span></span>
@@ -159,7 +159,7 @@ analysis:</p>
 <span><span class="co">#&gt; Preparing for model fitting</span></span>
 <span><span class="co">#&gt; ------------------------------------------------------------</span></span>
 <span><span class="co">#&gt; Fitting outcome model</span></span>
-<span><span class="co">#&gt; Processing time of fitting outcome model: 51.156 s</span></span>
+<span><span class="co">#&gt; Processing time of fitting outcome model: 44.694 s</span></span>
 <span><span class="co">#&gt; summary(model)</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Call:</span></span>
@@ -206,7 +206,7 @@ analysis:</p>
 <span><span class="co">#&gt; Number of Fisher Scoring iterations: 15</span></span>
 <span><span class="co">#&gt; ------------------------------------------------------------</span></span>
 <span><span class="co">#&gt; Calculating robust variance</span></span>
-<span><span class="co">#&gt; Processing time of calculating robust variance: 3.6 s</span></span>
+<span><span class="co">#&gt; Processing time of calculating robust variance: 2.6 s</span></span>
 <span><span class="co">#&gt; Summary with robust standard error:</span></span>
 <span><span class="co">#&gt;                 names  estimate robust_se        lb        ub       z p_value</span></span>
 <span><span class="co">#&gt; 1         (Intercept) -3.10e+00  7.01e-01 -4.47e+00 -1.72e+00  -4.417 &lt; 1e-04</span></span>
@@ -484,7 +484,7 @@ data.</p>
 <span><span class="op">)</span></span>
 <span><span class="co">#&gt; Starting data manipulation</span></span>
 <span><span class="co">#&gt; Finished data manipulation</span></span>
-<span><span class="co">#&gt; Processing time of data manipulation: 1.0 s</span></span>
+<span><span class="co">#&gt; Processing time of data manipulation: 0.7 s</span></span>
 <span><span class="co">#&gt; ------------------------------------------------------------</span></span>
 <span><span class="co">#&gt; P(treatment=1 | treatment=0) for denominator</span></span>
 <span><span class="co">#&gt; </span></span>
@@ -584,7 +584,7 @@ data.</p>
 <span><span class="co">#&gt; Number of Fisher Scoring iterations: 7</span></span>
 <span><span class="co">#&gt; Starting data extension</span></span>
 <span><span class="co">#&gt; Finish data extension</span></span>
-<span><span class="co">#&gt; Processing time of data extension: 6.1 s</span></span>
+<span><span class="co">#&gt; Processing time of data extension: 5.1 s</span></span>
 <span><span class="co">#&gt; ------------------------------------------------------------</span></span>
 <span><span class="co">#&gt; Summary of extended data:</span></span>
 <span><span class="co">#&gt; Number of observations: 963883</span></span>
@@ -759,7 +759,7 @@ time in each trial. All observations with events are included.</p>
 <code class="sourceCode R"><span><span class="va">sampled_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/case_control_sampling_trials.html">case_control_sampling_trials</a></span><span class="op">(</span><span class="va">prep_data</span>, p_control <span class="op">=</span> <span class="fl">0.1</span>, sample_all_times <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/str.html" class="external-link">str</a></span><span class="op">(</span><span class="va">sampled_data</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Classes 'data.table' and 'data.frame':   133875 obs. of  14 variables:</span></span>
-<span><span class="co">#&gt;  $ id                : int  176 31 54 358 484 358 165 176 165 484 ...</span></span>
+<span><span class="co">#&gt;  $ id                : int  358 484 358 54 423 54 140 484 475 484 ...</span></span>
 <span><span class="co">#&gt;  $ for_period        : int  1 1 1 1 1 1 1 1 1 1 ...</span></span>
 <span><span class="co">#&gt;  $ followup_time     : int  0 1 2 3 4 5 6 7 8 9 ...</span></span>
 <span><span class="co">#&gt;  $ outcome           : num  0 0 0 0 0 0 0 0 0 0 ...</span></span>
@@ -769,8 +769,8 @@ time in each trial. All observations with events are included.</p>
 <span><span class="co">#&gt;  $ catvarB           : Factor w/ 5 levels "0","1","2","3",..: 5 5 5 5 5 5 5 5 5 5 ...</span></span>
 <span><span class="co">#&gt;  $ catvarC           : Factor w/ 4 levels "0","1","2","7": 4 4 4 4 4 4 4 4 4 4 ...</span></span>
 <span><span class="co">#&gt;  $ nvarA             : int  0 0 0 0 0 0 0 0 0 0 ...</span></span>
-<span><span class="co">#&gt;  $ nvarB             : int  0 0 0 0 1 0 0 0 0 1 ...</span></span>
-<span><span class="co">#&gt;  $ nvarC             : int  45 40 49 47 55 47 70 45 70 55 ...</span></span>
+<span><span class="co">#&gt;  $ nvarB             : int  0 1 0 0 0 0 0 1 0 1 ...</span></span>
+<span><span class="co">#&gt;  $ nvarC             : int  47 55 47 49 56 49 46 55 69 55 ...</span></span>
 <span><span class="co">#&gt;  $ assigned_treatment: int  0 0 0 0 0 0 0 0 0 0 ...</span></span>
 <span><span class="co">#&gt;  $ sample_weight     : num  10 10 10 10 10 10 10 10 10 10 ...</span></span>
 <span><span class="co">#&gt;  - attr(*, ".internal.selfref")=&lt;externalptr&gt;</span></span></code></pre></div>
@@ -803,7 +803,7 @@ estimates.</p>
 <span><span class="co">#&gt; ------------------------------------------------------------</span></span>
 <span><span class="co">#&gt; Fitting outcome model</span></span>
 <span><span class="co">#&gt; Warning in eval(family$initialize): non-integer #successes in a binomial glm!</span></span>
-<span><span class="co">#&gt; Processing time of fitting outcome model: 2.4 s</span></span>
+<span><span class="co">#&gt; Processing time of fitting outcome model: 2.2 s</span></span>
 <span><span class="co">#&gt; summary(model)</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Call:</span></span>
@@ -814,38 +814,38 @@ estimates.</p>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Deviance Residuals: </span></span>
 <span><span class="co">#&gt;     Min       1Q   Median       3Q      Max  </span></span>
-<span><span class="co">#&gt; -1.3583  -0.2865  -0.2118  -0.1376  10.2009  </span></span>
+<span><span class="co">#&gt; -1.4016  -0.2886  -0.2126  -0.1381  10.0840  </span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Coefficients:</span></span>
 <span><span class="co">#&gt;                      Estimate Std. Error z value Pr(&gt;|z|)    </span></span>
-<span><span class="co">#&gt; (Intercept)        -2.262e+00  2.336e-01  -9.683  &lt; 2e-16 ***</span></span>
-<span><span class="co">#&gt; assigned_treatment -5.097e-01  5.359e-02  -9.511  &lt; 2e-16 ***</span></span>
-<span><span class="co">#&gt; for_period         -1.164e-03  9.029e-04  -1.290 0.197178    </span></span>
-<span><span class="co">#&gt; I(for_period^2)     7.397e-06  1.977e-06   3.742 0.000182 ***</span></span>
-<span><span class="co">#&gt; followup_time       2.397e-03  1.034e-03   2.319 0.020379 *  </span></span>
-<span><span class="co">#&gt; I(followup_time^2) -2.910e-05  6.410e-06  -4.541 5.61e-06 ***</span></span>
-<span><span class="co">#&gt; catvarA1            4.555e-01  3.907e-02  11.656  &lt; 2e-16 ***</span></span>
-<span><span class="co">#&gt; catvarA2            4.618e-01  5.420e-02   8.520  &lt; 2e-16 ***</span></span>
-<span><span class="co">#&gt; catvarA3           -9.954e+00  5.009e+01  -0.199 0.842471    </span></span>
-<span><span class="co">#&gt; catvarA7            4.513e-01  7.096e-02   6.360 2.02e-10 ***</span></span>
-<span><span class="co">#&gt; catvarB1           -3.546e-01  1.855e-01  -1.911 0.055985 .  </span></span>
-<span><span class="co">#&gt; catvarB2           -6.303e-02  1.888e-01  -0.334 0.738510    </span></span>
-<span><span class="co">#&gt; catvarB3           -2.451e+00  3.665e-01  -6.688 2.26e-11 ***</span></span>
-<span><span class="co">#&gt; catvarB7           -7.538e-01  1.876e-01  -4.019 5.85e-05 ***</span></span>
-<span><span class="co">#&gt; catvarC1           -8.107e-02  4.854e-02  -1.670 0.094909 .  </span></span>
-<span><span class="co">#&gt; catvarC2            4.664e-02  4.342e-02   1.074 0.282753    </span></span>
-<span><span class="co">#&gt; catvarC7           -5.047e-01  6.288e-02  -8.025 1.01e-15 ***</span></span>
-<span><span class="co">#&gt; nvarA              -2.107e-02  8.987e-03  -2.345 0.019049 *  </span></span>
-<span><span class="co">#&gt; nvarB               2.935e-03  3.900e-04   7.526 5.24e-14 ***</span></span>
-<span><span class="co">#&gt; nvarC              -5.467e-02  1.232e-03 -44.382  &lt; 2e-16 ***</span></span>
+<span><span class="co">#&gt; (Intercept)        -2.261e+00  2.335e-01  -9.683  &lt; 2e-16 ***</span></span>
+<span><span class="co">#&gt; assigned_treatment -4.979e-01  5.376e-02  -9.262  &lt; 2e-16 ***</span></span>
+<span><span class="co">#&gt; for_period         -1.347e-03  9.064e-04  -1.486 0.137226    </span></span>
+<span><span class="co">#&gt; I(for_period^2)     7.795e-06  1.983e-06   3.932 8.44e-05 ***</span></span>
+<span><span class="co">#&gt; followup_time       1.764e-03  1.012e-03   1.744 0.081116 .  </span></span>
+<span><span class="co">#&gt; I(followup_time^2) -2.211e-05  6.141e-06  -3.600 0.000318 ***</span></span>
+<span><span class="co">#&gt; catvarA1            4.579e-01  3.884e-02  11.790  &lt; 2e-16 ***</span></span>
+<span><span class="co">#&gt; catvarA2            4.068e-01  5.419e-02   7.506 6.08e-14 ***</span></span>
+<span><span class="co">#&gt; catvarA3           -9.966e+00  5.027e+01  -0.198 0.842851    </span></span>
+<span><span class="co">#&gt; catvarA7            4.185e-01  7.081e-02   5.911 3.41e-09 ***</span></span>
+<span><span class="co">#&gt; catvarB1           -3.619e-01  1.857e-01  -1.949 0.051324 .  </span></span>
+<span><span class="co">#&gt; catvarB2           -5.157e-02  1.889e-01  -0.273 0.784881    </span></span>
+<span><span class="co">#&gt; catvarB3           -2.405e+00  3.667e-01  -6.557 5.48e-11 ***</span></span>
+<span><span class="co">#&gt; catvarB7           -7.255e-01  1.875e-01  -3.869 0.000109 ***</span></span>
+<span><span class="co">#&gt; catvarC1           -9.167e-02  4.850e-02  -1.890 0.058764 .  </span></span>
+<span><span class="co">#&gt; catvarC2            4.463e-02  4.307e-02   1.036 0.300012    </span></span>
+<span><span class="co">#&gt; catvarC7           -5.161e-01  6.236e-02  -8.276  &lt; 2e-16 ***</span></span>
+<span><span class="co">#&gt; nvarA              -2.058e-02  8.935e-03  -2.303 0.021258 *  </span></span>
+<span><span class="co">#&gt; nvarB               3.173e-03  3.973e-04   7.987 1.39e-15 ***</span></span>
+<span><span class="co">#&gt; nvarC              -5.459e-02  1.235e-03 -44.206  &lt; 2e-16 ***</span></span>
 <span><span class="co">#&gt; ---</span></span>
 <span><span class="co">#&gt; Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; (Dispersion parameter for binomial family taken to be 1)</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt;     Null deviance: 57674  on 133874  degrees of freedom</span></span>
-<span><span class="co">#&gt; Residual deviance: 54217  on 133855  degrees of freedom</span></span>
-<span><span class="co">#&gt; AIC: 54130</span></span>
+<span><span class="co">#&gt;     Null deviance: 57886  on 133874  degrees of freedom</span></span>
+<span><span class="co">#&gt; Residual deviance: 54493  on 133855  degrees of freedom</span></span>
+<span><span class="co">#&gt; AIC: 54387</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Number of Fisher Scoring iterations: 13</span></span>
 <span><span class="co">#&gt; ------------------------------------------------------------</span></span>
@@ -853,26 +853,26 @@ estimates.</p>
 <span><span class="co">#&gt; Processing time of calculating robust variance: 0.2 s</span></span>
 <span><span class="co">#&gt; Summary with robust standard error:</span></span>
 <span><span class="co">#&gt;                 names  estimate robust_se        lb        ub        z p_value</span></span>
-<span><span class="co">#&gt; 1         (Intercept) -2.26e+00  1.09e+00 -4.40e+00 -1.25e-01  -2.0751  0.0380</span></span>
-<span><span class="co">#&gt; 2  assigned_treatment -5.10e-01  4.35e-01 -1.36e+00  3.42e-01  -1.1724  0.2410</span></span>
-<span><span class="co">#&gt; 3          for_period -1.16e-03  5.47e-03 -1.19e-02  9.56e-03  -0.2129  0.8314</span></span>
-<span><span class="co">#&gt; 4     I(for_period^2)  7.40e-06  1.19e-05 -1.59e-05  3.07e-05   0.6211  0.5345</span></span>
-<span><span class="co">#&gt; 5       followup_time  2.40e-03  5.85e-03 -9.06e-03  1.39e-02   0.4101  0.6818</span></span>
-<span><span class="co">#&gt; 6  I(followup_time^2) -2.91e-05  5.45e-05 -1.36e-04  7.77e-05  -0.5342  0.5932</span></span>
-<span><span class="co">#&gt; 7            catvarA1  4.55e-01  3.00e-01 -1.33e-01  1.04e+00   1.5176  0.1291</span></span>
-<span><span class="co">#&gt; 8            catvarA2  4.62e-01  3.68e-01 -2.59e-01  1.18e+00   1.2562  0.2090</span></span>
-<span><span class="co">#&gt; 9            catvarA3 -9.95e+00  8.02e-01 -1.15e+01 -8.38e+00 -12.4044  &lt;1e-04</span></span>
-<span><span class="co">#&gt; 10           catvarA7  4.51e-01  3.87e-01 -3.07e-01  1.21e+00   1.1664  0.2434</span></span>
-<span><span class="co">#&gt; 11           catvarB1 -3.55e-01  6.59e-01 -1.65e+00  9.37e-01  -0.5383  0.5904</span></span>
-<span><span class="co">#&gt; 12           catvarB2 -6.30e-02  6.98e-01 -1.43e+00  1.31e+00  -0.0903  0.9281</span></span>
-<span><span class="co">#&gt; 13           catvarB3 -2.45e+00  1.13e+00 -4.66e+00 -2.41e-01  -2.1733  0.0298</span></span>
-<span><span class="co">#&gt; 14           catvarB7 -7.54e-01  6.82e-01 -2.09e+00  5.84e-01  -1.1048  0.2693</span></span>
-<span><span class="co">#&gt; 15           catvarC1 -8.11e-02  2.32e-01 -5.35e-01  3.73e-01  -0.3501  0.7263</span></span>
-<span><span class="co">#&gt; 16           catvarC2  4.66e-02  2.95e-01 -5.31e-01  6.24e-01   0.1583  0.8742</span></span>
-<span><span class="co">#&gt; 17           catvarC7 -5.05e-01  3.56e-01 -1.20e+00  1.94e-01  -1.4166  0.1566</span></span>
-<span><span class="co">#&gt; 18              nvarA -2.11e-02  5.75e-02 -1.34e-01  9.17e-02  -0.3662  0.7143</span></span>
-<span><span class="co">#&gt; 19              nvarB  2.93e-03  2.44e-03 -1.85e-03  7.72e-03   1.2013  0.2296</span></span>
-<span><span class="co">#&gt; 20              nvarC -5.47e-02  9.58e-03 -7.35e-02 -3.59e-02  -5.7043  &lt;1e-04</span></span>
+<span><span class="co">#&gt; 1         (Intercept) -2.26e+00  1.08e+00 -4.37e+00 -1.47e-01  -2.0966  0.0360</span></span>
+<span><span class="co">#&gt; 2  assigned_treatment -4.98e-01  4.41e-01 -1.36e+00  3.66e-01  -1.1292  0.2588</span></span>
+<span><span class="co">#&gt; 3          for_period -1.35e-03  5.43e-03 -1.20e-02  9.29e-03  -0.2483  0.8039</span></span>
+<span><span class="co">#&gt; 4     I(for_period^2)  7.79e-06  1.19e-05 -1.55e-05  3.11e-05   0.6566  0.5115</span></span>
+<span><span class="co">#&gt; 5       followup_time  1.76e-03  5.67e-03 -9.35e-03  1.29e-02   0.3111  0.7557</span></span>
+<span><span class="co">#&gt; 6  I(followup_time^2) -2.21e-05  5.28e-05 -1.26e-04  8.13e-05  -0.4190  0.6752</span></span>
+<span><span class="co">#&gt; 7            catvarA1  4.58e-01  3.02e-01 -1.34e-01  1.05e+00   1.5171  0.1292</span></span>
+<span><span class="co">#&gt; 8            catvarA2  4.07e-01  3.65e-01 -3.09e-01  1.12e+00   1.1140  0.2653</span></span>
+<span><span class="co">#&gt; 9            catvarA3 -9.97e+00  8.21e-01 -1.16e+01 -8.36e+00 -12.1370  &lt;1e-04</span></span>
+<span><span class="co">#&gt; 10           catvarA7  4.19e-01  3.84e-01 -3.34e-01  1.17e+00   1.0905  0.2755</span></span>
+<span><span class="co">#&gt; 11           catvarB1 -3.62e-01  6.57e-01 -1.65e+00  9.25e-01  -0.5511  0.5816</span></span>
+<span><span class="co">#&gt; 12           catvarB2 -5.16e-02  6.98e-01 -1.42e+00  1.32e+00  -0.0739  0.9411</span></span>
+<span><span class="co">#&gt; 13           catvarB3 -2.40e+00  1.13e+00 -4.63e+00 -1.82e-01  -2.1207  0.0339</span></span>
+<span><span class="co">#&gt; 14           catvarB7 -7.26e-01  6.78e-01 -2.06e+00  6.04e-01  -1.0694  0.2849</span></span>
+<span><span class="co">#&gt; 15           catvarC1 -9.17e-02  2.30e-01 -5.43e-01  3.60e-01  -0.3981  0.6905</span></span>
+<span><span class="co">#&gt; 16           catvarC2  4.46e-02  2.95e-01 -5.34e-01  6.24e-01   0.1511  0.8799</span></span>
+<span><span class="co">#&gt; 17           catvarC7 -5.16e-01  3.45e-01 -1.19e+00  1.60e-01  -1.4956  0.1348</span></span>
+<span><span class="co">#&gt; 18              nvarA -2.06e-02  5.72e-02 -1.33e-01  9.16e-02  -0.3597  0.7191</span></span>
+<span><span class="co">#&gt; 19              nvarB  3.17e-03  2.52e-03 -1.77e-03  8.12e-03   1.2571  0.2087</span></span>
+<span><span class="co">#&gt; 20              nvarC -5.46e-02  9.67e-03 -7.35e-02 -3.56e-02  -5.6458  &lt;1e-04</span></span>
 <span><span class="co">#&gt; ------------------------------------------------------------</span></span></code></pre></div>
 <p>The result is the same type as the previous result from the simple
 <code>initiators</code> function, containing the <code>glm</code> object
@@ -896,38 +896,38 @@ and the sandwich results.</p>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Deviance Residuals: </span></span>
 <span><span class="co">#&gt;     Min       1Q   Median       3Q      Max  </span></span>
-<span><span class="co">#&gt; -1.3583  -0.2865  -0.2118  -0.1376  10.2009  </span></span>
+<span><span class="co">#&gt; -1.4016  -0.2886  -0.2126  -0.1381  10.0840  </span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Coefficients:</span></span>
 <span><span class="co">#&gt;                      Estimate Std. Error z value Pr(&gt;|z|)    </span></span>
-<span><span class="co">#&gt; (Intercept)        -2.262e+00  2.336e-01  -9.683  &lt; 2e-16 ***</span></span>
-<span><span class="co">#&gt; assigned_treatment -5.097e-01  5.359e-02  -9.511  &lt; 2e-16 ***</span></span>
-<span><span class="co">#&gt; for_period         -1.164e-03  9.029e-04  -1.290 0.197178    </span></span>
-<span><span class="co">#&gt; I(for_period^2)     7.397e-06  1.977e-06   3.742 0.000182 ***</span></span>
-<span><span class="co">#&gt; followup_time       2.397e-03  1.034e-03   2.319 0.020379 *  </span></span>
-<span><span class="co">#&gt; I(followup_time^2) -2.910e-05  6.410e-06  -4.541 5.61e-06 ***</span></span>
-<span><span class="co">#&gt; catvarA1            4.555e-01  3.907e-02  11.656  &lt; 2e-16 ***</span></span>
-<span><span class="co">#&gt; catvarA2            4.618e-01  5.420e-02   8.520  &lt; 2e-16 ***</span></span>
-<span><span class="co">#&gt; catvarA3           -9.954e+00  5.009e+01  -0.199 0.842471    </span></span>
-<span><span class="co">#&gt; catvarA7            4.513e-01  7.096e-02   6.360 2.02e-10 ***</span></span>
-<span><span class="co">#&gt; catvarB1           -3.546e-01  1.855e-01  -1.911 0.055985 .  </span></span>
-<span><span class="co">#&gt; catvarB2           -6.303e-02  1.888e-01  -0.334 0.738510    </span></span>
-<span><span class="co">#&gt; catvarB3           -2.451e+00  3.665e-01  -6.688 2.26e-11 ***</span></span>
-<span><span class="co">#&gt; catvarB7           -7.538e-01  1.876e-01  -4.019 5.85e-05 ***</span></span>
-<span><span class="co">#&gt; catvarC1           -8.107e-02  4.854e-02  -1.670 0.094909 .  </span></span>
-<span><span class="co">#&gt; catvarC2            4.664e-02  4.342e-02   1.074 0.282753    </span></span>
-<span><span class="co">#&gt; catvarC7           -5.047e-01  6.288e-02  -8.025 1.01e-15 ***</span></span>
-<span><span class="co">#&gt; nvarA              -2.107e-02  8.987e-03  -2.345 0.019049 *  </span></span>
-<span><span class="co">#&gt; nvarB               2.935e-03  3.900e-04   7.526 5.24e-14 ***</span></span>
-<span><span class="co">#&gt; nvarC              -5.467e-02  1.232e-03 -44.382  &lt; 2e-16 ***</span></span>
+<span><span class="co">#&gt; (Intercept)        -2.261e+00  2.335e-01  -9.683  &lt; 2e-16 ***</span></span>
+<span><span class="co">#&gt; assigned_treatment -4.979e-01  5.376e-02  -9.262  &lt; 2e-16 ***</span></span>
+<span><span class="co">#&gt; for_period         -1.347e-03  9.064e-04  -1.486 0.137226    </span></span>
+<span><span class="co">#&gt; I(for_period^2)     7.795e-06  1.983e-06   3.932 8.44e-05 ***</span></span>
+<span><span class="co">#&gt; followup_time       1.764e-03  1.012e-03   1.744 0.081116 .  </span></span>
+<span><span class="co">#&gt; I(followup_time^2) -2.211e-05  6.141e-06  -3.600 0.000318 ***</span></span>
+<span><span class="co">#&gt; catvarA1            4.579e-01  3.884e-02  11.790  &lt; 2e-16 ***</span></span>
+<span><span class="co">#&gt; catvarA2            4.068e-01  5.419e-02   7.506 6.08e-14 ***</span></span>
+<span><span class="co">#&gt; catvarA3           -9.966e+00  5.027e+01  -0.198 0.842851    </span></span>
+<span><span class="co">#&gt; catvarA7            4.185e-01  7.081e-02   5.911 3.41e-09 ***</span></span>
+<span><span class="co">#&gt; catvarB1           -3.619e-01  1.857e-01  -1.949 0.051324 .  </span></span>
+<span><span class="co">#&gt; catvarB2           -5.157e-02  1.889e-01  -0.273 0.784881    </span></span>
+<span><span class="co">#&gt; catvarB3           -2.405e+00  3.667e-01  -6.557 5.48e-11 ***</span></span>
+<span><span class="co">#&gt; catvarB7           -7.255e-01  1.875e-01  -3.869 0.000109 ***</span></span>
+<span><span class="co">#&gt; catvarC1           -9.167e-02  4.850e-02  -1.890 0.058764 .  </span></span>
+<span><span class="co">#&gt; catvarC2            4.463e-02  4.307e-02   1.036 0.300012    </span></span>
+<span><span class="co">#&gt; catvarC7           -5.161e-01  6.236e-02  -8.276  &lt; 2e-16 ***</span></span>
+<span><span class="co">#&gt; nvarA              -2.058e-02  8.935e-03  -2.303 0.021258 *  </span></span>
+<span><span class="co">#&gt; nvarB               3.173e-03  3.973e-04   7.987 1.39e-15 ***</span></span>
+<span><span class="co">#&gt; nvarC              -5.459e-02  1.235e-03 -44.206  &lt; 2e-16 ***</span></span>
 <span><span class="co">#&gt; ---</span></span>
 <span><span class="co">#&gt; Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; (Dispersion parameter for binomial family taken to be 1)</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt;     Null deviance: 57674  on 133874  degrees of freedom</span></span>
-<span><span class="co">#&gt; Residual deviance: 54217  on 133855  degrees of freedom</span></span>
-<span><span class="co">#&gt; AIC: 54130</span></span>
+<span><span class="co">#&gt;     Null deviance: 57886  on 133874  degrees of freedom</span></span>
+<span><span class="co">#&gt; Residual deviance: 54493  on 133855  degrees of freedom</span></span>
+<span><span class="co">#&gt; AIC: 54387</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Number of Fisher Scoring iterations: 13</span></span></code></pre></div>
 <p>We can also use this object to predict cumulative incidence curves
