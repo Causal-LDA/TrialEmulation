@@ -12,7 +12,7 @@ Rcpp::Rostream<false>& Rcpp::Rcerr = Rcpp::Rcpp_cerr_get();
 
 // censor_func
 Rcpp::DataFrame censor_func(Rcpp::DataFrame& sw_data);
-RcppExport SEXP _RandomisedTrialsEmulation_censor_func(SEXP sw_dataSEXP) {
+RcppExport SEXP _TrialEmulation_censor_func(SEXP sw_dataSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -23,11 +23,11 @@ END_RCPP
 }
 
 static const R_CallMethodDef CallEntries[] = {
-    {"_RandomisedTrialsEmulation_censor_func", (DL_FUNC) &_RandomisedTrialsEmulation_censor_func, 1},
+    {"_TrialEmulation_censor_func", (DL_FUNC) &_TrialEmulation_censor_func, 1},
     {NULL, NULL, 0}
 };
 
-RcppExport void R_init_RandomisedTrialsEmulation(DllInfo *dll) {
+RcppExport void R_init_TrialEmulation(DllInfo *dll) {
     R_registerRoutines(dll, NULL, CallEntries, NULL, NULL);
     R_useDynamicSymbols(dll, FALSE);
 }

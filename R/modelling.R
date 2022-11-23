@@ -43,6 +43,7 @@ data_modelling <- function(data,
   # Dummy variables used in data.table calls declared to prevent package check NOTES:
   weight <- sample_weight <- followup_time <- NULL
 
+  data <- as.data.table(data)
   # if there are any limits on the follow up
   if (!is.na(first_followup) || !is.na(last_followup)) {
     data <- data[followup_time >= max(0, first_followup, na.rm = TRUE) &

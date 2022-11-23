@@ -46,7 +46,7 @@ test_that("data_preparation can be quiet", {
 test_that("data_preparation gives an error for existing trial files", {
   save_dir <- withr::local_tempdir(pattern = "duplicates", tempdir(TRUE))
 
-  write.csv(RandomisedTrialsEmulation::vignette_switch_data[1:10, ], file = file.path(save_dir, "trial_1.csv"))
+  write.csv(TrialEmulation::vignette_switch_data[1:10, ], file = file.path(save_dir, "trial_1.csv"))
 
   expect_error(
     data_preparation(
