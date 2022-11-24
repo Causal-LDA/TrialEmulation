@@ -24,8 +24,6 @@ data_preparation(
   pool_cense = 0,
   cense_d_cov = ~1,
   cense_n_cov = ~1,
-  include_followup_time_case = ~followup_time + I(followup_time^2),
-  include_expansion_time_case = ~for_period + I(for_period^2),
   include_regime_length = FALSE,
   eligible_wts_0 = NA,
   eligible_wts_1 = NA,
@@ -86,10 +84,6 @@ calculation.}
 
 \item{cense_n_cov}{A RHS formula for modelling probability of being censored. Used in the denominator of weight
 calculation.}
-
-\item{include_followup_time_case}{The model to include \code{followup_time} in outcome model, specified as a RHS formula.}
-
-\item{include_expansion_time_case}{The model to include \code{for_period} in outcome model, specified as a RHS formula.}
 
 \item{include_regime_length}{If defined as 1 a new variable (time_on_regime) is added to dataset.
 This variable stores the duration of time that the patient has been on the current treatment value}

@@ -26,8 +26,8 @@
 #'   outcome_cov = c("catvarA", "nvarA"),
 #'   last_followup = 40,
 #'   model_var = "assigned_treatment",
-#'   include_followup_time_case = ~followup_time,
-#'   include_expansion_time_case = ~for_period,
+#'   include_followup_time = ~followup_time,
+#'   include_expansion_time = ~for_period,
 #'   use_sample_weights = FALSE,
 #'   quiet = TRUE,
 #'   glm_function = "glm"
@@ -57,13 +57,13 @@
 #' lines(predicted_ci[[3]]$followup_time, predicted_ci[[3]]$`2.5%`, lty = 2)
 #' lines(predicted_ci[[3]]$followup_time, predicted_ci[[3]]$`97.5%`, lty = 2)
 #'
-predict.RTE_model <- function(object,
-                              newdata,
-                              predict_times,
-                              conf_int = TRUE,
-                              samples = 100,
-                              type = c("cum_inc", "survival"),
-                              ...) {
+predict.TE_model <- function(object,
+                             newdata,
+                             predict_times,
+                             conf_int = TRUE,
+                             samples = 100,
+                             type = c("cum_inc", "survival"),
+                             ...) {
   assert_class(object$model, "glm")
   model <- object$model
   type <- match.arg(type)

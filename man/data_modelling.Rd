@@ -15,8 +15,8 @@ data_modelling(
   weight_limits = c(0, Inf),
   use_censor = 0,
   check_missing = 0,
-  include_followup_time_case = ~followup_time + I(followup_time^2),
-  include_expansion_time_case = ~for_period + I(for_period^2),
+  include_followup_time = ~followup_time + I(followup_time^2),
+  include_expansion_time = ~for_period + I(for_period^2),
   where_case = NA,
   glm_function = c("glm", "parglm"),
   use_sample_weights = TRUE,
@@ -53,10 +53,6 @@ and \code{dose + dose^2} for as-treated. \code{time_on_regime}? TODO check what 
 initial treatment value}
 
 \item{check_missing}{Check for missing values in final model when use_censor=1 (Not added yet!)}
-
-\item{include_followup_time_case}{The model to include \code{followup_time} in outcome model, specified as a RHS formula.}
-
-\item{include_expansion_time_case}{The model to include \code{for_period} in outcome model, specified as a RHS formula.}
 
 \item{where_case}{List of where conditions used in subsetting the data used in final analysis}
 
