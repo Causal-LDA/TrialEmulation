@@ -33,9 +33,9 @@ case_control_sampling_trials <- function(data_prep,
     subset_expr <- substitute(subset_condition)
   }
 
-  if (inherits(data_prep, "RTE_data_prep_sep")) {
+  if (inherits(data_prep, "TE_data_prep_sep")) {
     trial_samples <- sample_data_prep_sep(data_prep, p_control, sample_all_times, use_subset, subset_expr, sort)
-  } else if (inherits(data_prep, "RTE_data_prep_dt")) {
+  } else if (inherits(data_prep, "TE_data_prep_dt")) {
     trial_samples <- sample_data_prep_dt(data_prep, p_control, sample_all_times, use_subset, subset_expr, sort)
   } else {
     stop("Unknown data_prep object.")

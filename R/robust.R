@@ -33,6 +33,6 @@ robust_calculation <- function(model, data_id) {
   output$p_value <- format.pval(2 * (1 - pnorm(abs(output$z))), digits = 3, eps = 0.0001)
 
   result <- list(summary = output, matrix = var_matrix)
-  class(result) <- "RTE_robust"
+  class(result) <- "TE_robust"
   result
 }

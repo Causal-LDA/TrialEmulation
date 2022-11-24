@@ -34,8 +34,6 @@ data_preparation <- function(data,
                              pool_cense = 0,
                              cense_d_cov = ~1,
                              cense_n_cov = ~1,
-                             include_followup_time_case = ~ followup_time + I(followup_time^2),
-                             include_expansion_time_case = ~ for_period + I(for_period^2),
                              include_regime_length = FALSE,
                              eligible_wts_0 = NA,
                              eligible_wts_1 = NA,
@@ -58,8 +56,6 @@ data_preparation <- function(data,
   switch_d_cov <- as_formula(switch_d_cov)
   cense_d_cov <- as_formula(cense_d_cov)
   cense_n_cov <- as_formula(cense_n_cov)
-  include_followup_time_case <- as_formula(include_followup_time_case)
-  include_expansion_time_case <- as_formula(include_expansion_time_case)
 
   model_var <- if (!is.null(model_var)) {
     as_formula(model_var)
@@ -145,7 +141,7 @@ data_preparation <- function(data,
   result$switch_models <- if (use_weight) weight_result$switch_models else NULL
   result$censor_models <- if (use_weight) weight_result$censor_models else NULL
 
-  class(result) <- c(ifelse(separate_files, "RTE_data_prep_sep", "RTE_data_prep_dt"), "RTE_data_prep")
+  class(result) <- c(ifelse(separate_files, "TE_data_prep_sep", "TE_data_prep_dt"), "TE_data_prep")
   return(result)
 }
 

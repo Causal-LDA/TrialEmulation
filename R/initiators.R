@@ -33,8 +33,10 @@
 #' @param pool_cense Pool the numerator and denominator models (0: split models by previous treatment Am1 = 0 and
 #' Am1 = 1 as in treatment models and 1: pool all observations together into a single numerator and denominator model)
 #'  Defaults to 0
-#' @param include_followup_time_case The model to include `followup_time` in outcome model, specified as a RHS formula.
-#' @param include_expansion_time_case The model to include `for_period` in outcome model, specified as a RHS formula.
+#' @param include_followup_time The model to include the follow up time of the trial (`followup_time`) in outcome model,
+#'  specified as a RHS formula.
+#' @param include_expansion_time The model to include the trial period (`for_period`) in outcome model,
+#'  specified as a RHS formula.
 #' @param include_regime_length If defined as 1 a new variable (time_on_regime) is added to dataset.
 #'  This variable stores the duration of time that the patient has been on the current treatment value
 #' @param eligible_wts_0 Eligibility criteria used in weights for model condition Am1 = 0
@@ -90,8 +92,8 @@ initiators <- function(data,
                        pool_cense = 0,
                        cense_d_cov = ~1,
                        cense_n_cov = ~1,
-                       include_followup_time_case = ~ followup_time + I(followup_time^2),
-                       include_expansion_time_case = ~ for_period + I(for_period^2),
+                       include_followup_time = ~ followup_time + I(followup_time^2),
+                       include_expansion_time = ~ for_period + I(for_period^2),
                        include_regime_length = 0,
                        eligible_wts_0 = NA,
                        eligible_wts_1 = NA,
@@ -127,8 +129,6 @@ initiators <- function(data,
     pool_cense = pool_cense,
     cense_d_cov = cense_d_cov,
     cense_n_cov = cense_n_cov,
-    include_followup_time_case = include_followup_time_case,
-    include_expansion_time_case = include_expansion_time_case,
     include_regime_length = include_regime_length,
     eligible_wts_0 = eligible_wts_0,
     eligible_wts_1 = eligible_wts_1,
@@ -152,8 +152,8 @@ initiators <- function(data,
     weight_limits = weight_limits,
     use_censor = use_censor,
     check_missing = check_missing,
-    include_followup_time_case = include_followup_time_case,
-    include_expansion_time_case = include_expansion_time_case,
+    include_followup_time = include_followup_time,
+    include_expansion_time = include_expansion_time,
     where_case = where_case,
     glm_function = "glm",
     use_sample_weights = FALSE,

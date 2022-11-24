@@ -25,8 +25,8 @@ data_modelling <- function(data,
                            weight_limits = c(0, Inf),
                            use_censor = 0,
                            check_missing = 0,
-                           include_followup_time_case = ~ followup_time + I(followup_time^2),
-                           include_expansion_time_case = ~ for_period + I(for_period^2),
+                           include_followup_time = ~ followup_time + I(followup_time^2),
+                           include_expansion_time = ~ for_period + I(for_period^2),
                            where_case = NA,
                            glm_function = c("glm", "parglm"),
                            use_sample_weights = TRUE,
@@ -34,8 +34,8 @@ data_modelling <- function(data,
                            ...) {
   assert_flag(quiet)
   outcome_cov <- as_formula(outcome_cov)
-  include_followup_time_case <- as_formula(include_followup_time_case)
-  include_expansion_time_case <- as_formula(include_expansion_time_case)
+  include_followup_time <- as_formula(include_followup_time)
+  include_expansion_time <- as_formula(include_expansion_time)
   glm_function <- match.arg(glm_function)
   analysis_weights <- match.arg(analysis_weights)
   assert_numeric(weight_limits, len = 2, lower = 0, upper = Inf)
@@ -85,7 +85,7 @@ data_modelling <- function(data,
 
   model_formula <- Reduce(
     add_rhs,
-    c(model_formula, include_expansion_time_case, include_followup_time_case, outcome_cov)
+    c(model_formula, include_expansion_time, include_followup_time, outcome_cov)
   )
 
   if (any(!is.na(where_case))) {
@@ -133,6 +133,6 @@ data_modelling <- function(data,
   quiet_line(quiet)
 
   result <- list(model = model.full, robust = robust_model)
-  class(result) <- "RTE_model"
+  class(result) <- "TE_model"
   result
 }
