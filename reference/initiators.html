@@ -18,7 +18,7 @@ interface to the main working functions data_preparation() and data_modelling().
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">TrialEmulation</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.2.9</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.2.10</span>
       </span>
     </div>
 
@@ -84,8 +84,8 @@ interface to the main working functions <code><a href="data_preparation.html">da
 <span>  pool_cense <span class="op">=</span> <span class="fl">0</span>,</span>
 <span>  cense_d_cov <span class="op">=</span> <span class="op">~</span><span class="fl">1</span>,</span>
 <span>  cense_n_cov <span class="op">=</span> <span class="op">~</span><span class="fl">1</span>,</span>
-<span>  include_followup_time_case <span class="op">=</span> <span class="op">~</span><span class="va">followup_time</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/r/base/AsIs.html" class="external-link">I</a></span><span class="op">(</span><span class="va">followup_time</span><span class="op">^</span><span class="fl">2</span><span class="op">)</span>,</span>
-<span>  include_expansion_time_case <span class="op">=</span> <span class="op">~</span><span class="va">for_period</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/r/base/AsIs.html" class="external-link">I</a></span><span class="op">(</span><span class="va">for_period</span><span class="op">^</span><span class="fl">2</span><span class="op">)</span>,</span>
+<span>  include_followup_time <span class="op">=</span> <span class="op">~</span><span class="va">followup_time</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/r/base/AsIs.html" class="external-link">I</a></span><span class="op">(</span><span class="va">followup_time</span><span class="op">^</span><span class="fl">2</span><span class="op">)</span>,</span>
+<span>  include_expansion_time <span class="op">=</span> <span class="op">~</span><span class="va">for_period</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/r/base/AsIs.html" class="external-link">I</a></span><span class="op">(</span><span class="va">for_period</span><span class="op">^</span><span class="fl">2</span><span class="op">)</span>,</span>
 <span>  include_regime_length <span class="op">=</span> <span class="fl">0</span>,</span>
 <span>  eligible_wts_0 <span class="op">=</span> <span class="cn">NA</span>,</span>
 <span>  eligible_wts_1 <span class="op">=</span> <span class="cn">NA</span>,</span>
@@ -209,12 +209,14 @@ calculation.</p></dd>
 calculation.</p></dd>
 
 
-<dt>include_followup_time_case</dt>
-<dd><p>The model to include <code>followup_time</code> in outcome model, specified as a RHS formula.</p></dd>
+<dt>include_followup_time</dt>
+<dd><p>The model to include the follow up time of the trial (<code>followup_time</code>) in outcome model,
+specified as a RHS formula.</p></dd>
 
 
-<dt>include_expansion_time_case</dt>
-<dd><p>The model to include <code>for_period</code> in outcome model, specified as a RHS formula.</p></dd>
+<dt>include_expansion_time</dt>
+<dd><p>The model to include the trial period (<code>for_period</code>) in outcome model,
+specified as a RHS formula.</p></dd>
 
 
 <dt>include_regime_length</dt>
