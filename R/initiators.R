@@ -33,8 +33,10 @@
 #' @param pool_cense Pool the numerator and denominator models (0: split models by previous treatment Am1 = 0 and
 #' Am1 = 1 as in treatment models and 1: pool all observations together into a single numerator and denominator model)
 #'  Defaults to 0
-#' @param include_followup_time_case The model to include `followup_time` in outcome model, specified as a RHS formula.
-#' @param include_expansion_time_case The model to include `for_period` in outcome model, specified as a RHS formula.
+#' @param include_followup_time The model to include the follow up time of the trial (`followup_time`) in outcome model,
+#'  specified as a RHS formula.
+#' @param include_expansion_time The model to include the trial period (`for_period`) in outcome model,
+#'  specified as a RHS formula.
 #' @param include_regime_length If defined as 1 a new variable (time_on_regime) is added to dataset.
 #'  This variable stores the duration of time that the patient has been on the current treatment value
 #' @param eligible_wts_0 Eligibility criteria used in weights for model condition Am1 = 0

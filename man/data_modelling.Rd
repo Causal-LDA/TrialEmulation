@@ -54,6 +54,12 @@ initial treatment value}
 
 \item{check_missing}{Check for missing values in final model when use_censor=1 (Not added yet!)}
 
+\item{include_followup_time}{The model to include the follow up time of the trial (\code{followup_time}) in outcome model,
+specified as a RHS formula.}
+
+\item{include_expansion_time}{The model to include the trial period (\code{for_period}) in outcome model,
+specified as a RHS formula.}
+
 \item{where_case}{List of where conditions used in subsetting the data used in final analysis}
 
 \item{glm_function}{Which glm function to use for the final model from \code{stats} or \code{parglm} packages}
