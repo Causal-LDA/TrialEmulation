@@ -26,20 +26,18 @@ test_that("weight_func works as expected", {
   expect_equal(sum(result$data$wt), 5124.4538)
   expect_equal(sum(result$data$wtC), 5127.7397)
 
-  expect_list(result$censor_models, types = "data.frame", any.missing = FALSE, len = 8)
+  expect_list(result$censor_models, types = "TE_weight_summary", any.missing = FALSE, len = 4)
   expect_equal(
-    result$censor_models$cens_d0$estimate,
+    result$censor_models$cens_d0$summary$estimate,
     c(0.900038686916255, 0.588866421245376, -0.464693730180448, 0.32342303175603, -0.25226496458668, 0.9730384163288)
   )
 
-  expect_list(result$switch_models, types = "data.frame", any.missing = FALSE, len = 8)
+  expect_list(result$switch_models, types = "TE_weight_summary", any.missing = FALSE, len = 4)
   expect_equal(
-    result$switch_models$switch_d0$estimate,
+    result$switch_models$switch_d0$summary$estimate,
     c(-0.52632937, 0.35856345, 0.42935005)
   )
 })
-
-
 
 
 test_that("weight_func works saves model objects", {

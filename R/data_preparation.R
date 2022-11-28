@@ -163,39 +163,3 @@ check_data_dir <- function(data_dir) {
     }
   }
 }
-
-#' Summary methods for data_preparation objects
-#'
-#' @param object Result from data_preparation()
-#' @param ...
-#'
-#' @examples
-summary.TE_data_prep <- function(object, ...) {
-  cat("Number of observations in expanded data:", object$N, "\n")
-  cat("First trial period:", object$min_period, "\n")
-  cat("Last trial period:", object$max_period, "\n\n")
-  cat("Weight models\n")
-  str(object$switch_models, max = 1)
-  str(object$censor_models, max = 1)
-}
-
-#' @rdname summary.TE_data_prep
-#' @export
-summary.TE_data_prep_sep <- function(object, ...) {
-  cat("Expanded Trial Emulation data\n\n")
-
-  n_files <- length(object$data)
-  cat("Expanded data saved in ", n_files, " csv file", if (n_files > 1) "s" else "", ":\n", sep = "")
-  print(data.table(data = object$data), topn = 3, n = 5, col.names = "none")
-  cat("\n\n")
-  NextMethod()
-}
-
-#' @rdname summary.TE_data_prep
-#' @export
-summary.TE_data_prep_dt <- function(object, ...) {
-  cat("Expanded Trial Emulation data\n\n")
-  print(object$data, topn = 3, nrows = 3)
-  cat("\n")
-  NextMethod()
-}

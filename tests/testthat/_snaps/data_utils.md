@@ -122,7 +122,7 @@
       Number of Fisher Scoring iterations: 4
       
     Message <simpleMessage>
-      Model for P(cense = 0 |  X, Am1=0) for denominator
+      Model for P(cense = 0 | X, Am1=0) for denominator
     Output
       
       Call:
@@ -155,7 +155,7 @@
       Number of Fisher Scoring iterations: 5
       
     Message <simpleMessage>
-      Model for P(cense = 0 |  X, Am1=0) for numerator
+      Model for P(cense = 0 | X, Am1=0) for numerator
     Output
       
       Call:
@@ -185,7 +185,7 @@
       Number of Fisher Scoring iterations: 4
       
     Message <simpleMessage>
-      Model for P(cense = 0 |  X, Am1=1) for denominator
+      Model for P(cense = 0 | X, Am1=1) for denominator
     Output
       
       Call:
@@ -218,7 +218,7 @@
       Number of Fisher Scoring iterations: 6
       
     Message <simpleMessage>
-      Model for P(cense = 0 |  X, Am1=1) for numerator
+      Model for P(cense = 0 | X, Am1=1) for numerator
     Output
       
       Call:

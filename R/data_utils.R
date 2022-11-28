@@ -121,13 +121,10 @@ weight_func <- function(sw_data,
   # Switching weights --------------------
   ## ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-
   # Fit the models for the weights in the four scenarios
   weight_models <- list()
   # ------------------- eligible0 == 1 --------------------
   # --------------- denominator ------------------
-  quiet_msg(quiet, "P(treatment=1 | treatment=0) for denominator")
-
   model1 <- fit_glm(
     data = sw_data[if (any(!is.na(eligible_wts_0))) (eligible0 == 1 & eligible_wts_0 == 1) else eligible0 == 1],
     formula = switch_d_cov,
@@ -135,25 +132,19 @@ weight_func <- function(sw_data,
     glm_function = glm_function
   )
 
-  quiet_print(quiet, summary(model1))
-  switch_d0 <- data.table(
-    p0_d = model1$fitted.values,
-    eligible0 = unlist(model1$data$eligible0),
-    id = model1$data[, id],
-    period = model1$data[, period]
-  )
+  switch_d0 <- cbind(p0_d = model1$fitted.values, model1$data[, c("eligible0", "id", "period")])
 
-  weight_models$switch_d0 <- broom::tidy(model1)
-  weight_models$switch_d0_statistics <- broom::glance(model1)
-  if (save_weight_models) {
-    saveRDS(model1, file = file.path(save_dir, "weight_model_switch_d0.rds"))
-  }
+  weight_models$switch_d0 <- process_weight_model(
+    model1,
+    save_weight_models,
+    save_dir,
+    "weight_model_switch_d0.rds",
+    "P(treatment=1 | treatment=0) for denominator",
+    quiet
+  )
   rm(model1)
 
   # -------------- numerator --------------------
-
-  quiet_msg(quiet, "P(treatment=1 | treatment=0) for numerator")
-
   model2 <- fit_glm(
     data = sw_data[if (any(!is.na(eligible_wts_0))) (eligible0 == 1 & eligible_wts_0 == 1) else eligible0 == 1],
     formula = switch_n_cov,
@@ -161,24 +152,20 @@ weight_func <- function(sw_data,
     glm_function = glm_function
   )
 
-  quiet_print(quiet, summary(model2))
-  switch_n0 <- data.table(
-    p0_n = model2$fitted.values,
-    eligible0 = unlist(model2$data$eligible0),
-    id = model2$data[, id],
-    period = model2$data[, period]
-  )
+  switch_n0 <- cbind(p0_n = model2$fitted.values, model2$data[, c("eligible0", "id", "period")])
 
-  weight_models$switch_n0 <- broom::tidy(model2)
-  weight_models$switch_n0_statistics <- broom::glance(model2)
-  if (save_weight_models) {
-    saveRDS(model2, file = file.path(save_dir, "weight_model_switch_n0.rds"))
-  }
+  weight_models$switch_n0 <- process_weight_model(
+    model2,
+    save_weight_models,
+    save_dir,
+    "weight_model_switch_n0.rds",
+    "P(treatment=1 | treatment=0) for numerator",
+    quiet
+  )
   rm(model2)
 
   # ------------------- eligible1 == 1 --------------------
   # --------------- denominator ------------------
-  quiet_msg(quiet, "P(treatment=1 | treatment=1) for denominator")
   model3 <- fit_glm(
     data = sw_data[if (any(!is.na(eligible_wts_1))) (eligible1 == 1 & eligible_wts_1 == 1) else eligible1 == 1],
     formula = switch_d_cov,
@@ -186,23 +173,20 @@ weight_func <- function(sw_data,
     glm_function = glm_function
   )
 
-  quiet_print(quiet, summary(model3))
-  switch_d1 <- data.table(
-    p1_d = model3$fitted.values,
-    eligible1 = unlist(model3$data$eligible1),
-    id = model3$data[, id],
-    period = model3$data[, period]
+  switch_d1 <- cbind(p1_d = model3$fitted.values, model3$data[, c("eligible1", "id", "period")])
+
+  weight_models$switch_d1 <- process_weight_model(
+    model3,
+    save_weight_models,
+    save_dir,
+    "weight_model_switch_d1.rds",
+    "P(treatment=1 | treatment=1) for denominator",
+    quiet
   )
 
-  weight_models$switch_d1 <- broom::tidy(model3)
-  weight_models$switch_statistics <- broom::glance(model3)
-  if (save_weight_models) {
-    saveRDS(model3, file = file.path(save_dir, "weight_model_switch_d1.rds"))
-  }
   rm(model3)
 
   # -------------------- numerator ---------------------------
-  quiet_msg(quiet, "P(treatment=1 | treatment=1) for numerator")
   model4 <- fit_glm(
     data = sw_data[if (any(!is.na(eligible_wts_1))) (eligible1 == 1 & eligible_wts_1 == 1) else eligible1 == 1],
     formula = switch_n_cov,
@@ -210,19 +194,16 @@ weight_func <- function(sw_data,
     glm_function = glm_function
   )
 
-  quiet_print(quiet, summary(model4))
-  switch_n1 <- data.table(
-    p1_n = model4$fitted.values,
-    eligible1 = unlist(model4$data$eligible1),
-    id = model4$data[, id],
-    period = model4$data[, period]
-  )
+  switch_n1 <- cbind(p1_n = model4$fitted.values, model4$data[, c("eligible1", "id", "period")])
 
-  weight_models$switch_n1 <- broom::tidy(model4)
-  weight_models$switch_n1_statistics <- broom::glance(model4)
-  if (save_weight_models) {
-    saveRDS(model4, file = file.path(save_dir, "weight_model_switch_n1.rds"))
-  }
+  weight_models$switch_n1 <- process_weight_model(
+    model4,
+    save_weight_models,
+    save_dir,
+    "weight_model_switch_n1.rds",
+    "P(treatment=1 | treatment=1) for numerator",
+    quiet
+  )
   rm(model4)
 
   # -------------- Combine results --------------------
@@ -238,70 +219,60 @@ weight_func <- function(sw_data,
 
   rm(switch_d0, switch_d1, switch_n0, switch_n1)
 
-  sw_data <- merge.data.table(sw_data, switch_0, by = c("id", "period"), all = TRUE)
-  sw_data <- merge.data.table(sw_data, switch_1, by = c("id", "period"), all = TRUE)
+  sw_data <- merge.data.table(sw_data, switch_0[, -c("eligible0")], by = c("id", "period"), all = TRUE)
+  sw_data <- merge.data.table(sw_data, switch_1[, -c("eligible1")], by = c("id", "period"), all = TRUE)
 
   rm(switch_1, switch_0)
-
-  sw_data[, eligible0.y := NULL]
-  sw_data[, eligible1.y := NULL]
-  setnames(sw_data, c("eligible0.x", "eligible1.x"), c("eligible0", "eligible1"))
-
 
   ## ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   # Censoring weights --------------------
   ## ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  cens_models <- list()
+  censor_models <- list()
   if (!is.na(cense)) {
     cense_d_cov <- update(cense_d_cov, paste("1 -", cense, "~ ."))
     cense_n_cov <- update(cense_n_cov, paste("1 -", cense, "~ ."))
 
     if (pool_cense == 1) {
       # -------------------- denominator -------------------------
-      quiet_msg(quiet, "Model for P(cense = 0 |  X ) for denominator")
-      # -----------------------------------------------------------
       model1.cense <- fit_glm(
         data = sw_data,
         formula = cense_d_cov,
         ...,
         glm_function = glm_function
       )
-      quiet_print(quiet, summary(model1.cense))
-      cense_d0 <- data.table(
-        pC_d = model1.cense$fitted.values,
-        id = model1.cense$data[, id],
-        period = model1.cense$data[, period]
-      )
 
-      cens_models$cens_pool_d <- broom::tidy(model1.cense)
-      cens_models$cens_pool_d_statistics <- broom::glance(model1.cense)
-      if (save_weight_models) {
-        saveRDS(model1.cense, file = file.path(save_dir, "cense_model_pool_d.rds"))
-      }
+      cense_d0 <- cbind(pC_d = model1.cense$fitted.values, model1.cense$data[, c("id", "period")])
+
+      censor_models$cens_pool_d <- process_weight_model(
+        model1.cense,
+        save_weight_models,
+        save_dir,
+        "cense_model_pool_d.rds",
+        "Model for P(cense = 0 | X ) for denominator",
+        quiet
+      )
       rm(model1.cense)
 
       # --------------------- numerator ---------------------------
-      quiet_msg(quiet, "Model for P(cense = 0 |  X ) for numerator")
-      # ---------------------------------------------------------
       model2.cense <- fit_glm(
         data = sw_data,
         formula = cense_n_cov,
         ...,
         glm_function = glm_function
       )
-      quiet_print(quiet, summary(model2.cense))
-      cense_n0 <- data.table(
-        pC_n = model2.cense$fitted.values,
-        id = model2.cense$data[, id],
-        period = model2.cense$data[, period]
-      )
 
-      cens_models$cens_pool_n <- broom::tidy(model2.cense)
-      cens_models$cens_pool_n_statistics <- broom::glance(model2.cense)
-      if (save_weight_models) {
-        saveRDS(model2.cense, file = file.path(save_dir, "cense_model_pool_n.rds"))
-      }
+      cense_n0 <- cbind(pC_n = model2.cense$fitted.values, model2.cense$data[, c("id", "period")])
+
+      censor_models$cens_pool_n <- process_weight_model(
+        model2.cense,
+        save_weight_models,
+        save_dir,
+        "cense_model_pool_n.rds",
+        "Model for P(cense = 0 | X ) for numerator",
+        quiet
+      )
       rm(model2.cense)
+
       sw_data <- merge.data.table(sw_data, cense_d0, by = c("id", "period"), all = TRUE)
       sw_data <- merge.data.table(sw_data, cense_n0, by = c("id", "period"), all = TRUE)
 
@@ -310,31 +281,26 @@ weight_func <- function(sw_data,
       # when pool_cense != 1
 
       # ---------------------- denominator -----------------------
-      quiet_msg(quiet, "Model for P(cense = 0 |  X, Am1=0) for denominator")
       # ---------------------- eligible0 ---------------------------
-
       model1.cense <- fit_glm(
         data = sw_data[eligible0 == 1],
         formula = cense_d_cov,
         ...,
         glm_function = glm_function
       )
-      quiet_print(quiet, summary(model1.cense))
-      cense_d0 <- data.table(
-        pC_d0 = model1.cense$fitted.values,
-        id = model1.cense$data[, id],
-        period = model1.cense$data[, period]
+
+      cense_d0 <- cbind(pC_d0 = model1.cense$fitted.values, model1.cense$data[, c("id", "period")])
+
+      censor_models$cens_d0 <- process_weight_model(
+        model1.cense,
+        save_weight_models,
+        save_dir,
+        "cense_model_d0.rds",
+        "Model for P(cense = 0 | X, Am1=0) for denominator",
+        quiet
       )
-
-
-      cens_models$cens_d0 <- broom::tidy(model1.cense)
-      cens_models$cens_d0_statistics <- broom::glance(model1.cense)
-      if (save_weight_models) {
-        saveRDS(model1.cense, file = file.path(save_dir, "cense_model_d0.rds"))
-      }
       rm(model1.cense)
       # -------------------------- numerator ----------------------
-      quiet_msg(quiet, "Model for P(cense = 0 |  X, Am1=0) for numerator")
       #--------------------------- eligible0 -----------------------
       model2.cense <- fit_glm(
         data = sw_data[eligible0 == 1],
@@ -342,21 +308,19 @@ weight_func <- function(sw_data,
         ...,
         glm_function = glm_function
       )
-      quiet_print(quiet, summary(model2.cense))
-      cense_n0 <- data.table(
-        pC_n0 = model2.cense$fitted.values,
-        id = model2.cense$data[, id],
-        period = model2.cense$data[, period]
+      cense_n0 <- cbind(pC_n0 = model2.cense$fitted.values, model2.cense$data[, c("id", "period")])
+
+      censor_models$cens_n0 <- process_weight_model(
+        model2.cense,
+        save_weight_models,
+        save_dir,
+        "cense_model_n0.rds",
+        "Model for P(cense = 0 | X, Am1=0) for numerator",
+        quiet
       )
 
-      cens_models$cens_n0 <- broom::tidy(model2.cense)
-      cens_models$cens_n0_statistics <- broom::glance(model2.cense)
-      if (save_weight_models) {
-        saveRDS(model2.cense, file = file.path(save_dir, "cense_model_n0.rds"))
-      }
       rm(model2.cense)
       # ------------------------- denominator ---------------------
-      quiet_msg(quiet, "Model for P(cense = 0 |  X, Am1=1) for denominator")
       # ------------------------ eligible1 -------------------------
       model3.cense <- fit_glm(
         data = sw_data[eligible1 == 1],
@@ -364,21 +328,19 @@ weight_func <- function(sw_data,
         ...,
         glm_function = glm_function
       )
-      quiet_print(quiet, summary(model3.cense))
-      cense_d1 <- data.table(
-        pC_d1 = model3.cense$fitted.values,
-        id = model3.cense$data[, id],
-        period = model3.cense$data[, period]
-      )
 
-      cens_models$cens_d1 <- broom::tidy(model3.cense)
-      cens_models$cens_d1_statistics <- broom::glance(model3.cense)
-      if (save_weight_models) {
-        saveRDS(model3.cense, file = file.path(save_dir, "cense_model_d1.rds"))
-      }
+      cense_d1 <- cbind(pC_d1 = model3.cense$fitted.values, model3.cense$data[, c("id", "period")])
+
+      censor_models$cens_d1 <- process_weight_model(
+        model3.cense,
+        save_weight_models,
+        save_dir,
+        "cense_model_d1.rds",
+        "Model for P(cense = 0 | X, Am1=1) for denominator",
+        quiet
+      )
       rm(model3.cense)
       # ------------------------ numerator -------------------------
-      quiet_msg(quiet, "Model for P(cense = 0 |  X, Am1=1) for numerator")
       # ------------------------- eligible1 -----------------------
       model4.cense <- fit_glm(
         data = sw_data[eligible1 == 1],
@@ -386,18 +348,16 @@ weight_func <- function(sw_data,
         ...,
         glm_function = glm_function
       )
-      quiet_print(quiet, summary(model4.cense))
-      cense_n1 <- data.frame(
-        pC_n1 = model4.cense$fitted.values,
-        id = model4.cense$data[, id],
-        period = model4.cense$data[, period]
-      )
+      cense_n1 <- cbind(pC_n1 = model4.cense$fitted.values, model4.cense$data[, c("id", "period")])
 
-      cens_models$cens_n1 <- broom::tidy(model4.cense)
-      cens_models$cens_n1_statistics <- broom::glance(model4.cense)
-      if (save_weight_models) {
-        saveRDS(model4.cense, file = file.path(save_dir, "cense_model_n1.rds"))
-      }
+      censor_models$cens_n1 <- process_weight_model(
+        model4.cense,
+        save_weight_models,
+        save_dir,
+        "cense_model_n1.rds",
+        "Model for P(cense = 0 | X, Am1=1) for numerator",
+        quiet
+      )
       rm(model4.cense)
 
       # combine ------------------------------
@@ -469,6 +429,31 @@ weight_func <- function(sw_data,
   list(
     data = sw_data,
     switch_models = weight_models,
-    censor_models = cens_models
+    censor_models = censor_models
   )
+}
+
+#' Helper to Process Weight Models
+#'
+#' @param model glm model object
+#' @param save_weight_models whether to save model objects TRUE/FALSE
+#' @param save_dir directory to save to
+#' @param filename filename for saved model object
+#' @param description short description of model
+#' @param quiet Don't print model summary
+#' @noRd
+process_weight_model <- function(model, save_weight_models, save_dir, filename, description, quiet) {
+  quiet_msg(quiet, description)
+  quiet_print(quiet, summary(model))
+  result <- list(
+    description = description,
+    summary = broom::tidy(model),
+    fit_summary = broom::glance(model)
+  )
+  if (save_weight_models) {
+    result$path <- file.path(save_dir, filename)
+    saveRDS(model, file = result$path)
+  }
+  class(result) <- c("TE_weight_summary", "list")
+  result
 }
