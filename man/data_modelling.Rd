@@ -14,7 +14,6 @@ data_modelling(
   analysis_weights = c("asis", "unweighted", "p99", "weight_limits"),
   weight_limits = c(0, Inf),
   use_censor = 0,
-  check_missing = 0,
   include_followup_time = ~followup_time + I(followup_time^2),
   include_expansion_time = ~for_period + I(for_period^2),
   where_case = NA,
@@ -51,8 +50,6 @@ and \code{dose + dose^2} for as-treated. \code{time_on_regime}? TODO check what 
 
 \item{use_censor}{Use censoring for per-protocol analysis - censor person-times once a person-trial stops taking the
 initial treatment value}
-
-\item{check_missing}{Check for missing values in final model when use_censor=1 (Not added yet!)}
 
 \item{include_followup_time}{The model to include the follow up time of the trial (\code{followup_time}) in outcome model,
 specified as a RHS formula.}
