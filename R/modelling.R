@@ -105,6 +105,13 @@ data_modelling <- function(data,
   }
   if (use_weight == 0) data[["weight"]] <- 1
 
+  if (!test_data_table(data, any.missing = FALSE)) {
+    warning(
+      "Data frame for outcome model contains missing data. Doing complete-case analysis.",
+      "See ?glm for `na.action` options."
+    )
+  }
+
   quiet_line(quiet)
   quiet_msg(quiet, "Fitting outcome model")
   timing <- system.time({

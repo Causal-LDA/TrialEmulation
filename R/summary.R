@@ -57,6 +57,21 @@ summary.TE_data_prep_dt <- function(object, ...) {
   NextMethod()
 }
 
+#' @export
+summary.TE_model <- function(object, max = 250, ...) {
+  cat("Trial Emulation Outcome Model\n\n")
+  cat("Outcome model formula:\n")
+  cat(as.character(result$model$formula), "\n\n")
+  cat("Coefficent summary (robust):\n")
+  print.data.frame(object$robust$summary, row.names = FALSE, max = max, ...)
+
+  object_name <- match.call()[["object"]]
+
+  cat("\n")
+  cat(object_name, "$model contains the fitted glm model object.\n", sep = "")
+  cat(object_name, "$robust$matrix contains the full robust covariance matrix.\n", sep = "")
+}
+
 
 #' Print a Weight Summary Object
 #'
