@@ -12,20 +12,24 @@ summary.TE_data_prep <- function(object, ...) {
   has_cens_w <- length(object$censor_models) > 0
   has_switch_w <- length(object$switch_models) > 0
 
+  cat(console_line(), "\n")
   if (has_cens_w || has_switch_w) {
-    cat("Weight models\n\n")
+    cat("Weight models\n")
+    cat("-------------\n")
 
     if (has_switch_w) {
-      cat("Treatment switch models\n\n")
+      cat("Treatment switch models\n")
+      cat("-----------------------\n\n")
       lapply(names(object$switch_models), function(n) {
-        cat("switch_models$", n, ": ", sep = "")
+        cat("switch_models$", n, ":\n ", sep = "")
         print(object$switch_models[[n]], full = FALSE)
-        cat("\n")
+        cat(console_line(), "\n")
       })
     }
     if (has_cens_w) {
       if (length(object$censor_models)) {
         cat("Censoring models\n")
+        cat("----------------\n\n")
         lapply(names(object$censor_models), function(n) {
           cat("censor_models$", n, ":\n", sep = "")
           print(object$censor_models[[n]], full = FALSE)
@@ -61,7 +65,8 @@ summary.TE_data_prep_dt <- function(object, ...) {
 summary.TE_model <- function(object, max = 250, ...) {
   cat("Trial Emulation Outcome Model\n\n")
   cat("Outcome model formula:\n")
-  cat(as.character(result$model$formula), "\n\n")
+  print(object$model$formula, showEnv = FALSE)
+  cat("\n")
   cat("Coefficent summary (robust):\n")
   print.data.frame(object$robust$summary, row.names = FALSE, max = max, ...)
 
@@ -75,18 +80,19 @@ summary.TE_model <- function(object, max = 250, ...) {
 
 #' Print a Weight Summary Object
 #'
-#' @param object print.TE_weight_summary object
-#' @param ... not used
+#' @param x print.TE_weight_summary object.
+#' @param full Print full or short summary.
+#' @param ... Arguments from other methods. Not used.
 #' @export
-print.TE_weight_summary <- function(object, full = TRUE, ...) {
-  cat(object$description, "\n\n")
-  print.data.frame(object$summary, row.names = FALSE)
+print.TE_weight_summary <- function(x, full = TRUE, ...) {
+  cat(x$description, "\n\n")
+  print.data.frame(x$summary, row.names = FALSE)
   cat("\n")
   if (full) {
-    print.data.frame(object$fit_summary, row.names = FALSE)
-    if (!is.null(object$path)) {
+    print.data.frame(x$fit_summary, row.names = FALSE)
+    if (!is.null(x$path)) {
       cat("\n")
-      cat("Object saved at \"", object$path, "\"", sep = "")
+      cat("Object saved at \"", x$path, "\"", sep = "")
     }
   }
 }

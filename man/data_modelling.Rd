@@ -2,7 +2,7 @@
 % Please edit documentation in R/modelling.R
 \name{data_modelling}
 \alias{data_modelling}
-\title{Data modelling Function}
+\title{Fit the Outcome Model}
 \usage{
 data_modelling(
   data,
@@ -69,8 +69,16 @@ The weights used in the model are calculated as \code{weight = weight * sample_w
 \item{...}{Additional arguments passed to \code{glm_function}. This may be used to specify initial parameter estimates
 or arguments to \code{control}. See \link[stats:glm]{stats::glm}, \link[parglm:parglm]{parglm::parglm} and \code{\link[parglm:parglm.control]{parglm::parglm.control()}} for more information.}
 }
+\value{
+Object of class \code{TE_model} containing
+\itemize{
+\item \code{model}, a \code{glm} object
+\item \code{robust} a list containing a coefficient summary table and the robust covariance \code{matrix}.
+}
+}
 \description{
-This function do the modelling.
+Sets up the model formulas and data for the pooled logistic regression and
+robust variance estimation and fits the models.
 }
 \details{
 The class variables parameters (\code{outcomeClass},\code{class_switchn},

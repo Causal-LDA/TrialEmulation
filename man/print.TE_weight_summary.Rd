@@ -4,12 +4,14 @@
 \alias{print.TE_weight_summary}
 \title{Print a Weight Summary Object}
 \usage{
-\method{print}{TE_weight_summary}(object, full = TRUE, ...)
+\method{print}{TE_weight_summary}(x, full = TRUE, ...)
 }
 \arguments{
-\item{object}{print.TE_weight_summary object}
+\item{x}{print.TE_weight_summary object.}
 
-\item{...}{not used}
+\item{full}{Print full or short summary.}
+
+\item{...}{Arguments from other methods. Not used.}
 }
 \description{
 Print a Weight Summary Object

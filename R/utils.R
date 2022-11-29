@@ -35,7 +35,11 @@ quiet_msg <- function(quiet, x, ...) {
 #' @param quiet Print if `TRUE `
 #' @noRd
 quiet_line <- function(quiet) {
-  quiet_msg(quiet, paste0(strrep("-", 0.75 * getOption("width")), "\n"))
+  quiet_msg(quiet, paste0(console_line(), "\n"))
+}
+
+console_line <- function() {
+  strrep("-", 0.75 * getOption("width"))
 }
 
 #' Print with timing statement

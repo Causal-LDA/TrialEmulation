@@ -141,6 +141,7 @@ list.files(working_dir, "*.rds")
 # The path is stored in the saved object
 switch_n0 <- readRDS(prep_data$switch_models$switch_n0$path)
 summary(switch_n0)
+hist(switch_n0$fitted.values, main = "Histogram of weights from model switch_n0")
 ```
 
 We also see the expanded trial files:
@@ -154,7 +155,7 @@ To create a manageable dataset for the final analysis we can sample from these t
 Here we sample 10% of the patients without an event at each follow-up time in each trial. All 
 observations with events are included.
 ```{r sample}
-sampled_data <- case_control_sampling_trials(prep_data, p_control = 0.1, sample_all_times = TRUE)
+sampled_data <- case_control_sampling_trials(prep_data, p_control = 0.1)
 str(sampled_data)
 ```
 
@@ -185,7 +186,7 @@ The result is the same type as the previous result from the simple `initiators` 
 containing the `glm` object and the sandwich results.
 
 ```{r modelling_result}
-str(model_result, max.level = 1)
+summary(model_result)
 ```
 
 ```{r glm_summary}
