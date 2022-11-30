@@ -69,6 +69,11 @@ result <- initiators(
 )
 ```
 
+
+```{r initiators_summary}
+summary(result)
+```
+
 By default, this returns the final `glm` model object and the results using the sandwich estimator.
 ```{r init_summary}
 summary(result$model)
@@ -118,24 +123,30 @@ prep_data <- data_preparation(
   switch_n_cov = ~ nvarA + nvarB
 )
 ```
-We have some summaries of the weighting models in the results from `data_preparation()`
-```{r weight_summaries}
-str(prep_data$switch_models, max.level = 2)
-prep_data$switch_models$switch_n0
-prep_data$switch_models$switch_n0_statistics
+
+Use `summary` to get an overview of the result.
+```{r}
+summary(prep_data)
 ```
 
-We also have the full model objects saved in `data_dir = working_dir`, so you can inspect the data used in those models and further investigate how well those models fit.
+For more information about the weighting models, we can inspect them individually
+```{r weight_summaries}
+prep_data$switch_models$switch_n0
+```
+
+If `save_weight_models = TRUE,` the full model objects are saved in `working_dir`, so you can inspect the data used in those models and further investigate how well those models fit.
 ```{r weight_files}
 list.files(working_dir, "*.rds")
 
-switch_n0 <- readRDS(file.path(working_dir, "weight_model_switch_n0.rds"))
+# The path is stored in the saved object
+switch_n0 <- readRDS(prep_data$switch_models$switch_n0$path)
 summary(switch_n0)
+hist(switch_n0$fitted.values, main = "Histogram of weights from model switch_n0")
 ```
 
 We also see the expanded trial files:
 ```{r trial_files}
-list.files(working_dir, pattern = "trial_")
+prep_data$data
 ```
 
 Each of these csv files contains the data for the trial starting at period `_i`.
@@ -144,7 +155,7 @@ To create a manageable dataset for the final analysis we can sample from these t
 Here we sample 10% of the patients without an event at each follow-up time in each trial. All 
 observations with events are included.
 ```{r sample}
-sampled_data <- case_control_sampling_trials(prep_data, p_control = 0.1, sample_all_times = TRUE)
+sampled_data <- case_control_sampling_trials(prep_data, p_control = 0.1)
 str(sampled_data)
 ```
 
@@ -175,7 +186,7 @@ The result is the same type as the previous result from the simple `initiators` 
 containing the `glm` object and the sandwich results.
 
 ```{r modelling_result}
-str(model_result, max.level = 1)
+summary(model_result)
 ```
 
 ```{r glm_summary}
@@ -201,7 +212,7 @@ plot(
   model_preds$difference$cum_inc_diff,
   ty = "l", ylab = "Cumulative Incidence Difference",
   xlab = "Follow-up Time",
-  ylim = c(-0.15, 0.02)
+  ylim = c(-0.15, 0.05)
 )
 lines(model_preds$difference$followup_time, model_preds$difference$`2.5%`, lty = 2)
 lines(model_preds$difference$followup_time, model_preds$difference$`97.5%`, lty = 2)

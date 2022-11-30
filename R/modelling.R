@@ -1,6 +1,8 @@
-#' Data modelling Function
+#' Fit the Outcome Model
 #'
-#' This function do the modelling.
+#' Sets up the model formulas and data for the pooled logistic regression and
+#' robust variance estimation and fits the models.
+#'
 #' @param use_sample_weights Use sample weights in addition to IP weights. `data` must contain a column `sample_weight`.
 #' The weights used in the model are calculated as `weight = weight * sample_weight`.
 #' @inheritParams initiators
@@ -10,6 +12,10 @@
 #'  vector which will construct factors using `as.factor` or as a named list
 #'  with the arguments for factor e.g.
 #'  `list(risk_cat=list(levels = c(1,2,3,0), age_cat=list(levels=c(1,2,3),labels=c("50-60","60-70","70+")`
+#'
+#' @returns Object of class `TE_model` containing
+#'  * `model`, a `glm` object
+#'  * `robust` a list containing a coefficient summary table and the robust covariance `matrix`.
 #'
 #' @export
 #' @importFrom stats as.formula binomial pnorm quantile relevel
@@ -24,7 +30,6 @@ data_modelling <- function(data,
                            analysis_weights = c("asis", "unweighted", "p99", "weight_limits"),
                            weight_limits = c(0, Inf),
                            use_censor = 0,
-                           check_missing = 0,
                            include_followup_time = ~ followup_time + I(followup_time^2),
                            include_expansion_time = ~ for_period + I(for_period^2),
                            where_case = NA,
@@ -32,6 +37,9 @@ data_modelling <- function(data,
                            use_sample_weights = TRUE,
                            quiet = FALSE,
                            ...) {
+  if (inherits(data, "TE_data_prep_dt")) data <- data$data
+
+  assert_data_frame(data)
   assert_flag(quiet)
   outcome_cov <- as_formula(outcome_cov)
   include_followup_time <- as_formula(include_followup_time)
@@ -105,6 +113,13 @@ data_modelling <- function(data,
     data[["weight"]] <- 1
   }
   if (use_weight == 0) data[["weight"]] <- 1
+
+  if (!test_data_table(data, any.missing = FALSE)) {
+    warning(
+      "Data frame for outcome model contains missing data. Doing complete-case analysis.",
+      "See ?glm for `na.action` options."
+    )
+  }
 
   quiet_line(quiet)
   quiet_msg(quiet, "Fitting outcome model")

@@ -168,7 +168,7 @@ expand <- function(sw_data,
 
   switch_data[, followup_time := period_new - for_period]
 
-  if (use_censor == 0) {
+  if (use_censor == 0 || "dose" %in% keeplist) {
     switch_data[, dose := cumA_new - dosesum + treat]
   }
 

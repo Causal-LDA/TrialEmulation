@@ -1,6 +1,5 @@
 Package: TrialEmulation
-Title: Design and analysis of observational time-to-event data using
-    target trial emulation
+Title: Design and conduct of causal analyses of observational time-to-event data using target trial emulation
 Version: 0.0.2.12
 Authors@R: c(
     person("Roonak", "Rezvani", , "roonak.r74@gmail.com", role = "aut",

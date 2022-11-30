@@ -24,7 +24,6 @@ initiators(
   analysis_weights = c("asis", "unweighted", "p99", "weight_limits"),
   weight_limits = c(0, Inf),
   use_censor = 0,
-  check_missing = 0,
   cense = NA,
   pool_cense = 0,
   cense_d_cov = ~1,
@@ -91,8 +90,6 @@ calculation.}
 
 \item{use_censor}{Use censoring for per-protocol analysis - censor person-times once a person-trial stops taking the
 initial treatment value}
-
-\item{check_missing}{Check for missing values in final model when use_censor=1 (Not added yet!)}
 
 \item{cense}{Censoring variable}
 

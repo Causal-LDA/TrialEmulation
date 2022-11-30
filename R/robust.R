@@ -11,9 +11,6 @@
 #' robust variance estimates, and `matrix`, the `sandwich` covariance matrix.
 #'
 robust_calculation <- function(model, data_id) {
-  # Dummy variables used in data.table calls declared to prevent package check NOTES:
-  lb <- estimate <- robust_se <- ub <- z <- p_value <- NULL
-
   var_matrix <- sandwich::vcovCL(
     model,
     cluster = data_id,
@@ -22,15 +19,13 @@ robust_calculation <- function(model, data_id) {
     fix = FALSE
   )
   se <- sqrt(diag(var_matrix))
-  est_temp <- model$coefficients
-
-  output <- data.frame(names = names(est_temp))
-  output$estimate <- est_temp
-  output$robust_se <- se[names(est_temp)]
-  output$lb <- output$estimate - (1.96 * output$robust_se)
-  output$ub <- output$estimate + (1.96 * output$robust_se)
+  output <- data.frame(names = names(model$coefficients))
+  output$estimate <- model$coefficients
+  output$robust_se <- se[names(model$coefficients)]
+  output$`2.5%` <- output$estimate - (1.96 * output$robust_se)
+  output$`97.5%` <- output$estimate + (1.96 * output$robust_se)
   output$z <- output$estimate / output$robust_se
-  output$p_value <- format.pval(2 * (1 - pnorm(abs(output$z))), digits = 3, eps = 0.0001)
+  output$p_value <- 2 * (1 - pnorm(abs(output$z)))
 
   result <- list(summary = output, matrix = var_matrix)
   class(result) <- "TE_robust"

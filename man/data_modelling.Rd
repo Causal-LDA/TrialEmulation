@@ -2,7 +2,7 @@
 % Please edit documentation in R/modelling.R
 \name{data_modelling}
 \alias{data_modelling}
-\title{Data modelling Function}
+\title{Fit the Outcome Model}
 \usage{
 data_modelling(
   data,
@@ -14,7 +14,6 @@ data_modelling(
   analysis_weights = c("asis", "unweighted", "p99", "weight_limits"),
   weight_limits = c(0, Inf),
   use_censor = 0,
-  check_missing = 0,
   include_followup_time = ~followup_time + I(followup_time^2),
   include_expansion_time = ~for_period + I(for_period^2),
   where_case = NA,
@@ -52,8 +51,6 @@ and \code{dose + dose^2} for as-treated. \code{time_on_regime}? TODO check what 
 \item{use_censor}{Use censoring for per-protocol analysis - censor person-times once a person-trial stops taking the
 initial treatment value}
 
-\item{check_missing}{Check for missing values in final model when use_censor=1 (Not added yet!)}
-
 \item{include_followup_time}{The model to include the follow up time of the trial (\code{followup_time}) in outcome model,
 specified as a RHS formula.}
 
@@ -72,8 +69,16 @@ The weights used in the model are calculated as \code{weight = weight * sample_w
 \item{...}{Additional arguments passed to \code{glm_function}. This may be used to specify initial parameter estimates
 or arguments to \code{control}. See \link[stats:glm]{stats::glm}, \link[parglm:parglm]{parglm::parglm} and \code{\link[parglm:parglm.control]{parglm::parglm.control()}} for more information.}
 }
+\value{
+Object of class \code{TE_model} containing
+\itemize{
+\item \code{model}, a \code{glm} object
+\item \code{robust} a list containing a coefficient summary table and the robust covariance \code{matrix}.
+}
+}
 \description{
-This function do the modelling.
+Sets up the model formulas and data for the pooled logistic regression and
+robust variance estimation and fits the models.
 }
 \details{
 The class variables parameters (\code{outcomeClass},\code{class_switchn},

@@ -26,20 +26,18 @@ test_that("weight_func works as expected", {
   expect_equal(sum(result$data$wt), 5124.4538)
   expect_equal(sum(result$data$wtC), 5127.7397)
 
-  expect_list(result$censor_models, types = "data.frame", any.missing = FALSE, len = 8)
+  expect_list(result$censor_models, types = "TE_weight_summary", any.missing = FALSE, len = 4)
   expect_equal(
-    result$censor_models$cens_d0$estimate,
+    result$censor_models$cens_d0$summary$estimate,
     c(0.900038686916255, 0.588866421245376, -0.464693730180448, 0.32342303175603, -0.25226496458668, 0.9730384163288)
   )
 
-  expect_list(result$switch_models, types = "data.frame", any.missing = FALSE, len = 8)
+  expect_list(result$switch_models, types = "TE_weight_summary", any.missing = FALSE, len = 4)
   expect_equal(
-    result$switch_models$switch_d0$estimate,
+    result$switch_models$switch_d0$summary$estimate,
     c(-0.52632937, 0.35856345, 0.42935005)
   )
 })
-
-
 
 
 test_that("weight_func works saves model objects", {
@@ -91,4 +89,41 @@ test_that("weight_func works saves model objects", {
   )
 
   expect_data_frame(switch_d1$data, nrows = 2154, ncols = 20)
+})
+
+
+test_that("weight_func works time on regime", {
+  data <- readRDS(test_path("data/pre_weight_func.rds"))
+
+  result <- weight_func(
+    sw_data = data,
+    switch_n_cov = ~1,
+    switch_d_cov = ~ X1 + X2,
+    cense = "C",
+    pool_cense = 0,
+    cense_d_cov = ~ X1 + X2 + X3 + X4 + age_s,
+    cense_n_cov = ~ X3 + X4,
+    include_regime_length = 1,
+    quiet = TRUE
+  )
+  expect_snapshot(for (i in result$switch_models) print(i))
+  expect_snapshot(for (i in result$censor_models) print(i))
+})
+
+
+test_that("weight_func works with pool_cense = 1", {
+  data <- readRDS(test_path("data/pre_weight_func.rds"))
+
+  result <- weight_func(
+    sw_data = data,
+    switch_n_cov = ~1,
+    switch_d_cov = ~ X1 + X2,
+    cense = "C",
+    pool_cense = 1,
+    cense_d_cov = ~ X1 + X2 + X3 + X4 + age_s,
+    cense_n_cov = ~ X3 + X4,
+    quiet = TRUE
+  )
+  expect_snapshot(lapply(result$switch_models, print))
+  expect_snapshot(lapply(result$censor_models, print))
 })

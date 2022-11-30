@@ -28,7 +28,6 @@
 #' @param weight_limits Lower and upper limits to truncate weights, given as `c(lower, upper)`
 #' @param use_censor Use censoring for per-protocol analysis - censor person-times once a person-trial stops taking the
 #'  initial treatment value
-#' @param check_missing Check for missing values in final model when use_censor=1 (Not added yet!)
 #' @param cense Censoring variable
 #' @param pool_cense Pool the numerator and denominator models (0: split models by previous treatment Am1 = 0 and
 #' Am1 = 1 as in treatment models and 1: pool all observations together into a single numerator and denominator model)
@@ -87,7 +86,6 @@ initiators <- function(data,
                        analysis_weights = c("asis", "unweighted", "p99", "weight_limits"),
                        weight_limits = c(0, Inf),
                        use_censor = 0,
-                       check_missing = 0,
                        cense = NA,
                        pool_cense = 0,
                        cense_d_cov = ~1,
@@ -124,7 +122,6 @@ initiators <- function(data,
     last_period = last_period,
     use_weight = use_weight,
     use_censor = use_censor,
-    check_missing = check_missing,
     cense = cense,
     pool_cense = pool_cense,
     cense_d_cov = cense_d_cov,
@@ -151,7 +148,6 @@ initiators <- function(data,
     analysis_weights = analysis_weights,
     weight_limits = weight_limits,
     use_censor = use_censor,
-    check_missing = check_missing,
     include_followup_time = include_followup_time,
     include_expansion_time = include_expansion_time,
     where_case = where_case,
