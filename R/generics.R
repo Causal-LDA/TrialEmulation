@@ -1,6 +1,8 @@
 
 #' Summary methods
-#' @rdname summary
+#'
+#' Print summaries of data and model objects produced by `TrialEmulation`.
+#' @rdname summary_TE
 #'
 #' @param object Object to print summary
 #' @param digits Number of digits to print. Passed to print methods such as [print.data.frame].
@@ -38,7 +40,7 @@ summary.TE_data_prep <- function(object, digits = 4, ...) {
   }
 }
 
-#' @rdname summary
+#' @rdname summary_TE
 #' @export
 summary.TE_data_prep_sep <- function(object, digits = 4, ...) {
   cat("Expanded Trial Emulation data\n\n")
@@ -50,7 +52,7 @@ summary.TE_data_prep_sep <- function(object, digits = 4, ...) {
   NextMethod()
 }
 
-#' @rdname summary
+#' @rdname summary_TE
 #' @export
 summary.TE_data_prep_dt <- function(object, digits = 4, ...) {
   cat("Expanded Trial Emulation data\n\n")
@@ -60,7 +62,7 @@ summary.TE_data_prep_dt <- function(object, digits = 4, ...) {
 }
 
 #' @export
-#' @rdname summary
+#' @rdname summary_TE
 summary.TE_model <- function(object, digits = 4, ...) {
   cat("Trial Emulation Outcome Model\n\n")
   cat("Outcome model formula:\n")
@@ -77,7 +79,7 @@ summary.TE_model <- function(object, digits = 4, ...) {
 }
 
 #' @export
-#' @rdname summary
+#' @rdname summary_TE
 summary.TE_robust <- function(object, digits = 4, ...) {
   to_print <- object$summary
   to_print$p_value <- format.pval(to_print$p_value, digits = digits, ...)
@@ -93,6 +95,7 @@ summary.TE_robust <- function(object, digits = 4, ...) {
 #' @param digits Number of digits to print. Passed to [print.data.frame].
 #' @param ... Arguments passed to [print.data.frame].
 #' @export
+#' @rdname print_TE
 print.TE_weight_summary <- function(x, full = TRUE, digits = 4, ...) {
   cat(x$description, "\n\n")
   print.data.frame(x$summary, row.names = FALSE, digits = digits, ...)
@@ -104,4 +107,23 @@ print.TE_weight_summary <- function(x, full = TRUE, digits = 4, ...) {
       cat("Object saved at \"", x$path, "\"", sep = "")
     }
   }
+}
+
+
+#' Extract Weights
+#' @param object Object to extract weights from
+#' @param ... Not used.
+#' @export
+#' @rdname weights_TE
+weights.TE_data_prep_dt <- function(object, ...) {
+  object$data["weights"]
+}
+
+#' @export
+#' @rdname weights_TE
+weights.TE_data_prep_sep <- function(object, ...) {
+  warning(
+    "weights() not supported when data prepared with separate=TRUE.",
+    "Sample data first with case_control_sampling_trials()"
+  )
 }
