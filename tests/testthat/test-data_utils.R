@@ -90,3 +90,40 @@ test_that("weight_func works saves model objects", {
 
   expect_data_frame(switch_d1$data, nrows = 2154, ncols = 20)
 })
+
+
+test_that("weight_func works time on regime", {
+  data <- readRDS(test_path("data/pre_weight_func.rds"))
+
+  result <- weight_func(
+    sw_data = data,
+    switch_n_cov = ~1,
+    switch_d_cov = ~ X1 + X2,
+    cense = "C",
+    pool_cense = 0,
+    cense_d_cov = ~ X1 + X2 + X3 + X4 + age_s,
+    cense_n_cov = ~ X3 + X4,
+    include_regime_length = 1,
+    quiet = TRUE
+  )
+  expect_snapshot(for (i in result$switch_models) print(i))
+  expect_snapshot(for (i in result$censor_models) print(i))
+})
+
+
+test_that("weight_func works with pool_cense = 1", {
+  data <- readRDS(test_path("data/pre_weight_func.rds"))
+
+  result <- weight_func(
+    sw_data = data,
+    switch_n_cov = ~1,
+    switch_d_cov = ~ X1 + X2,
+    cense = "C",
+    pool_cense = 1,
+    cense_d_cov = ~ X1 + X2 + X3 + X4 + age_s,
+    cense_n_cov = ~ X3 + X4,
+    quiet = TRUE
+  )
+  expect_snapshot(lapply(result$switch_models, print))
+  expect_snapshot(lapply(result$censor_models, print))
+})
