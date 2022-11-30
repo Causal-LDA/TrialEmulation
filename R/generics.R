@@ -116,14 +116,14 @@ print.TE_weight_summary <- function(x, full = TRUE, digits = 4, ...) {
 #' @export
 #' @rdname weights_TE
 weights.TE_data_prep_dt <- function(object, ...) {
-  object$data["weights"]
+  object$data[["weight"]]
 }
 
 #' @export
 #' @rdname weights_TE
 weights.TE_data_prep_sep <- function(object, ...) {
   warning(
-    "weights() not supported when data prepared with separate=TRUE.",
+    "weights() not supported when data prepared with separate_files=TRUE.",
     "Sample data first with case_control_sampling_trials()"
   )
 }
