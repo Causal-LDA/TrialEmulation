@@ -1,8 +1,10 @@
 
-#' Summary methods for data_preparation objects
+#' Summary methods
+#' @rdname summary
 #'
-#' @param object `TE_data_prep` object from `data_preparation()`
-#' @param ... Not used
+#' @param object Object to print summary
+#' @param digits Number of digits to print. Passed to print methods such as [print.data.frame].
+#' @param ... Additional arguments passed to print methods.
 #' @export
 summary.TE_data_prep <- function(object, digits = 4, ...) {
   cat("Number of observations in expanded data:", object$N, "\n")
@@ -36,7 +38,7 @@ summary.TE_data_prep <- function(object, digits = 4, ...) {
   }
 }
 
-#' @rdname summary.TE_data_prep
+#' @rdname summary
 #' @export
 summary.TE_data_prep_sep <- function(object, digits = 4, ...) {
   cat("Expanded Trial Emulation data\n\n")
@@ -48,7 +50,7 @@ summary.TE_data_prep_sep <- function(object, digits = 4, ...) {
   NextMethod()
 }
 
-#' @rdname summary.TE_data_prep
+#' @rdname summary
 #' @export
 summary.TE_data_prep_dt <- function(object, digits = 4, ...) {
   cat("Expanded Trial Emulation data\n\n")
@@ -58,13 +60,14 @@ summary.TE_data_prep_dt <- function(object, digits = 4, ...) {
 }
 
 #' @export
-summary.TE_model <- function(object, max = 250, digits = 4, ...) {
+#' @rdname summary
+summary.TE_model <- function(object, digits = 4, ...) {
   cat("Trial Emulation Outcome Model\n\n")
   cat("Outcome model formula:\n")
   print(object$model$formula, showEnv = FALSE)
   cat("\n")
   cat("Coefficent summary (robust):\n")
-  print.data.frame(object$robust$summary, row.names = FALSE, max = max, digits = digits, ...)
+  summary(object$robust, digits = digits, ...)
 
   object_name <- match.call()[["object"]]
 
@@ -73,12 +76,22 @@ summary.TE_model <- function(object, max = 250, digits = 4, ...) {
   cat(object_name, "$robust$matrix contains the full robust covariance matrix.\n", sep = "")
 }
 
+#' @export
+#' @rdname summary
+summary.TE_robust <- function(object, digits = 4, ...) {
+  to_print <- object$summary
+  to_print$p_value <- format.pval(to_print$p_value, digits = digits, ...)
+  print.data.frame(to_print, digits = digits, row.names = FALSE, ...)
+}
+
+
 
 #' Print a Weight Summary Object
 #'
 #' @param x print.TE_weight_summary object.
 #' @param full Print full or short summary.
-#' @param ... Arguments from other methods. Not used.
+#' @param digits Number of digits to print. Passed to [print.data.frame].
+#' @param ... Arguments passed to [print.data.frame].
 #' @export
 print.TE_weight_summary <- function(x, full = TRUE, digits = 4, ...) {
   cat(x$description, "\n\n")

@@ -6,7 +6,7 @@
       cense_n_cov = ~ X3 + X4, save_weight_models = FALSE, save_dir = save_dir,
       glm_function = "parglm", control = parglm.control(nthreads = 2, method = "FAST"))
     Message <simpleMessage>
-      P(treatment=1 | treatment=0) for denominator
+      P(treatment = 1 | previous treatment = 0) for denominator
     Output
       
       Call:
@@ -36,7 +36,7 @@
       Number of Fisher Scoring iterations: 4
       
     Message <simpleMessage>
-      P(treatment=1 | treatment=0) for numerator
+      P(treatment = 1 | previous treatment = 0) for numerator
     Output
       
       Call:
@@ -64,7 +64,7 @@
       Number of Fisher Scoring iterations: 4
       
     Message <simpleMessage>
-      P(treatment=1 | treatment=1) for denominator
+      P(treatment = 1 | previous treatment = 1) for denominator
     Output
       
       Call:
@@ -94,7 +94,7 @@
       Number of Fisher Scoring iterations: 4
       
     Message <simpleMessage>
-      P(treatment=1 | treatment=1) for numerator
+      P(treatment = 1 | previous treatment = 1) for numerator
     Output
       
       Call:
@@ -122,7 +122,7 @@
       Number of Fisher Scoring iterations: 4
       
     Message <simpleMessage>
-      Model for P(cense = 0 | X, Am1=0) for denominator
+      Model for P(cense = 0 | X, previous treatment = 0) for denominator
     Output
       
       Call:
@@ -155,7 +155,7 @@
       Number of Fisher Scoring iterations: 5
       
     Message <simpleMessage>
-      Model for P(cense = 0 | X, Am1=0) for numerator
+      Model for P(cense = 0 | X, previous treatment = 0) for numerator
     Output
       
       Call:
@@ -185,7 +185,7 @@
       Number of Fisher Scoring iterations: 4
       
     Message <simpleMessage>
-      Model for P(cense = 0 | X, Am1=1) for denominator
+      Model for P(cense = 0 | X, previous treatment = 1) for denominator
     Output
       
       Call:
@@ -218,7 +218,7 @@
       Number of Fisher Scoring iterations: 6
       
     Message <simpleMessage>
-      Model for P(cense = 0 | X, Am1=1) for numerator
+      Model for P(cense = 0 | X, previous treatment = 1) for numerator
     Output
       
       Call:
