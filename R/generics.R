@@ -111,9 +111,12 @@ print.TE_weight_summary <- function(x, full = TRUE, digits = 4, ...) {
 
 
 #' Extract Weights
+#'
 #' @param object Object to extract weights from
 #' @param ... Not used.
+#'
 #' @export
+#' @importFrom stats weights
 #' @rdname weights_TE
 weights.TE_data_prep_dt <- function(object, ...) {
   object$data[["weight"]]

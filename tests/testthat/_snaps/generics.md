@@ -9,7 +9,7 @@
        1: random_temp_dir_path/trial_0.csv
        2: random_temp_dir_path/trial_1.csv
        3: random_temp_dir_path/trial_2.csv
-      ---                                                                                             
+      ---
        8: random_temp_dir_path/trial_7.csv
        9: random_temp_dir_path/trial_8.csv
       10: random_temp_dir_path/trial_9.csv

@@ -24,7 +24,8 @@ test_that("summary for data_preparation separate=TRUE", {
   expect_snapshot(
     summary(object, digits = 3),
     transform = function(lines) {
-      gsub(": .*trial_", ": random_temp_dir_path/trial_", lines)
+      lines <- gsub(": .*trial_", ": random_temp_dir_path/trial_", lines)
+      gsub("^--- *", "---", lines)
     }
   )
   expect_snapshot(
