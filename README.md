@@ -7,4 +7,4 @@ To install directly from github use the command
 remotes::install_github("CAM-Roche/TrialEmulation")
 ```
 
-For more information see the [Getting Started vignette](https://cam-roche.github.io/RandomisedTrialsEmulation/articles/Getting-Started.html).
+For more information see the [Getting Started vignette](https://cam-roche.github.io/TrialEmulation/articles/Getting-Started.html).
