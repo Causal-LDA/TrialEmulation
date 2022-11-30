@@ -6,11 +6,11 @@
 \alias{summary.TE_data_prep_dt}
 \title{Summary methods for data_preparation objects}
 \usage{
-\method{summary}{TE_data_prep}(object, ...)
+\method{summary}{TE_data_prep}(object, digits = 4, ...)
 
-\method{summary}{TE_data_prep_sep}(object, ...)
+\method{summary}{TE_data_prep_sep}(object, digits = 4, ...)
 
-\method{summary}{TE_data_prep_dt}(object, ...)
+\method{summary}{TE_data_prep_dt}(object, digits = 4, ...)
 }
 \arguments{
 \item{object}{\code{TE_data_prep} object from \code{data_preparation()}}

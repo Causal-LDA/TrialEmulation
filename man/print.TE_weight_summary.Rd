@@ -4,7 +4,7 @@
 \alias{print.TE_weight_summary}
 \title{Print a Weight Summary Object}
 \usage{
-\method{print}{TE_weight_summary}(x, full = TRUE, ...)
+\method{print}{TE_weight_summary}(x, full = TRUE, digits = 4, ...)
 }
 \arguments{
 \item{x}{print.TE_weight_summary object.}
