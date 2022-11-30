@@ -139,7 +139,7 @@ weight_func <- function(sw_data,
     save_weight_models,
     save_dir,
     "weight_model_switch_d0.rds",
-    "P(treatment=1 | treatment=0) for denominator",
+    "P(treatment = 1 | previous treatment = 0) for denominator",
     quiet
   )
   rm(model1)
@@ -159,7 +159,7 @@ weight_func <- function(sw_data,
     save_weight_models,
     save_dir,
     "weight_model_switch_n0.rds",
-    "P(treatment=1 | treatment=0) for numerator",
+    "P(treatment = 1 | previous treatment = 0) for numerator",
     quiet
   )
   rm(model2)
@@ -180,7 +180,7 @@ weight_func <- function(sw_data,
     save_weight_models,
     save_dir,
     "weight_model_switch_d1.rds",
-    "P(treatment=1 | treatment=1) for denominator",
+    "P(treatment = 1 | previous treatment = 1) for denominator",
     quiet
   )
 
@@ -201,7 +201,7 @@ weight_func <- function(sw_data,
     save_weight_models,
     save_dir,
     "weight_model_switch_n1.rds",
-    "P(treatment=1 | treatment=1) for numerator",
+    "P(treatment = 1 | previous treatment = 1) for numerator",
     quiet
   )
   rm(model4)
@@ -248,7 +248,7 @@ weight_func <- function(sw_data,
         save_weight_models,
         save_dir,
         "cense_model_pool_d.rds",
-        "Model for P(cense = 0 | X ) for denominator",
+        "Model for P(cense = 0 | X) for denominator",
         quiet
       )
       rm(model1.cense)
@@ -268,7 +268,7 @@ weight_func <- function(sw_data,
         save_weight_models,
         save_dir,
         "cense_model_pool_n.rds",
-        "Model for P(cense = 0 | X ) for numerator",
+        "Model for P(cense = 0 | X) for numerator",
         quiet
       )
       rm(model2.cense)
@@ -296,7 +296,7 @@ weight_func <- function(sw_data,
         save_weight_models,
         save_dir,
         "cense_model_d0.rds",
-        "Model for P(cense = 0 | X, Am1=0) for denominator",
+        "Model for P(cense = 0 | X, previous treatment = 0) for denominator",
         quiet
       )
       rm(model1.cense)
@@ -315,7 +315,7 @@ weight_func <- function(sw_data,
         save_weight_models,
         save_dir,
         "cense_model_n0.rds",
-        "Model for P(cense = 0 | X, Am1=0) for numerator",
+        "Model for P(cense = 0 | X, previous treatment = 0) for numerator",
         quiet
       )
 
@@ -336,7 +336,7 @@ weight_func <- function(sw_data,
         save_weight_models,
         save_dir,
         "cense_model_d1.rds",
-        "Model for P(cense = 0 | X, Am1=1) for denominator",
+        "Model for P(cense = 0 | X, previous treatment = 1) for denominator",
         quiet
       )
       rm(model3.cense)
@@ -355,7 +355,7 @@ weight_func <- function(sw_data,
         save_weight_models,
         save_dir,
         "cense_model_n1.rds",
-        "Model for P(cense = 0 | X, Am1=1) for numerator",
+        "Model for P(cense = 0 | X, previous treatment = 1) for numerator",
         quiet
       )
       rm(model4.cense)

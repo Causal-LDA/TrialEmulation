@@ -212,7 +212,7 @@ plot(
   model_preds$difference$cum_inc_diff,
   ty = "l", ylab = "Cumulative Incidence Difference",
   xlab = "Follow-up Time",
-  ylim = c(-0.15, 0.02)
+  ylim = c(-0.15, 0.05)
 )
 lines(model_preds$difference$followup_time, model_preds$difference$`2.5%`, lty = 2)
 lines(model_preds$difference$followup_time, model_preds$difference$`97.5%`, lty = 2)

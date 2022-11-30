@@ -4,37 +4,33 @@
 #' @param object `TE_data_prep` object from `data_preparation()`
 #' @param ... Not used
 #' @export
-summary.TE_data_prep <- function(object, ...) {
+summary.TE_data_prep <- function(object, digits = 4, ...) {
   cat("Number of observations in expanded data:", object$N, "\n")
   cat("First trial period:", object$min_period, "\n")
   cat("Last trial period:", object$max_period, "\n\n")
 
-  has_cens_w <- length(object$censor_models) > 0
-  has_switch_w <- length(object$switch_models) > 0
+  has_cens_w <- test_list(object$censor_models, min.len = 1, all.missing = TRUE)
+  has_switch_w <- test_list(object$switch_models, min.len = 1, all.missing = TRUE)
 
   cat(console_line(), "\n")
   if (has_cens_w || has_switch_w) {
-    cat("Weight models\n")
-    cat("-------------\n")
-
+    cat_underline("Weight models")
     if (has_switch_w) {
-      cat("Treatment switch models\n")
-      cat("-----------------------\n\n")
-      lapply(names(object$switch_models), function(n) {
+      cat_underline("Treatment switch models")
+      for (n in names(object$switch_models)) {
         cat("switch_models$", n, ":\n ", sep = "")
-        print(object$switch_models[[n]], full = FALSE)
+        print(object$switch_models[[n]], full = FALSE, digits = digits, ...)
         cat(console_line(), "\n")
-      })
+      }
     }
     if (has_cens_w) {
       if (length(object$censor_models)) {
-        cat("Censoring models\n")
-        cat("----------------\n\n")
-        lapply(names(object$censor_models), function(n) {
+        cat_underline("Censoring models")
+        for (n in names(object$censor_models)) {
           cat("censor_models$", n, ":\n", sep = "")
-          print(object$censor_models[[n]], full = FALSE)
-          cat("\n")
-        })
+          print(object$censor_models[[n]], full = FALSE, digits = digits, ...)
+          cat(console_line(), "\n")
+        }
       }
     }
   }
@@ -42,33 +38,33 @@ summary.TE_data_prep <- function(object, ...) {
 
 #' @rdname summary.TE_data_prep
 #' @export
-summary.TE_data_prep_sep <- function(object, ...) {
+summary.TE_data_prep_sep <- function(object, digits = 4, ...) {
   cat("Expanded Trial Emulation data\n\n")
 
   n_files <- length(object$data)
   cat("Expanded data saved in ", n_files, " csv file", if (n_files > 1) "s" else "", ":\n", sep = "")
-  print(data.table(data = object$data), topn = 3, n = 5, col.names = "none")
+  print(data.table(data = object$data), topn = 3, n = 5, col.names = "none", digits = digits, ...)
   cat("\n\n")
   NextMethod()
 }
 
 #' @rdname summary.TE_data_prep
 #' @export
-summary.TE_data_prep_dt <- function(object, ...) {
+summary.TE_data_prep_dt <- function(object, digits = 4, ...) {
   cat("Expanded Trial Emulation data\n\n")
-  print(object$data, topn = 3, nrows = 3)
+  print(object$data, topn = 3, nrows = 3, digits = digits, ...)
   cat("\n")
   NextMethod()
 }
 
 #' @export
-summary.TE_model <- function(object, max = 250, ...) {
+summary.TE_model <- function(object, max = 250, digits = 4, ...) {
   cat("Trial Emulation Outcome Model\n\n")
   cat("Outcome model formula:\n")
   print(object$model$formula, showEnv = FALSE)
   cat("\n")
   cat("Coefficent summary (robust):\n")
-  print.data.frame(object$robust$summary, row.names = FALSE, max = max, ...)
+  print.data.frame(object$robust$summary, row.names = FALSE, max = max, digits = digits, ...)
 
   object_name <- match.call()[["object"]]
 
@@ -84,12 +80,12 @@ summary.TE_model <- function(object, max = 250, ...) {
 #' @param full Print full or short summary.
 #' @param ... Arguments from other methods. Not used.
 #' @export
-print.TE_weight_summary <- function(x, full = TRUE, ...) {
+print.TE_weight_summary <- function(x, full = TRUE, digits = 4, ...) {
   cat(x$description, "\n\n")
-  print.data.frame(x$summary, row.names = FALSE)
+  print.data.frame(x$summary, row.names = FALSE, digits = digits, ...)
   cat("\n")
   if (full) {
-    print.data.frame(x$fit_summary, row.names = FALSE)
+    print.data.frame(x$fit_summary, row.names = FALSE, digits = digits, ...)
     if (!is.null(x$path)) {
       cat("\n")
       cat("Object saved at \"", x$path, "\"", sep = "")
