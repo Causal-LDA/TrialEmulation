@@ -78,10 +78,7 @@ predict.TE_model <- function(object,
   }
 
   newdata <- check_newdata(newdata, model, predict_times)
-  model_terms <- delete.response(terms(model))
-  model_frame <- model.frame(model_terms, newdata, xlev = model$xlevels)
-  if (!is.null(data_classes <- attr(model_terms, "dataClasses"))) .checkMFClasses(data_classes, model_frame)
-  model_matrix <- model.matrix(model_terms, model_frame, contrasts.arg = model$contrasts)
+
 
   pred_fun <- if (type == "survival") {
     calculate_survival
@@ -89,15 +86,15 @@ predict.TE_model <- function(object,
     calculate_cum_inc
   }
 
-  pred_list <- lapply(
-    c(assigned_treatment_0 = 0, assigned_treatment_1 = 1),
-    calculate_predictions,
-    model_matrix = model_matrix,
+  pred_list <- calculate_predictions(
+    newdata = newdata,
+    model = model,
+    treatment_values = c(assigned_treatment_0 = 0, assigned_treatment_1 = 1),
     pred_fun = pred_fun,
     coefs_mat = coefs_mat,
-    linkinv = model$family$linkinv,
     matrix_n_col = length(predict_times)
   )
+
   pred_list$difference <- pred_list$assigned_treatment_1 - pred_list$assigned_treatment_0
 
   mapply(
@@ -198,20 +195,28 @@ calculate_survival <- function(p_mat) {
 
 #' Calculate and transform predictions
 #'
-#' @param model_matrix Model matrix to multiple with coefficients
-#' @param treatment_value Value to insert into `assigned_treatment` column
+#' @param model GLM object
+#' @param newdata New data to predict outcome
+#' @param treatment_values Named vector of value to insert into `assigned_treatment` column
 #' @param pred_fun Function to transform prediction matrix
 #' @param coefs_mat Matrix of coefficients corresponding to `model_matrix`.
-#' @param linkinv Inverse link function for transforming linear predictor
 #' @param matrix_n_col Expected number of column after prediction.
 #'
 #' @return A matrix with transformed predicted values. Number of columns corresponds
 #'  to the number of rows of `coefs_mat`
-calculate_predictions <- function(model_matrix, treatment_value, pred_fun, coefs_mat, linkinv, matrix_n_col) {
-  treatment_col <- which(colnames(model_matrix) == "assigned_treatment")
-  model_matrix[, treatment_col] <- treatment_value
-  pred_list <- lapply(seq_len(nrow(coefs_mat)), function(coef_i) {
-    pred_fun(matrix(linkinv(model_matrix %*% t(coefs_mat[coef_i, , drop = FALSE])), ncol = matrix_n_col))
+calculate_predictions <- function(newdata, model, treatment_values, pred_fun, coefs_mat, matrix_n_col) {
+  model_terms <- delete.response(terms(model))
+  model_frame <- model.frame(model_terms, newdata, xlev = model$xlevels)
+  if (!is.null(data_classes <- attr(model_terms, "dataClasses"))) .checkMFClasses(data_classes, model_frame)
+
+  linkinv <- model$family$linkinv
+
+  lapply(treatment_values, function(treatment_value) {
+    model_frame$assigned_treatment <- treatment_value
+    model_matrix <- model.matrix(model_terms, model_frame, contrasts.arg = model$contrasts)
+    pred_list <- lapply(seq_len(nrow(coefs_mat)), function(coef_i) {
+      pred_fun(matrix(linkinv(model_matrix %*% t(coefs_mat[coef_i, , drop = FALSE])), ncol = matrix_n_col))
+    })
+    matrix(unlist(pred_list), ncol = length(pred_list))
   })
-  matrix(unlist(pred_list), ncol = length(pred_list))
 }
