@@ -83,3 +83,32 @@ test_that("calculate_survival works as expected", {
   result <- calculate_survival(object)
   expect_equal(result, c(0.7000, 0.6050, 0.5445))
 })
+
+
+test_that("predict.RTE_model works with interactions", {
+  data <- readRDS(test_path("data/ready_for_modelling.rds"))
+
+  expect_warning(
+    expect_warning(
+      object <- data_modelling(
+        data = data,
+        outcome_cov = ~ X1 + X2 + age_s,
+        model_var = ~ assigned_treatment:followup_time,
+        use_weight = 1,
+        use_censor = 1,
+        include_followup_time = ~followup_time,
+        include_expansion_time = ~1,
+        glm_function = c("glm"),
+        use_sample_weights = FALSE,
+        quiet = TRUE
+      ),
+      "non-integer #successes in a binomial glm",
+      fixed = TRUE
+    ),
+    "fitted probabilities numerically 0 or 1 occurred"
+  )
+
+  set.seed(100)
+  result <- predict(object, predict_times = 0:8, conf_int = TRUE, samples = 5)
+  expect_snapshot_value(result, style = "json2", tolerance = 1e-05)
+})
