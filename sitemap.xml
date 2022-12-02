@@ -82,10 +82,16 @@
     <loc>/reference/predict.TE_model.html</loc>
   </url>
   <url>
+    <loc>/reference/print_TE.html</loc>
+  </url>
+  <url>
     <loc>/reference/robust_calculation.html</loc>
   </url>
   <url>
     <loc>/reference/select_data_cols.html</loc>
+  </url>
+  <url>
+    <loc>/reference/summary_TE.html</loc>
   </url>
   <url>
     <loc>/reference/trial_example.html</loc>
@@ -95,5 +101,8 @@
   </url>
   <url>
     <loc>/reference/weight_func.html</loc>
+  </url>
+  <url>
+    <loc>/reference/weights_TE.html</loc>
   </url>
 </urlset>

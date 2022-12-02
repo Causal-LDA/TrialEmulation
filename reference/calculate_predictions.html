@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">TrialEmulation</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.2.11</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.2.12</span>
       </span>
     </div>
 
@@ -58,23 +58,27 @@
 
     <div id="ref-usage">
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">calculate_predictions</span><span class="op">(</span></span>
-<span>  <span class="va">model_matrix</span>,</span>
-<span>  <span class="va">treatment_value</span>,</span>
+<span>  <span class="va">newdata</span>,</span>
+<span>  <span class="va">model</span>,</span>
+<span>  <span class="va">treatment_values</span>,</span>
 <span>  <span class="va">pred_fun</span>,</span>
 <span>  <span class="va">coefs_mat</span>,</span>
-<span>  <span class="va">linkinv</span>,</span>
 <span>  <span class="va">matrix_n_col</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
-    <dl><dt>model_matrix</dt>
-<dd><p>Model matrix to multiple with coefficients</p></dd>
+    <dl><dt>newdata</dt>
+<dd><p>New data to predict outcome</p></dd>
 
 
-<dt>treatment_value</dt>
-<dd><p>Value to insert into <code>assigned_treatment</code> column</p></dd>
+<dt>model</dt>
+<dd><p>GLM object</p></dd>
+
+
+<dt>treatment_values</dt>
+<dd><p>Named vector of value to insert into <code>assigned_treatment</code> column</p></dd>
 
 
 <dt>pred_fun</dt>
@@ -83,10 +87,6 @@
 
 <dt>coefs_mat</dt>
 <dd><p>Matrix of coefficients corresponding to <code>model_matrix</code>.</p></dd>
-
-
-<dt>linkinv</dt>
-<dd><p>Inverse link function for transforming linear predictor</p></dd>
 
 
 <dt>matrix_n_col</dt>

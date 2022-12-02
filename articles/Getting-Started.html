@@ -33,7 +33,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">TrialEmulation</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.2.11</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.2.12</span>
       </span>
     </div>
 
@@ -147,11 +147,11 @@ analysis:</p>
 <span><span class="op">)</span></span>
 <span><span class="co">#&gt; Starting data manipulation</span></span>
 <span><span class="co">#&gt; Finished data manipulation</span></span>
-<span><span class="co">#&gt; Processing time of data manipulation: 0.8 s</span></span>
+<span><span class="co">#&gt; Processing time of data manipulation: 1.0 s</span></span>
 <span><span class="co">#&gt; ------------------------------------------------------------</span></span>
 <span><span class="co">#&gt; Starting data extension</span></span>
 <span><span class="co">#&gt; Finish data extension</span></span>
-<span><span class="co">#&gt; Processing time of data extension: 6.9 s</span></span>
+<span><span class="co">#&gt; Processing time of data extension: 7.4 s</span></span>
 <span><span class="co">#&gt; ------------------------------------------------------------</span></span>
 <span><span class="co">#&gt; Summary of extended data:</span></span>
 <span><span class="co">#&gt; Number of observations: 1939053</span></span>
@@ -159,7 +159,7 @@ analysis:</p>
 <span><span class="co">#&gt; Preparing for model fitting</span></span>
 <span><span class="co">#&gt; ------------------------------------------------------------</span></span>
 <span><span class="co">#&gt; Fitting outcome model</span></span>
-<span><span class="co">#&gt; Processing time of fitting outcome model: 45.954 s</span></span>
+<span><span class="co">#&gt; Processing time of fitting outcome model: 47.746 s</span></span>
 <span><span class="co">#&gt; summary(model)</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Call:</span></span>
@@ -206,33 +206,88 @@ analysis:</p>
 <span><span class="co">#&gt; Number of Fisher Scoring iterations: 15</span></span>
 <span><span class="co">#&gt; ------------------------------------------------------------</span></span>
 <span><span class="co">#&gt; Calculating robust variance</span></span>
-<span><span class="co">#&gt; Processing time of calculating robust variance: 2.7 s</span></span>
+<span><span class="co">#&gt; Processing time of calculating robust variance: 3.0 s</span></span>
 <span><span class="co">#&gt; Summary with robust standard error:</span></span>
-<span><span class="co">#&gt;                 names  estimate robust_se        lb        ub       z p_value</span></span>
-<span><span class="co">#&gt; 1         (Intercept) -3.10e+00  7.01e-01 -4.47e+00 -1.72e+00  -4.417 &lt; 1e-04</span></span>
-<span><span class="co">#&gt; 2  assigned_treatment -2.73e-01  3.09e-01 -8.78e-01  3.32e-01  -0.883 0.37714</span></span>
-<span><span class="co">#&gt; 3          for_period  1.21e-03  4.02e-03 -6.67e-03  9.10e-03   0.301 0.76323</span></span>
-<span><span class="co">#&gt; 4     I(for_period^2)  2.06e-06  9.40e-06 -1.64e-05  2.05e-05   0.219 0.82629</span></span>
-<span><span class="co">#&gt; 5       followup_time  2.86e-03  3.40e-03 -3.80e-03  9.53e-03   0.842 0.39966</span></span>
-<span><span class="co">#&gt; 6  I(followup_time^2) -6.86e-06  1.63e-05 -3.87e-05  2.50e-05  -0.422 0.67321</span></span>
-<span><span class="co">#&gt; 7            catvarA1  2.96e-01  1.91e-01 -7.82e-02  6.69e-01   1.550 0.12119</span></span>
-<span><span class="co">#&gt; 8            catvarA2  1.38e-01  2.81e-01 -4.13e-01  6.89e-01   0.493 0.62234</span></span>
-<span><span class="co">#&gt; 9            catvarA3 -1.10e+01  9.47e-01 -1.29e+01 -9.18e+00 -11.658 &lt; 1e-04</span></span>
-<span><span class="co">#&gt; 10           catvarA7  4.39e-01  2.23e-01  2.21e-03  8.76e-01   1.970 0.04885</span></span>
-<span><span class="co">#&gt; 11           catvarB1 -3.94e-01  3.01e-01 -9.83e-01  1.95e-01  -1.312 0.18963</span></span>
-<span><span class="co">#&gt; 12           catvarB2 -4.17e-01  3.64e-01 -1.13e+00  2.96e-01  -1.147 0.25142</span></span>
-<span><span class="co">#&gt; 13           catvarB3 -2.42e+00  9.26e-01 -4.23e+00 -6.02e-01  -2.610 0.00904</span></span>
-<span><span class="co">#&gt; 14           catvarB7 -6.95e-01  3.06e-01 -1.29e+00 -9.62e-02  -2.275 0.02291</span></span>
-<span><span class="co">#&gt; 15           catvarC1 -4.91e-02  1.55e-01 -3.53e-01  2.55e-01  -0.316 0.75172</span></span>
-<span><span class="co">#&gt; 16           catvarC2 -6.71e-02  2.27e-01 -5.12e-01  3.78e-01  -0.296 0.76733</span></span>
-<span><span class="co">#&gt; 17           catvarC7 -1.19e-01  1.74e-01 -4.59e-01  2.22e-01  -0.683 0.49479</span></span>
-<span><span class="co">#&gt; 18              nvarA -8.40e-02  4.50e-02 -1.72e-01  4.22e-03  -1.866 0.06199</span></span>
-<span><span class="co">#&gt; 19              nvarB  5.21e-03  2.24e-03  8.23e-04  9.60e-03   2.328 0.01993</span></span>
-<span><span class="co">#&gt; 20              nvarC -4.23e-02  6.71e-03 -5.55e-02 -2.92e-02  -6.308 &lt; 1e-04</span></span>
+<span><span class="co">#&gt;                 names  estimate robust_se      2.5%     97.5%       z  p_value</span></span>
+<span><span class="co">#&gt; 1         (Intercept) -3.10e+00  7.01e-01 -4.47e+00 -1.72e+00  -4.417 1.00e-05</span></span>
+<span><span class="co">#&gt; 2  assigned_treatment -2.73e-01  3.09e-01 -8.78e-01  3.32e-01  -0.883 3.77e-01</span></span>
+<span><span class="co">#&gt; 3          for_period  1.21e-03  4.02e-03 -6.67e-03  9.10e-03   0.301 7.63e-01</span></span>
+<span><span class="co">#&gt; 4     I(for_period^2)  2.06e-06  9.40e-06 -1.64e-05  2.05e-05   0.219 8.26e-01</span></span>
+<span><span class="co">#&gt; 5       followup_time  2.86e-03  3.40e-03 -3.80e-03  9.53e-03   0.842 4.00e-01</span></span>
+<span><span class="co">#&gt; 6  I(followup_time^2) -6.86e-06  1.63e-05 -3.87e-05  2.50e-05  -0.422 6.73e-01</span></span>
+<span><span class="co">#&gt; 7            catvarA1  2.96e-01  1.91e-01 -7.82e-02  6.69e-01   1.550 1.21e-01</span></span>
+<span><span class="co">#&gt; 8            catvarA2  1.38e-01  2.81e-01 -4.13e-01  6.89e-01   0.493 6.22e-01</span></span>
+<span><span class="co">#&gt; 9            catvarA3 -1.10e+01  9.47e-01 -1.29e+01 -9.18e+00 -11.658 0.00e+00</span></span>
+<span><span class="co">#&gt; 10           catvarA7  4.39e-01  2.23e-01  2.21e-03  8.76e-01   1.970 4.88e-02</span></span>
+<span><span class="co">#&gt; 11           catvarB1 -3.94e-01  3.01e-01 -9.83e-01  1.95e-01  -1.312 1.90e-01</span></span>
+<span><span class="co">#&gt; 12           catvarB2 -4.17e-01  3.64e-01 -1.13e+00  2.96e-01  -1.147 2.51e-01</span></span>
+<span><span class="co">#&gt; 13           catvarB3 -2.42e+00  9.26e-01 -4.23e+00 -6.02e-01  -2.610 9.04e-03</span></span>
+<span><span class="co">#&gt; 14           catvarB7 -6.95e-01  3.06e-01 -1.29e+00 -9.62e-02  -2.275 2.29e-02</span></span>
+<span><span class="co">#&gt; 15           catvarC1 -4.91e-02  1.55e-01 -3.53e-01  2.55e-01  -0.316 7.52e-01</span></span>
+<span><span class="co">#&gt; 16           catvarC2 -6.71e-02  2.27e-01 -5.12e-01  3.78e-01  -0.296 7.67e-01</span></span>
+<span><span class="co">#&gt; 17           catvarC7 -1.19e-01  1.74e-01 -4.59e-01  2.22e-01  -0.683 4.95e-01</span></span>
+<span><span class="co">#&gt; 18              nvarA -8.40e-02  4.50e-02 -1.72e-01  4.22e-03  -1.866 6.20e-02</span></span>
+<span><span class="co">#&gt; 19              nvarB  5.21e-03  2.24e-03  8.23e-04  9.60e-03   2.328 1.99e-02</span></span>
+<span><span class="co">#&gt; 20              nvarC -4.23e-02  6.71e-03 -5.55e-02 -2.92e-02  -6.308 2.83e-10</span></span>
 <span><span class="co">#&gt; ------------------------------------------------------------</span></span></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">result</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Trial Emulation Outcome Model</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Outcome model formula:</span></span>
+<span><span class="co">#&gt; outcome ~ assigned_treatment + for_period + I(for_period^2) + </span></span>
+<span><span class="co">#&gt;     followup_time + I(followup_time^2) + catvarA + catvarB + </span></span>
+<span><span class="co">#&gt;     catvarC + nvarA + nvarB + nvarC</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Coefficent summary (robust):</span></span>
+<span><span class="co">#&gt;               names   estimate robust_se       2.5%      97.5%        z</span></span>
+<span><span class="co">#&gt;         (Intercept) -3.096e+00 7.009e-01 -4.470e+00 -1.722e+00  -4.4172</span></span>
+<span><span class="co">#&gt;  assigned_treatment -2.727e-01 3.088e-01 -8.779e-01  3.325e-01  -0.8832</span></span>
+<span><span class="co">#&gt;          for_period  1.212e-03 4.023e-03 -6.673e-03  9.097e-03   0.3012</span></span>
+<span><span class="co">#&gt;     I(for_period^2)  2.063e-06 9.398e-06 -1.636e-05  2.048e-05   0.2195</span></span>
+<span><span class="co">#&gt;       followup_time  2.863e-03 3.400e-03 -3.800e-03  9.527e-03   0.8422</span></span>
+<span><span class="co">#&gt;  I(followup_time^2) -6.857e-06 1.626e-05 -3.872e-05  2.501e-05  -0.4217</span></span>
+<span><span class="co">#&gt;            catvarA1  2.955e-01 1.907e-01 -7.822e-02  6.693e-01   1.5498</span></span>
+<span><span class="co">#&gt;            catvarA2  1.385e-01 2.811e-01 -4.125e-01  6.894e-01   0.4925</span></span>
+<span><span class="co">#&gt;            catvarA3 -1.104e+01 9.466e-01 -1.289e+01 -9.180e+00 -11.6576</span></span>
+<span><span class="co">#&gt;            catvarA7  4.390e-01 2.229e-01  2.213e-03  8.759e-01   1.9699</span></span>
+<span><span class="co">#&gt;            catvarB1 -3.942e-01 3.005e-01 -9.832e-01  1.948e-01  -1.3117</span></span>
+<span><span class="co">#&gt;            catvarB2 -4.172e-01 3.638e-01 -1.130e+00  2.958e-01  -1.1469</span></span>
+<span><span class="co">#&gt;            catvarB3 -2.417e+00 9.259e-01 -4.232e+00 -6.022e-01  -2.6104</span></span>
+<span><span class="co">#&gt;            catvarB7 -6.952e-01 3.056e-01 -1.294e+00 -9.624e-02  -2.2749</span></span>
+<span><span class="co">#&gt;            catvarC1 -4.905e-02 1.550e-01 -3.529e-01  2.548e-01  -0.3164</span></span>
+<span><span class="co">#&gt;            catvarC2 -6.715e-02 2.269e-01 -5.120e-01  3.777e-01  -0.2959</span></span>
+<span><span class="co">#&gt;            catvarC7 -1.186e-01 1.737e-01 -4.592e-01  2.219e-01  -0.6827</span></span>
+<span><span class="co">#&gt;               nvarA -8.404e-02 4.503e-02 -1.723e-01  4.216e-03  -1.8664</span></span>
+<span><span class="co">#&gt;               nvarB  5.212e-03 2.239e-03  8.231e-04  9.600e-03   2.3276</span></span>
+<span><span class="co">#&gt;               nvarC -4.232e-02 6.710e-03 -5.548e-02 -2.917e-02  -6.3079</span></span>
+<span><span class="co">#&gt;    p_value</span></span>
+<span><span class="co">#&gt;  9.997e-06</span></span>
+<span><span class="co">#&gt;   0.377143</span></span>
+<span><span class="co">#&gt;   0.763228</span></span>
+<span><span class="co">#&gt;   0.826290</span></span>
+<span><span class="co">#&gt;   0.399657</span></span>
+<span><span class="co">#&gt;   0.673209</span></span>
+<span><span class="co">#&gt;   0.121185</span></span>
+<span><span class="co">#&gt;   0.622343</span></span>
+<span><span class="co">#&gt;  &lt; 2.2e-16</span></span>
+<span><span class="co">#&gt;   0.048846</span></span>
+<span><span class="co">#&gt;   0.189633</span></span>
+<span><span class="co">#&gt;   0.251418</span></span>
+<span><span class="co">#&gt;   0.009045</span></span>
+<span><span class="co">#&gt;   0.022912</span></span>
+<span><span class="co">#&gt;   0.751717</span></span>
+<span><span class="co">#&gt;   0.767325</span></span>
+<span><span class="co">#&gt;   0.494790</span></span>
+<span><span class="co">#&gt;   0.061991</span></span>
+<span><span class="co">#&gt;   0.019933</span></span>
+<span><span class="co">#&gt;  2.829e-10</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; result$model contains the fitted glm model object.</span></span>
+<span><span class="co">#&gt; result$robust$matrix contains the full robust covariance matrix.</span></span></code></pre></div>
 <p>By default, this returns the final <code>glm</code> model object and
 the results using the sandwich estimator.</p>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">result</span><span class="op">$</span><span class="va">model</span><span class="op">)</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Call:</span></span>
@@ -277,9 +332,9 @@ the results using the sandwich estimator.</p>
 <span><span class="co">#&gt; AIC: 107677</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Number of Fisher Scoring iterations: 15</span></span></code></pre></div>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">result</span><span class="op">$</span><span class="va">robust</span><span class="op">$</span><span class="va">summary</span></span>
-<span><span class="co">#&gt;                 names      estimate    robust_se            lb            ub</span></span>
+<span><span class="co">#&gt;                 names      estimate    robust_se          2.5%         97.5%</span></span>
 <span><span class="co">#&gt; 1         (Intercept) -3.095941e+00 7.008783e-01 -4.469663e+00 -1.7222196577</span></span>
 <span><span class="co">#&gt; 2  assigned_treatment -2.726885e-01 3.087599e-01 -8.778580e-01  0.3324809277</span></span>
 <span><span class="co">#&gt; 3          for_period  1.211873e-03 4.022885e-03 -6.672980e-03  0.0090967269</span></span>
@@ -300,29 +355,29 @@ the results using the sandwich estimator.</p>
 <span><span class="co">#&gt; 18              nvarA -8.403861e-02 4.502810e-02 -1.722937e-01  0.0042164664</span></span>
 <span><span class="co">#&gt; 19              nvarB  5.211807e-03 2.239120e-03  8.231314e-04  0.0096004830</span></span>
 <span><span class="co">#&gt; 20              nvarC -4.232413e-02 6.709734e-03 -5.547521e-02 -0.0291730526</span></span>
-<span><span class="co">#&gt;              z p_value</span></span>
-<span><span class="co">#&gt; 1   -4.4172306 &lt; 1e-04</span></span>
-<span><span class="co">#&gt; 2   -0.8831733 0.37714</span></span>
-<span><span class="co">#&gt; 3    0.3012449 0.76323</span></span>
-<span><span class="co">#&gt; 4    0.2194627 0.82629</span></span>
-<span><span class="co">#&gt; 5    0.8422343 0.39966</span></span>
-<span><span class="co">#&gt; 6   -0.4217486 0.67321</span></span>
-<span><span class="co">#&gt; 7    1.5498183 0.12119</span></span>
-<span><span class="co">#&gt; 8    0.4925328 0.62234</span></span>
-<span><span class="co">#&gt; 9  -11.6576025 &lt; 1e-04</span></span>
-<span><span class="co">#&gt; 10   1.9699305 0.04885</span></span>
-<span><span class="co">#&gt; 11  -1.3116666 0.18963</span></span>
-<span><span class="co">#&gt; 12  -1.1469129 0.25142</span></span>
-<span><span class="co">#&gt; 13  -2.6103573 0.00904</span></span>
-<span><span class="co">#&gt; 14  -2.2748917 0.02291</span></span>
-<span><span class="co">#&gt; 15  -0.3163758 0.75172</span></span>
-<span><span class="co">#&gt; 16  -0.2958753 0.76733</span></span>
-<span><span class="co">#&gt; 17  -0.6827097 0.49479</span></span>
-<span><span class="co">#&gt; 18  -1.8663592 0.06199</span></span>
-<span><span class="co">#&gt; 19   2.3276138 0.01993</span></span>
-<span><span class="co">#&gt; 20  -6.3078703 &lt; 1e-04</span></span></code></pre></div>
+<span><span class="co">#&gt;              z      p_value</span></span>
+<span><span class="co">#&gt; 1   -4.4172306 9.997357e-06</span></span>
+<span><span class="co">#&gt; 2   -0.8831733 3.771426e-01</span></span>
+<span><span class="co">#&gt; 3    0.3012449 7.632278e-01</span></span>
+<span><span class="co">#&gt; 4    0.2194627 8.262896e-01</span></span>
+<span><span class="co">#&gt; 5    0.8422343 3.996568e-01</span></span>
+<span><span class="co">#&gt; 6   -0.4217486 6.732085e-01</span></span>
+<span><span class="co">#&gt; 7    1.5498183 1.211851e-01</span></span>
+<span><span class="co">#&gt; 8    0.4925328 6.223428e-01</span></span>
+<span><span class="co">#&gt; 9  -11.6576025 0.000000e+00</span></span>
+<span><span class="co">#&gt; 10   1.9699305 4.884634e-02</span></span>
+<span><span class="co">#&gt; 11  -1.3116666 1.896327e-01</span></span>
+<span><span class="co">#&gt; 12  -1.1469129 2.514176e-01</span></span>
+<span><span class="co">#&gt; 13  -2.6103573 9.044771e-03</span></span>
+<span><span class="co">#&gt; 14  -2.2748917 2.291243e-02</span></span>
+<span><span class="co">#&gt; 15  -0.3163758 7.517173e-01</span></span>
+<span><span class="co">#&gt; 16  -0.2958753 7.673253e-01</span></span>
+<span><span class="co">#&gt; 17  -0.6827097 4.947903e-01</span></span>
+<span><span class="co">#&gt; 18  -1.8663592 6.199112e-02</span></span>
+<span><span class="co">#&gt; 19   2.3276138 1.993262e-02</span></span>
+<span><span class="co">#&gt; 20  -6.3078703 2.829010e-10</span></span></code></pre></div>
 <p>Also the sandwich variance-covariance matrix.</p>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">result</span><span class="op">$</span><span class="va">robust</span><span class="op">$</span><span class="va">matrix</span></span>
 <span><span class="co">#&gt;                      (Intercept) assigned_treatment    for_period</span></span>
 <span><span class="co">#&gt; (Intercept)         4.912304e-01       2.133315e-02 -1.650603e-03</span></span>
@@ -459,12 +514,12 @@ and modelling steps separately.</p>
 <p>This also allows for processing of very large data sets, by doing the
 data preparation in chunks and then sampling from the expanded trial
 data.</p>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># for the purposes of the vignette, we use a temporary directory, however it may be useful to use a permanent location</span></span>
 <span><span class="co"># in order to inspect the outputs later</span></span>
 <span><span class="va">working_dir</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="cn">TRUE</span><span class="op">)</span>, <span class="st">"trial_emu"</span><span class="op">)</span></span>
 <span><span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/files2.html" class="external-link">dir.exists</a></span><span class="op">(</span><span class="va">working_dir</span><span class="op">)</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/base/files2.html" class="external-link">dir.create</a></span><span class="op">(</span><span class="va">working_dir</span><span class="op">)</span></span></code></pre></div>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">prep_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/data_preparation.html">data_preparation</a></span><span class="op">(</span></span>
 <span>  data <span class="op">=</span> <span class="va">trial_example</span>,</span>
 <span>  id <span class="op">=</span> <span class="st">"id"</span>,</span>
@@ -484,9 +539,9 @@ data.</p>
 <span><span class="op">)</span></span>
 <span><span class="co">#&gt; Starting data manipulation</span></span>
 <span><span class="co">#&gt; Finished data manipulation</span></span>
-<span><span class="co">#&gt; Processing time of data manipulation: 0.7 s</span></span>
+<span><span class="co">#&gt; Processing time of data manipulation: 1.0 s</span></span>
 <span><span class="co">#&gt; ------------------------------------------------------------</span></span>
-<span><span class="co">#&gt; P(treatment=1 | treatment=0) for denominator</span></span>
+<span><span class="co">#&gt; P(treatment = 1 | previous treatment = 0) for denominator</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Call:</span></span>
 <span><span class="co">#&gt; glm(formula = treatment ~ 1, family = binomial(link = "logit"), </span></span>
@@ -509,7 +564,7 @@ data.</p>
 <span><span class="co">#&gt; AIC: 4331.7</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Number of Fisher Scoring iterations: 6</span></span>
-<span><span class="co">#&gt; P(treatment=1 | treatment=0) for numerator</span></span>
+<span><span class="co">#&gt; P(treatment = 1 | previous treatment = 0) for numerator</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Call:</span></span>
 <span><span class="co">#&gt; glm(formula = treatment ~ nvarA + nvarB, family = binomial(link = "logit"), </span></span>
@@ -534,7 +589,7 @@ data.</p>
 <span><span class="co">#&gt; AIC: 4335.4</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Number of Fisher Scoring iterations: 6</span></span>
-<span><span class="co">#&gt; P(treatment=1 | treatment=1) for denominator</span></span>
+<span><span class="co">#&gt; P(treatment = 1 | previous treatment = 1) for denominator</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Call:</span></span>
 <span><span class="co">#&gt; glm(formula = treatment ~ 1, family = binomial(link = "logit"), </span></span>
@@ -557,7 +612,7 @@ data.</p>
 <span><span class="co">#&gt; AIC: 2348.7</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Number of Fisher Scoring iterations: 7</span></span>
-<span><span class="co">#&gt; P(treatment=1 | treatment=1) for numerator</span></span>
+<span><span class="co">#&gt; P(treatment = 1 | previous treatment = 1) for numerator</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Call:</span></span>
 <span><span class="co">#&gt; glm(formula = treatment ~ nvarA + nvarB, family = binomial(link = "logit"), </span></span>
@@ -584,45 +639,94 @@ data.</p>
 <span><span class="co">#&gt; Number of Fisher Scoring iterations: 7</span></span>
 <span><span class="co">#&gt; Starting data extension</span></span>
 <span><span class="co">#&gt; Finish data extension</span></span>
-<span><span class="co">#&gt; Processing time of data extension: 5.2 s</span></span>
+<span><span class="co">#&gt; Processing time of data extension: 5.5 s</span></span>
 <span><span class="co">#&gt; ------------------------------------------------------------</span></span>
 <span><span class="co">#&gt; Summary of extended data:</span></span>
 <span><span class="co">#&gt; Number of observations: 963883</span></span>
 <span><span class="co">#&gt; ------------------------------------------------------------</span></span></code></pre></div>
-<p>We have some summaries of the weighting models in the results from
-<code><a href="../reference/data_preparation.html">data_preparation()</a></code></p>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/str.html" class="external-link">str</a></span><span class="op">(</span><span class="va">prep_data</span><span class="op">$</span><span class="va">switch_models</span>, max.level <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span>
-<span><span class="co">#&gt; List of 8</span></span>
-<span><span class="co">#&gt;  $ switch_d0           : tibble [1 × 5] (S3: tbl_df/tbl/data.frame)</span></span>
-<span><span class="co">#&gt;  $ switch_d0_statistics: tibble [1 × 8] (S3: tbl_df/tbl/data.frame)</span></span>
-<span><span class="co">#&gt;  $ switch_n0           : tibble [3 × 5] (S3: tbl_df/tbl/data.frame)</span></span>
-<span><span class="co">#&gt;  $ switch_n0_statistics: tibble [1 × 8] (S3: tbl_df/tbl/data.frame)</span></span>
-<span><span class="co">#&gt;  $ switch_d1           : tibble [1 × 5] (S3: tbl_df/tbl/data.frame)</span></span>
-<span><span class="co">#&gt;  $ switch_statistics   : tibble [1 × 8] (S3: tbl_df/tbl/data.frame)</span></span>
-<span><span class="co">#&gt;  $ switch_n1           : tibble [3 × 5] (S3: tbl_df/tbl/data.frame)</span></span>
-<span><span class="co">#&gt;  $ switch_n1_statistics: tibble [1 × 8] (S3: tbl_df/tbl/data.frame)</span></span>
-<span><span class="va">prep_data</span><span class="op">$</span><span class="va">switch_models</span><span class="op">$</span><span class="va">switch_n0</span></span>
-<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 3 × 5</span></span></span>
-<span><span class="co">#&gt;   term         estimate std.error statistic p.value</span></span>
-<span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>           <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> (Intercept) -<span style="color: #BB0000;">3.82</span>       0.067<span style="text-decoration: underline;">9</span>    -<span style="color: #BB0000;">56.2</span>     0    </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> nvarA        0.004<span style="text-decoration: underline;">11</span>    0.029<span style="text-decoration: underline;">4</span>      0.140   0.889</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span> nvarB       -<span style="color: #BB0000;">0.000</span><span style="color: #BB0000; text-decoration: underline;">660</span>   0.001<span style="text-decoration: underline;">30</span>    -<span style="color: #BB0000;">0.509</span>   0.611</span></span>
-<span><span class="va">prep_data</span><span class="op">$</span><span class="va">switch_models</span><span class="op">$</span><span class="va">switch_n0_statistics</span></span>
-<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 1 × 8</span></span></span>
-<span><span class="co">#&gt;   null.deviance df.null logLik   AIC   BIC deviance df.residual  nobs</span></span>
-<span><span class="co">#&gt;           <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span>         <span style="text-decoration: underline;">4</span>330.   <span style="text-decoration: underline;">21</span>263 -<span style="color: #BB0000; text-decoration: underline;">2</span><span style="color: #BB0000;">165.</span> <span style="text-decoration: underline;">4</span>335. <span style="text-decoration: underline;">4</span>359.    <span style="text-decoration: underline;">4</span>329.       <span style="text-decoration: underline;">21</span>261 <span style="text-decoration: underline;">21</span>264</span></span></code></pre></div>
-<p>We also have the full model objects saved in
-<code>data_dir = working_dir</code>, so you can inspect the data used in
-those models and further investigate how well those models fit.</p>
+<p>Use <code>summary</code> to get an overview of the result.</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">prep_data</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Expanded Trial Emulation data</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Expanded data saved in 396 csv files:</span></span>
+<span><span class="co">#&gt;   1:   /tmp/Rtmpk8h1ZH/trial_emu/trial_1.csv</span></span>
+<span><span class="co">#&gt;   2:   /tmp/Rtmpk8h1ZH/trial_emu/trial_2.csv</span></span>
+<span><span class="co">#&gt;   3:   /tmp/Rtmpk8h1ZH/trial_emu/trial_3.csv</span></span>
+<span><span class="co">#&gt;  ---                                        </span></span>
+<span><span class="co">#&gt; 394: /tmp/Rtmpk8h1ZH/trial_emu/trial_394.csv</span></span>
+<span><span class="co">#&gt; 395: /tmp/Rtmpk8h1ZH/trial_emu/trial_395.csv</span></span>
+<span><span class="co">#&gt; 396: /tmp/Rtmpk8h1ZH/trial_emu/trial_396.csv</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Number of observations in expanded data: 963883 </span></span>
+<span><span class="co">#&gt; First trial period: 1 </span></span>
+<span><span class="co">#&gt; Last trial period: 396 </span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; ------------------------------------------------------------ </span></span>
+<span><span class="co">#&gt; Weight models</span></span>
+<span><span class="co">#&gt; -------------</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Treatment switch models</span></span>
+<span><span class="co">#&gt; -----------------------</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; switch_models$switch_d0:</span></span>
+<span><span class="co">#&gt;  P(treatment = 1 | previous treatment = 0) for denominator </span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt;         term estimate std.error statistic p.value</span></span>
+<span><span class="co">#&gt;  (Intercept)   -3.843   0.04785    -80.31       0</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; ------------------------------------------------------------ </span></span>
+<span><span class="co">#&gt; switch_models$switch_n0:</span></span>
+<span><span class="co">#&gt;  P(treatment = 1 | previous treatment = 0) for numerator </span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt;         term   estimate std.error statistic p.value</span></span>
+<span><span class="co">#&gt;  (Intercept) -3.8203716  0.067925  -56.2436  0.0000</span></span>
+<span><span class="co">#&gt;        nvarA  0.0041081  0.029433    0.1396  0.8890</span></span>
+<span><span class="co">#&gt;        nvarB -0.0006602  0.001296   -0.5093  0.6105</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; ------------------------------------------------------------ </span></span>
+<span><span class="co">#&gt; switch_models$switch_d1:</span></span>
+<span><span class="co">#&gt;  P(treatment = 1 | previous treatment = 1) for denominator </span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt;         term estimate std.error statistic p.value</span></span>
+<span><span class="co">#&gt;  (Intercept)    4.376   0.06815     64.21       0</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; ------------------------------------------------------------ </span></span>
+<span><span class="co">#&gt; switch_models$switch_n1:</span></span>
+<span><span class="co">#&gt;  P(treatment = 1 | previous treatment = 1) for numerator </span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt;         term  estimate std.error statistic    p.value</span></span>
+<span><span class="co">#&gt;  (Intercept)  4.022249  0.116756  34.45003 4.499e-260</span></span>
+<span><span class="co">#&gt;        nvarA -0.002263  0.044029  -0.05139  9.590e-01</span></span>
+<span><span class="co">#&gt;        nvarB  0.007584  0.002306   3.28854  1.007e-03</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; ------------------------------------------------------------</span></span></code></pre></div>
+<p>For more information about the weighting models, we can inspect them
+individually</p>
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">prep_data</span><span class="op">$</span><span class="va">switch_models</span><span class="op">$</span><span class="va">switch_n0</span></span>
+<span><span class="co">#&gt; P(treatment = 1 | previous treatment = 0) for numerator </span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt;         term   estimate std.error statistic p.value</span></span>
+<span><span class="co">#&gt;  (Intercept) -3.8203716  0.067925  -56.2436  0.0000</span></span>
+<span><span class="co">#&gt;        nvarA  0.0041081  0.029433    0.1396  0.8890</span></span>
+<span><span class="co">#&gt;        nvarB -0.0006602  0.001296   -0.5093  0.6105</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt;  null.deviance df.null logLik  AIC  BIC deviance df.residual  nobs</span></span>
+<span><span class="co">#&gt;           4330   21263  -2165 4335 4359     4329       21261 21264</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Object saved at "/tmp/Rtmpk8h1ZH/trial_emu/weight_model_switch_n0.rds"</span></span></code></pre></div>
+<p>If <code>save_weight_models = TRUE,</code> the full model objects are
+saved in <code>working_dir</code>, so you can inspect the data used in
+those models and further investigate how well those models fit.</p>
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/list.files.html" class="external-link">list.files</a></span><span class="op">(</span><span class="va">working_dir</span>, <span class="st">"*.rds"</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1] "weight_model_switch_d0.rds" "weight_model_switch_d1.rds"</span></span>
 <span><span class="co">#&gt; [3] "weight_model_switch_n0.rds" "weight_model_switch_n1.rds"</span></span>
 <span></span>
-<span><span class="va">switch_n0</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/readRDS.html" class="external-link">readRDS</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">working_dir</span>, <span class="st">"weight_model_switch_n0.rds"</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co"># The path is stored in the saved object</span></span>
+<span><span class="va">switch_n0</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/readRDS.html" class="external-link">readRDS</a></span><span class="op">(</span><span class="va">prep_data</span><span class="op">$</span><span class="va">switch_models</span><span class="op">$</span><span class="va">switch_n0</span><span class="op">$</span><span class="va">path</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">switch_n0</span><span class="op">)</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Call:</span></span>
@@ -647,119 +751,418 @@ those models and further investigate how well those models fit.</p>
 <span><span class="co">#&gt; Residual deviance: 4329.4  on 21261  degrees of freedom</span></span>
 <span><span class="co">#&gt; AIC: 4335.4</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Number of Fisher Scoring iterations: 6</span></span></code></pre></div>
+<span><span class="co">#&gt; Number of Fisher Scoring iterations: 6</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/hist.html" class="external-link">hist</a></span><span class="op">(</span><span class="va">switch_n0</span><span class="op">$</span><span class="va">fitted.values</span>, main <span class="op">=</span> <span class="st">"Histogram of weights from model switch_n0"</span><span class="op">)</span></span></code></pre></div>
+<p><img src="Getting-Started_files/figure-html/weight_files-1.png" width="700"></p>
 <p>We also see the expanded trial files:</p>
-<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/list.files.html" class="external-link">list.files</a></span><span class="op">(</span><span class="va">working_dir</span>, pattern <span class="op">=</span> <span class="st">"trial_"</span><span class="op">)</span></span>
-<span><span class="co">#&gt;   [1] "trial_1.csv"   "trial_10.csv"  "trial_100.csv" "trial_101.csv"</span></span>
-<span><span class="co">#&gt;   [5] "trial_102.csv" "trial_103.csv" "trial_104.csv" "trial_105.csv"</span></span>
-<span><span class="co">#&gt;   [9] "trial_106.csv" "trial_107.csv" "trial_108.csv" "trial_109.csv"</span></span>
-<span><span class="co">#&gt;  [13] "trial_11.csv"  "trial_110.csv" "trial_111.csv" "trial_112.csv"</span></span>
-<span><span class="co">#&gt;  [17] "trial_113.csv" "trial_114.csv" "trial_115.csv" "trial_116.csv"</span></span>
-<span><span class="co">#&gt;  [21] "trial_117.csv" "trial_118.csv" "trial_119.csv" "trial_12.csv" </span></span>
-<span><span class="co">#&gt;  [25] "trial_120.csv" "trial_121.csv" "trial_122.csv" "trial_123.csv"</span></span>
-<span><span class="co">#&gt;  [29] "trial_124.csv" "trial_125.csv" "trial_126.csv" "trial_127.csv"</span></span>
-<span><span class="co">#&gt;  [33] "trial_128.csv" "trial_129.csv" "trial_13.csv"  "trial_130.csv"</span></span>
-<span><span class="co">#&gt;  [37] "trial_131.csv" "trial_132.csv" "trial_133.csv" "trial_134.csv"</span></span>
-<span><span class="co">#&gt;  [41] "trial_135.csv" "trial_136.csv" "trial_137.csv" "trial_138.csv"</span></span>
-<span><span class="co">#&gt;  [45] "trial_139.csv" "trial_14.csv"  "trial_140.csv" "trial_141.csv"</span></span>
-<span><span class="co">#&gt;  [49] "trial_142.csv" "trial_143.csv" "trial_144.csv" "trial_145.csv"</span></span>
-<span><span class="co">#&gt;  [53] "trial_146.csv" "trial_147.csv" "trial_148.csv" "trial_149.csv"</span></span>
-<span><span class="co">#&gt;  [57] "trial_15.csv"  "trial_150.csv" "trial_151.csv" "trial_152.csv"</span></span>
-<span><span class="co">#&gt;  [61] "trial_153.csv" "trial_154.csv" "trial_155.csv" "trial_156.csv"</span></span>
-<span><span class="co">#&gt;  [65] "trial_157.csv" "trial_158.csv" "trial_159.csv" "trial_16.csv" </span></span>
-<span><span class="co">#&gt;  [69] "trial_160.csv" "trial_161.csv" "trial_162.csv" "trial_163.csv"</span></span>
-<span><span class="co">#&gt;  [73] "trial_164.csv" "trial_165.csv" "trial_166.csv" "trial_167.csv"</span></span>
-<span><span class="co">#&gt;  [77] "trial_168.csv" "trial_169.csv" "trial_17.csv"  "trial_170.csv"</span></span>
-<span><span class="co">#&gt;  [81] "trial_171.csv" "trial_172.csv" "trial_173.csv" "trial_174.csv"</span></span>
-<span><span class="co">#&gt;  [85] "trial_175.csv" "trial_176.csv" "trial_177.csv" "trial_178.csv"</span></span>
-<span><span class="co">#&gt;  [89] "trial_179.csv" "trial_18.csv"  "trial_180.csv" "trial_181.csv"</span></span>
-<span><span class="co">#&gt;  [93] "trial_182.csv" "trial_183.csv" "trial_184.csv" "trial_185.csv"</span></span>
-<span><span class="co">#&gt;  [97] "trial_186.csv" "trial_187.csv" "trial_188.csv" "trial_189.csv"</span></span>
-<span><span class="co">#&gt; [101] "trial_19.csv"  "trial_190.csv" "trial_191.csv" "trial_192.csv"</span></span>
-<span><span class="co">#&gt; [105] "trial_193.csv" "trial_194.csv" "trial_195.csv" "trial_196.csv"</span></span>
-<span><span class="co">#&gt; [109] "trial_197.csv" "trial_198.csv" "trial_199.csv" "trial_2.csv"  </span></span>
-<span><span class="co">#&gt; [113] "trial_20.csv"  "trial_200.csv" "trial_201.csv" "trial_202.csv"</span></span>
-<span><span class="co">#&gt; [117] "trial_203.csv" "trial_204.csv" "trial_205.csv" "trial_206.csv"</span></span>
-<span><span class="co">#&gt; [121] "trial_207.csv" "trial_208.csv" "trial_209.csv" "trial_21.csv" </span></span>
-<span><span class="co">#&gt; [125] "trial_210.csv" "trial_211.csv" "trial_212.csv" "trial_213.csv"</span></span>
-<span><span class="co">#&gt; [129] "trial_214.csv" "trial_215.csv" "trial_216.csv" "trial_217.csv"</span></span>
-<span><span class="co">#&gt; [133] "trial_218.csv" "trial_219.csv" "trial_22.csv"  "trial_220.csv"</span></span>
-<span><span class="co">#&gt; [137] "trial_221.csv" "trial_222.csv" "trial_223.csv" "trial_224.csv"</span></span>
-<span><span class="co">#&gt; [141] "trial_225.csv" "trial_226.csv" "trial_227.csv" "trial_228.csv"</span></span>
-<span><span class="co">#&gt; [145] "trial_229.csv" "trial_23.csv"  "trial_230.csv" "trial_231.csv"</span></span>
-<span><span class="co">#&gt; [149] "trial_232.csv" "trial_233.csv" "trial_234.csv" "trial_235.csv"</span></span>
-<span><span class="co">#&gt; [153] "trial_236.csv" "trial_237.csv" "trial_238.csv" "trial_239.csv"</span></span>
-<span><span class="co">#&gt; [157] "trial_24.csv"  "trial_240.csv" "trial_241.csv" "trial_242.csv"</span></span>
-<span><span class="co">#&gt; [161] "trial_243.csv" "trial_244.csv" "trial_245.csv" "trial_246.csv"</span></span>
-<span><span class="co">#&gt; [165] "trial_247.csv" "trial_248.csv" "trial_249.csv" "trial_25.csv" </span></span>
-<span><span class="co">#&gt; [169] "trial_250.csv" "trial_251.csv" "trial_252.csv" "trial_253.csv"</span></span>
-<span><span class="co">#&gt; [173] "trial_254.csv" "trial_255.csv" "trial_256.csv" "trial_257.csv"</span></span>
-<span><span class="co">#&gt; [177] "trial_258.csv" "trial_259.csv" "trial_26.csv"  "trial_260.csv"</span></span>
-<span><span class="co">#&gt; [181] "trial_261.csv" "trial_262.csv" "trial_263.csv" "trial_264.csv"</span></span>
-<span><span class="co">#&gt; [185] "trial_265.csv" "trial_266.csv" "trial_267.csv" "trial_268.csv"</span></span>
-<span><span class="co">#&gt; [189] "trial_269.csv" "trial_27.csv"  "trial_270.csv" "trial_271.csv"</span></span>
-<span><span class="co">#&gt; [193] "trial_272.csv" "trial_273.csv" "trial_274.csv" "trial_275.csv"</span></span>
-<span><span class="co">#&gt; [197] "trial_276.csv" "trial_277.csv" "trial_278.csv" "trial_279.csv"</span></span>
-<span><span class="co">#&gt; [201] "trial_28.csv"  "trial_280.csv" "trial_281.csv" "trial_282.csv"</span></span>
-<span><span class="co">#&gt; [205] "trial_283.csv" "trial_284.csv" "trial_285.csv" "trial_286.csv"</span></span>
-<span><span class="co">#&gt; [209] "trial_287.csv" "trial_288.csv" "trial_289.csv" "trial_29.csv" </span></span>
-<span><span class="co">#&gt; [213] "trial_290.csv" "trial_291.csv" "trial_292.csv" "trial_293.csv"</span></span>
-<span><span class="co">#&gt; [217] "trial_294.csv" "trial_295.csv" "trial_296.csv" "trial_297.csv"</span></span>
-<span><span class="co">#&gt; [221] "trial_298.csv" "trial_299.csv" "trial_3.csv"   "trial_30.csv" </span></span>
-<span><span class="co">#&gt; [225] "trial_300.csv" "trial_301.csv" "trial_302.csv" "trial_303.csv"</span></span>
-<span><span class="co">#&gt; [229] "trial_304.csv" "trial_305.csv" "trial_306.csv" "trial_307.csv"</span></span>
-<span><span class="co">#&gt; [233] "trial_308.csv" "trial_309.csv" "trial_31.csv"  "trial_310.csv"</span></span>
-<span><span class="co">#&gt; [237] "trial_311.csv" "trial_312.csv" "trial_313.csv" "trial_314.csv"</span></span>
-<span><span class="co">#&gt; [241] "trial_315.csv" "trial_316.csv" "trial_317.csv" "trial_318.csv"</span></span>
-<span><span class="co">#&gt; [245] "trial_319.csv" "trial_32.csv"  "trial_320.csv" "trial_321.csv"</span></span>
-<span><span class="co">#&gt; [249] "trial_322.csv" "trial_323.csv" "trial_324.csv" "trial_325.csv"</span></span>
-<span><span class="co">#&gt; [253] "trial_326.csv" "trial_327.csv" "trial_328.csv" "trial_329.csv"</span></span>
-<span><span class="co">#&gt; [257] "trial_33.csv"  "trial_330.csv" "trial_331.csv" "trial_332.csv"</span></span>
-<span><span class="co">#&gt; [261] "trial_333.csv" "trial_334.csv" "trial_335.csv" "trial_336.csv"</span></span>
-<span><span class="co">#&gt; [265] "trial_337.csv" "trial_338.csv" "trial_339.csv" "trial_34.csv" </span></span>
-<span><span class="co">#&gt; [269] "trial_340.csv" "trial_341.csv" "trial_342.csv" "trial_343.csv"</span></span>
-<span><span class="co">#&gt; [273] "trial_344.csv" "trial_345.csv" "trial_346.csv" "trial_347.csv"</span></span>
-<span><span class="co">#&gt; [277] "trial_348.csv" "trial_349.csv" "trial_35.csv"  "trial_350.csv"</span></span>
-<span><span class="co">#&gt; [281] "trial_351.csv" "trial_352.csv" "trial_353.csv" "trial_354.csv"</span></span>
-<span><span class="co">#&gt; [285] "trial_355.csv" "trial_356.csv" "trial_357.csv" "trial_358.csv"</span></span>
-<span><span class="co">#&gt; [289] "trial_359.csv" "trial_36.csv"  "trial_360.csv" "trial_361.csv"</span></span>
-<span><span class="co">#&gt; [293] "trial_362.csv" "trial_363.csv" "trial_364.csv" "trial_365.csv"</span></span>
-<span><span class="co">#&gt; [297] "trial_366.csv" "trial_367.csv" "trial_368.csv" "trial_369.csv"</span></span>
-<span><span class="co">#&gt; [301] "trial_37.csv"  "trial_370.csv" "trial_371.csv" "trial_372.csv"</span></span>
-<span><span class="co">#&gt; [305] "trial_373.csv" "trial_374.csv" "trial_375.csv" "trial_376.csv"</span></span>
-<span><span class="co">#&gt; [309] "trial_377.csv" "trial_378.csv" "trial_379.csv" "trial_38.csv" </span></span>
-<span><span class="co">#&gt; [313] "trial_380.csv" "trial_381.csv" "trial_382.csv" "trial_383.csv"</span></span>
-<span><span class="co">#&gt; [317] "trial_384.csv" "trial_385.csv" "trial_386.csv" "trial_387.csv"</span></span>
-<span><span class="co">#&gt; [321] "trial_388.csv" "trial_389.csv" "trial_39.csv"  "trial_390.csv"</span></span>
-<span><span class="co">#&gt; [325] "trial_391.csv" "trial_392.csv" "trial_393.csv" "trial_394.csv"</span></span>
-<span><span class="co">#&gt; [329] "trial_395.csv" "trial_396.csv" "trial_4.csv"   "trial_40.csv" </span></span>
-<span><span class="co">#&gt; [333] "trial_41.csv"  "trial_42.csv"  "trial_43.csv"  "trial_44.csv" </span></span>
-<span><span class="co">#&gt; [337] "trial_45.csv"  "trial_46.csv"  "trial_47.csv"  "trial_48.csv" </span></span>
-<span><span class="co">#&gt; [341] "trial_49.csv"  "trial_5.csv"   "trial_50.csv"  "trial_51.csv" </span></span>
-<span><span class="co">#&gt; [345] "trial_52.csv"  "trial_53.csv"  "trial_54.csv"  "trial_55.csv" </span></span>
-<span><span class="co">#&gt; [349] "trial_56.csv"  "trial_57.csv"  "trial_58.csv"  "trial_59.csv" </span></span>
-<span><span class="co">#&gt; [353] "trial_6.csv"   "trial_60.csv"  "trial_61.csv"  "trial_62.csv" </span></span>
-<span><span class="co">#&gt; [357] "trial_63.csv"  "trial_64.csv"  "trial_65.csv"  "trial_66.csv" </span></span>
-<span><span class="co">#&gt; [361] "trial_67.csv"  "trial_68.csv"  "trial_69.csv"  "trial_7.csv"  </span></span>
-<span><span class="co">#&gt; [365] "trial_70.csv"  "trial_71.csv"  "trial_72.csv"  "trial_73.csv" </span></span>
-<span><span class="co">#&gt; [369] "trial_74.csv"  "trial_75.csv"  "trial_76.csv"  "trial_77.csv" </span></span>
-<span><span class="co">#&gt; [373] "trial_78.csv"  "trial_79.csv"  "trial_8.csv"   "trial_80.csv" </span></span>
-<span><span class="co">#&gt; [377] "trial_81.csv"  "trial_82.csv"  "trial_83.csv"  "trial_84.csv" </span></span>
-<span><span class="co">#&gt; [381] "trial_85.csv"  "trial_86.csv"  "trial_87.csv"  "trial_88.csv" </span></span>
-<span><span class="co">#&gt; [385] "trial_89.csv"  "trial_9.csv"   "trial_90.csv"  "trial_91.csv" </span></span>
-<span><span class="co">#&gt; [389] "trial_92.csv"  "trial_93.csv"  "trial_94.csv"  "trial_95.csv" </span></span>
-<span><span class="co">#&gt; [393] "trial_96.csv"  "trial_97.csv"  "trial_98.csv"  "trial_99.csv"</span></span></code></pre></div>
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">prep_data</span><span class="op">$</span><span class="va">data</span></span>
+<span><span class="co">#&gt;   [1] "/tmp/Rtmpk8h1ZH/trial_emu/trial_1.csv"  </span></span>
+<span><span class="co">#&gt;   [2] "/tmp/Rtmpk8h1ZH/trial_emu/trial_2.csv"  </span></span>
+<span><span class="co">#&gt;   [3] "/tmp/Rtmpk8h1ZH/trial_emu/trial_3.csv"  </span></span>
+<span><span class="co">#&gt;   [4] "/tmp/Rtmpk8h1ZH/trial_emu/trial_4.csv"  </span></span>
+<span><span class="co">#&gt;   [5] "/tmp/Rtmpk8h1ZH/trial_emu/trial_5.csv"  </span></span>
+<span><span class="co">#&gt;   [6] "/tmp/Rtmpk8h1ZH/trial_emu/trial_6.csv"  </span></span>
+<span><span class="co">#&gt;   [7] "/tmp/Rtmpk8h1ZH/trial_emu/trial_7.csv"  </span></span>
+<span><span class="co">#&gt;   [8] "/tmp/Rtmpk8h1ZH/trial_emu/trial_8.csv"  </span></span>
+<span><span class="co">#&gt;   [9] "/tmp/Rtmpk8h1ZH/trial_emu/trial_9.csv"  </span></span>
+<span><span class="co">#&gt;  [10] "/tmp/Rtmpk8h1ZH/trial_emu/trial_10.csv" </span></span>
+<span><span class="co">#&gt;  [11] "/tmp/Rtmpk8h1ZH/trial_emu/trial_11.csv" </span></span>
+<span><span class="co">#&gt;  [12] "/tmp/Rtmpk8h1ZH/trial_emu/trial_12.csv" </span></span>
+<span><span class="co">#&gt;  [13] "/tmp/Rtmpk8h1ZH/trial_emu/trial_13.csv" </span></span>
+<span><span class="co">#&gt;  [14] "/tmp/Rtmpk8h1ZH/trial_emu/trial_14.csv" </span></span>
+<span><span class="co">#&gt;  [15] "/tmp/Rtmpk8h1ZH/trial_emu/trial_15.csv" </span></span>
+<span><span class="co">#&gt;  [16] "/tmp/Rtmpk8h1ZH/trial_emu/trial_16.csv" </span></span>
+<span><span class="co">#&gt;  [17] "/tmp/Rtmpk8h1ZH/trial_emu/trial_17.csv" </span></span>
+<span><span class="co">#&gt;  [18] "/tmp/Rtmpk8h1ZH/trial_emu/trial_18.csv" </span></span>
+<span><span class="co">#&gt;  [19] "/tmp/Rtmpk8h1ZH/trial_emu/trial_19.csv" </span></span>
+<span><span class="co">#&gt;  [20] "/tmp/Rtmpk8h1ZH/trial_emu/trial_20.csv" </span></span>
+<span><span class="co">#&gt;  [21] "/tmp/Rtmpk8h1ZH/trial_emu/trial_21.csv" </span></span>
+<span><span class="co">#&gt;  [22] "/tmp/Rtmpk8h1ZH/trial_emu/trial_22.csv" </span></span>
+<span><span class="co">#&gt;  [23] "/tmp/Rtmpk8h1ZH/trial_emu/trial_23.csv" </span></span>
+<span><span class="co">#&gt;  [24] "/tmp/Rtmpk8h1ZH/trial_emu/trial_24.csv" </span></span>
+<span><span class="co">#&gt;  [25] "/tmp/Rtmpk8h1ZH/trial_emu/trial_25.csv" </span></span>
+<span><span class="co">#&gt;  [26] "/tmp/Rtmpk8h1ZH/trial_emu/trial_26.csv" </span></span>
+<span><span class="co">#&gt;  [27] "/tmp/Rtmpk8h1ZH/trial_emu/trial_27.csv" </span></span>
+<span><span class="co">#&gt;  [28] "/tmp/Rtmpk8h1ZH/trial_emu/trial_28.csv" </span></span>
+<span><span class="co">#&gt;  [29] "/tmp/Rtmpk8h1ZH/trial_emu/trial_29.csv" </span></span>
+<span><span class="co">#&gt;  [30] "/tmp/Rtmpk8h1ZH/trial_emu/trial_30.csv" </span></span>
+<span><span class="co">#&gt;  [31] "/tmp/Rtmpk8h1ZH/trial_emu/trial_31.csv" </span></span>
+<span><span class="co">#&gt;  [32] "/tmp/Rtmpk8h1ZH/trial_emu/trial_32.csv" </span></span>
+<span><span class="co">#&gt;  [33] "/tmp/Rtmpk8h1ZH/trial_emu/trial_33.csv" </span></span>
+<span><span class="co">#&gt;  [34] "/tmp/Rtmpk8h1ZH/trial_emu/trial_34.csv" </span></span>
+<span><span class="co">#&gt;  [35] "/tmp/Rtmpk8h1ZH/trial_emu/trial_35.csv" </span></span>
+<span><span class="co">#&gt;  [36] "/tmp/Rtmpk8h1ZH/trial_emu/trial_36.csv" </span></span>
+<span><span class="co">#&gt;  [37] "/tmp/Rtmpk8h1ZH/trial_emu/trial_37.csv" </span></span>
+<span><span class="co">#&gt;  [38] "/tmp/Rtmpk8h1ZH/trial_emu/trial_38.csv" </span></span>
+<span><span class="co">#&gt;  [39] "/tmp/Rtmpk8h1ZH/trial_emu/trial_39.csv" </span></span>
+<span><span class="co">#&gt;  [40] "/tmp/Rtmpk8h1ZH/trial_emu/trial_40.csv" </span></span>
+<span><span class="co">#&gt;  [41] "/tmp/Rtmpk8h1ZH/trial_emu/trial_41.csv" </span></span>
+<span><span class="co">#&gt;  [42] "/tmp/Rtmpk8h1ZH/trial_emu/trial_42.csv" </span></span>
+<span><span class="co">#&gt;  [43] "/tmp/Rtmpk8h1ZH/trial_emu/trial_43.csv" </span></span>
+<span><span class="co">#&gt;  [44] "/tmp/Rtmpk8h1ZH/trial_emu/trial_44.csv" </span></span>
+<span><span class="co">#&gt;  [45] "/tmp/Rtmpk8h1ZH/trial_emu/trial_45.csv" </span></span>
+<span><span class="co">#&gt;  [46] "/tmp/Rtmpk8h1ZH/trial_emu/trial_46.csv" </span></span>
+<span><span class="co">#&gt;  [47] "/tmp/Rtmpk8h1ZH/trial_emu/trial_47.csv" </span></span>
+<span><span class="co">#&gt;  [48] "/tmp/Rtmpk8h1ZH/trial_emu/trial_48.csv" </span></span>
+<span><span class="co">#&gt;  [49] "/tmp/Rtmpk8h1ZH/trial_emu/trial_49.csv" </span></span>
+<span><span class="co">#&gt;  [50] "/tmp/Rtmpk8h1ZH/trial_emu/trial_50.csv" </span></span>
+<span><span class="co">#&gt;  [51] "/tmp/Rtmpk8h1ZH/trial_emu/trial_51.csv" </span></span>
+<span><span class="co">#&gt;  [52] "/tmp/Rtmpk8h1ZH/trial_emu/trial_52.csv" </span></span>
+<span><span class="co">#&gt;  [53] "/tmp/Rtmpk8h1ZH/trial_emu/trial_53.csv" </span></span>
+<span><span class="co">#&gt;  [54] "/tmp/Rtmpk8h1ZH/trial_emu/trial_54.csv" </span></span>
+<span><span class="co">#&gt;  [55] "/tmp/Rtmpk8h1ZH/trial_emu/trial_55.csv" </span></span>
+<span><span class="co">#&gt;  [56] "/tmp/Rtmpk8h1ZH/trial_emu/trial_56.csv" </span></span>
+<span><span class="co">#&gt;  [57] "/tmp/Rtmpk8h1ZH/trial_emu/trial_57.csv" </span></span>
+<span><span class="co">#&gt;  [58] "/tmp/Rtmpk8h1ZH/trial_emu/trial_58.csv" </span></span>
+<span><span class="co">#&gt;  [59] "/tmp/Rtmpk8h1ZH/trial_emu/trial_59.csv" </span></span>
+<span><span class="co">#&gt;  [60] "/tmp/Rtmpk8h1ZH/trial_emu/trial_60.csv" </span></span>
+<span><span class="co">#&gt;  [61] "/tmp/Rtmpk8h1ZH/trial_emu/trial_61.csv" </span></span>
+<span><span class="co">#&gt;  [62] "/tmp/Rtmpk8h1ZH/trial_emu/trial_62.csv" </span></span>
+<span><span class="co">#&gt;  [63] "/tmp/Rtmpk8h1ZH/trial_emu/trial_63.csv" </span></span>
+<span><span class="co">#&gt;  [64] "/tmp/Rtmpk8h1ZH/trial_emu/trial_64.csv" </span></span>
+<span><span class="co">#&gt;  [65] "/tmp/Rtmpk8h1ZH/trial_emu/trial_65.csv" </span></span>
+<span><span class="co">#&gt;  [66] "/tmp/Rtmpk8h1ZH/trial_emu/trial_66.csv" </span></span>
+<span><span class="co">#&gt;  [67] "/tmp/Rtmpk8h1ZH/trial_emu/trial_67.csv" </span></span>
+<span><span class="co">#&gt;  [68] "/tmp/Rtmpk8h1ZH/trial_emu/trial_68.csv" </span></span>
+<span><span class="co">#&gt;  [69] "/tmp/Rtmpk8h1ZH/trial_emu/trial_69.csv" </span></span>
+<span><span class="co">#&gt;  [70] "/tmp/Rtmpk8h1ZH/trial_emu/trial_70.csv" </span></span>
+<span><span class="co">#&gt;  [71] "/tmp/Rtmpk8h1ZH/trial_emu/trial_71.csv" </span></span>
+<span><span class="co">#&gt;  [72] "/tmp/Rtmpk8h1ZH/trial_emu/trial_72.csv" </span></span>
+<span><span class="co">#&gt;  [73] "/tmp/Rtmpk8h1ZH/trial_emu/trial_73.csv" </span></span>
+<span><span class="co">#&gt;  [74] "/tmp/Rtmpk8h1ZH/trial_emu/trial_74.csv" </span></span>
+<span><span class="co">#&gt;  [75] "/tmp/Rtmpk8h1ZH/trial_emu/trial_75.csv" </span></span>
+<span><span class="co">#&gt;  [76] "/tmp/Rtmpk8h1ZH/trial_emu/trial_76.csv" </span></span>
+<span><span class="co">#&gt;  [77] "/tmp/Rtmpk8h1ZH/trial_emu/trial_77.csv" </span></span>
+<span><span class="co">#&gt;  [78] "/tmp/Rtmpk8h1ZH/trial_emu/trial_78.csv" </span></span>
+<span><span class="co">#&gt;  [79] "/tmp/Rtmpk8h1ZH/trial_emu/trial_79.csv" </span></span>
+<span><span class="co">#&gt;  [80] "/tmp/Rtmpk8h1ZH/trial_emu/trial_80.csv" </span></span>
+<span><span class="co">#&gt;  [81] "/tmp/Rtmpk8h1ZH/trial_emu/trial_81.csv" </span></span>
+<span><span class="co">#&gt;  [82] "/tmp/Rtmpk8h1ZH/trial_emu/trial_82.csv" </span></span>
+<span><span class="co">#&gt;  [83] "/tmp/Rtmpk8h1ZH/trial_emu/trial_83.csv" </span></span>
+<span><span class="co">#&gt;  [84] "/tmp/Rtmpk8h1ZH/trial_emu/trial_84.csv" </span></span>
+<span><span class="co">#&gt;  [85] "/tmp/Rtmpk8h1ZH/trial_emu/trial_85.csv" </span></span>
+<span><span class="co">#&gt;  [86] "/tmp/Rtmpk8h1ZH/trial_emu/trial_86.csv" </span></span>
+<span><span class="co">#&gt;  [87] "/tmp/Rtmpk8h1ZH/trial_emu/trial_87.csv" </span></span>
+<span><span class="co">#&gt;  [88] "/tmp/Rtmpk8h1ZH/trial_emu/trial_88.csv" </span></span>
+<span><span class="co">#&gt;  [89] "/tmp/Rtmpk8h1ZH/trial_emu/trial_89.csv" </span></span>
+<span><span class="co">#&gt;  [90] "/tmp/Rtmpk8h1ZH/trial_emu/trial_90.csv" </span></span>
+<span><span class="co">#&gt;  [91] "/tmp/Rtmpk8h1ZH/trial_emu/trial_91.csv" </span></span>
+<span><span class="co">#&gt;  [92] "/tmp/Rtmpk8h1ZH/trial_emu/trial_92.csv" </span></span>
+<span><span class="co">#&gt;  [93] "/tmp/Rtmpk8h1ZH/trial_emu/trial_93.csv" </span></span>
+<span><span class="co">#&gt;  [94] "/tmp/Rtmpk8h1ZH/trial_emu/trial_94.csv" </span></span>
+<span><span class="co">#&gt;  [95] "/tmp/Rtmpk8h1ZH/trial_emu/trial_95.csv" </span></span>
+<span><span class="co">#&gt;  [96] "/tmp/Rtmpk8h1ZH/trial_emu/trial_96.csv" </span></span>
+<span><span class="co">#&gt;  [97] "/tmp/Rtmpk8h1ZH/trial_emu/trial_97.csv" </span></span>
+<span><span class="co">#&gt;  [98] "/tmp/Rtmpk8h1ZH/trial_emu/trial_98.csv" </span></span>
+<span><span class="co">#&gt;  [99] "/tmp/Rtmpk8h1ZH/trial_emu/trial_99.csv" </span></span>
+<span><span class="co">#&gt; [100] "/tmp/Rtmpk8h1ZH/trial_emu/trial_100.csv"</span></span>
+<span><span class="co">#&gt; [101] "/tmp/Rtmpk8h1ZH/trial_emu/trial_101.csv"</span></span>
+<span><span class="co">#&gt; [102] "/tmp/Rtmpk8h1ZH/trial_emu/trial_102.csv"</span></span>
+<span><span class="co">#&gt; [103] "/tmp/Rtmpk8h1ZH/trial_emu/trial_103.csv"</span></span>
+<span><span class="co">#&gt; [104] "/tmp/Rtmpk8h1ZH/trial_emu/trial_104.csv"</span></span>
+<span><span class="co">#&gt; [105] "/tmp/Rtmpk8h1ZH/trial_emu/trial_105.csv"</span></span>
+<span><span class="co">#&gt; [106] "/tmp/Rtmpk8h1ZH/trial_emu/trial_106.csv"</span></span>
+<span><span class="co">#&gt; [107] "/tmp/Rtmpk8h1ZH/trial_emu/trial_107.csv"</span></span>
+<span><span class="co">#&gt; [108] "/tmp/Rtmpk8h1ZH/trial_emu/trial_108.csv"</span></span>
+<span><span class="co">#&gt; [109] "/tmp/Rtmpk8h1ZH/trial_emu/trial_109.csv"</span></span>
+<span><span class="co">#&gt; [110] "/tmp/Rtmpk8h1ZH/trial_emu/trial_110.csv"</span></span>
+<span><span class="co">#&gt; [111] "/tmp/Rtmpk8h1ZH/trial_emu/trial_111.csv"</span></span>
+<span><span class="co">#&gt; [112] "/tmp/Rtmpk8h1ZH/trial_emu/trial_112.csv"</span></span>
+<span><span class="co">#&gt; [113] "/tmp/Rtmpk8h1ZH/trial_emu/trial_113.csv"</span></span>
+<span><span class="co">#&gt; [114] "/tmp/Rtmpk8h1ZH/trial_emu/trial_114.csv"</span></span>
+<span><span class="co">#&gt; [115] "/tmp/Rtmpk8h1ZH/trial_emu/trial_115.csv"</span></span>
+<span><span class="co">#&gt; [116] "/tmp/Rtmpk8h1ZH/trial_emu/trial_116.csv"</span></span>
+<span><span class="co">#&gt; [117] "/tmp/Rtmpk8h1ZH/trial_emu/trial_117.csv"</span></span>
+<span><span class="co">#&gt; [118] "/tmp/Rtmpk8h1ZH/trial_emu/trial_118.csv"</span></span>
+<span><span class="co">#&gt; [119] "/tmp/Rtmpk8h1ZH/trial_emu/trial_119.csv"</span></span>
+<span><span class="co">#&gt; [120] "/tmp/Rtmpk8h1ZH/trial_emu/trial_120.csv"</span></span>
+<span><span class="co">#&gt; [121] "/tmp/Rtmpk8h1ZH/trial_emu/trial_121.csv"</span></span>
+<span><span class="co">#&gt; [122] "/tmp/Rtmpk8h1ZH/trial_emu/trial_122.csv"</span></span>
+<span><span class="co">#&gt; [123] "/tmp/Rtmpk8h1ZH/trial_emu/trial_123.csv"</span></span>
+<span><span class="co">#&gt; [124] "/tmp/Rtmpk8h1ZH/trial_emu/trial_124.csv"</span></span>
+<span><span class="co">#&gt; [125] "/tmp/Rtmpk8h1ZH/trial_emu/trial_125.csv"</span></span>
+<span><span class="co">#&gt; [126] "/tmp/Rtmpk8h1ZH/trial_emu/trial_126.csv"</span></span>
+<span><span class="co">#&gt; [127] "/tmp/Rtmpk8h1ZH/trial_emu/trial_127.csv"</span></span>
+<span><span class="co">#&gt; [128] "/tmp/Rtmpk8h1ZH/trial_emu/trial_128.csv"</span></span>
+<span><span class="co">#&gt; [129] "/tmp/Rtmpk8h1ZH/trial_emu/trial_129.csv"</span></span>
+<span><span class="co">#&gt; [130] "/tmp/Rtmpk8h1ZH/trial_emu/trial_130.csv"</span></span>
+<span><span class="co">#&gt; [131] "/tmp/Rtmpk8h1ZH/trial_emu/trial_131.csv"</span></span>
+<span><span class="co">#&gt; [132] "/tmp/Rtmpk8h1ZH/trial_emu/trial_132.csv"</span></span>
+<span><span class="co">#&gt; [133] "/tmp/Rtmpk8h1ZH/trial_emu/trial_133.csv"</span></span>
+<span><span class="co">#&gt; [134] "/tmp/Rtmpk8h1ZH/trial_emu/trial_134.csv"</span></span>
+<span><span class="co">#&gt; [135] "/tmp/Rtmpk8h1ZH/trial_emu/trial_135.csv"</span></span>
+<span><span class="co">#&gt; [136] "/tmp/Rtmpk8h1ZH/trial_emu/trial_136.csv"</span></span>
+<span><span class="co">#&gt; [137] "/tmp/Rtmpk8h1ZH/trial_emu/trial_137.csv"</span></span>
+<span><span class="co">#&gt; [138] "/tmp/Rtmpk8h1ZH/trial_emu/trial_138.csv"</span></span>
+<span><span class="co">#&gt; [139] "/tmp/Rtmpk8h1ZH/trial_emu/trial_139.csv"</span></span>
+<span><span class="co">#&gt; [140] "/tmp/Rtmpk8h1ZH/trial_emu/trial_140.csv"</span></span>
+<span><span class="co">#&gt; [141] "/tmp/Rtmpk8h1ZH/trial_emu/trial_141.csv"</span></span>
+<span><span class="co">#&gt; [142] "/tmp/Rtmpk8h1ZH/trial_emu/trial_142.csv"</span></span>
+<span><span class="co">#&gt; [143] "/tmp/Rtmpk8h1ZH/trial_emu/trial_143.csv"</span></span>
+<span><span class="co">#&gt; [144] "/tmp/Rtmpk8h1ZH/trial_emu/trial_144.csv"</span></span>
+<span><span class="co">#&gt; [145] "/tmp/Rtmpk8h1ZH/trial_emu/trial_145.csv"</span></span>
+<span><span class="co">#&gt; [146] "/tmp/Rtmpk8h1ZH/trial_emu/trial_146.csv"</span></span>
+<span><span class="co">#&gt; [147] "/tmp/Rtmpk8h1ZH/trial_emu/trial_147.csv"</span></span>
+<span><span class="co">#&gt; [148] "/tmp/Rtmpk8h1ZH/trial_emu/trial_148.csv"</span></span>
+<span><span class="co">#&gt; [149] "/tmp/Rtmpk8h1ZH/trial_emu/trial_149.csv"</span></span>
+<span><span class="co">#&gt; [150] "/tmp/Rtmpk8h1ZH/trial_emu/trial_150.csv"</span></span>
+<span><span class="co">#&gt; [151] "/tmp/Rtmpk8h1ZH/trial_emu/trial_151.csv"</span></span>
+<span><span class="co">#&gt; [152] "/tmp/Rtmpk8h1ZH/trial_emu/trial_152.csv"</span></span>
+<span><span class="co">#&gt; [153] "/tmp/Rtmpk8h1ZH/trial_emu/trial_153.csv"</span></span>
+<span><span class="co">#&gt; [154] "/tmp/Rtmpk8h1ZH/trial_emu/trial_154.csv"</span></span>
+<span><span class="co">#&gt; [155] "/tmp/Rtmpk8h1ZH/trial_emu/trial_155.csv"</span></span>
+<span><span class="co">#&gt; [156] "/tmp/Rtmpk8h1ZH/trial_emu/trial_156.csv"</span></span>
+<span><span class="co">#&gt; [157] "/tmp/Rtmpk8h1ZH/trial_emu/trial_157.csv"</span></span>
+<span><span class="co">#&gt; [158] "/tmp/Rtmpk8h1ZH/trial_emu/trial_158.csv"</span></span>
+<span><span class="co">#&gt; [159] "/tmp/Rtmpk8h1ZH/trial_emu/trial_159.csv"</span></span>
+<span><span class="co">#&gt; [160] "/tmp/Rtmpk8h1ZH/trial_emu/trial_160.csv"</span></span>
+<span><span class="co">#&gt; [161] "/tmp/Rtmpk8h1ZH/trial_emu/trial_161.csv"</span></span>
+<span><span class="co">#&gt; [162] "/tmp/Rtmpk8h1ZH/trial_emu/trial_162.csv"</span></span>
+<span><span class="co">#&gt; [163] "/tmp/Rtmpk8h1ZH/trial_emu/trial_163.csv"</span></span>
+<span><span class="co">#&gt; [164] "/tmp/Rtmpk8h1ZH/trial_emu/trial_164.csv"</span></span>
+<span><span class="co">#&gt; [165] "/tmp/Rtmpk8h1ZH/trial_emu/trial_165.csv"</span></span>
+<span><span class="co">#&gt; [166] "/tmp/Rtmpk8h1ZH/trial_emu/trial_166.csv"</span></span>
+<span><span class="co">#&gt; [167] "/tmp/Rtmpk8h1ZH/trial_emu/trial_167.csv"</span></span>
+<span><span class="co">#&gt; [168] "/tmp/Rtmpk8h1ZH/trial_emu/trial_168.csv"</span></span>
+<span><span class="co">#&gt; [169] "/tmp/Rtmpk8h1ZH/trial_emu/trial_169.csv"</span></span>
+<span><span class="co">#&gt; [170] "/tmp/Rtmpk8h1ZH/trial_emu/trial_170.csv"</span></span>
+<span><span class="co">#&gt; [171] "/tmp/Rtmpk8h1ZH/trial_emu/trial_171.csv"</span></span>
+<span><span class="co">#&gt; [172] "/tmp/Rtmpk8h1ZH/trial_emu/trial_172.csv"</span></span>
+<span><span class="co">#&gt; [173] "/tmp/Rtmpk8h1ZH/trial_emu/trial_173.csv"</span></span>
+<span><span class="co">#&gt; [174] "/tmp/Rtmpk8h1ZH/trial_emu/trial_174.csv"</span></span>
+<span><span class="co">#&gt; [175] "/tmp/Rtmpk8h1ZH/trial_emu/trial_175.csv"</span></span>
+<span><span class="co">#&gt; [176] "/tmp/Rtmpk8h1ZH/trial_emu/trial_176.csv"</span></span>
+<span><span class="co">#&gt; [177] "/tmp/Rtmpk8h1ZH/trial_emu/trial_177.csv"</span></span>
+<span><span class="co">#&gt; [178] "/tmp/Rtmpk8h1ZH/trial_emu/trial_178.csv"</span></span>
+<span><span class="co">#&gt; [179] "/tmp/Rtmpk8h1ZH/trial_emu/trial_179.csv"</span></span>
+<span><span class="co">#&gt; [180] "/tmp/Rtmpk8h1ZH/trial_emu/trial_180.csv"</span></span>
+<span><span class="co">#&gt; [181] "/tmp/Rtmpk8h1ZH/trial_emu/trial_181.csv"</span></span>
+<span><span class="co">#&gt; [182] "/tmp/Rtmpk8h1ZH/trial_emu/trial_182.csv"</span></span>
+<span><span class="co">#&gt; [183] "/tmp/Rtmpk8h1ZH/trial_emu/trial_183.csv"</span></span>
+<span><span class="co">#&gt; [184] "/tmp/Rtmpk8h1ZH/trial_emu/trial_184.csv"</span></span>
+<span><span class="co">#&gt; [185] "/tmp/Rtmpk8h1ZH/trial_emu/trial_185.csv"</span></span>
+<span><span class="co">#&gt; [186] "/tmp/Rtmpk8h1ZH/trial_emu/trial_186.csv"</span></span>
+<span><span class="co">#&gt; [187] "/tmp/Rtmpk8h1ZH/trial_emu/trial_187.csv"</span></span>
+<span><span class="co">#&gt; [188] "/tmp/Rtmpk8h1ZH/trial_emu/trial_188.csv"</span></span>
+<span><span class="co">#&gt; [189] "/tmp/Rtmpk8h1ZH/trial_emu/trial_189.csv"</span></span>
+<span><span class="co">#&gt; [190] "/tmp/Rtmpk8h1ZH/trial_emu/trial_190.csv"</span></span>
+<span><span class="co">#&gt; [191] "/tmp/Rtmpk8h1ZH/trial_emu/trial_191.csv"</span></span>
+<span><span class="co">#&gt; [192] "/tmp/Rtmpk8h1ZH/trial_emu/trial_192.csv"</span></span>
+<span><span class="co">#&gt; [193] "/tmp/Rtmpk8h1ZH/trial_emu/trial_193.csv"</span></span>
+<span><span class="co">#&gt; [194] "/tmp/Rtmpk8h1ZH/trial_emu/trial_194.csv"</span></span>
+<span><span class="co">#&gt; [195] "/tmp/Rtmpk8h1ZH/trial_emu/trial_195.csv"</span></span>
+<span><span class="co">#&gt; [196] "/tmp/Rtmpk8h1ZH/trial_emu/trial_196.csv"</span></span>
+<span><span class="co">#&gt; [197] "/tmp/Rtmpk8h1ZH/trial_emu/trial_197.csv"</span></span>
+<span><span class="co">#&gt; [198] "/tmp/Rtmpk8h1ZH/trial_emu/trial_198.csv"</span></span>
+<span><span class="co">#&gt; [199] "/tmp/Rtmpk8h1ZH/trial_emu/trial_199.csv"</span></span>
+<span><span class="co">#&gt; [200] "/tmp/Rtmpk8h1ZH/trial_emu/trial_200.csv"</span></span>
+<span><span class="co">#&gt; [201] "/tmp/Rtmpk8h1ZH/trial_emu/trial_201.csv"</span></span>
+<span><span class="co">#&gt; [202] "/tmp/Rtmpk8h1ZH/trial_emu/trial_202.csv"</span></span>
+<span><span class="co">#&gt; [203] "/tmp/Rtmpk8h1ZH/trial_emu/trial_203.csv"</span></span>
+<span><span class="co">#&gt; [204] "/tmp/Rtmpk8h1ZH/trial_emu/trial_204.csv"</span></span>
+<span><span class="co">#&gt; [205] "/tmp/Rtmpk8h1ZH/trial_emu/trial_205.csv"</span></span>
+<span><span class="co">#&gt; [206] "/tmp/Rtmpk8h1ZH/trial_emu/trial_206.csv"</span></span>
+<span><span class="co">#&gt; [207] "/tmp/Rtmpk8h1ZH/trial_emu/trial_207.csv"</span></span>
+<span><span class="co">#&gt; [208] "/tmp/Rtmpk8h1ZH/trial_emu/trial_208.csv"</span></span>
+<span><span class="co">#&gt; [209] "/tmp/Rtmpk8h1ZH/trial_emu/trial_209.csv"</span></span>
+<span><span class="co">#&gt; [210] "/tmp/Rtmpk8h1ZH/trial_emu/trial_210.csv"</span></span>
+<span><span class="co">#&gt; [211] "/tmp/Rtmpk8h1ZH/trial_emu/trial_211.csv"</span></span>
+<span><span class="co">#&gt; [212] "/tmp/Rtmpk8h1ZH/trial_emu/trial_212.csv"</span></span>
+<span><span class="co">#&gt; [213] "/tmp/Rtmpk8h1ZH/trial_emu/trial_213.csv"</span></span>
+<span><span class="co">#&gt; [214] "/tmp/Rtmpk8h1ZH/trial_emu/trial_214.csv"</span></span>
+<span><span class="co">#&gt; [215] "/tmp/Rtmpk8h1ZH/trial_emu/trial_215.csv"</span></span>
+<span><span class="co">#&gt; [216] "/tmp/Rtmpk8h1ZH/trial_emu/trial_216.csv"</span></span>
+<span><span class="co">#&gt; [217] "/tmp/Rtmpk8h1ZH/trial_emu/trial_217.csv"</span></span>
+<span><span class="co">#&gt; [218] "/tmp/Rtmpk8h1ZH/trial_emu/trial_218.csv"</span></span>
+<span><span class="co">#&gt; [219] "/tmp/Rtmpk8h1ZH/trial_emu/trial_219.csv"</span></span>
+<span><span class="co">#&gt; [220] "/tmp/Rtmpk8h1ZH/trial_emu/trial_220.csv"</span></span>
+<span><span class="co">#&gt; [221] "/tmp/Rtmpk8h1ZH/trial_emu/trial_221.csv"</span></span>
+<span><span class="co">#&gt; [222] "/tmp/Rtmpk8h1ZH/trial_emu/trial_222.csv"</span></span>
+<span><span class="co">#&gt; [223] "/tmp/Rtmpk8h1ZH/trial_emu/trial_223.csv"</span></span>
+<span><span class="co">#&gt; [224] "/tmp/Rtmpk8h1ZH/trial_emu/trial_224.csv"</span></span>
+<span><span class="co">#&gt; [225] "/tmp/Rtmpk8h1ZH/trial_emu/trial_225.csv"</span></span>
+<span><span class="co">#&gt; [226] "/tmp/Rtmpk8h1ZH/trial_emu/trial_226.csv"</span></span>
+<span><span class="co">#&gt; [227] "/tmp/Rtmpk8h1ZH/trial_emu/trial_227.csv"</span></span>
+<span><span class="co">#&gt; [228] "/tmp/Rtmpk8h1ZH/trial_emu/trial_228.csv"</span></span>
+<span><span class="co">#&gt; [229] "/tmp/Rtmpk8h1ZH/trial_emu/trial_229.csv"</span></span>
+<span><span class="co">#&gt; [230] "/tmp/Rtmpk8h1ZH/trial_emu/trial_230.csv"</span></span>
+<span><span class="co">#&gt; [231] "/tmp/Rtmpk8h1ZH/trial_emu/trial_231.csv"</span></span>
+<span><span class="co">#&gt; [232] "/tmp/Rtmpk8h1ZH/trial_emu/trial_232.csv"</span></span>
+<span><span class="co">#&gt; [233] "/tmp/Rtmpk8h1ZH/trial_emu/trial_233.csv"</span></span>
+<span><span class="co">#&gt; [234] "/tmp/Rtmpk8h1ZH/trial_emu/trial_234.csv"</span></span>
+<span><span class="co">#&gt; [235] "/tmp/Rtmpk8h1ZH/trial_emu/trial_235.csv"</span></span>
+<span><span class="co">#&gt; [236] "/tmp/Rtmpk8h1ZH/trial_emu/trial_236.csv"</span></span>
+<span><span class="co">#&gt; [237] "/tmp/Rtmpk8h1ZH/trial_emu/trial_237.csv"</span></span>
+<span><span class="co">#&gt; [238] "/tmp/Rtmpk8h1ZH/trial_emu/trial_238.csv"</span></span>
+<span><span class="co">#&gt; [239] "/tmp/Rtmpk8h1ZH/trial_emu/trial_239.csv"</span></span>
+<span><span class="co">#&gt; [240] "/tmp/Rtmpk8h1ZH/trial_emu/trial_240.csv"</span></span>
+<span><span class="co">#&gt; [241] "/tmp/Rtmpk8h1ZH/trial_emu/trial_241.csv"</span></span>
+<span><span class="co">#&gt; [242] "/tmp/Rtmpk8h1ZH/trial_emu/trial_242.csv"</span></span>
+<span><span class="co">#&gt; [243] "/tmp/Rtmpk8h1ZH/trial_emu/trial_243.csv"</span></span>
+<span><span class="co">#&gt; [244] "/tmp/Rtmpk8h1ZH/trial_emu/trial_244.csv"</span></span>
+<span><span class="co">#&gt; [245] "/tmp/Rtmpk8h1ZH/trial_emu/trial_245.csv"</span></span>
+<span><span class="co">#&gt; [246] "/tmp/Rtmpk8h1ZH/trial_emu/trial_246.csv"</span></span>
+<span><span class="co">#&gt; [247] "/tmp/Rtmpk8h1ZH/trial_emu/trial_247.csv"</span></span>
+<span><span class="co">#&gt; [248] "/tmp/Rtmpk8h1ZH/trial_emu/trial_248.csv"</span></span>
+<span><span class="co">#&gt; [249] "/tmp/Rtmpk8h1ZH/trial_emu/trial_249.csv"</span></span>
+<span><span class="co">#&gt; [250] "/tmp/Rtmpk8h1ZH/trial_emu/trial_250.csv"</span></span>
+<span><span class="co">#&gt; [251] "/tmp/Rtmpk8h1ZH/trial_emu/trial_251.csv"</span></span>
+<span><span class="co">#&gt; [252] "/tmp/Rtmpk8h1ZH/trial_emu/trial_252.csv"</span></span>
+<span><span class="co">#&gt; [253] "/tmp/Rtmpk8h1ZH/trial_emu/trial_253.csv"</span></span>
+<span><span class="co">#&gt; [254] "/tmp/Rtmpk8h1ZH/trial_emu/trial_254.csv"</span></span>
+<span><span class="co">#&gt; [255] "/tmp/Rtmpk8h1ZH/trial_emu/trial_255.csv"</span></span>
+<span><span class="co">#&gt; [256] "/tmp/Rtmpk8h1ZH/trial_emu/trial_256.csv"</span></span>
+<span><span class="co">#&gt; [257] "/tmp/Rtmpk8h1ZH/trial_emu/trial_257.csv"</span></span>
+<span><span class="co">#&gt; [258] "/tmp/Rtmpk8h1ZH/trial_emu/trial_258.csv"</span></span>
+<span><span class="co">#&gt; [259] "/tmp/Rtmpk8h1ZH/trial_emu/trial_259.csv"</span></span>
+<span><span class="co">#&gt; [260] "/tmp/Rtmpk8h1ZH/trial_emu/trial_260.csv"</span></span>
+<span><span class="co">#&gt; [261] "/tmp/Rtmpk8h1ZH/trial_emu/trial_261.csv"</span></span>
+<span><span class="co">#&gt; [262] "/tmp/Rtmpk8h1ZH/trial_emu/trial_262.csv"</span></span>
+<span><span class="co">#&gt; [263] "/tmp/Rtmpk8h1ZH/trial_emu/trial_263.csv"</span></span>
+<span><span class="co">#&gt; [264] "/tmp/Rtmpk8h1ZH/trial_emu/trial_264.csv"</span></span>
+<span><span class="co">#&gt; [265] "/tmp/Rtmpk8h1ZH/trial_emu/trial_265.csv"</span></span>
+<span><span class="co">#&gt; [266] "/tmp/Rtmpk8h1ZH/trial_emu/trial_266.csv"</span></span>
+<span><span class="co">#&gt; [267] "/tmp/Rtmpk8h1ZH/trial_emu/trial_267.csv"</span></span>
+<span><span class="co">#&gt; [268] "/tmp/Rtmpk8h1ZH/trial_emu/trial_268.csv"</span></span>
+<span><span class="co">#&gt; [269] "/tmp/Rtmpk8h1ZH/trial_emu/trial_269.csv"</span></span>
+<span><span class="co">#&gt; [270] "/tmp/Rtmpk8h1ZH/trial_emu/trial_270.csv"</span></span>
+<span><span class="co">#&gt; [271] "/tmp/Rtmpk8h1ZH/trial_emu/trial_271.csv"</span></span>
+<span><span class="co">#&gt; [272] "/tmp/Rtmpk8h1ZH/trial_emu/trial_272.csv"</span></span>
+<span><span class="co">#&gt; [273] "/tmp/Rtmpk8h1ZH/trial_emu/trial_273.csv"</span></span>
+<span><span class="co">#&gt; [274] "/tmp/Rtmpk8h1ZH/trial_emu/trial_274.csv"</span></span>
+<span><span class="co">#&gt; [275] "/tmp/Rtmpk8h1ZH/trial_emu/trial_275.csv"</span></span>
+<span><span class="co">#&gt; [276] "/tmp/Rtmpk8h1ZH/trial_emu/trial_276.csv"</span></span>
+<span><span class="co">#&gt; [277] "/tmp/Rtmpk8h1ZH/trial_emu/trial_277.csv"</span></span>
+<span><span class="co">#&gt; [278] "/tmp/Rtmpk8h1ZH/trial_emu/trial_278.csv"</span></span>
+<span><span class="co">#&gt; [279] "/tmp/Rtmpk8h1ZH/trial_emu/trial_279.csv"</span></span>
+<span><span class="co">#&gt; [280] "/tmp/Rtmpk8h1ZH/trial_emu/trial_280.csv"</span></span>
+<span><span class="co">#&gt; [281] "/tmp/Rtmpk8h1ZH/trial_emu/trial_281.csv"</span></span>
+<span><span class="co">#&gt; [282] "/tmp/Rtmpk8h1ZH/trial_emu/trial_282.csv"</span></span>
+<span><span class="co">#&gt; [283] "/tmp/Rtmpk8h1ZH/trial_emu/trial_283.csv"</span></span>
+<span><span class="co">#&gt; [284] "/tmp/Rtmpk8h1ZH/trial_emu/trial_284.csv"</span></span>
+<span><span class="co">#&gt; [285] "/tmp/Rtmpk8h1ZH/trial_emu/trial_285.csv"</span></span>
+<span><span class="co">#&gt; [286] "/tmp/Rtmpk8h1ZH/trial_emu/trial_286.csv"</span></span>
+<span><span class="co">#&gt; [287] "/tmp/Rtmpk8h1ZH/trial_emu/trial_287.csv"</span></span>
+<span><span class="co">#&gt; [288] "/tmp/Rtmpk8h1ZH/trial_emu/trial_288.csv"</span></span>
+<span><span class="co">#&gt; [289] "/tmp/Rtmpk8h1ZH/trial_emu/trial_289.csv"</span></span>
+<span><span class="co">#&gt; [290] "/tmp/Rtmpk8h1ZH/trial_emu/trial_290.csv"</span></span>
+<span><span class="co">#&gt; [291] "/tmp/Rtmpk8h1ZH/trial_emu/trial_291.csv"</span></span>
+<span><span class="co">#&gt; [292] "/tmp/Rtmpk8h1ZH/trial_emu/trial_292.csv"</span></span>
+<span><span class="co">#&gt; [293] "/tmp/Rtmpk8h1ZH/trial_emu/trial_293.csv"</span></span>
+<span><span class="co">#&gt; [294] "/tmp/Rtmpk8h1ZH/trial_emu/trial_294.csv"</span></span>
+<span><span class="co">#&gt; [295] "/tmp/Rtmpk8h1ZH/trial_emu/trial_295.csv"</span></span>
+<span><span class="co">#&gt; [296] "/tmp/Rtmpk8h1ZH/trial_emu/trial_296.csv"</span></span>
+<span><span class="co">#&gt; [297] "/tmp/Rtmpk8h1ZH/trial_emu/trial_297.csv"</span></span>
+<span><span class="co">#&gt; [298] "/tmp/Rtmpk8h1ZH/trial_emu/trial_298.csv"</span></span>
+<span><span class="co">#&gt; [299] "/tmp/Rtmpk8h1ZH/trial_emu/trial_299.csv"</span></span>
+<span><span class="co">#&gt; [300] "/tmp/Rtmpk8h1ZH/trial_emu/trial_300.csv"</span></span>
+<span><span class="co">#&gt; [301] "/tmp/Rtmpk8h1ZH/trial_emu/trial_301.csv"</span></span>
+<span><span class="co">#&gt; [302] "/tmp/Rtmpk8h1ZH/trial_emu/trial_302.csv"</span></span>
+<span><span class="co">#&gt; [303] "/tmp/Rtmpk8h1ZH/trial_emu/trial_303.csv"</span></span>
+<span><span class="co">#&gt; [304] "/tmp/Rtmpk8h1ZH/trial_emu/trial_304.csv"</span></span>
+<span><span class="co">#&gt; [305] "/tmp/Rtmpk8h1ZH/trial_emu/trial_305.csv"</span></span>
+<span><span class="co">#&gt; [306] "/tmp/Rtmpk8h1ZH/trial_emu/trial_306.csv"</span></span>
+<span><span class="co">#&gt; [307] "/tmp/Rtmpk8h1ZH/trial_emu/trial_307.csv"</span></span>
+<span><span class="co">#&gt; [308] "/tmp/Rtmpk8h1ZH/trial_emu/trial_308.csv"</span></span>
+<span><span class="co">#&gt; [309] "/tmp/Rtmpk8h1ZH/trial_emu/trial_309.csv"</span></span>
+<span><span class="co">#&gt; [310] "/tmp/Rtmpk8h1ZH/trial_emu/trial_310.csv"</span></span>
+<span><span class="co">#&gt; [311] "/tmp/Rtmpk8h1ZH/trial_emu/trial_311.csv"</span></span>
+<span><span class="co">#&gt; [312] "/tmp/Rtmpk8h1ZH/trial_emu/trial_312.csv"</span></span>
+<span><span class="co">#&gt; [313] "/tmp/Rtmpk8h1ZH/trial_emu/trial_313.csv"</span></span>
+<span><span class="co">#&gt; [314] "/tmp/Rtmpk8h1ZH/trial_emu/trial_314.csv"</span></span>
+<span><span class="co">#&gt; [315] "/tmp/Rtmpk8h1ZH/trial_emu/trial_315.csv"</span></span>
+<span><span class="co">#&gt; [316] "/tmp/Rtmpk8h1ZH/trial_emu/trial_316.csv"</span></span>
+<span><span class="co">#&gt; [317] "/tmp/Rtmpk8h1ZH/trial_emu/trial_317.csv"</span></span>
+<span><span class="co">#&gt; [318] "/tmp/Rtmpk8h1ZH/trial_emu/trial_318.csv"</span></span>
+<span><span class="co">#&gt; [319] "/tmp/Rtmpk8h1ZH/trial_emu/trial_319.csv"</span></span>
+<span><span class="co">#&gt; [320] "/tmp/Rtmpk8h1ZH/trial_emu/trial_320.csv"</span></span>
+<span><span class="co">#&gt; [321] "/tmp/Rtmpk8h1ZH/trial_emu/trial_321.csv"</span></span>
+<span><span class="co">#&gt; [322] "/tmp/Rtmpk8h1ZH/trial_emu/trial_322.csv"</span></span>
+<span><span class="co">#&gt; [323] "/tmp/Rtmpk8h1ZH/trial_emu/trial_323.csv"</span></span>
+<span><span class="co">#&gt; [324] "/tmp/Rtmpk8h1ZH/trial_emu/trial_324.csv"</span></span>
+<span><span class="co">#&gt; [325] "/tmp/Rtmpk8h1ZH/trial_emu/trial_325.csv"</span></span>
+<span><span class="co">#&gt; [326] "/tmp/Rtmpk8h1ZH/trial_emu/trial_326.csv"</span></span>
+<span><span class="co">#&gt; [327] "/tmp/Rtmpk8h1ZH/trial_emu/trial_327.csv"</span></span>
+<span><span class="co">#&gt; [328] "/tmp/Rtmpk8h1ZH/trial_emu/trial_328.csv"</span></span>
+<span><span class="co">#&gt; [329] "/tmp/Rtmpk8h1ZH/trial_emu/trial_329.csv"</span></span>
+<span><span class="co">#&gt; [330] "/tmp/Rtmpk8h1ZH/trial_emu/trial_330.csv"</span></span>
+<span><span class="co">#&gt; [331] "/tmp/Rtmpk8h1ZH/trial_emu/trial_331.csv"</span></span>
+<span><span class="co">#&gt; [332] "/tmp/Rtmpk8h1ZH/trial_emu/trial_332.csv"</span></span>
+<span><span class="co">#&gt; [333] "/tmp/Rtmpk8h1ZH/trial_emu/trial_333.csv"</span></span>
+<span><span class="co">#&gt; [334] "/tmp/Rtmpk8h1ZH/trial_emu/trial_334.csv"</span></span>
+<span><span class="co">#&gt; [335] "/tmp/Rtmpk8h1ZH/trial_emu/trial_335.csv"</span></span>
+<span><span class="co">#&gt; [336] "/tmp/Rtmpk8h1ZH/trial_emu/trial_336.csv"</span></span>
+<span><span class="co">#&gt; [337] "/tmp/Rtmpk8h1ZH/trial_emu/trial_337.csv"</span></span>
+<span><span class="co">#&gt; [338] "/tmp/Rtmpk8h1ZH/trial_emu/trial_338.csv"</span></span>
+<span><span class="co">#&gt; [339] "/tmp/Rtmpk8h1ZH/trial_emu/trial_339.csv"</span></span>
+<span><span class="co">#&gt; [340] "/tmp/Rtmpk8h1ZH/trial_emu/trial_340.csv"</span></span>
+<span><span class="co">#&gt; [341] "/tmp/Rtmpk8h1ZH/trial_emu/trial_341.csv"</span></span>
+<span><span class="co">#&gt; [342] "/tmp/Rtmpk8h1ZH/trial_emu/trial_342.csv"</span></span>
+<span><span class="co">#&gt; [343] "/tmp/Rtmpk8h1ZH/trial_emu/trial_343.csv"</span></span>
+<span><span class="co">#&gt; [344] "/tmp/Rtmpk8h1ZH/trial_emu/trial_344.csv"</span></span>
+<span><span class="co">#&gt; [345] "/tmp/Rtmpk8h1ZH/trial_emu/trial_345.csv"</span></span>
+<span><span class="co">#&gt; [346] "/tmp/Rtmpk8h1ZH/trial_emu/trial_346.csv"</span></span>
+<span><span class="co">#&gt; [347] "/tmp/Rtmpk8h1ZH/trial_emu/trial_347.csv"</span></span>
+<span><span class="co">#&gt; [348] "/tmp/Rtmpk8h1ZH/trial_emu/trial_348.csv"</span></span>
+<span><span class="co">#&gt; [349] "/tmp/Rtmpk8h1ZH/trial_emu/trial_349.csv"</span></span>
+<span><span class="co">#&gt; [350] "/tmp/Rtmpk8h1ZH/trial_emu/trial_350.csv"</span></span>
+<span><span class="co">#&gt; [351] "/tmp/Rtmpk8h1ZH/trial_emu/trial_351.csv"</span></span>
+<span><span class="co">#&gt; [352] "/tmp/Rtmpk8h1ZH/trial_emu/trial_352.csv"</span></span>
+<span><span class="co">#&gt; [353] "/tmp/Rtmpk8h1ZH/trial_emu/trial_353.csv"</span></span>
+<span><span class="co">#&gt; [354] "/tmp/Rtmpk8h1ZH/trial_emu/trial_354.csv"</span></span>
+<span><span class="co">#&gt; [355] "/tmp/Rtmpk8h1ZH/trial_emu/trial_355.csv"</span></span>
+<span><span class="co">#&gt; [356] "/tmp/Rtmpk8h1ZH/trial_emu/trial_356.csv"</span></span>
+<span><span class="co">#&gt; [357] "/tmp/Rtmpk8h1ZH/trial_emu/trial_357.csv"</span></span>
+<span><span class="co">#&gt; [358] "/tmp/Rtmpk8h1ZH/trial_emu/trial_358.csv"</span></span>
+<span><span class="co">#&gt; [359] "/tmp/Rtmpk8h1ZH/trial_emu/trial_359.csv"</span></span>
+<span><span class="co">#&gt; [360] "/tmp/Rtmpk8h1ZH/trial_emu/trial_360.csv"</span></span>
+<span><span class="co">#&gt; [361] "/tmp/Rtmpk8h1ZH/trial_emu/trial_361.csv"</span></span>
+<span><span class="co">#&gt; [362] "/tmp/Rtmpk8h1ZH/trial_emu/trial_362.csv"</span></span>
+<span><span class="co">#&gt; [363] "/tmp/Rtmpk8h1ZH/trial_emu/trial_363.csv"</span></span>
+<span><span class="co">#&gt; [364] "/tmp/Rtmpk8h1ZH/trial_emu/trial_364.csv"</span></span>
+<span><span class="co">#&gt; [365] "/tmp/Rtmpk8h1ZH/trial_emu/trial_365.csv"</span></span>
+<span><span class="co">#&gt; [366] "/tmp/Rtmpk8h1ZH/trial_emu/trial_366.csv"</span></span>
+<span><span class="co">#&gt; [367] "/tmp/Rtmpk8h1ZH/trial_emu/trial_367.csv"</span></span>
+<span><span class="co">#&gt; [368] "/tmp/Rtmpk8h1ZH/trial_emu/trial_368.csv"</span></span>
+<span><span class="co">#&gt; [369] "/tmp/Rtmpk8h1ZH/trial_emu/trial_369.csv"</span></span>
+<span><span class="co">#&gt; [370] "/tmp/Rtmpk8h1ZH/trial_emu/trial_370.csv"</span></span>
+<span><span class="co">#&gt; [371] "/tmp/Rtmpk8h1ZH/trial_emu/trial_371.csv"</span></span>
+<span><span class="co">#&gt; [372] "/tmp/Rtmpk8h1ZH/trial_emu/trial_372.csv"</span></span>
+<span><span class="co">#&gt; [373] "/tmp/Rtmpk8h1ZH/trial_emu/trial_373.csv"</span></span>
+<span><span class="co">#&gt; [374] "/tmp/Rtmpk8h1ZH/trial_emu/trial_374.csv"</span></span>
+<span><span class="co">#&gt; [375] "/tmp/Rtmpk8h1ZH/trial_emu/trial_375.csv"</span></span>
+<span><span class="co">#&gt; [376] "/tmp/Rtmpk8h1ZH/trial_emu/trial_376.csv"</span></span>
+<span><span class="co">#&gt; [377] "/tmp/Rtmpk8h1ZH/trial_emu/trial_377.csv"</span></span>
+<span><span class="co">#&gt; [378] "/tmp/Rtmpk8h1ZH/trial_emu/trial_378.csv"</span></span>
+<span><span class="co">#&gt; [379] "/tmp/Rtmpk8h1ZH/trial_emu/trial_379.csv"</span></span>
+<span><span class="co">#&gt; [380] "/tmp/Rtmpk8h1ZH/trial_emu/trial_380.csv"</span></span>
+<span><span class="co">#&gt; [381] "/tmp/Rtmpk8h1ZH/trial_emu/trial_381.csv"</span></span>
+<span><span class="co">#&gt; [382] "/tmp/Rtmpk8h1ZH/trial_emu/trial_382.csv"</span></span>
+<span><span class="co">#&gt; [383] "/tmp/Rtmpk8h1ZH/trial_emu/trial_383.csv"</span></span>
+<span><span class="co">#&gt; [384] "/tmp/Rtmpk8h1ZH/trial_emu/trial_384.csv"</span></span>
+<span><span class="co">#&gt; [385] "/tmp/Rtmpk8h1ZH/trial_emu/trial_385.csv"</span></span>
+<span><span class="co">#&gt; [386] "/tmp/Rtmpk8h1ZH/trial_emu/trial_386.csv"</span></span>
+<span><span class="co">#&gt; [387] "/tmp/Rtmpk8h1ZH/trial_emu/trial_387.csv"</span></span>
+<span><span class="co">#&gt; [388] "/tmp/Rtmpk8h1ZH/trial_emu/trial_388.csv"</span></span>
+<span><span class="co">#&gt; [389] "/tmp/Rtmpk8h1ZH/trial_emu/trial_389.csv"</span></span>
+<span><span class="co">#&gt; [390] "/tmp/Rtmpk8h1ZH/trial_emu/trial_390.csv"</span></span>
+<span><span class="co">#&gt; [391] "/tmp/Rtmpk8h1ZH/trial_emu/trial_391.csv"</span></span>
+<span><span class="co">#&gt; [392] "/tmp/Rtmpk8h1ZH/trial_emu/trial_392.csv"</span></span>
+<span><span class="co">#&gt; [393] "/tmp/Rtmpk8h1ZH/trial_emu/trial_393.csv"</span></span>
+<span><span class="co">#&gt; [394] "/tmp/Rtmpk8h1ZH/trial_emu/trial_394.csv"</span></span>
+<span><span class="co">#&gt; [395] "/tmp/Rtmpk8h1ZH/trial_emu/trial_395.csv"</span></span>
+<span><span class="co">#&gt; [396] "/tmp/Rtmpk8h1ZH/trial_emu/trial_396.csv"</span></span></code></pre></div>
 <p>Each of these csv files contains the data for the trial starting at
 period <code>_i</code>. To create a manageable dataset for the final
 analysis we can sample from these trials.</p>
 <p>Here we sample 10% of the patients without an event at each follow-up
 time in each trial. All observations with events are included.</p>
-<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">sampled_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/case_control_sampling_trials.html">case_control_sampling_trials</a></span><span class="op">(</span><span class="va">prep_data</span>, p_control <span class="op">=</span> <span class="fl">0.1</span>, sample_all_times <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">sampled_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/case_control_sampling_trials.html">case_control_sampling_trials</a></span><span class="op">(</span><span class="va">prep_data</span>, p_control <span class="op">=</span> <span class="fl">0.1</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/str.html" class="external-link">str</a></span><span class="op">(</span><span class="va">sampled_data</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Classes 'data.table' and 'data.frame':   133875 obs. of  14 variables:</span></span>
-<span><span class="co">#&gt;  $ id                : int  423 54 423 31 423 54 176 176 475 475 ...</span></span>
+<span><span class="co">#&gt;  $ id                : int  476 358 165 476 140 176 54 31 54 476 ...</span></span>
 <span><span class="co">#&gt;  $ for_period        : int  1 1 1 1 1 1 1 1 1 1 ...</span></span>
 <span><span class="co">#&gt;  $ followup_time     : int  0 1 2 3 4 5 6 7 8 9 ...</span></span>
 <span><span class="co">#&gt;  $ outcome           : num  0 0 0 0 0 0 0 0 0 0 ...</span></span>
@@ -770,7 +1173,7 @@ time in each trial. All observations with events are included.</p>
 <span><span class="co">#&gt;  $ catvarC           : Factor w/ 4 levels "0","1","2","7": 4 4 4 4 4 4 4 4 4 4 ...</span></span>
 <span><span class="co">#&gt;  $ nvarA             : int  0 0 0 0 0 0 0 0 0 0 ...</span></span>
 <span><span class="co">#&gt;  $ nvarB             : int  0 0 0 0 0 0 0 0 0 0 ...</span></span>
-<span><span class="co">#&gt;  $ nvarC             : int  56 49 56 40 56 49 45 45 69 69 ...</span></span>
+<span><span class="co">#&gt;  $ nvarC             : int  49 47 70 49 46 45 49 40 49 49 ...</span></span>
 <span><span class="co">#&gt;  $ assigned_treatment: int  0 0 0 0 0 0 0 0 0 0 ...</span></span>
 <span><span class="co">#&gt;  $ sample_weight     : num  10 10 10 10 10 10 10 10 10 10 ...</span></span>
 <span><span class="co">#&gt;  - attr(*, ".internal.selfref")=&lt;externalptr&gt;</span></span></code></pre></div>
@@ -789,7 +1192,7 @@ formula to <code>outcome_cov</code>,
 function. Since we have sampled from the data, we should make use of the
 <code>use_sample_weights</code> option to get correct survival
 estimates.</p>
-<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">model_result</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/data_modelling.html">data_modelling</a></span><span class="op">(</span></span>
 <span>  data <span class="op">=</span> <span class="va">sampled_data</span>,</span>
 <span>  outcome_cov <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"catvarA"</span>, <span class="st">"catvarB"</span>, <span class="st">"catvarC"</span>, <span class="st">"nvarA"</span>, <span class="st">"nvarB"</span>, <span class="st">"nvarC"</span><span class="op">)</span>,</span>
@@ -814,78 +1217,125 @@ estimates.</p>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Deviance Residuals: </span></span>
 <span><span class="co">#&gt;     Min       1Q   Median       3Q      Max  </span></span>
-<span><span class="co">#&gt; -1.3027  -0.2913  -0.2131  -0.1369  10.0136  </span></span>
+<span><span class="co">#&gt; -1.3936  -0.2869  -0.2129  -0.1370  10.1499  </span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Coefficients:</span></span>
 <span><span class="co">#&gt;                      Estimate Std. Error z value Pr(&gt;|z|)    </span></span>
-<span><span class="co">#&gt; (Intercept)        -2.176e+00  2.333e-01  -9.326  &lt; 2e-16 ***</span></span>
-<span><span class="co">#&gt; assigned_treatment -5.214e-01  5.324e-02  -9.793  &lt; 2e-16 ***</span></span>
-<span><span class="co">#&gt; for_period         -1.167e-03  9.042e-04  -1.291 0.196840    </span></span>
-<span><span class="co">#&gt; I(for_period^2)     6.921e-06  1.984e-06   3.489 0.000486 ***</span></span>
-<span><span class="co">#&gt; followup_time       1.284e-03  9.694e-04   1.324 0.185392    </span></span>
-<span><span class="co">#&gt; I(followup_time^2) -1.200e-05  5.675e-06  -2.115 0.034462 *  </span></span>
-<span><span class="co">#&gt; catvarA1            4.933e-01  3.842e-02  12.840  &lt; 2e-16 ***</span></span>
-<span><span class="co">#&gt; catvarA2            4.196e-01  5.425e-02   7.735 1.04e-14 ***</span></span>
-<span><span class="co">#&gt; catvarA3           -9.965e+00  5.145e+01  -0.194 0.846420    </span></span>
-<span><span class="co">#&gt; catvarA7            4.035e-01  7.110e-02   5.675 1.38e-08 ***</span></span>
-<span><span class="co">#&gt; catvarB1           -3.308e-01  1.858e-01  -1.780 0.075031 .  </span></span>
-<span><span class="co">#&gt; catvarB2           -7.949e-03  1.890e-01  -0.042 0.966459    </span></span>
-<span><span class="co">#&gt; catvarB3           -2.345e+00  3.668e-01  -6.394 1.61e-10 ***</span></span>
-<span><span class="co">#&gt; catvarB7           -7.248e-01  1.874e-01  -3.867 0.000110 ***</span></span>
-<span><span class="co">#&gt; catvarC1           -8.124e-02  4.854e-02  -1.674 0.094176 .  </span></span>
-<span><span class="co">#&gt; catvarC2            1.064e-01  4.225e-02   2.519 0.011785 *  </span></span>
-<span><span class="co">#&gt; catvarC7           -5.474e-01  6.226e-02  -8.792  &lt; 2e-16 ***</span></span>
-<span><span class="co">#&gt; nvarA              -2.340e-02  8.980e-03  -2.606 0.009161 ** </span></span>
-<span><span class="co">#&gt; nvarB               2.845e-03  3.917e-04   7.263 3.78e-13 ***</span></span>
-<span><span class="co">#&gt; nvarC              -5.615e-02  1.226e-03 -45.783  &lt; 2e-16 ***</span></span>
+<span><span class="co">#&gt; (Intercept)        -2.300e+00  2.334e-01  -9.858  &lt; 2e-16 ***</span></span>
+<span><span class="co">#&gt; assigned_treatment -4.740e-01  5.347e-02  -8.865  &lt; 2e-16 ***</span></span>
+<span><span class="co">#&gt; for_period         -1.611e-03  9.014e-04  -1.787 0.073962 .  </span></span>
+<span><span class="co">#&gt; I(for_period^2)     8.427e-06  1.975e-06   4.266 1.99e-05 ***</span></span>
+<span><span class="co">#&gt; followup_time       1.434e-03  1.008e-03   1.422 0.155043    </span></span>
+<span><span class="co">#&gt; I(followup_time^2) -2.025e-05  6.100e-06  -3.320 0.000901 ***</span></span>
+<span><span class="co">#&gt; catvarA1            4.740e-01  3.893e-02  12.177  &lt; 2e-16 ***</span></span>
+<span><span class="co">#&gt; catvarA2            4.523e-01  5.432e-02   8.327  &lt; 2e-16 ***</span></span>
+<span><span class="co">#&gt; catvarA3           -9.959e+00  5.245e+01  -0.190 0.849393    </span></span>
+<span><span class="co">#&gt; catvarA7            4.241e-01  7.111e-02   5.964 2.47e-09 ***</span></span>
+<span><span class="co">#&gt; catvarB1           -2.643e-01  1.857e-01  -1.423 0.154613    </span></span>
+<span><span class="co">#&gt; catvarB2            4.886e-02  1.890e-01   0.259 0.796014    </span></span>
+<span><span class="co">#&gt; catvarB3           -2.295e+00  3.667e-01  -6.258 3.90e-10 ***</span></span>
+<span><span class="co">#&gt; catvarB7           -6.340e-01  1.875e-01  -3.381 0.000722 ***</span></span>
+<span><span class="co">#&gt; catvarC1           -9.349e-02  4.852e-02  -1.927 0.053989 .  </span></span>
+<span><span class="co">#&gt; catvarC2            3.576e-02  4.327e-02   0.826 0.408656    </span></span>
+<span><span class="co">#&gt; catvarC7           -4.972e-01  6.248e-02  -7.958 1.75e-15 ***</span></span>
+<span><span class="co">#&gt; nvarA              -2.074e-02  8.911e-03  -2.328 0.019920 *  </span></span>
+<span><span class="co">#&gt; nvarB               3.224e-03  3.929e-04   8.207 2.27e-16 ***</span></span>
+<span><span class="co">#&gt; nvarC              -5.532e-02  1.240e-03 -44.607  &lt; 2e-16 ***</span></span>
 <span><span class="co">#&gt; ---</span></span>
 <span><span class="co">#&gt; Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; (Dispersion parameter for binomial family taken to be 1)</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt;     Null deviance: 58734  on 133874  degrees of freedom</span></span>
-<span><span class="co">#&gt; Residual deviance: 55225  on 133855  degrees of freedom</span></span>
-<span><span class="co">#&gt; AIC: 55120</span></span>
+<span><span class="co">#&gt;     Null deviance: 57867  on 133874  degrees of freedom</span></span>
+<span><span class="co">#&gt; Residual deviance: 54462  on 133855  degrees of freedom</span></span>
+<span><span class="co">#&gt; AIC: 54354</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Number of Fisher Scoring iterations: 13</span></span>
 <span><span class="co">#&gt; ------------------------------------------------------------</span></span>
 <span><span class="co">#&gt; Calculating robust variance</span></span>
 <span><span class="co">#&gt; Processing time of calculating robust variance: 0.2 s</span></span>
 <span><span class="co">#&gt; Summary with robust standard error:</span></span>
-<span><span class="co">#&gt;                 names  estimate robust_se        lb        ub        z p_value</span></span>
-<span><span class="co">#&gt; 1         (Intercept) -2.18e+00  1.09e+00 -4.32e+00 -3.43e-02  -1.9914  0.0464</span></span>
-<span><span class="co">#&gt; 2  assigned_treatment -5.21e-01  4.42e-01 -1.39e+00  3.44e-01  -1.1802  0.2379</span></span>
-<span><span class="co">#&gt; 3          for_period -1.17e-03  5.61e-03 -1.22e-02  9.84e-03  -0.2079  0.8353</span></span>
-<span><span class="co">#&gt; 4     I(for_period^2)  6.92e-06  1.22e-05 -1.71e-05  3.09e-05   0.5652  0.5719</span></span>
-<span><span class="co">#&gt; 5       followup_time  1.28e-03  5.34e-03 -9.18e-03  1.17e-02   0.2406  0.8099</span></span>
-<span><span class="co">#&gt; 6  I(followup_time^2) -1.20e-05  4.83e-05 -1.07e-04  8.26e-05  -0.2486  0.8036</span></span>
-<span><span class="co">#&gt; 7            catvarA1  4.93e-01  3.11e-01 -1.16e-01  1.10e+00   1.5879  0.1123</span></span>
-<span><span class="co">#&gt; 8            catvarA2  4.20e-01  3.70e-01 -3.05e-01  1.14e+00   1.1345  0.2566</span></span>
-<span><span class="co">#&gt; 9            catvarA3 -9.96e+00  8.55e-01 -1.16e+01 -8.29e+00 -11.6513  &lt;1e-04</span></span>
-<span><span class="co">#&gt; 10           catvarA7  4.03e-01  3.88e-01 -3.57e-01  1.16e+00   1.0403  0.2982</span></span>
-<span><span class="co">#&gt; 11           catvarB1 -3.31e-01  6.61e-01 -1.63e+00  9.64e-01  -0.5008  0.6165</span></span>
-<span><span class="co">#&gt; 12           catvarB2 -7.95e-03  6.99e-01 -1.38e+00  1.36e+00  -0.0114  0.9909</span></span>
-<span><span class="co">#&gt; 13           catvarB3 -2.35e+00  1.14e+00 -4.57e+00 -1.18e-01  -2.0640  0.0390</span></span>
-<span><span class="co">#&gt; 14           catvarB7 -7.25e-01  6.82e-01 -2.06e+00  6.12e-01  -1.0626  0.2879</span></span>
-<span><span class="co">#&gt; 15           catvarC1 -8.12e-02  2.31e-01 -5.34e-01  3.71e-01  -0.3519  0.7249</span></span>
-<span><span class="co">#&gt; 16           catvarC2  1.06e-01  2.94e-01 -4.70e-01  6.83e-01   0.3619  0.7174</span></span>
-<span><span class="co">#&gt; 17           catvarC7 -5.47e-01  3.49e-01 -1.23e+00  1.36e-01  -1.5697  0.1165</span></span>
-<span><span class="co">#&gt; 18              nvarA -2.34e-02  5.79e-02 -1.37e-01  9.02e-02  -0.4038  0.6863</span></span>
-<span><span class="co">#&gt; 19              nvarB  2.84e-03  2.48e-03 -2.01e-03  7.70e-03   1.1490  0.2505</span></span>
-<span><span class="co">#&gt; 20              nvarC -5.61e-02  1.00e-02 -7.58e-02 -3.65e-02  -5.6060  &lt;1e-04</span></span>
+<span><span class="co">#&gt;                 names  estimate robust_se      2.5%     97.5%        z  p_value</span></span>
+<span><span class="co">#&gt; 1         (Intercept) -2.30e+00  1.08e+00 -4.42e+00 -1.84e-01  -2.1308 3.31e-02</span></span>
+<span><span class="co">#&gt; 2  assigned_treatment -4.74e-01  4.37e-01 -1.33e+00  3.83e-01  -1.0845 2.78e-01</span></span>
+<span><span class="co">#&gt; 3          for_period -1.61e-03  5.44e-03 -1.23e-02  9.04e-03  -0.2963 7.67e-01</span></span>
+<span><span class="co">#&gt; 4     I(for_period^2)  8.43e-06  1.19e-05 -1.49e-05  3.17e-05   0.7085 4.79e-01</span></span>
+<span><span class="co">#&gt; 5       followup_time  1.43e-03  5.72e-03 -9.77e-03  1.26e-02   0.2508 8.02e-01</span></span>
+<span><span class="co">#&gt; 6  I(followup_time^2) -2.03e-05  5.20e-05 -1.22e-04  8.17e-05  -0.3893 6.97e-01</span></span>
+<span><span class="co">#&gt; 7            catvarA1  4.74e-01  2.99e-01 -1.11e-01  1.06e+00   1.5873 1.12e-01</span></span>
+<span><span class="co">#&gt; 8            catvarA2  4.52e-01  3.67e-01 -2.67e-01  1.17e+00   1.2318 2.18e-01</span></span>
+<span><span class="co">#&gt; 9            catvarA3 -9.96e+00  7.89e-01 -1.15e+01 -8.41e+00 -12.6297 0.00e+00</span></span>
+<span><span class="co">#&gt; 10           catvarA7  4.24e-01  3.88e-01 -3.37e-01  1.19e+00   1.0923 2.75e-01</span></span>
+<span><span class="co">#&gt; 11           catvarB1 -2.64e-01  6.55e-01 -1.55e+00  1.02e+00  -0.4038 6.86e-01</span></span>
+<span><span class="co">#&gt; 12           catvarB2  4.89e-02  6.96e-01 -1.32e+00  1.41e+00   0.0702 9.44e-01</span></span>
+<span><span class="co">#&gt; 13           catvarB3 -2.29e+00  1.14e+00 -4.53e+00 -5.88e-02  -2.0116 4.43e-02</span></span>
+<span><span class="co">#&gt; 14           catvarB7 -6.34e-01  6.77e-01 -1.96e+00  6.93e-01  -0.9362 3.49e-01</span></span>
+<span><span class="co">#&gt; 15           catvarC1 -9.35e-02  2.32e-01 -5.49e-01  3.62e-01  -0.4027 6.87e-01</span></span>
+<span><span class="co">#&gt; 16           catvarC2  3.58e-02  2.92e-01 -5.36e-01  6.08e-01   0.1225 9.02e-01</span></span>
+<span><span class="co">#&gt; 17           catvarC7 -4.97e-01  3.50e-01 -1.18e+00  1.90e-01  -1.4188 1.56e-01</span></span>
+<span><span class="co">#&gt; 18              nvarA -2.07e-02  5.71e-02 -1.33e-01  9.11e-02  -0.3634 7.16e-01</span></span>
+<span><span class="co">#&gt; 19              nvarB  3.22e-03  2.49e-03 -1.66e-03  8.10e-03   1.2950 1.95e-01</span></span>
+<span><span class="co">#&gt; 20              nvarC -5.53e-02  9.82e-03 -7.46e-02 -3.61e-02  -5.6354 1.75e-08</span></span>
 <span><span class="co">#&gt; ------------------------------------------------------------</span></span></code></pre></div>
 <p>The result is the same type as the previous result from the simple
 <code>initiators</code> function, containing the <code>glm</code> object
 and the sandwich results.</p>
-<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/str.html" class="external-link">str</a></span><span class="op">(</span><span class="va">model_result</span>, max.level <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span>
-<span><span class="co">#&gt; List of 2</span></span>
-<span><span class="co">#&gt;  $ model :List of 30</span></span>
-<span><span class="co">#&gt;   ..- attr(*, "class")= chr [1:2] "glm" "lm"</span></span>
-<span><span class="co">#&gt;  $ robust:List of 2</span></span>
-<span><span class="co">#&gt;   ..- attr(*, "class")= chr "TE_robust"</span></span>
-<span><span class="co">#&gt;  - attr(*, "class")= chr "TE_model"</span></span></code></pre></div>
-<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">model_result</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Trial Emulation Outcome Model</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Outcome model formula:</span></span>
+<span><span class="co">#&gt; outcome ~ assigned_treatment + for_period + I(for_period^2) + </span></span>
+<span><span class="co">#&gt;     followup_time + I(followup_time^2) + catvarA + catvarB + </span></span>
+<span><span class="co">#&gt;     catvarC + nvarA + nvarB + nvarC</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Coefficent summary (robust):</span></span>
+<span><span class="co">#&gt;               names   estimate robust_se       2.5%      97.5%         z</span></span>
+<span><span class="co">#&gt;         (Intercept) -2.300e+00 1.080e+00 -4.416e+00 -1.844e-01  -2.13082</span></span>
+<span><span class="co">#&gt;  assigned_treatment -4.740e-01 4.371e-01 -1.331e+00  3.827e-01  -1.08448</span></span>
+<span><span class="co">#&gt;          for_period -1.611e-03 5.436e-03 -1.227e-02  9.044e-03  -0.29628</span></span>
+<span><span class="co">#&gt;     I(for_period^2)  8.427e-06 1.189e-05 -1.489e-05  3.174e-05   0.70853</span></span>
+<span><span class="co">#&gt;       followup_time  1.434e-03 5.718e-03 -9.773e-03  1.264e-02   0.25080</span></span>
+<span><span class="co">#&gt;  I(followup_time^2) -2.025e-05 5.202e-05 -1.222e-04  8.170e-05  -0.38934</span></span>
+<span><span class="co">#&gt;            catvarA1  4.740e-01 2.986e-01 -1.113e-01  1.059e+00   1.58733</span></span>
+<span><span class="co">#&gt;            catvarA2  4.523e-01 3.672e-01 -2.674e-01  1.172e+00   1.23178</span></span>
+<span><span class="co">#&gt;            catvarA3 -9.959e+00 7.886e-01 -1.150e+01 -8.414e+00 -12.62965</span></span>
+<span><span class="co">#&gt;            catvarA7  4.241e-01 3.883e-01 -3.369e-01  1.185e+00   1.09227</span></span>
+<span><span class="co">#&gt;            catvarB1 -2.643e-01 6.546e-01 -1.547e+00  1.019e+00  -0.40376</span></span>
+<span><span class="co">#&gt;            catvarB2  4.886e-02 6.964e-01 -1.316e+00  1.414e+00   0.07017</span></span>
+<span><span class="co">#&gt;            catvarB3 -2.295e+00 1.141e+00 -4.530e+00 -5.883e-02  -2.01157</span></span>
+<span><span class="co">#&gt;            catvarB7 -6.340e-01 6.772e-01 -1.961e+00  6.933e-01  -0.93619</span></span>
+<span><span class="co">#&gt;            catvarC1 -9.349e-02 2.322e-01 -5.485e-01  3.615e-01  -0.40271</span></span>
+<span><span class="co">#&gt;            catvarC2  3.576e-02 2.919e-01 -5.363e-01  6.078e-01   0.12251</span></span>
+<span><span class="co">#&gt;            catvarC7 -4.972e-01 3.504e-01 -1.184e+00  1.896e-01  -1.41884</span></span>
+<span><span class="co">#&gt;               nvarA -2.074e-02 5.707e-02 -1.326e-01  9.112e-02  -0.36344</span></span>
+<span><span class="co">#&gt;               nvarB  3.224e-03 2.490e-03 -1.656e-03  8.104e-03   1.29499</span></span>
+<span><span class="co">#&gt;               nvarC -5.532e-02 9.817e-03 -7.456e-02 -3.608e-02  -5.63541</span></span>
+<span><span class="co">#&gt;    p_value</span></span>
+<span><span class="co">#&gt;    0.03310</span></span>
+<span><span class="co">#&gt;    0.27815</span></span>
+<span><span class="co">#&gt;    0.76701</span></span>
+<span><span class="co">#&gt;    0.47861</span></span>
+<span><span class="co">#&gt;    0.80197</span></span>
+<span><span class="co">#&gt;    0.69703</span></span>
+<span><span class="co">#&gt;    0.11244</span></span>
+<span><span class="co">#&gt;    0.21803</span></span>
+<span><span class="co">#&gt;  &lt; 2.2e-16</span></span>
+<span><span class="co">#&gt;    0.27471</span></span>
+<span><span class="co">#&gt;    0.68639</span></span>
+<span><span class="co">#&gt;    0.94406</span></span>
+<span><span class="co">#&gt;    0.04426</span></span>
+<span><span class="co">#&gt;    0.34917</span></span>
+<span><span class="co">#&gt;    0.68716</span></span>
+<span><span class="co">#&gt;    0.90249</span></span>
+<span><span class="co">#&gt;    0.15595</span></span>
+<span><span class="co">#&gt;    0.71628</span></span>
+<span><span class="co">#&gt;    0.19532</span></span>
+<span><span class="co">#&gt;  1.746e-08</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; model_result$model contains the fitted glm model object.</span></span>
+<span><span class="co">#&gt; model_result$robust$matrix contains the full robust covariance matrix.</span></span></code></pre></div>
+<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">model_result</span><span class="op">$</span><span class="va">model</span><span class="op">)</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Call:</span></span>
@@ -896,38 +1346,38 @@ and the sandwich results.</p>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Deviance Residuals: </span></span>
 <span><span class="co">#&gt;     Min       1Q   Median       3Q      Max  </span></span>
-<span><span class="co">#&gt; -1.3027  -0.2913  -0.2131  -0.1369  10.0136  </span></span>
+<span><span class="co">#&gt; -1.3936  -0.2869  -0.2129  -0.1370  10.1499  </span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Coefficients:</span></span>
 <span><span class="co">#&gt;                      Estimate Std. Error z value Pr(&gt;|z|)    </span></span>
-<span><span class="co">#&gt; (Intercept)        -2.176e+00  2.333e-01  -9.326  &lt; 2e-16 ***</span></span>
-<span><span class="co">#&gt; assigned_treatment -5.214e-01  5.324e-02  -9.793  &lt; 2e-16 ***</span></span>
-<span><span class="co">#&gt; for_period         -1.167e-03  9.042e-04  -1.291 0.196840    </span></span>
-<span><span class="co">#&gt; I(for_period^2)     6.921e-06  1.984e-06   3.489 0.000486 ***</span></span>
-<span><span class="co">#&gt; followup_time       1.284e-03  9.694e-04   1.324 0.185392    </span></span>
-<span><span class="co">#&gt; I(followup_time^2) -1.200e-05  5.675e-06  -2.115 0.034462 *  </span></span>
-<span><span class="co">#&gt; catvarA1            4.933e-01  3.842e-02  12.840  &lt; 2e-16 ***</span></span>
-<span><span class="co">#&gt; catvarA2            4.196e-01  5.425e-02   7.735 1.04e-14 ***</span></span>
-<span><span class="co">#&gt; catvarA3           -9.965e+00  5.145e+01  -0.194 0.846420    </span></span>
-<span><span class="co">#&gt; catvarA7            4.035e-01  7.110e-02   5.675 1.38e-08 ***</span></span>
-<span><span class="co">#&gt; catvarB1           -3.308e-01  1.858e-01  -1.780 0.075031 .  </span></span>
-<span><span class="co">#&gt; catvarB2           -7.949e-03  1.890e-01  -0.042 0.966459    </span></span>
-<span><span class="co">#&gt; catvarB3           -2.345e+00  3.668e-01  -6.394 1.61e-10 ***</span></span>
-<span><span class="co">#&gt; catvarB7           -7.248e-01  1.874e-01  -3.867 0.000110 ***</span></span>
-<span><span class="co">#&gt; catvarC1           -8.124e-02  4.854e-02  -1.674 0.094176 .  </span></span>
-<span><span class="co">#&gt; catvarC2            1.064e-01  4.225e-02   2.519 0.011785 *  </span></span>
-<span><span class="co">#&gt; catvarC7           -5.474e-01  6.226e-02  -8.792  &lt; 2e-16 ***</span></span>
-<span><span class="co">#&gt; nvarA              -2.340e-02  8.980e-03  -2.606 0.009161 ** </span></span>
-<span><span class="co">#&gt; nvarB               2.845e-03  3.917e-04   7.263 3.78e-13 ***</span></span>
-<span><span class="co">#&gt; nvarC              -5.615e-02  1.226e-03 -45.783  &lt; 2e-16 ***</span></span>
+<span><span class="co">#&gt; (Intercept)        -2.300e+00  2.334e-01  -9.858  &lt; 2e-16 ***</span></span>
+<span><span class="co">#&gt; assigned_treatment -4.740e-01  5.347e-02  -8.865  &lt; 2e-16 ***</span></span>
+<span><span class="co">#&gt; for_period         -1.611e-03  9.014e-04  -1.787 0.073962 .  </span></span>
+<span><span class="co">#&gt; I(for_period^2)     8.427e-06  1.975e-06   4.266 1.99e-05 ***</span></span>
+<span><span class="co">#&gt; followup_time       1.434e-03  1.008e-03   1.422 0.155043    </span></span>
+<span><span class="co">#&gt; I(followup_time^2) -2.025e-05  6.100e-06  -3.320 0.000901 ***</span></span>
+<span><span class="co">#&gt; catvarA1            4.740e-01  3.893e-02  12.177  &lt; 2e-16 ***</span></span>
+<span><span class="co">#&gt; catvarA2            4.523e-01  5.432e-02   8.327  &lt; 2e-16 ***</span></span>
+<span><span class="co">#&gt; catvarA3           -9.959e+00  5.245e+01  -0.190 0.849393    </span></span>
+<span><span class="co">#&gt; catvarA7            4.241e-01  7.111e-02   5.964 2.47e-09 ***</span></span>
+<span><span class="co">#&gt; catvarB1           -2.643e-01  1.857e-01  -1.423 0.154613    </span></span>
+<span><span class="co">#&gt; catvarB2            4.886e-02  1.890e-01   0.259 0.796014    </span></span>
+<span><span class="co">#&gt; catvarB3           -2.295e+00  3.667e-01  -6.258 3.90e-10 ***</span></span>
+<span><span class="co">#&gt; catvarB7           -6.340e-01  1.875e-01  -3.381 0.000722 ***</span></span>
+<span><span class="co">#&gt; catvarC1           -9.349e-02  4.852e-02  -1.927 0.053989 .  </span></span>
+<span><span class="co">#&gt; catvarC2            3.576e-02  4.327e-02   0.826 0.408656    </span></span>
+<span><span class="co">#&gt; catvarC7           -4.972e-01  6.248e-02  -7.958 1.75e-15 ***</span></span>
+<span><span class="co">#&gt; nvarA              -2.074e-02  8.911e-03  -2.328 0.019920 *  </span></span>
+<span><span class="co">#&gt; nvarB               3.224e-03  3.929e-04   8.207 2.27e-16 ***</span></span>
+<span><span class="co">#&gt; nvarC              -5.532e-02  1.240e-03 -44.607  &lt; 2e-16 ***</span></span>
 <span><span class="co">#&gt; ---</span></span>
 <span><span class="co">#&gt; Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; (Dispersion parameter for binomial family taken to be 1)</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt;     Null deviance: 58734  on 133874  degrees of freedom</span></span>
-<span><span class="co">#&gt; Residual deviance: 55225  on 133855  degrees of freedom</span></span>
-<span><span class="co">#&gt; AIC: 55120</span></span>
+<span><span class="co">#&gt;     Null deviance: 57867  on 133874  degrees of freedom</span></span>
+<span><span class="co">#&gt; Residual deviance: 54462  on 133855  degrees of freedom</span></span>
+<span><span class="co">#&gt; AIC: 54354</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Number of Fisher Scoring iterations: 13</span></span></code></pre></div>
 <p>We can also use this object to predict cumulative incidence curves
@@ -935,7 +1385,7 @@ and use these for treatment comparisons. Here we use the patients who
 were in the first trial as the target population. To get the data in the
 right format, we can use the <code>data_template</code> returned by
 <code><a href="../reference/data_preparation.html">data_preparation()</a></code>.</p>
-<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">new_data</span> <span class="op">&lt;-</span> <span class="fu">data.table</span><span class="fu">::</span><span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/fread.html" class="external-link">fread</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">working_dir</span>, <span class="st">"trial_1.csv"</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="va">new_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/cbind.html" class="external-link">rbind</a></span><span class="op">(</span><span class="fu">data.table</span><span class="fu">::</span><span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/as.data.table.html" class="external-link">as.data.table</a></span><span class="op">(</span><span class="va">prep_data</span><span class="op">$</span><span class="va">data_template</span><span class="op">)</span>, <span class="va">new_data</span><span class="op">)</span></span>
 <span><span class="va">model_preds</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/predict.html" class="external-link">predict</a></span><span class="op">(</span><span class="va">model_result</span>, predict_times <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span><span class="op">:</span><span class="fl">40</span><span class="op">)</span>, newdata <span class="op">=</span> <span class="va">new_data</span>, type <span class="op">=</span> <span class="st">"cum_inc"</span><span class="op">)</span></span></code></pre></div>
@@ -943,17 +1393,17 @@ right format, we can use the <code>data_template</code> returned by
 predictions for assigned treatment 0, for assigned treatment 1 and for
 the difference. It possible to change the type of predicted values,
 either cumulative incidence or survival.</p>
-<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span></span>
 <span>  <span class="va">model_preds</span><span class="op">$</span><span class="va">difference</span><span class="op">$</span><span class="va">followup_time</span>,</span>
 <span>  <span class="va">model_preds</span><span class="op">$</span><span class="va">difference</span><span class="op">$</span><span class="va">cum_inc_diff</span>,</span>
 <span>  ty <span class="op">=</span> <span class="st">"l"</span>, ylab <span class="op">=</span> <span class="st">"Cumulative Incidence Difference"</span>,</span>
 <span>  xlab <span class="op">=</span> <span class="st">"Follow-up Time"</span>,</span>
-<span>  ylim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">0.15</span>, <span class="fl">0.02</span><span class="op">)</span></span>
+<span>  ylim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">0.15</span>, <span class="fl">0.05</span><span class="op">)</span></span>
 <span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/lines.html" class="external-link">lines</a></span><span class="op">(</span><span class="va">model_preds</span><span class="op">$</span><span class="va">difference</span><span class="op">$</span><span class="va">followup_time</span>, <span class="va">model_preds</span><span class="op">$</span><span class="va">difference</span><span class="op">$</span><span class="va">`2.5%`</span>, lty <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/lines.html" class="external-link">lines</a></span><span class="op">(</span><span class="va">model_preds</span><span class="op">$</span><span class="va">difference</span><span class="op">$</span><span class="va">followup_time</span>, <span class="va">model_preds</span><span class="op">$</span><span class="va">difference</span><span class="op">$</span><span class="va">`97.5%`</span>, lty <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span></code></pre></div>
-<p><img src="Getting-Started_files/figure-html/unnamed-chunk-2-1.png" width="700"></p>
+<p><img src="Getting-Started_files/figure-html/unnamed-chunk-3-1.png" width="700"></p>
 </div>
   </div>
 

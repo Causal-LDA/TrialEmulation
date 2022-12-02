@@ -18,7 +18,7 @@ interface to the main working functions data_preparation() and data_modelling().
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">TrialEmulation</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.2.11</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.2.12</span>
       </span>
     </div>
 
@@ -79,7 +79,6 @@ interface to the main working functions <code><a href="data_preparation.html">da
 <span>  analysis_weights <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"asis"</span>, <span class="st">"unweighted"</span>, <span class="st">"p99"</span>, <span class="st">"weight_limits"</span><span class="op">)</span>,</span>
 <span>  weight_limits <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="cn">Inf</span><span class="op">)</span>,</span>
 <span>  use_censor <span class="op">=</span> <span class="fl">0</span>,</span>
-<span>  check_missing <span class="op">=</span> <span class="fl">0</span>,</span>
 <span>  cense <span class="op">=</span> <span class="cn">NA</span>,</span>
 <span>  pool_cense <span class="op">=</span> <span class="fl">0</span>,</span>
 <span>  cense_d_cov <span class="op">=</span> <span class="op">~</span><span class="fl">1</span>,</span>
@@ -183,10 +182,6 @@ calculation.</p></dd>
 <dt>use_censor</dt>
 <dd><p>Use censoring for per-protocol analysis - censor person-times once a person-trial stops taking the
 initial treatment value</p></dd>
-
-
-<dt>check_missing</dt>
-<dd><p>Check for missing values in final model when use_censor=1 (Not added yet!)</p></dd>
 
 
 <dt>cense</dt>
