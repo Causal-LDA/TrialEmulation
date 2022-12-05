@@ -72,7 +72,7 @@ data_modelling <- function(data,
 
   model_formula <- outcome ~ 1
 
-  if (!is.null(model_var)) {
+  if (!is.na(model_var)) {
     # if the model_var is not empty, we use the information provided by user
     model_formula <- add_rhs(model_formula, as_formula(model_var))
   } else {
