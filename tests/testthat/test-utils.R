@@ -58,3 +58,25 @@ test_that("extract_baseline works works as expected", {
 
   expect_equal(result, expected)
 })
+
+
+test_that("as_formula works with a formula as string", {
+  result <- as_formula("~age + sex")
+  expected <- ~ age + sex
+  environment(expected) <- environment(result) <- globalenv()
+  expect_equal(result, expected)
+})
+
+test_that("as_formula works with strings", {
+  result <- as_formula(c("age", "bmi", "sex"))
+  expected <- ~ age + bmi + sex
+  environment(expected) <- environment(result) <- globalenv()
+  expect_equal(result, expected)
+})
+
+test_that("as_formula works with formulas", {
+  result <- as_formula(~ age + sex + time)
+  expected <- ~ age + sex + time
+  environment(expected) <- environment(result) <- globalenv()
+  expect_equal(result, expected)
+})
