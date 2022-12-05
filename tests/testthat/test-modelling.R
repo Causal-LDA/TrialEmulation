@@ -120,6 +120,7 @@ test_that("Modelling works with where_case", {
       where_var = "age",
       quiet = TRUE
     )
+    saveRDS(prep_PP_data, test_path("data/prep_data_object.rds"))
     saveRDS(prep_PP_data$data, test_path("data/ready_for_modelling.rds"))
   }
 
@@ -211,4 +212,65 @@ test_that("data_modelling works with analysis_weights = weight_limits", {
     "non-integer #successes in a binomial glm!"
   )
   expect_snapshot_value(as.data.frame(result_limits$robust$summary), style = "json2")
+})
+
+
+
+test_that("data_modelling works with missing sample weights", {
+  data <- readRDS(test_path("data/ready_for_modelling.rds"))
+  expect_warning(
+    expect_warning(
+      result_sample <- data_modelling(
+        data,
+        outcome_cov = ~ X1 + X2 + X3 + X4 + age_s,
+        model_var = "assigned_treatment",
+        include_followup_time = ~followup_time,
+        include_expansion_time = ~for_period,
+        use_sample_weights = TRUE,
+        use_weight = 1,
+        glm_function = "glm",
+        quiet = TRUE,
+      ),
+      "non-integer #successes in a binomial glm!"
+    ),
+    "'sample_weight' column not found in data. Using sample weights = 1."
+  )
+
+  expect_warning(
+    expected_result <- data_modelling(
+      data,
+      outcome_cov = ~ X1 + X2 + X3 + X4 + age_s,
+      model_var = "assigned_treatment",
+      include_followup_time = ~followup_time,
+      include_expansion_time = ~for_period,
+      use_sample_weights = FALSE,
+      use_weight = 1,
+      glm_function = "glm",
+      quiet = TRUE,
+    ),
+    "non-integer #successes in a binomial glm!"
+  )
+  expect_equal(result_sample$robust$summary, expected_result$robust$summary)
+})
+
+test_that("data_modelling works with sample weights", {
+  data <- readRDS(test_path("data/prep_data_object.rds"))
+  set.seed(2020)
+  sampled_data <- case_control_sampling_trials(data, p_control = 0.5, sample_all_times = TRUE)
+
+  expect_warning(
+    result_sample <- data_modelling(
+      sampled_data,
+      outcome_cov = ~ X1 + X2 + X3 + X4 + age_s,
+      model_var = "assigned_treatment",
+      include_followup_time = ~followup_time,
+      include_expansion_time = ~for_period,
+      use_sample_weights = TRUE,
+      use_weight = 1,
+      glm_function = "glm",
+      quiet = TRUE,
+    ),
+    "non-integer #successes in a binomial glm!"
+  )
+  expect_snapshot_value(as.data.frame(result_sample$robust$summary), style = "json2")
 })
