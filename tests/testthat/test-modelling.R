@@ -120,6 +120,7 @@ test_that("Modelling works with where_case", {
       where_var = "age",
       quiet = TRUE
     )
+    saveRDS(prep_PP_data, test_path("data/prep_data_object.rds"))
     saveRDS(prep_PP_data$data, test_path("data/ready_for_modelling.rds"))
   }
 
@@ -211,4 +212,168 @@ test_that("data_modelling works with analysis_weights = weight_limits", {
     "non-integer #successes in a binomial glm!"
   )
   expect_snapshot_value(as.data.frame(result_limits$robust$summary), style = "json2")
+})
+
+
+
+test_that("data_modelling works with missing sample weights", {
+  data <- readRDS(test_path("data/ready_for_modelling.rds"))
+  expect_warning(
+    expect_warning(
+      result_sample <- data_modelling(
+        data,
+        outcome_cov = ~ X1 + X2 + X3 + X4 + age_s,
+        model_var = "assigned_treatment",
+        include_followup_time = ~followup_time,
+        include_expansion_time = ~for_period,
+        use_sample_weights = TRUE,
+        use_weight = 1,
+        glm_function = "glm",
+        quiet = TRUE,
+      ),
+      "non-integer #successes in a binomial glm!"
+    ),
+    "'sample_weight' column not found in data. Using sample weights = 1."
+  )
+
+  expect_warning(
+    expected_result <- data_modelling(
+      data,
+      outcome_cov = ~ X1 + X2 + X3 + X4 + age_s,
+      model_var = "assigned_treatment",
+      include_followup_time = ~followup_time,
+      include_expansion_time = ~for_period,
+      use_sample_weights = FALSE,
+      use_weight = 1,
+      glm_function = "glm",
+      quiet = TRUE,
+    ),
+    "non-integer #successes in a binomial glm!"
+  )
+  expect_equal(result_sample$robust$summary, expected_result$robust$summary)
+})
+
+test_that("data_modelling works with sample weights", {
+  data <- readRDS(test_path("data/prep_data_object.rds"))
+  set.seed(2020)
+  sampled_data <- case_control_sampling_trials(data, p_control = 0.5, sample_all_times = TRUE)
+
+  expect_warning(
+    result_sample <- data_modelling(
+      sampled_data,
+      outcome_cov = ~ X1 + X2 + X3 + X4 + age_s,
+      model_var = "assigned_treatment",
+      include_followup_time = ~followup_time,
+      include_expansion_time = ~for_period,
+      use_sample_weights = TRUE,
+      use_weight = 1,
+      glm_function = "glm",
+      quiet = TRUE,
+    ),
+    "non-integer #successes in a binomial glm!"
+  )
+  expect_snapshot_value(as.data.frame(result_sample$robust$summary), style = "json2")
+})
+
+
+test_that("data_modelling makes model formula as expected with weight and censor", {
+  data <- readRDS(test_path("data/prep_data_object.rds"))
+  expect_warning(
+    result_w_c <- data_modelling(
+      data,
+      outcome_cov = ~ X1 + X2 + X3 + X4 + age_s,
+      include_followup_time = ~followup_time,
+      include_expansion_time = ~for_period,
+      use_sample_weights = FALSE,
+      use_weight = 1,
+      use_censor = 1,
+      glm_function = "glm",
+      quiet = TRUE,
+    ),
+    "non-integer #successes in a binomial glm!"
+  )
+  result_formula <- result_w_c$model$formula
+  expected_formula <- outcome ~ assigned_treatment + for_period + followup_time + X1 + X2 + X3 + X4 + age_s
+  environment(expected_formula) <- environment(result_formula) <- globalenv()
+  expect_equal(result_formula, expected_formula)
+})
+
+test_that("data_modelling makes model formula as expected with no weight and no censor", {
+  data <- readRDS(test_path("data/prep_data_object.rds"))
+  result_w_c <- data_modelling(
+    data,
+    outcome_cov = ~ X1 + X2 + X3 + X4 + age_s,
+    include_followup_time = ~followup_time,
+    include_expansion_time = ~for_period,
+    use_sample_weights = FALSE,
+    use_weight = 0,
+    use_censor = 0,
+    glm_function = "glm",
+    quiet = TRUE,
+  )
+  result_formula <- result_w_c$model$formula
+  expected_formula <- outcome ~ assigned_treatment + for_period + followup_time + X1 + X2 + X3 + X4 + age_s
+  environment(expected_formula) <- environment(result_formula) <- globalenv()
+  expect_equal(result_formula, expected_formula)
+})
+
+test_that("data_modelling makes model formula as expected with weight and no censor", {
+  set.seed(20222022)
+  simdata_censored <- data_gen_censored(1000, 10)
+  prep_PP_data <- data_preparation(
+    data = simdata_censored,
+    id = "ID",
+    period = "t",
+    treatment = "A",
+    outcome = "Y",
+    eligible = "eligible",
+    outcome_cov = ~ X1 + X2,
+    use_weight = 1,
+    use_censor = 0,
+    switch_d_cov = ~ X1 + X2 + X3 + X4 + age_s,
+    switch_n_cov = ~ X3 + X4,
+    separate_files = FALSE,
+    last_period = 8,
+    first_period = 2,
+    where_var = "age",
+    quiet = TRUE
+  )
+  expect_warning(
+    result_w_c <- data_modelling(
+      prep_PP_data,
+      outcome_cov = ~ X1 + X2,
+      include_followup_time = ~followup_time,
+      include_expansion_time = ~for_period,
+      use_sample_weights = FALSE,
+      use_weight = 1,
+      use_censor = 0,
+      glm_function = "glm",
+      quiet = TRUE,
+    ),
+    "non-integer #successes in a binomial glm!"
+  )
+  result_formula <- result_w_c$model$formula
+  expected_formula <- outcome ~ dose + I(dose^2) + for_period + followup_time + X1 + X2
+  environment(expected_formula) <- environment(result_formula) <- globalenv()
+  expect_equal(result_formula, expected_formula)
+})
+
+test_that("data_modelling makes model formula as expected with no weight and censor", {
+  data <- readRDS(test_path("data/prep_data_object.rds"))
+  result_w_c <- data_modelling(
+    data,
+    outcome_cov = ~ X1 + X2 + X3 + X4 + age_s,
+    include_followup_time = ~followup_time,
+    include_expansion_time = ~for_period,
+    use_sample_weights = FALSE,
+    use_weight = 0,
+    use_censor = 1,
+    glm_function = "glm",
+    quiet = TRUE,
+  )
+
+  result_formula <- result_w_c$model$formula
+  expected_formula <- outcome ~ assigned_treatment + for_period + followup_time + X1 + X2 + X3 + X4 + age_s
+  environment(expected_formula) <- environment(result_formula) <- globalenv()
+  expect_equal(result_formula, expected_formula)
 })

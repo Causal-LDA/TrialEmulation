@@ -58,3 +58,34 @@ test_that("extract_baseline works works as expected", {
 
   expect_equal(result, expected)
 })
+
+
+test_that("as_formula works with a formula as string", {
+  result <- as_formula("~age + sex")
+  expected <- ~ age + sex
+  environment(expected) <- environment(result) <- globalenv()
+  expect_equal(result, expected)
+})
+
+test_that("as_formula works with strings", {
+  result <- as_formula(c("age", "bmi", "sex"))
+  expected <- ~ age + bmi + sex
+  environment(expected) <- environment(result) <- globalenv()
+  expect_equal(result, expected)
+})
+
+test_that("as_formula works with formulas", {
+  result <- as_formula(~ age + sex + time)
+  expected <- ~ age + sex + time
+  environment(expected) <- environment(result) <- globalenv()
+  expect_equal(result, expected)
+})
+
+test_that("assert_monotonic works as expected", {
+  expect_error(assert_monotonic(c(1, 4, 3)), "Not monotonically increasing")
+  expect_error(assert_monotonic(c(1, 4, 3), increasing = FALSE), "Not monotonically decreasing")
+  expect_error(assert_monotonic(c(1, 2, 3), increasing = FALSE), "Not monotonically decreasing")
+  expect_error(assert_monotonic(c(3, 2, 1), increasing = TRUE), "Not monotonically increasing")
+  expect_null(assert_monotonic(1:4))
+  expect_null(assert_monotonic(4:-1, increasing = FALSE))
+})

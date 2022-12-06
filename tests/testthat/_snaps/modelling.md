@@ -238,3 +238,63 @@
       ]
     }
 
+# data_modelling works with sample weights
+
+    {
+      "type": "list",
+      "attributes": {
+        "names": {
+          "type": "character",
+          "attributes": {},
+          "value": ["names", "estimate", "robust_se", "2.5%", "97.5%", "z", "p_value"]
+        },
+        "row.names": {
+          "type": "integer",
+          "attributes": {},
+          "value": [1, 2, 3, 4, 5, 6, 7, 8, 9]
+        },
+        "class": {
+          "type": "character",
+          "attributes": {},
+          "value": ["data.frame"]
+        }
+      },
+      "value": [
+        {
+          "type": "character",
+          "attributes": {},
+          "value": ["(Intercept)", "assigned_treatment", "for_period", "followup_time", "X1", "X2", "X3", "X4", "age_s"]
+        },
+        {
+          "type": "double",
+          "attributes": {},
+          "value": [-3.54865874, -1.54017165, -0.4175523, -0.74069663, 1.31097919, 0.21127406, 0.51670844, 0.95202281, 0.03044352]
+        },
+        {
+          "type": "double",
+          "attributes": {},
+          "value": [1.2380501, 1.38676039, 0.38284172, 0.33401377, 0.66803671, 0.61024755, 1.22147932, 0.91635618, 0.40002335]
+        },
+        {
+          "type": "double",
+          "attributes": {},
+          "value": [-5.97523694, -4.25822201, -1.16792207, -1.39536362, 0.00162724, -0.98481114, -1.87739102, -0.8440353, -0.75360224]
+        },
+        {
+          "type": "double",
+          "attributes": {},
+          "value": [-1.12208053, 1.17787871, 0.33281747, -0.08602963, 2.62033115, 1.40735927, 2.91080791, 2.74808093, 0.81448928]
+        },
+        {
+          "type": "double",
+          "attributes": {},
+          "value": [-2.86632885, -1.11062565, -1.09066561, -2.21756313, 1.96243585, 0.34621043, 0.42301858, 1.03892224, 0.07610435]
+        },
+        {
+          "type": "double",
+          "attributes": {},
+          "value": [0.00415263, 0.26672952, 0.27542005, 0.02658463, 0.04971176, 0.72918458, 0.67228171, 0.2988409, 0.93933608]
+        }
+      ]
+    }
+

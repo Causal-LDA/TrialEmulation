@@ -23,7 +23,7 @@
 
 data_modelling <- function(data,
                            outcome_cov = ~1,
-                           model_var = NA,
+                           model_var = NULL,
                            first_followup = NA,
                            last_followup = NA,
                            use_weight = 0,
