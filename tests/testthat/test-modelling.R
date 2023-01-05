@@ -120,6 +120,7 @@ test_that("Modelling works with where_case", {
       where_var = "age",
       quiet = TRUE
     )
+    saveRDS(simdata_censored, test_path("data/raw_data.rds"))
     saveRDS(prep_PP_data, test_path("data/prep_data_object.rds"))
     saveRDS(prep_PP_data$data, test_path("data/ready_for_modelling.rds"))
   }

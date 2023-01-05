@@ -248,99 +248,52 @@
       Number of Fisher Scoring iterations: 5
       
 
-# weight_func works time on regime
+# weight_func works with user specified time on regime
 
     Code
       for (i in result$switch_models) print(i)
     Output
       P(treatment = 1 | previous treatment = 0) for denominator 
       
-                      term estimate std.error statistic   p.value
-               (Intercept) -0.09647  0.072673    -1.327 1.844e-01
-                        X1  0.37310  0.079695     4.682 2.846e-06
-                        X2  0.45602  0.041421    11.009 3.449e-28
-            time_on_regime -0.39377  0.060036    -6.559 5.421e-11
-       I(time_on_regime^2)  0.02355  0.009802     2.403 1.628e-02
+                 term estimate std.error statistic   p.value
+          (Intercept)  -0.1657   0.06642    -2.495 1.261e-02
+                   X1   0.3719   0.07957     4.674 2.960e-06
+                   X2   0.4548   0.04131    11.008 3.505e-28
+       time_on_regime  -0.2686   0.02750    -9.768 1.538e-22
       
        null.deviance df.null logLik  AIC  BIC deviance df.residual nobs
-                3870    2848  -1807 3625 3655     3615        2844 2849
+                3870    2848  -1810 3628 3652     3620        2845 2849
       P(treatment = 1 | previous treatment = 0) for numerator 
       
-                      term estimate std.error statistic   p.value
-               (Intercept)  0.07328  0.059050     1.241 2.146e-01
-            time_on_regime -0.37093  0.058468    -6.344 2.236e-10
-       I(time_on_regime^2)  0.02278  0.009578     2.378 1.741e-02
+                 term  estimate std.error statistic   p.value
+          (Intercept)  0.005973   0.05142    0.1162 9.075e-01
+       time_on_regime -0.250221   0.02676   -9.3493 8.819e-21
       
        null.deviance df.null logLik  AIC  BIC deviance df.residual nobs
-                3870    2848  -1882 3770 3788     3764        2846 2849
+                3870    2848  -1885 3773 3785     3769        2847 2849
       P(treatment = 1 | previous treatment = 1) for denominator 
       
-                      term estimate std.error statistic   p.value
-               (Intercept)  0.44003   0.13985     3.146 1.652e-03
-                        X1  0.34909   0.11262     3.100 1.938e-03
-                        X2  0.45026   0.04908     9.173 4.581e-20
-            time_on_regime  0.27407   0.09689     2.829 4.674e-03
-       I(time_on_regime^2) -0.02218   0.01262    -1.757 7.887e-02
+                 term estimate std.error statistic   p.value
+          (Intercept)   0.6281   0.08932     7.032 2.036e-12
+                   X1   0.3559   0.11244     3.165 1.550e-03
+                   X2   0.4496   0.04903     9.170 4.731e-20
+       time_on_regime   0.1130   0.02898     3.901 9.591e-05
       
        null.deviance df.null logLik  AIC  BIC deviance df.residual nobs
-                2650    2153  -1265 2540 2569     2530        2149 2154
+                2650    2153  -1267 2541 2564     2533        2150 2154
       P(treatment = 1 | previous treatment = 1) for numerator 
       
-                      term estimate std.error statistic  p.value
-               (Intercept)  0.37107   0.13286     2.793 0.005223
-            time_on_regime  0.27531   0.09461     2.910 0.003615
-       I(time_on_regime^2) -0.02303   0.01235    -1.865 0.062171
+                 term estimate std.error statistic   p.value
+          (Intercept)   0.5673   0.08024     7.070 1.551e-12
+       time_on_regime   0.1086   0.02845     3.818 1.343e-04
       
        null.deviance df.null logLik  AIC  BIC deviance df.residual nobs
-                2650    2153  -1315 2637 2654     2631        2151 2154
+                2650    2153  -1317 2638 2650     2634        2152 2154
 
 ---
 
     Code
       for (i in result$censor_models) print(i)
-    Output
-      Model for P(cense = 0 | X, previous treatment = 0) for denominator 
-      
-              term estimate std.error statistic   p.value
-       (Intercept)   0.9000   0.09634     9.342 9.427e-21
-                X1   0.5889   0.11288     5.217 1.820e-07
-                X2  -0.4647   0.05660    -8.210 2.203e-16
-                X3   0.3234   0.11178     2.893 3.811e-03
-                X4  -0.2523   0.05627    -4.483 7.351e-06
-             age_s   0.9730   0.06783    14.346 1.130e-46
-      
-       null.deviance df.null logLik  AIC  BIC deviance df.residual nobs
-                2466    2848  -1052 2117 2153     2105        2843 2849
-      Model for P(cense = 0 | X, previous treatment = 0) for numerator 
-      
-              term estimate std.error statistic   p.value
-       (Intercept)   1.5199   0.07547    20.139 3.386e-90
-                X3   0.2021   0.10398     1.944 5.192e-02
-                X4  -0.2408   0.05398    -4.461 8.173e-06
-      
-       null.deviance df.null logLik  AIC  BIC deviance df.residual nobs
-                2466    2848  -1221 2449 2467     2443        2846 2849
-      Model for P(cense = 0 | X, previous treatment = 1) for denominator 
-      
-              term estimate std.error statistic   p.value
-       (Intercept)   1.7865   0.13213    13.521 1.179e-41
-                X1   0.3350   0.20307     1.649 9.906e-02
-                X2  -0.5968   0.08589    -6.948 3.697e-12
-                X3   0.3677   0.16983     2.165 3.037e-02
-                X4  -0.2222   0.09511    -2.336 1.947e-02
-             age_s   1.1458   0.11569     9.904 4.017e-23
-      
-       null.deviance df.null logLik  AIC  BIC deviance df.residual nobs
-                1180    2153 -505.7 1023 1057     1011        2148 2154
-      Model for P(cense = 0 | X, previous treatment = 1) for numerator 
-      
-              term estimate std.error statistic   p.value
-       (Intercept)   2.3507   0.11680    20.126 4.378e-90
-                X3   0.3063   0.16109     1.902 5.721e-02
-                X4  -0.1026   0.09121    -1.125 2.608e-01
-      
-       null.deviance df.null logLik  AIC  BIC deviance df.residual nobs
-                1180    2153 -587.5 1181 1198     1175        2151 2154
 
 # weight_func works with pool_cense = 1
 

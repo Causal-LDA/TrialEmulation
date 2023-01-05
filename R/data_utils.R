@@ -32,20 +32,24 @@ select_data_cols <- function(data,
     data[eligible] <- 1
   }
 
-  cols <- unique(c(
-    eligible_wts_0, eligible_wts_1, formula_vars, cense, where_var,
-    id, period, treatment, outcome, eligible
-  ))
-  cols <- cols[!is.na(cols)]
-  assert_subset(cols, colnames(data))
+  assert_names(c(id, period, treatment, outcome, eligible), subset.of = colnames(data))
 
-  data_new <- setDT(data)[, cols, with = FALSE]
+  data_new <- setDT(data)
 
   setnames(
     data_new,
     old = c(id, period, outcome, eligible, treatment),
     new = c("id", "period", "outcome", "eligible", "treatment")
   )
+
+  cols <- stats::na.omit(unique(c(eligible_wts_0, eligible_wts_1, cense, where_var, formula_vars)))
+  derived_col_names <- c("time_on_regime")
+  assert_names(cols, subset.of = c(colnames(data_new), derived_col_names))
+
+  data_new <- data_new[,
+    c("id", "period", "outcome", "eligible", "treatment", setdiff(cols, derived_col_names)),
+    with = FALSE
+  ]
 
   if (test_string(eligible_wts_0)) setnames(data_new, c(eligible_wts_0), c("eligible_wts_0"))
   if (test_string(eligible_wts_1)) setnames(data_new, c(eligible_wts_1), c("eligible_wts_1"))
@@ -59,7 +63,7 @@ select_data_cols <- function(data,
 #' This function get the data.table with period column and expand it based on it
 #' @param y The data.table with period column
 
-f <- function(y) {
+expand_helper <- function(y) {
   last <- !duplicated(y$period, fromLast = TRUE)
   last_ind <- which(last == TRUE)
   return(seq(0, y$period[last_ind]))
@@ -76,7 +80,7 @@ for_period_func <- function(x) {
   period <- id <- for_period <- NULL
 
   x_new <- x[rep(seq_len(.N), period + 1), list(id, period)]
-  x_new[, for_period := f(.BY), by = list(id, period)]
+  x_new[, for_period := expand_helper(.BY), by = list(id, period)]
   return(x_new[, for_period])
 }
 
@@ -96,7 +100,6 @@ weight_func <- function(sw_data,
                         pool_cense = 0,
                         cense_d_cov = NA,
                         cense_n_cov = NA,
-                        include_regime_length = 0,
                         save_weight_models = FALSE,
                         save_dir,
                         quiet = FALSE,
@@ -111,11 +114,6 @@ weight_func <- function(sw_data,
 
   switch_d_cov <- update.formula(switch_d_cov, treatment ~ .)
   switch_n_cov <- update.formula(switch_n_cov, treatment ~ .)
-
-  if (include_regime_length == 1) {
-    switch_d_cov <- update.formula(switch_d_cov, ~ . + time_on_regime + I(time_on_regime^2))
-    switch_n_cov <- update.formula(switch_n_cov, ~ . + time_on_regime + I(time_on_regime^2))
-  }
 
   ## ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   # Switching weights --------------------

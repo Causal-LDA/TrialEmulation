@@ -23,7 +23,6 @@ data_preparation(
   pool_cense = 0,
   cense_d_cov = ~1,
   cense_n_cov = ~1,
-  include_regime_length = FALSE,
   eligible_wts_0 = NA,
   eligible_wts_1 = NA,
   where_var = NULL,
@@ -53,13 +52,13 @@ data_preparation(
 
 \item{model_var}{List of Variables of interest to be used in final model.
 Derived variables to use in outcome models. Typically \code{assigned_treatment} for ITT and per-protocol,
-and \code{dose + dose^2} for as-treated. \code{time_on_regime}? TODO check what else is derived}
+and \code{dose + dose^2} for as-treated.}
 
 \item{switch_n_cov}{A RHS formula for modelling probability of switching treatment. Used in the numerator of weight
-calculation.}
+calculation. May use \code{time_on_regime} to include treatment duration.}
 
 \item{switch_d_cov}{A RHS formula for modelling probability of switching treatment. Used in the denominator of weight
-calculation.}
+calculation. May use \code{time_on_regime} to include treatment duration.}
 
 \item{first_period}{First period value to start expanding about}
 
@@ -81,9 +80,6 @@ calculation.}
 
 \item{cense_n_cov}{A RHS formula for modelling probability of being censored. Used in the denominator of weight
 calculation.}
-
-\item{include_regime_length}{If defined as 1 a new variable (time_on_regime) is added to dataset.
-This variable stores the duration of time that the patient has been on the current treatment value}
 
 \item{eligible_wts_0}{Eligibility criteria used in weights for model condition Am1 = 0}
 

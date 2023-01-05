@@ -14,7 +14,6 @@ weight_func(
   pool_cense = 0,
   cense_d_cov = NA,
   cense_n_cov = NA,
-  include_regime_length = 0,
   save_weight_models = FALSE,
   save_dir,
   quiet = FALSE,
@@ -26,10 +25,10 @@ weight_func(
 \item{sw_data}{A data.table}
 
 \item{switch_n_cov}{A RHS formula for modelling probability of switching treatment. Used in the numerator of weight
-calculation.}
+calculation. May use \code{time_on_regime} to include treatment duration.}
 
 \item{switch_d_cov}{A RHS formula for modelling probability of switching treatment. Used in the denominator of weight
-calculation.}
+calculation. May use \code{time_on_regime} to include treatment duration.}
 
 \item{eligible_wts_0}{Eligibility criteria used in weights for model condition Am1 = 0}
 
@@ -46,9 +45,6 @@ calculation.}
 
 \item{cense_n_cov}{A RHS formula for modelling probability of being censored. Used in the denominator of weight
 calculation.}
-
-\item{include_regime_length}{If defined as 1 a new variable (time_on_regime) is added to dataset.
-This variable stores the duration of time that the patient has been on the current treatment value}
 
 \item{save_weight_models}{Save weight models objects in \code{data_dir}.}
 

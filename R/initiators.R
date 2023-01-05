@@ -12,7 +12,7 @@
 #' @param outcome_cov A RHS formula with baseline covariates to adjust in final model
 #' @param model_var List of Variables of interest to be used in final model.
 #'   Derived variables to use in outcome models. Typically `assigned_treatment` for ITT and per-protocol,
-#'   and `dose + dose^2` for as-treated. `time_on_regime`? TODO check what else is derived
+#'   and `dose + dose^2` for as-treated.
 #'
 #' @param first_period First period value to start expanding about
 #' @param last_period Last period value to expand about
@@ -36,8 +36,6 @@
 #'  specified as a RHS formula.
 #' @param include_expansion_time The model to include the trial period (`for_period`) in outcome model,
 #'  specified as a RHS formula.
-#' @param include_regime_length If defined as 1 a new variable (time_on_regime) is added to dataset.
-#'  This variable stores the duration of time that the patient has been on the current treatment value
 #' @param eligible_wts_0 Eligibility criteria used in weights for model condition Am1 = 0
 #' @param eligible_wts_1 Eligibility criteria used in weights for model condition Am1 = 1
 #' @param where_var List of variables used in where conditions used in subsetting the data used in final analysis
@@ -47,9 +45,9 @@
 #' @param glm_function Which glm function to use for the final model from `stats` or `parglm` packages
 #' @param quiet Don't print progress messages.
 #' @param switch_n_cov A RHS formula for modelling probability of switching treatment. Used in the numerator of weight
-#' calculation.
+#' calculation. May use `time_on_regime` to include treatment duration.
 #' @param switch_d_cov A RHS formula for modelling probability of switching treatment. Used in the denominator of weight
-#' calculation.
+#' calculation. May use `time_on_regime` to include treatment duration.
 #' @param cense_d_cov A RHS formula for modelling probability of being censored. Used in the numerator of weight
 #' calculation.
 #' @param cense_n_cov A RHS formula for modelling probability of being censored. Used in the denominator of weight
@@ -92,7 +90,6 @@ initiators <- function(data,
                        cense_n_cov = ~1,
                        include_followup_time = ~ followup_time + I(followup_time^2),
                        include_expansion_time = ~ for_period + I(for_period^2),
-                       include_regime_length = 0,
                        eligible_wts_0 = NA,
                        eligible_wts_1 = NA,
                        where_var = NULL,
@@ -126,7 +123,6 @@ initiators <- function(data,
     pool_cense = pool_cense,
     cense_d_cov = cense_d_cov,
     cense_n_cov = cense_n_cov,
-    include_regime_length = include_regime_length,
     eligible_wts_0 = eligible_wts_0,
     eligible_wts_1 = eligible_wts_1,
     where_var = where_var,
