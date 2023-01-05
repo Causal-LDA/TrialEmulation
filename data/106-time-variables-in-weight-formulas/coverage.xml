@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage line-rate="0.93393665158371" branch-rate="0" lines-covered="1032" lines-valid="1105" branches-covered="0" branches-valid="0" complexity="0" version="3.6.1" timestamp="2023-01-05 11:10:11">
+<coverage line-rate="0.93393665158371" branch-rate="0" lines-covered="1032" lines-valid="1105" branches-covered="0" branches-valid="0" complexity="0" version="3.6.1" timestamp="2023-01-05 14:25:15">
   <sources/>
   <packages>
     <package name="TrialEmulation" line-rate="0.93393665158371" branch-rate="0" complexity="0">
@@ -777,7 +777,7 @@
                 <line number="57" hits="19" branch="false"/>
               </lines>
             </method>
-            <method name="f" signature="" line-rate="1" branch-rate="0">
+            <method name="expand_helper" signature="" line-rate="1" branch-rate="0">
               <lines>
                 <line number="67" hits="310621" branch="false"/>
                 <line number="68" hits="310621" branch="false"/>
