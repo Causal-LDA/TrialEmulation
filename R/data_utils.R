@@ -100,7 +100,6 @@ weight_func <- function(sw_data,
                         pool_cense = 0,
                         cense_d_cov = NA,
                         cense_n_cov = NA,
-                        include_regime_length = FALSE,
                         save_weight_models = FALSE,
                         save_dir,
                         quiet = FALSE,
@@ -115,11 +114,6 @@ weight_func <- function(sw_data,
 
   switch_d_cov <- update.formula(switch_d_cov, treatment ~ .)
   switch_n_cov <- update.formula(switch_n_cov, treatment ~ .)
-
-  if (isTRUE(include_regime_length)) {
-    switch_d_cov <- update.formula(switch_d_cov, ~ . + time_on_regime + I(time_on_regime^2))
-    switch_n_cov <- update.formula(switch_n_cov, ~ . + time_on_regime + I(time_on_regime^2))
-  }
 
   ## ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   # Switching weights --------------------

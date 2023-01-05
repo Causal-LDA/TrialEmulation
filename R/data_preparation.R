@@ -33,7 +33,6 @@ data_preparation <- function(data,
                              pool_cense = 0,
                              cense_d_cov = ~1,
                              cense_n_cov = ~1,
-                             include_regime_length = FALSE,
                              eligible_wts_0 = NA,
                              eligible_wts_1 = NA,
                              where_var = NULL,
@@ -46,7 +45,6 @@ data_preparation <- function(data,
                              ...) {
   assert_flag(quiet)
   assert_flag(separate_files)
-  assert_flag(include_regime_length)
   assert_flag(save_weight_models)
 
   if (isTRUE(separate_files)) check_data_dir(data_dir)
@@ -98,7 +96,6 @@ data_preparation <- function(data,
       pool_cense = pool_cense,
       cense_d_cov = cense_d_cov,
       cense_n_cov = cense_n_cov,
-      include_regime_length = include_regime_length,
       save_weight_models = save_weight_models,
       save_dir = data_dir,
       quiet = quiet,

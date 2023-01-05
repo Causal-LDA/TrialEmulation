@@ -30,7 +30,6 @@ initiators(
   cense_n_cov = ~1,
   include_followup_time = ~followup_time + I(followup_time^2),
   include_expansion_time = ~for_period + I(for_period^2),
-  include_regime_length = FALSE,
   eligible_wts_0 = NA,
   eligible_wts_1 = NA,
   where_var = NULL,
@@ -108,10 +107,6 @@ specified as a RHS formula.}
 
 \item{include_expansion_time}{The model to include the trial period (\code{for_period}) in outcome model,
 specified as a RHS formula.}
-
-\item{include_regime_length}{If \code{TRUE} a new variable (\code{time_on_regime}) is added to dataset.
-This variable stores the duration of time that the patient has been on the current treatment value.
-This variable is also added to the switch weight model formulas specified by \code{switch_n_cov} and \code{switch_d_cov}.}
 
 \item{eligible_wts_0}{Eligibility criteria used in weights for model condition Am1 = 0}
 

@@ -36,9 +36,6 @@
 #'  specified as a RHS formula.
 #' @param include_expansion_time The model to include the trial period (`for_period`) in outcome model,
 #'  specified as a RHS formula.
-#' @param include_regime_length If `TRUE` a new variable (`time_on_regime`) is added to dataset.
-#'  This variable stores the duration of time that the patient has been on the current treatment value.
-#'  This variable is also added to the switch weight model formulas specified by `switch_n_cov` and `switch_d_cov`.
 #' @param eligible_wts_0 Eligibility criteria used in weights for model condition Am1 = 0
 #' @param eligible_wts_1 Eligibility criteria used in weights for model condition Am1 = 1
 #' @param where_var List of variables used in where conditions used in subsetting the data used in final analysis
@@ -93,7 +90,6 @@ initiators <- function(data,
                        cense_n_cov = ~1,
                        include_followup_time = ~ followup_time + I(followup_time^2),
                        include_expansion_time = ~ for_period + I(for_period^2),
-                       include_regime_length = FALSE,
                        eligible_wts_0 = NA,
                        eligible_wts_1 = NA,
                        where_var = NULL,
@@ -127,7 +123,6 @@ initiators <- function(data,
     pool_cense = pool_cense,
     cense_d_cov = cense_d_cov,
     cense_n_cov = cense_n_cov,
-    include_regime_length = include_regime_length,
     eligible_wts_0 = eligible_wts_0,
     eligible_wts_1 = eligible_wts_1,
     where_var = where_var,
