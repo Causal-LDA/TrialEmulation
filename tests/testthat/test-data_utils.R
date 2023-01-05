@@ -103,13 +103,27 @@ test_that("weight_func works time on regime", {
     pool_cense = 0,
     cense_d_cov = ~ X1 + X2 + X3 + X4 + age_s,
     cense_n_cov = ~ X3 + X4,
-    include_regime_length = 1,
+    include_regime_length = TRUE,
     quiet = TRUE
   )
   expect_snapshot(for (i in result$switch_models) print(i))
   expect_snapshot(for (i in result$censor_models) print(i))
 })
 
+
+test_that("weight_func works with user specified time on regime", {
+  data <- readRDS(test_path("data/pre_weight_func.rds"))
+
+  result <- weight_func(
+    sw_data = data,
+    switch_n_cov = ~time_on_regime,
+    switch_d_cov = ~ X1 + X2 + time_on_regime,
+    include_regime_length = FALSE,
+    quiet = TRUE
+  )
+  expect_snapshot(for (i in result$switch_models) print(i))
+  expect_snapshot(for (i in result$censor_models) print(i))
+})
 
 test_that("weight_func works with pool_cense = 1", {
   data <- readRDS(test_path("data/pre_weight_func.rds"))
@@ -126,4 +140,102 @@ test_that("weight_func works with pool_cense = 1", {
   )
   expect_snapshot(lapply(result$switch_models, print))
   expect_snapshot(lapply(result$censor_models, print))
+})
+
+
+test_that("select_data_cols works as expected", {
+  result <- select_data_cols(
+    data = trial_example,
+    formula_vars = c("nvarA", "nvarC"),
+    where_var = "catvarA",
+    eligible_wts_0 = NA,
+    eligible_wts_1 = NA,
+    cense = NA
+  )
+  expect_data_frame(
+    result,
+    nrows = 48400,
+    ncols = 8
+  )
+  check_names(
+    colnames(result),
+    permutation.of = c(
+      "id", "period", "outcome", "eligible",
+      "treatment", "catvarA", "nvarA", "nvarC"
+    )
+  )
+})
+
+test_that("select_data_cols works as expected with non-default names", {
+  result <- select_data_cols(
+    data = readRDS(test_path("data/raw_data.rds")),
+    id = "ID",
+    period = "t",
+    treatment = "A",
+    outcome = "Y",
+    eligible = "eligible",
+    formula_vars = c("X1", "age"),
+    where_var = "X3",
+    eligible_wts_0 = NA,
+    eligible_wts_1 = NA,
+    cense = "C"
+  )
+  expect_data_frame(
+    result,
+    nrows = 4926,
+    ncols = 9
+  )
+  expect_names(
+    colnames(result),
+    permutation.of = c(
+      "id", "period", "outcome", "eligible",
+      "treatment", "C", "X3", "X1", "age"
+    )
+  )
+})
+
+test_that("user can select period in select_data_cols", {
+  result <- select_data_cols(
+    data = readRDS(test_path("data/raw_data.rds")),
+    id = "ID",
+    period = "t",
+    treatment = "A",
+    outcome = "Y",
+    eligible = "eligible",
+    formula_vars = c("X1", "period"),
+    where_var = "X3",
+    eligible_wts_0 = NA,
+    eligible_wts_1 = NA,
+    cense = "C"
+  )
+  expect_names(
+    colnames(result),
+    permutation.of = c(
+      "id", "period", "outcome", "eligible",
+      "treatment", "C", "X3", "X1", "period"
+    )
+  )
+})
+
+test_that("select_data_cols allows derived variables in formula vars", {
+  result <- select_data_cols(
+    data = readRDS(test_path("data/raw_data.rds")),
+    id = "ID",
+    period = "t",
+    treatment = "A",
+    outcome = "Y",
+    eligible = "eligible",
+    formula_vars = c("X1", "time_on_regime"),
+    where_var = "X3",
+    eligible_wts_0 = NA,
+    eligible_wts_1 = NA,
+    cense = "C"
+  )
+  expect_names(
+    colnames(result),
+    permutation.of = c(
+      "id", "period", "outcome", "eligible",
+      "treatment", "C", "X3", "X1"
+    )
+  )
 })

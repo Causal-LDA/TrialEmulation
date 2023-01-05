@@ -82,8 +82,9 @@ calculation.}
 \item{cense_n_cov}{A RHS formula for modelling probability of being censored. Used in the denominator of weight
 calculation.}
 
-\item{include_regime_length}{If defined as 1 a new variable (time_on_regime) is added to dataset.
-This variable stores the duration of time that the patient has been on the current treatment value}
+\item{include_regime_length}{If \code{TRUE} a new variable (\code{time_on_regime}) is added to dataset.
+This variable stores the duration of time that the patient has been on the current treatment value.
+This variable is also added to the switch weight model formulas specified by \code{switch_n_cov} and \code{switch_d_cov}.}
 
 \item{eligible_wts_0}{Eligibility criteria used in weights for model condition Am1 = 0}
 

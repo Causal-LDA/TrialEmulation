@@ -46,6 +46,7 @@ data_preparation <- function(data,
                              ...) {
   assert_flag(quiet)
   assert_flag(separate_files)
+  assert_flag(include_regime_length)
   assert_flag(save_weight_models)
 
   if (isTRUE(separate_files)) check_data_dir(data_dir)

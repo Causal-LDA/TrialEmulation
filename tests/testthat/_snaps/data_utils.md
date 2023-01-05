@@ -342,6 +342,53 @@
        null.deviance df.null logLik  AIC  BIC deviance df.residual nobs
                 1180    2153 -587.5 1181 1198     1175        2151 2154
 
+# weight_func works with user specified time on regime
+
+    Code
+      for (i in result$switch_models) print(i)
+    Output
+      P(treatment = 1 | previous treatment = 0) for denominator 
+      
+                 term estimate std.error statistic   p.value
+          (Intercept)  -0.1657   0.06642    -2.495 1.261e-02
+                   X1   0.3719   0.07957     4.674 2.960e-06
+                   X2   0.4548   0.04131    11.008 3.505e-28
+       time_on_regime  -0.2686   0.02750    -9.768 1.538e-22
+      
+       null.deviance df.null logLik  AIC  BIC deviance df.residual nobs
+                3870    2848  -1810 3628 3652     3620        2845 2849
+      P(treatment = 1 | previous treatment = 0) for numerator 
+      
+                 term  estimate std.error statistic   p.value
+          (Intercept)  0.005973   0.05142    0.1162 9.075e-01
+       time_on_regime -0.250221   0.02676   -9.3493 8.819e-21
+      
+       null.deviance df.null logLik  AIC  BIC deviance df.residual nobs
+                3870    2848  -1885 3773 3785     3769        2847 2849
+      P(treatment = 1 | previous treatment = 1) for denominator 
+      
+                 term estimate std.error statistic   p.value
+          (Intercept)   0.6281   0.08932     7.032 2.036e-12
+                   X1   0.3559   0.11244     3.165 1.550e-03
+                   X2   0.4496   0.04903     9.170 4.731e-20
+       time_on_regime   0.1130   0.02898     3.901 9.591e-05
+      
+       null.deviance df.null logLik  AIC  BIC deviance df.residual nobs
+                2650    2153  -1267 2541 2564     2533        2150 2154
+      P(treatment = 1 | previous treatment = 1) for numerator 
+      
+                 term estimate std.error statistic   p.value
+          (Intercept)   0.5673   0.08024     7.070 1.551e-12
+       time_on_regime   0.1086   0.02845     3.818 1.343e-04
+      
+       null.deviance df.null logLik  AIC  BIC deviance df.residual nobs
+                2650    2153  -1317 2638 2650     2634        2152 2154
+
+---
+
+    Code
+      for (i in result$censor_models) print(i)
+
 # weight_func works with pool_cense = 1
 
     Code

@@ -14,7 +14,7 @@ weight_func(
   pool_cense = 0,
   cense_d_cov = NA,
   cense_n_cov = NA,
-  include_regime_length = 0,
+  include_regime_length = FALSE,
   save_weight_models = FALSE,
   save_dir,
   quiet = FALSE,
@@ -47,8 +47,9 @@ calculation.}
 \item{cense_n_cov}{A RHS formula for modelling probability of being censored. Used in the denominator of weight
 calculation.}
 
-\item{include_regime_length}{If defined as 1 a new variable (time_on_regime) is added to dataset.
-This variable stores the duration of time that the patient has been on the current treatment value}
+\item{include_regime_length}{If \code{TRUE} a new variable (\code{time_on_regime}) is added to dataset.
+This variable stores the duration of time that the patient has been on the current treatment value.
+This variable is also added to the switch weight model formulas specified by \code{switch_n_cov} and \code{switch_d_cov}.}
 
 \item{save_weight_models}{Save weight models objects in \code{data_dir}.}
 

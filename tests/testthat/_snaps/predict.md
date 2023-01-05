@@ -389,3 +389,144 @@
       ]
     }
 
+# predict.RTE_model works with interactions
+
+    {
+      "type": "list",
+      "attributes": {
+        "names": {
+          "type": "character",
+          "attributes": {},
+          "value": ["assigned_treatment_0", "assigned_treatment_1", "difference"]
+        }
+      },
+      "value": [
+        {
+          "type": "list",
+          "attributes": {
+            "names": {
+              "type": "character",
+              "attributes": {},
+              "value": ["followup_time", "cum_inc", "2.5%", "97.5%"]
+            },
+            "class": {
+              "type": "character",
+              "attributes": {},
+              "value": ["data.frame"]
+            },
+            "row.names": {
+              "type": "integer",
+              "attributes": {},
+              "value": [1, 2, 3, 4, 5, 6, 7, 8, 9]
+            }
+          },
+          "value": [
+            {
+              "type": "integer",
+              "attributes": {},
+              "value": [0, 1, 2, 3, 4, 5, 6, 7, 8]
+            },
+            {
+              "type": "double",
+              "attributes": {},
+              "value": [0.01259591, 0.0187253, 0.02171972, 0.02318543, 0.02390355, 0.02425555, 0.02442814, 0.02451276, 0.02455426]
+            },
+            {
+              "type": "double",
+              "attributes": {},
+              "value": [0.00760414, 0.01155176, 0.01322984, 0.01389294, 0.01418302, 0.01431058, 0.01436698, 0.01439207, 0.0144033]
+            },
+            {
+              "type": "double",
+              "attributes": {},
+              "value": [0.01226728, 0.01841097, 0.02152136, 0.02311238, 0.02472089, 0.02686338, 0.02853859, 0.02985207, 0.03088424]
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "attributes": {
+            "names": {
+              "type": "character",
+              "attributes": {},
+              "value": ["followup_time", "cum_inc", "2.5%", "97.5%"]
+            },
+            "class": {
+              "type": "character",
+              "attributes": {},
+              "value": ["data.frame"]
+            },
+            "row.names": {
+              "type": "integer",
+              "attributes": {},
+              "value": [1, 2, 3, 4, 5, 6, 7, 8, 9]
+            }
+          },
+          "value": [
+            {
+              "type": "integer",
+              "attributes": {},
+              "value": [0, 1, 2, 3, 4, 5, 6, 7, 8]
+            },
+            {
+              "type": "double",
+              "attributes": {},
+              "value": [0.01259591, 0.01259592, 0.01259592, 0.01259592, 0.01259592, 0.01259592, 0.01259592, 0.01259592, 0.01259592]
+            },
+            {
+              "type": "double",
+              "attributes": {},
+              "value": [0.00760414, 0.00760414, 0.00760414, 0.00760414, 0.00760414, 0.00760414, 0.00760414, 0.00760414, 0.00760414]
+            },
+            {
+              "type": "double",
+              "attributes": {},
+              "value": [0.01226728, 0.01226728, 0.01226728, 0.01226728, 0.01226728, 0.01226728, 0.01226728, 0.01226728, 0.01226728]
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "attributes": {
+            "names": {
+              "type": "character",
+              "attributes": {},
+              "value": ["followup_time", "cum_inc_diff", "2.5%", "97.5%"]
+            },
+            "class": {
+              "type": "character",
+              "attributes": {},
+              "value": ["data.frame"]
+            },
+            "row.names": {
+              "type": "integer",
+              "attributes": {},
+              "value": [1, 2, 3, 4, 5, 6, 7, 8, 9]
+            }
+          },
+          "value": [
+            {
+              "type": "integer",
+              "attributes": {},
+              "value": [0, 1, 2, 3, 4, 5, 6, 7, 8]
+            },
+            {
+              "type": "double",
+              "attributes": {},
+              "value": [0, -0.00612938, -0.0091238, -0.01058951, -0.01130763, -0.01165964, -0.01183222, -0.01191684, -0.01195834]
+            },
+            {
+              "type": "double",
+              "attributes": {},
+              "value": [0, -0.0062295, -0.01057137, -0.01411454, -0.016864, -0.01900648, -0.02068169, -0.02199517, -0.02302734]
+            },
+            {
+              "type": "double",
+              "attributes": {},
+              "value": [0, -0.00351999, -0.00504363, -0.00570673, -0.00599681, -0.00612437, -0.00618078, -0.00620587, -0.00621709]
+            }
+          ]
+        }
+      ]
+    }
+
