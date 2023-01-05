@@ -25,10 +25,10 @@ weight_func(
 \item{sw_data}{A data.table}
 
 \item{switch_n_cov}{A RHS formula for modelling probability of switching treatment. Used in the numerator of weight
-calculation.}
+calculation. May use \code{time_on_regime} to include treatment duration.}
 
 \item{switch_d_cov}{A RHS formula for modelling probability of switching treatment. Used in the denominator of weight
-calculation.}
+calculation. May use \code{time_on_regime} to include treatment duration.}
 
 \item{eligible_wts_0}{Eligibility criteria used in weights for model condition Am1 = 0}
 

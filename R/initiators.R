@@ -12,7 +12,7 @@
 #' @param outcome_cov A RHS formula with baseline covariates to adjust in final model
 #' @param model_var List of Variables of interest to be used in final model.
 #'   Derived variables to use in outcome models. Typically `assigned_treatment` for ITT and per-protocol,
-#'   and `dose + dose^2` for as-treated. `time_on_regime`? TODO check what else is derived
+#'   and `dose + dose^2` for as-treated.
 #'
 #' @param first_period First period value to start expanding about
 #' @param last_period Last period value to expand about
@@ -45,9 +45,9 @@
 #' @param glm_function Which glm function to use for the final model from `stats` or `parglm` packages
 #' @param quiet Don't print progress messages.
 #' @param switch_n_cov A RHS formula for modelling probability of switching treatment. Used in the numerator of weight
-#' calculation.
+#' calculation. May use `time_on_regime` to include treatment duration.
 #' @param switch_d_cov A RHS formula for modelling probability of switching treatment. Used in the denominator of weight
-#' calculation.
+#' calculation. May use `time_on_regime` to include treatment duration.
 #' @param cense_d_cov A RHS formula for modelling probability of being censored. Used in the numerator of weight
 #' calculation.
 #' @param cense_n_cov A RHS formula for modelling probability of being censored. Used in the denominator of weight

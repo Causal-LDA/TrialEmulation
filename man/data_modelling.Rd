@@ -30,7 +30,7 @@ data_modelling(
 
 \item{model_var}{List of Variables of interest to be used in final model.
 Derived variables to use in outcome models. Typically \code{assigned_treatment} for ITT and per-protocol,
-and \code{dose + dose^2} for as-treated. \code{time_on_regime}? TODO check what else is derived}
+and \code{dose + dose^2} for as-treated.}
 
 \item{first_followup}{First follow-up period}
 
