@@ -33,7 +33,9 @@ select_data_cols <- function(data,
   }
 
   assert_names(c(id, period, treatment, outcome, eligible), subset.of = colnames(data))
+
   data_new <- setDT(data)
+
   setnames(
     data_new,
     old = c(id, period, outcome, eligible, treatment),
