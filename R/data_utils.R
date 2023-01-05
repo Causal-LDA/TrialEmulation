@@ -43,7 +43,7 @@ select_data_cols <- function(data,
   )
 
   cols <- stats::na.omit(unique(c(eligible_wts_0, eligible_wts_1, cense, where_var, formula_vars)))
-  derived_col_names <- c("time_on_regime", "dose")
+  derived_col_names <- c("time_on_regime")
   assert_names(cols, subset.of = c(colnames(data_new), derived_col_names))
 
   data_new <- data_new[,
@@ -63,7 +63,7 @@ select_data_cols <- function(data,
 #' This function get the data.table with period column and expand it based on it
 #' @param y The data.table with period column
 
-f <- function(y) {
+expand_helper <- function(y) {
   last <- !duplicated(y$period, fromLast = TRUE)
   last_ind <- which(last == TRUE)
   return(seq(0, y$period[last_ind]))
@@ -80,7 +80,7 @@ for_period_func <- function(x) {
   period <- id <- for_period <- NULL
 
   x_new <- x[rep(seq_len(.N), period + 1), list(id, period)]
-  x_new[, for_period := f(.BY), by = list(id, period)]
+  x_new[, for_period := expand_helper(.BY), by = list(id, period)]
   return(x_new[, for_period])
 }
 
