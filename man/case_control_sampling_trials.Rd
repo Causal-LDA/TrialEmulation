@@ -9,6 +9,7 @@ case_control_sampling_trials(
   p_control = NULL,
   sample_all_times = TRUE,
   subset_condition,
+  sampling_threshold = 20,
   sort = FALSE
 )
 }
@@ -21,6 +22,9 @@ case_control_sampling_trials(
 when there is a case at that follow up time (FALSE)?}
 
 \item{subset_condition}{Expression used to \code{\link[=subset]{subset()}} the trial data before sampling.}
+
+\item{sampling_threshold}{If there are fewer control observations than this threshold for a trial/follow-up time
+then all observations at that time will be included in the sampled data (default = 20).}
 
 \item{sort}{Sort data before sampling. This ensures results are identical between data prepared with
 \code{separate_files} TRUE and FALSE.}
