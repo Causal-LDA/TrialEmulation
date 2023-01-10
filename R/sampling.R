@@ -3,8 +3,6 @@
 #' @param data_prep Result from [data_preparation()].
 #' @param p_control Proportion of controls to select at each follow-up time of each trial.
 #' @param subset_condition Expression used to [subset()] the trial data before sampling.
-#' @param sampling_threshold If there are fewer control observations than this threshold for a trial/follow-up time
-#'  then all observations at that time will be included in the sampled data (default = 20).
 #' @param sample_all_times Sample controls at all follow up times (TRUE) or only
 #' when there is a case at that follow up time (FALSE)?
 #' @param sort Sort data before sampling. This ensures results are identical between data prepared with
@@ -27,7 +25,6 @@ case_control_sampling_trials <- function(data_prep,
                                          p_control = NULL,
                                          sample_all_times = TRUE,
                                          subset_condition,
-                                         sampling_threshold = 20,
                                          sort = FALSE) {
   assert_flag(sample_all_times)
   assert_numeric(p_control, lower = 0, upper = 1, min.len = 1)
@@ -37,7 +34,7 @@ case_control_sampling_trials <- function(data_prep,
   }
 
 
-  args <- alist(data_prep, p_control, sample_all_times, use_subset, subset_expr, sort, sampling_threshold)
+  args <- alist(data_prep, p_control, sample_all_times, use_subset, subset_expr, sort)
   if (inherits(data_prep, "TE_data_prep_sep")) {
     trial_samples <- do.call(sample_data_prep_sep, args)
   } else if (inherits(data_prep, "TE_data_prep_dt")) {
@@ -59,8 +56,7 @@ sample_data_prep_sep <- function(data_prep,
                                  sample_all_times,
                                  use_subset,
                                  subset_expr,
-                                 sort,
-                                 sampling_threshold) {
+                                 sort) {
   trial_files <- data_prep$data
   exists <- vapply(trial_files, test_file_exists, logical(1L))
   if (any(!exists)) {
@@ -72,7 +68,7 @@ sample_data_prep_sep <- function(data_prep,
 
   lapply(trial_files, function(trial_file) {
     period_data <- rbind(template, fread(input = trial_file))
-    sample_from_period(period_data, p_control, use_subset, subset_expr, sample_all_times, sort, sampling_threshold)
+    sample_from_period(period_data, p_control, use_subset, subset_expr, sample_all_times, sort)
   })
 }
 
@@ -82,8 +78,7 @@ sample_data_prep_dt <- function(data_prep,
                                 sample_all_times,
                                 use_subset,
                                 subset_expr,
-                                sort,
-                                sampling_threshold) {
+                                sort) {
   periods <- sort(unique(data_prep$data$for_period))
   lapply(periods, function(t) {
     sample_from_period(
@@ -92,8 +87,7 @@ sample_data_prep_dt <- function(data_prep,
       use_subset,
       subset_expr,
       sample_all_times,
-      sort,
-      sampling_threshold
+      sort
     )
   })
 }
@@ -117,8 +111,7 @@ sample_from_period <- function(period_data,
                                use_subset,
                                subset_expr,
                                sample_all_times,
-                               sort = FALSE,
-                               sampling_threshold = 1) {
+                               sort = FALSE) {
   if (use_subset) period_data <- subset(period_data, eval(subset_expr))
   if (isTRUE(sort)) setorderv(period_data, c("followup_time", "id"))
   followup_split <- split(period_data, by = "followup_time")
@@ -128,8 +121,7 @@ sample_from_period <- function(period_data,
       followup_split,
       do_sampling,
       p_control = p,
-      sample_all_times = sample_all_times,
-      sampling_threshold = sampling_threshold
+      sample_all_times = sample_all_times
     ))
   })
   rbindlist(all_samples, idcol = "sample_id")
@@ -146,9 +138,7 @@ sample_from_period <- function(period_data,
 #'
 #' @return A data frame with the cases and the sampled controls
 #' @noRd
-do_sampling <- function(data, p_control = 0.01, sample_all_times = TRUE, sampling_threshold = 1) {
-  sample_weight <- NULL
-
+do_sampling <- function(data, p_control = 0.01, sample_all_times = TRUE) {
   ### cases occurred at each period and follow-up visit
   cases <- which(data$outcome == 1)
   ncase <- length(cases)
@@ -158,14 +148,10 @@ do_sampling <- function(data, p_control = 0.01, sample_all_times = TRUE, samplin
     ### controls (still under follow-up and events haven't occurred) at each period and follow-up visit
     controls <- which(data$outcome == 0)
     n_controls <- length(controls)
-    if (n_controls < sampling_threshold) {
-      n_sample <- n_controls
-    } else {
-      n_sample <- ceiling(n_controls * p_control)
-    }
+    n_sample <- rbinom(1, n_controls, p_control)
     controlselect <- sample(controls, size = n_sample)
     dataall <- data[c(cases, controlselect), ]
-    set(dataall, j = "sample_weight", value = c(rep(1, length(cases)), rep(n_controls / n_sample, n_sample)))
+    set(dataall, j = "sample_weight", value = c(rep(1, ncase), rep(1 / p_control, n_sample)))
   }
   dataall
 }

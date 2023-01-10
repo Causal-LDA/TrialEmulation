@@ -24,7 +24,7 @@ test_that("sample_from_period works as expected", {
 
   result <- sample_from_period(period_data = data, p_control = 0.01, use_subset = FALSE, sample_all_times = TRUE)
 
-  expect_data_frame(result, nrow = 156, ncol = 15)
+  expect_data_frame(result, nrow = 87, ncol = 15)
   expect_identical(unique(result$sample_id), 1L)
 
   result_cases <- result[outcome == 1, c("id", "for_period", "followup_time")]
@@ -44,7 +44,7 @@ test_that("sample_from_period works as expected when sample_all_times = FALSE", 
   data <- as.data.table(TrialEmulation::vignette_switch_data)[for_period == 272]
   set.seed(651)
   result <- sample_from_period(period_data = data, p_control = 0.01, use_subset = FALSE, sample_all_times = FALSE)
-  expect_data_frame(result, nrow = 58, ncol = 15)
+  expect_data_frame(result, nrow = 41, ncol = 15)
   expect_identical(unique(result$sample_id), 1L)
 
   result_cases <- result[outcome == 1, c("id", "for_period", "followup_time")]
@@ -68,10 +68,10 @@ test_that("sample_from_period works as expected with multiple proportions", {
     sample_all_times = FALSE
   )
 
-  expect_data_frame(result, nrow = 162, ncol = 15)
+  expect_data_frame(result, nrow = 129, ncol = 15)
   expect_identical(unique(result$sample_id), c(1L, 2L))
-  expect_data_frame(result[sample_id == 1], nrow = 58, ncol = 15)
-  expect_data_frame(result[sample_id == 2], nrow = 104, ncol = 15)
+  expect_data_frame(result[sample_id == 1], nrow = 44, ncol = 15)
+  expect_data_frame(result[sample_id == 2], nrow = 85, ncol = 15)
 
   expect_snapshot_value(as.data.frame(result[1:30, ]), style = "json2")
 
@@ -105,10 +105,9 @@ test_that("case_control_sampling_trials works with separate_files = TRUE", {
   samples <- case_control_sampling_trials(
     expanded_data,
     p_control = 0.01,
-    sample_all_time = FALSE,
-    sampling_threshold = 1
+    sample_all_time = FALSE
   )
-  expect_data_frame(samples, nrow = 435, ncol = 11)
+  expect_data_frame(samples, nrow = 263, ncol = 11)
   expect_snapshot_value(as.data.frame(samples[1:30, ]), style = "json2")
 })
 
@@ -126,10 +125,9 @@ test_that("case_control_sampling_trials works with separate_files = FALSE", {
   samples <- case_control_sampling_trials(
     expanded_data,
     p_control = 0.01,
-    sample_all_time = FALSE,
-    sampling_threshold = 1
+    sample_all_time = FALSE
   )
-  expect_data_frame(samples, nrow = 435, ncol = 11)
+  expect_data_frame(samples, nrow = 263, ncol = 11)
   expect_snapshot_value(as.data.frame(samples[1:30, ]), style = "json2")
 })
 
@@ -231,8 +229,8 @@ test_that("case_control_sampling_trials works with multiple p_control", {
     sample_all_time = FALSE
   )
   expect_list(samples, types = "data.frame", len = 2)
-  expect_data_frame(samples[[1]], nrow = 2151, ncol = 11)
-  expect_data_frame(samples[[2]], nrow = 2299, ncol = 11)
+  expect_data_frame(samples[[1]], nrow = 260, ncol = 11)
+  expect_data_frame(samples[[2]], nrow = 596, ncol = 11)
 })
 
 
@@ -266,53 +264,4 @@ test_that("case_control_sampling_trials works with sort = TRUE", {
   samples_f <- case_control_sampling_trials(expanded_data_f, p_control = 0.01, sample_all_time = FALSE, sort = TRUE)
 
   expect_identical(samples_f, samples_t)
-})
-
-test_that("case_control_sampling_trials works with sampling threshold", {
-  dat <- trial_example[trial_example$id < 200, ]
-  object <- data_preparation(
-    data = dat,
-    data_dir = save_dir,
-    outcome_cov = c("nvarA", "nvarB", "nvarC"),
-    first_period = 250,
-    last_period = 260,
-    separate_files = FALSE,
-    quiet = TRUE
-  )
-  result <- case_control_sampling_trials(object, p_control = 0.01, sampling_threshold = 25)
-
-  n_controls <- nrow(object$data[for_period == 250 & followup_time == 3 & outcome == 0, ])
-  sampled <- result[for_period == 250 & followup_time == 3 & outcome == 0, ]
-  n_sampled <- nrow(sampled)
-  expect_equal(sampled$sample_weight, n_controls / n_sampled)
-
-  n_controls <- nrow(object$data[for_period == 250 & followup_time == 127 & outcome == 0, ])
-  sampled <- result[for_period == 250 & followup_time == 127 & outcome == 0, ]
-  n_sampled <- nrow(sampled)
-  expect_equal(sampled$sample_weight, rep(n_controls / n_sampled, n_sampled))
-
-  above_threshold <- nrow(result[for_period == 250 & followup_time == 28 & outcome == 0, ])
-  expect_equal(above_threshold, 1)
-  at_threshold <- nrow(result[for_period == 250 & followup_time == 29 & outcome == 0, ])
-  expect_equal(at_threshold, 1)
-  below_threshold <- nrow(result[for_period == 250 & followup_time == 36 & outcome == 0, ])
-  expect_equal(below_threshold, 24)
-})
-
-test_that("case_control_sampling_trials works has correct sample_weights", {
-  dat <- trial_example[trial_example$id < 200, ]
-  object <- data_preparation(
-    data = dat,
-    data_dir = save_dir,
-    outcome_cov = c("nvarA", "nvarB", "nvarC"),
-    first_period = 260,
-    last_period = 280,
-    separate_files = FALSE,
-    quiet = TRUE
-  )
-  result <- case_control_sampling_trials(object, p_control = 0.01, sort = TRUE)
-  n_controls <- nrow(object$data[for_period == 270 & followup_time == 3 & outcome == 0, ])
-  sampled <- result[for_period == 270 & followup_time == 3 & outcome == 0, ]
-  n_sampled <- nrow(sampled)
-  expect_equal(sampled$sample_weight, n_controls / n_sampled)
 })
