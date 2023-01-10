@@ -1,20 +1,17 @@
 test_that("do_sampling works as expected when case exist", {
   data <- as.data.table(TrialEmulation::vignette_switch_data)[for_period == 272 & followup_time == 5]
   set.seed(100)
-  sample1 <- do_sampling(data, p_control = 0.1, sample_all_times = FALSE)
+  sample1 <- do_sampling(data, p_control = 0.1)
   expect_snapshot_value(as.data.frame(sample1), style = "json2")
 
-  sample01 <- do_sampling(data, p_control = 0.01, sample_all_times = FALSE)
+  sample01 <- do_sampling(data, p_control = 0.01)
   expect_snapshot_value(as.data.frame(sample01), style = "json2")
 })
 
 test_that("do_sampling works as expected when no cases exist", {
   data <- as.data.table(TrialEmulation::vignette_switch_data)[for_period == 5 & followup_time == 5]
   set.seed(1100)
-  result_null <- do_sampling(data, p_control = 0.1, sample_all_times = FALSE)
-  expect_null(result_null)
-
-  result_rows <- do_sampling(data, p_control = 0.1, sample_all_times = TRUE)
+  result_rows <- do_sampling(data, p_control = 0.1)
   expect_snapshot_value(as.data.frame(result_rows), style = "json2")
 })
 
@@ -22,7 +19,7 @@ test_that("sample_from_period works as expected", {
   data <- as.data.table(TrialEmulation::vignette_switch_data)[for_period == 272]
   set.seed(651)
 
-  result <- sample_from_period(period_data = data, p_control = 0.01, use_subset = FALSE, sample_all_times = TRUE)
+  result <- sample_from_period(period_data = data, p_control = 0.01, use_subset = FALSE)
 
   expect_data_frame(result, nrow = 87, ncol = 15)
   expect_identical(unique(result$sample_id), 1L)
@@ -40,38 +37,19 @@ test_that("sample_from_period works as expected", {
   )
 })
 
-test_that("sample_from_period works as expected when sample_all_times = FALSE", {
-  data <- as.data.table(TrialEmulation::vignette_switch_data)[for_period == 272]
-  set.seed(651)
-  result <- sample_from_period(period_data = data, p_control = 0.01, use_subset = FALSE, sample_all_times = FALSE)
-  expect_data_frame(result, nrow = 41, ncol = 15)
-  expect_identical(unique(result$sample_id), 1L)
-
-  result_cases <- result[outcome == 1, c("id", "for_period", "followup_time")]
-  expected_cases <- data[outcome == 1, c("id", "for_period", "followup_time")]
-  expect_equal(
-    result_cases[order(result_cases$followup_time, result_cases$id)],
-    expected_cases[order(expected_cases$followup_time, expected_cases$id)]
-  )
-  expect_data_frame(result[followup_time == 2], nrows = 0)
-
-  expect_snapshot_value(as.data.frame(result[outcome == 0, c("id", "for_period", "followup_time")]), style = "json2")
-})
-
 test_that("sample_from_period works as expected with multiple proportions", {
   data <- as.data.table(TrialEmulation::vignette_switch_data)[for_period == 272]
   set.seed(209)
   result <- sample_from_period(
     period_data = data,
     p_control = c(0.01, 0.05),
-    use_subset = FALSE,
-    sample_all_times = FALSE
+    use_subset = FALSE
   )
 
-  expect_data_frame(result, nrow = 129, ncol = 15)
+  expect_data_frame(result, nrow = 338, ncol = 15)
   expect_identical(unique(result$sample_id), c(1L, 2L))
-  expect_data_frame(result[sample_id == 1], nrow = 44, ncol = 15)
-  expect_data_frame(result[sample_id == 2], nrow = 85, ncol = 15)
+  expect_data_frame(result[sample_id == 1], nrow = 87, ncol = 15)
+  expect_data_frame(result[sample_id == 2], nrow = 251, ncol = 15)
 
   expect_snapshot_value(as.data.frame(result[1:30, ]), style = "json2")
 
@@ -102,12 +80,8 @@ test_that("case_control_sampling_trials works with separate_files = TRUE", {
     separate_files = TRUE,
     quiet = TRUE
   )
-  samples <- case_control_sampling_trials(
-    expanded_data,
-    p_control = 0.01,
-    sample_all_time = FALSE
-  )
-  expect_data_frame(samples, nrow = 263, ncol = 11)
+  samples <- case_control_sampling_trials(expanded_data, p_control = 0.01)
+  expect_data_frame(samples, nrow = 714, ncol = 11)
   expect_snapshot_value(as.data.frame(samples[1:30, ]), style = "json2")
 })
 
@@ -122,12 +96,8 @@ test_that("case_control_sampling_trials works with separate_files = FALSE", {
     separate_files = FALSE,
     quiet = TRUE
   )
-  samples <- case_control_sampling_trials(
-    expanded_data,
-    p_control = 0.01,
-    sample_all_time = FALSE
-  )
-  expect_data_frame(samples, nrow = 263, ncol = 11)
+  samples <- case_control_sampling_trials(expanded_data, p_control = 0.01)
+  expect_data_frame(samples, nrow = 714, ncol = 11)
   expect_snapshot_value(as.data.frame(samples[1:30, ]), style = "json2")
 })
 
@@ -183,7 +153,6 @@ test_that("case_control_sampling_trials gives errors for arguments", {
     case_control_sampling_trials(
       trial_example,
       p_control = 0.01,
-      sample_all_time = FALSE,
       subset_condition = nvarC > 75
     ),
     "Unknown data_prep object"
@@ -193,20 +162,9 @@ test_that("case_control_sampling_trials gives errors for arguments", {
     case_control_sampling_trials(
       trial_example,
       p_control = "a",
-      sample_all_time = FALSE,
       subset_condition = nvarC > 75
     ),
     "Must be of type 'numeric'"
-  )
-
-  expect_error(
-    case_control_sampling_trials(
-      trial_example,
-      p_control = 0.5,
-      sample_all_time = NULL,
-      subset_condition = nvarC > 75
-    ),
-    "Must be of type 'logical flag'"
   )
 })
 
@@ -225,12 +183,11 @@ test_that("case_control_sampling_trials works with multiple p_control", {
   set.seed(2090)
   samples <- case_control_sampling_trials(
     expanded_data,
-    p_control = c(0.01, 0.1),
-    sample_all_time = FALSE
+    p_control = c(0.01, 0.1)
   )
   expect_list(samples, types = "data.frame", len = 2)
-  expect_data_frame(samples[[1]], nrow = 260, ncol = 11)
-  expect_data_frame(samples[[2]], nrow = 596, ncol = 11)
+  expect_data_frame(samples[[1]], nrow = 696, ncol = 11)
+  expect_data_frame(samples[[2]], nrow = 5259, ncol = 11)
 })
 
 
@@ -258,10 +215,10 @@ test_that("case_control_sampling_trials works with sort = TRUE", {
     quiet = TRUE
   )
   set.seed(9999)
-  samples_t <- case_control_sampling_trials(expanded_data_t, p_control = 0.01, sample_all_time = FALSE, sort = TRUE)
+  samples_t <- case_control_sampling_trials(expanded_data_t, p_control = 0.01, sort = TRUE)
 
   set.seed(9999)
-  samples_f <- case_control_sampling_trials(expanded_data_f, p_control = 0.01, sample_all_time = FALSE, sort = TRUE)
+  samples_f <- case_control_sampling_trials(expanded_data_f, p_control = 0.01, sort = TRUE)
 
   expect_identical(samples_f, samples_t)
 })
