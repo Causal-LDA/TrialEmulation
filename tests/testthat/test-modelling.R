@@ -257,7 +257,7 @@ test_that("data_modelling works with missing sample weights", {
 test_that("data_modelling works with sample weights", {
   data <- readRDS(test_path("data/prep_data_object.rds"))
   set.seed(2020)
-  sampled_data <- case_control_sampling_trials(data, p_control = 0.5, sample_all_times = TRUE)
+  sampled_data <- case_control_sampling_trials(data, p_control = 0.5)
 
   expect_warning(
     result_sample <- data_modelling(
