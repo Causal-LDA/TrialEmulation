@@ -37,5 +37,5 @@ expanded_data <- data_preparation(
   first_period = 260,
   last_period = 280
 )
-samples <- case_control_sampling_trials(expanded_data, p_control = 0.01, sample_all_time = TRUE)
+samples <- case_control_sampling_trials(expanded_data, p_control = 0.01)
 }
