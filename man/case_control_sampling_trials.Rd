@@ -7,7 +7,6 @@
 case_control_sampling_trials(
   data_prep,
   p_control = NULL,
-  sample_all_times = TRUE,
   subset_condition,
   sort = FALSE
 )
@@ -16,9 +15,6 @@ case_control_sampling_trials(
 \item{data_prep}{Result from \code{\link[=data_preparation]{data_preparation()}}.}
 
 \item{p_control}{Proportion of controls to select at each follow-up time of each trial.}
-
-\item{sample_all_times}{Sample controls at all follow up times (TRUE) or only
-when there is a case at that follow up time (FALSE)?}
 
 \item{subset_condition}{Expression used to \code{\link[=subset]{subset()}} the trial data before sampling.}
 
@@ -41,5 +37,5 @@ expanded_data <- data_preparation(
   first_period = 260,
   last_period = 280
 )
-samples <- case_control_sampling_trials(expanded_data, p_control = 0.01, sample_all_time = TRUE)
+samples <- case_control_sampling_trials(expanded_data, p_control = 0.01)
 }
