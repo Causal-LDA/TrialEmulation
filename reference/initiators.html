@@ -18,7 +18,7 @@ interface to the main working functions data_preparation() and data_modelling().
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">TrialEmulation</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.2.13</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.2.14</span>
       </span>
     </div>
 
@@ -85,7 +85,6 @@ interface to the main working functions <code><a href="data_preparation.html">da
 <span>  cense_n_cov <span class="op">=</span> <span class="op">~</span><span class="fl">1</span>,</span>
 <span>  include_followup_time <span class="op">=</span> <span class="op">~</span><span class="va">followup_time</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/r/base/AsIs.html" class="external-link">I</a></span><span class="op">(</span><span class="va">followup_time</span><span class="op">^</span><span class="fl">2</span><span class="op">)</span>,</span>
 <span>  include_expansion_time <span class="op">=</span> <span class="op">~</span><span class="va">for_period</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/r/base/AsIs.html" class="external-link">I</a></span><span class="op">(</span><span class="va">for_period</span><span class="op">^</span><span class="fl">2</span><span class="op">)</span>,</span>
-<span>  include_regime_length <span class="op">=</span> <span class="fl">0</span>,</span>
 <span>  eligible_wts_0 <span class="op">=</span> <span class="cn">NA</span>,</span>
 <span>  eligible_wts_1 <span class="op">=</span> <span class="cn">NA</span>,</span>
 <span>  where_var <span class="op">=</span> <span class="cn">NULL</span>,</span>
@@ -130,17 +129,17 @@ interface to the main working functions <code><a href="data_preparation.html">da
 <dt>model_var</dt>
 <dd><p>List of Variables of interest to be used in final model.
 Derived variables to use in outcome models. Typically <code>assigned_treatment</code> for ITT and per-protocol,
-and <code>dose + dose^2</code> for as-treated. <code>time_on_regime</code>? TODO check what else is derived</p></dd>
+and <code>dose + dose^2</code> for as-treated.</p></dd>
 
 
 <dt>switch_n_cov</dt>
 <dd><p>A RHS formula for modelling probability of switching treatment. Used in the numerator of weight
-calculation.</p></dd>
+calculation. May use <code>time_on_regime</code> to include treatment duration.</p></dd>
 
 
 <dt>switch_d_cov</dt>
 <dd><p>A RHS formula for modelling probability of switching treatment. Used in the denominator of weight
-calculation.</p></dd>
+calculation. May use <code>time_on_regime</code> to include treatment duration.</p></dd>
 
 
 <dt>first_period</dt>
@@ -214,11 +213,6 @@ specified as a RHS formula.</p></dd>
 specified as a RHS formula.</p></dd>
 
 
-<dt>include_regime_length</dt>
-<dd><p>If defined as 1 a new variable (time_on_regime) is added to dataset.
-This variable stores the duration of time that the patient has been on the current treatment value</p></dd>
-
-
 <dt>eligible_wts_0</dt>
 <dd><p>Eligibility criteria used in weights for model condition Am1 = 0</p></dd>
 
@@ -274,7 +268,7 @@ or arguments to <code>control</code>. See <a href="https://rdrr.io/r/stats/glm.h
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer></div>
