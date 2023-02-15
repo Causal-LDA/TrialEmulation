@@ -41,7 +41,7 @@ data_modelling <- function(data,
 
   arg_checks <- makeAssertCollection()
   assert_data_frame(data, add = arg_checks)
-  assert_multi_class(outcome_cov, classes = c("formula", "character"), add = arg_checks)
+  outcome_cov <- as_formula(outcome_cov, add = arg_checks)
   assert_multi_class(model_var, classes = c("formula", "character"), null.ok = TRUE, add = arg_checks)
   assert_integerish(first_followup, lower = 0, all.missing = TRUE, len = 1, add = arg_checks)
   assert_integerish(last_followup, lower = 0, all.missing = TRUE, len = 1, add = arg_checks)
@@ -50,17 +50,14 @@ data_modelling <- function(data,
     assert_choice(analysis_weights[1], choices = c("asis", "unweighted", "p99", "weight_limits"), add = arg_checks)
   assert_numeric(weight_limits, len = 2, lower = 0, upper = Inf, sorted = TRUE, add = arg_checks)
   assert_flag(use_censor, add = arg_checks)
-  assert_multi_class(include_followup_time, classes = c("formula", "character"), add = arg_checks)
+  include_followup_time <- as_formula(include_followup_time, add = arg_checks)
+  include_expansion_time <- as_formula(include_expansion_time, add = arg_checks)
   assert_multi_class(include_expansion_time, classes = c("formula", "character"), add = arg_checks)
   assert_character(where_case, add = arg_checks)
   glm_function <- assert_choice(glm_function[1], choices = c("glm", "parglm"), add = arg_checks)
   assert_flag(use_sample_weights, add = arg_checks)
   assert_flag(quiet, add = arg_checks)
   reportAssertions(arg_checks)
-
-  outcome_cov <- as_formula(outcome_cov)
-  include_followup_time <- as_formula(include_followup_time)
-  include_expansion_time <- as_formula(include_expansion_time)
 
   # Dummy variables used in data.table calls declared to prevent package check NOTES:
   weight <- sample_weight <- followup_time <- NULL
