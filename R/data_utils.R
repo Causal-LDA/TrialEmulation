@@ -97,7 +97,7 @@ weight_func <- function(sw_data,
                         eligible_wts_0 = NA,
                         eligible_wts_1 = NA,
                         cense = NA,
-                        pool_cense = 0,
+                        pool_cense = FALSE,
                         cense_d_cov = NA,
                         cense_n_cov = NA,
                         save_weight_models = FALSE,
@@ -230,7 +230,7 @@ weight_func <- function(sw_data,
     cense_d_cov <- update(cense_d_cov, paste("1 -", cense, "~ ."))
     cense_n_cov <- update(cense_n_cov, paste("1 -", cense, "~ ."))
 
-    if (pool_cense == 1) {
+    if (isTRUE(pool_cense)) {
       # -------------------- denominator -------------------------
       model1.cense <- fit_glm(
         data = sw_data,
@@ -414,7 +414,7 @@ weight_func <- function(sw_data,
   if (is.na(cense)) {
     sw_data[, wtC := 1.0]
   } else {
-    if (pool_cense == 0) {
+    if (isFALSE(pool_cense)) {
       sw_data[am_1 == 0, `:=`(pC_n = pC_n0, pC_d = pC_d0)]
       sw_data[am_1 == 1, `:=`(pC_n = pC_n1, pC_d = pC_d1)]
     }

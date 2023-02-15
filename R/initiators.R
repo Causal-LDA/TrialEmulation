@@ -29,9 +29,10 @@
 #' @param use_censor Use censoring for per-protocol analysis - censor person-times once a person-trial stops taking the
 #'  initial treatment value
 #' @param cense Censoring variable
-#' @param pool_cense Pool the numerator and denominator models (0: split models by previous treatment Am1 = 0 and
-#' Am1 = 1 as in treatment models and 1: pool all observations together into a single numerator and denominator model)
-#'  Defaults to 0
+#' @param pool_cense Pool the numerator and denominator models (`FALSE`: split models by previous treatment Am1 = 0 and
+#' Am1 = 1 as in treatment models and
+#' `TRUE`: pool all observations together into a single numerator and denominator model)
+#'  Defaults to `FALSE`
 #' @param include_followup_time The model to include the follow up time of the trial (`followup_time`) in outcome model,
 #'  specified as a RHS formula.
 #' @param include_expansion_time The model to include the trial period (`for_period`) in outcome model,
@@ -85,7 +86,7 @@ initiators <- function(data,
                        weight_limits = c(0, Inf),
                        use_censor = FALSE,
                        cense = NA,
-                       pool_cense = 0,
+                       pool_cense = FALSE,
                        cense_d_cov = ~1,
                        cense_n_cov = ~1,
                        include_followup_time = ~ followup_time + I(followup_time^2),

@@ -9,7 +9,7 @@ test_that("weight_func works as expected", {
       switch_n_cov = ~1,
       switch_d_cov = ~ X1 + X2,
       cense = "C",
-      pool_cense = 0,
+      pool_cense = FALSE,
       cense_d_cov = ~ X1 + X2 + X3 + X4 + age_s,
       cense_n_cov = ~ X3 + X4,
       save_weight_models = FALSE,
@@ -51,7 +51,7 @@ test_that("weight_func works saves model objects", {
     switch_n_cov = ~1,
     switch_d_cov = ~ X1 + X2,
     cense = "C",
-    pool_cense = 0,
+    pool_cense = FALSE,
     cense_d_cov = ~ X1 + X2 + X3 + X4 + age_s,
     cense_n_cov = ~ X3 + X4,
     save_weight_models = TRUE,
@@ -104,7 +104,7 @@ test_that("weight_func works with user specified time on regime", {
   expect_snapshot(for (i in result$censor_models) print(i))
 })
 
-test_that("weight_func works with pool_cense = 1", {
+test_that("weight_func works with pool_cense = TRUE", {
   data <- readRDS(test_path("data/pre_weight_func.rds"))
 
   result <- weight_func(
@@ -112,7 +112,7 @@ test_that("weight_func works with pool_cense = 1", {
     switch_n_cov = ~1,
     switch_d_cov = ~ X1 + X2,
     cense = "C",
-    pool_cense = 1,
+    pool_cense = TRUE,
     cense_d_cov = ~ X1 + X2 + X3 + X4 + age_s,
     cense_n_cov = ~ X3 + X4,
     quiet = TRUE
