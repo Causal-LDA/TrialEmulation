@@ -57,8 +57,8 @@ data_preparation <- function(data,
   assert_multi_class(switch_d_cov, classes = c("formula", "character"), add = arg_checks)
   assert_multi_class(cense_d_cov, classes = c("formula", "character"), add = arg_checks)
   assert_multi_class(cense_n_cov, classes = c("formula", "character"), add = arg_checks)
-  assert_integerish(first_period, lower = 0, all.missing = TRUE, add = arg_checks)
-  assert_integerish(last_period, lower = 0, all.missing = TRUE, add = arg_checks)
+  assert_integerish(first_period, lower = 0, all.missing = TRUE, len = 1, add = arg_checks)
+  assert_integerish(last_period, lower = 0, all.missing = TRUE, len = 1, add = arg_checks)
   reportAssertions(arg_checks)
 
   if (isTRUE(separate_files)) check_data_dir(data_dir)
