@@ -17,10 +17,10 @@ data_preparation(
   switch_d_cov = ~1,
   first_period = NA,
   last_period = NA,
-  use_weight = 0,
-  use_censor = 0,
+  use_weight = FALSE,
+  use_censor = FALSE,
   cense = NA,
-  pool_cense = 0,
+  pool_cense = FALSE,
   cense_d_cov = ~1,
   cense_n_cov = ~1,
   eligible_wts_0 = NA,
@@ -64,16 +64,17 @@ calculation. May use \code{time_on_regime} to include treatment duration.}
 
 \item{last_period}{Last period value to expand about}
 
-\item{use_weight}{Use weights in analysis. If 0 then no weights will be calculated.}
+\item{use_weight}{Use weights in analysis. If \code{FALSE} then no weights will be calculated.}
 
 \item{use_censor}{Use censoring for per-protocol analysis - censor person-times once a person-trial stops taking the
 initial treatment value}
 
 \item{cense}{Censoring variable}
 
-\item{pool_cense}{Pool the numerator and denominator models (0: split models by previous treatment Am1 = 0 and
-Am1 = 1 as in treatment models and 1: pool all observations together into a single numerator and denominator model)
-Defaults to 0}
+\item{pool_cense}{Pool the numerator and denominator models (\code{FALSE}: split models by previous treatment Am1 = 0 and
+Am1 = 1 as in treatment models and
+\code{TRUE}: pool all observations together into a single numerator and denominator model)
+Defaults to \code{FALSE}}
 
 \item{cense_d_cov}{A RHS formula for modelling probability of being censored. Used in the numerator of weight
 calculation.}

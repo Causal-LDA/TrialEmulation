@@ -4,7 +4,7 @@
 \alias{data_manipulation}
 \title{Data Manipulation Function}
 \usage{
-data_manipulation(data, use_censor = 1)
+data_manipulation(data, use_censor = TRUE)
 }
 \arguments{
 \item{data}{\code{data.table} to pre-process for weight calculation and extension.}
