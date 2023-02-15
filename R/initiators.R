@@ -58,10 +58,10 @@
 #' @details
 #' If `model_var = NULL` the package will add some terms to the outcome model:
 #'
-#'  * if `use_censor = 0` and `use_weight = 0`, an as-treated analysis will be done the outcome model will have
+#'  * if `use_censor = FALSE` and `use_weight = FALSE`, an as-treated analysis will be done the outcome model will have
 #'  `~ dose + I(dose^2)` terms added
-#'  * if `use_censor = 1`, a per-protocol analysis will be done with an `~assigned_treatment` term added
-#'  * if `use_censor = 0` and `use_weight = 1`, an intention to treat analysis will be done with an
+#'  * if `use_censor = TRUE`, a per-protocol analysis will be done with an `~assigned_treatment` term added
+#'  * if `use_censor = FALSE` and `use_weight = 1`, an intention to treat analysis will be done with an
 #'   `~assigned_treatment` term added
 #'
 #' @export
@@ -83,7 +83,7 @@ initiators <- function(data,
                        save_weight_models = FALSE,
                        analysis_weights = c("asis", "unweighted", "p99", "weight_limits"),
                        weight_limits = c(0, Inf),
-                       use_censor = 0,
+                       use_censor = FALSE,
                        cense = NA,
                        pool_cense = 0,
                        cense_d_cov = ~1,

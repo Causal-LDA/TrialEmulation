@@ -28,7 +28,7 @@ data_preparation <- function(data,
                              first_period = NA,
                              last_period = NA,
                              use_weight = 0,
-                             use_censor = 0,
+                             use_censor = FALSE,
                              cense = NA,
                              pool_cense = 0,
                              cense_d_cov = ~1,
@@ -44,8 +44,22 @@ data_preparation <- function(data,
                              quiet = FALSE,
                              ...) {
   assert_flag(quiet)
-  assert_flag(separate_files)
-  assert_flag(save_weight_models)
+  arg_checks <- makeAssertCollection()
+  assert_flag(use_weight, add = arg_checks)
+  assert_flag(use_censor, add = arg_checks)
+  assert_flag(pool_cense, add = arg_checks)
+  assert_flag(save_weight_models, add = arg_checks)
+  assert_flag(separate_files, add = arg_checks)
+  assert_flag(quiet, add = arg_checks)
+  assert_multi_class(outcome_cov, classes = c("formula", "character"), add = arg_checks)
+  assert_multi_class(model_var, classes = c("formula", "character"), null.ok = TRUE, add = arg_checks)
+  assert_multi_class(switch_n_cov, classes = c("formula", "character"), add = arg_checks)
+  assert_multi_class(switch_d_cov, classes = c("formula", "character"), add = arg_checks)
+  assert_multi_class(cense_d_cov, classes = c("formula", "character"), add = arg_checks)
+  assert_multi_class(cense_n_cov, classes = c("formula", "character"), add = arg_checks)
+  assert_integerish(first_period, lower = 0, all.missing = TRUE, add = arg_checks)
+  assert_integerish(last_period, lower = 0, all.missing = TRUE, add = arg_checks)
+  reportAssertions(arg_checks)
 
   if (isTRUE(separate_files)) check_data_dir(data_dir)
 
@@ -57,7 +71,7 @@ data_preparation <- function(data,
 
   model_var <- if (!is.null(model_var)) {
     as_formula(model_var)
-  } else if (use_censor == 0 && use_weight == 1) {
+  } else if (isFALSE(use_censor) && use_weight == 1) {
     ~dose
   } else {
     ~assigned_treatment

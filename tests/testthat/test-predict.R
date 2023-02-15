@@ -16,7 +16,7 @@ test_that("predict.RTE_model works as expected", {
     outcome_cov = c("catvarA", "catvarB", "catvarC", "nvarA", "nvarB", "nvarC"),
     include_followup_time = ~followup_time,
     include_expansion_time = ~for_period,
-    use_censor = 0,
+    use_censor = FALSE,
     use_weight = 0,
     quiet = TRUE
   )
@@ -95,7 +95,7 @@ test_that("predict.RTE_model works with interactions", {
         outcome_cov = ~ X1 + X2 + age_s,
         model_var = ~ assigned_treatment:followup_time,
         use_weight = 1,
-        use_censor = 1,
+        use_censor = TRUE,
         include_followup_time = ~followup_time,
         include_expansion_time = ~1,
         glm_function = c("glm"),

@@ -20,7 +20,7 @@ data_extension <- function(data,
                            outcomeCov_var = NA,
                            first_period = NA,
                            last_period = NA,
-                           use_censor = 0,
+                           use_censor = FALSE,
                            where_var = NA,
                            data_dir = "~/rds/hpc-work/",
                            separate_files = FALSE,
@@ -152,7 +152,7 @@ expand <- function(sw_data,
   switch_data[, period_new := sw_data[expand_index, period]]
   switch_data[, cumA_new := sw_data[expand_index, cumA]]
   switch_data[, treatment_new := sw_data[expand_index, treatment]]
-  if (use_censor == 1) {
+  if (isTRUE(use_censor)) {
     switch_data[, switch_new := sw_data[expand_index, switch]]
   } else {
     switch_data[, switch_new := 0]
@@ -168,7 +168,7 @@ expand <- function(sw_data,
 
   switch_data[, followup_time := period_new - for_period]
 
-  if (use_censor == 0 || "dose" %in% keeplist) {
+  if (isFALSE(use_censor) || "dose" %in% keeplist) {
     switch_data[, dose := cumA_new - dosesum + treat]
   }
 
@@ -181,7 +181,7 @@ expand <- function(sw_data,
   switch_data[, weight := (weight0 / wtprod)]
 
   switch_data[, case := 0]
-  if (use_censor == 0) {
+  if (isFALSE(use_censor)) {
     switch_data[(time_of_event == period_new & outcome_new == 1), case := 1]
   } else {
     switch_data[switch_new == 1, case := as.numeric(NA)]
