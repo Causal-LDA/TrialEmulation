@@ -26,7 +26,7 @@ data_modelling <- function(data,
                            model_var = NULL,
                            first_followup = NA,
                            last_followup = NA,
-                           use_weight = 0,
+                           use_weight = FALSE,
                            analysis_weights = c("asis", "unweighted", "p99", "weight_limits"),
                            weight_limits = c(0, Inf),
                            use_censor = FALSE,
@@ -78,7 +78,7 @@ data_modelling <- function(data,
   } else {
     # if the model_var is empty, we provide the needed variables based on analysis type
     if (isFALSE(use_censor)) {
-      if (use_weight == 0) {
+      if (isFALSE(use_weight)) {
         # for ITT analysis
         model_formula <- add_rhs(model_formula, ~assigned_treatment)
       } else {
@@ -112,7 +112,7 @@ data_modelling <- function(data,
   } else if (analysis_weights == "unweighted") {
     data[["weight"]] <- 1
   }
-  if (use_weight == 0) data[["weight"]] <- 1
+  if (isFALSE(use_weight)) data[["weight"]] <- 1
 
   if (!test_data_table(data, any.missing = FALSE)) {
     warning(

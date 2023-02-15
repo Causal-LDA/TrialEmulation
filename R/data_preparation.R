@@ -27,7 +27,7 @@ data_preparation <- function(data,
                              switch_d_cov = ~1,
                              first_period = NA,
                              last_period = NA,
-                             use_weight = 0,
+                             use_weight = FALSE,
                              use_censor = FALSE,
                              cense = NA,
                              pool_cense = 0,
@@ -71,7 +71,7 @@ data_preparation <- function(data,
 
   model_var <- if (!is.null(model_var)) {
     as_formula(model_var)
-  } else if (isFALSE(use_censor) && use_weight == 1) {
+  } else if (isFALSE(use_censor) && isTRUE(use_weight)) {
     ~dose
   } else {
     ~assigned_treatment
@@ -99,7 +99,7 @@ data_preparation <- function(data,
   quiet_msg_time(quiet, "Processing time of data manipulation: ", timing)
   quiet_line(quiet)
 
-  if (use_weight == 1) {
+  if (isTRUE(use_weight)) {
     weight_result <- weight_func(
       sw_data = data,
       switch_n_cov = switch_n_cov,
@@ -117,7 +117,7 @@ data_preparation <- function(data,
       ...
     )
     data <- weight_result$data
-  } else if (use_weight == 0) {
+  } else if (isFALSE(use_weight)) {
     set(data, j = "wt", value = 1)
   }
 

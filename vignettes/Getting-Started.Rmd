@@ -65,7 +65,7 @@ result <- initiators(
   model_var = "assigned_treatment",
   outcome_cov = c("catvarA", "catvarB", "catvarC", "nvarA", "nvarB", "nvarC"),
   use_censor = FALSE,
-  use_weight = 0
+  use_weight = FALSE
 )
 ```
 
@@ -117,7 +117,7 @@ prep_data <- data_preparation(
   data_dir = working_dir,
   save_weight_models = TRUE,
   use_censor = TRUE,
-  use_weight = 1,
+  use_weight = TRUE,
   chunk_size = 500,
   separate_files = TRUE,
   switch_n_cov = ~ nvarA + nvarB
@@ -175,7 +175,7 @@ model_result <- data_modelling(
   data = sampled_data,
   outcome_cov = c("catvarA", "catvarB", "catvarC", "nvarA", "nvarB", "nvarC"),
   model_var = "assigned_treatment",
-  use_weight = 1,
+  use_weight = TRUE,
   use_censor = FALSE,
   glm_function = "glm",
   use_sample_weights = TRUE
