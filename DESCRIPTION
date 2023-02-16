@@ -1,7 +1,7 @@
 Package: TrialEmulation
 Title: Design and conduct of causal analyses of observational
     time-to-event data using target trial emulation
-Version: 0.0.2.16
+Version: 0.0.2.17
 Authors@R: c(
     person("Roonak", "Rezvani", , "roonak.r74@gmail.com", role = "aut",
            comment = c(ORCID = "0000-0001-5580-5058", "Original package author")),
