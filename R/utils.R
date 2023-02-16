@@ -1,4 +1,3 @@
-
 #' Conditional Printing
 #'
 #' @param quiet (`logical`) Messages printed if `FALSE`
@@ -82,13 +81,14 @@ assert_monotonic <- function(x, increasing = TRUE) {
 #' Coerce to a Formula with RHS only
 #'
 #' @param x A formula or character vector.
+#' @param add A collection to store assertion messages. See [checkmate::AssertCollection].
 #'
 #' @return A formula
 #' @noRd
 #' @examples
 #' as_formula(c("age", "sex"))
-as_formula <- function(x) {
-  assert_multi_class(x, classes = c("formula", "character"))
+as_formula <- function(x, add = NULL) {
+  assert_multi_class(x, classes = c("formula", "character"), add = add)
   if (test_string(x, pattern = "~")) {
     x <- as.formula(x)
   } else if (is.character(x)) {

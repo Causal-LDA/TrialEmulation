@@ -10,7 +10,7 @@ data_extension(
   outcomeCov_var = NA,
   first_period = NA,
   last_period = NA,
-  use_censor = 0,
+  use_censor = FALSE,
   where_var = NA,
   data_dir = "~/rds/hpc-work/",
   separate_files = FALSE,

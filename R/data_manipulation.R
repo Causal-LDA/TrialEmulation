@@ -5,14 +5,14 @@
 #' @param data `data.table` to pre-process for weight calculation and extension.
 #' @param use_censor apply censoring due to treatment switch?
 
-data_manipulation <- function(data, use_censor = 1) {
+data_manipulation <- function(data, use_censor = TRUE) {
   # Dummy variables used in data.table calls declared to prevent package check NOTES:
   time_of_event <- am_1 <- cumA <- regime_start <- time_on_regime <- time_on_regime2 <-
     regime_start_shift <- started0 <- started1 <- stop0 <- stop1 <- eligible0_sw <-
     eligible1_sw <- delete <- eligible0 <- eligible1 <- wt <- after_eligibility <-
     after_event <- id <- period <- eligible <- outcome <- treatment <- NULL
 
-  assert_int(use_censor)
+  assert_flag(use_censor)
   len <- nrow(data)
   len_id <- length(unique(data[, id]))
 
@@ -60,7 +60,7 @@ data_manipulation <- function(data, use_censor = 1) {
   sw_data[, cumA := cumsum(cumA), by = id]
   sw_data[, regime_start_shift := NULL]
 
-  if (use_censor == 1) {
+  if (isTRUE(use_censor)) {
     sw_data[, started0 := NA_real_]
     sw_data[, started1 := NA_real_]
     sw_data[, stop0 := NA_real_]

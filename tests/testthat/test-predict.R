@@ -1,4 +1,3 @@
-
 test_that("predict.RTE_model works as expected", {
   trial_ex <- TrialEmulation::trial_example
   trial_ex$catvarA <- as.factor(trial_ex$catvarA)
@@ -16,8 +15,8 @@ test_that("predict.RTE_model works as expected", {
     outcome_cov = c("catvarA", "catvarB", "catvarC", "nvarA", "nvarB", "nvarC"),
     include_followup_time = ~followup_time,
     include_expansion_time = ~for_period,
-    use_censor = 0,
-    use_weight = 0,
+    use_censor = FALSE,
+    use_weight = FALSE,
     quiet = TRUE
   )
 
@@ -44,7 +43,7 @@ test_that("predict.RTE_model works with newdata", {
     include_followup_time = ~followup_time,
     include_expansion_time = ~for_period,
     use_sample_weights = FALSE,
-    use_weight = 1,
+    use_weight = TRUE,
     glm_function = "glm",
     quiet = TRUE
   )
@@ -94,8 +93,8 @@ test_that("predict.RTE_model works with interactions", {
         data = data,
         outcome_cov = ~ X1 + X2 + age_s,
         model_var = ~ assigned_treatment:followup_time,
-        use_weight = 1,
-        use_censor = 1,
+        use_weight = TRUE,
+        use_censor = TRUE,
         include_followup_time = ~followup_time,
         include_expansion_time = ~1,
         glm_function = c("glm"),

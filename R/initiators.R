@@ -18,20 +18,21 @@
 #' @param last_period Last period value to expand about
 #' @param first_followup First follow-up period
 #' @param last_followup Last follow-up period
-#' @param use_weight Use weights in analysis. If 0 then no weights will be calculated.
+#' @param use_weight Use weights in analysis. If `FALSE` then no weights will be calculated.
 #' @param save_weight_models Save weight models objects in `data_dir`.
 #' @param analysis_weights One of
 #'  * `"asis"`: use the weights as calculated
 #'  * `"p99"`: truncate weights at the 1st and 99th percentiles
 #'  * `"weight_limits"`: truncate weights at the values specified in `weight_limits`
-#'  * `"unweighted"`: set all analysis weights to 1, even with `use_weights = 1`
+#'  * `"unweighted"`: set all analysis weights to 1, even with `use_weight = TRUE`
 #' @param weight_limits Lower and upper limits to truncate weights, given as `c(lower, upper)`
 #' @param use_censor Use censoring for per-protocol analysis - censor person-times once a person-trial stops taking the
 #'  initial treatment value
 #' @param cense Censoring variable
-#' @param pool_cense Pool the numerator and denominator models (0: split models by previous treatment Am1 = 0 and
-#' Am1 = 1 as in treatment models and 1: pool all observations together into a single numerator and denominator model)
-#'  Defaults to 0
+#' @param pool_cense Pool the numerator and denominator models (`FALSE`: split models by previous treatment Am1 = 0 and
+#' Am1 = 1 as in treatment models and
+#' `TRUE`: pool all observations together into a single numerator and denominator model)
+#'  Defaults to `FALSE`
 #' @param include_followup_time The model to include the follow up time of the trial (`followup_time`) in outcome model,
 #'  specified as a RHS formula.
 #' @param include_expansion_time The model to include the trial period (`for_period`) in outcome model,
@@ -58,10 +59,10 @@
 #' @details
 #' If `model_var = NULL` the package will add some terms to the outcome model:
 #'
-#'  * if `use_censor = 0` and `use_weight = 0`, an as-treated analysis will be done the outcome model will have
+#'  * if `use_censor = FALSE` and `use_weight = FALSE`, an as-treated analysis will be done the outcome model will have
 #'  `~ dose + I(dose^2)` terms added
-#'  * if `use_censor = 1`, a per-protocol analysis will be done with an `~assigned_treatment` term added
-#'  * if `use_censor = 0` and `use_weight = 1`, an intention to treat analysis will be done with an
+#'  * if `use_censor = TRUE`, a per-protocol analysis will be done with an `~assigned_treatment` term added
+#'  * if `use_censor = FALSE` and `use_weight = TRUE`, an intention to treat analysis will be done with an
 #'   `~assigned_treatment` term added
 #'
 #' @export
@@ -79,13 +80,13 @@ initiators <- function(data,
                        last_period = NA,
                        first_followup = NA,
                        last_followup = NA,
-                       use_weight = 0,
+                       use_weight = FALSE,
                        save_weight_models = FALSE,
                        analysis_weights = c("asis", "unweighted", "p99", "weight_limits"),
                        weight_limits = c(0, Inf),
-                       use_censor = 0,
+                       use_censor = FALSE,
                        cense = NA,
-                       pool_cense = 0,
+                       pool_cense = FALSE,
                        cense_d_cov = ~1,
                        cense_n_cov = ~1,
                        include_followup_time = ~ followup_time + I(followup_time^2),

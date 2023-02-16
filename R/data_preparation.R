@@ -27,10 +27,10 @@ data_preparation <- function(data,
                              switch_d_cov = ~1,
                              first_period = NA,
                              last_period = NA,
-                             use_weight = 0,
-                             use_censor = 0,
+                             use_weight = FALSE,
+                             use_censor = FALSE,
                              cense = NA,
-                             pool_cense = 0,
+                             pool_cense = FALSE,
                              cense_d_cov = ~1,
                              cense_n_cov = ~1,
                              eligible_wts_0 = NA,
@@ -44,8 +44,22 @@ data_preparation <- function(data,
                              quiet = FALSE,
                              ...) {
   assert_flag(quiet)
-  assert_flag(separate_files)
-  assert_flag(save_weight_models)
+  arg_checks <- makeAssertCollection()
+  assert_flag(use_weight, add = arg_checks)
+  assert_flag(use_censor, add = arg_checks)
+  assert_flag(pool_cense, add = arg_checks)
+  assert_flag(save_weight_models, add = arg_checks)
+  assert_flag(separate_files, add = arg_checks)
+  assert_flag(quiet, add = arg_checks)
+  assert_multi_class(outcome_cov, classes = c("formula", "character"), add = arg_checks)
+  assert_multi_class(model_var, classes = c("formula", "character"), null.ok = TRUE, add = arg_checks)
+  assert_multi_class(switch_n_cov, classes = c("formula", "character"), add = arg_checks)
+  assert_multi_class(switch_d_cov, classes = c("formula", "character"), add = arg_checks)
+  assert_multi_class(cense_d_cov, classes = c("formula", "character"), add = arg_checks)
+  assert_multi_class(cense_n_cov, classes = c("formula", "character"), add = arg_checks)
+  assert_integerish(first_period, lower = 0, all.missing = TRUE, len = 1, add = arg_checks)
+  assert_integerish(last_period, lower = 0, all.missing = TRUE, len = 1, add = arg_checks)
+  reportAssertions(arg_checks)
 
   if (isTRUE(separate_files)) check_data_dir(data_dir)
 
@@ -57,7 +71,7 @@ data_preparation <- function(data,
 
   model_var <- if (!is.null(model_var)) {
     as_formula(model_var)
-  } else if (use_censor == 0 && use_weight == 1) {
+  } else if (isFALSE(use_censor) && isTRUE(use_weight)) {
     ~dose
   } else {
     ~assigned_treatment
@@ -85,7 +99,7 @@ data_preparation <- function(data,
   quiet_msg_time(quiet, "Processing time of data manipulation: ", timing)
   quiet_line(quiet)
 
-  if (use_weight == 1) {
+  if (isTRUE(use_weight)) {
     weight_result <- weight_func(
       sw_data = data,
       switch_n_cov = switch_n_cov,
@@ -103,7 +117,7 @@ data_preparation <- function(data,
       ...
     )
     data <- weight_result$data
-  } else if (use_weight == 0) {
+  } else if (isFALSE(use_weight)) {
     set(data, j = "wt", value = 1)
   }
 

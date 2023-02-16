@@ -26,10 +26,10 @@ data_modelling <- function(data,
                            model_var = NULL,
                            first_followup = NA,
                            last_followup = NA,
-                           use_weight = 0,
+                           use_weight = FALSE,
                            analysis_weights = c("asis", "unweighted", "p99", "weight_limits"),
                            weight_limits = c(0, Inf),
-                           use_censor = 0,
+                           use_censor = FALSE,
                            include_followup_time = ~ followup_time + I(followup_time^2),
                            include_expansion_time = ~ for_period + I(for_period^2),
                            where_case = NA,
@@ -39,14 +39,25 @@ data_modelling <- function(data,
                            ...) {
   if (inherits(data, "TE_data_prep_dt")) data <- data$data
 
-  assert_data_frame(data)
-  assert_flag(quiet)
-  outcome_cov <- as_formula(outcome_cov)
-  include_followup_time <- as_formula(include_followup_time)
-  include_expansion_time <- as_formula(include_expansion_time)
-  glm_function <- match.arg(glm_function)
-  analysis_weights <- match.arg(analysis_weights)
-  assert_numeric(weight_limits, len = 2, lower = 0, upper = Inf)
+  arg_checks <- makeAssertCollection()
+  assert_data_frame(data, add = arg_checks)
+  outcome_cov <- as_formula(outcome_cov, add = arg_checks)
+  assert_multi_class(model_var, classes = c("formula", "character"), null.ok = TRUE, add = arg_checks)
+  assert_integerish(first_followup, lower = 0, all.missing = TRUE, len = 1, add = arg_checks)
+  assert_integerish(last_followup, lower = 0, all.missing = TRUE, len = 1, add = arg_checks)
+  assert_flag(use_weight, add = arg_checks)
+  analysis_weights <-
+    assert_choice(analysis_weights[1], choices = c("asis", "unweighted", "p99", "weight_limits"), add = arg_checks)
+  assert_numeric(weight_limits, len = 2, lower = 0, upper = Inf, sorted = TRUE, add = arg_checks)
+  assert_flag(use_censor, add = arg_checks)
+  include_followup_time <- as_formula(include_followup_time, add = arg_checks)
+  include_expansion_time <- as_formula(include_expansion_time, add = arg_checks)
+  assert_multi_class(include_expansion_time, classes = c("formula", "character"), add = arg_checks)
+  assert_character(where_case, add = arg_checks)
+  glm_function <- assert_choice(glm_function[1], choices = c("glm", "parglm"), add = arg_checks)
+  assert_flag(use_sample_weights, add = arg_checks)
+  assert_flag(quiet, add = arg_checks)
+  reportAssertions(arg_checks)
 
   # Dummy variables used in data.table calls declared to prevent package check NOTES:
   weight <- sample_weight <- followup_time <- NULL
@@ -77,8 +88,8 @@ data_modelling <- function(data,
     model_formula <- add_rhs(model_formula, as_formula(model_var))
   } else {
     # if the model_var is empty, we provide the needed variables based on analysis type
-    if (use_censor == 0) {
-      if (use_weight == 0) {
+    if (isFALSE(use_censor)) {
+      if (isFALSE(use_weight)) {
         # for ITT analysis
         model_formula <- add_rhs(model_formula, ~assigned_treatment)
       } else {
@@ -112,7 +123,7 @@ data_modelling <- function(data,
   } else if (analysis_weights == "unweighted") {
     data[["weight"]] <- 1
   }
-  if (use_weight == 0) data[["weight"]] <- 1
+  if (isFALSE(use_weight)) data[["weight"]] <- 1
 
   if (!test_data_table(data, any.missing = FALSE)) {
     warning(

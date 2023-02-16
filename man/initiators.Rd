@@ -19,13 +19,13 @@ initiators(
   last_period = NA,
   first_followup = NA,
   last_followup = NA,
-  use_weight = 0,
+  use_weight = FALSE,
   save_weight_models = FALSE,
   analysis_weights = c("asis", "unweighted", "p99", "weight_limits"),
   weight_limits = c(0, Inf),
-  use_censor = 0,
+  use_censor = FALSE,
   cense = NA,
-  pool_cense = 0,
+  pool_cense = FALSE,
   cense_d_cov = ~1,
   cense_n_cov = ~1,
   include_followup_time = ~followup_time + I(followup_time^2),
@@ -73,7 +73,7 @@ calculation. May use \code{time_on_regime} to include treatment duration.}
 
 \item{last_followup}{Last follow-up period}
 
-\item{use_weight}{Use weights in analysis. If 0 then no weights will be calculated.}
+\item{use_weight}{Use weights in analysis. If \code{FALSE} then no weights will be calculated.}
 
 \item{save_weight_models}{Save weight models objects in \code{data_dir}.}
 
@@ -82,7 +82,7 @@ calculation. May use \code{time_on_regime} to include treatment duration.}
 \item \code{"asis"}: use the weights as calculated
 \item \code{"p99"}: truncate weights at the 1st and 99th percentiles
 \item \code{"weight_limits"}: truncate weights at the values specified in \code{weight_limits}
-\item \code{"unweighted"}: set all analysis weights to 1, even with \code{use_weights = 1}
+\item \code{"unweighted"}: set all analysis weights to 1, even with \code{use_weight = TRUE}
 }}
 
 \item{weight_limits}{Lower and upper limits to truncate weights, given as \code{c(lower, upper)}}
@@ -92,9 +92,10 @@ initial treatment value}
 
 \item{cense}{Censoring variable}
 
-\item{pool_cense}{Pool the numerator and denominator models (0: split models by previous treatment Am1 = 0 and
-Am1 = 1 as in treatment models and 1: pool all observations together into a single numerator and denominator model)
-Defaults to 0}
+\item{pool_cense}{Pool the numerator and denominator models (\code{FALSE}: split models by previous treatment Am1 = 0 and
+Am1 = 1 as in treatment models and
+\code{TRUE}: pool all observations together into a single numerator and denominator model)
+Defaults to \code{FALSE}}
 
 \item{cense_d_cov}{A RHS formula for modelling probability of being censored. Used in the numerator of weight
 calculation.}
@@ -133,10 +134,10 @@ interface to the main working functions \code{\link[=data_preparation]{data_prep
 \details{
 If \code{model_var = NULL} the package will add some terms to the outcome model:
 \itemize{
-\item if \code{use_censor = 0} and \code{use_weight = 0}, an as-treated analysis will be done the outcome model will have
+\item if \code{use_censor = FALSE} and \code{use_weight = FALSE}, an as-treated analysis will be done the outcome model will have
 \code{~ dose + I(dose^2)} terms added
-\item if \code{use_censor = 1}, a per-protocol analysis will be done with an \code{~assigned_treatment} term added
-\item if \code{use_censor = 0} and \code{use_weight = 1}, an intention to treat analysis will be done with an
+\item if \code{use_censor = TRUE}, a per-protocol analysis will be done with an \code{~assigned_treatment} term added
+\item if \code{use_censor = FALSE} and \code{use_weight = TRUE}, an intention to treat analysis will be done with an
 \code{~assigned_treatment} term added
 }
 }

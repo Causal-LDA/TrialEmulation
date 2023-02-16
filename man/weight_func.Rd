@@ -11,7 +11,7 @@ weight_func(
   eligible_wts_0 = NA,
   eligible_wts_1 = NA,
   cense = NA,
-  pool_cense = 0,
+  pool_cense = FALSE,
   cense_d_cov = NA,
   cense_n_cov = NA,
   save_weight_models = FALSE,
@@ -36,9 +36,10 @@ calculation. May use \code{time_on_regime} to include treatment duration.}
 
 \item{cense}{Censoring variable}
 
-\item{pool_cense}{Pool the numerator and denominator models (0: split models by previous treatment Am1 = 0 and
-Am1 = 1 as in treatment models and 1: pool all observations together into a single numerator and denominator model)
-Defaults to 0}
+\item{pool_cense}{Pool the numerator and denominator models (\code{FALSE}: split models by previous treatment Am1 = 0 and
+Am1 = 1 as in treatment models and
+\code{TRUE}: pool all observations together into a single numerator and denominator model)
+Defaults to \code{FALSE}}
 
 \item{cense_d_cov}{A RHS formula for modelling probability of being censored. Used in the numerator of weight
 calculation.}
