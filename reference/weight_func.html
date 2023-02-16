@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">TrialEmulation</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.2.14</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.2.15</span>
       </span>
     </div>
 
@@ -64,7 +64,7 @@
 <span>  eligible_wts_0 <span class="op">=</span> <span class="cn">NA</span>,</span>
 <span>  eligible_wts_1 <span class="op">=</span> <span class="cn">NA</span>,</span>
 <span>  cense <span class="op">=</span> <span class="cn">NA</span>,</span>
-<span>  pool_cense <span class="op">=</span> <span class="fl">0</span>,</span>
+<span>  pool_cense <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  cense_d_cov <span class="op">=</span> <span class="cn">NA</span>,</span>
 <span>  cense_n_cov <span class="op">=</span> <span class="cn">NA</span>,</span>
 <span>  save_weight_models <span class="op">=</span> <span class="cn">FALSE</span>,</span>
@@ -104,9 +104,10 @@ calculation. May use <code>time_on_regime</code> to include treatment duration.<
 
 
 <dt>pool_cense</dt>
-<dd><p>Pool the numerator and denominator models (0: split models by previous treatment Am1 = 0 and
-Am1 = 1 as in treatment models and 1: pool all observations together into a single numerator and denominator model)
-Defaults to 0</p></dd>
+<dd><p>Pool the numerator and denominator models (<code>FALSE</code>: split models by previous treatment Am1 = 0 and
+Am1 = 1 as in treatment models and
+<code>TRUE</code>: pool all observations together into a single numerator and denominator model)
+Defaults to <code>FALSE</code></p></dd>
 
 
 <dt>cense_d_cov</dt>
