@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage line-rate="0.935455349248453" branch-rate="0" lines-covered="1058" lines-valid="1131" branches-covered="0" branches-valid="0" complexity="0" version="3.6.1" timestamp="2023-02-15 13:33:30">
+<coverage line-rate="0.935455349248453" branch-rate="0" lines-covered="1058" lines-valid="1131" branches-covered="0" branches-valid="0" complexity="0" version="3.6.1" timestamp="2023-02-16 07:54:52">
   <sources/>
   <packages>
     <package name="TrialEmulation" line-rate="0.935455349248453" branch-rate="0" complexity="0">
@@ -2272,98 +2272,98 @@
           <methods>
             <method name="quiet_print" signature="" line-rate="1" branch-rate="0">
               <lines>
-                <line number="14" hits="94" branch="false"/>
-                <line number="15" hits="9" branch="false"/>
+                <line number="13" hits="94" branch="false"/>
+                <line number="14" hits="9" branch="false"/>
               </lines>
             </method>
             <method name="quiet_msg" signature="" line-rate="1" branch-rate="0">
               <lines>
-                <line number="28" hits="417" branch="false"/>
-                <line number="29" hits="22" branch="false"/>
+                <line number="27" hits="417" branch="false"/>
+                <line number="28" hits="22" branch="false"/>
               </lines>
             </method>
             <method name="quiet_line" signature="" line-rate="1" branch-rate="0">
               <lines>
-                <line number="38" hits="104" branch="false"/>
+                <line number="37" hits="104" branch="false"/>
               </lines>
             </method>
             <method name="console_line" signature="" line-rate="1" branch-rate="0">
               <lines>
-                <line number="42" hits="22" branch="false"/>
+                <line number="41" hits="22" branch="false"/>
               </lines>
             </method>
             <method name="cat_underline" signature="" line-rate="1" branch-rate="0">
               <lines>
-                <line number="46" hits="6" branch="false"/>
+                <line number="45" hits="6" branch="false"/>
               </lines>
             </method>
             <method name="quiet_msg_time" signature="" line-rate="1" branch-rate="0">
               <lines>
+                <line number="56" hits="70" branch="false"/>
                 <line number="57" hits="70" branch="false"/>
                 <line number="58" hits="70" branch="false"/>
-                <line number="59" hits="70" branch="false"/>
               </lines>
             </method>
             <method name="assert_monotonic" signature="" line-rate="1" branch-rate="0">
               <lines>
-                <line number="74" hits="37" branch="false"/>
-                <line number="75" hits="2" branch="false"/>
-                <line number="76" hits="35" branch="false"/>
-                <line number="77" hits="2" branch="false"/>
+                <line number="73" hits="37" branch="false"/>
+                <line number="74" hits="2" branch="false"/>
+                <line number="75" hits="35" branch="false"/>
+                <line number="76" hits="2" branch="false"/>
               </lines>
             </method>
             <method name="as_formula" signature="" line-rate="1" branch-rate="0">
               <lines>
+                <line number="91" hits="157" branch="false"/>
                 <line number="92" hits="157" branch="false"/>
-                <line number="93" hits="157" branch="false"/>
-                <line number="94" hits="1" branch="false"/>
-                <line number="95" hits="156" branch="false"/>
-                <line number="96" hits="37" branch="false"/>
+                <line number="93" hits="1" branch="false"/>
+                <line number="94" hits="156" branch="false"/>
+                <line number="95" hits="37" branch="false"/>
+                <line number="97" hits="157" branch="false"/>
                 <line number="98" hits="157" branch="false"/>
-                <line number="99" hits="157" branch="false"/>
               </lines>
             </method>
             <method name="add_rhs" signature="" line-rate="1" branch-rate="0">
               <lines>
-                <line number="113" hits="76" branch="false"/>
+                <line number="112" hits="76" branch="false"/>
               </lines>
             </method>
             <method name="extract_baseline" signature="" line-rate="1" branch-rate="0">
               <lines>
-                <line number="128" hits="1" branch="false"/>
+                <line number="127" hits="1" branch="false"/>
+                <line number="129" hits="1" branch="false"/>
                 <line number="130" hits="1" branch="false"/>
                 <line number="131" hits="1" branch="false"/>
-                <line number="132" hits="1" branch="false"/>
               </lines>
             </method>
           </methods>
           <lines>
-            <line number="14" hits="94" branch="false"/>
-            <line number="15" hits="9" branch="false"/>
-            <line number="28" hits="417" branch="false"/>
-            <line number="29" hits="22" branch="false"/>
-            <line number="38" hits="104" branch="false"/>
-            <line number="42" hits="22" branch="false"/>
-            <line number="46" hits="6" branch="false"/>
+            <line number="13" hits="94" branch="false"/>
+            <line number="14" hits="9" branch="false"/>
+            <line number="27" hits="417" branch="false"/>
+            <line number="28" hits="22" branch="false"/>
+            <line number="37" hits="104" branch="false"/>
+            <line number="41" hits="22" branch="false"/>
+            <line number="45" hits="6" branch="false"/>
+            <line number="56" hits="70" branch="false"/>
             <line number="57" hits="70" branch="false"/>
             <line number="58" hits="70" branch="false"/>
-            <line number="59" hits="70" branch="false"/>
-            <line number="74" hits="37" branch="false"/>
-            <line number="75" hits="2" branch="false"/>
-            <line number="76" hits="35" branch="false"/>
-            <line number="77" hits="2" branch="false"/>
+            <line number="73" hits="37" branch="false"/>
+            <line number="74" hits="2" branch="false"/>
+            <line number="75" hits="35" branch="false"/>
+            <line number="76" hits="2" branch="false"/>
+            <line number="91" hits="157" branch="false"/>
             <line number="92" hits="157" branch="false"/>
-            <line number="93" hits="157" branch="false"/>
-            <line number="94" hits="1" branch="false"/>
-            <line number="95" hits="156" branch="false"/>
-            <line number="96" hits="37" branch="false"/>
+            <line number="93" hits="1" branch="false"/>
+            <line number="94" hits="156" branch="false"/>
+            <line number="95" hits="37" branch="false"/>
+            <line number="97" hits="157" branch="false"/>
             <line number="98" hits="157" branch="false"/>
-            <line number="99" hits="157" branch="false"/>
-            <line number="113" hits="76" branch="false"/>
-            <line number="128" hits="1" branch="false"/>
+            <line number="112" hits="76" branch="false"/>
+            <line number="127" hits="1" branch="false"/>
+            <line number="129" hits="1" branch="false"/>
             <line number="130" hits="1" branch="false"/>
             <line number="131" hits="1" branch="false"/>
-            <line number="132" hits="1" branch="false"/>
           </lines>
         </class>
         <class name="code.cpp" filename="src/code.cpp" line-rate="0.925925925925926" branch-rate="0" complexity="0">
