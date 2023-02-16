@@ -1,4 +1,3 @@
-
 #' Conditional Printing
 #'
 #' @param quiet (`logical`) Messages printed if `FALSE`

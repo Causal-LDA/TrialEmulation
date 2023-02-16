@@ -1,4 +1,3 @@
-
 test_that("predict.RTE_model works as expected", {
   trial_ex <- TrialEmulation::trial_example
   trial_ex$catvarA <- as.factor(trial_ex$catvarA)
