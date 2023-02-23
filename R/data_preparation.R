@@ -43,7 +43,6 @@ data_preparation <- function(data,
                              separate_files = FALSE,
                              quiet = FALSE,
                              ...) {
-  assert_flag(quiet)
   arg_checks <- makeAssertCollection()
   assert_flag(use_weight, add = arg_checks)
   assert_flag(use_censor, add = arg_checks)

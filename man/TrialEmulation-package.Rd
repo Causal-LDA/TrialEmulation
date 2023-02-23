@@ -18,4 +18,10 @@ Authors:
   \item Li Su \email{li.su@mrc-bsu.cam.ac.uk}
 }
 
+Other contributors:
+\itemize{
+  \item F. Hoffmann-La Roche AG [copyright holder, funder]
+  \item MRC Biostatistics Unit, University of Cambridge [copyright holder, funder]
+}
+
 }

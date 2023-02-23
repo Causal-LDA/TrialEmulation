@@ -6,13 +6,15 @@ Authors@R: c(
     person("Roonak", "Rezvani", , "roonak.r74@gmail.com", role = "aut",
            comment = c(ORCID = "0000-0001-5580-5058", "Original package author")),
     person("Isaac", "Gravestock", , "isaac.gravestock@roche.com", role = c("aut", "cre")),
-    person("Li", "Su", , "li.su@mrc-bsu.cam.ac.uk", role = "aut")
+    person("Li", "Su", , "li.su@mrc-bsu.cam.ac.uk", role = "aut"),
+    person("F. Hoffmann-La Roche AG", role = c("cph", "fnd")),
+    person("MRC Biostatistics Unit, University of Cambridge", role = c("cph", "fnd"))
   )
 Description: This R package is is designed to estimate intention-to-treat
     and per-protocol effects in emulated trials using electronic health
     records. The package applies the randomized clinical trials design and
     analysis to an observational setting.
-License: GPL (>= 3)
+License: Apache License (>= 2)
 Depends: 
     R (>= 3.5.0)
 Imports: 
