@@ -6,4 +6,5 @@ linters: linters_with_defaults(
   )
 exclusions: list(
   "R/RcppExports.R"
+  "LICENSE.md"
   )
