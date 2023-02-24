@@ -1,13 +1,13 @@
 Package: TrialEmulation
 Title: Design and conduct of causal analyses of observational
     time-to-event data using target trial emulation
-Version: 0.0.2.17
+Version: 0.0.2.18
 Authors@R: c(
     person("Roonak", "Rezvani", , "roonak.r74@gmail.com", role = "aut",
            comment = c(ORCID = "0000-0001-5580-5058", "Original package author")),
     person("Isaac", "Gravestock", , "isaac.gravestock@roche.com", role = c("aut", "cre")),
     person("Li", "Su", , "li.su@mrc-bsu.cam.ac.uk", role = "aut"),
-    person("Medical Research Council (MRC)", role = c("fnd")),
+    person("Medical Research Council (MRC)", role = "fnd"),
     person("F. Hoffmann-La Roche AG", role = c("cph", "fnd"))
   )
 Description: This R package is is designed to estimate intention-to-treat
