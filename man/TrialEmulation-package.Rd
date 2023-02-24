@@ -20,8 +20,8 @@ Authors:
 
 Other contributors:
 \itemize{
+  \item Medical Research Council (MRC) [funder]
   \item F. Hoffmann-La Roche AG [copyright holder, funder]
-  \item MRC Biostatistics Unit, University of Cambridge [copyright holder, funder]
 }
 
 }

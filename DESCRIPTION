@@ -7,8 +7,8 @@ Authors@R: c(
            comment = c(ORCID = "0000-0001-5580-5058", "Original package author")),
     person("Isaac", "Gravestock", , "isaac.gravestock@roche.com", role = c("aut", "cre")),
     person("Li", "Su", , "li.su@mrc-bsu.cam.ac.uk", role = "aut"),
-    person("F. Hoffmann-La Roche AG", role = c("cph", "fnd")),
-    person("MRC Biostatistics Unit, University of Cambridge", role = c("cph", "fnd"))
+    person("Medical Research Council (MRC)", role = c("fnd")),
+    person("F. Hoffmann-La Roche AG", role = c("cph", "fnd"))
   )
 Description: This R package is is designed to estimate intention-to-treat
     and per-protocol effects in emulated trials using electronic health
