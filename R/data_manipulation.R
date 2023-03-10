@@ -4,6 +4,7 @@
 #'
 #' @param data `data.table` to pre-process for weight calculation and extension.
 #' @param use_censor apply censoring due to treatment switch?
+#' @keywords internal
 
 data_manipulation <- function(data, use_censor = TRUE) {
   # Dummy variables used in data.table calls declared to prevent package check NOTES:

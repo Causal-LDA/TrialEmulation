@@ -45,3 +45,6 @@ testing/
 
 renv/
 .Rprofile
+
+# Pkgdown site
+docs/*

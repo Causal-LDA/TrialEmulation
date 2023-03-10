@@ -18,6 +18,7 @@ A formula of the form \code{~ rhs(f1) + rhs(f2)}
 Add RHS Parts of Formulas
 }
 \examples{
-add_rhs(~ a + b, z ~ c + log(d))
+TrialEmulation:::add_rhs(~ a + b, z ~ c + log(d))
 # ~ a + b + c + log(d)
 }
+\keyword{internal}

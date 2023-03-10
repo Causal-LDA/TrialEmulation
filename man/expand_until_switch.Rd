@@ -18,3 +18,4 @@ Vector of indicator values up until first switch.
 Check if patients have switched treatment in eligible trials
 and set \code{expand = 0}.
 }
+\keyword{internal}

@@ -2,7 +2,7 @@
 #'
 #' This function truncate the weights of data at the 1st and 99th percentile
 #' @param switch_data The data.table with weight column
-
+#' @noRd
 p99_weight <- function(switch_data) {
   # Dummy variables used in data.table calls declared to prevent package check NOTES:
   weight <- NULL
@@ -24,7 +24,7 @@ p99_weight <- function(switch_data) {
 #' @param switch_data The data.table contains weight column
 #' @param lower_limit The user defined minimum possible weight
 #' @param upper_limit The user defined maximum possible weight
-
+#' @noRd
 limit_weight <- function(switch_data, lower_limit, upper_limit) {
   # Dummy variables used in data.table calls declared to prevent package check NOTES:
   weight <- NULL

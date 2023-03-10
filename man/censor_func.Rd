@@ -9,3 +9,4 @@
 \description{
 Artificial censoring C++ function
 }
+\keyword{internal}

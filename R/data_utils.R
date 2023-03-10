@@ -15,6 +15,9 @@
 #' @param where_var Variables used in where conditions used in subsetting the data used in final analysis (where_case),
 #' @param formula_vars Variables used in outcome or weight models.
 #'  the variables not included in the final model.
+#'
+#' @returns A data.table with the required columns
+#' @keywords internal
 select_data_cols <- function(data,
                              id = "id",
                              period = "period",

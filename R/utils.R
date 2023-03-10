@@ -64,11 +64,11 @@ quiet_msg_time <- function(quiet, msg, proc_time) {
 #' @param increasing Test for increasing or decreasing.
 #'
 #' @return Nothing if check is successful, error otherwise.
-#' @export
+#' @keywords internal
 #'
 #' @examples
-#' assert_monotonic(1:3)
-#' assert_monotonic(c(0.02, 0.0187, 0.005), FALSE)
+#' TrialEmulation:::assert_monotonic(1:3)
+#' TrialEmulation:::assert_monotonic(c(0.02, 0.0187, 0.005), FALSE)
 assert_monotonic <- function(x, increasing = TRUE) {
   if (isTRUE(increasing) && !all(x == cummax(x))) {
     stop("Not monotonically increasing")
@@ -104,9 +104,9 @@ as_formula <- function(x, add = NULL) {
 #' @param f2 formula to extract right side
 #'
 #' @return A formula of the form `~ rhs(f1) + rhs(f2)`
-#' @export
+#' @keywords internal
 #' @examples
-#' add_rhs(~ a + b, z ~ c + log(d))
+#' TrialEmulation:::add_rhs(~ a + b, z ~ c + log(d))
 #' # ~ a + b + c + log(d)
 add_rhs <- function(f1, f2) {
   update.formula(f1, substitute(~ . + add, list(add = formula.tools::rhs(f2))))

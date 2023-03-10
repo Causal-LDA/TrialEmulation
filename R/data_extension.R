@@ -99,6 +99,7 @@ data_extension <- function(data,
 #' @param keeplist A list contains names of variables used in final model
 #'
 #' @import data.table
+#' @keywords internal
 
 expand <- function(sw_data,
                    outcomeCov_var,
@@ -204,8 +205,8 @@ expand <- function(sw_data,
 #' and set `expand = 0`.
 #' @param s numeric vector where `1` indicates a treatment switch in that period
 #' @param n length of s
-#'
 #' @return Vector of indicator values up until first switch.
+#' @keywords internal
 expand_until_switch <- function(s, n) {
   first_switch <- match(1, s)
   if (!is.na(first_switch)) {

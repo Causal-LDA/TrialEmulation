@@ -43,6 +43,10 @@ the variables not included in the final model.}
 
 \item{where_var}{Variables used in where conditions used in subsetting the data used in final analysis (where_case),}
 }
+\value{
+A data.table with the required columns
+}
 \description{
 Select the required columns from the data and rename
 }
+\keyword{internal}

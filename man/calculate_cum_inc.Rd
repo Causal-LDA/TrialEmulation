@@ -28,5 +28,6 @@ surv_prob <- matrix(
   byrow = TRUE
 )
 TrialEmulation:::calculate_cum_inc(surv_prob)
-TrialEmulation:::calculate_survival(surv_prob)
 }
+\keyword{TrialEmulation:::calculate_survival(surv_prob)}
+\keyword{internal}

@@ -18,6 +18,7 @@ Nothing if check is successful, error otherwise.
 Assert Monotonicity
 }
 \examples{
-assert_monotonic(1:3)
-assert_monotonic(c(0.02, 0.0187, 0.005), FALSE)
+TrialEmulation:::assert_monotonic(1:3)
+TrialEmulation:::assert_monotonic(c(0.02, 0.0187, 0.005), FALSE)
 }
+\keyword{internal}

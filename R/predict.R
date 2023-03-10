@@ -122,7 +122,7 @@ predict.TE_model <- function(object,
 #' @param newdata new data to predict, or missing.
 #' @param model glm model object.
 #' @param predict_times times to predict to add to resulting newdata.
-#' @noRd
+#' @keywords internal
 #' @return A `newdata` data.frame
 check_newdata <- function(newdata, model, predict_times) {
   required_vars <- setdiff(all.vars(model$formula), "outcome")
@@ -163,7 +163,7 @@ check_newdata <- function(newdata, model, predict_times) {
 #' @param p_mat Probability matrix with rows for each subject and follow-up time as the columns.
 #'
 #' @return A vector containing the cumulative incidence or survival values.
-#'
+#' @keywords internal
 #' @examples
 #' surv_prob <- matrix(
 #'   c(
@@ -182,7 +182,7 @@ calculate_cum_inc <- function(p_mat) {
 }
 
 #' @rdname calculate_cum_inc
-#' @examples
+#' @keywords internal
 #' TrialEmulation:::calculate_survival(surv_prob)
 calculate_survival <- function(p_mat) {
   assert_matrix(p_mat, mode = "numeric")
@@ -204,6 +204,7 @@ calculate_survival <- function(p_mat) {
 #'
 #' @return A matrix with transformed predicted values. Number of columns corresponds
 #'  to the number of rows of `coefs_mat`
+#' @keywords internal
 calculate_predictions <- function(newdata, model, treatment_values, pred_fun, coefs_mat, matrix_n_col) {
   model_terms <- delete.response(terms(model))
   model_frame <- model.frame(model_terms, newdata, xlev = model$xlevels)

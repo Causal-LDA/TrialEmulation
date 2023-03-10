@@ -33,3 +33,4 @@ to the number of rows of \code{coefs_mat}
 \description{
 Calculate and transform predictions
 }
+\keyword{internal}
