@@ -61,3 +61,4 @@ or arguments to \code{control}. See \link[stats:glm]{stats::glm}, \link[parglm:p
 \description{
 This function performs the calculation for weight of the data
 }
+\keyword{internal}

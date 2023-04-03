@@ -93,6 +93,7 @@ for_period_func <- function(x) {
 #' @param sw_data A data.table
 #' @param save_dir Directory to save tidy weight model summaries in as 'weight_models.rda'
 #' @inheritParams initiators
+#' @keywords internal
 #'
 weight_func <- function(sw_data,
                         switch_n_cov = NA,
