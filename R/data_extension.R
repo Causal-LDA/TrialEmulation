@@ -14,6 +14,7 @@
 #' @param data_dir Directory to save data
 #' @param separate_files Save expanded data in separate CSV files for each trial.
 #' @param chunk_size Number of ids to expand in each chunk
+#' @keywords internal
 
 data_extension <- function(data,
                            keeplist,

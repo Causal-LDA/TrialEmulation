@@ -65,6 +65,7 @@ select_data_cols <- function(data,
 #'
 #' This function get the data.table with period column and expand it based on it
 #' @param y The data.table with period column
+#' @keywords internal
 
 expand_helper <- function(y) {
   last <- !duplicated(y$period, fromLast = TRUE)
@@ -77,6 +78,7 @@ expand_helper <- function(y) {
 #' This function get the data.table with period and id columns and generate the for_period feature
 #' @param x The data.table with id and period columns
 #' for_period_func()
+#' @keywords internal
 
 for_period_func <- function(x) {
   # Dummy variables used in data.table calls declared to prevent package check NOTES:
