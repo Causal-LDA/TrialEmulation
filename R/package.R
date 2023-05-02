@@ -2,6 +2,7 @@
 #'
 #' `TrialEmulation` facilitates preprocessing and analysing observational data
 #' an emulated a randomised trial.
+#' @keywords internal
 "_PACKAGE"
 
 #' @import checkmate

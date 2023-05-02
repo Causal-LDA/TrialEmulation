@@ -1,0 +1,18 @@
+url: https://causal-lda.github.io/TrialEmulation
+
+reference:
+- title: User Functions
+- contents:
+  - initiators
+  - data_preparation
+  - data_modelling
+  - case_control_sampling_trials
+  - starts_with("predict")
+  - starts_with("print")
+  - starts_with("summary")
+  - starts_with("weights")
+  - extract_baseline
+- title: Data Sets
+- contents:
+  - trial_example
+  - vignette_switch_data
