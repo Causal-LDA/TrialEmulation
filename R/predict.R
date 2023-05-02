@@ -1,5 +1,3 @@
-
-
 #' Predict Cumulative Incidence with Confidence Intervals
 #'
 #' @param object Object from [data_modelling()] or [initiators()].

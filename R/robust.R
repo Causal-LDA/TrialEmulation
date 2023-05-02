@@ -1,4 +1,3 @@
-
 #' Robust Variance Calculation
 #'
 #' This function performs the calculation of robust standard errors based on
