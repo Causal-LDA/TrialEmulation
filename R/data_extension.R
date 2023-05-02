@@ -162,7 +162,7 @@ expand <- function(sw_data,
   switch_data[, outcome_new := sw_data[expand_index, outcome]]
   switch_data[, time_of_event := sw_data[expand_index, time_of_event]]
   switch_data[, weight0 := sw_data[expand_index, weight0]]
-  switch_data[, for_period := for_period_func(sw_data)]
+  switch_data[, for_period := sequence(sw_data[["period"]] + 1, from = 0)]
   switch_data[, index := seq_len(.N)]
 
   switch_data <- switch_data[temp_data, on = list(id = id, for_period = period)]
