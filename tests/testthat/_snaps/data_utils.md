@@ -15,10 +15,6 @@
               trace = FALSE, nthreads = 2, block_size = NULL, method = "FAST"), 
           method = parglm::parglm.fit, singular.ok = FALSE)
       
-      Deviance Residuals: 
-          Min       1Q   Median       3Q      Max  
-      -1.5619  -1.0320  -0.8117   1.2276   1.9618  
-      
       Coefficients:
                   Estimate Std. Error z value Pr(>|z|)    
       (Intercept) -0.52633    0.05629  -9.351  < 2e-16 ***
@@ -45,10 +41,6 @@
               trace = FALSE, nthreads = 2, block_size = NULL, method = "FAST"), 
           method = parglm::parglm.fit, singular.ok = FALSE)
       
-      Deviance Residuals: 
-         Min      1Q  Median      3Q     Max  
-      -1.038  -1.038  -1.038   1.323   1.323  
-      
       Coefficients:
                   Estimate Std. Error z value Pr(>|z|)    
       (Intercept)  -0.3366     0.0380  -8.857   <2e-16 ***
@@ -72,10 +64,6 @@
           data = data, control = list(epsilon = 1e-08, maxit = 25, 
               trace = FALSE, nthreads = 2, block_size = NULL, method = "FAST"), 
           method = parglm::parglm.fit, singular.ok = FALSE)
-      
-      Deviance Residuals: 
-          Min       1Q   Median       3Q      Max  
-      -2.1549  -1.2867   0.7295   0.8722   1.4429  
       
       Coefficients:
                   Estimate Std. Error z value Pr(>|z|)    
@@ -103,10 +91,6 @@
               trace = FALSE, nthreads = 2, block_size = NULL, method = "FAST"), 
           method = parglm::parglm.fit, singular.ok = FALSE)
       
-      Deviance Residuals: 
-          Min       1Q   Median       3Q      Max  
-      -1.5410  -1.5410   0.8531   0.8531   0.8531  
-      
       Coefficients:
                   Estimate Std. Error z value Pr(>|z|)    
       (Intercept)   0.8235     0.0468    17.6   <2e-16 ***
@@ -130,10 +114,6 @@
           data = data, control = list(epsilon = 1e-08, maxit = 25, 
               trace = FALSE, nthreads = 2, block_size = NULL, method = "FAST"), 
           method = parglm::parglm.fit, singular.ok = FALSE)
-      
-      Deviance Residuals: 
-          Min       1Q   Median       3Q      Max  
-      -3.1031   0.2401   0.4013   0.5996   1.8356  
       
       Coefficients:
                   Estimate Std. Error z value Pr(>|z|)    
@@ -164,10 +144,6 @@
               trace = FALSE, nthreads = 2, block_size = NULL, method = "FAST"), 
           method = parglm::parglm.fit, singular.ok = FALSE)
       
-      Deviance Residuals: 
-          Min       1Q   Median       3Q      Max  
-      -2.2424   0.5067   0.5557   0.6094   0.8898  
-      
       Coefficients:
                   Estimate Std. Error z value Pr(>|z|)    
       (Intercept)  1.51989    0.07547  20.139  < 2e-16 ***
@@ -193,10 +169,6 @@
           data = data, control = list(epsilon = 1e-08, maxit = 25, 
               trace = FALSE, nthreads = 2, block_size = NULL, method = "FAST"), 
           method = parglm::parglm.fit, singular.ok = FALSE)
-      
-      Deviance Residuals: 
-          Min       1Q   Median       3Q      Max  
-      -2.9568   0.1792   0.2875   0.4277   1.2206  
       
       Coefficients:
                   Estimate Std. Error z value Pr(>|z|)    
@@ -226,10 +198,6 @@
           data = data, control = list(epsilon = 1e-08, maxit = 25, 
               trace = FALSE, nthreads = 2, block_size = NULL, method = "FAST"), 
           method = parglm::parglm.fit, singular.ok = FALSE)
-      
-      Deviance Residuals: 
-          Min       1Q   Median       3Q      Max  
-      -2.3923   0.3695   0.3892   0.4273   0.5012  
       
       Coefficients:
                   Estimate Std. Error z value Pr(>|z|)    

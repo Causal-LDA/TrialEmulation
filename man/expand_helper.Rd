@@ -12,3 +12,4 @@ expand_helper(y)
 \description{
 This function get the data.table with period column and expand it based on it
 }
+\keyword{internal}

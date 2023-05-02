@@ -2,11 +2,12 @@
 .lintr
 ^.*\.Rproj$
 ^.DS_Store
+^LICENSE\.md$
 ^\.Rproj\.user$
 ^\.github$
 ^\.pre-commit-config\.yaml$
+^_pkgdown.yml$
 ^design$
 ^renv$
 ^renv\.lock$
 ^testing$
-^LICENSE\.md$

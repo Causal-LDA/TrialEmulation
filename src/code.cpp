@@ -31,6 +31,7 @@ using namespace Rcpp;
 //' @description Artificial censoring C++ function
 //'
 //' @param sw_data A dataframe with the columns needed in censoring process
+//' @keywords internal
 
 // [[Rcpp::export(censor_func)]]
 Rcpp::DataFrame censor_func(Rcpp::DataFrame& sw_data){

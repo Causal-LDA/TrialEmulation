@@ -14,3 +14,4 @@ data_manipulation(data, use_censor = TRUE)
 \description{
 This function takes the data and all the variables and does the extension preprocessing
 }
+\keyword{internal}

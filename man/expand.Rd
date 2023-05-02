@@ -34,3 +34,4 @@ initial treatment value}
 \description{
 This function performs the data expansion for a given dataset
 }
+\keyword{internal}

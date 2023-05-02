@@ -6,6 +6,7 @@
 #' @description Artificial censoring C++ function
 #'
 #' @param sw_data A dataframe with the columns needed in censoring process
+#' @keywords internal
 NULL
 
 censor_func <- function(sw_data) {

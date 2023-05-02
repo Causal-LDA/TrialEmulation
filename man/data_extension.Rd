@@ -43,3 +43,4 @@ the variables not included in the final model}
 \description{
 Expands the longitudinal data into a sequence of trials.
 }
+\keyword{internal}

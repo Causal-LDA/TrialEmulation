@@ -13,3 +13,4 @@ for_period_func()}
 \description{
 This function get the data.table with period and id columns and generate the for_period feature
 }
+\keyword{internal}

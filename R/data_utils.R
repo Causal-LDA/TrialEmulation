@@ -15,6 +15,9 @@
 #' @param where_var Variables used in where conditions used in subsetting the data used in final analysis (where_case),
 #' @param formula_vars Variables used in outcome or weight models.
 #'  the variables not included in the final model.
+#'
+#' @returns A data.table with the required columns
+#' @keywords internal
 select_data_cols <- function(data,
                              id = "id",
                              period = "period",
@@ -62,6 +65,7 @@ select_data_cols <- function(data,
 #'
 #' This function get the data.table with period column and expand it based on it
 #' @param y The data.table with period column
+#' @keywords internal
 
 expand_helper <- function(y) {
   last <- !duplicated(y$period, fromLast = TRUE)
@@ -74,6 +78,7 @@ expand_helper <- function(y) {
 #' This function get the data.table with period and id columns and generate the for_period feature
 #' @param x The data.table with id and period columns
 #' for_period_func()
+#' @keywords internal
 
 for_period_func <- function(x) {
   # Dummy variables used in data.table calls declared to prevent package check NOTES:
@@ -90,6 +95,7 @@ for_period_func <- function(x) {
 #' @param sw_data A data.table
 #' @param save_dir Directory to save tidy weight model summaries in as 'weight_models.rda'
 #' @inheritParams initiators
+#' @keywords internal
 #'
 weight_func <- function(sw_data,
                         switch_n_cov = NA,

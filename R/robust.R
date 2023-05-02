@@ -1,4 +1,3 @@
-
 #' Robust Variance Calculation
 #'
 #' This function performs the calculation of robust standard errors based on
@@ -9,7 +8,7 @@
 #'
 #' @returns A list with elements `summary`, a table with the model summary using the
 #' robust variance estimates, and `matrix`, the `sandwich` covariance matrix.
-#'
+#' @keywords internal
 robust_calculation <- function(model, data_id) {
   var_matrix <- sandwich::vcovCL(
     model,

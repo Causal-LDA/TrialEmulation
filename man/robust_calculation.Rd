@@ -19,3 +19,4 @@ robust variance estimates, and \code{matrix}, the \code{sandwich} covariance mat
 This function performs the calculation of robust standard errors based on
 variances estimated using \code{\link[sandwich:vcovCL]{sandwich::vcovCL}}.
 }
+\keyword{internal}
