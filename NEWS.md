@@ -1,3 +1,3 @@
-# TrialEmulation 0.0.2.18
+# TrialEmulation 0.0.2.19
 
 * Added a `NEWS.md` file to track changes to the package.
