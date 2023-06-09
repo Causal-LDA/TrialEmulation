@@ -1,0 +1,87 @@
+---
+title: "Settings Design"
+author: "Isaac Gravestock"
+date: "2023-05-03"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Problem
+
+Currently the package has lots of parameters to specify. This is necessary for flexible data preparation and modelling. However many of these parameters need to be specified in multiple functions. Additionally there are some heuristics happening in the background to set parameters which are not specified.
+
+## Proposal
+
+Create some settings objects and helper functions to capture these parameters and pass these objects to the various data and modelling functions.
+
+These objects can have checks to make sure they are valid and consistent.
+They can have print/show methods to neatly explain what is specified.
+The heuristics can be done in the helper methods.
+
+All of this will simplify the downstream functions.
+
+Users could also have the option of overriding a particular parameter in a function.
+
+## Design
+
+We could have `S3` class objects for settings
+
+```{r}
+trial_emulation_settings <- function(
+    data_columns = list(outcome, cens, ...),
+    switch_weight_models = switch_weight_models(),
+    censor_weight_models = censor_weight_models(),
+    outcome_model = outcome_model(),
+    sampling = case_control_sampling(),
+    expansion_settings = expansion_settings(),
+    ...) {
+  te_settings <- list()
+  check_settings(te_settings)
+  class(te_settings) <- "te_settings"
+  te_settings
+}
+```
+
+There would be sub-functions for each group of settings
+
+```{r}
+data_columns <- function(id = "id",
+                         period = "period",
+                         outcome = "outcome",
+                         eligible = "eligible",
+                         censored = "censored") {
+  list(
+    id = id,
+    period = period,
+    outcome = outcome,
+    censored = censored
+  )
+}
+```
+
+```{r}
+prepare_data <- function(
+    data,
+    settings_object) {
+  data <- select_data_cols(data, settings_object)
+
+  settings_object_contains <- list(
+    id = "id",
+    period = "period",
+    treatment = "treatment",
+    outcome = "outcome",
+    eligible = "eligible",
+    eligible_wts_0,
+    eligible_wts_1,
+    formula_vars,
+    cense,
+    where_var
+  )
+
+  data <- data_manipulation(data)
+  data
+}
+```
