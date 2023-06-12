@@ -22,6 +22,9 @@ te_variables(
 \item{treatment}{column name of treatment received in period}
 
 \item{outcome}{column name of outcome events}
+
+\item{where_variables}{column names of variables which should be retained for subsetting the final dataset
+for modelling.}
 }
 \description{
 Set Data Variables

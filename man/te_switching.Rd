@@ -13,7 +13,17 @@ te_switching(
 )
 }
 \arguments{
-\item{eligible_wts_1}{}
+\item{switch_n_model}{RHS formula for numerator model for calculating treatment switching weights.}
+
+\item{switch_d_model}{RHS formula for denominator model for calculating stabilized treatment switching weights.}
+
+\item{censor_switchers}{logical. Censor patients who switch treatments.}
+
+\item{eligible_wts_0}{name of column containing \code{0}/\code{1} flag for observations which cannot switch treatment
+(from \code{treatment = 0} to \code{treatment = 1}) and should be excluded from fitting the treatment switch model.}
+
+\item{eligible_wts_1}{name of column for excluding patients from model for switching from
+\code{treatment = 1} to \code{treatment = 0}.}
 }
 \description{
 Set Treatment Switching

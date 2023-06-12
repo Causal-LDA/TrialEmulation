@@ -22,7 +22,13 @@ trial_emulation_setup(
 
 \item{expansion}{set how the data are expanded into trials using \code{\link[=te_expansion]{te_expansion()}}}
 
-\item{treatment_switching}{set how treatment switching is handles}
+\item{treatment_switching}{set how treatment switching weighted and censored using \code{\link[=te_switching]{te_switching()}}}
+
+\item{censoring}{set how informative censoring is weighted using \code{\link[=te_censoring]{te_censoring()}}}
+
+\item{sampling}{set how case-control sampling is done for large datasets \code{\link[=te_sampling]{te_sampling()}}}
+
+\item{outcome_model}{specify the outcome model using \code{\link[=te_outcome_model]{te_outcome_model()}}}
 
 \item{...}{}
 }

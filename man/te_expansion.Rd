@@ -4,10 +4,21 @@
 \alias{te_expansion}
 \title{Set up Trial Expansion}
 \usage{
-te_expansion(first_period = NA, last_period = NA)
+te_expansion(
+  first_period = NA,
+  last_period = NA,
+  separate_files = FALSE,
+  chunk_size = 500
+)
 }
 \arguments{
-\item{last_period}{}
+\item{first_period}{Exclude trials starting before this time}
+
+\item{last_period}{Exclude trials starting after this time}
+
+\item{separate_files}{Expand data into separate files for each trial}
+
+\item{chunk_size}{number of patients to process in each chunk}
 }
 \description{
 Set up Trial Expansion
