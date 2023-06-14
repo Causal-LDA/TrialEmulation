@@ -1,12 +1,41 @@
 
-
+# check setup is valid
 check_setup <- function(setup) {
-  # check setup is valid
+  assert_class(setup, "TE_setup")
 }
 
-
+# get set up for data preparation
 get_data_setup <- function(setup) {
-  setup$data
+  assert_class(setup, "TE_setup")
+
+  data_setup <- with(
+    setup,
+    list(
+      id = variables$id,
+      period = variables$period,
+      treatment = variables$treatment,
+      outcome = variables$outcome,
+      eligible = variables$eligible,
+      eligible_wts_0 = treatment_switching$eligible_wts_0,
+      eligible_wts_1 = treatment_switching$eligible_wts_1,
+      formula_vars = unlist(lapply(
+        list(
+          outcome_model$covariate_adjustment,
+          treatment_switching$switch_n_model,
+          treatment_switching$switch_d_model,
+          censoring$censor_n_model,
+          censoring$censor_d_model
+        ),
+        all.vars
+      )),
+      use_censor = isTRUE(treatment_switching$censor_switchers),
+      cense = censoring$censored,
+      where_var = variables$where_var
+    )
+  )
+
+  class(data_setup) <- "TE_data_setup"
+  data_setup
 }
 
 
@@ -30,7 +59,20 @@ trial_emulation_setup <- function(data,
                                   sampling = te_sampling(),
                                   outcome_model = te_outcome_model(),
                                   ...) {
+  setup <- c(
+    list(
+      variables = variables,
+      expansion = expansion,
+      treatment_switching = treatment_switching,
+      censoring = censoring,
+      sampling = sampling,
+      outcome_model = outcome_model
+    ),
+    list(...)
+  )
 
+  class(setup) <- "TE_setup"
+  setup
 }
 
 #' Set Data Variables
@@ -40,7 +82,7 @@ trial_emulation_setup <- function(data,
 #' @param outcome column name of outcome events
 #' @param eligible column name of eligibility flag
 #' @param treatment column name of treatment received in period
-#' @param where_variables column names of variables which should be retained for subsetting the final dataset
+#' @param where_variables column names of variables which should be retained for sub-setting the final dataset
 #'  for modelling.
 #'
 #' @export
@@ -48,7 +90,8 @@ te_variables <- function(id = "id",
                          period = "period",
                          eligible = "eligible",
                          treatment = "treatment",
-                         outcome = "outcome") {
+                         outcome = "outcome",
+                         where_variables = NA) {
   list(
     id = id,
     period = period,
@@ -114,7 +157,12 @@ te_censoring <- function(censored = "censored",
                          censor_d_model = ~1,
                          censor_n_model = ~1,
                          pool_models = FALSE) {
-
+  list(
+    censored = censored,
+    censor_d_model = censor_d_model,
+    censor_n_model = censor_n_model,
+    pool_models = pool_models
+  )
 }
 
 #' Set up Data Sampling
@@ -123,8 +171,11 @@ te_censoring <- function(censored = "censored",
 #'
 #' @export
 te_sampling <- function(sample_trials = FALSE,
-                        proportion) {
-
+                        proportion = .1) {
+  list(
+    sample_trials = FALSE,
+    proportion = proportion
+  )
 }
 
 #' Set up Outcome Model Fitting
@@ -137,16 +188,24 @@ te_sampling <- function(sample_trials = FALSE,
 #' the outcome model.
 #' @param where_case where_case
 #' @param use_weight logical. Fit the logistic regression model with the censoring and sampling weights.
-#' @param glm_function name of function to use for fitting glm. `"glm"` for `stats::glm` or `"parglm"` for
-#' `parglm::parglm`
+#' @param glm_function name of function to use for fitting logistic regression model,
+#'  `"glm"` for [stats::glm] or `"parglm"` for [parglm::parglm].
 #'
 #' @export
-te_outcome_model <- function(outcome = ~assigned_treatment,
+te_outcome_model <- function(outcome = assigned_treatment ~ .,
                              covariate_adjustment = ~1,
                              followup_time_adjustment = ~ followup_time + I(followup_time^2),
                              expansion_time_adjustment = ~ for_period + I(for_period^2),
-                             where_case,
+                             where_case = NULL,
                              use_weight = TRUE,
                              glm_function = "glm") {
-
+  list(
+    outcome = outcome,
+    covariate_adjustment = covariate_adjustment,
+    followup_time_adjustment = followup_time_adjustment,
+    expansion_time_adjustment = expansion_time_adjustment,
+    where_case = where_case,
+    use_weight = use_weight,
+    glm_function = glm_function
+  )
 }

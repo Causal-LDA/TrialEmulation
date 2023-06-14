@@ -85,7 +85,7 @@ data_preparation <- function(data,
     eligible = eligible,
     eligible_wts_0 = eligible_wts_0,
     eligible_wts_1 = eligible_wts_1,
-    formula_vars = unlist(lapply(list(outcome_cov, switch_n_cov, switch_d_cov, cense_n_cov, cense_n_cov), all.vars)),
+    formula_vars = unlist(lapply(list(outcome_cov, switch_n_cov, switch_d_cov, cense_n_cov, cense_d_cov), all.vars)),
     cense = cense,
     where_var = where_var
   )

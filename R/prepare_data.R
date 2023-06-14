@@ -27,6 +27,49 @@ prepare_data <- function(data,
   TE_data <- data_manipulation(TE_data, use_censor = data_setup$use_censor)
 
   result <- list(data = TE_data, data_setup = data_setup)
-  class(result) <- "TE_data"
   result
+}
+
+
+calculate_weights <- function(data,
+                              setup) {
+  weight_func(
+    data,
+    sw_data = data,
+    switch_n_cov = setup$treatment_switching$switch_n_cov,
+    switch_d_cov = setup$treatment_switching$switch_d_cov,
+    eligible_wts_0 = setup$treatment_switching$eligible_wts_0,
+    eligible_wts_1 = setup$treatment_switching$eligible_wts_1,
+    cense = setup$censoring$censored,
+    pool_cense = setup$censoring$pool_cense,
+    cense_d_cov = setup$censoring$cense_d_cov,
+    cense_n_cov = setup$censoring$cense_n_cov,
+    save_weight_models = save_weight_models,
+    save_dir = data_dir,
+    quiet = quiet,
+    glm_function = glm_function
+  )
+}
+
+set_weights <- function(data, weights_object) {
+  data$weights <- weights(weights_object)
+}
+
+expand_trial_sequence <- function(data, settings) {
+  data_extension(data, settings)
+}
+
+
+
+calculate_weights <- function(data,
+                              settings_object) {
+  weight_func(data, settings)
+}
+
+set_weights <- function(data, weights_object) {
+  data$weights <- weights(weights_object)
+}
+
+expand_trial_sequence <- function(data, settings) {
+  data_extension(data, settings)
 }

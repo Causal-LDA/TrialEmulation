@@ -9,7 +9,7 @@ te_outcome_model(
   covariate_adjustment = ~1,
   followup_time_adjustment = ~followup_time + I(followup_time^2),
   expansion_time_adjustment = ~for_period + I(for_period^2),
-  where_case,
+  where_case = NULL,
   use_weight = TRUE,
   glm_function = "glm"
 )
@@ -27,8 +27,8 @@ the outcome model.}
 
 \item{use_weight}{logical. Fit the logistic regression model with the censoring and sampling weights.}
 
-\item{glm_function}{name of function to use for fitting glm. \code{"glm"} for \code{stats::glm} or \code{"parglm"} for
-\code{parglm::parglm}}
+\item{glm_function}{name of function to use for fitting logistic regression model,
+\code{"glm"} for \link[stats:glm]{stats::glm} or \code{"parglm"} for \link[parglm:parglm]{parglm::parglm}.}
 
 \item{treatment_model}{RHS formula specifying how treatment is incorporated in the outcome model}
 }
