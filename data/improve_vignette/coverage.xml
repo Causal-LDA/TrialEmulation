@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE coverage SYSTEM "https://raw.githubusercontent.com/cobertura/cobertura/master/cobertura/src/site/htdocs/xml/coverage-04.dtd">
-<coverage line-rate="0.934995547640249" branch-rate="0" lines-covered="1050" lines-valid="1123" branches-covered="0" branches-valid="0" complexity="0" version="3.6.2" timestamp="2023-07-04 19:18:33.35976">
+<coverage line-rate="0.934995547640249" branch-rate="0" lines-covered="1050" lines-valid="1123" branches-covered="0" branches-valid="0" complexity="0" version="3.6.2" timestamp="2023-07-04 19:35:15.359299">
   <sources>
     <source>/__w/TrialEmulation/TrialEmulation/TrialEmulation</source>
   </sources>
@@ -1353,152 +1353,152 @@
           <methods>
             <method name="summary.TE_data_prep" signature="" line-rate="1" branch-rate="0" complexity="0">
               <lines>
+                <line number="10" hits="2" branch="false"/>
                 <line number="11" hits="2" branch="false"/>
                 <line number="12" hits="2" branch="false"/>
-                <line number="13" hits="2" branch="false"/>
+                <line number="14" hits="2" branch="false"/>
                 <line number="15" hits="2" branch="false"/>
-                <line number="16" hits="2" branch="false"/>
+                <line number="17" hits="2" branch="false"/>
                 <line number="18" hits="2" branch="false"/>
                 <line number="19" hits="2" branch="false"/>
                 <line number="20" hits="2" branch="false"/>
                 <line number="21" hits="2" branch="false"/>
                 <line number="22" hits="2" branch="false"/>
-                <line number="23" hits="2" branch="false"/>
+                <line number="23" hits="8" branch="false"/>
                 <line number="24" hits="8" branch="false"/>
                 <line number="25" hits="8" branch="false"/>
-                <line number="26" hits="8" branch="false"/>
+                <line number="28" hits="2" branch="false"/>
                 <line number="29" hits="2" branch="false"/>
                 <line number="30" hits="2" branch="false"/>
                 <line number="31" hits="2" branch="false"/>
-                <line number="32" hits="2" branch="false"/>
+                <line number="32" hits="8" branch="false"/>
                 <line number="33" hits="8" branch="false"/>
                 <line number="34" hits="8" branch="false"/>
-                <line number="35" hits="8" branch="false"/>
               </lines>
             </method>
             <method name="summary.TE_data_prep_sep" signature="" line-rate="1" branch-rate="0" complexity="0">
               <lines>
-                <line number="45" hits="1" branch="false"/>
+                <line number="44" hits="1" branch="false"/>
+                <line number="46" hits="1" branch="false"/>
                 <line number="47" hits="1" branch="false"/>
                 <line number="48" hits="1" branch="false"/>
                 <line number="49" hits="1" branch="false"/>
                 <line number="50" hits="1" branch="false"/>
-                <line number="51" hits="1" branch="false"/>
               </lines>
             </method>
             <method name="summary.TE_data_prep_dt" signature="" line-rate="1" branch-rate="0" complexity="0">
               <lines>
+                <line number="56" hits="1" branch="false"/>
                 <line number="57" hits="1" branch="false"/>
                 <line number="58" hits="1" branch="false"/>
                 <line number="59" hits="1" branch="false"/>
-                <line number="60" hits="1" branch="false"/>
               </lines>
             </method>
             <method name="summary.TE_model" signature="" line-rate="1" branch-rate="0" complexity="0">
               <lines>
+                <line number="65" hits="1" branch="false"/>
                 <line number="66" hits="1" branch="false"/>
                 <line number="67" hits="1" branch="false"/>
                 <line number="68" hits="1" branch="false"/>
                 <line number="69" hits="1" branch="false"/>
                 <line number="70" hits="1" branch="false"/>
-                <line number="71" hits="1" branch="false"/>
-                <line number="73" hits="1" branch="false"/>
+                <line number="72" hits="1" branch="false"/>
+                <line number="74" hits="1" branch="false"/>
                 <line number="75" hits="1" branch="false"/>
                 <line number="76" hits="1" branch="false"/>
-                <line number="77" hits="1" branch="false"/>
               </lines>
             </method>
             <method name="summary.TE_robust" signature="" line-rate="1" branch-rate="0" complexity="0">
               <lines>
+                <line number="82" hits="1" branch="false"/>
                 <line number="83" hits="1" branch="false"/>
                 <line number="84" hits="1" branch="false"/>
-                <line number="85" hits="1" branch="false"/>
               </lines>
             </method>
             <method name="print.TE_weight_summary" signature="" line-rate="0.75" branch-rate="0" complexity="0">
               <lines>
+                <line number="97" hits="24" branch="false"/>
                 <line number="98" hits="24" branch="false"/>
                 <line number="99" hits="24" branch="false"/>
                 <line number="100" hits="24" branch="false"/>
-                <line number="101" hits="24" branch="false"/>
+                <line number="101" hits="8" branch="false"/>
                 <line number="102" hits="8" branch="false"/>
-                <line number="103" hits="8" branch="false"/>
+                <line number="103" hits="0" branch="false"/>
                 <line number="104" hits="0" branch="false"/>
-                <line number="105" hits="0" branch="false"/>
               </lines>
             </method>
             <method name="weights.TE_data_prep_dt" signature="" line-rate="0" branch-rate="0" complexity="0">
               <lines>
-                <line number="120" hits="0" branch="false"/>
+                <line number="119" hits="0" branch="false"/>
               </lines>
             </method>
             <method name="weights.TE_data_prep_sep" signature="" line-rate="0" branch-rate="0" complexity="0">
               <lines>
+                <line number="125" hits="0" branch="false"/>
                 <line number="126" hits="0" branch="false"/>
                 <line number="127" hits="0" branch="false"/>
                 <line number="128" hits="0" branch="false"/>
-                <line number="129" hits="0" branch="false"/>
               </lines>
             </method>
           </methods>
           <lines>
+            <line number="10" hits="2" branch="false"/>
             <line number="11" hits="2" branch="false"/>
             <line number="12" hits="2" branch="false"/>
-            <line number="13" hits="2" branch="false"/>
+            <line number="14" hits="2" branch="false"/>
             <line number="15" hits="2" branch="false"/>
-            <line number="16" hits="2" branch="false"/>
+            <line number="17" hits="2" branch="false"/>
             <line number="18" hits="2" branch="false"/>
             <line number="19" hits="2" branch="false"/>
             <line number="20" hits="2" branch="false"/>
             <line number="21" hits="2" branch="false"/>
             <line number="22" hits="2" branch="false"/>
-            <line number="23" hits="2" branch="false"/>
+            <line number="23" hits="8" branch="false"/>
             <line number="24" hits="8" branch="false"/>
             <line number="25" hits="8" branch="false"/>
-            <line number="26" hits="8" branch="false"/>
+            <line number="28" hits="2" branch="false"/>
             <line number="29" hits="2" branch="false"/>
             <line number="30" hits="2" branch="false"/>
             <line number="31" hits="2" branch="false"/>
-            <line number="32" hits="2" branch="false"/>
+            <line number="32" hits="8" branch="false"/>
             <line number="33" hits="8" branch="false"/>
             <line number="34" hits="8" branch="false"/>
-            <line number="35" hits="8" branch="false"/>
-            <line number="45" hits="1" branch="false"/>
+            <line number="44" hits="1" branch="false"/>
+            <line number="46" hits="1" branch="false"/>
             <line number="47" hits="1" branch="false"/>
             <line number="48" hits="1" branch="false"/>
             <line number="49" hits="1" branch="false"/>
             <line number="50" hits="1" branch="false"/>
-            <line number="51" hits="1" branch="false"/>
+            <line number="56" hits="1" branch="false"/>
             <line number="57" hits="1" branch="false"/>
             <line number="58" hits="1" branch="false"/>
             <line number="59" hits="1" branch="false"/>
-            <line number="60" hits="1" branch="false"/>
+            <line number="65" hits="1" branch="false"/>
             <line number="66" hits="1" branch="false"/>
             <line number="67" hits="1" branch="false"/>
             <line number="68" hits="1" branch="false"/>
             <line number="69" hits="1" branch="false"/>
             <line number="70" hits="1" branch="false"/>
-            <line number="71" hits="1" branch="false"/>
-            <line number="73" hits="1" branch="false"/>
+            <line number="72" hits="1" branch="false"/>
+            <line number="74" hits="1" branch="false"/>
             <line number="75" hits="1" branch="false"/>
             <line number="76" hits="1" branch="false"/>
-            <line number="77" hits="1" branch="false"/>
+            <line number="82" hits="1" branch="false"/>
             <line number="83" hits="1" branch="false"/>
             <line number="84" hits="1" branch="false"/>
-            <line number="85" hits="1" branch="false"/>
+            <line number="97" hits="24" branch="false"/>
             <line number="98" hits="24" branch="false"/>
             <line number="99" hits="24" branch="false"/>
             <line number="100" hits="24" branch="false"/>
-            <line number="101" hits="24" branch="false"/>
+            <line number="101" hits="8" branch="false"/>
             <line number="102" hits="8" branch="false"/>
-            <line number="103" hits="8" branch="false"/>
+            <line number="103" hits="0" branch="false"/>
             <line number="104" hits="0" branch="false"/>
-            <line number="105" hits="0" branch="false"/>
-            <line number="120" hits="0" branch="false"/>
+            <line number="119" hits="0" branch="false"/>
+            <line number="125" hits="0" branch="false"/>
             <line number="126" hits="0" branch="false"/>
             <line number="127" hits="0" branch="false"/>
             <line number="128" hits="0" branch="false"/>
-            <line number="129" hits="0" branch="false"/>
           </lines>
         </class>
         <class name="initiators.R" filename="R/initiators.R" line-rate="0.979591836734694" branch-rate="0" complexity="0">
