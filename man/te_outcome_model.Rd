@@ -5,7 +5,7 @@
 \title{Set up Outcome Model Fitting}
 \usage{
 te_outcome_model(
-  outcome = ~assigned_treatment,
+  treatment_model = ~assigned_treatment,
   covariate_adjustment = ~1,
   followup_time_adjustment = ~followup_time + I(followup_time^2),
   expansion_time_adjustment = ~for_period + I(for_period^2),
@@ -15,6 +15,8 @@ te_outcome_model(
 )
 }
 \arguments{
+\item{treatment_model}{RHS model for specifying treatment in outcome model, typically \code{~assigned_treatment}}
+
 \item{covariate_adjustment}{RHS formula for specifying the adjustment of baseline trial covariates}
 
 \item{followup_time_adjustment}{RHS formula for specifying how the trial's follow up time is adjusted
@@ -29,8 +31,6 @@ the outcome model.}
 
 \item{glm_function}{name of function to use for fitting logistic regression model,
 \code{"glm"} for \link[stats:glm]{stats::glm} or \code{"parglm"} for \link[parglm:parglm]{parglm::parglm}.}
-
-\item{treatment_model}{RHS formula specifying how treatment is incorporated in the outcome model}
 }
 \description{
 Set up Outcome Model Fitting

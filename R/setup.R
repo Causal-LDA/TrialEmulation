@@ -1,41 +1,32 @@
 
+
 # check setup is valid
-check_setup <- function(setup) {
-  assert_class(setup, "TE_setup")
+validate_TE_setup <- function(object, data) {
+  assert_class(object, "TE_setup")
 }
 
-# get set up for data preparation
-get_data_setup <- function(setup) {
-  assert_class(setup, "TE_setup")
+#' @export
+print.TE_setup <- function(x, ...) {
+  print.TE_censoring(x$censoring)
+  cat("\n")
+}
 
-  data_setup <- with(
-    setup,
-    list(
-      id = variables$id,
-      period = variables$period,
-      treatment = variables$treatment,
-      outcome = variables$outcome,
-      eligible = variables$eligible,
-      eligible_wts_0 = treatment_switching$eligible_wts_0,
-      eligible_wts_1 = treatment_switching$eligible_wts_1,
-      formula_vars = unlist(lapply(
-        list(
-          outcome_model$covariate_adjustment,
-          treatment_switching$switch_n_model,
-          treatment_switching$switch_d_model,
-          censoring$censor_n_model,
-          censoring$censor_d_model
-        ),
-        all.vars
-      )),
-      use_censor = isTRUE(treatment_switching$censor_switchers),
-      cense = censoring$censored,
-      where_var = variables$where_var
-    )
-  )
 
-  class(data_setup) <- "TE_data_setup"
-  data_setup
+#' @export
+print.TE_censoring <- function(x, ...) {
+  if (is.na(x$censored)) {
+    cat("No informative censoring defined.\n")
+  } else {
+    cat_underline("Informative censoring model", 1)
+    cat("Censoring variable:", dQuote(x$censored, FALSE), "\n")
+    cat("Numerator model:", as.character(x$censor_n_model), "\n")
+    cat("Denominator model:", as.character(x$censor_d_model), "\n")
+    if (isTRUE(x$pooled)) {
+      cat("Models pooled across treatment groups\n")
+    } else {
+      cat("Separate models for treatment groups\n")
+    }
+  }
 }
 
 
@@ -48,17 +39,19 @@ get_data_setup <- function(setup) {
 #' @param censoring set how informative censoring is weighted using [te_censoring()]
 #' @param sampling set how case-control sampling is done for large datasets [te_sampling()]
 #' @param outcome_model specify the outcome model using [te_outcome_model()]
-#' @param ...
+#' @param ... other parameters saved to the object
 #'
 #' @export
 trial_emulation_setup <- function(data,
                                   variables = te_variables(),
                                   expansion = te_expansion(),
                                   treatment_switching = te_switching(),
-                                  censoring = te_censoring(),
+                                  censoring,
                                   sampling = te_sampling(),
                                   outcome_model = te_outcome_model(),
                                   ...) {
+  if (missing(censoring)) censoring <- te_censoring(censored = NA)
+
   setup <- c(
     list(
       variables = variables,
@@ -72,6 +65,7 @@ trial_emulation_setup <- function(data,
   )
 
   class(setup) <- "TE_setup"
+  validate_TE_setup(setup, data)
   setup
 }
 
@@ -157,30 +151,32 @@ te_censoring <- function(censored = "censored",
                          censor_d_model = ~1,
                          censor_n_model = ~1,
                          pool_models = FALSE) {
-  list(
+  object <- list(
     censored = censored,
     censor_d_model = censor_d_model,
     censor_n_model = censor_n_model,
     pool_models = pool_models
   )
+  class(object) <- "TE_censoring"
+  object
 }
 
 #' Set up Data Sampling
 #'
 #' @param sample_trials FALSE
+#' @param probability sampling probability for a control observation
 #'
 #' @export
 te_sampling <- function(sample_trials = FALSE,
-                        proportion = .1) {
+                        probability = .1) {
   list(
     sample_trials = FALSE,
-    proportion = proportion
+    probability = probability
   )
 }
 
 #' Set up Outcome Model Fitting
-#'
-#' @param treatment_model RHS formula specifying how treatment is incorporated in the outcome model
+#' @param treatment_model RHS model for specifying treatment in outcome model, typically `~assigned_treatment`
 #' @param covariate_adjustment RHS formula for specifying the adjustment of baseline trial covariates
 #' @param followup_time_adjustment RHS formula for specifying how the trial's follow up time is adjusted
 #' in the outcome model.
@@ -192,7 +188,7 @@ te_sampling <- function(sample_trials = FALSE,
 #'  `"glm"` for [stats::glm] or `"parglm"` for [parglm::parglm].
 #'
 #' @export
-te_outcome_model <- function(outcome = assigned_treatment ~ .,
+te_outcome_model <- function(treatment_model = ~assigned_treatment,
                              covariate_adjustment = ~1,
                              followup_time_adjustment = ~ followup_time + I(followup_time^2),
                              expansion_time_adjustment = ~ for_period + I(for_period^2),
@@ -200,7 +196,7 @@ te_outcome_model <- function(outcome = assigned_treatment ~ .,
                              use_weight = TRUE,
                              glm_function = "glm") {
   list(
-    outcome = outcome,
+    treatment_model = treatment_model,
     covariate_adjustment = covariate_adjustment,
     followup_time_adjustment = followup_time_adjustment,
     expansion_time_adjustment = expansion_time_adjustment,
@@ -208,4 +204,39 @@ te_outcome_model <- function(outcome = assigned_treatment ~ .,
     use_weight = use_weight,
     glm_function = glm_function
   )
+}
+
+
+# get set up for data preparation
+get_data_setup <- function(setup) {
+  assert_class(setup, "TE_setup")
+
+  data_setup <- with(
+    setup,
+    list(
+      id = variables$id,
+      period = variables$period,
+      treatment = variables$treatment,
+      outcome = variables$outcome,
+      eligible = variables$eligible,
+      eligible_wts_0 = treatment_switching$eligible_wts_0,
+      eligible_wts_1 = treatment_switching$eligible_wts_1,
+      formula_vars = unlist(lapply(
+        list(
+          outcome_model$covariate_adjustment,
+          treatment_switching$switch_n_model,
+          treatment_switching$switch_d_model,
+          censoring$censor_n_model,
+          censoring$censor_d_model
+        ),
+        all.vars
+      )),
+      use_censor = isTRUE(treatment_switching$censor_switchers),
+      cense = censoring$censored,
+      where_var = variables$where_var
+    )
+  )
+
+  class(data_setup) <- "TE_data_setup"
+  data_setup
 }

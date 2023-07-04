@@ -400,7 +400,8 @@ weight_func <- function(sw_data,
     sw_data[is.na(pC_n), pC_n := 1]
     sw_data[, wtC := pC_n / pC_d]
   }
-  sw_data[, wt := wt * wtC]
+  sw_data[, wtS := wt]
+  sw_data[, wt := wtS * wtC]
 
   list(
     data = sw_data,

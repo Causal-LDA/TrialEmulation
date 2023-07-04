@@ -4,10 +4,12 @@
 \alias{te_sampling}
 \title{Set up Data Sampling}
 \usage{
-te_sampling(sample_trials = FALSE, proportion = 0.1)
+te_sampling(sample_trials = FALSE, probability = 0.1)
 }
 \arguments{
 \item{sample_trials}{FALSE}
+
+\item{probability}{sampling probability for a control observation}
 }
 \description{
 Set up Data Sampling

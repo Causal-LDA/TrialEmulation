@@ -9,7 +9,7 @@ trial_emulation_setup(
   variables = te_variables(),
   expansion = te_expansion(),
   treatment_switching = te_switching(),
-  censoring = te_censoring(),
+  censoring,
   sampling = te_sampling(),
   outcome_model = te_outcome_model(),
   ...
@@ -30,7 +30,7 @@ trial_emulation_setup(
 
 \item{outcome_model}{specify the outcome model using \code{\link[=te_outcome_model]{te_outcome_model()}}}
 
-\item{...}{}
+\item{...}{other parameters saved to the object}
 }
 \description{
 Set up Trial Emulation

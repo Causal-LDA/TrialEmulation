@@ -9,7 +9,8 @@ te_variables(
   period = "period",
   eligible = "eligible",
   treatment = "treatment",
-  outcome = "outcome"
+  outcome = "outcome",
+  where_variables = NA
 )
 }
 \arguments{
