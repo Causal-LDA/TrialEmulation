@@ -1,4 +1,3 @@
-
 #' Summary methods
 #'
 #' Print summaries of data and model objects produced by `TrialEmulation`.

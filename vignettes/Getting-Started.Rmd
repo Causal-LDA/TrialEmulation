@@ -57,9 +57,8 @@ head(trial_example)
 There is an all-in-one function `initators()` which does all of the steps with one function call.
 This is similar to the [INITIATORS SAS macro](https://causalab.sph.harvard.edu/software/).
 
-
-
 Call the `initiators()` function to run the complete analysis:
+
 ```{r initiators}
 result <- initiators(
   data = trial_example,
@@ -74,7 +73,6 @@ result <- initiators(
   use_weight = FALSE
 )
 ```
-
 
 ```{r initiators_summary}
 summary(result)
@@ -95,7 +93,6 @@ Also the sandwich robust variance-covariance matrix.
 # only print the first columns
 head(result$robust$matrix, c(17, 4))
 ```
-
 
 ## Flexible Analysis {#flexible}
 
@@ -144,6 +141,7 @@ prep_data$switch_models$switch_n0
 ```
 
 If `save_weight_models = TRUE,` the full model objects are saved in `working_dir`, so you can inspect the data used in those models and further investigate how well those models fit.
+
 ```{r weight_files}
 list.files(working_dir, "*.rds")
 
@@ -154,6 +152,7 @@ hist(switch_n0$fitted.values, main = "Histogram of weights from model switch_n0"
 ```
 
 We also see the expanded trial files:
+
 ```{r trial_files}
 head(prep_data$data)
 ```
@@ -163,6 +162,7 @@ To create a manageable dataset for the final analysis we can sample from these t
 
 Here we sample 10% of the patients without an event at each follow-up time in each trial. All 
 observations with events are included.
+
 ```{r sample}
 sampled_data <- case_control_sampling_trials(prep_data, p_control = 0.1)
 str(sampled_data)
@@ -226,7 +226,6 @@ plot(
 lines(model_preds$difference$followup_time, model_preds$difference$`2.5%`, lty = 2)
 lines(model_preds$difference$followup_time, model_preds$difference$`97.5%`, lty = 2)
 ```
-
 
 ```{r cleanup, echo=FALSE}
 # clean up
