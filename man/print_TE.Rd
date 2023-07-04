@@ -4,14 +4,12 @@
 \alias{print.TE_weight_summary}
 \title{Print a Weight Summary Object}
 \usage{
-\method{print}{TE_weight_summary}(x, full = TRUE, digits = 4, ...)
+\method{print}{TE_weight_summary}(x, full = TRUE, ...)
 }
 \arguments{
 \item{x}{print.TE_weight_summary object.}
 
 \item{full}{Print full or short summary.}
-
-\item{digits}{Number of digits to print. Passed to \link{print.data.frame}.}
 
 \item{...}{Arguments passed to \link{print.data.frame}.}
 }

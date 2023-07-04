@@ -12,25 +12,22 @@ knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>"
 )
+options("digits" = 3)
 ```
 
 This package implements methods to analyse a sequence of target trials.
 
 The steps to do this are:
 
- 1. create the data set with all the required variables
- 2. fit models for censoring and calculate weights
+ 1. create a data set with all the required variables
+ 2. fit models for censoring and calculate inverse probability weights
  3. expand the data set, with records for each eligible patient for each trial period
  4. fit models for outcomes
 
-Some of the functions are inspired by the [INITIATORS SAS macro](https://causalab.sph.harvard.edu/software/).
+The package provides two options for conducting the analysis: an [all-in-one function](#initiators) and a 
+set of more [flexible functions](#flexible).
 
-```{r setup}
-library(TrialEmulation)
-```
-
-
-There is an all-in-one function `initators()` which does all of the steps with one function call.
+## Required Data
 
 To get started a longitudinal dataset must be created containing:
 
@@ -38,20 +35,29 @@ To get started a longitudinal dataset must be created containing:
  * patient identifier
  * treatment indicator
  * outcome indicator
- * eligibility indicator for trial start in period
- * other covariates relating to treatment, outcome, or censoring to be used in the models for weights or the outcome
+ * censoring indicator
+ * eligibility indicator for a trial starting in each time period
+ * other covariates relating to treatment, outcome, or informative censoring to be used in the models for weights or the outcome
  
+An example data set is included to demonstrate the format:
 
 ```{r data}
+library(TrialEmulation)
 # Prepare the example data
 data("trial_example")
-
+# Set columns to factors as necessary
 trial_example$catvarA <- as.factor(trial_example$catvarA)
 trial_example$catvarB <- as.factor(trial_example$catvarB)
-trial_example$catvarC <- as.factor(trial_example$catvarC)
 
 head(trial_example)
 ```
+
+## All-in-one analysis {#initiators}
+
+There is an all-in-one function `initators()` which does all of the steps with one function call.
+This is similar to the [INITIATORS SAS macro](https://causalab.sph.harvard.edu/software/).
+
+
 
 Call the `initiators()` function to run the complete analysis:
 ```{r initiators}
@@ -63,7 +69,7 @@ result <- initiators(
   treatment = "treatment",
   outcome = "outcome",
   model_var = "assigned_treatment",
-  outcome_cov = c("catvarA", "catvarB", "catvarC", "nvarA", "nvarB", "nvarC"),
+  outcome_cov = c("catvarA", "catvarB", "nvarA", "nvarB", "nvarC"),
   use_censor = FALSE,
   use_weight = FALSE
 )
@@ -79,17 +85,19 @@ By default, this returns the final `glm` model object and the results using the 
 summary(result$model)
 ```
 
+Tidy summaries of the robust models are available.
 ```{r init_robust_summary}
-result$robust$summary
+print(result$robust$summary)
 ```
 
-Also the sandwich variance-covariance matrix.
+Also the sandwich robust variance-covariance matrix.
 ```{r init_robust_matrix}
-result$robust$matrix
+# only print the first columns
+head(result$robust$matrix, c(17, 4))
 ```
 
 
-# Flexible Analysis
+## Flexible Analysis {#flexible}
 
 To gain complete control over the analysis and to inspect the intermediate objects, it can
 be useful to run the the data preparation and modelling steps separately.
@@ -98,8 +106,8 @@ This also allows for processing of very large data sets, by doing the data prepa
 sampling from the expanded trial data.
 
 ```{r temp_dir}
-# for the purposes of the vignette, we use a temporary directory, however it may be useful to use a permanent location
-# in order to inspect the outputs later
+# for the purposes of the vignette, we use a temporary directory, however it may be useful to use a permanent
+# location in order to inspect the outputs later
 working_dir <- file.path(tempdir(TRUE), "trial_emu")
 if (!dir.exists(working_dir)) dir.create(working_dir)
 ```
@@ -113,14 +121,15 @@ prep_data <- data_preparation(
   treatment = "treatment",
   outcome = "outcome",
   model_var = "assigned_treatment",
-  outcome_cov = ~ catvarA + catvarB + catvarC + nvarA + nvarB + nvarC,
+  outcome_cov = ~ catvarA + catvarB + nvarA + nvarB + nvarC,
   data_dir = working_dir,
   save_weight_models = TRUE,
   use_censor = TRUE,
   use_weight = TRUE,
   chunk_size = 500,
   separate_files = TRUE,
-  switch_n_cov = ~ nvarA + nvarB
+  switch_n_cov = ~ nvarA + nvarB,
+  quiet = TRUE
 )
 ```
 
@@ -146,7 +155,7 @@ hist(switch_n0$fitted.values, main = "Histogram of weights from model switch_n0"
 
 We also see the expanded trial files:
 ```{r trial_files}
-prep_data$data
+head(prep_data$data)
 ```
 
 Each of these csv files contains the data for the trial starting at period `_i`.
@@ -173,7 +182,7 @@ we should make use of the `use_sample_weights` option to get correct survival es
 ```{r modelling}
 model_result <- data_modelling(
   data = sampled_data,
-  outcome_cov = c("catvarA", "catvarB", "catvarC", "nvarA", "nvarB", "nvarC"),
+  outcome_cov = c("catvarA", "catvarB", "nvarA", "nvarB", "nvarC"),
   model_var = "assigned_treatment",
   use_weight = TRUE,
   use_censor = FALSE,

@@ -93,7 +93,7 @@
 ---
 
     Code
-      print(object$censor_models[[1]])
+      print(object$censor_models[[1]], digits = 4)
     Output
       Model for P(cense = 0 | X, previous treatment = 0) for denominator 
       
@@ -108,7 +108,7 @@
 ---
 
     Code
-      print(object$censor_models[[1]], full = FALSE)
+      print(object$censor_models[[1]], full = FALSE, digits = 4)
     Output
       Model for P(cense = 0 | X, previous treatment = 0) for denominator 
       
@@ -218,7 +218,7 @@
 ---
 
     Code
-      print(object$switch_models[[1]])
+      print(object$switch_models[[1]], digits = 4)
     Output
       P(treatment = 1 | previous treatment = 0) for denominator 
       
@@ -231,7 +231,7 @@
 ---
 
     Code
-      print(object$switch_models[[1]], full = FALSE)
+      print(object$switch_models[[1]], full = FALSE, digits = 4)
     Output
       P(treatment = 1 | previous treatment = 0) for denominator 
       
@@ -242,10 +242,10 @@
 ---
 
     Code
-      summary(weights(object))
+      summary(weights(object), digits = 4)
     Output
          Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
-       0.1661  0.9386  1.0000  1.0810  1.1354  7.7059 
+       0.1661  0.9386  1.0000  1.0810  1.1350  7.7060 
 
 # summary for initiators
 
