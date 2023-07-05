@@ -1,4 +1,10 @@
-# Welcome to TrialEmulation
+# TrialEmulation
+
+<!-- badges: start -->
+[![Project Status: Active – The project has reached a stable, usable state and is being actively developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
+[![Code
+Coverage](https://raw.githubusercontent.com/Causal-LDA/TrialEmulation/_xml_coverage_reports/data/main/badge.svg)](https://raw.githubusercontent.com/Causal-LDA/TrialEmulation/_xml_coverage_reports/data/main/coverage.xml)
+<!-- badges: end -->
 
 This package implements algorithms to conduct a **sequence of target trials** analysis.
 
