@@ -1,4 +1,3 @@
-
 prep_data <- data_preparation(
   data = trial_example,
   id = "id",
