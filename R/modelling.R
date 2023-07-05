@@ -1,17 +1,15 @@
 #' Fit the Outcome Model
 #'
-#' Sets up the model formulas and data for the pooled logistic regression and
-#' robust variance estimation and fits the models.
+#' Fits a weighted pooled logistic regression model for the sequence of trials and
+#' calculates a robust covariance matrix using a sandwich estimator.
 #'
 #' @param use_sample_weights Use sample weights in addition to IP weights. `data` must contain a column `sample_weight`.
 #' The weights used in the model are calculated as `weight = weight * sample_weight`.
 #' @inheritParams initiators
 #'
-#' @details The class variables parameters (`outcomeClass`,`class_switchn`,
-#'  `class_switchd`,`class_censen`,`class_censed`) can be given as a character
-#'  vector which will construct factors using `as.factor` or as a named list
-#'  with the arguments for factor e.g.
-#'  `list(risk_cat=list(levels = c(1,2,3,0), age_cat=list(levels=c(1,2,3),labels=c("50-60","60-70","70+")`
+#' @details
+#'  The model formula is constructed by combining the arguments `outcome_cov`, `model_var`,
+#'   `include_followup_time`, and `include_trial_period`.
 #'
 #' @returns Object of class `TE_model` containing
 #'  * `model`, a `glm` object
@@ -21,22 +19,22 @@
 #' @importFrom stats as.formula binomial pnorm quantile relevel
 #' @importFrom utils write.csv
 
-data_modelling <- function(data,
-                           outcome_cov = ~1,
-                           model_var = NULL,
-                           first_followup = NA,
-                           last_followup = NA,
-                           use_weight = FALSE,
-                           analysis_weights = c("asis", "unweighted", "p99", "weight_limits"),
-                           weight_limits = c(0, Inf),
-                           use_censor = FALSE,
-                           include_followup_time = ~ followup_time + I(followup_time^2),
-                           include_expansion_time = ~ for_period + I(for_period^2),
-                           where_case = NA,
-                           glm_function = c("glm", "parglm"),
-                           use_sample_weights = TRUE,
-                           quiet = FALSE,
-                           ...) {
+outcome_modelling <- function(data,
+                              outcome_cov = ~1,
+                              model_var = NULL,
+                              first_followup = NA,
+                              last_followup = NA,
+                              use_weight = FALSE,
+                              analysis_weights = c("asis", "unweighted", "p99", "weight_limits"),
+                              weight_limits = c(0, Inf),
+                              use_censor = FALSE,
+                              include_followup_time = ~ followup_time + I(followup_time^2),
+                              include_trial_period = ~ trial_period + I(trial_period^2),
+                              where_case = NA,
+                              glm_function = c("glm", "parglm"),
+                              use_sample_weights = TRUE,
+                              quiet = FALSE,
+                              ...) {
   if (inherits(data, "TE_data_prep_dt")) data <- data$data
 
   arg_checks <- makeAssertCollection()
@@ -51,8 +49,8 @@ data_modelling <- function(data,
   assert_numeric(weight_limits, len = 2, lower = 0, upper = Inf, sorted = TRUE, add = arg_checks)
   assert_flag(use_censor, add = arg_checks)
   include_followup_time <- as_formula(include_followup_time, add = arg_checks)
-  include_expansion_time <- as_formula(include_expansion_time, add = arg_checks)
-  assert_multi_class(include_expansion_time, classes = c("formula", "character"), add = arg_checks)
+  include_trial_period <- as_formula(include_trial_period, add = arg_checks)
+  assert_multi_class(include_trial_period, classes = c("formula", "character"), add = arg_checks)
   assert_character(where_case, add = arg_checks)
   glm_function <- assert_choice(glm_function[1], choices = c("glm", "parglm"), add = arg_checks)
   assert_flag(use_sample_weights, add = arg_checks)
@@ -104,7 +102,7 @@ data_modelling <- function(data,
 
   model_formula <- Reduce(
     add_rhs,
-    c(model_formula, include_expansion_time, include_followup_time, outcome_cov)
+    c(model_formula, include_trial_period, include_followup_time, outcome_cov)
   )
 
   if (any(!is.na(where_case))) {

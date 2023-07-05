@@ -14,7 +14,7 @@ test_that("predict.RTE_model works as expected", {
     model_var = "assigned_treatment",
     outcome_cov = c("catvarA", "catvarB", "catvarC", "nvarA", "nvarB", "nvarC"),
     include_followup_time = ~followup_time,
-    include_expansion_time = ~for_period,
+    include_trial_period = ~trial_period,
     use_censor = FALSE,
     use_weight = FALSE,
     quiet = TRUE
@@ -33,15 +33,15 @@ test_that("predict.RTE_model works as expected", {
 
 test_that("predict.RTE_model works with newdata", {
   data <- as.data.table(TrialEmulation::vignette_switch_data)
-  new_data <- data[data$followup_time == 0 & data$for_period == 300, ]
+  new_data <- data[data$followup_time == 0 & data$trial_period == 300, ]
   data$catvarA <- factor(data$catvarA)
 
-  object <- data_modelling(
+  object <- outcome_modelling(
     data,
     outcome_cov = ~ catvarA + nvarA,
     model_var = "assigned_treatment",
     include_followup_time = ~followup_time,
-    include_expansion_time = ~for_period,
+    include_trial_period = ~trial_period,
     use_sample_weights = FALSE,
     use_weight = TRUE,
     glm_function = "glm",
@@ -89,14 +89,14 @@ test_that("predict.RTE_model works with interactions", {
 
   expect_warning(
     expect_warning(
-      object <- data_modelling(
+      object <- outcome_modelling(
         data = data,
         outcome_cov = ~ X1 + X2 + age_s,
         model_var = ~ assigned_treatment:followup_time,
         use_weight = TRUE,
         use_censor = TRUE,
         include_followup_time = ~followup_time,
-        include_expansion_time = ~1,
+        include_trial_period = ~1,
         glm_function = c("glm"),
         use_sample_weights = FALSE,
         quiet = TRUE

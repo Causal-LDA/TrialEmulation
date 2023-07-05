@@ -78,7 +78,7 @@ test_that("expand works as expected", {
   result <- expand(
     sw_data = test_data,
     keeplist = c(
-      "id", "for_period", "followup_time", "outcome", "weight", "treatment",
+      "id", "trial_period", "followup_time", "outcome", "weight", "treatment",
       "X1", "X2", "X3", "X4", "age_s", "assigned_treatment"
     ),
     maxperiod = 9L,
@@ -92,7 +92,7 @@ test_that("expand works as expected", {
 
   expected <- data.table(
     id = c(4L, 4L, 4L, 4L, 4L, 4L, 4L, 4L),
-    for_period = c(0L, 0L, 1L, 2L, 2L, 2L, 2L, 2L),
+    trial_period = c(0L, 0L, 1L, 2L, 2L, 2L, 2L, 2L),
     followup_time = c(0L, 1L, 0L, 0L, 1L, 2L, 3L, 4L),
     outcome = c(0, 0, 0, 0, 0, 0, 0, 0),
     weight = c(1, 0.778308153988203, 1, 1, 0.833492409839268, 0.99297248552513, 1.01548035495021, 0.861877770233159),
@@ -124,7 +124,7 @@ test_that("data extensions works as expected with first and last periods", {
   result_limited <- TrialEmulation:::data_extension(
     data = data,
     keeplist = c(
-      "id", "for_period", "followup_time", "outcome", "weight", "treatment",
+      "id", "trial_period", "followup_time", "outcome", "weight", "treatment",
       "X1", "X2", "X3", "X4", "age_s", "assigned_treatment"
     ),
     outcomeCov_var = c("X1", "X2", "X3", "X4", "age_s"),
@@ -138,7 +138,7 @@ test_that("data extensions works as expected with first and last periods", {
   result <- TrialEmulation:::data_extension(
     data = data,
     keeplist = c(
-      "id", "for_period", "followup_time", "outcome", "weight", "treatment",
+      "id", "trial_period", "followup_time", "outcome", "weight", "treatment",
       "X1", "X2", "X3", "X4", "age_s", "assigned_treatment"
     ),
     outcomeCov_var = c("X1", "X2", "X3", "X4", "age_s"),
@@ -149,7 +149,7 @@ test_that("data extensions works as expected with first and last periods", {
 
   expect_equal(
     result_limited$data,
-    result$data[result$data$for_period >= 2 & result$data$for_period <= 8]
+    result$data[result$data$trial_period >= 2 & result$data$trial_period <= 8]
   )
   expect_equal(result_limited$min_period, 2)
   expect_equal(result_limited$max_period, 8)
@@ -176,7 +176,7 @@ test_that("data extensions works as expected with separate_files=TRUE", {
   result_limited <- data_extension(
     data = data,
     keeplist = c(
-      "id", "for_period", "followup_time", "outcome", "weight", "treatment",
+      "id", "trial_period", "followup_time", "outcome", "weight", "treatment",
       "X1", "X2", "X3", "X4", "age_s", "assigned_treatment"
     ),
     outcomeCov_var = c("X1", "X2", "X3", "X4", "age_s"),
@@ -191,7 +191,7 @@ test_that("data extensions works as expected with separate_files=TRUE", {
   result <- data_extension(
     data = data,
     keeplist = c(
-      "id", "for_period", "followup_time", "outcome", "weight", "treatment",
+      "id", "trial_period", "followup_time", "outcome", "weight", "treatment",
       "X1", "X2", "X3", "X4", "age_s", "assigned_treatment"
     ),
     outcomeCov_var = c("X1", "X2", "X3", "X4", "age_s"),
@@ -223,7 +223,7 @@ test_that("data extensions works as expected with separate_files=TRUE", {
   expected_limited <- TrialEmulation:::data_extension(
     data = data,
     keeplist = c(
-      "id", "for_period", "followup_time", "outcome", "weight", "treatment",
+      "id", "trial_period", "followup_time", "outcome", "weight", "treatment",
       "X1", "X2", "X3", "X4", "age_s", "assigned_treatment"
     ),
     outcomeCov_var = c("X1", "X2", "X3", "X4", "age_s"),
@@ -233,6 +233,6 @@ test_that("data extensions works as expected with separate_files=TRUE", {
     where_var = NULL,
     separate_files = FALSE
   )
-  data.table::setorderv(expected_limited$data, c("for_period", "id", "followup_time"))
+  data.table::setorderv(expected_limited$data, c("trial_period", "id", "followup_time"))
   expect_equal(as.data.frame(result_trials)$weight, as.data.frame(expected_limited$data)$weight)
 })

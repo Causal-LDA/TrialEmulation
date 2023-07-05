@@ -8,7 +8,7 @@
 #'
 #' @return A `data.frame` or a [split()] `data.frame` if  `length(p_control) > 1`. An additional column
 #' containing sample weights will be added to the result. These can be included in the models fit with
-#' [data_modelling()].
+#' [outcome_modelling()].
 #' @export
 #' @examples
 #' dat <- trial_example[trial_example$id < 200, ]
@@ -73,10 +73,10 @@ sample_data_prep_dt <- function(data_prep,
                                 use_subset,
                                 subset_expr,
                                 sort) {
-  periods <- sort(unique(data_prep$data$for_period))
+  periods <- sort(unique(data_prep$data$trial_period))
   lapply(periods, function(t) {
     sample_from_period(
-      data_prep$data[data_prep$data$for_period == t, ],
+      data_prep$data[data_prep$data$trial_period == t, ],
       p_control,
       use_subset,
       subset_expr,

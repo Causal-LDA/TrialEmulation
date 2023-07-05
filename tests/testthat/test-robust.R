@@ -1,6 +1,6 @@
 test_that("robust_calculation works as expected", {
   object <- glm(
-    outcome ~ for_period + followup_time + assigned_treatment,
+    outcome ~ trial_period + followup_time + assigned_treatment,
     data = vignette_switch_data
   )
 
@@ -9,7 +9,7 @@ test_that("robust_calculation works as expected", {
   expect_list(result, len = 2)
 
   expected_summary <- data.frame(
-    names = c("(Intercept)", "for_period", "followup_time", "assigned_treatment"),
+    names = c("(Intercept)", "trial_period", "followup_time", "assigned_treatment"),
     estimate = c(0.00136295054903676, 1.38831096405389e-05, 6.66873154987971e-06, -0.000537493694584342),
     robust_se = c(0.00125180530919543, 5.41292248056937e-06, 6.51930925412827e-06, 0.00140485643532218),
     `2.5%` = c(-0.00109058785698629, 3.27378157862297e-06, -6.10911458821171e-06, -0.00329101230781582),
@@ -33,8 +33,8 @@ test_that("robust_calculation works as expected", {
     nrow = 4,
     ncol = 4,
     dimnames = list(
-      c("(Intercept)", "for_period", "followup_time", "assigned_treatment"),
-      c("(Intercept)", "for_period", "followup_time", "assigned_treatment")
+      c("(Intercept)", "trial_period", "followup_time", "assigned_treatment"),
+      c("(Intercept)", "trial_period", "followup_time", "assigned_treatment")
     )
   )
 

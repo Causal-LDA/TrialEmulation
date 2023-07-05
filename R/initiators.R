@@ -1,7 +1,7 @@
 #' Initiators Analysis
 #'
 #' An all-in-one analysis using a sequence of target trials. This provides a simplified
-#' interface to the main working functions [`data_preparation()`] and [`data_modelling()`].
+#' interface to the main working functions [`data_preparation()`] and [`outcome_modelling()`].
 #'
 #' @param data A `data.frame` containing all the required columns.
 #' @param id Name of the data column for id feature Defaults to id
@@ -35,7 +35,7 @@
 #'  Defaults to `FALSE`
 #' @param include_followup_time The model to include the follow up time of the trial (`followup_time`) in outcome model,
 #'  specified as a RHS formula.
-#' @param include_expansion_time The model to include the trial period (`for_period`) in outcome model,
+#' @param include_trial_period The model to include the trial period (`trial_period`) in outcome model,
 #'  specified as a RHS formula.
 #' @param eligible_wts_0 Eligibility criteria used in weights for model condition Am1 = 0
 #' @param eligible_wts_1 Eligibility criteria used in weights for model condition Am1 = 1
@@ -90,7 +90,7 @@ initiators <- function(data,
                        cense_d_cov = ~1,
                        cense_n_cov = ~1,
                        include_followup_time = ~ followup_time + I(followup_time^2),
-                       include_expansion_time = ~ for_period + I(for_period^2),
+                       include_trial_period = ~ trial_period + I(trial_period^2),
                        eligible_wts_0 = NA,
                        eligible_wts_1 = NA,
                        where_var = NULL,
@@ -135,7 +135,7 @@ initiators <- function(data,
   )
 
   # Fit final models and robust variance estimates
-  model_full <- data_modelling(
+  model_full <- outcome_modelling(
     data = prep_result$data,
     outcome_cov = outcome_cov,
     model_var = model_var,
@@ -146,7 +146,7 @@ initiators <- function(data,
     weight_limits = weight_limits,
     use_censor = use_censor,
     include_followup_time = include_followup_time,
-    include_expansion_time = include_expansion_time,
+    include_trial_period = include_trial_period,
     where_case = where_case,
     glm_function = "glm",
     use_sample_weights = FALSE,

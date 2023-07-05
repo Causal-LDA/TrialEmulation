@@ -16,7 +16,7 @@
         "names": {
           "type": "character",
           "attributes": {},
-          "value": ["id", "for_period", "followup_time", "outcome", "weight", "treatment", "catvarA", "catvarB", "catvarC", "nvarA", "nvarB", "nvarC", "assigned_treatment", "sample_weight"]
+          "value": ["id", "trial_period", "followup_time", "outcome", "weight", "treatment", "catvarA", "catvarB", "catvarC", "nvarA", "nvarB", "nvarC", "assigned_treatment", "sample_weight"]
         }
       },
       "value": [
@@ -111,7 +111,7 @@
         "names": {
           "type": "character",
           "attributes": {},
-          "value": ["id", "for_period", "followup_time", "outcome", "weight", "treatment", "catvarA", "catvarB", "catvarC", "nvarA", "nvarB", "nvarC", "assigned_treatment", "sample_weight"]
+          "value": ["id", "trial_period", "followup_time", "outcome", "weight", "treatment", "catvarA", "catvarB", "catvarC", "nvarA", "nvarB", "nvarC", "assigned_treatment", "sample_weight"]
         }
       },
       "value": [
@@ -206,7 +206,7 @@
         "names": {
           "type": "character",
           "attributes": {},
-          "value": ["id", "for_period", "followup_time", "outcome", "weight", "treatment", "catvarA", "catvarB", "catvarC", "nvarA", "nvarB", "nvarC", "assigned_treatment", "sample_weight"]
+          "value": ["id", "trial_period", "followup_time", "outcome", "weight", "treatment", "catvarA", "catvarB", "catvarC", "nvarA", "nvarB", "nvarC", "assigned_treatment", "sample_weight"]
         }
       },
       "value": [
@@ -301,7 +301,7 @@
         "names": {
           "type": "character",
           "attributes": {},
-          "value": ["id", "for_period", "followup_time"]
+          "value": ["id", "trial_period", "followup_time"]
         }
       },
       "value": [
@@ -341,7 +341,7 @@
         "names": {
           "type": "character",
           "attributes": {},
-          "value": ["sample_id", "id", "for_period", "followup_time", "outcome", "weight", "treatment", "catvarA", "catvarB", "catvarC", "nvarA", "nvarB", "nvarC", "assigned_treatment", "sample_weight"]
+          "value": ["sample_id", "id", "trial_period", "followup_time", "outcome", "weight", "treatment", "catvarA", "catvarB", "catvarC", "nvarA", "nvarB", "nvarC", "assigned_treatment", "sample_weight"]
         }
       },
       "value": [
@@ -441,7 +441,7 @@
         "names": {
           "type": "character",
           "attributes": {},
-          "value": ["id", "for_period", "followup_time", "outcome", "weight", "treatment", "nvarA", "nvarB", "nvarC", "assigned_treatment", "sample_weight"]
+          "value": ["id", "trial_period", "followup_time", "outcome", "weight", "treatment", "nvarA", "nvarB", "nvarC", "assigned_treatment", "sample_weight"]
         }
       },
       "value": [
@@ -521,7 +521,7 @@
         "names": {
           "type": "character",
           "attributes": {},
-          "value": ["id", "for_period", "followup_time", "outcome", "weight", "treatment", "nvarA", "nvarB", "nvarC", "assigned_treatment", "sample_weight"]
+          "value": ["id", "trial_period", "followup_time", "outcome", "weight", "treatment", "nvarA", "nvarB", "nvarC", "assigned_treatment", "sample_weight"]
         }
       },
       "value": [

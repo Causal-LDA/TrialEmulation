@@ -240,7 +240,7 @@
             {
               "type": "character",
               "attributes": {},
-              "value": ["(Intercept)", "assigned_treatment", "for_period", "followup_time", "catvarA1", "catvarA2", "catvarA3", "catvarA7", "nvarA"]
+              "value": ["(Intercept)", "assigned_treatment", "trial_period", "followup_time", "catvarA1", "catvarA2", "catvarA3", "catvarA7", "nvarA"]
             }
           ]
         }

@@ -1,5 +1,5 @@
 test_that("do_sampling works as expected when case exist", {
-  data <- as.data.table(TrialEmulation::vignette_switch_data)[for_period == 272 & followup_time == 5]
+  data <- as.data.table(TrialEmulation::vignette_switch_data)[trial_period == 272 & followup_time == 5]
   set.seed(100)
   sample1 <- do_sampling(data, p_control = 0.1)
   expect_snapshot_value(as.data.frame(sample1), style = "json2")
@@ -9,14 +9,14 @@ test_that("do_sampling works as expected when case exist", {
 })
 
 test_that("do_sampling works as expected when no cases exist", {
-  data <- as.data.table(TrialEmulation::vignette_switch_data)[for_period == 5 & followup_time == 5]
+  data <- as.data.table(TrialEmulation::vignette_switch_data)[trial_period == 5 & followup_time == 5]
   set.seed(1100)
   result_rows <- do_sampling(data, p_control = 0.1)
   expect_snapshot_value(as.data.frame(result_rows), style = "json2")
 })
 
 test_that("sample_from_period works as expected", {
-  data <- as.data.table(TrialEmulation::vignette_switch_data)[for_period == 272]
+  data <- as.data.table(TrialEmulation::vignette_switch_data)[trial_period == 272]
   set.seed(651)
 
   result <- sample_from_period(period_data = data, p_control = 0.01, use_subset = FALSE)
@@ -24,21 +24,21 @@ test_that("sample_from_period works as expected", {
   expect_data_frame(result, nrow = 87, ncol = 15)
   expect_identical(unique(result$sample_id), 1L)
 
-  result_cases <- result[outcome == 1, c("id", "for_period", "followup_time")]
-  expected_cases <- data[outcome == 1, c("id", "for_period", "followup_time")]
+  result_cases <- result[outcome == 1, c("id", "trial_period", "followup_time")]
+  expected_cases <- data[outcome == 1, c("id", "trial_period", "followup_time")]
   expect_equal(
     result_cases[order(result_cases$followup_time, result_cases$id)],
     expected_cases[order(expected_cases$followup_time, expected_cases$id)]
   )
   expect_data_frame(result[followup_time == 2], nrows = 1)
   expect_snapshot_value(
-    as.data.frame(result[outcome == 0, c("id", "for_period", "followup_time")]),
+    as.data.frame(result[outcome == 0, c("id", "trial_period", "followup_time")]),
     style = "json2"
   )
 })
 
 test_that("sample_from_period works as expected with multiple proportions", {
-  data <- as.data.table(TrialEmulation::vignette_switch_data)[for_period == 272]
+  data <- as.data.table(TrialEmulation::vignette_switch_data)[trial_period == 272]
   set.seed(209)
   result <- sample_from_period(
     period_data = data,
@@ -53,14 +53,14 @@ test_that("sample_from_period works as expected with multiple proportions", {
 
   expect_snapshot_value(as.data.frame(result[1:30, ]), style = "json2")
 
-  result_cases_1 <- result[outcome == 1 & sample_id == 1, c("id", "for_period", "followup_time")]
-  expected_cases <- data[outcome == 1, c("id", "for_period", "followup_time")]
+  result_cases_1 <- result[outcome == 1 & sample_id == 1, c("id", "trial_period", "followup_time")]
+  expected_cases <- data[outcome == 1, c("id", "trial_period", "followup_time")]
   expect_equal(
     result_cases_1[order(result_cases_1$followup_time, result_cases_1$id)],
     expected_cases[order(expected_cases$followup_time, expected_cases$id)]
   )
 
-  result_cases_2 <- result[outcome == 1 & sample_id == 2, c("id", "for_period", "followup_time")]
+  result_cases_2 <- result[outcome == 1 & sample_id == 2, c("id", "trial_period", "followup_time")]
   expect_equal(
     result_cases_2[order(result_cases_2$followup_time, result_cases_2$id)],
     expected_cases[order(expected_cases$followup_time, expected_cases$id)]

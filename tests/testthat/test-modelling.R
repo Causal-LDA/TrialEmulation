@@ -1,13 +1,13 @@
-# data_modelling ----
-test_that("data_modelling can be quiet", {
+# outcome_modelling ----
+test_that("outcome_modelling can be quiet", {
   data <- vignette_switch_data
   expect_silent(
-    result <- data_modelling(
+    result <- outcome_modelling(
       data,
       outcome_cov = c("catvarA", "nvarA"),
       model_var = "assigned_treatment",
       include_followup_time = ~followup_time,
-      include_expansion_time = ~for_period,
+      include_trial_period = ~trial_period,
       use_sample_weights = FALSE,
       quiet = TRUE,
       glm_function = "glm"
@@ -15,14 +15,14 @@ test_that("data_modelling can be quiet", {
   )
 })
 
-test_that("data_modelling gives expected results in example data", {
+test_that("outcome_modelling gives expected results in example data", {
   data <- vignette_switch_data
-  result <- data_modelling(
+  result <- outcome_modelling(
     data,
     outcome_cov = c("catvarA", "catvarB", "catvarC", "nvarA", "nvarB", "nvarC"),
     model_var = "assigned_treatment",
     include_followup_time = ~followup_time,
-    include_expansion_time = ~for_period,
+    include_trial_period = ~trial_period,
     use_sample_weights = FALSE,
     quiet = TRUE,
     glm_function = "parglm",
@@ -32,7 +32,7 @@ test_that("data_modelling gives expected results in example data", {
   expected_coefs <- c(
     `(Intercept)` = -3.44513044265409,
     assigned_treatment = -0.279511046771487,
-    for_period = 0.00193709391469456,
+    trial_period = 0.00193709391469456,
     followup_time = 0.00139579193160405,
     catvarA = 0.0586518690748273,
     catvarB = -0.0545402601125559,
@@ -46,7 +46,7 @@ test_that("data_modelling gives expected results in example data", {
   expect_equal(
     result$robust$summary$names,
     c(
-      "(Intercept)", "assigned_treatment", "for_period", "followup_time",
+      "(Intercept)", "assigned_treatment", "trial_period", "followup_time",
       "catvarA", "catvarB", "catvarC", "nvarA", "nvarB", "nvarC"
     )
   )
@@ -61,15 +61,15 @@ test_that("data_modelling gives expected results in example data", {
 })
 
 
-test_that("data_modelling works with data.tables and weights", {
+test_that("outcome_modelling works with data.tables and weights", {
   data <- as.data.table(TrialEmulation::vignette_switch_data)
   expect_silent(
-    result_parglm <- data_modelling(
+    result_parglm <- outcome_modelling(
       data,
       outcome_cov = c("catvarA", "nvarA"),
       model_var = "assigned_treatment",
       include_followup_time = ~followup_time,
-      include_expansion_time = ~for_period,
+      include_trial_period = ~trial_period,
       use_sample_weights = FALSE,
       use_weight = TRUE,
       glm_function = "parglm",
@@ -79,12 +79,12 @@ test_that("data_modelling works with data.tables and weights", {
   )
 
   expect_silent(
-    result_glm <- data_modelling(
+    result_glm <- outcome_modelling(
       data,
       outcome_cov = c("catvarA", "nvarA"),
       model_var = "assigned_treatment",
       include_followup_time = ~followup_time,
-      include_expansion_time = ~for_period,
+      include_trial_period = ~trial_period,
       use_sample_weights = FALSE,
       use_weight = TRUE,
       glm_function = "glm",
@@ -129,14 +129,14 @@ test_that("Modelling works with where_case", {
   data <- readRDS(test_path("data/ready_for_modelling.rds"))
 
   expect_warning(
-    result <- data_modelling(
+    result <- outcome_modelling(
       data = data,
       outcome_cov = ~ X1 + X2 + X3 + X4 + age_s,
       model_var = "assigned_treatment",
       use_weight = TRUE,
       use_censor = TRUE,
       include_followup_time = ~ factor(followup_time),
-      include_expansion_time = ~1,
+      include_trial_period = ~1,
       glm_function = c("glm"),
       use_sample_weights = FALSE,
       first_followup = 0,
@@ -151,16 +151,16 @@ test_that("Modelling works with where_case", {
   expect_snapshot_value(as.data.frame(result$robust$summary), style = "json2")
 })
 
-test_that("data_modelling works with analysis_weights = unweighted", {
+test_that("outcome_modelling works with analysis_weights = unweighted", {
   data <- readRDS(test_path("data/ready_for_modelling.rds"))
 
   expect_silent(
-    result_unweighted <- data_modelling(
+    result_unweighted <- outcome_modelling(
       data,
       outcome_cov = ~ X1 + X2 + X3 + X4 + age_s,
       model_var = "assigned_treatment",
       include_followup_time = ~followup_time,
-      include_expansion_time = ~for_period,
+      include_trial_period = ~trial_period,
       use_sample_weights = FALSE,
       use_weight = TRUE,
       glm_function = "glm",
@@ -172,16 +172,16 @@ test_that("data_modelling works with analysis_weights = unweighted", {
   expect_snapshot_value(as.data.frame(result_unweighted$robust$summary), style = "json2")
 })
 
-test_that("data_modelling works with analysis_weights = p99", {
+test_that("outcome_modelling works with analysis_weights = p99", {
   data <- readRDS(test_path("data/ready_for_modelling.rds"))
 
   expect_warning(
-    result_p99 <- data_modelling(
+    result_p99 <- outcome_modelling(
       data,
       outcome_cov = ~ X1 + X2 + X3 + X4 + age_s,
       model_var = "assigned_treatment",
       include_followup_time = ~followup_time,
-      include_expansion_time = ~for_period,
+      include_trial_period = ~trial_period,
       use_sample_weights = FALSE,
       use_weight = TRUE,
       glm_function = "glm",
@@ -194,16 +194,16 @@ test_that("data_modelling works with analysis_weights = p99", {
 })
 
 
-test_that("data_modelling works with analysis_weights = weight_limits", {
+test_that("outcome_modelling works with analysis_weights = weight_limits", {
   data <- readRDS(test_path("data/ready_for_modelling.rds"))
 
   expect_warning(
-    result_limits <- data_modelling(
+    result_limits <- outcome_modelling(
       data,
       outcome_cov = ~ X1 + X2 + X3 + X4 + age_s,
       model_var = "assigned_treatment",
       include_followup_time = ~followup_time,
-      include_expansion_time = ~for_period,
+      include_trial_period = ~trial_period,
       use_sample_weights = FALSE,
       use_weight = TRUE,
       glm_function = "glm",
@@ -218,16 +218,16 @@ test_that("data_modelling works with analysis_weights = weight_limits", {
 
 
 
-test_that("data_modelling works with missing sample weights", {
+test_that("outcome_modelling works with missing sample weights", {
   data <- readRDS(test_path("data/ready_for_modelling.rds"))
   expect_warning(
     expect_warning(
-      result_sample <- data_modelling(
+      result_sample <- outcome_modelling(
         data,
         outcome_cov = ~ X1 + X2 + X3 + X4 + age_s,
         model_var = "assigned_treatment",
         include_followup_time = ~followup_time,
-        include_expansion_time = ~for_period,
+        include_trial_period = ~trial_period,
         use_sample_weights = TRUE,
         use_weight = TRUE,
         glm_function = "glm",
@@ -239,12 +239,12 @@ test_that("data_modelling works with missing sample weights", {
   )
 
   expect_warning(
-    expected_result <- data_modelling(
+    expected_result <- outcome_modelling(
       data,
       outcome_cov = ~ X1 + X2 + X3 + X4 + age_s,
       model_var = "assigned_treatment",
       include_followup_time = ~followup_time,
-      include_expansion_time = ~for_period,
+      include_trial_period = ~trial_period,
       use_sample_weights = FALSE,
       use_weight = TRUE,
       glm_function = "glm",
@@ -255,18 +255,18 @@ test_that("data_modelling works with missing sample weights", {
   expect_equal(result_sample$robust$summary, expected_result$robust$summary)
 })
 
-test_that("data_modelling works with sample weights", {
+test_that("outcome_modelling works with sample weights", {
   data <- readRDS(test_path("data/prep_data_object.rds"))
   set.seed(2020)
   sampled_data <- case_control_sampling_trials(data, p_control = 0.5)
 
   expect_warning(
-    result_sample <- data_modelling(
+    result_sample <- outcome_modelling(
       sampled_data,
       outcome_cov = ~ X1 + X2 + X3 + X4 + age_s,
       model_var = "assigned_treatment",
       include_followup_time = ~followup_time,
-      include_expansion_time = ~for_period,
+      include_trial_period = ~trial_period,
       use_sample_weights = TRUE,
       use_weight = TRUE,
       glm_function = "glm",
@@ -278,14 +278,14 @@ test_that("data_modelling works with sample weights", {
 })
 
 
-test_that("data_modelling makes model formula as expected with weight and censor", {
+test_that("outcome_modelling makes model formula as expected with weight and censor", {
   data <- readRDS(test_path("data/prep_data_object.rds"))
   expect_warning(
-    result_w_c <- data_modelling(
+    result_w_c <- outcome_modelling(
       data,
       outcome_cov = ~ X1 + X2 + X3 + X4 + age_s,
       include_followup_time = ~followup_time,
-      include_expansion_time = ~for_period,
+      include_trial_period = ~trial_period,
       use_sample_weights = FALSE,
       use_weight = TRUE,
       use_censor = TRUE,
@@ -295,18 +295,18 @@ test_that("data_modelling makes model formula as expected with weight and censor
     "non-integer #successes in a binomial glm!"
   )
   result_formula <- result_w_c$model$formula
-  expected_formula <- outcome ~ assigned_treatment + for_period + followup_time + X1 + X2 + X3 + X4 + age_s
+  expected_formula <- outcome ~ assigned_treatment + trial_period + followup_time + X1 + X2 + X3 + X4 + age_s
   environment(expected_formula) <- environment(result_formula) <- globalenv()
   expect_equal(result_formula, expected_formula)
 })
 
-test_that("data_modelling makes model formula as expected with no weight and no censor", {
+test_that("outcome_modelling makes model formula as expected with no weight and no censor", {
   data <- readRDS(test_path("data/prep_data_object.rds"))
-  result_w_c <- data_modelling(
+  result_w_c <- outcome_modelling(
     data,
     outcome_cov = ~ X1 + X2 + X3 + X4 + age_s,
     include_followup_time = ~followup_time,
-    include_expansion_time = ~for_period,
+    include_trial_period = ~trial_period,
     use_sample_weights = FALSE,
     use_weight = FALSE,
     use_censor = FALSE,
@@ -314,12 +314,12 @@ test_that("data_modelling makes model formula as expected with no weight and no 
     quiet = TRUE,
   )
   result_formula <- result_w_c$model$formula
-  expected_formula <- outcome ~ assigned_treatment + for_period + followup_time + X1 + X2 + X3 + X4 + age_s
+  expected_formula <- outcome ~ assigned_treatment + trial_period + followup_time + X1 + X2 + X3 + X4 + age_s
   environment(expected_formula) <- environment(result_formula) <- globalenv()
   expect_equal(result_formula, expected_formula)
 })
 
-test_that("data_modelling makes model formula as expected with weight and no censor", {
+test_that("outcome_modelling makes model formula as expected with weight and no censor", {
   set.seed(20222022)
   simdata_censored <- data_gen_censored(1000, 10)
   prep_PP_data <- data_preparation(
@@ -341,11 +341,11 @@ test_that("data_modelling makes model formula as expected with weight and no cen
     quiet = TRUE
   )
   expect_warning(
-    result_w_c <- data_modelling(
+    result_w_c <- outcome_modelling(
       prep_PP_data,
       outcome_cov = ~ X1 + X2,
       include_followup_time = ~followup_time,
-      include_expansion_time = ~for_period,
+      include_trial_period = ~trial_period,
       use_sample_weights = FALSE,
       use_weight = TRUE,
       use_censor = FALSE,
@@ -355,18 +355,18 @@ test_that("data_modelling makes model formula as expected with weight and no cen
     "non-integer #successes in a binomial glm!"
   )
   result_formula <- result_w_c$model$formula
-  expected_formula <- outcome ~ dose + I(dose^2) + for_period + followup_time + X1 + X2
+  expected_formula <- outcome ~ dose + I(dose^2) + trial_period + followup_time + X1 + X2
   environment(expected_formula) <- environment(result_formula) <- globalenv()
   expect_equal(result_formula, expected_formula)
 })
 
-test_that("data_modelling makes model formula as expected with no weight and censor", {
+test_that("outcome_modelling makes model formula as expected with no weight and censor", {
   data <- readRDS(test_path("data/prep_data_object.rds"))
-  result_w_c <- data_modelling(
+  result_w_c <- outcome_modelling(
     data,
     outcome_cov = ~ X1 + X2 + X3 + X4 + age_s,
     include_followup_time = ~followup_time,
-    include_expansion_time = ~for_period,
+    include_trial_period = ~trial_period,
     use_sample_weights = FALSE,
     use_weight = FALSE,
     use_censor = TRUE,
@@ -375,7 +375,7 @@ test_that("data_modelling makes model formula as expected with no weight and cen
   )
 
   result_formula <- result_w_c$model$formula
-  expected_formula <- outcome ~ assigned_treatment + for_period + followup_time + X1 + X2 + X3 + X4 + age_s
+  expected_formula <- outcome ~ assigned_treatment + trial_period + followup_time + X1 + X2 + X3 + X4 + age_s
   environment(expected_formula) <- environment(result_formula) <- globalenv()
   expect_equal(result_formula, expected_formula)
 })

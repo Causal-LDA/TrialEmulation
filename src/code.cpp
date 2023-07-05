@@ -5,7 +5,7 @@ using namespace Rcpp;
 // //' @name expand_func
 // //' @description Expand the periods iteratively in C++
 // //'
-// //' @param d A dataframe with for_period, period_new and switch_new columns
+// //' @param d A dataframe with trial_period, period_new and switch_new columns
 // //' @param first_period First period value to start expanding about
 //
 // // [[Rcpp::export(expand_func)]]
@@ -13,7 +13,7 @@ using namespace Rcpp;
 //   int n = d.nrows();
 //   Rcpp::IntegerVector ex (last_period+1, 1);
 //   Rcpp::IntegerVector expand (n, 1);
-//   Rcpp::IntegerVector t_period = d["for_period"];
+//   Rcpp::IntegerVector t_period = d["trial_period"];
 //   Rcpp::IntegerVector t_new = d["period_new"];
 //   Rcpp::IntegerVector t_switch = d["switch_new"];
 //   for(int i=0; i<n; i++){

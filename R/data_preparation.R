@@ -121,7 +121,7 @@ data_preparation <- function(data,
   }
 
   keeplist <- c(
-    "id", "for_period", "followup_time", "outcome", "weight", "treatment",
+    "id", "trial_period", "followup_time", "outcome", "weight", "treatment",
     where_var, all.vars(outcome_cov), all.vars(model_var)
   )
 
