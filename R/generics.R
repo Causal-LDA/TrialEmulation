@@ -1,14 +1,12 @@
-
 #' Summary methods
 #'
 #' Print summaries of data and model objects produced by `TrialEmulation`.
 #' @rdname summary_TE
 #'
 #' @param object Object to print summary
-#' @param digits Number of digits to print. Passed to print methods such as [print.data.frame].
 #' @param ... Additional arguments passed to print methods.
 #' @export
-summary.TE_data_prep <- function(object, digits = 4, ...) {
+summary.TE_data_prep <- function(object, ...) {
   cat("Number of observations in expanded data:", object$N, "\n")
   cat("First trial period:", object$min_period, "\n")
   cat("Last trial period:", object$max_period, "\n\n")
@@ -23,7 +21,7 @@ summary.TE_data_prep <- function(object, digits = 4, ...) {
       cat_underline("Treatment switch models")
       for (n in names(object$switch_models)) {
         cat("switch_models$", n, ":\n ", sep = "")
-        print(object$switch_models[[n]], full = FALSE, digits = digits, ...)
+        print(object$switch_models[[n]], full = FALSE, ...)
         cat(console_line(), "\n")
       }
     }
@@ -32,7 +30,7 @@ summary.TE_data_prep <- function(object, digits = 4, ...) {
         cat_underline("Censoring models")
         for (n in names(object$censor_models)) {
           cat("censor_models$", n, ":\n", sep = "")
-          print(object$censor_models[[n]], full = FALSE, digits = digits, ...)
+          print(object$censor_models[[n]], full = FALSE, ...)
           cat(console_line(), "\n")
         }
       }
@@ -42,34 +40,34 @@ summary.TE_data_prep <- function(object, digits = 4, ...) {
 
 #' @rdname summary_TE
 #' @export
-summary.TE_data_prep_sep <- function(object, digits = 4, ...) {
+summary.TE_data_prep_sep <- function(object, ...) {
   cat("Expanded Trial Emulation data\n\n")
 
   n_files <- length(object$data)
   cat("Expanded data saved in ", n_files, " csv file", if (n_files > 1) "s" else "", ":\n", sep = "")
-  print(data.table(data = object$data), topn = 3, n = 5, col.names = "none", digits = digits, ...)
+  print(data.table(data = object$data), topn = 3, n = 5, col.names = "none", ...)
   cat("\n\n")
   NextMethod()
 }
 
 #' @rdname summary_TE
 #' @export
-summary.TE_data_prep_dt <- function(object, digits = 4, ...) {
+summary.TE_data_prep_dt <- function(object, ...) {
   cat("Expanded Trial Emulation data\n\n")
-  print(object$data, topn = 3, nrows = 3, digits = digits, ...)
+  print(object$data, topn = 3, nrows = 3, ...)
   cat("\n")
   NextMethod()
 }
 
 #' @export
 #' @rdname summary_TE
-summary.TE_model <- function(object, digits = 4, ...) {
+summary.TE_model <- function(object, ...) {
   cat("Trial Emulation Outcome Model\n\n")
   cat("Outcome model formula:\n")
   print(object$model$formula, showEnv = FALSE)
   cat("\n")
   cat("Coefficent summary (robust):\n")
-  summary(object$robust, digits = digits, ...)
+  summary(object$robust, ...)
 
   object_name <- match.call()[["object"]]
 
@@ -80,10 +78,10 @@ summary.TE_model <- function(object, digits = 4, ...) {
 
 #' @export
 #' @rdname summary_TE
-summary.TE_robust <- function(object, digits = 4, ...) {
+summary.TE_robust <- function(object, ...) {
   to_print <- object$summary
-  to_print$p_value <- format.pval(to_print$p_value, digits = digits, ...)
-  print.data.frame(to_print, digits = digits, row.names = FALSE, ...)
+  to_print$p_value <- format.pval(to_print$p_value, ...)
+  print.data.frame(to_print, row.names = FALSE, ...)
 }
 
 
@@ -92,16 +90,15 @@ summary.TE_robust <- function(object, digits = 4, ...) {
 #'
 #' @param x print.TE_weight_summary object.
 #' @param full Print full or short summary.
-#' @param digits Number of digits to print. Passed to [print.data.frame].
 #' @param ... Arguments passed to [print.data.frame].
 #' @export
 #' @rdname print_TE
-print.TE_weight_summary <- function(x, full = TRUE, digits = 4, ...) {
+print.TE_weight_summary <- function(x, full = TRUE, ...) {
   cat(x$description, "\n\n")
-  print.data.frame(x$summary, row.names = FALSE, digits = digits, ...)
+  print.data.frame(x$summary, row.names = FALSE, ...)
   cat("\n")
   if (full) {
-    print.data.frame(x$fit_summary, row.names = FALSE, digits = digits, ...)
+    print.data.frame(x$fit_summary, row.names = FALSE, ...)
     if (!is.null(x$path)) {
       cat("\n")
       cat("Object saved at \"", x$path, "\"", sep = "")

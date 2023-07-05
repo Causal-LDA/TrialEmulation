@@ -1,7 +1,8 @@
 # Welcome to TrialEmulation
 
-This package is under active development and is not yet available on CRAN.
-To install directly from github use the command
+This package implements algorithms to conduct a **sequence of target trials** analysis.
+
+To install the latest development version from github
 
 ```r
 remotes::install_github("Causal-LDA/TrialEmulation")

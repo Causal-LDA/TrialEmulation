@@ -219,7 +219,7 @@
 # weight_func works with user specified time on regime
 
     Code
-      for (i in result$switch_models) print(i)
+      for (i in result$switch_models) print(i, digits = 4)
     Output
       P(treatment = 1 | previous treatment = 0) for denominator 
       
@@ -261,12 +261,12 @@
 ---
 
     Code
-      for (i in result$censor_models) print(i)
+      for (i in result$censor_models) print(i, digits = 4)
 
 # weight_func works with pool_cense = TRUE
 
     Code
-      lapply(result$switch_models, print)
+      lapply(result$switch_models, print, digits = 4)
     Output
       P(treatment = 1 | previous treatment = 0) for denominator 
       
@@ -316,7 +316,7 @@
 ---
 
     Code
-      lapply(result$censor_models, print)
+      lapply(result$censor_models, print, digits = 4)
     Output
       Model for P(cense = 0 | X) for denominator 
       

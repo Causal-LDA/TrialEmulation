@@ -100,8 +100,8 @@ test_that("weight_func works with user specified time on regime", {
     switch_d_cov = ~ X1 + X2 + time_on_regime,
     quiet = TRUE
   )
-  expect_snapshot(for (i in result$switch_models) print(i))
-  expect_snapshot(for (i in result$censor_models) print(i))
+  expect_snapshot(for (i in result$switch_models) print(i, digits = 4))
+  expect_snapshot(for (i in result$censor_models) print(i, digits = 4))
 })
 
 test_that("weight_func works with pool_cense = TRUE", {
@@ -117,8 +117,8 @@ test_that("weight_func works with pool_cense = TRUE", {
     cense_n_cov = ~ X3 + X4,
     quiet = TRUE
   )
-  expect_snapshot(lapply(result$switch_models, print))
-  expect_snapshot(lapply(result$censor_models, print))
+  expect_snapshot(lapply(result$switch_models, print, digits = 4))
+  expect_snapshot(lapply(result$censor_models, print, digits = 4))
 })
 
 

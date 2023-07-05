@@ -8,20 +8,18 @@
 \alias{summary.TE_robust}
 \title{Summary methods}
 \usage{
-\method{summary}{TE_data_prep}(object, digits = 4, ...)
+\method{summary}{TE_data_prep}(object, ...)
 
-\method{summary}{TE_data_prep_sep}(object, digits = 4, ...)
+\method{summary}{TE_data_prep_sep}(object, ...)
 
-\method{summary}{TE_data_prep_dt}(object, digits = 4, ...)
+\method{summary}{TE_data_prep_dt}(object, ...)
 
-\method{summary}{TE_model}(object, digits = 4, ...)
+\method{summary}{TE_model}(object, ...)
 
-\method{summary}{TE_robust}(object, digits = 4, ...)
+\method{summary}{TE_robust}(object, ...)
 }
 \arguments{
 \item{object}{Object to print summary}
-
-\item{digits}{Number of digits to print. Passed to print methods such as \link{print.data.frame}.}
 
 \item{...}{Additional arguments passed to print methods.}
 }
