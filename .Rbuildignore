@@ -8,6 +8,7 @@
 ^\.pre-commit-config\.yaml$
 ^_pkgdown.yml$
 ^design$
+^local$
 ^renv$
 ^renv\.lock$
 ^testing$

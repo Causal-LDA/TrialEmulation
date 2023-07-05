@@ -48,3 +48,5 @@ renv/
 
 # Pkgdown site
 docs/*
+
+local

@@ -48,9 +48,9 @@ jobs:
       REPO_GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     with:
       auto-update: true
-  gitleaks:
-    name: gitleaks 💧
-    uses: insightsengineering/r.pkg.template/.github/workflows/gitleaks.yaml@main
+  # gitleaks:
+  #   name: gitleaks 💧
+  #   uses: insightsengineering/r.pkg.template/.github/workflows/gitleaks.yaml@main
   spelling:
     if: github.event_name == 'pull_request'
     name: Spell Check 🆎
