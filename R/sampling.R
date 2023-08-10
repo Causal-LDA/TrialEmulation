@@ -8,7 +8,7 @@
 #'
 #' @return A `data.frame` or a [split()] `data.frame` if  `length(p_control) > 1`. An additional column
 #' containing sample weights will be added to the result. These can be included in the models fit with
-#' [outcome_modelling()].
+#' [pooled_trial_lr()].
 #' @export
 #' @examples
 #' dat <- trial_example[trial_example$id < 200, ]

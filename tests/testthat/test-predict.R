@@ -36,7 +36,7 @@ test_that("predict.RTE_model works with newdata", {
   new_data <- data[data$followup_time == 0 & data$trial_period == 300, ]
   data$catvarA <- factor(data$catvarA)
 
-  object <- outcome_modelling(
+  object <- pooled_trial_lr(
     data,
     outcome_cov = ~ catvarA + nvarA,
     model_var = "assigned_treatment",
@@ -89,7 +89,7 @@ test_that("predict.RTE_model works with interactions", {
 
   expect_warning(
     expect_warning(
-      object <- outcome_modelling(
+      object <- pooled_trial_lr(
         data = data,
         outcome_cov = ~ X1 + X2 + age_s,
         model_var = ~ assigned_treatment:followup_time,

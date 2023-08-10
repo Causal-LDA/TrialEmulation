@@ -1,4 +1,4 @@
-#' Fit the Outcome Model
+#' Fit the Pooled Logistic Regression for the Sequence of Trials
 #'
 #' Fits a weighted pooled logistic regression model for the sequence of trials and
 #' calculates a robust covariance matrix using a sandwich estimator.
@@ -19,22 +19,22 @@
 #' @importFrom stats as.formula binomial pnorm quantile relevel
 #' @importFrom utils write.csv
 
-outcome_modelling <- function(data,
-                              outcome_cov = ~1,
-                              model_var = NULL,
-                              first_followup = NA,
-                              last_followup = NA,
-                              use_weight = FALSE,
-                              analysis_weights = c("asis", "unweighted", "p99", "weight_limits"),
-                              weight_limits = c(0, Inf),
-                              use_censor = FALSE,
-                              include_followup_time = ~ followup_time + I(followup_time^2),
-                              include_trial_period = ~ trial_period + I(trial_period^2),
-                              where_case = NA,
-                              glm_function = c("glm", "parglm"),
-                              use_sample_weights = TRUE,
-                              quiet = FALSE,
-                              ...) {
+pooled_trial_lr <- function(data,
+                            outcome_cov = ~1,
+                            model_var = NULL,
+                            first_followup = NA,
+                            last_followup = NA,
+                            use_weight = FALSE,
+                            analysis_weights = c("asis", "unweighted", "p99", "weight_limits"),
+                            weight_limits = c(0, Inf),
+                            use_censor = FALSE,
+                            include_followup_time = ~ followup_time + I(followup_time^2),
+                            include_trial_period = ~ trial_period + I(trial_period^2),
+                            where_case = NA,
+                            glm_function = c("glm", "parglm"),
+                            use_sample_weights = TRUE,
+                            quiet = FALSE,
+                            ...) {
   if (inherits(data, "TE_data_prep_dt")) data <- data$data
 
   arg_checks <- makeAssertCollection()
@@ -63,8 +63,9 @@ outcome_modelling <- function(data,
   data <- as.data.table(data)
   # if there are any limits on the follow up
   if (!is.na(first_followup) || !is.na(last_followup)) {
-    data <- data[followup_time >= max(0, first_followup, na.rm = TRUE) &
-      followup_time <= min(Inf, last_followup, na.rm = TRUE), ]
+    data <- data[
+      followup_time >= max(0, first_followup, na.rm = TRUE) & followup_time <= min(Inf, last_followup, na.rm = TRUE),
+    ]
   }
 
   quiet_msg(quiet, "Preparing for model fitting")
@@ -132,26 +133,19 @@ outcome_modelling <- function(data,
 
   quiet_line(quiet)
   quiet_msg(quiet, "Fitting outcome model")
-  timing <- system.time({
-    model.full <- fit_glm(
-      glm_function = glm_function,
-      formula = model_formula,
-      data = data,
-      weights = data[["weight"]],
-      ...
-    )
-  })
+  model.full <- fit_glm(
+    glm_function = glm_function,
+    formula = model_formula,
+    data = data,
+    weights = data[["weight"]],
+    ...
+  )
 
-  quiet_msg_time(quiet, "Processing time of fitting outcome model: ", timing)
-  quiet_msg(quiet, "summary(model)")
   quiet_print(quiet, summary(model.full))
   quiet_line(quiet)
 
   quiet_msg(quiet, "Calculating robust variance")
-  timing <- system.time({
-    robust_model <- robust_calculation(model.full, data[["id"]])
-  })
-  quiet_msg_time(quiet, "Processing time of calculating robust variance: ", timing)
+  robust_model <- robust_calculation(model.full, data[["id"]])
   quiet_msg(quiet, "Summary with robust standard error:")
   quiet_print(quiet, format.data.frame(robust_model$summary, digits = 3))
   quiet_line(quiet)

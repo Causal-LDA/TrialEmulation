@@ -129,7 +129,7 @@ or arguments to \code{control}. See \link[stats:glm]{stats::glm}, \link[parglm:p
 }
 \description{
 An all-in-one analysis using a sequence of target trials. This provides a simplified
-interface to the main working functions \code{\link[=data_preparation]{data_preparation()}} and \code{\link[=outcome_modelling]{outcome_modelling()}}.
+interface to the main working functions \code{\link[=data_preparation]{data_preparation()}} and \code{\link[=pooled_trial_lr]{pooled_trial_lr()}}.
 }
 \details{
 If \code{model_var = NULL} the package will add some terms to the outcome model:

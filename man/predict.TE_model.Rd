@@ -15,7 +15,7 @@
 )
 }
 \arguments{
-\item{object}{Object from \code{\link[=outcome_modelling]{outcome_modelling()}} or \code{\link[=initiators]{initiators()}}.}
+\item{object}{Object from \code{\link[=pooled_trial_lr]{pooled_trial_lr()}} or \code{\link[=initiators]{initiators()}}.}
 
 \item{newdata}{Baseline trial data to predict cumulative incidence or survival for. If \code{newdata} contains
 rows with \code{followup_time > 0} these will be removed.}
@@ -43,7 +43,7 @@ Predict Cumulative Incidence with Confidence Intervals
 data("vignette_switch_data")
 data_subset <- vignette_switch_data[vignette_switch_data$trial_period > 200 &
   vignette_switch_data$trial_period < 300, ]
-model <- outcome_modelling(
+model <- pooled_trial_lr(
   data = data_subset,
   outcome_cov = c("catvarA", "nvarA"),
   last_followup = 40,

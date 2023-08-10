@@ -1,6 +1,6 @@
 #' Predict Cumulative Incidence with Confidence Intervals
 #'
-#' @param object Object from [outcome_modelling()] or [initiators()].
+#' @param object Object from [pooled_trial_lr()] or [initiators()].
 #' @param newdata Baseline trial data to predict cumulative incidence or survival for. If `newdata` contains
 #' rows with `followup_time > 0` these will be removed.
 #' @param type Type of values to calculate. Either cumulative incidence (`"cum_inc"`) or survival (`"survival"`).
@@ -19,7 +19,7 @@
 #' data("vignette_switch_data")
 #' data_subset <- vignette_switch_data[vignette_switch_data$trial_period > 200 &
 #'   vignette_switch_data$trial_period < 300, ]
-#' model <- outcome_modelling(
+#' model <- pooled_trial_lr(
 #'   data = data_subset,
 #'   outcome_cov = c("catvarA", "nvarA"),
 #'   last_followup = 40,

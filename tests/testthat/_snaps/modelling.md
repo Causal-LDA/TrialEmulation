@@ -58,7 +58,7 @@
       ]
     }
 
-# outcome_modelling works with analysis_weights = unweighted
+# pooled_trial_lr works with analysis_weights = unweighted
 
     {
       "type": "list",
@@ -118,7 +118,7 @@
       ]
     }
 
-# outcome_modelling works with analysis_weights = p99
+# pooled_trial_lr works with analysis_weights = p99
 
     {
       "type": "list",
@@ -178,7 +178,7 @@
       ]
     }
 
-# outcome_modelling works with analysis_weights = weight_limits
+# pooled_trial_lr works with analysis_weights = weight_limits
 
     {
       "type": "list",
@@ -238,7 +238,7 @@
       ]
     }
 
-# outcome_modelling works with sample weights
+# pooled_trial_lr works with sample weights
 
     {
       "type": "list",
