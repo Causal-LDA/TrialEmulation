@@ -9,8 +9,17 @@
 \code{TrialEmulation} facilitates preprocessing and analysing observational data
 an emulated a randomised trial.
 }
+\seealso{
+Useful links:
+\itemize{
+  \item \url{https://causal-lda.github.io/TrialEmulation}
+  \item \url{https://github.com/Causal-LDA/TrialEmulation}
+  \item Report bugs at \url{https://github.com/Causal-LDA/TrialEmulation/issues}
+}
+
+}
 \author{
-\strong{Maintainer}: Isaac Gravestock \email{isaac.gravestock@roche.com}
+\strong{Maintainer}: Isaac Gravestock \email{isaac.gravestock@roche.com} (\href{https://orcid.org/0000-0003-0283-2065}{ORCID})
 
 Authors:
 \itemize{
