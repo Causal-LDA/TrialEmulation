@@ -1,6 +1,6 @@
 Package: TrialEmulation
-Title: Causal Analysis of Observational Time-To-Event Data
-Version: 0.0.3.1
+Title: Causal Analysis of Observational Time-to-Event Data
+Version: 0.0.3.0
 Authors@R: c(
     person("Roonak", "Rezvani", , "roonak.r74@gmail.com", role = "aut",
            comment = c(ORCID = "0000-0001-5580-5058", "Original package author")),
@@ -16,7 +16,7 @@ Description: Implements target trial emulation methods to apply randomized
     per-protocol effects in emulated trials using electronic health
     records.
 License: Apache License (>= 2)
-URL: https://causal-lda.github.io/TrialEmulation,
+URL: https://causal-lda.github.io/TrialEmulation/,
     https://github.com/Causal-LDA/TrialEmulation
 BugReports: https://github.com/Causal-LDA/TrialEmulation/issues
 Depends: 

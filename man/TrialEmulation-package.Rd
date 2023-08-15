@@ -12,7 +12,7 @@ an emulated a randomised trial.
 \seealso{
 Useful links:
 \itemize{
-  \item \url{https://causal-lda.github.io/TrialEmulation}
+  \item \url{https://causal-lda.github.io/TrialEmulation/}
   \item \url{https://github.com/Causal-LDA/TrialEmulation}
   \item Report bugs at \url{https://github.com/Causal-LDA/TrialEmulation/issues}
 }
