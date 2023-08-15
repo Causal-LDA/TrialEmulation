@@ -27,7 +27,7 @@ data_extension <- function(data,
                            separate_files = FALSE,
                            chunk_size = 200) {
   # data.table notes:
-  for_period <- NULL
+  trial_period <- NULL
 
   if (isTRUE(separate_files)) assert_directory_exists(data_dir)
 
@@ -49,9 +49,9 @@ data_extension <- function(data,
         keeplist = keeplist
       )
       N <- N + nrow(switch_data)
-      for (p in unique(switch_data[["for_period"]])) {
+      for (p in unique(switch_data[["trial_period"]])) {
         file_p <- file.path(data_dir, paste0("trial_", p, ".csv"))
-        fwrite(switch_data[for_period == p, ], file_p, append = TRUE)
+        fwrite(switch_data[trial_period == p, ], file_p, append = TRUE)
       }
     }
     files <- file.path(data_dir, paste0("trial_", first_period:last_period, ".csv"))
@@ -112,7 +112,7 @@ expand <- function(sw_data,
   # Dummy variables used in data.table calls declared to prevent package check NOTES:
   id <- period <- wtprod <- elgcount <- treat <- dosesum <- eligible <- treatment <- treatment_new <-
     weight0 <- wt <- cumA <- init <- init_shift <- period_new <- cumA_new <- switch_new <-
-    outcome_new <- outcome <- time_of_event <- for_period <- index <-
+    outcome_new <- outcome <- time_of_event <- trial_period <- index <-
     followup_time <- dose <- weight <- case <- NULL
 
   temp_data <- data.table(
@@ -162,13 +162,13 @@ expand <- function(sw_data,
   switch_data[, outcome_new := sw_data[expand_index, outcome]]
   switch_data[, time_of_event := sw_data[expand_index, time_of_event]]
   switch_data[, weight0 := sw_data[expand_index, weight0]]
-  switch_data[, for_period := sequence(sw_data[["period"]] + 1, from = 0)]
+  switch_data[, trial_period := sequence(sw_data[["period"]] + 1, from = 0)]
   switch_data[, index := seq_len(.N)]
 
-  switch_data <- switch_data[temp_data, on = list(id = id, for_period = period)]
+  switch_data <- switch_data[temp_data, on = list(id = id, trial_period = period)]
   setorder(switch_data, index)
 
-  switch_data[, followup_time := period_new - for_period]
+  switch_data[, followup_time := period_new - trial_period]
 
   if (isFALSE(use_censor) || "dose" %in% keeplist) {
     switch_data[, dose := cumA_new - dosesum + treat]
@@ -177,7 +177,7 @@ expand <- function(sw_data,
   switch_data[followup_time == 0, switch_new := 0]
   switch_data[expand == 1,
     expand := expand_until_switch(switch_new, .N),
-    by = c("id", "for_period")
+    by = c("id", "trial_period")
   ]
 
   switch_data[, weight := (weight0 / wtprod)]

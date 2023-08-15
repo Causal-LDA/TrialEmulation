@@ -4,7 +4,7 @@
 \alias{summary.TE_data_prep}
 \alias{summary.TE_data_prep_sep}
 \alias{summary.TE_data_prep_dt}
-\alias{summary.TE_model}
+\alias{summary.TE_msm}
 \alias{summary.TE_robust}
 \title{Summary methods}
 \usage{
@@ -14,7 +14,7 @@
 
 \method{summary}{TE_data_prep_dt}(object, ...)
 
-\method{summary}{TE_model}(object, ...)
+\method{summary}{TE_msm}(object, ...)
 
 \method{summary}{TE_robust}(object, ...)
 }

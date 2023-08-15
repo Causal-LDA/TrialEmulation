@@ -95,7 +95,7 @@ test_that("data_preparation has correct values for 'treatment'", {
     quiet = TRUE
   )
 
-  prep_PP_data$data[, t := for_period + followup_time]
+  prep_PP_data$data[, t := trial_period + followup_time]
   compare <- merge(
     x = prep_PP_data$data[, c("id", "t", "treatment", "outcome")],
     y = simdata_censored[, c("ID", "t", "A", "Y")],

@@ -24,7 +24,7 @@ case_control_sampling_trials(
 \value{
 A \code{data.frame} or a \code{\link[=split]{split()}} \code{data.frame} if  \code{length(p_control) > 1}. An additional column
 containing sample weights will be added to the result. These can be included in the models fit with
-\code{\link[=data_modelling]{data_modelling()}}.
+\code{\link[=trial_msm]{trial_msm()}}.
 }
 \description{
 Case-control sampling from extended data

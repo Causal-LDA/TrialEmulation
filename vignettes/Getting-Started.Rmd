@@ -170,17 +170,17 @@ str(sampled_data)
 
 Before proceeding with the modelling, it is possible to manipulate and derive new variables and adjust factor levels
 in the `data.frame`. You can also specify transformations in a formula to `outcome_cov`, 
-`include_followup_time_case` or `include_expansion_time_case`, such as `~ ns(for_period)` or 
+`include_followup_time` or `include_trial_period`, such as `~ ns(trial_period)` or 
 `~ I(nvarA^2) + nvarC > 50 + catvarA:nvarC`.
 
-It is also possible to specify formulas in `data_modelling` to include, for example, splines with
+It is also possible to specify formulas in `trial_msm()` to include, for example, splines with
 `ns()`.
 
-Now we can fit the model with the `data_modelling()` function. Since we have sampled from the data, 
+Now we can fit the model with the `trial_msm()` function. Since we have sampled from the data, 
 we should make use of the `use_sample_weights` option to get correct survival estimates.
 
 ```{r modelling}
-model_result <- data_modelling(
+model_result <- trial_msm(
   data = sampled_data,
   outcome_cov = c("catvarA", "catvarB", "nvarA", "nvarB", "nvarC"),
   model_var = "assigned_treatment",

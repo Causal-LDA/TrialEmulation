@@ -58,7 +58,7 @@
       ]
     }
 
-# data_modelling works with analysis_weights = unweighted
+# trial_msm works with analysis_weights = unweighted
 
     {
       "type": "list",
@@ -83,7 +83,7 @@
         {
           "type": "character",
           "attributes": {},
-          "value": ["(Intercept)", "assigned_treatment", "for_period", "followup_time", "X1", "X2", "X3", "X4", "age_s"]
+          "value": ["(Intercept)", "assigned_treatment", "trial_period", "followup_time", "X1", "X2", "X3", "X4", "age_s"]
         },
         {
           "type": "double",
@@ -118,7 +118,7 @@
       ]
     }
 
-# data_modelling works with analysis_weights = p99
+# trial_msm works with analysis_weights = p99
 
     {
       "type": "list",
@@ -143,7 +143,7 @@
         {
           "type": "character",
           "attributes": {},
-          "value": ["(Intercept)", "assigned_treatment", "for_period", "followup_time", "X1", "X2", "X3", "X4", "age_s"]
+          "value": ["(Intercept)", "assigned_treatment", "trial_period", "followup_time", "X1", "X2", "X3", "X4", "age_s"]
         },
         {
           "type": "double",
@@ -178,7 +178,7 @@
       ]
     }
 
-# data_modelling works with analysis_weights = weight_limits
+# trial_msm works with analysis_weights = weight_limits
 
     {
       "type": "list",
@@ -203,7 +203,7 @@
         {
           "type": "character",
           "attributes": {},
-          "value": ["(Intercept)", "assigned_treatment", "for_period", "followup_time", "X1", "X2", "X3", "X4", "age_s"]
+          "value": ["(Intercept)", "assigned_treatment", "trial_period", "followup_time", "X1", "X2", "X3", "X4", "age_s"]
         },
         {
           "type": "double",
@@ -238,7 +238,7 @@
       ]
     }
 
-# data_modelling works with sample weights
+# trial_msm works with sample weights
 
     {
       "type": "list",
@@ -263,7 +263,7 @@
         {
           "type": "character",
           "attributes": {},
-          "value": ["(Intercept)", "assigned_treatment", "for_period", "followup_time", "X1", "X2", "X3", "X4", "age_s"]
+          "value": ["(Intercept)", "assigned_treatment", "trial_period", "followup_time", "X1", "X2", "X3", "X4", "age_s"]
         },
         {
           "type": "double",

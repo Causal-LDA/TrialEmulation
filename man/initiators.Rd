@@ -29,7 +29,7 @@ initiators(
   cense_d_cov = ~1,
   cense_n_cov = ~1,
   include_followup_time = ~followup_time + I(followup_time^2),
-  include_expansion_time = ~for_period + I(for_period^2),
+  include_trial_period = ~trial_period + I(trial_period^2),
   eligible_wts_0 = NA,
   eligible_wts_1 = NA,
   where_var = NULL,
@@ -65,9 +65,9 @@ calculation. May use \code{time_on_regime} to include treatment duration.}
 \item{switch_d_cov}{A RHS formula for modelling probability of switching treatment. Used in the denominator of weight
 calculation. May use \code{time_on_regime} to include treatment duration.}
 
-\item{first_period}{First period value to start expanding about}
+\item{first_period}{First time period to include as trial baseline in expanded data}
 
-\item{last_period}{Last period value to expand about}
+\item{last_period}{Last time period to include as trial baseline in expanded data}
 
 \item{first_followup}{First follow-up period}
 
@@ -92,10 +92,9 @@ initial treatment value}
 
 \item{cense}{Censoring variable}
 
-\item{pool_cense}{Pool the numerator and denominator models (\code{FALSE}: split models by previous treatment Am1 = 0 and
-Am1 = 1 as in treatment models and
-\code{TRUE}: pool all observations together into a single numerator and denominator model)
-Defaults to \code{FALSE}}
+\item{pool_cense}{Fit pooled or separate censoring models for those treated and
+those untreated at the immediately previous visit.
+(default is \code{FALSE}, separate numerator and denominator models for treatment groups)}
 
 \item{cense_d_cov}{A RHS formula for modelling probability of being censored. Used in the numerator of weight
 calculation.}
@@ -106,7 +105,7 @@ calculation.}
 \item{include_followup_time}{The model to include the follow up time of the trial (\code{followup_time}) in outcome model,
 specified as a RHS formula.}
 
-\item{include_expansion_time}{The model to include the trial period (\code{for_period}) in outcome model,
+\item{include_trial_period}{The model to include the trial period (\code{trial_period}) in outcome model,
 specified as a RHS formula.}
 
 \item{eligible_wts_0}{Eligibility criteria used in weights for model condition Am1 = 0}
@@ -129,7 +128,7 @@ or arguments to \code{control}. See \link[stats:glm]{stats::glm}, \link[parglm:p
 }
 \description{
 An all-in-one analysis using a sequence of target trials. This provides a simplified
-interface to the main working functions \code{\link[=data_preparation]{data_preparation()}} and \code{\link[=data_modelling]{data_modelling()}}.
+interface to the main working functions \code{\link[=data_preparation]{data_preparation()}} and \code{\link[=trial_msm]{trial_msm()}}.
 }
 \details{
 If \code{model_var = NULL} the package will add some terms to the outcome model:

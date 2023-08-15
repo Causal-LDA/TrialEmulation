@@ -123,14 +123,14 @@
     Output
       Expanded Trial Emulation data
       
-              id for_period followup_time outcome weight treatment X1
-         1:    1          0             0       0  1.000         1  1
-         2:    1          0             1       0  1.011         1  1
-         3:    1          0             2       0  0.994         1  1
-        ---                                                          
-      9474: 1000          0             7       0  0.821         1  0
-      9475: 1000          0             8       0  0.761         1  0
-      9476: 1000          0             9       1  0.698         1  0
+              id trial_period followup_time outcome weight treatment X1
+         1:    1            0             0       0  1.000         1  1
+         2:    1            0             1       0  1.011         1  1
+         3:    1            0             2       0  0.994         1  1
+        ---                                                            
+      9474: 1000            0             7       0  0.821         1  0
+      9475: 1000            0             8       0  0.761         1  0
+      9476: 1000            0             9       1  0.698         1  0
             assigned_treatment dose
          1:                  1    1
          2:                  1    2
@@ -255,7 +255,7 @@
       Trial Emulation Outcome Model
       
       Outcome model formula:
-      outcome ~ assigned_treatment + dose + for_period + I(for_period^2) + 
+      outcome ~ assigned_treatment + dose + trial_period + I(trial_period^2) + 
           followup_time + I(followup_time^2) + X1
       
       Coefficent summary (robust):
@@ -263,8 +263,8 @@
               (Intercept)  -4.1266    0.2437 -4.6043 -3.6489 -16.931  <2e-16
        assigned_treatment   0.3091    0.2788 -0.2373  0.8555   1.109   0.267
                      dose  -0.1922    0.1174 -0.4224  0.0380  -1.636   0.102
-               for_period  -0.0668    0.0926 -0.2483  0.1147  -0.721   0.471
-          I(for_period^2)  -0.0116    0.0199 -0.0506  0.0273  -0.585   0.558
+             trial_period  -0.0668    0.0926 -0.2483  0.1147  -0.721   0.471
+        I(trial_period^2)  -0.0116    0.0199 -0.0506  0.0273  -0.585   0.558
             followup_time   0.2249    0.1401 -0.0496  0.4995   1.606   0.108
        I(followup_time^2)  -0.0181    0.0169 -0.0513  0.0151  -1.070   0.284
                        X1  -0.1110    0.2291 -0.5600  0.3381  -0.484   0.628
@@ -280,7 +280,7 @@
       Trial Emulation Outcome Model
       
       Outcome model formula:
-      outcome ~ assigned_treatment + dose + for_period + I(for_period^2) + 
+      outcome ~ assigned_treatment + dose + trial_period + I(trial_period^2) + 
           followup_time + I(followup_time^2) + X1
       
       Coefficent summary (robust):
@@ -288,8 +288,8 @@
               (Intercept) -4.12662820 0.24372909 -4.60433721 -3.64891919 -16.9312093
        assigned_treatment  0.30913237 0.27877733 -0.23727119  0.85553592   1.1088863
                      dose -0.19218381 0.11744822 -0.42238232  0.03801470  -1.6363280
-               for_period -0.06679054 0.09260338 -0.24829317  0.11471209  -0.7212538
-          I(for_period^2) -0.01163048 0.01987472 -0.05058494  0.02732398  -0.5851896
+             trial_period -0.06679054 0.09260338 -0.24829317  0.11471209  -0.7212538
+        I(trial_period^2) -0.01163048 0.01987472 -0.05058494  0.02732398  -0.5851896
             followup_time  0.22492444 0.14006997 -0.04961271  0.49946158   1.6058005
        I(followup_time^2) -0.01812884 0.01693641 -0.05132420  0.01506652  -1.0704062
                        X1 -0.11095373 0.22910223 -0.55999411  0.33808665  -0.4842979
