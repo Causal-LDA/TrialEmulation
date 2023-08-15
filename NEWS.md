@@ -1,8 +1,8 @@
-# TrialEmulation 0.0.3
+# TrialEmulation 0.0.3.0
 
 * Initial release to CRAN
 
-# TrialEmulation 0.0.2
+# TrialEmulation 0.0.2.x
 
 * Further feature development and code improvement
 
@@ -16,6 +16,6 @@
 
 * Initial development by Roonak Rezvani as internship project
 
-* Data preparation and model fitting functions
+* Data preparation and model fitting functions for sequence of target trials
 
-* Support for large data using data.table and chunked processing
+* Support for large data using `biglm`, `data.table` and chunked processing
