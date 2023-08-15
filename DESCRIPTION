@@ -1,5 +1,5 @@
 Package: TrialEmulation
-Title: Causal Analysis of Observational Tme-To-Event Data
+Title: Causal Analysis of Observational Time-To-Event Data
 Version: 0.0.3.0
 Authors@R: c(
     person("Roonak", "Rezvani", , "roonak.r74@gmail.com", role = "aut",
@@ -10,10 +10,10 @@ Authors@R: c(
     person("Medical Research Council (MRC)", role = "fnd"),
     person("F. Hoffmann-La Roche AG", role = c("cph", "fnd"))
   )
-Description: Implements methods to apply randomized clinical trial design
-    and analysis in an observational setting. Using marginal structural models,
-    it can estimate intention-to-treat and per-protocol effects in emulated
-    trials using electronic health records. 
+Description: Implements target trial emulation methods to apply randomized 
+    clinical trial design and analysis in an observational setting. Using
+    marginal structural models, it can estimate intention-to-treat and
+    per-protocol effects in emulated trials using electronic health records. 
 License: Apache License (>= 2)
 Depends: 
     R (>= 3.5.0)
