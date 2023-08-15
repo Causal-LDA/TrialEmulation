@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE coverage SYSTEM "https://raw.githubusercontent.com/cobertura/cobertura/master/cobertura/src/site/htdocs/xml/coverage-04.dtd">
-<coverage line-rate="0.934646374216652" branch-rate="0" lines-covered="1044" lines-valid="1117" branches-covered="0" branches-valid="0" complexity="0" version="3.6.2" timestamp="2023-08-11 15:39:33.14161">
+<coverage line-rate="0.934646374216652" branch-rate="0" lines-covered="1044" lines-valid="1117" branches-covered="0" branches-valid="0" complexity="0" version="3.6.2" timestamp="2023-08-15 09:45:23.974668">
   <sources>
     <source>/__w/TrialEmulation/TrialEmulation/TrialEmulation</source>
   </sources>
@@ -1394,7 +1394,7 @@
                 <line number="59" hits="1" branch="false"/>
               </lines>
             </method>
-            <method name="summary.TE_model" signature="" line-rate="1" branch-rate="0" complexity="0">
+            <method name="summary.TE_msm" signature="" line-rate="1" branch-rate="0" complexity="0">
               <lines>
                 <line number="65" hits="1" branch="false"/>
                 <line number="66" hits="1" branch="false"/>
@@ -1693,7 +1693,7 @@
         </class>
         <class name="modelling.R" filename="R/modelling.R" line-rate="0.95" branch-rate="0" complexity="0">
           <methods>
-            <method name="pooled_trial_lr" signature="" line-rate="0.95" branch-rate="0" complexity="0">
+            <method name="trial_msm" signature="" line-rate="0.95" branch-rate="0" complexity="0">
               <lines>
                 <line number="38" hits="4" branch="false"/>
                 <line number="40" hits="19" branch="false"/>
@@ -1863,7 +1863,7 @@
         </class>
         <class name="predict.R" filename="R/predict.R" line-rate="0.8" branch-rate="0" complexity="0">
           <methods>
-            <method name="predict.TE_model" signature="" line-rate="0.975609756097561" branch-rate="0" complexity="0">
+            <method name="predict.TE_msm" signature="" line-rate="0.975609756097561" branch-rate="0" complexity="0">
               <lines>
                 <line number="65" hits="2" branch="false"/>
                 <line number="66" hits="2" branch="false"/>
