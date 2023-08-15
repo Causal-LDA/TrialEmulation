@@ -1,4 +1,4 @@
-# predict.RTE_model works as expected
+# predict.TE_msm works as expected
 
     {
       "type": "list",
@@ -220,7 +220,7 @@
       ]
     }
 
-# predict.RTE_model works with newdata
+# predict.TE_msm works with newdata
 
     {
       "type": "double",
@@ -389,7 +389,7 @@
       ]
     }
 
-# predict.RTE_model works with interactions
+# predict.TE_msm works with interactions
 
     {
       "type": "list",

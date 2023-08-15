@@ -58,7 +58,7 @@
       ]
     }
 
-# pooled_trial_lr works with analysis_weights = unweighted
+# trial_msm works with analysis_weights = unweighted
 
     {
       "type": "list",
@@ -118,7 +118,7 @@
       ]
     }
 
-# pooled_trial_lr works with analysis_weights = p99
+# trial_msm works with analysis_weights = p99
 
     {
       "type": "list",
@@ -178,7 +178,7 @@
       ]
     }
 
-# pooled_trial_lr works with analysis_weights = weight_limits
+# trial_msm works with analysis_weights = weight_limits
 
     {
       "type": "list",
@@ -238,7 +238,7 @@
       ]
     }
 
-# pooled_trial_lr works with sample weights
+# trial_msm works with sample weights
 
     {
       "type": "list",

@@ -1,6 +1,6 @@
 #' Predict Cumulative Incidence with Confidence Intervals
 #'
-#' @param object Object from [pooled_trial_lr()] or [initiators()].
+#' @param object Object from [trial_msm()] or [initiators()].
 #' @param newdata Baseline trial data to predict cumulative incidence or survival for. If `newdata` contains
 #' rows with `followup_time > 0` these will be removed.
 #' @param type Type of values to calculate. Either cumulative incidence (`"cum_inc"`) or survival (`"survival"`).
@@ -19,7 +19,7 @@
 #' data("vignette_switch_data")
 #' data_subset <- vignette_switch_data[vignette_switch_data$trial_period > 200 &
 #'   vignette_switch_data$trial_period < 300, ]
-#' model <- pooled_trial_lr(
+#' model <- trial_msm(
 #'   data = data_subset,
 #'   outcome_cov = c("catvarA", "nvarA"),
 #'   last_followup = 40,
@@ -55,13 +55,13 @@
 #' lines(predicted_ci[[3]]$followup_time, predicted_ci[[3]]$`2.5%`, lty = 2)
 #' lines(predicted_ci[[3]]$followup_time, predicted_ci[[3]]$`97.5%`, lty = 2)
 #'
-predict.TE_model <- function(object,
-                             newdata,
-                             predict_times,
-                             conf_int = TRUE,
-                             samples = 100,
-                             type = c("cum_inc", "survival"),
-                             ...) {
+predict.TE_msm <- function(object,
+                           newdata,
+                           predict_times,
+                           conf_int = TRUE,
+                           samples = 100,
+                           type = c("cum_inc", "survival"),
+                           ...) {
   assert_class(object$model, "glm")
   model <- object$model
   type <- match.arg(type)

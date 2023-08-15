@@ -1,7 +1,7 @@
 #' Initiators Analysis
 #'
 #' An all-in-one analysis using a sequence of target trials. This provides a simplified
-#' interface to the main working functions [`data_preparation()`] and [`pooled_trial_lr()`].
+#' interface to the main working functions [`data_preparation()`] and [`trial_msm()`].
 #'
 #' @param data A `data.frame` containing all the required columns.
 #' @param id Name of the data column for id feature Defaults to id
@@ -134,7 +134,7 @@ initiators <- function(data,
   )
 
   # Fit final models and robust variance estimates
-  model_full <- pooled_trial_lr(
+  model_full <- trial_msm(
     data = prep_result$data,
     outcome_cov = outcome_cov,
     model_var = model_var,

@@ -1,4 +1,4 @@
-#' Fit the Pooled Logistic Regression for the Sequence of Trials
+#' Fit the Marginal Structural Model for the Sequence of Trials
 #'
 #' Fits a weighted pooled logistic regression model for the sequence of trials and
 #' calculates a robust covariance matrix using a sandwich estimator.
@@ -11,7 +11,7 @@
 #'  The model formula is constructed by combining the arguments `outcome_cov`, `model_var`,
 #'   `include_followup_time`, and `include_trial_period`.
 #'
-#' @returns Object of class `TE_model` containing
+#' @returns Object of class `TE_msm` containing
 #'  * `model`, a `glm` object
 #'  * `robust` a list containing a coefficient summary table and the robust covariance `matrix`.
 #'
@@ -19,22 +19,22 @@
 #' @importFrom stats as.formula binomial pnorm quantile relevel
 #' @importFrom utils write.csv
 
-pooled_trial_lr <- function(data,
-                            outcome_cov = ~1,
-                            model_var = NULL,
-                            first_followup = NA,
-                            last_followup = NA,
-                            use_weight = FALSE,
-                            analysis_weights = c("asis", "unweighted", "p99", "weight_limits"),
-                            weight_limits = c(0, Inf),
-                            use_censor = FALSE,
-                            include_followup_time = ~ followup_time + I(followup_time^2),
-                            include_trial_period = ~ trial_period + I(trial_period^2),
-                            where_case = NA,
-                            glm_function = c("glm", "parglm"),
-                            use_sample_weights = TRUE,
-                            quiet = FALSE,
-                            ...) {
+trial_msm <- function(data,
+                      outcome_cov = ~1,
+                      model_var = NULL,
+                      first_followup = NA,
+                      last_followup = NA,
+                      use_weight = FALSE,
+                      analysis_weights = c("asis", "unweighted", "p99", "weight_limits"),
+                      weight_limits = c(0, Inf),
+                      use_censor = FALSE,
+                      include_followup_time = ~ followup_time + I(followup_time^2),
+                      include_trial_period = ~ trial_period + I(trial_period^2),
+                      where_case = NA,
+                      glm_function = c("glm", "parglm"),
+                      use_sample_weights = TRUE,
+                      quiet = FALSE,
+                      ...) {
   if (inherits(data, "TE_data_prep_dt")) data <- data$data
 
   arg_checks <- makeAssertCollection()
@@ -151,6 +151,6 @@ pooled_trial_lr <- function(data,
   quiet_line(quiet)
 
   result <- list(model = model.full, robust = robust_model)
-  class(result) <- "TE_model"
+  class(result) <- "TE_msm"
   result
 }

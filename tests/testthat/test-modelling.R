@@ -1,8 +1,8 @@
-# pooled_trial_lr ----
-test_that("pooled_trial_lr can be quiet", {
+# trial_msm ----
+test_that("trial_msm can be quiet", {
   data <- vignette_switch_data
   expect_silent(
-    result <- pooled_trial_lr(
+    result <- trial_msm(
       data,
       outcome_cov = c("catvarA", "nvarA"),
       model_var = "assigned_treatment",
@@ -15,9 +15,9 @@ test_that("pooled_trial_lr can be quiet", {
   )
 })
 
-test_that("pooled_trial_lr gives expected results in example data", {
+test_that("trial_msm gives expected results in example data", {
   data <- vignette_switch_data
-  result <- pooled_trial_lr(
+  result <- trial_msm(
     data,
     outcome_cov = c("catvarA", "catvarB", "catvarC", "nvarA", "nvarB", "nvarC"),
     model_var = "assigned_treatment",
@@ -61,10 +61,10 @@ test_that("pooled_trial_lr gives expected results in example data", {
 })
 
 
-test_that("pooled_trial_lr works with data.tables and weights", {
+test_that("trial_msm works with data.tables and weights", {
   data <- as.data.table(TrialEmulation::vignette_switch_data)
   expect_silent(
-    result_parglm <- pooled_trial_lr(
+    result_parglm <- trial_msm(
       data,
       outcome_cov = c("catvarA", "nvarA"),
       model_var = "assigned_treatment",
@@ -79,7 +79,7 @@ test_that("pooled_trial_lr works with data.tables and weights", {
   )
 
   expect_silent(
-    result_glm <- pooled_trial_lr(
+    result_glm <- trial_msm(
       data,
       outcome_cov = c("catvarA", "nvarA"),
       model_var = "assigned_treatment",
@@ -129,7 +129,7 @@ test_that("Modelling works with where_case", {
   data <- readRDS(test_path("data/ready_for_modelling.rds"))
 
   expect_warning(
-    result <- pooled_trial_lr(
+    result <- trial_msm(
       data = data,
       outcome_cov = ~ X1 + X2 + X3 + X4 + age_s,
       model_var = "assigned_treatment",
@@ -151,11 +151,11 @@ test_that("Modelling works with where_case", {
   expect_snapshot_value(as.data.frame(result$robust$summary), style = "json2")
 })
 
-test_that("pooled_trial_lr works with analysis_weights = unweighted", {
+test_that("trial_msm works with analysis_weights = unweighted", {
   data <- readRDS(test_path("data/ready_for_modelling.rds"))
 
   expect_silent(
-    result_unweighted <- pooled_trial_lr(
+    result_unweighted <- trial_msm(
       data,
       outcome_cov = ~ X1 + X2 + X3 + X4 + age_s,
       model_var = "assigned_treatment",
@@ -172,11 +172,11 @@ test_that("pooled_trial_lr works with analysis_weights = unweighted", {
   expect_snapshot_value(as.data.frame(result_unweighted$robust$summary), style = "json2")
 })
 
-test_that("pooled_trial_lr works with analysis_weights = p99", {
+test_that("trial_msm works with analysis_weights = p99", {
   data <- readRDS(test_path("data/ready_for_modelling.rds"))
 
   expect_warning(
-    result_p99 <- pooled_trial_lr(
+    result_p99 <- trial_msm(
       data,
       outcome_cov = ~ X1 + X2 + X3 + X4 + age_s,
       model_var = "assigned_treatment",
@@ -194,11 +194,11 @@ test_that("pooled_trial_lr works with analysis_weights = p99", {
 })
 
 
-test_that("pooled_trial_lr works with analysis_weights = weight_limits", {
+test_that("trial_msm works with analysis_weights = weight_limits", {
   data <- readRDS(test_path("data/ready_for_modelling.rds"))
 
   expect_warning(
-    result_limits <- pooled_trial_lr(
+    result_limits <- trial_msm(
       data,
       outcome_cov = ~ X1 + X2 + X3 + X4 + age_s,
       model_var = "assigned_treatment",
@@ -218,11 +218,11 @@ test_that("pooled_trial_lr works with analysis_weights = weight_limits", {
 
 
 
-test_that("pooled_trial_lr works with missing sample weights", {
+test_that("trial_msm works with missing sample weights", {
   data <- readRDS(test_path("data/ready_for_modelling.rds"))
   expect_warning(
     expect_warning(
-      result_sample <- pooled_trial_lr(
+      result_sample <- trial_msm(
         data,
         outcome_cov = ~ X1 + X2 + X3 + X4 + age_s,
         model_var = "assigned_treatment",
@@ -239,7 +239,7 @@ test_that("pooled_trial_lr works with missing sample weights", {
   )
 
   expect_warning(
-    expected_result <- pooled_trial_lr(
+    expected_result <- trial_msm(
       data,
       outcome_cov = ~ X1 + X2 + X3 + X4 + age_s,
       model_var = "assigned_treatment",
@@ -255,13 +255,13 @@ test_that("pooled_trial_lr works with missing sample weights", {
   expect_equal(result_sample$robust$summary, expected_result$robust$summary)
 })
 
-test_that("pooled_trial_lr works with sample weights", {
+test_that("trial_msm works with sample weights", {
   data <- readRDS(test_path("data/prep_data_object.rds"))
   set.seed(2020)
   sampled_data <- case_control_sampling_trials(data, p_control = 0.5)
 
   expect_warning(
-    result_sample <- pooled_trial_lr(
+    result_sample <- trial_msm(
       sampled_data,
       outcome_cov = ~ X1 + X2 + X3 + X4 + age_s,
       model_var = "assigned_treatment",
@@ -278,10 +278,10 @@ test_that("pooled_trial_lr works with sample weights", {
 })
 
 
-test_that("pooled_trial_lr makes model formula as expected with weight and censor", {
+test_that("trial_msm makes model formula as expected with weight and censor", {
   data <- readRDS(test_path("data/prep_data_object.rds"))
   expect_warning(
-    result_w_c <- pooled_trial_lr(
+    result_w_c <- trial_msm(
       data,
       outcome_cov = ~ X1 + X2 + X3 + X4 + age_s,
       include_followup_time = ~followup_time,
@@ -300,9 +300,9 @@ test_that("pooled_trial_lr makes model formula as expected with weight and censo
   expect_equal(result_formula, expected_formula)
 })
 
-test_that("pooled_trial_lr makes model formula as expected with no weight and no censor", {
+test_that("trial_msm makes model formula as expected with no weight and no censor", {
   data <- readRDS(test_path("data/prep_data_object.rds"))
-  result_w_c <- pooled_trial_lr(
+  result_w_c <- trial_msm(
     data,
     outcome_cov = ~ X1 + X2 + X3 + X4 + age_s,
     include_followup_time = ~followup_time,
@@ -319,7 +319,7 @@ test_that("pooled_trial_lr makes model formula as expected with no weight and no
   expect_equal(result_formula, expected_formula)
 })
 
-test_that("pooled_trial_lr makes model formula as expected with weight and no censor", {
+test_that("trial_msm makes model formula as expected with weight and no censor", {
   set.seed(20222022)
   simdata_censored <- data_gen_censored(1000, 10)
   prep_PP_data <- data_preparation(
@@ -341,7 +341,7 @@ test_that("pooled_trial_lr makes model formula as expected with weight and no ce
     quiet = TRUE
   )
   expect_warning(
-    result_w_c <- pooled_trial_lr(
+    result_w_c <- trial_msm(
       prep_PP_data,
       outcome_cov = ~ X1 + X2,
       include_followup_time = ~followup_time,
@@ -360,9 +360,9 @@ test_that("pooled_trial_lr makes model formula as expected with weight and no ce
   expect_equal(result_formula, expected_formula)
 })
 
-test_that("pooled_trial_lr makes model formula as expected with no weight and censor", {
+test_that("trial_msm makes model formula as expected with no weight and censor", {
   data <- readRDS(test_path("data/prep_data_object.rds"))
-  result_w_c <- pooled_trial_lr(
+  result_w_c <- trial_msm(
     data,
     outcome_cov = ~ X1 + X2 + X3 + X4 + age_s,
     include_followup_time = ~followup_time,

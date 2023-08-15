@@ -61,7 +61,7 @@ summary.TE_data_prep_dt <- function(object, ...) {
 
 #' @export
 #' @rdname summary_TE
-summary.TE_model <- function(object, ...) {
+summary.TE_msm <- function(object, ...) {
   cat("Trial Emulation Outcome Model\n\n")
   cat("Outcome model formula:\n")
   print(object$model$formula, showEnv = FALSE)

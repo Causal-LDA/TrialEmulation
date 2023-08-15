@@ -5,7 +5,7 @@ reference:
 - contents:
   - initiators
   - data_preparation
-  - pooled_trial_lr
+  - trial_msm
   - case_control_sampling_trials
   - starts_with("predict")
   - starts_with("print")
