@@ -52,9 +52,6 @@
     <loc>https://causal-lda.github.io/TrialEmulation/reference/data_manipulation.html</loc>
   </url>
   <url>
-    <loc>https://causal-lda.github.io/TrialEmulation/reference/data_modelling.html</loc>
-  </url>
-  <url>
     <loc>https://causal-lda.github.io/TrialEmulation/reference/data_preparation.html</loc>
   </url>
   <url>
@@ -73,7 +70,7 @@
     <loc>https://causal-lda.github.io/TrialEmulation/reference/initiators.html</loc>
   </url>
   <url>
-    <loc>https://causal-lda.github.io/TrialEmulation/reference/predict.TE_model.html</loc>
+    <loc>https://causal-lda.github.io/TrialEmulation/reference/predict.TE_msm.html</loc>
   </url>
   <url>
     <loc>https://causal-lda.github.io/TrialEmulation/reference/print_TE.html</loc>
@@ -89,6 +86,9 @@
   </url>
   <url>
     <loc>https://causal-lda.github.io/TrialEmulation/reference/trial_example.html</loc>
+  </url>
+  <url>
+    <loc>https://causal-lda.github.io/TrialEmulation/reference/trial_msm.html</loc>
   </url>
   <url>
     <loc>https://causal-lda.github.io/TrialEmulation/reference/vignette_switch_data.html</loc>
