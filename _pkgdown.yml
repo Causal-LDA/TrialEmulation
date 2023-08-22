@@ -16,3 +16,5 @@ reference:
 - contents:
   - trial_example
   - vignette_switch_data
+  - te_data_ex
+  - te_model_ex
