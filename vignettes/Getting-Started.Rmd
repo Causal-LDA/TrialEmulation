@@ -13,6 +13,7 @@ knitr::opts_chunk$set(
   comment = "#>"
 )
 options("digits" = 3)
+setDTthreads(2)
 ```
 
 This package implements methods to analyse a sequence of target trials.
