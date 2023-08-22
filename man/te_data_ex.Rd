@@ -3,12 +3,7 @@
 \docType{data}
 \name{te_data_ex}
 \alias{te_data_ex}
-\title{Example of a Prepared Data Object
-
-\if{html}{\out{<div class="sourceCode">}}\preformatted{dat <- trial_example[trial_example$id < 200, ]
-
-[trial_example$id < 200, ]: R:trial_example$id\%20\%3C\%20200,\%20
-}\if{html}{\out{</div>}}}
+\title{Example of a Prepared Data Object}
 \format{
 An object of class \code{TE_data_prep_dt} (inherits from \code{TE_data_prep}) of length 6.
 }
@@ -16,14 +11,19 @@ An object of class \code{TE_data_prep_dt} (inherits from \code{TE_data_prep}) of
 te_data_ex
 }
 \description{
+A small example object from \link{data_preparation} used in examples.
+It is created with the following code:
+}
+\details{
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{dat <- trial_example[trial_example$id < 200, ]
+
 te_data_ex <- data_preparation(
 data = dat,
-outcome_cov = c("nvarA", "catvarA"),
-first_period = 260,
-last_period = 280
+ outcome_cov = c("nvarA", "catvarA"),
+ first_period = 260,
+ last_period = 280
 )
-
-\if{html}{\out{<div class="sourceCode">}}\preformatted{}\if{html}{\out{</div>}}
+}\if{html}{\out{</div>}}
 }
 \seealso{
 \link{te_model_ex}

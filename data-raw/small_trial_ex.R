@@ -8,7 +8,7 @@ te_data_ex <- data_preparation(
 )
 
 te_model_ex <- trial_msm(
-  data = data_subset,
+  data = te_data_ex,
   outcome_cov = c("catvarA", "nvarA"),
   last_followup = 40,
   model_var = "assigned_treatment",

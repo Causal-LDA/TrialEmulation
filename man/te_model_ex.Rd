@@ -3,22 +3,7 @@
 \docType{data}
 \name{te_model_ex}
 \alias{te_model_ex}
-\title{Example of a Fitted MSM Model Object
-
-\if{html}{\out{<div class="sourceCode">}}\preformatted{te_model_ex <- trial_msm(
- data = data_subset,
- outcome_cov = c("catvarA", "nvarA"),
- last_followup = 40,
- model_var = "assigned_treatment",
- include_followup_time = ~followup_time,
- include_trial_period = ~trial_period,
- use_sample_weights = FALSE,
- quiet = TRUE,
- glm_function = "glm"
- )
-}\if{html}{\out{</div>}}
-
-@seealso \link{te_data_ex}}
+\title{Example of a Fitted MSM Model Object}
 \format{
 An object of class \code{TE_msm} of length 2.
 }
@@ -26,9 +11,11 @@ An object of class \code{TE_msm} of length 2.
 te_model_ex
 }
 \description{
-Example of a Fitted MSM Model Object
-
-\if{html}{\out{<div class="sourceCode">}}\preformatted{te_model_ex <- trial_msm(
+A small example object from \link{trial_msm} used in examples. It is created with the
+following code:
+}
+\details{
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{te_model_ex <- trial_msm(
  data = data_subset,
  outcome_cov = c("catvarA", "nvarA"),
  last_followup = 40,
@@ -40,7 +27,8 @@ Example of a Fitted MSM Model Object
  glm_function = "glm"
  )
 }\if{html}{\out{</div>}}
-
-@seealso \link{te_data_ex}
+}
+\seealso{
+\link{te_data_ex}
 }
 \keyword{datasets}

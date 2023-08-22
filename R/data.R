@@ -45,7 +45,11 @@
 "vignette_switch_data"
 
 #' Example of a Prepared Data Object
-#' ```
+#'
+#' A small example object from [data_preparation] used in examples.
+#'  It is created with the following code:
+#'
+#' ```{r, eval = FALSE}
 #' dat <- trial_example[trial_example$id < 200, ]
 #'
 #' te_data_ex <- data_preparation(
@@ -55,11 +59,16 @@
 #'  last_period = 280
 #' )
 #' ```
+#'
 #' @seealso [te_model_ex]
 "te_data_ex"
 
 #' Example of a Fitted MSM Model Object
-#' ```
+#'
+#' A small example object from [trial_msm] used in examples. It is created with the
+#' following code:
+#'
+#' ```{r, eval = FALSE}
 #' te_model_ex <- trial_msm(
 #'  data = data_subset,
 #'  outcome_cov = c("catvarA", "nvarA"),
@@ -72,5 +81,6 @@
 #'  glm_function = "glm"
 #'  )
 #'  ```
-#'  @seealso [te_data_ex]
+#'
+#' @seealso [te_data_ex]
 "te_model_ex"
