@@ -15,23 +15,11 @@
 #' @export
 #' @importFrom stats .checkMFClasses coef delete.response model.frame model.matrix terms setNames
 #' @examples
+#' # If necessary set the number of `data.table` threads
+#' data.table::setDTthreads(2)
 #'
-#' data("vignette_switch_data")
-#' data_subset <- vignette_switch_data[vignette_switch_data$trial_period > 200 &
-#'   vignette_switch_data$trial_period < 300, ]
-#' model <- trial_msm(
-#'   data = data_subset,
-#'   outcome_cov = c("catvarA", "nvarA"),
-#'   last_followup = 40,
-#'   model_var = "assigned_treatment",
-#'   include_followup_time = ~followup_time,
-#'   include_trial_period = ~trial_period,
-#'   use_sample_weights = FALSE,
-#'   quiet = TRUE,
-#'   glm_function = "glm"
-#' )
-#'
-#' predicted_ci <- predict(model, predict_times = 0:30, samples = 10)
+#' data("te_model_ex")
+#' predicted_ci <- predict(te_model_ex, predict_times = 0:30, samples = 10)
 #'
 #' # Plot the cumulative incidence curves for each treatment
 #' plot(predicted_ci[[1]]$followup_time, predicted_ci[[1]]$cum_inc,

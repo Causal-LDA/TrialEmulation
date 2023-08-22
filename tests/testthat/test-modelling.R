@@ -1,9 +1,9 @@
 # trial_msm ----
 test_that("trial_msm can be quiet", {
-  data <- vignette_switch_data
+  data("te_data_ex")
   expect_silent(
     result <- trial_msm(
-      data,
+      data = te_data_ex,
       outcome_cov = c("catvarA", "nvarA"),
       model_var = "assigned_treatment",
       include_followup_time = ~followup_time,
@@ -26,7 +26,7 @@ test_that("trial_msm gives expected results in example data", {
     use_sample_weights = FALSE,
     quiet = TRUE,
     glm_function = "parglm",
-    control = parglm.control()
+    control = parglm.control(nthreads = 2)
   )
   expect_class(result$model, "glm")
   expected_coefs <- c(
@@ -96,6 +96,7 @@ test_that("trial_msm works with data.tables and weights", {
 
 
 test_that("Modelling works with where_case", {
+  skip_on_cran()
   if (FALSE) {
     set.seed(20222022)
     simdata_censored <- data_gen_censored(1000, 10)
@@ -152,6 +153,7 @@ test_that("Modelling works with where_case", {
 })
 
 test_that("trial_msm works with analysis_weights = unweighted", {
+  skip_on_cran()
   data <- readRDS(test_path("data/ready_for_modelling.rds"))
 
   expect_silent(
@@ -173,6 +175,7 @@ test_that("trial_msm works with analysis_weights = unweighted", {
 })
 
 test_that("trial_msm works with analysis_weights = p99", {
+  skip_on_cran()
   data <- readRDS(test_path("data/ready_for_modelling.rds"))
 
   expect_warning(
@@ -195,6 +198,7 @@ test_that("trial_msm works with analysis_weights = p99", {
 
 
 test_that("trial_msm works with analysis_weights = weight_limits", {
+  skip_on_cran()
   data <- readRDS(test_path("data/ready_for_modelling.rds"))
 
   expect_warning(
@@ -219,6 +223,7 @@ test_that("trial_msm works with analysis_weights = weight_limits", {
 
 
 test_that("trial_msm works with missing sample weights", {
+  skip_on_cran()
   data <- readRDS(test_path("data/ready_for_modelling.rds"))
   expect_warning(
     expect_warning(
@@ -256,6 +261,7 @@ test_that("trial_msm works with missing sample weights", {
 })
 
 test_that("trial_msm works with sample weights", {
+  skip_on_cran()
   data <- readRDS(test_path("data/prep_data_object.rds"))
   set.seed(2020)
   sampled_data <- case_control_sampling_trials(data, p_control = 0.5)
@@ -279,6 +285,7 @@ test_that("trial_msm works with sample weights", {
 
 
 test_that("trial_msm makes model formula as expected with weight and censor", {
+  skip_on_cran()
   data <- readRDS(test_path("data/prep_data_object.rds"))
   expect_warning(
     result_w_c <- trial_msm(
@@ -301,6 +308,7 @@ test_that("trial_msm makes model formula as expected with weight and censor", {
 })
 
 test_that("trial_msm makes model formula as expected with no weight and no censor", {
+  skip_on_cran()
   data <- readRDS(test_path("data/prep_data_object.rds"))
   result_w_c <- trial_msm(
     data,
@@ -320,6 +328,7 @@ test_that("trial_msm makes model formula as expected with no weight and no censo
 })
 
 test_that("trial_msm makes model formula as expected with weight and no censor", {
+  skip_on_cran()
   set.seed(20222022)
   simdata_censored <- data_gen_censored(1000, 10)
   prep_PP_data <- data_preparation(
@@ -361,6 +370,7 @@ test_that("trial_msm makes model formula as expected with weight and no censor",
 })
 
 test_that("trial_msm makes model formula as expected with no weight and censor", {
+  skip_on_cran()
   data <- readRDS(test_path("data/prep_data_object.rds"))
   result_w_c <- trial_msm(
     data,
