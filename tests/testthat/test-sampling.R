@@ -161,7 +161,6 @@ test_that("case_control_sampling_trials gives errors for arguments", {
 
 
 test_that("case_control_sampling_trials works with multiple p_control", {
-
   data("te_data_ex")
   set.seed(2090)
   samples <- case_control_sampling_trials(
