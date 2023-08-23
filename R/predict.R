@@ -149,7 +149,7 @@ check_newdata <- function(newdata, model, predict_times) {
 #' @param p_mat Probability matrix with rows for each subject and follow-up time as the columns.
 #'
 #' @return A vector containing the cumulative incidence or survival values.
-#' @keywords internal
+#' @noRd
 #' @examples
 #' surv_prob <- matrix(
 #'   c(
@@ -168,6 +168,7 @@ calculate_cum_inc <- function(p_mat) {
 }
 
 #' @rdname calculate_cum_inc
+#' @noRd
 #' @keywords internal
 #' TrialEmulation:::calculate_survival(surv_prob)
 calculate_survival <- function(p_mat) {

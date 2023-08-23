@@ -71,9 +71,9 @@ or arguments to \code{control}. See \link[stats:glm]{stats::glm}, \link[parglm:p
 }
 \value{
 Object of class \code{TE_msm} containing
-\itemize{
-\item \code{model}, a \code{glm} object
-\item \code{robust} a list containing a coefficient summary table and the robust covariance \code{matrix}.
+\describe{
+\item{model}{a \code{glm} object}
+\item{robust}{a list containing a coefficient summary table and the robust covariance \code{matrix}}
 }
 }
 \description{

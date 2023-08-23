@@ -23,6 +23,9 @@
 
 \item{...}{Additional arguments passed to print methods.}
 }
+\value{
+No value, displays summaries of object.
+}
 \description{
 Print summaries of data and model objects produced by \code{TrialEmulation}.
 }

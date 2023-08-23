@@ -12,8 +12,8 @@ knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>"
 )
-options("digits" = 3)
-setDTthreads(2)
+old <- options("digits" = 3)
+data.table::setDTthreads(2)
 ```
 
 This package implements methods to analyse a sequence of target trials.
@@ -231,4 +231,9 @@ lines(model_preds$difference$followup_time, model_preds$difference$`97.5%`, lty 
 ```{r cleanup, echo=FALSE}
 # clean up
 unlink(working_dir, recursive = TRUE)
+```
+
+```{r, include=FALSE}
+options(old)
+data.table::setDTthreads(NULL)
 ```

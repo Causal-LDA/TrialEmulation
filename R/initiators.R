@@ -64,6 +64,12 @@
 #'  * if `use_censor = FALSE` and `use_weight = TRUE`, an intention to treat analysis will be done with an
 #'   `~assigned_treatment` term added
 #'
+#' @returns Returns the result of [trial_msm()] on the expanded data.
+#' An object of class `TE_msm` containing
+#' \describe{
+#'  \item{model}{a `glm` object}
+#'  \item{robust}{a list containing a coefficient summary table and the robust covariance `matrix`}
+#' }
 #' @export
 initiators <- function(data,
                        id = "id",

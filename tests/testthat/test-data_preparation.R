@@ -13,7 +13,6 @@ test_that("data_preparation works as expected", {
   )
 
   expect_identical(result$N, 1939053L)
-  expect_identical(result$range, 396)
   expect_identical(result$min_period, 1L)
   expect_identical(result$max_period, 396L)
   expect(nrow(result$data), result$N)

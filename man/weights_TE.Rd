@@ -14,6 +14,9 @@
 
 \item{...}{Not used.}
 }
+\value{
+Weights extracted from \code{object} as a numeric vector.
+}
 \description{
 Extract Weights
 }

@@ -5,7 +5,7 @@
 \alias{te_data_ex}
 \title{Example of a Prepared Data Object}
 \format{
-An object of class \code{TE_data_prep_dt} (inherits from \code{TE_data_prep}) of length 6.
+An object of class \code{TE_data_prep_dt} (inherits from \code{TE_data_prep}) of length 5.
 }
 \usage{
 te_data_ex

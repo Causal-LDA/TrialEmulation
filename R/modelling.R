@@ -12,8 +12,10 @@
 #'   `include_followup_time`, and `include_trial_period`.
 #'
 #' @returns Object of class `TE_msm` containing
-#'  * `model`, a `glm` object
-#'  * `robust` a list containing a coefficient summary table and the robust covariance `matrix`.
+#' \describe{
+#'  \item{model}{a `glm` object}
+#'  \item{robust}{a list containing a coefficient summary table and the robust covariance `matrix`}
+#' }
 #'
 #' @export
 #' @importFrom stats as.formula binomial pnorm quantile relevel
