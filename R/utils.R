@@ -64,8 +64,7 @@ quiet_msg_time <- function(quiet, msg, proc_time) {
 #' @param increasing Test for increasing or decreasing.
 #'
 #' @return Nothing if check is successful, error otherwise.
-#' @keywords internal
-#'
+#' @noRd
 #' @examples
 #' TrialEmulation:::assert_monotonic(1:3)
 #' TrialEmulation:::assert_monotonic(c(0.02, 0.0187, 0.005), FALSE)
@@ -104,7 +103,7 @@ as_formula <- function(x, add = NULL) {
 #' @param f2 formula to extract right side
 #'
 #' @return A formula of the form `~ rhs(f1) + rhs(f2)`
-#' @keywords internal
+#' @noRd
 #' @examples
 #' TrialEmulation:::add_rhs(~ a + b, z ~ c + log(d))
 #' # ~ a + b + c + log(d)
@@ -121,6 +120,7 @@ add_rhs <- function(f1, f2) {
 #' @details
 #' Reads `trial_file` and saves the observations with `followup_time == 0` to `baseline_file` csv.
 #'
+#' @returns The file path of the csv if successful.
 #' @export
 extract_baseline <- function(trial_file, baseline_file, quiet = TRUE) {
   # Dummy assignments for data.table
@@ -129,5 +129,8 @@ extract_baseline <- function(trial_file, baseline_file, quiet = TRUE) {
   if (file.exists(trial_file)) {
     quiet_msg("Extracting baseline observations from ", trial_file)
     fwrite(fread(trial_file)[followup_time == 0, ], file = baseline_file)
+    return(baseline_file)
+  } else {
+    assert_file_exists(trial_file)
   }
 }

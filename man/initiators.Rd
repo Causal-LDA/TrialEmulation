@@ -126,6 +126,14 @@ specified as a RHS formula.}
 \item{...}{Additional arguments passed to \code{glm_function}. This may be used to specify initial parameter estimates
 or arguments to \code{control}. See \link[stats:glm]{stats::glm}, \link[parglm:parglm]{parglm::parglm} and \code{\link[parglm:parglm.control]{parglm::parglm.control()}} for more information.}
 }
+\value{
+Returns the result of \code{\link[=trial_msm]{trial_msm()}} on the expanded data.
+An object of class \code{TE_msm} containing
+\describe{
+\item{model}{a \code{glm} object}
+\item{robust}{a list containing a coefficient summary table and the robust covariance \code{matrix}}
+}
+}
 \description{
 An all-in-one analysis using a sequence of target trials. This provides a simplified
 interface to the main working functions \code{\link[=data_preparation]{data_preparation()}} and \code{\link[=trial_msm]{trial_msm()}}.

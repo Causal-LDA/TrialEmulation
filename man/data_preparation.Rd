@@ -2,7 +2,7 @@
 % Please edit documentation in R/data_preparation.R
 \name{data_preparation}
 \alias{data_preparation}
-\title{Data Preparation Function}
+\title{Prepare Sequence of Trial Data}
 \usage{
 data_preparation(
   data,
@@ -106,8 +106,28 @@ already contains trial files an error will occur, other files may be overwritten
 \item{...}{Additional arguments passed to \code{glm_function}. This may be used to specify initial parameter estimates
 or arguments to \code{control}. See \link[stats:glm]{stats::glm}, \link[parglm:parglm]{parglm::parglm} and \code{\link[parglm:parglm.control]{parglm::parglm.control()}} for more information.}
 }
+\value{
+An object of class \code{TE_data_prep}, which can either be sampled from (\link{case_control_sampling_trials})
+or directly used in a model (\link{trial_msm}).
+It contains the elements
+\describe{
+\item{data}{the expanded trial dataset for all trial periods. If \code{separate=FALSE} a \code{data.table}, if
+\code{separate=TRUE} a character vector with the file path of the expanded data as csv.}
+\item{min_period}{the first trial period in the expanded data}
+\item{max_period}{the last trial period in the expanded data}
+\item{N}{the total number of observations in the expanded data}
+\item{data_template}{a zero-row \code{data.frame} in the with the columns and attributes of the expanded data}
+\item{switch_models}{a list of summaries of the models fitted for probability of switching treatment,
+if \code{use_weight=TRUE}}
+\item{censor_models}{a list of summaries of the models fitted for probability of censoring treatment,
+if \code{use_weight=TRUE}}
+}
+}
 \description{
-This function prepare the data for modelling.
+This function takes the one row per time period per patient data and constructs
+a dataset with the records for each period in each trial. This considerably expands
+the size of the data. It takes into account the eligibility for each trial and
+calculates the weight models and the weights for each time period in the expanded data.
 }
 \details{
 The arguments \code{chunk_size} and \code{separate_files} allow for processing of large datasets that

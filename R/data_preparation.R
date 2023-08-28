@@ -1,6 +1,10 @@
-#' Data Preparation Function
+#' Prepare Sequence of Trial Data
 #'
-#' This function prepare the data for modelling.
+#' This function takes the one row per time period per patient data and constructs
+#' a dataset with the records for each period in each trial. This considerably expands
+#' the size of the data. It takes into account the eligibility for each trial and
+#' calculates the weight models and the weights for each time period in the expanded data.
+#'
 #' @inheritParams initiators
 #' @param chunk_size Number of patients to process in one chunk when `separate_files = TRUE`
 #' @param separate_files Save expanded data in separate CSV files for each trial.
@@ -15,6 +19,23 @@
 #' would not fit in memory once expanded. When `separate_files = TRUE`, the input data are processed
 #' in chunks of patients and saved into separate files for each trial starting period. These separate
 #' files can be sampled to create the dataset for the modelling.
+#'
+#' @returns An object of class `TE_data_prep`, which can either be sampled from ([case_control_sampling_trials])
+#' or directly used in a model ([trial_msm]).
+#' It contains the elements
+#' \describe{
+#'   \item{data}{the expanded trial dataset for all trial periods. If `separate=FALSE` a `data.table`, if
+#'   `separate=TRUE` a character vector with the file path of the expanded data as csv.}
+#'   \item{min_period}{the first trial period in the expanded data}
+#'   \item{max_period}{the last trial period in the expanded data}
+#'   \item{N}{the total number of observations in the expanded data}
+#'   \item{data_template}{a zero-row `data.frame` in the with the columns and attributes of the expanded data}
+#'   \item{switch_models}{a list of summaries of the models fitted for probability of switching treatment,
+#'   if `use_weight=TRUE`}
+#'   \item{censor_models}{a list of summaries of the models fitted for probability of censoring treatment,
+#'   if `use_weight=TRUE`}
+#'   }
+#'
 data_preparation <- function(data,
                              id = "id",
                              period = "period",
@@ -91,12 +112,7 @@ data_preparation <- function(data,
   )
 
   quiet_msg(quiet, "Starting data manipulation")
-  timing <- system.time({
-    data <- data_manipulation(data, use_censor = use_censor)
-  })
-  quiet_msg(quiet, "Finished data manipulation")
-  quiet_msg_time(quiet, "Processing time of data manipulation: ", timing)
-  quiet_line(quiet)
+  data <- data_manipulation(data, use_censor = use_censor)
 
   if (isTRUE(use_weight)) {
     weight_result <- weight_func(
@@ -126,23 +142,18 @@ data_preparation <- function(data,
   )
 
   quiet_msg(quiet, "Starting data extension")
-  timing <- system.time({
-    result <- data_extension(
-      data = data,
-      keeplist = keeplist,
-      outcomeCov_var = all.vars(outcome_cov),
-      first_period = first_period,
-      last_period = last_period,
-      use_censor = use_censor,
-      where_var = where_var,
-      separate_files = separate_files,
-      data_dir = data_dir,
-      chunk_size = chunk_size
-    )
-  })
-  quiet_msg(quiet, "Finish data extension")
-  quiet_msg_time(quiet, "Processing time of data extension: ", timing)
-  quiet_line(quiet)
+  result <- data_extension(
+    data = data,
+    keeplist = keeplist,
+    outcomeCov_var = all.vars(outcome_cov),
+    first_period = first_period,
+    last_period = last_period,
+    use_censor = use_censor,
+    where_var = where_var,
+    separate_files = separate_files,
+    data_dir = data_dir,
+    chunk_size = chunk_size
+  )
 
   quiet_msg(quiet, "Summary of extended data:")
   quiet_msg(quiet, paste0("Number of observations: ", result$N))

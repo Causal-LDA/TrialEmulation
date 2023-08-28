@@ -59,7 +59,6 @@ data_extension <- function(data,
       data = files[file.exists(files)],
       min_period = first_period,
       max_period = last_period,
-      range = 1 + last_period - first_period,
       N = N,
       data_template = as.data.frame(switch_data[0, ])
     )
@@ -77,7 +76,6 @@ data_extension <- function(data,
       data = switch_data,
       min_period = first_period,
       max_period = last_period,
-      range = 1 + last_period - first_period,
       N = nrow(switch_data),
       data_template = as.data.frame(switch_data[0, ])
     )

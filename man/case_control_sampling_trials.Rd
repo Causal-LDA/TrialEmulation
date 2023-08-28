@@ -30,12 +30,9 @@ containing sample weights will be added to the result. These can be included in 
 Case-control sampling from extended data
 }
 \examples{
-dat <- trial_example[trial_example$id < 200, ]
-expanded_data <- data_preparation(
-  data = dat,
-  outcome_cov = c("nvarA", "nvarB", "nvarC"),
-  first_period = 260,
-  last_period = 280
-)
-samples <- case_control_sampling_trials(expanded_data, p_control = 0.01)
+# If necessary reduce the number of threads for data.table
+data.table::setDTthreads(2)
+
+data("te_data_ex")
+samples <- case_control_sampling_trials(te_data_ex, p_control = 0.01)
 }

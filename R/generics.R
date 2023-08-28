@@ -5,6 +5,8 @@
 #'
 #' @param object Object to print summary
 #' @param ... Additional arguments passed to print methods.
+#'
+#' @returns No value, displays summaries of object.
 #' @export
 summary.TE_data_prep <- function(object, ...) {
   cat("Number of observations in expanded data:", object$N, "\n")
@@ -92,6 +94,7 @@ summary.TE_robust <- function(object, ...) {
 #' @param full Print full or short summary.
 #' @param ... Arguments passed to [print.data.frame].
 #' @export
+#' @returns No return value, only for printing.
 #' @rdname print_TE
 print.TE_weight_summary <- function(x, full = TRUE, ...) {
   cat(x$description, "\n\n")
@@ -114,6 +117,7 @@ print.TE_weight_summary <- function(x, full = TRUE, ...) {
 #'
 #' @export
 #' @importFrom stats weights
+#' @returns Weights extracted from `object` as a numeric vector.
 #' @rdname weights_TE
 weights.TE_data_prep_dt <- function(object, ...) {
   object$data[["weight"]]

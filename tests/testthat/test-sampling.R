@@ -126,24 +126,15 @@ test_that("case_control_sampling_trials works with separate_files = TRUE is repr
 
 test_that("case_control_sampling_trials works with subsetting", {
   save_dir <- withr::local_tempdir(pattern = "sampling", tempdir(TRUE))
-  dat <- trial_example[trial_example$id < 200, ]
-  expanded_data <- data_preparation(
-    data = dat,
-    data_dir = save_dir,
-    outcome_cov = c("nvarA", "nvarB", "nvarC"),
-    first_period = 260,
-    last_period = 280,
-    separate_files = TRUE,
-    quiet = TRUE
-  )
+  data("te_data_ex")
   set.seed(2090)
   samples <- case_control_sampling_trials(
-    expanded_data,
+    te_data_ex,
     p_control = 0.01,
-    subset_condition = nvarC > 75
+    subset_condition = catvarA == 2
   )
 
-  expect_true(all(samples$nvarC > 75))
+  expect_true(all(samples$catvarA == 2))
 })
 
 
@@ -170,29 +161,23 @@ test_that("case_control_sampling_trials gives errors for arguments", {
 
 
 test_that("case_control_sampling_trials works with multiple p_control", {
-  dat <- trial_example[trial_example$id < 200, ]
-  expanded_data <- data_preparation(
-    data = dat,
-    data_dir = save_dir,
-    outcome_cov = c("nvarA", "nvarB", "nvarC"),
-    first_period = 260,
-    last_period = 280,
-    separate_files = FALSE,
-    quiet = TRUE
-  )
+  data("te_data_ex")
   set.seed(2090)
   samples <- case_control_sampling_trials(
-    expanded_data,
+    te_data_ex,
     p_control = c(0.01, 0.1)
   )
   expect_list(samples, types = "data.frame", len = 2)
-  expect_data_frame(samples[[1]], nrow = 696, ncol = 11)
-  expect_data_frame(samples[[2]], nrow = 5259, ncol = 11)
+  expect_data_frame(samples[[1]], nrow = 696, ncol = 10)
+  expect_data_frame(samples[[2]], nrow = 5259, ncol = 10)
 })
 
 
 test_that("case_control_sampling_trials works with sort = TRUE", {
+  skip_on_cran()
   save_dir <- withr::local_tempdir(pattern = "sampling", tempdir(TRUE))
+
+
   dat <- trial_example[trial_example$id < 200, ]
 
   expanded_data_t <- data_preparation(

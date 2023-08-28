@@ -13,6 +13,9 @@
 
 \item{...}{Arguments passed to \link{print.data.frame}.}
 }
+\value{
+No return value, only for printing.
+}
 \description{
 Print a Weight Summary Object
 }

@@ -15,23 +15,11 @@
 #' @export
 #' @importFrom stats .checkMFClasses coef delete.response model.frame model.matrix terms setNames
 #' @examples
+#' # If necessary set the number of `data.table` threads
+#' data.table::setDTthreads(2)
 #'
-#' data("vignette_switch_data")
-#' data_subset <- vignette_switch_data[vignette_switch_data$trial_period > 200 &
-#'   vignette_switch_data$trial_period < 300, ]
-#' model <- trial_msm(
-#'   data = data_subset,
-#'   outcome_cov = c("catvarA", "nvarA"),
-#'   last_followup = 40,
-#'   model_var = "assigned_treatment",
-#'   include_followup_time = ~followup_time,
-#'   include_trial_period = ~trial_period,
-#'   use_sample_weights = FALSE,
-#'   quiet = TRUE,
-#'   glm_function = "glm"
-#' )
-#'
-#' predicted_ci <- predict(model, predict_times = 0:30, samples = 10)
+#' data("te_model_ex")
+#' predicted_ci <- predict(te_model_ex, predict_times = 0:30, samples = 10)
 #'
 #' # Plot the cumulative incidence curves for each treatment
 #' plot(predicted_ci[[1]]$followup_time, predicted_ci[[1]]$cum_inc,
@@ -161,7 +149,7 @@ check_newdata <- function(newdata, model, predict_times) {
 #' @param p_mat Probability matrix with rows for each subject and follow-up time as the columns.
 #'
 #' @return A vector containing the cumulative incidence or survival values.
-#' @keywords internal
+#' @noRd
 #' @examples
 #' surv_prob <- matrix(
 #'   c(
@@ -180,6 +168,7 @@ calculate_cum_inc <- function(p_mat) {
 }
 
 #' @rdname calculate_cum_inc
+#' @noRd
 #' @keywords internal
 #' TrialEmulation:::calculate_survival(surv_prob)
 calculate_survival <- function(p_mat) {

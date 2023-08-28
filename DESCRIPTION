@@ -1,6 +1,6 @@
 Package: TrialEmulation
-Title: Causal Analysis of Observational Time-To-Event Data
-Version: 0.0.3.1
+Title: Causal Analysis of Observational Time-to-Event Data
+Version: 0.0.3.2
 Authors@R: c(
     person("Roonak", "Rezvani", , "roonak.r74@gmail.com", role = "aut",
            comment = c(ORCID = "0000-0001-5580-5058", "Original package author")),
@@ -14,9 +14,10 @@ Description: Implements target trial emulation methods to apply randomized
     clinical trial design and analysis in an observational setting. Using
     marginal structural models, it can estimate intention-to-treat and
     per-protocol effects in emulated trials using electronic health
-    records.
+    records. A description and application of the method can be found in
+    Danaei et al (2013) <doi:10.1177/0962280211403603>.
 License: Apache License (>= 2)
-URL: https://causal-lda.github.io/TrialEmulation,
+URL: https://causal-lda.github.io/TrialEmulation/,
     https://github.com/Causal-LDA/TrialEmulation
 BugReports: https://github.com/Causal-LDA/TrialEmulation/issues
 Depends: 
@@ -43,5 +44,6 @@ Config/testthat/edition: 3
 Encoding: UTF-8
 Language: en-GB
 LazyData: true
+LazyDataCompression: xz
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.2.3

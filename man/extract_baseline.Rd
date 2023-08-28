@@ -13,6 +13,9 @@ extract_baseline(trial_file, baseline_file, quiet = TRUE)
 
 \item{quiet}{Don't print progress messages.}
 }
+\value{
+The file path of the csv if successful.
+}
 \description{
 Extract Baseline Observations
 }
