@@ -1,4 +1,4 @@
-# TrialEmulation 0.0.3.2
+# TrialEmulation 0.0.3.3
 
 * Initial release to CRAN
 
