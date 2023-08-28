@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">TrialEmulation</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.3.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.3.0</span>
       </span>
     </div>
 
@@ -103,11 +103,25 @@ containing sample weights will be added to the result. These can be included in 
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># If necessary reduce the number of threads for data.table</span></span></span>
-<span class="r-in"><span><span class="fu">data.table</span><span class="fu">::</span><span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/openmp-utils.html" class="external-link">setDTthreads</a></span><span class="op">(</span><span class="fl">2</span><span class="op">)</span></span></span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"te_data_ex"</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">samples</span> <span class="op">&lt;-</span> <span class="fu">case_control_sampling_trials</span><span class="op">(</span><span class="va">te_data_ex</span>, p_control <span class="op">=</span> <span class="fl">0.01</span><span class="op">)</span></span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">dat</span> <span class="op">&lt;-</span> <span class="va">trial_example</span><span class="op">[</span><span class="va">trial_example</span><span class="op">$</span><span class="va">id</span> <span class="op">&lt;</span> <span class="fl">200</span>, <span class="op">]</span></span></span>
+<span class="r-in"><span><span class="va">expanded_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="data_preparation.html">data_preparation</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>  data <span class="op">=</span> <span class="va">dat</span>,</span></span>
+<span class="r-in"><span>  outcome_cov <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"nvarA"</span>, <span class="st">"nvarB"</span>, <span class="st">"nvarC"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  first_period <span class="op">=</span> <span class="fl">260</span>,</span></span>
+<span class="r-in"><span>  last_period <span class="op">=</span> <span class="fl">280</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Starting data manipulation</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Finished data manipulation</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Processing time of data manipulation: 0.2 s</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> ------------------------------------------------------------</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Starting data extension</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Finish data extension</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Processing time of data extension: 2.0 s</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> ------------------------------------------------------------</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Summary of extended data:</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Number of observations: 50139</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> ------------------------------------------------------------</span>
+<span class="r-in"><span><span class="va">samples</span> <span class="op">&lt;-</span> <span class="fu">case_control_sampling_trials</span><span class="op">(</span><span class="va">expanded_data</span>, p_control <span class="op">=</span> <span class="fl">0.01</span><span class="op">)</span></span></span>
 </code></pre></div>
     </div>
   </div>
