@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">TrialEmulation</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.3.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.3.2</span>
       </span>
     </div>
 
@@ -117,23 +117,11 @@ and the difference between them.</p>
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"vignette_switch_data"</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">data_subset</span> <span class="op">&lt;-</span> <span class="va">vignette_switch_data</span><span class="op">[</span><span class="va">vignette_switch_data</span><span class="op">$</span><span class="va">trial_period</span> <span class="op">&gt;</span> <span class="fl">200</span> <span class="op">&amp;</span></span></span>
-<span class="r-in"><span>  <span class="va">vignette_switch_data</span><span class="op">$</span><span class="va">trial_period</span> <span class="op">&lt;</span> <span class="fl">300</span>, <span class="op">]</span></span></span>
-<span class="r-in"><span><span class="va">model</span> <span class="op">&lt;-</span> <span class="fu"><a href="trial_msm.html">trial_msm</a></span><span class="op">(</span></span></span>
-<span class="r-in"><span>  data <span class="op">=</span> <span class="va">data_subset</span>,</span></span>
-<span class="r-in"><span>  outcome_cov <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"catvarA"</span>, <span class="st">"nvarA"</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>  last_followup <span class="op">=</span> <span class="fl">40</span>,</span></span>
-<span class="r-in"><span>  model_var <span class="op">=</span> <span class="st">"assigned_treatment"</span>,</span></span>
-<span class="r-in"><span>  include_followup_time <span class="op">=</span> <span class="op">~</span><span class="va">followup_time</span>,</span></span>
-<span class="r-in"><span>  include_trial_period <span class="op">=</span> <span class="op">~</span><span class="va">trial_period</span>,</span></span>
-<span class="r-in"><span>  use_sample_weights <span class="op">=</span> <span class="cn">FALSE</span>,</span></span>
-<span class="r-in"><span>  quiet <span class="op">=</span> <span class="cn">TRUE</span>,</span></span>
-<span class="r-in"><span>  glm_function <span class="op">=</span> <span class="st">"glm"</span></span></span>
-<span class="r-in"><span><span class="op">)</span></span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># If necessary set the number of `data.table` threads</span></span></span>
+<span class="r-in"><span><span class="fu">data.table</span><span class="fu">::</span><span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/openmp-utils.html" class="external-link">setDTthreads</a></span><span class="op">(</span><span class="fl">2</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="va">predicted_ci</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/predict.html" class="external-link">predict</a></span><span class="op">(</span><span class="va">model</span>, predict_times <span class="op">=</span> <span class="fl">0</span><span class="op">:</span><span class="fl">30</span>, samples <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"te_model_ex"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">predicted_ci</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/predict.html" class="external-link">predict</a></span><span class="op">(</span><span class="va">te_model_ex</span>, predict_times <span class="op">=</span> <span class="fl">0</span><span class="op">:</span><span class="fl">30</span>, samples <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Plot the cumulative incidence curves for each treatment</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">predicted_ci</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">$</span><span class="va">followup_time</span>, <span class="va">predicted_ci</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">$</span><span class="va">cum_inc</span>,</span></span>

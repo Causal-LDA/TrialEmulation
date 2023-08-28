@@ -18,7 +18,7 @@ interface to the main working functions data_preparation() and trial_msm()."><!-
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">TrialEmulation</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.3.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.3.2</span>
       </span>
     </div>
 
@@ -251,6 +251,19 @@ specified as a RHS formula.</p></dd>
 <dt>...</dt>
 <dd><p>Additional arguments passed to <code>glm_function</code>. This may be used to specify initial parameter estimates
 or arguments to <code>control</code>. See <a href="https://rdrr.io/r/stats/glm.html" class="external-link">stats::glm</a>, <a href="https://rdrr.io/pkg/parglm/man/parglm.html" class="external-link">parglm::parglm</a> and <code><a href="https://rdrr.io/pkg/parglm/man/parglm.control.html" class="external-link">parglm::parglm.control()</a></code> for more information.</p></dd>
+
+</dl></div>
+    <div id="value">
+    <h2>Value</h2>
+    
+
+<p>Returns the result of <code><a href="trial_msm.html">trial_msm()</a></code> on the expanded data.
+An object of class <code>TE_msm</code> containing</p><dl><dt>model</dt>
+<dd><p>a <code>glm</code> object</p></dd>
+
+<dt>robust</dt>
+<dd><p>a list containing a coefficient summary table and the robust covariance <code>matrix</code></p></dd>
+
 
 </dl></div>
     <div id="details">

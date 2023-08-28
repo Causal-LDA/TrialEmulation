@@ -25,15 +25,6 @@
     <loc>https://causal-lda.github.io/TrialEmulation/reference/TrialEmulation-package.html</loc>
   </url>
   <url>
-    <loc>https://causal-lda.github.io/TrialEmulation/reference/add_rhs.html</loc>
-  </url>
-  <url>
-    <loc>https://causal-lda.github.io/TrialEmulation/reference/assert_monotonic.html</loc>
-  </url>
-  <url>
-    <loc>https://causal-lda.github.io/TrialEmulation/reference/calculate_cum_inc.html</loc>
-  </url>
-  <url>
     <loc>https://causal-lda.github.io/TrialEmulation/reference/calculate_predictions.html</loc>
   </url>
   <url>
@@ -83,6 +74,12 @@
   </url>
   <url>
     <loc>https://causal-lda.github.io/TrialEmulation/reference/summary_TE.html</loc>
+  </url>
+  <url>
+    <loc>https://causal-lda.github.io/TrialEmulation/reference/te_data_ex.html</loc>
+  </url>
+  <url>
+    <loc>https://causal-lda.github.io/TrialEmulation/reference/te_model_ex.html</loc>
   </url>
   <url>
     <loc>https://causal-lda.github.io/TrialEmulation/reference/trial_example.html</loc>
