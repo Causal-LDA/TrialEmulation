@@ -10,8 +10,6 @@ reference:
   - starts_with("predict")
   - starts_with("print")
   - starts_with("summary")
-  - starts_with("weights")
-  - extract_baseline
 - title: Data Sets
 - contents:
   - trial_example

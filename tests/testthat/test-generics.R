@@ -35,7 +35,6 @@ test_that("summary for data_preparation separate=TRUE", {
     }
   )
   expect_snapshot(print(object$censor_models[[1]], full = FALSE, digits = 4))
-  expect_warning(weights(object), "not supported when data prepared with ")
 })
 
 test_that("summary for data_preparation separate=FALSE", {
@@ -65,7 +64,6 @@ test_that("summary for data_preparation separate=FALSE", {
   expect_snapshot(summary(object, digits = 3))
   expect_snapshot(print(object$switch_models[[1]], digits = 4))
   expect_snapshot(print(object$switch_models[[1]], full = FALSE, digits = 4))
-  expect_snapshot(summary(weights(object), digits = 4))
 })
 
 

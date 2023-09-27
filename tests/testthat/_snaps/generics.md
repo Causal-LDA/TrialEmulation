@@ -239,14 +239,6 @@
        (Intercept)  -0.3028   0.03781    -8.007 1.174e-15
       
 
----
-
-    Code
-      summary(weights(object), digits = 4)
-    Output
-         Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
-       0.1661  0.9386  1.0000  1.0810  1.1350  7.7060 
-
 # summary for initiators
 
     Code

@@ -121,7 +121,7 @@ add_rhs <- function(f1, f2) {
 #' Reads `trial_file` and saves the observations with `followup_time == 0` to `baseline_file` csv.
 #'
 #' @returns The file path of the csv if successful.
-#' @export
+#' @noRd
 extract_baseline <- function(trial_file, baseline_file, quiet = TRUE) {
   # Dummy assignments for data.table
   followup_time <- NULL
