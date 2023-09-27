@@ -18,7 +18,7 @@ calculates a robust covariance matrix using a sandwich estimator."><!-- mathjax 
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">TrialEmulation</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.3.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.3.3</span>
       </span>
     </div>
 
@@ -166,9 +166,14 @@ or arguments to <code>control</code>. See <a href="https://rdrr.io/r/stats/glm.h
     <h2>Value</h2>
     
 
-<p>Object of class <code>TE_msm</code> containing</p><ul><li><p><code>model</code>, a <code>glm</code> object</p></li>
-<li><p><code>robust</code> a list containing a coefficient summary table and the robust covariance <code>matrix</code>.</p></li>
-</ul></div>
+<p>Object of class <code>TE_msm</code> containing</p><dl><dt>model</dt>
+<dd><p>a <code>glm</code> object</p></dd>
+
+<dt>robust</dt>
+<dd><p>a list containing a coefficient summary table and the robust covariance <code>matrix</code></p></dd>
+
+
+</dl></div>
     <div id="details">
     <h2>Details</h2>
     <p>The model formula is constructed by combining the arguments <code>outcome_cov</code>, <code>model_var</code>,
