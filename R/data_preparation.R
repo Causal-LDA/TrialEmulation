@@ -43,7 +43,7 @@ data_preparation <- function(data,
                              outcome = "outcome",
                              eligible = "eligible",
                              outcome_cov = ~1,
-                             model_var = NULL,
+                             estimand_type = c("ITT", "PP", "As-Treated"),
                              switch_n_cov = ~1,
                              switch_d_cov = ~1,
                              first_period = NA,
@@ -51,7 +51,7 @@ data_preparation <- function(data,
                              use_weight = FALSE,
                              use_censor = FALSE,
                              cense = NA,
-                             pool_cense = FALSE,
+                             pool_cense = c("none", "both", "numerator"),
                              cense_d_cov = ~1,
                              cense_n_cov = ~1,
                              eligible_wts_0 = NA,
@@ -67,18 +67,18 @@ data_preparation <- function(data,
   arg_checks <- makeAssertCollection()
   assert_flag(use_weight, add = arg_checks)
   assert_flag(use_censor, add = arg_checks)
-  assert_flag(pool_cense, add = arg_checks)
   assert_flag(save_weight_models, add = arg_checks)
   assert_flag(separate_files, add = arg_checks)
   assert_flag(quiet, add = arg_checks)
   assert_multi_class(outcome_cov, classes = c("formula", "character"), add = arg_checks)
-  assert_multi_class(model_var, classes = c("formula", "character"), null.ok = TRUE, add = arg_checks)
   assert_multi_class(switch_n_cov, classes = c("formula", "character"), add = arg_checks)
   assert_multi_class(switch_d_cov, classes = c("formula", "character"), add = arg_checks)
   assert_multi_class(cense_d_cov, classes = c("formula", "character"), add = arg_checks)
   assert_multi_class(cense_n_cov, classes = c("formula", "character"), add = arg_checks)
   assert_integerish(first_period, lower = 0, all.missing = TRUE, len = 1, add = arg_checks)
   assert_integerish(last_period, lower = 0, all.missing = TRUE, len = 1, add = arg_checks)
+  assert_choice(estimand_type, choices = c("ITT", "PP", "As-Treated"), add = arg_checks)
+  if (isTRUE(use_weight)) assert_choice(pool_cense, choices = c("none", "both", "numerator"), add = arg_checks)
   reportAssertions(arg_checks)
 
   if (isTRUE(separate_files)) check_data_dir(data_dir)
@@ -89,12 +89,19 @@ data_preparation <- function(data,
   cense_d_cov <- as_formula(cense_d_cov)
   cense_n_cov <- as_formula(cense_n_cov)
 
-  model_var <- if (!is.null(model_var)) {
-    as_formula(model_var)
-  } else if (isFALSE(use_censor) && isTRUE(use_weight)) {
-    ~dose
-  } else {
-    ~assigned_treatment
+  if (estimand_type == "ITT") {
+    model_var <- ~assigned_treatment
+    if (use_weight) assert_choice(pool_cense, c("none", "numerator"))
+    assert_false(use_censor)
+  } else if (estimand_type == "PP") {
+    model_var <- ~assigned_treatment
+    assert_true(use_censor)
+    assert_true(use_weight)
+    assert_choice(pool_cense, c("none", "both", "numerator"))
+  } else if (estimand_type == "As-Treated") {
+    model_var <- ~dose
+    assert_choice(pool_cense, c("none", "both", "numerator"))
+    assert_true(use_censor)
   }
 
   data <- select_data_cols(
@@ -122,7 +129,8 @@ data_preparation <- function(data,
       eligible_wts_0 = eligible_wts_0,
       eligible_wts_1 = eligible_wts_1,
       cense = cense,
-      pool_cense = pool_cense,
+      pool_cense_n = pool_cense %in% c("both", "numerator"),
+      pool_cense_d = pool_cense == "both",
       cense_d_cov = cense_d_cov,
       cense_n_cov = cense_n_cov,
       save_weight_models = save_weight_models,

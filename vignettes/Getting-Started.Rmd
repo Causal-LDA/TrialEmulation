@@ -67,11 +67,12 @@ result <- initiators(
   period = "period",
   eligible = "eligible",
   treatment = "treatment",
+  estimand_type = "ITT",
   outcome = "outcome",
   model_var = "assigned_treatment",
   outcome_cov = c("catvarA", "catvarB", "nvarA", "nvarB", "nvarC"),
   use_censor = FALSE,
-  use_weight = FALSE
+  use_weight = FALSE,
 )
 ```
 
@@ -118,10 +119,11 @@ prep_data <- data_preparation(
   eligible = "eligible",
   treatment = "treatment",
   outcome = "outcome",
-  model_var = "assigned_treatment",
   outcome_cov = ~ catvarA + catvarB + nvarA + nvarB + nvarC,
   data_dir = working_dir,
   save_weight_models = TRUE,
+  estimand_type = "PP",
+  pool_cense = "none",
   use_censor = TRUE,
   use_weight = TRUE,
   chunk_size = 500,

@@ -185,8 +185,7 @@ expand <- function(sw_data,
     switch_data[(time_of_event == period_new & outcome_new == 1), case := 1]
   } else {
     switch_data[switch_new == 1, case := as.numeric(NA)]
-    switch_data[(switch_new == 0 &
-      time_of_event == period_new & outcome_new == 1), case := 1]
+    switch_data[(switch_new == 0 & time_of_event == period_new & outcome_new == 1), case := 1]
   }
 
   setnames(switch_data, c("case"), c("outcome"))

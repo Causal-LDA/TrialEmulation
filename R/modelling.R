@@ -23,6 +23,7 @@
 
 trial_msm <- function(data,
                       outcome_cov = ~1,
+                      estimand_type = c("ITT", "PP", "As-Treated"),
                       model_var = NULL,
                       first_followup = NA,
                       last_followup = NA,
@@ -82,30 +83,23 @@ trial_msm <- function(data,
     }
   }
 
-  model_formula <- outcome ~ 1
-
-  if (!is.null(model_var)) {
-    # if the model_var is not empty, we use the information provided by user
-    model_formula <- add_rhs(model_formula, as_formula(model_var))
-  } else {
-    # if the model_var is empty, we provide the needed variables based on analysis type
-    if (isFALSE(use_censor)) {
-      if (isFALSE(use_weight)) {
-        # for ITT analysis
-        model_formula <- add_rhs(model_formula, ~assigned_treatment)
-      } else {
-        # for as treated analysis
-        model_formula <- add_rhs(model_formula, ~ dose + I(dose^2))
-      }
-    } else {
-      # for per-protocol analysis
-      model_formula <- add_rhs(model_formula, ~assigned_treatment)
+  if (is.null(model_var)) {
+    if (estimand_type == "ITT") {
+      model_var <- ~assigned_treatment
+    } else if (estimand_type == "PP") {
+      model_var <- ~assigned_treatment
+      if (isFALSE(use_weight)) warning("Estimand type is per-protocol but use_weights = FALSE")
+    } else if (estimand_type == "As-Treated") {
+      model_var <- ~ dose + I(dose^2)
     }
+  } else {
+    model_var <- as_formula(model_var)
   }
 
+  model_formula <- outcome ~ 1
   model_formula <- Reduce(
     add_rhs,
-    c(model_formula, include_trial_period, include_followup_time, outcome_cov)
+    c(model_formula, model_var, include_trial_period, include_followup_time, outcome_cov)
   )
 
   if (any(!is.na(where_case))) {

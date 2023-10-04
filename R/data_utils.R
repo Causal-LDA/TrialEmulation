@@ -37,7 +37,7 @@ select_data_cols <- function(data,
 
   assert_names(c(id, period, treatment, outcome, eligible), subset.of = colnames(data))
 
-  data_new <- setDT(data)
+  data_new <- as.data.table(data)
 
   setnames(
     data_new,
@@ -75,7 +75,8 @@ weight_func <- function(sw_data,
                         eligible_wts_0 = NA,
                         eligible_wts_1 = NA,
                         cense = NA,
-                        pool_cense = FALSE,
+                        pool_cense_n = FALSE,
+                        pool_cense_d = FALSE,
                         cense_d_cov = NA,
                         cense_n_cov = NA,
                         save_weight_models = FALSE,
@@ -208,8 +209,7 @@ weight_func <- function(sw_data,
     cense_d_cov <- update(cense_d_cov, paste("1 -", cense, "~ ."))
     cense_n_cov <- update(cense_n_cov, paste("1 -", cense, "~ ."))
 
-    if (isTRUE(pool_cense)) {
-      # -------------------- denominator -------------------------
+    if (isTRUE(pool_cense_d)) { # Fit pooled denominator models
       model1.cense <- fit_glm(
         data = sw_data,
         formula = cense_d_cov,
@@ -217,7 +217,7 @@ weight_func <- function(sw_data,
         glm_function = glm_function
       )
 
-      cense_d0 <- cbind(pC_d = model1.cense$fitted.values, model1.cense$data[, c("id", "period")])
+      cense_d <- cbind(pC_d = model1.cense$fitted.values, model1.cense$data[, c("id", "period")])
 
       censor_models$cens_pool_d <- process_weight_model(
         model1.cense,
@@ -228,34 +228,7 @@ weight_func <- function(sw_data,
         quiet
       )
       rm(model1.cense)
-
-      # --------------------- numerator ---------------------------
-      model2.cense <- fit_glm(
-        data = sw_data,
-        formula = cense_n_cov,
-        ...,
-        glm_function = glm_function
-      )
-
-      cense_n0 <- cbind(pC_n = model2.cense$fitted.values, model2.cense$data[, c("id", "period")])
-
-      censor_models$cens_pool_n <- process_weight_model(
-        model2.cense,
-        save_weight_models,
-        save_dir,
-        "cense_model_pool_n.rds",
-        "Model for P(cense = 0 | X) for numerator",
-        quiet
-      )
-      rm(model2.cense)
-
-      sw_data <- merge.data.table(sw_data, cense_d0, by = c("id", "period"), all = TRUE)
-      sw_data <- merge.data.table(sw_data, cense_n0, by = c("id", "period"), all = TRUE)
-
-      rm(cense_d0, cense_n0)
-    } else {
-      # when pool_cense != 1
-
+    } else { # Fit separate denominator models for each arm
       # ---------------------- denominator -----------------------
       # ---------------------- eligible0 ---------------------------
       model1.cense <- fit_glm(
@@ -276,26 +249,7 @@ weight_func <- function(sw_data,
         quiet
       )
       rm(model1.cense)
-      # -------------------------- numerator ----------------------
-      #--------------------------- eligible0 -----------------------
-      model2.cense <- fit_glm(
-        data = sw_data[eligible0 == 1],
-        formula = cense_n_cov,
-        ...,
-        glm_function = glm_function
-      )
-      cense_n0 <- cbind(pC_n0 = model2.cense$fitted.values, model2.cense$data[, c("id", "period")])
 
-      censor_models$cens_n0 <- process_weight_model(
-        model2.cense,
-        save_weight_models,
-        save_dir,
-        "cense_model_n0.rds",
-        "Model for P(cense = 0 | X, previous treatment = 0) for numerator",
-        quiet
-      )
-
-      rm(model2.cense)
       # ------------------------- denominator ---------------------
       # ------------------------ eligible1 -------------------------
       model3.cense <- fit_glm(
@@ -316,6 +270,49 @@ weight_func <- function(sw_data,
         quiet
       )
       rm(model3.cense)
+    }
+
+    if (isTRUE(pool_cense_n)) { # Fit pooled numerator models
+      model2.cense <- fit_glm(
+        data = sw_data,
+        formula = cense_n_cov,
+        ...,
+        glm_function = glm_function
+      )
+
+      cense_n <- cbind(pC_n = model2.cense$fitted.values, model2.cense$data[, c("id", "period")])
+
+      censor_models$cens_pool_n <- process_weight_model(
+        model2.cense,
+        save_weight_models,
+        save_dir,
+        "cense_model_pool_n.rds",
+        "Model for P(cense = 0 | X) for numerator",
+        quiet
+      )
+      rm(model2.cense)
+    } else { # Fit separate numerator models for each arm
+      # -------------------------- numerator ----------------------
+      #--------------------------- eligible0 -----------------------
+      model2.cense <- fit_glm(
+        data = sw_data[eligible0 == 1],
+        formula = cense_n_cov,
+        ...,
+        glm_function = glm_function
+      )
+      cense_n0 <- cbind(pC_n0 = model2.cense$fitted.values, model2.cense$data[, c("id", "period")])
+
+      censor_models$cens_n0 <- process_weight_model(
+        model2.cense,
+        save_weight_models,
+        save_dir,
+        "cense_model_n0.rds",
+        "Model for P(cense = 0 | X, previous treatment = 0) for numerator",
+        quiet
+      )
+
+      rm(model2.cense)
+
       # ------------------------ numerator -------------------------
       # ------------------------- eligible1 -----------------------
       model4.cense <- fit_glm(
@@ -335,8 +332,17 @@ weight_func <- function(sw_data,
         quiet
       )
       rm(model4.cense)
+    }
 
-      # combine ------------------------------
+    # combine ------------------------------
+    if (pool_cense_d && pool_cense_n) {
+      # all pooled
+      sw_data <- merge.data.table(sw_data, cense_d, by = c("id", "period"), all = TRUE)
+      sw_data <- merge.data.table(sw_data, cense_n, by = c("id", "period"), all = TRUE)
+
+      rm(cense_d0, cense_n0)
+    } else if (!pool_cense_d && !pool_cense_n) {
+      # no pooled
       cense_0 <- cense_d0[cense_n0, on = list(id = id, period = period)]
       cense_1 <- cense_d1[cense_n1, on = list(id = id, period = period)]
       rm(cense_n1, cense_d1, cense_n0, cense_d0)
@@ -345,6 +351,20 @@ weight_func <- function(sw_data,
       sw_data <- merge.data.table(sw_data, cense_1, by = c("id", "period"), all = TRUE)
 
       rm(cense_0, cense_1)
+      sw_data[am_1 == 0, `:=`(pC_n = pC_n0, pC_d = pC_d0)]
+      sw_data[am_1 == 1, `:=`(pC_n = pC_n1, pC_d = pC_d1)]
+    } else if (!pool_cense_d && pool_cense_n) {
+      # only numerator pooled
+      sw_data <- sw_data[cense_n, on = list(id = id, period = period)]
+      sw_data <- merge.data.table(sw_data, cense_d0, by = c("id", "period"), all = TRUE)
+      sw_data <- merge.data.table(sw_data, cense_d1, by = c("id", "period"), all = TRUE)
+      rm(cense_d1, cense_n, cense_d0)
+
+      sw_data[am_1 == 0, `:=`(pC_d = pC_d0)]
+      sw_data[am_1 == 1, `:=`(pC_d = pC_d1)]
+    } else if (pool_cense_d && !pool_cense_n) {
+      # only denominator pooled
+      warning("does this make sense?")
     }
   }
   # wt and wtC calculation
@@ -392,10 +412,6 @@ weight_func <- function(sw_data,
   if (is.na(cense)) {
     sw_data[, wtC := 1.0]
   } else {
-    if (isFALSE(pool_cense)) {
-      sw_data[am_1 == 0, `:=`(pC_n = pC_n0, pC_d = pC_d0)]
-      sw_data[am_1 == 1, `:=`(pC_n = pC_n1, pC_d = pC_d1)]
-    }
     sw_data[is.na(pC_d), pC_d := 1]
     sw_data[is.na(pC_n), pC_n := 1]
     sw_data[, wtC := pC_n / pC_d]

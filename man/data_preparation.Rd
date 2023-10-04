@@ -12,7 +12,7 @@ data_preparation(
   outcome = "outcome",
   eligible = "eligible",
   outcome_cov = ~1,
-  model_var = NULL,
+  estimand_type = c("ITT", "PP", "As-Treated"),
   switch_n_cov = ~1,
   switch_d_cov = ~1,
   first_period = NA,
@@ -20,7 +20,7 @@ data_preparation(
   use_weight = FALSE,
   use_censor = FALSE,
   cense = NA,
-  pool_cense = FALSE,
+  pool_cense = c("none", "both", "numerator"),
   cense_d_cov = ~1,
   cense_n_cov = ~1,
   eligible_wts_0 = NA,
@@ -49,10 +49,6 @@ data_preparation(
 \item{eligible}{Indicator of whether or not an observation is eligible to be expanded about Defaults to eligible}
 
 \item{outcome_cov}{A RHS formula with baseline covariates to adjust in final model}
-
-\item{model_var}{List of Variables of interest to be used in final model.
-Derived variables to use in outcome models. Typically \code{assigned_treatment} for ITT and per-protocol,
-and \code{dose + dose^2} for as-treated.}
 
 \item{switch_n_cov}{A RHS formula for modelling probability of switching treatment. Used in the numerator of weight
 calculation. May use \code{time_on_regime} to include treatment duration.}

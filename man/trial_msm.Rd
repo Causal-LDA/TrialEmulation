@@ -7,6 +7,7 @@
 trial_msm(
   data,
   outcome_cov = ~1,
+  estimand_type = c("ITT", "PP", "As-Treated"),
   model_var = NULL,
   first_followup = NA,
   last_followup = NA,
