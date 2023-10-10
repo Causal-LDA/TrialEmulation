@@ -8,8 +8,8 @@ test_that("data_preparation works as expected", {
     eligible = "eligible",
     treatment = "treatment",
     outcome = "outcome",
-    model_var = "assigned_treatment",
-    outcome_cov = c("catvarA", "catvarB", "catvarC", "nvarA", "nvarB", "nvarC")
+    outcome_cov = c("catvarA", "catvarB", "catvarC", "nvarA", "nvarB", "nvarC"),
+    estimand_type = "ITT"
   )
 
   expect_identical(result$N, 1939053L)
@@ -32,11 +32,11 @@ test_that("data_preparation can be quiet", {
       eligible = "eligible",
       treatment = "treatment",
       outcome = "outcome",
-      model_var = "assigned_treatment",
       outcome_cov = "catvarA",
       first_period = 1,
       last_period = 5,
-      quiet = TRUE
+      quiet = TRUE,
+      estimand_type = "ITT"
     )
   )
 })
@@ -55,7 +55,7 @@ test_that("data_preparation gives an error for existing trial files", {
       eligible = "eligible",
       treatment = "treatment",
       outcome = "outcome",
-      model_var = "assigned_treatment",
+      estimand_type = "ITT",
       outcome_cov = "catvarA",
       first_period = 1,
       last_period = 5,
@@ -89,7 +89,7 @@ test_that("data_preparation has correct values for 'treatment'", {
     outcome = "Y",
     eligible = "eligible",
     outcome_cov = ~X1,
-    model_var = "assigned_treatment",
+    estimand_type = "ITT",
     separate_files = FALSE,
     quiet = TRUE
   )
@@ -103,4 +103,12 @@ test_that("data_preparation has correct values for 'treatment'", {
   )
   expect_equal(compare$treatment, compare$A)
   expect_equal(compare$outcome, compare$Y)
+})
+
+
+test_that("data_preparation works with PP estimand type", {
+})
+
+
+test_that("data_preparation works with As-Treated estimand type", {
 })

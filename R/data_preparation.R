@@ -42,6 +42,7 @@ data_preparation <- function(data,
                              treatment = "treatment",
                              outcome = "outcome",
                              eligible = "eligible",
+                             model_var = NULL,
                              outcome_cov = ~1,
                              estimand_type = c("ITT", "PP", "As-Treated"),
                              switch_n_cov = ~1,
@@ -99,9 +100,13 @@ data_preparation <- function(data,
     assert_true(use_weight)
     assert_choice(pool_cense, c("none", "both", "numerator"))
   } else if (estimand_type == "As-Treated") {
-    model_var <- ~dose
+    model_var <- if (is.null(model_var)) {
+      ~dose
+    } else {
+      as_formula(model_var)
+    }
     assert_choice(pool_cense, c("none", "both", "numerator"))
-    assert_true(use_censor)
+    assert_false(use_censor)
   }
 
   data <- select_data_cols(

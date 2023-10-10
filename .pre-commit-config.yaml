@@ -52,7 +52,8 @@ repos:
           (.*/|)WORDLIST|
           \.github/workflows/.*|
           data/.*|
-          tests/testthat/data/.*
+          tests/testthat/data/.*|
+          tests/testthat/_snaps/.*
           )$
     -   id: lintr
     -   id: readme-rmd-rendered

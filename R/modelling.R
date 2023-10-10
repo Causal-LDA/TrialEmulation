@@ -30,7 +30,6 @@ trial_msm <- function(data,
                       use_weight = FALSE,
                       analysis_weights = c("asis", "unweighted", "p99", "weight_limits"),
                       weight_limits = c(0, Inf),
-                      use_censor = FALSE,
                       include_followup_time = ~ followup_time + I(followup_time^2),
                       include_trial_period = ~ trial_period + I(trial_period^2),
                       where_case = NA,
@@ -50,7 +49,6 @@ trial_msm <- function(data,
   analysis_weights <-
     assert_choice(analysis_weights[1], choices = c("asis", "unweighted", "p99", "weight_limits"), add = arg_checks)
   assert_numeric(weight_limits, len = 2, lower = 0, upper = Inf, sorted = TRUE, add = arg_checks)
-  assert_flag(use_censor, add = arg_checks)
   include_followup_time <- as_formula(include_followup_time, add = arg_checks)
   include_trial_period <- as_formula(include_trial_period, add = arg_checks)
   assert_multi_class(include_trial_period, classes = c("formula", "character"), add = arg_checks)

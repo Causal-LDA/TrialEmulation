@@ -339,8 +339,7 @@ weight_func <- function(sw_data,
       # all pooled
       sw_data <- merge.data.table(sw_data, cense_d, by = c("id", "period"), all = TRUE)
       sw_data <- merge.data.table(sw_data, cense_n, by = c("id", "period"), all = TRUE)
-
-      rm(cense_d0, cense_n0)
+      rm(cense_d, cense_n)
     } else if (!pool_cense_d && !pool_cense_n) {
       # no pooled
       cense_0 <- cense_d0[cense_n0, on = list(id = id, period = period)]
@@ -364,7 +363,7 @@ weight_func <- function(sw_data,
       sw_data[am_1 == 1, `:=`(pC_d = pC_d1)]
     } else if (pool_cense_d && !pool_cense_n) {
       # only denominator pooled
-      warning("does this make sense?")
+      stop("Check the arguments for pooling censoring models!")
     }
   }
   # wt and wtC calculation
@@ -417,6 +416,11 @@ weight_func <- function(sw_data,
     sw_data[, wtC := pC_n / pC_d]
   }
   sw_data[, wt := wt * wtC]
+
+  censor_models <- censor_models[intersect(
+    c("cens_pool_d", "cens_d0", "cens_n0", "cens_d1", "cens_n1", "cens_pool_n"),
+    names(censor_models)
+  )]
 
   list(
     data = sw_data,

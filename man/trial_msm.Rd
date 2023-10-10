@@ -14,7 +14,6 @@ trial_msm(
   use_weight = FALSE,
   analysis_weights = c("asis", "unweighted", "p99", "weight_limits"),
   weight_limits = c(0, Inf),
-  use_censor = FALSE,
   include_followup_time = ~followup_time + I(followup_time^2),
   include_trial_period = ~trial_period + I(trial_period^2),
   where_case = NA,
@@ -48,9 +47,6 @@ and \code{dose + dose^2} for as-treated.}
 }}
 
 \item{weight_limits}{Lower and upper limits to truncate weights, given as \code{c(lower, upper)}}
-
-\item{use_censor}{Use censoring for per-protocol analysis - censor person-times once a person-trial stops taking the
-initial treatment value}
 
 \item{include_followup_time}{The model to include the follow up time of the trial (\code{followup_time}) in outcome model,
 specified as a RHS formula.}

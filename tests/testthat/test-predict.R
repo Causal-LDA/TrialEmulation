@@ -13,6 +13,7 @@ test_that("predict.TE_msm works as expected", {
     outcome = "outcome",
     model_var = "assigned_treatment",
     outcome_cov = c("catvarA", "catvarB", "catvarC", "nvarA", "nvarB", "nvarC"),
+    estimand_type = "ITT",
     include_followup_time = ~followup_time,
     include_trial_period = ~trial_period,
     use_censor = FALSE,
@@ -94,7 +95,6 @@ test_that("predict.TE_msm works with interactions", {
         outcome_cov = ~ X1 + X2 + age_s,
         model_var = ~ assigned_treatment:followup_time,
         use_weight = TRUE,
-        use_censor = TRUE,
         include_followup_time = ~followup_time,
         include_trial_period = ~1,
         glm_function = c("glm"),
@@ -102,7 +102,6 @@ test_that("predict.TE_msm works with interactions", {
         quiet = TRUE
       ),
       "non-integer #successes in a binomial glm",
-      fixed = TRUE
     ),
     "fitted probabilities numerically 0 or 1 occurred"
   )

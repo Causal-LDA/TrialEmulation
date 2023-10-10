@@ -11,6 +11,7 @@ data_preparation(
   treatment = "treatment",
   outcome = "outcome",
   eligible = "eligible",
+  model_var = NULL,
   outcome_cov = ~1,
   estimand_type = c("ITT", "PP", "As-Treated"),
   switch_n_cov = ~1,
@@ -47,6 +48,10 @@ data_preparation(
 \item{outcome}{Name of the data column for outcome feature Defaults to outcome}
 
 \item{eligible}{Indicator of whether or not an observation is eligible to be expanded about Defaults to eligible}
+
+\item{model_var}{List of Variables of interest to be used in final model.
+Derived variables to use in outcome models. Typically \code{assigned_treatment} for ITT and per-protocol,
+and \code{dose + dose^2} for as-treated.}
 
 \item{outcome_cov}{A RHS formula with baseline covariates to adjust in final model}
 
