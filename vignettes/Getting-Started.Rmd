@@ -188,7 +188,6 @@ model_result <- trial_msm(
   outcome_cov = c("catvarA", "catvarB", "nvarA", "nvarB", "nvarC"),
   model_var = "assigned_treatment",
   use_weight = TRUE,
-  use_censor = FALSE,
   glm_function = "glm",
   use_sample_weights = TRUE
 )
