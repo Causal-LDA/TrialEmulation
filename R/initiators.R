@@ -29,9 +29,10 @@
 #' @param use_censor Use censoring for per-protocol analysis - censor person-times once a person-trial stops taking the
 #'  initial treatment value
 #' @param cense Censoring variable
+#' @param estimand_type Which estimand is being used. One of `"ITT"`, `"PP"`, `"As-Treated"`.
 #' @param pool_cense Fit pooled or separate censoring models for those treated and
-#' those untreated at the immediately previous visit.
-#' (default is `FALSE`, separate numerator and denominator models for treatment groups)
+#' those untreated at the immediately previous visit. Pooling can be specified for numerator and denominator models.
+#' One of `"none"`, `"numerator"`, or `"both"` (default is `"none"`).
 #' @param include_followup_time The model to include the follow up time of the trial (`followup_time`) in outcome model,
 #'  specified as a RHS formula.
 #' @param include_trial_period The model to include the trial period (`trial_period`) in outcome model,

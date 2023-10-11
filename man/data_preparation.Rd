@@ -55,6 +55,8 @@ and \code{dose + dose^2} for as-treated.}
 
 \item{outcome_cov}{A RHS formula with baseline covariates to adjust in final model}
 
+\item{estimand_type}{Which estimand is being used. One of \code{"ITT"}, \code{"PP"}, \code{"As-Treated"}.}
+
 \item{switch_n_cov}{A RHS formula for modelling probability of switching treatment. Used in the numerator of weight
 calculation. May use \code{time_on_regime} to include treatment duration.}
 
@@ -73,8 +75,8 @@ initial treatment value}
 \item{cense}{Censoring variable}
 
 \item{pool_cense}{Fit pooled or separate censoring models for those treated and
-those untreated at the immediately previous visit.
-(default is \code{FALSE}, separate numerator and denominator models for treatment groups)}
+those untreated at the immediately previous visit. Pooling can be specified for numerator and denominator models.
+One of \code{"none"}, \code{"numerator"}, or \code{"both"} (default is \code{"none"}).}
 
 \item{cense_d_cov}{A RHS formula for modelling probability of being censored. Used in the numerator of weight
 calculation.}

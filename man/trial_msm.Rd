@@ -28,6 +28,8 @@ trial_msm(
 
 \item{outcome_cov}{A RHS formula with baseline covariates to adjust in final model}
 
+\item{estimand_type}{Which estimand is being used. One of \code{"ITT"}, \code{"PP"}, \code{"As-Treated"}.}
+
 \item{model_var}{List of Variables of interest to be used in final model.
 Derived variables to use in outcome models. Typically \code{assigned_treatment} for ITT and per-protocol,
 and \code{dose + dose^2} for as-treated.}

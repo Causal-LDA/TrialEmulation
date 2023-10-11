@@ -143,7 +143,8 @@ For more information about the weighting models, we can inspect them individuall
 prep_data$switch_models$switch_n0
 ```
 
-If `save_weight_models = TRUE,` the full model objects are saved in `working_dir`, so you can inspect the data used in those models and further investigate how well those models fit.
+If `save_weight_models = TRUE,` the full model objects are saved in `working_dir`, so you can inspect the data used in 
+those models and further investigate how well those models fit.
 
 ```{r weight_files}
 list.files(working_dir, "*.rds")
