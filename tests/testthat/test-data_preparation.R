@@ -22,7 +22,6 @@ test_that("data_preparation works as expected", {
   expect_equal(result_pat_1, expected_pat_1)
 })
 
-# data_preparation ----
 test_that("data_preparation can be quiet", {
   expect_silent(
     result <- data_preparation(
@@ -107,8 +106,48 @@ test_that("data_preparation has correct values for 'treatment'", {
 
 
 test_that("data_preparation works with PP estimand type", {
+  data("trial_example")
+  set.seed(1)
+  result <- data_preparation(
+    data = trial_example,
+    id = "id",
+    period = "period",
+    eligible = "eligible",
+    treatment = "treatment",
+    outcome = "outcome",
+    outcome_cov = c("catvarA", "catvarB", "catvarC", "nvarA", "nvarB", "nvarC"),
+    estimand_type = "PP",
+    use_censor = TRUE,
+    use_weight = TRUE,
+    pool_cense = "none"
+  )
+
+  expect_identical(result$N, 963883L)
+  expect_identical(result$min_period, 1L)
+  expect_identical(result$max_period, 396L)
+  expect(nrow(result$data), result$N)
 })
 
 
 test_that("data_preparation works with As-Treated estimand type", {
+  data("trial_example")
+  set.seed(1)
+  result <- data_preparation(
+    data = trial_example,
+    id = "id",
+    period = "period",
+    eligible = "eligible",
+    treatment = "treatment",
+    outcome = "outcome",
+    outcome_cov = c("catvarA", "catvarB", "catvarC", "nvarA", "nvarB", "nvarC"),
+    estimand_type = "As-Treated",
+    use_censor = FALSE,
+    use_weight = TRUE,
+    pool_cense = "none"
+  )
+
+  expect_identical(result$N, 1939053L)
+  expect_identical(result$min_period, 1L)
+  expect_identical(result$max_period, 396L)
+  expect(nrow(result$data), result$N)
 })

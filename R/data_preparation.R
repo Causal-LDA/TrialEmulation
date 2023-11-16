@@ -93,11 +93,11 @@ data_preparation <- function(data,
   if (estimand_type == "ITT") {
     model_var <- ~assigned_treatment
     if (use_weight) assert_choice(pool_cense, c("none", "numerator"))
-    assert_false(use_censor)
+    if (!isFALSE(use_censor)) stop("use_censor must be TRUE for estimand_type 'ITT'")
   } else if (estimand_type == "PP") {
     model_var <- ~assigned_treatment
-    assert_true(use_censor)
-    assert_true(use_weight)
+    if (!isTRUE(use_censor)) stop("use_censor must be TRUE for estimand_type 'PP'")
+    if (!isTRUE(use_weight)) stop("use_weight must be TRUE for estimand type 'PP'")
     assert_choice(pool_cense, c("none", "both", "numerator"))
   } else if (estimand_type == "As-Treated") {
     model_var <- if (is.null(model_var)) {
@@ -105,8 +105,8 @@ data_preparation <- function(data,
     } else {
       as_formula(model_var)
     }
-    assert_choice(pool_cense, c("none", "both", "numerator"))
-    assert_false(use_censor)
+    if (use_weight) assert_choice(pool_cense, c("none", "both", "numerator"))
+    if (!isFALSE(use_censor)) stop("use_censor must be TRUE for estimand_type 'As-Treated'")
   }
 
   data <- select_data_cols(
