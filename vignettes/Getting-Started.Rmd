@@ -71,8 +71,7 @@ result <- initiators(
   outcome = "outcome",
   model_var = "assigned_treatment",
   outcome_cov = c("catvarA", "catvarB", "nvarA", "nvarB", "nvarC"),
-  use_censor = FALSE,
-  use_weight = FALSE,
+  use_weight = FALSE
 )
 ```
 
@@ -124,7 +123,6 @@ prep_data <- data_preparation(
   save_weight_models = TRUE,
   estimand_type = "PP",
   pool_cense = "none",
-  use_censor = TRUE,
   use_weight = TRUE,
   chunk_size = 500,
   separate_files = TRUE,

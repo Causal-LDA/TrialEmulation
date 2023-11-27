@@ -24,7 +24,6 @@ initiators(
   save_weight_models = FALSE,
   analysis_weights = c("asis", "unweighted", "p99", "weight_limits"),
   weight_limits = c(0, Inf),
-  use_censor = FALSE,
   cense = NA,
   pool_cense = c("none", "both", "numerator"),
   cense_d_cov = ~1,
@@ -90,14 +89,12 @@ calculation. May use \code{time_on_regime} to include treatment duration.}
 
 \item{weight_limits}{Lower and upper limits to truncate weights, given as \code{c(lower, upper)}}
 
-\item{use_censor}{Use censoring for per-protocol analysis - censor person-times once a person-trial stops taking the
-initial treatment value}
-
-\item{cense}{Censoring variable}
+\item{cense}{Censoring variable column name. If this is specified, censoring models and weights will be estimated.}
 
 \item{pool_cense}{Fit pooled or separate censoring models for those treated and
 those untreated at the immediately previous visit. Pooling can be specified for numerator and denominator models.
-One of \code{"none"}, \code{"numerator"}, or \code{"both"} (default is \code{"none"}).}
+One of \code{"none"}, \code{"numerator"}, or \code{"both"} (default is \code{"none"} except when \code{estimand_type = "ITT"}
+then it is \code{"numerator"}).}
 
 \item{cense_d_cov}{A RHS formula for modelling probability of being censored. Used in the numerator of weight
 calculation.}

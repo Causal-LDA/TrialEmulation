@@ -50,7 +50,6 @@ data_preparation <- function(data,
                              first_period = NA,
                              last_period = NA,
                              use_weight = FALSE,
-                             use_censor = FALSE,
                              cense = NA,
                              pool_cense = c("none", "both", "numerator"),
                              cense_d_cov = ~1,
@@ -67,7 +66,6 @@ data_preparation <- function(data,
                              ...) {
   arg_checks <- makeAssertCollection()
   assert_flag(use_weight, add = arg_checks)
-  assert_flag(use_censor, add = arg_checks)
   assert_flag(save_weight_models, add = arg_checks)
   assert_flag(separate_files, add = arg_checks)
   assert_flag(quiet, add = arg_checks)
@@ -92,11 +90,18 @@ data_preparation <- function(data,
 
   if (estimand_type == "ITT") {
     model_var <- ~assigned_treatment
-    if (use_weight) assert_choice(pool_cense, c("none", "numerator"))
-    if (!isFALSE(use_censor)) stop("use_censor must be TRUE for estimand_type 'ITT'")
+    if (use_weight) {
+      if (pool_cense == "none") {
+        warning("pool_cense cannot be \"none\" with estimand_type = ITT. Setting to default \"numerator\"")
+        pool_cense <- "numerator"
+      }
+      assert_choice(pool_cense, c("both", "numerator"))
+    }
+
+    use_censor <- FALSE
   } else if (estimand_type == "PP") {
     model_var <- ~assigned_treatment
-    if (!isTRUE(use_censor)) stop("use_censor must be TRUE for estimand_type 'PP'")
+    use_censor <- TRUE
     if (!isTRUE(use_weight)) stop("use_weight must be TRUE for estimand type 'PP'")
     assert_choice(pool_cense, c("none", "both", "numerator"))
   } else if (estimand_type == "As-Treated") {
@@ -106,7 +111,7 @@ data_preparation <- function(data,
       as_formula(model_var)
     }
     if (use_weight) assert_choice(pool_cense, c("none", "both", "numerator"))
-    if (!isFALSE(use_censor)) stop("use_censor must be TRUE for estimand_type 'As-Treated'")
+    use_censor <- FALSE
   }
 
   data <- select_data_cols(

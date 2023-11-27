@@ -16,7 +16,6 @@ test_that("predict.TE_msm works as expected", {
     estimand_type = "ITT",
     include_followup_time = ~followup_time,
     include_trial_period = ~trial_period,
-    use_censor = FALSE,
     use_weight = FALSE,
     quiet = TRUE
   )

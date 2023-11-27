@@ -26,13 +26,12 @@
 #'  * `"weight_limits"`: truncate weights at the values specified in `weight_limits`
 #'  * `"unweighted"`: set all analysis weights to 1, even with `use_weight = TRUE`
 #' @param weight_limits Lower and upper limits to truncate weights, given as `c(lower, upper)`
-#' @param use_censor Use censoring for per-protocol analysis - censor person-times once a person-trial stops taking the
-#'  initial treatment value
-#' @param cense Censoring variable
 #' @param estimand_type Which estimand is being used. One of `"ITT"`, `"PP"`, `"As-Treated"`.
+#' @param cense Censoring variable column name. If this is specified, censoring models and weights will be estimated.
 #' @param pool_cense Fit pooled or separate censoring models for those treated and
 #' those untreated at the immediately previous visit. Pooling can be specified for numerator and denominator models.
-#' One of `"none"`, `"numerator"`, or `"both"` (default is `"none"`).
+#' One of `"none"`, `"numerator"`, or `"both"` (default is `"none"` except when `estimand_type = "ITT"`
+#' then it is `"numerator"`).
 #' @param include_followup_time The model to include the follow up time of the trial (`followup_time`) in outcome model,
 #'  specified as a RHS formula.
 #' @param include_trial_period The model to include the trial period (`trial_period`) in outcome model,
@@ -91,7 +90,6 @@ initiators <- function(data,
                        save_weight_models = FALSE,
                        analysis_weights = c("asis", "unweighted", "p99", "weight_limits"),
                        weight_limits = c(0, Inf),
-                       use_censor = FALSE,
                        cense = NA,
                        pool_cense = c("none", "both", "numerator"),
                        cense_d_cov = ~1,
@@ -127,7 +125,6 @@ initiators <- function(data,
     first_period = first_period,
     last_period = last_period,
     use_weight = use_weight,
-    use_censor = use_censor,
     cense = cense,
     pool_cense = pool_cense,
     cense_d_cov = cense_d_cov,

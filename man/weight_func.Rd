@@ -35,7 +35,7 @@ calculation. May use \code{time_on_regime} to include treatment duration.}
 
 \item{eligible_wts_1}{Eligibility criteria used in weights for model condition Am1 = 1}
 
-\item{cense}{Censoring variable}
+\item{cense}{Censoring variable column name. If this is specified, censoring models and weights will be estimated.}
 
 \item{cense_d_cov}{A RHS formula for modelling probability of being censored. Used in the numerator of weight
 calculation.}
