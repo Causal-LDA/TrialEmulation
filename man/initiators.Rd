@@ -20,7 +20,7 @@ initiators(
   last_period = NA,
   first_followup = NA,
   last_followup = NA,
-  use_weight = FALSE,
+  use_censor_weights = FALSE,
   save_weight_models = FALSE,
   analysis_weights = c("asis", "unweighted", "p99", "weight_limits"),
   weight_limits = c(0, Inf),
@@ -75,7 +75,7 @@ calculation. May use \code{time_on_regime} to include treatment duration.}
 
 \item{last_followup}{Last follow-up period}
 
-\item{use_weight}{Use weights in analysis. If \code{FALSE} then no weights will be calculated.}
+\item{use_censor_weights}{Use informative censoring weights in analysis.}
 
 \item{save_weight_models}{Save weight models objects in \code{data_dir}.}
 
@@ -84,12 +84,12 @@ calculation. May use \code{time_on_regime} to include treatment duration.}
 \item \code{"asis"}: use the weights as calculated
 \item \code{"p99"}: truncate weights at the 1st and 99th percentiles
 \item \code{"weight_limits"}: truncate weights at the values specified in \code{weight_limits}
-\item \code{"unweighted"}: set all analysis weights to 1, even with \code{use_weight = TRUE}
+\item \code{"unweighted"}: set all analysis weights to 1, even if weights switching or censoring weights were calculated.
 }}
 
 \item{weight_limits}{Lower and upper limits to truncate weights, given as \code{c(lower, upper)}}
 
-\item{cense}{Censoring variable column name. If this is specified, censoring models and weights will be estimated.}
+\item{cense}{Censoring variable column name. Required if \code{use_censor_weights = TRUE}}
 
 \item{pool_cense}{Fit pooled or separate censoring models for those treated and
 those untreated at the immediately previous visit. Pooling can be specified for numerator and denominator models.
@@ -137,14 +137,4 @@ An object of class \code{TE_msm} containing
 \description{
 An all-in-one analysis using a sequence of target trials. This provides a simplified
 interface to the main working functions \code{\link[=data_preparation]{data_preparation()}} and \code{\link[=trial_msm]{trial_msm()}}.
-}
-\details{
-If \code{model_var = NULL} the package will add some terms to the outcome model:
-\itemize{
-\item if \code{use_censor = FALSE} and \code{use_weight = FALSE}, an as-treated analysis will be done the outcome model will have
-\code{~ dose + I(dose^2)} terms added
-\item if \code{use_censor = TRUE}, a per-protocol analysis will be done with an \code{~assigned_treatment} term added
-\item if \code{use_censor = FALSE} and \code{use_weight = TRUE}, an intention to treat analysis will be done with an
-\code{~assigned_treatment} term added
-}
 }

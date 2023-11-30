@@ -71,7 +71,7 @@ test_that("trial_msm works with data.tables and weights", {
       include_followup_time = ~followup_time,
       include_trial_period = ~trial_period,
       use_sample_weights = FALSE,
-      use_weight = TRUE,
+      analysis_weights = "asis",
       glm_function = "parglm",
       control = parglm.control(nthreads = 2, method = "FAST"),
       quiet = TRUE
@@ -86,7 +86,7 @@ test_that("trial_msm works with data.tables and weights", {
       include_followup_time = ~followup_time,
       include_trial_period = ~trial_period,
       use_sample_weights = FALSE,
-      use_weight = TRUE,
+      analysis_weights = "asis",
       glm_function = "glm",
       quiet = TRUE
     )
@@ -109,7 +109,7 @@ test_that("Modelling works with where_case", {
       eligible = "eligible",
       outcome_cov = ~ X1 + X2 + X3 + X4 + age_s,
       model_var = "assigned_treatment",
-      use_weight = TRUE,
+      use_censor_weights = TRUE,
       estimand_type = "PP",
       switch_d_cov = ~ X1 + X2 + X3 + X4 + age_s,
       switch_n_cov = ~ X3 + X4,
@@ -134,7 +134,7 @@ test_that("Modelling works with where_case", {
       data = data,
       outcome_cov = ~ X1 + X2 + X3 + X4 + age_s,
       model_var = "assigned_treatment",
-      use_weight = TRUE,
+      analysis_weights = "asis",
       include_followup_time = ~ factor(followup_time),
       include_trial_period = ~1,
       glm_function = c("glm"),
@@ -162,7 +162,6 @@ test_that("trial_msm works with analysis_weights = unweighted", {
       include_followup_time = ~followup_time,
       include_trial_period = ~trial_period,
       use_sample_weights = FALSE,
-      use_weight = TRUE,
       glm_function = "glm",
       quiet = TRUE,
       analysis_weights = "unweighted"
@@ -184,7 +183,6 @@ test_that("trial_msm works with analysis_weights = p99", {
       include_followup_time = ~followup_time,
       include_trial_period = ~trial_period,
       use_sample_weights = FALSE,
-      use_weight = TRUE,
       glm_function = "glm",
       quiet = TRUE,
       analysis_weights = "p99"
@@ -207,7 +205,6 @@ test_that("trial_msm works with analysis_weights = weight_limits", {
       include_followup_time = ~followup_time,
       include_trial_period = ~trial_period,
       use_sample_weights = FALSE,
-      use_weight = TRUE,
       glm_function = "glm",
       quiet = TRUE,
       analysis_weights = "weight_limits",
@@ -231,8 +228,7 @@ test_that("trial_msm works with missing sample weights", {
         model_var = "assigned_treatment",
         include_followup_time = ~followup_time,
         include_trial_period = ~trial_period,
-        use_sample_weights = TRUE,
-        use_weight = TRUE,
+        analysis_weights = "asis",
         glm_function = "glm",
         quiet = TRUE,
       ),
@@ -249,7 +245,7 @@ test_that("trial_msm works with missing sample weights", {
       include_followup_time = ~followup_time,
       include_trial_period = ~trial_period,
       use_sample_weights = FALSE,
-      use_weight = TRUE,
+      analysis_weights = "asis",
       glm_function = "glm",
       quiet = TRUE,
     ),
@@ -272,7 +268,7 @@ test_that("trial_msm works with sample weights", {
       include_followup_time = ~followup_time,
       include_trial_period = ~trial_period,
       use_sample_weights = TRUE,
-      use_weight = TRUE,
+      analysis_weights = "asis",
       glm_function = "glm",
       quiet = TRUE,
     ),
@@ -292,7 +288,7 @@ test_that("trial_msm makes model formula as expected with weight and censor", {
       include_followup_time = ~followup_time,
       include_trial_period = ~trial_period,
       use_sample_weights = FALSE,
-      use_weight = TRUE,
+      analysis_weights = "asis",
       estimand_type = "PP",
       glm_function = "glm",
       quiet = TRUE,
@@ -320,7 +316,7 @@ test_that("trial_msm makes model formula as expected with estimand As-Treated", 
     outcome_cov = ~ X1 + X2,
     estimand_type = "As-Treated",
     pool_cense = "none",
-    use_weight = TRUE,
+    use_censor_weights = FALSE,
     switch_d_cov = ~ X1 + X2 + X3 + X4 + age_s,
     switch_n_cov = ~ X3 + X4,
     separate_files = FALSE,
@@ -336,7 +332,7 @@ test_that("trial_msm makes model formula as expected with estimand As-Treated", 
       include_followup_time = ~followup_time,
       include_trial_period = ~trial_period,
       use_sample_weights = FALSE,
-      use_weight = TRUE,
+      analysis_weights = "asis",
       estimand_type = "As-Treated",
       glm_function = "glm",
       quiet = TRUE,
@@ -349,7 +345,7 @@ test_that("trial_msm makes model formula as expected with estimand As-Treated", 
   expect_equal(result_formula, expected_formula)
 })
 
-test_that("trial_msm makes model formula as expected with estimand_type ITT and no weights", {
+test_that("trial_msm makes model formula as expected with estimand_type ITT and unweighted", {
   skip_on_cran()
   data <- readRDS(test_path("data/prep_data_object.rds"))
   result_w_c <- trial_msm(
@@ -359,7 +355,7 @@ test_that("trial_msm makes model formula as expected with estimand_type ITT and 
     include_trial_period = ~trial_period,
     estimand = "ITT",
     use_sample_weights = FALSE,
-    use_weight = FALSE,
+    analysis_weights = "unweighted",
     glm_function = "glm",
     quiet = TRUE,
   )

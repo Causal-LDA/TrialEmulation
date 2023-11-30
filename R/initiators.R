@@ -18,16 +18,16 @@
 #' @param last_period Last time period to include as trial baseline in expanded data
 #' @param first_followup First follow-up period
 #' @param last_followup Last follow-up period
-#' @param use_weight Use weights in analysis. If `FALSE` then no weights will be calculated.
 #' @param save_weight_models Save weight models objects in `data_dir`.
 #' @param analysis_weights One of
 #'  * `"asis"`: use the weights as calculated
 #'  * `"p99"`: truncate weights at the 1st and 99th percentiles
 #'  * `"weight_limits"`: truncate weights at the values specified in `weight_limits`
-#'  * `"unweighted"`: set all analysis weights to 1, even with `use_weight = TRUE`
+#'  * `"unweighted"`: set all analysis weights to 1, even if weights switching or censoring weights were calculated.
 #' @param weight_limits Lower and upper limits to truncate weights, given as `c(lower, upper)`
 #' @param estimand_type Which estimand is being used. One of `"ITT"`, `"PP"`, `"As-Treated"`.
-#' @param cense Censoring variable column name. If this is specified, censoring models and weights will be estimated.
+#' @param use_censor_weights Use informative censoring weights in analysis.
+#' @param cense Censoring variable column name. Required if `use_censor_weights = TRUE`
 #' @param pool_cense Fit pooled or separate censoring models for those treated and
 #' those untreated at the immediately previous visit. Pooling can be specified for numerator and denominator models.
 #' One of `"none"`, `"numerator"`, or `"both"` (default is `"none"` except when `estimand_type = "ITT"`
@@ -55,14 +55,6 @@
 #' @param ... Additional arguments passed to `glm_function`. This may be used to specify initial parameter estimates
 #' or arguments to `control`. See [stats::glm], [parglm::parglm] and [parglm::parglm.control()] for more information.
 #'
-#' @details
-#' If `model_var = NULL` the package will add some terms to the outcome model:
-#'
-#'  * if `use_censor = FALSE` and `use_weight = FALSE`, an as-treated analysis will be done the outcome model will have
-#'  `~ dose + I(dose^2)` terms added
-#'  * if `use_censor = TRUE`, a per-protocol analysis will be done with an `~assigned_treatment` term added
-#'  * if `use_censor = FALSE` and `use_weight = TRUE`, an intention to treat analysis will be done with an
-#'   `~assigned_treatment` term added
 #'
 #' @returns Returns the result of [trial_msm()] on the expanded data.
 #' An object of class `TE_msm` containing
@@ -86,7 +78,7 @@ initiators <- function(data,
                        last_period = NA,
                        first_followup = NA,
                        last_followup = NA,
-                       use_weight = FALSE,
+                       use_censor_weights = FALSE,
                        save_weight_models = FALSE,
                        analysis_weights = c("asis", "unweighted", "p99", "weight_limits"),
                        weight_limits = c(0, Inf),
@@ -124,7 +116,7 @@ initiators <- function(data,
     switch_d_cov = switch_d_cov,
     first_period = first_period,
     last_period = last_period,
-    use_weight = use_weight,
+    use_censor_weights = use_censor_weights,
     cense = cense,
     pool_cense = pool_cense,
     cense_d_cov = cense_d_cov,
@@ -147,7 +139,6 @@ initiators <- function(data,
     model_var = model_var,
     first_followup = first_followup,
     last_followup = last_followup,
-    use_weight = use_weight,
     analysis_weights = analysis_weights,
     weight_limits = weight_limits,
     include_followup_time = include_followup_time,

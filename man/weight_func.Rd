@@ -6,6 +6,8 @@
 \usage{
 weight_func(
   sw_data,
+  use_switch_weights = use_switch_weights,
+  use_censor_weights = use_censor_weights,
   switch_n_cov = NA,
   switch_d_cov = NA,
   eligible_wts_0 = NA,
@@ -25,6 +27,8 @@ weight_func(
 \arguments{
 \item{sw_data}{A data.table}
 
+\item{use_censor_weights}{Use informative censoring weights in analysis.}
+
 \item{switch_n_cov}{A RHS formula for modelling probability of switching treatment. Used in the numerator of weight
 calculation. May use \code{time_on_regime} to include treatment duration.}
 
@@ -35,7 +39,7 @@ calculation. May use \code{time_on_regime} to include treatment duration.}
 
 \item{eligible_wts_1}{Eligibility criteria used in weights for model condition Am1 = 1}
 
-\item{cense}{Censoring variable column name. If this is specified, censoring models and weights will be estimated.}
+\item{cense}{Censoring variable column name. Required if \code{use_censor_weights = TRUE}}
 
 \item{cense_d_cov}{A RHS formula for modelling probability of being censored. Used in the numerator of weight
 calculation.}

@@ -71,7 +71,7 @@ result <- initiators(
   outcome = "outcome",
   model_var = "assigned_treatment",
   outcome_cov = c("catvarA", "catvarB", "nvarA", "nvarB", "nvarC"),
-  use_weight = FALSE
+  use_censor_weights = FALSE
 )
 ```
 
@@ -123,7 +123,7 @@ prep_data <- data_preparation(
   save_weight_models = TRUE,
   estimand_type = "PP",
   pool_cense = "none",
-  use_weight = TRUE,
+  use_censor_weights = FALSE,
   chunk_size = 500,
   separate_files = TRUE,
   switch_n_cov = ~ nvarA + nvarB,
@@ -186,7 +186,6 @@ model_result <- trial_msm(
   data = sampled_data,
   outcome_cov = c("catvarA", "catvarB", "nvarA", "nvarB", "nvarC"),
   model_var = "assigned_treatment",
-  use_weight = TRUE,
   glm_function = "glm",
   use_sample_weights = TRUE
 )

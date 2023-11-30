@@ -8,6 +8,8 @@ test_that("weight_func works as expected", {
       sw_data = data,
       switch_n_cov = ~1,
       switch_d_cov = ~ X1 + X2,
+      use_switch_weights = TRUE,
+      use_censor_weights = TRUE,
       cense = "C",
       pool_cense_d = FALSE,
       pool_cense_n = FALSE,
@@ -52,6 +54,8 @@ test_that("weight_func works saves model objects", {
     switch_n_cov = ~1,
     switch_d_cov = ~ X1 + X2,
     cense = "C",
+    use_switch_weights = TRUE,
+    use_censor_weights = TRUE,
     pool_cense_d = FALSE,
     pool_cense_n = FALSE,
     cense_d_cov = ~ X1 + X2 + X3 + X4 + age_s,
@@ -98,6 +102,8 @@ test_that("weight_func works with user specified time on regime", {
 
   result <- weight_func(
     sw_data = data,
+    use_switch_weights = TRUE,
+    use_censor_weights = FALSE,
     switch_n_cov = ~time_on_regime,
     switch_d_cov = ~ X1 + X2 + time_on_regime,
     quiet = TRUE
@@ -114,6 +120,8 @@ test_that("weight_func works with pool_cense = TRUE", {
     switch_n_cov = ~1,
     switch_d_cov = ~ X1 + X2,
     cense = "C",
+    use_switch_weights = TRUE,
+    use_censor_weights = TRUE,
     pool_cense_d = TRUE,
     pool_cense_n = TRUE,
     cense_d_cov = ~ X1 + X2 + X3 + X4 + age_s,

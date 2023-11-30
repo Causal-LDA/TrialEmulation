@@ -31,9 +31,9 @@
 #'   \item{N}{the total number of observations in the expanded data}
 #'   \item{data_template}{a zero-row `data.frame` in the with the columns and attributes of the expanded data}
 #'   \item{switch_models}{a list of summaries of the models fitted for probability of switching treatment,
-#'   if `use_weight=TRUE`}
+#'   if `estimand_type` is `"PP"` or `"As-Treated"`}
 #'   \item{censor_models}{a list of summaries of the models fitted for probability of censoring treatment,
-#'   if `use_weight=TRUE`}
+#'   if `use_switching_weights=TRUE`}
 #'   }
 #'
 data_preparation <- function(data,
@@ -49,7 +49,7 @@ data_preparation <- function(data,
                              switch_d_cov = ~1,
                              first_period = NA,
                              last_period = NA,
-                             use_weight = FALSE,
+                             use_censor_weights = FALSE,
                              cense = NA,
                              pool_cense = c("none", "both", "numerator"),
                              cense_d_cov = ~1,
@@ -65,7 +65,7 @@ data_preparation <- function(data,
                              quiet = FALSE,
                              ...) {
   arg_checks <- makeAssertCollection()
-  assert_flag(use_weight, add = arg_checks)
+  assert_flag(use_censor_weights, add = arg_checks)
   assert_flag(save_weight_models, add = arg_checks)
   assert_flag(separate_files, add = arg_checks)
   assert_flag(quiet, add = arg_checks)
@@ -77,7 +77,7 @@ data_preparation <- function(data,
   assert_integerish(first_period, lower = 0, all.missing = TRUE, len = 1, add = arg_checks)
   assert_integerish(last_period, lower = 0, all.missing = TRUE, len = 1, add = arg_checks)
   assert_choice(estimand_type, choices = c("ITT", "PP", "As-Treated"), add = arg_checks)
-  if (isTRUE(use_weight)) assert_choice(pool_cense, choices = c("none", "both", "numerator"), add = arg_checks)
+  if (use_censor_weights) assert_string(cense, add = arg_checks)
   reportAssertions(arg_checks)
 
   if (isTRUE(separate_files)) check_data_dir(data_dir)
@@ -90,28 +90,41 @@ data_preparation <- function(data,
 
   if (estimand_type == "ITT") {
     model_var <- ~assigned_treatment
-    if (use_weight) {
-      if (pool_cense == "none") {
-        warning("pool_cense cannot be \"none\" with estimand_type = ITT. Setting to default \"numerator\"")
+    censor_at_switch <- FALSE
+    use_switch_weights <- FALSE
+    if (use_censor_weights) {
+      if (all(pool_cense == c("none", "both", "numerator"))) {
+        message("Setting pool_cense to default \"numerator\" for estimand_type = \"ITT\"")
         pool_cense <- "numerator"
       }
       assert_choice(pool_cense, c("both", "numerator"))
     }
-
-    use_censor <- FALSE
   } else if (estimand_type == "PP") {
     model_var <- ~assigned_treatment
-    use_censor <- TRUE
-    if (!isTRUE(use_weight)) stop("use_weight must be TRUE for estimand type 'PP'")
-    assert_choice(pool_cense, c("none", "both", "numerator"))
+    censor_at_switch <- TRUE
+    use_switch_weights <- TRUE
+    if (use_censor_weights) {
+      if (all(pool_cense == c("none", "both", "numerator"))) {
+        message("Setting pool_cense to default \"none\" for estimand_type = \"PP\"")
+        pool_cense <- "none"
+      }
+      assert_choice(pool_cense, c("none", "both", "numerator"))
+    }
   } else if (estimand_type == "As-Treated") {
     model_var <- if (is.null(model_var)) {
       ~dose
     } else {
       as_formula(model_var)
     }
-    if (use_weight) assert_choice(pool_cense, c("none", "both", "numerator"))
-    use_censor <- FALSE
+    censor_at_switch <- FALSE
+    use_switch_weights <- TRUE
+    if (use_censor_weights) {
+      if (all(pool_cense == c("none", "both", "numerator"))) {
+        message("Setting pool_cense to default \"none\" for estimand_type = \"As-Treated\"")
+        pool_cense <- "none"
+      }
+      assert_choice(pool_cense, c("none", "both", "numerator"))
+    }
   }
 
   data <- select_data_cols(
@@ -129,11 +142,13 @@ data_preparation <- function(data,
   )
 
   quiet_msg(quiet, "Starting data manipulation")
-  data <- data_manipulation(data, use_censor = use_censor)
+  data <- data_manipulation(data, use_censor = censor_at_switch)
 
-  if (isTRUE(use_weight)) {
+  if (use_censor_weights || use_switch_weights) {
     weight_result <- weight_func(
       sw_data = data,
+      use_switch_weights = use_switch_weights,
+      use_censor_weights = use_censor_weights,
       switch_n_cov = switch_n_cov,
       switch_d_cov = switch_d_cov,
       eligible_wts_0 = eligible_wts_0,
@@ -150,7 +165,7 @@ data_preparation <- function(data,
       ...
     )
     data <- weight_result$data
-  } else if (isFALSE(use_weight)) {
+  } else {
     set(data, j = "wt", value = 1)
   }
 
@@ -166,7 +181,7 @@ data_preparation <- function(data,
     outcomeCov_var = all.vars(outcome_cov),
     first_period = first_period,
     last_period = last_period,
-    use_censor = use_censor,
+    use_censor = censor_at_switch,
     where_var = where_var,
     separate_files = separate_files,
     data_dir = data_dir,
@@ -177,8 +192,8 @@ data_preparation <- function(data,
   quiet_msg(quiet, paste0("Number of observations: ", result$N))
   quiet_line(quiet)
 
-  result$switch_models <- if (use_weight) weight_result$switch_models else NULL
-  result$censor_models <- if (use_weight) weight_result$censor_models else NULL
+  result$switch_models <- if (use_switch_weights) weight_result$switch_models else NULL
+  result$censor_models <- if (use_censor_weights) weight_result$censor_models else NULL
 
   class(result) <- c(ifelse(separate_files, "TE_data_prep_sep", "TE_data_prep_dt"), "TE_data_prep")
   return(result)

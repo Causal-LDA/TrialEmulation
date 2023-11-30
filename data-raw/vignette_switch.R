@@ -9,7 +9,6 @@ prep_data <- data_preparation(
   outcome_cov = ~ catvarA + catvarB + catvarC + nvarA + nvarB + nvarC,
   save_weight_models = FALSE,
   use_censor = FALSE,
-  use_weight = FALSE,
   switch_n_cov = ~ nvarA + nvarB,
   quiet = TRUE
 )

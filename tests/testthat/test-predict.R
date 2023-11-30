@@ -16,7 +16,7 @@ test_that("predict.TE_msm works as expected", {
     estimand_type = "ITT",
     include_followup_time = ~followup_time,
     include_trial_period = ~trial_period,
-    use_weight = FALSE,
+    use_censor_weights = FALSE,
     quiet = TRUE
   )
 
@@ -43,7 +43,6 @@ test_that("predict.TE_msm works with newdata", {
     include_followup_time = ~followup_time,
     include_trial_period = ~trial_period,
     use_sample_weights = FALSE,
-    use_weight = TRUE,
     glm_function = "glm",
     quiet = TRUE
   )
@@ -93,7 +92,6 @@ test_that("predict.TE_msm works with interactions", {
         data = data,
         outcome_cov = ~ X1 + X2 + age_s,
         model_var = ~ assigned_treatment:followup_time,
-        use_weight = TRUE,
         include_followup_time = ~followup_time,
         include_trial_period = ~1,
         glm_function = c("glm"),

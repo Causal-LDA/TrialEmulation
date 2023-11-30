@@ -27,7 +27,6 @@ trial_msm <- function(data,
                       model_var = NULL,
                       first_followup = NA,
                       last_followup = NA,
-                      use_weight = FALSE,
                       analysis_weights = c("asis", "unweighted", "p99", "weight_limits"),
                       weight_limits = c(0, Inf),
                       include_followup_time = ~ followup_time + I(followup_time^2),
@@ -45,7 +44,6 @@ trial_msm <- function(data,
   assert_multi_class(model_var, classes = c("formula", "character"), null.ok = TRUE, add = arg_checks)
   assert_integerish(first_followup, lower = 0, all.missing = TRUE, len = 1, add = arg_checks)
   assert_integerish(last_followup, lower = 0, all.missing = TRUE, len = 1, add = arg_checks)
-  assert_flag(use_weight, add = arg_checks)
   analysis_weights <-
     assert_choice(analysis_weights[1], choices = c("asis", "unweighted", "p99", "weight_limits"), add = arg_checks)
   assert_numeric(weight_limits, len = 2, lower = 0, upper = Inf, sorted = TRUE, add = arg_checks)
@@ -72,6 +70,9 @@ trial_msm <- function(data,
   quiet_msg(quiet, "Preparing for model fitting")
 
   # adjust weights if necessary
+
+  if (!"weight" %in% colnames(data)) data[, weight := 1]
+
   if (use_sample_weights) {
     if (!"sample_weight" %in% colnames(data)) {
       warning("'sample_weight' column not found in data. Using sample weights = 1.")
@@ -86,7 +87,6 @@ trial_msm <- function(data,
       model_var <- ~assigned_treatment
     } else if (estimand_type == "PP") {
       model_var <- ~assigned_treatment
-      if (isFALSE(use_weight)) warning("Estimand type is per-protocol but use_weights = FALSE")
     } else if (estimand_type == "As-Treated") {
       model_var <- ~ dose + I(dose^2)
     }
@@ -116,7 +116,7 @@ trial_msm <- function(data,
   } else if (analysis_weights == "unweighted") {
     data[["weight"]] <- 1
   }
-  if (isFALSE(use_weight)) data[["weight"]] <- 1
+
 
   if (!test_data_table(data, any.missing = FALSE)) {
     warning(

@@ -11,7 +11,6 @@ trial_msm(
   model_var = NULL,
   first_followup = NA,
   last_followup = NA,
-  use_weight = FALSE,
   analysis_weights = c("asis", "unweighted", "p99", "weight_limits"),
   weight_limits = c(0, Inf),
   include_followup_time = ~followup_time + I(followup_time^2),
@@ -38,14 +37,12 @@ and \code{dose + dose^2} for as-treated.}
 
 \item{last_followup}{Last follow-up period}
 
-\item{use_weight}{Use weights in analysis. If \code{FALSE} then no weights will be calculated.}
-
 \item{analysis_weights}{One of
 \itemize{
 \item \code{"asis"}: use the weights as calculated
 \item \code{"p99"}: truncate weights at the 1st and 99th percentiles
 \item \code{"weight_limits"}: truncate weights at the values specified in \code{weight_limits}
-\item \code{"unweighted"}: set all analysis weights to 1, even with \code{use_weight = TRUE}
+\item \code{"unweighted"}: set all analysis weights to 1, even if weights switching or censoring weights were calculated.
 }}
 
 \item{weight_limits}{Lower and upper limits to truncate weights, given as \code{c(lower, upper)}}

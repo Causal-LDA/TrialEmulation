@@ -117,8 +117,7 @@ test_that("data_preparation works with PP estimand type", {
     outcome = "outcome",
     outcome_cov = c("catvarA", "catvarB", "catvarC", "nvarA", "nvarB", "nvarC"),
     estimand_type = "PP",
-    use_weight = TRUE,
-    pool_cense = "none"
+    use_censor_weights = FALSE
   )
 
   expect_identical(result$N, 963883L)
@@ -140,7 +139,7 @@ test_that("data_preparation works with As-Treated estimand type", {
     outcome = "outcome",
     outcome_cov = c("catvarA", "catvarB", "catvarC", "nvarA", "nvarB", "nvarC"),
     estimand_type = "As-Treated",
-    use_weight = TRUE,
+    use_censor_weights = FALSE,
     pool_cense = "none"
   )
 

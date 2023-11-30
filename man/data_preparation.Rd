@@ -18,7 +18,7 @@ data_preparation(
   switch_d_cov = ~1,
   first_period = NA,
   last_period = NA,
-  use_weight = FALSE,
+  use_censor_weights = FALSE,
   cense = NA,
   pool_cense = c("none", "both", "numerator"),
   cense_d_cov = ~1,
@@ -66,9 +66,9 @@ calculation. May use \code{time_on_regime} to include treatment duration.}
 
 \item{last_period}{Last time period to include as trial baseline in expanded data}
 
-\item{use_weight}{Use weights in analysis. If \code{FALSE} then no weights will be calculated.}
+\item{use_censor_weights}{Use informative censoring weights in analysis.}
 
-\item{cense}{Censoring variable column name. If this is specified, censoring models and weights will be estimated.}
+\item{cense}{Censoring variable column name. Required if \code{use_censor_weights = TRUE}}
 
 \item{pool_cense}{Fit pooled or separate censoring models for those treated and
 those untreated at the immediately previous visit. Pooling can be specified for numerator and denominator models.
@@ -118,9 +118,9 @@ It contains the elements
 \item{N}{the total number of observations in the expanded data}
 \item{data_template}{a zero-row \code{data.frame} in the with the columns and attributes of the expanded data}
 \item{switch_models}{a list of summaries of the models fitted for probability of switching treatment,
-if \code{use_weight=TRUE}}
+if \code{estimand_type} is \code{"PP"} or \code{"As-Treated"}}
 \item{censor_models}{a list of summaries of the models fitted for probability of censoring treatment,
-if \code{use_weight=TRUE}}
+if \code{use_switching_weights=TRUE}}
 }
 }
 \description{
