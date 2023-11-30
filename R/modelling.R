@@ -56,6 +56,10 @@ trial_msm <- function(data,
   assert_flag(quiet, add = arg_checks)
   reportAssertions(arg_checks)
 
+  if ("use_weight" %in% ...names()) {
+    stop("Argument `use_weight` is no longer supported. Use `analysis_weights` to control weighting behaviour.")
+  }
+
   # Dummy variables used in data.table calls declared to prevent package check NOTES:
   weight <- sample_weight <- followup_time <- NULL
 

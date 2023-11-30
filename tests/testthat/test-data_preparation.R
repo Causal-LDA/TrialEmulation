@@ -148,3 +148,37 @@ test_that("data_preparation works with As-Treated estimand type", {
   expect_identical(result$max_period, 396L)
   expect(nrow(result$data), result$N)
 })
+
+
+test_that("data_preparation works with ITT and censor weights", {
+  set.seed(2002211011)
+  simdata_censored <- data_gen_censored(1000, 10)
+  result <- data_preparation(
+    data = simdata_censored,
+    id = "ID", period = "t", treatment = "A",
+    outcome = "Y", eligible = "eligible",
+    estimand_type = "ITT",
+    outcome_cov = ~ X1 + X2 + X3 + X4 + age_s,
+    model_var = "assigned_treatment",
+    use_censor_weights = TRUE,
+    cense = "C", cense_d_cov = ~ X1 + X2 + X3 + X4 + age_s,
+    cense_n_cov = ~ X3 + X4,
+    pool_cense = "both",
+    save_weight_models = FALSE,
+    glm_function = "parglm", nthreads = 2, method = "FAST",
+    quiet = TRUE
+  )
+
+  expect_identical(result$N, 8795L)
+  expect_identical(result$min_period, 0L)
+  expect_identical(result$max_period, 9L)
+  expect(nrow(result$data), result$N)
+  expect_equal(
+    result$censor_models$cens_pool_d$summary$estimate,
+    c(1.37911964407242, 0.331586878535157, -0.582701095754271, 0.29591740519054, -0.0725139253274435, 0.94770056528085)
+  )
+  expect_equal(
+    result$censor_models$cens_pool_n$summary$estimate,
+    c(1.76997547565826, 0.307118590668955, -0.0870927737983157)
+  )
+})

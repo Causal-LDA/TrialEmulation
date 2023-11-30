@@ -96,6 +96,7 @@ weight_func <- function(sw_data,
   ## ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   # Switching weights --------------------
   ## ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  switch_models <- list()
   if (use_switch_weights) {
     switch_d_cov <- update.formula(switch_d_cov, treatment ~ .)
     switch_n_cov <- update.formula(switch_n_cov, treatment ~ .)
@@ -145,7 +146,7 @@ weight_func <- function(sw_data,
   # Calculate switching weights
   if (isFALSE(use_switch_weights)) {
     # default weights
-    sw_data[wt := 1.0]
+    sw_data[, wt := 1.0]
   } else {
     # use calculated weights
     if (any(!is.na(eligible_wts_0))) {

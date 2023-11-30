@@ -80,6 +80,9 @@ data_preparation <- function(data,
   if (use_censor_weights) assert_string(cense, add = arg_checks)
   reportAssertions(arg_checks)
 
+  if ("use_weight" %in% ...names()) {
+    stop("Argument `use_weight` is no longer supported. Use `estimand_type` to control weighting behaviour.")
+  }
   if (isTRUE(separate_files)) check_data_dir(data_dir)
 
   outcome_cov <- as_formula(outcome_cov)
