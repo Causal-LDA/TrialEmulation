@@ -127,10 +127,10 @@ test_that("data extensions works as expected with first and last periods", {
       "id", "trial_period", "followup_time", "outcome", "weight", "treatment",
       "X1", "X2", "X3", "X4", "age_s", "assigned_treatment"
     ),
-    outcomeCov_var = c("X1", "X2", "X3", "X4", "age_s"),
+    outcome_cov = ~ X1 + X2 + X3 + X4 + age_s,
     first_period = 2,
     last_period = 8,
-    use_censor = TRUE,
+    censor_at_switch = TRUE,
     where_var = NULL,
     separate_files = FALSE
   )
@@ -141,8 +141,8 @@ test_that("data extensions works as expected with first and last periods", {
       "id", "trial_period", "followup_time", "outcome", "weight", "treatment",
       "X1", "X2", "X3", "X4", "age_s", "assigned_treatment"
     ),
-    outcomeCov_var = c("X1", "X2", "X3", "X4", "age_s"),
-    use_censor = TRUE,
+    outcome_cov = ~ X1 + X2 + X3 + X4 + age_s,
+    censor_at_switch = TRUE,
     where_var = NULL,
     separate_files = FALSE
   )
@@ -179,10 +179,10 @@ test_that("data extensions works as expected with separate_files=TRUE", {
       "id", "trial_period", "followup_time", "outcome", "weight", "treatment",
       "X1", "X2", "X3", "X4", "age_s", "assigned_treatment"
     ),
-    outcomeCov_var = c("X1", "X2", "X3", "X4", "age_s"),
+    outcome_cov = ~ X1 + X2 + X3 + X4 + age_s,
     first_period = 2,
     last_period = 8,
-    use_censor = TRUE,
+    censor_at_switch = TRUE,
     where_var = NULL,
     separate_files = TRUE,
     data_dir = subset_dir
@@ -194,8 +194,8 @@ test_that("data extensions works as expected with separate_files=TRUE", {
       "id", "trial_period", "followup_time", "outcome", "weight", "treatment",
       "X1", "X2", "X3", "X4", "age_s", "assigned_treatment"
     ),
-    outcomeCov_var = c("X1", "X2", "X3", "X4", "age_s"),
-    use_censor = TRUE,
+    outcome_cov = ~ X1 + X2 + X3 + X4 + age_s,
+    censor_at_switch = TRUE,
     where_var = NULL,
     separate_files = TRUE,
     data_dir = all_dir
@@ -226,10 +226,10 @@ test_that("data extensions works as expected with separate_files=TRUE", {
       "id", "trial_period", "followup_time", "outcome", "weight", "treatment",
       "X1", "X2", "X3", "X4", "age_s", "assigned_treatment"
     ),
-    outcomeCov_var = c("X1", "X2", "X3", "X4", "age_s"),
+    outcome_cov = ~ X1 + X2 + X3 + X4 + age_s,
     first_period = 2,
     last_period = 8,
-    use_censor = TRUE,
+    censor_at_switch = TRUE,
     where_var = NULL,
     separate_files = FALSE
   )

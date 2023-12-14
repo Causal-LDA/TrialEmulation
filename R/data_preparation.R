@@ -113,24 +113,8 @@ data_preparation <- function(data,
     set(data, j = "wt", value = 1)
   }
 
-  args$keeplist <- c(
-    "id", "trial_period", "followup_time", "outcome", "weight", "treatment",
-    args$where_var, all.vars(args$outcome_cov), all.vars(args$model_var)
-  )
-
   quiet_msg(quiet, "Starting data extension")
-  result <- data_extension(
-    data = data,
-    keeplist = args$keeplist,
-    outcomeCov_var = all.vars(args$outcome_cov),
-    first_period = args$first_period,
-    last_period = args$last_period,
-    use_censor = args$censor_at_switch,
-    where_var = args$where_var,
-    separate_files = args$separate_files,
-    data_dir = args$data_dir,
-    chunk_size = args$chunk_size
-  )
+  result <- do.call("data_extension", args = c(list(data = data), args_for_fun(args, "data_extension")))
 
   quiet_msg(quiet, "Summary of extended data:")
   quiet_msg(quiet, paste0("Number of observations: ", result$N))
@@ -227,6 +211,10 @@ check_args_data_preparation <- function(data,
   switch_d_cov <- as_formula(switch_d_cov)
   cense_d_cov <- as_formula(cense_d_cov)
   cense_n_cov <- as_formula(cense_n_cov)
+  keeplist <- c(
+    "id", "trial_period", "followup_time", "outcome", "weight", "treatment",
+    where_var, all.vars(outcome_cov)
+  )
 
   args <- list(
     id = id,
@@ -254,7 +242,8 @@ check_args_data_preparation <- function(data,
     glm_function = glm_function,
     chunk_size = chunk_size,
     separate_files = separate_files,
-    quiet = quiet
+    quiet = quiet,
+    keeplist = keeplist
   )
 }
 
@@ -308,7 +297,8 @@ check_estimand_data_prep <- function(args) {
   args$model_var <- model_var
   args$censor_at_switch <- censor_at_switch
   args$use_switch_weights <- use_switch_weights
-  pool_cense <- args$pool_cense
+  args$keeplist <- unique(c(args$keeplist, all.vars(args$model_var)))
+
   args
 }
 

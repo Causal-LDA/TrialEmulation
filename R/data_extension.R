@@ -4,35 +4,35 @@
 #'
 #' @param data A `data.table` to be expanded
 #' @param keeplist A list contains names of variables used in final model
-#' @param outcomeCov_var A list of individual baseline variables used in final model
+#' @param outcome_cov A formula for covariate adjustment of the outcome model
 #' @param first_period First period value to start expanding about
 #' @param last_period Last period value to expand about
-#' @param use_censor Use censoring for per-protocol analysis - censor person-times once a person-trial stops taking the
-#' initial treatment value
+#' @param censor_at_switch Use censoring for per-protocol analysis - censor person-times once a person-trial
+#' stops taking the initial treatment value
 #' @param where_var Variables used in where conditions used in subsetting the data used in final analysis (where_case),
 #'  the variables not included in the final model
 #' @param data_dir Directory to save data
 #' @param separate_files Save expanded data in separate CSV files for each trial.
 #' @param chunk_size Number of ids to expand in each chunk
-#' @keywords internal
+#' @noRd
 
 data_extension <- function(data,
                            keeplist,
-                           outcomeCov_var = NA,
+                           outcome_cov = NA,
                            first_period = NA,
                            last_period = NA,
-                           use_censor = FALSE,
+                           censor_at_switch = FALSE,
                            where_var = NA,
-                           data_dir = "~/rds/hpc-work/",
+                           data_dir,
                            separate_files = FALSE,
                            chunk_size = 200) {
   # data.table notes:
   trial_period <- NULL
 
   if (isTRUE(separate_files)) assert_directory_exists(data_dir)
-
   if (is.na(first_period)) first_period <- min(data[["period"]])
   if (is.na(last_period)) last_period <- max(data[["period"]])
+  outcomeCov_var <- all.vars(outcome_cov)
 
   if (isTRUE(separate_files)) {
     all_ids <- unique(data$id)
@@ -43,7 +43,7 @@ data_extension <- function(data,
         sw_data = data[list(ids), ],
         outcomeCov_var = outcomeCov_var,
         where_var = where_var,
-        use_censor = use_censor,
+        use_censor = censor_at_switch,
         minperiod = first_period,
         maxperiod = last_period,
         keeplist = keeplist
@@ -67,7 +67,7 @@ data_extension <- function(data,
       sw_data = data,
       outcomeCov_var = outcomeCov_var,
       where_var = where_var,
-      use_censor = use_censor,
+      use_censor = censor_at_switch,
       minperiod = first_period,
       maxperiod = last_period,
       keeplist = keeplist
