@@ -4,7 +4,7 @@
       result <- weight_func(sw_data = data, switch_n_cov = ~1, switch_d_cov = ~ X1 +
         X2, use_switch_weights = TRUE, use_censor_weights = TRUE, cense = "C",
       pool_cense_d = FALSE, pool_cense_n = FALSE, cense_d_cov = ~ X1 + X2 + X3 + X4 +
-        age_s, cense_n_cov = ~ X3 + X4, save_weight_models = FALSE, save_dir = save_dir,
+        age_s, cense_n_cov = ~ X3 + X4, save_weight_models = FALSE, data_dir = save_dir,
       glm_function = "parglm", control = parglm.control(nthreads = 2, method = "FAST"))
     Message
       P(treatment = 1 | previous treatment = 0) for denominator

@@ -3,61 +3,45 @@
 #' Select the required columns from the data and rename
 #'
 #' @param data A `data.frame` containing all the required columns
-#' @param id Name of the `data` column for id feature Defaults to "id"
-#' @param period Name of the `data` column for period feature Defaults to "period"
-#' @param treatment Name of the `data` column for treatment feature Defaults to "treatment"
-#' @param outcome Name of the `data` column for outcome feature Defaults to "outcome"
-#' @param eligible Name of `data` column for indicator of whether or not an observation is eligible for a trial.
-#' Defaults to "eligible".
-#' @param eligible_wts_0 Eligibility criteria used in weights for model condition Am1 = 0
-#' @param eligible_wts_1 Eligibility criteria used in weights for model condition Am1 = 1
-#' @param cense Censoring variable
-#' @param where_var Variables used in where conditions used in subsetting the data used in final analysis (where_case),
-#' @param formula_vars Variables used in outcome or weight models.
-#'  the variables not included in the final model.
+#' @param args List of arguments from `data_preparation`
 #'
 #' @returns A data.table with the required columns
 #' @keywords internal
-select_data_cols <- function(data,
-                             id = "id",
-                             period = "period",
-                             treatment = "treatment",
-                             outcome = "outcome",
-                             eligible = "eligible",
-                             eligible_wts_0,
-                             eligible_wts_1,
-                             formula_vars,
-                             cense,
-                             where_var) {
-  if (!eligible %in% colnames(data)) {
-    warning(paste0("Eligibility variable not found in data: ", eligible))
-    warning("Eligibility set to 1 for all patients for all periods")
-    data[eligible] <- 1
-  }
-
-  assert_names(c(id, period, treatment, outcome, eligible), subset.of = colnames(data))
-
-  data_new <- as.data.table(data)
+select_data_cols <- function(data, args) {
+  id <- args$id
+  period <- args$period
+  treatment <- args$treatment
+  outcome <- args$outcome
+  eligible <- args$eligible
+  eligible_wts_0 <- args$eligible_wts_0
+  eligible_wts_1 <- args$eligible_wts_1
+  cense <- args$cense
+  where_var <- args$where_var
 
   setnames(
-    data_new,
+    data,
     old = c(id, period, outcome, eligible, treatment),
     new = c("id", "period", "outcome", "eligible", "treatment")
   )
 
-  cols <- stats::na.omit(unique(c(eligible_wts_0, eligible_wts_1, cense, where_var, formula_vars)))
-  derived_col_names <- c("time_on_regime")
-  assert_names(cols, subset.of = c(colnames(data_new), derived_col_names))
+  formula_vars <- unlist(
+    lapply(args[c("outcome_cov", "switch_n_cov", "switch_d_cov", "cense_n_cov", "cense_n_cov")], all.vars)
+  )
 
-  data_new <- data_new[,
+  cols <- unique(c(eligible_wts_0, eligible_wts_1, cense, where_var, formula_vars))
+  cols <- cols[!is.na(cols)]
+  derived_col_names <- c("time_on_regime")
+  assert_names(cols, subset.of = c(colnames(data), derived_col_names))
+
+  data <- data[,
     c("id", "period", "outcome", "eligible", "treatment", setdiff(cols, derived_col_names)),
     with = FALSE
   ]
 
-  if (test_string(eligible_wts_0)) setnames(data_new, c(eligible_wts_0), c("eligible_wts_0"))
-  if (test_string(eligible_wts_1)) setnames(data_new, c(eligible_wts_1), c("eligible_wts_1"))
+  if (test_string(eligible_wts_0)) setnames(data, c(eligible_wts_0), c("eligible_wts_0"))
+  if (test_string(eligible_wts_1)) setnames(data, c(eligible_wts_1), c("eligible_wts_1"))
 
-  data_new[order(id, period)]
+  data[order(id, period)]
 }
 
 
@@ -82,7 +66,7 @@ weight_func <- function(sw_data,
                         cense_d_cov = NA,
                         cense_n_cov = NA,
                         save_weight_models = FALSE,
-                        save_dir,
+                        data_dir,
                         quiet = FALSE,
                         glm_function = "glm",
                         ...) {
@@ -91,7 +75,7 @@ weight_func <- function(sw_data,
     treatment <- wt <- wtC <- p0_n <- p0_d <- p1_n <- p1_d <- pC_n0 <- pC_d0 <-
     pC_n1 <- pC_d1 <- pC_n <- pC_d <- NULL
 
-  if (save_weight_models) assert_directory_exists(save_dir)
+  if (save_weight_models) assert_directory_exists(data_dir)
 
   ## ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   # Switching weights --------------------
@@ -108,7 +92,7 @@ weight_func <- function(sw_data,
       eligible_wts_1 = eligible_wts_1,
       sw_data = sw_data,
       quiet = quiet,
-      save_dir = save_dir,
+      save_dir = data_dir,
       save_weight_models = save_weight_models,
       glm_function = glm_function,
       ...
@@ -133,7 +117,7 @@ weight_func <- function(sw_data,
       pool_cense_n = pool_cense_n,
       sw_data = sw_data,
       quiet = quiet,
-      save_dir = save_dir,
+      save_dir = data_dir,
       save_weight_models = save_weight_models,
       glm_function = glm_function,
       ...

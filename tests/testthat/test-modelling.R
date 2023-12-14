@@ -190,6 +190,14 @@ test_that("trial_msm works with analysis_weights = p99", {
     "non-integer #successes in a binomial glm!"
   )
   expect_snapshot_value(as.data.frame(result_p99$robust$summary), style = "json2")
+
+  quantiles <- quantile(data$weight, prob = c(0.01, 0.99), type = 1)
+  expect_equal(quantiles, c(`1%` = 0.264964755418739, `99%` = 1.67299290397343))
+
+  w <- data$weight
+  w[w > quantiles[2]] <- quantiles[2]
+  w[w < quantiles[1]] <- quantiles[1]
+  expect_equal(result_p99$model$prior.weights, w, ignore_attr = "names")
 })
 
 

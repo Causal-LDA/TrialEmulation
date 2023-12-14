@@ -73,18 +73,6 @@ trial_msm <- function(data,
 
   quiet_msg(quiet, "Preparing for model fitting")
 
-  # adjust weights if necessary
-
-  if (!"weight" %in% colnames(data)) data[, weight := 1]
-
-  if (use_sample_weights) {
-    if (!"sample_weight" %in% colnames(data)) {
-      warning("'sample_weight' column not found in data. Using sample weights = 1.")
-      data[, weight := weight]
-    } else {
-      data[, weight := weight * sample_weight]
-    }
-  }
 
   if (is.null(model_var)) {
     if (estimand_type == "ITT") {
@@ -111,16 +99,26 @@ trial_msm <- function(data,
     }
   }
 
-  if (analysis_weights == "asis") {
-    # no change
-  } else if (analysis_weights == "p99") {
-    data <- p99_weight(data)
-  } else if (analysis_weights == "weight_limits") {
-    data <- limit_weight(data, weight_limits[1], weight_limits[2])
-  } else if (analysis_weights == "unweighted") {
-    data[["weight"]] <- 1
+  # adjust weights if necessary
+  w <- if (!"weight" %in% colnames(data)) rep(1, nrow(data)) else data[["weight"]]
+
+  if (use_sample_weights) {
+    if (!"sample_weight" %in% colnames(data)) {
+      warning("'sample_weight' column not found in data. Using sample weights = 1.")
+    } else {
+      w <- w * data[["sample_weight"]]
+    }
   }
 
+  if (analysis_weights == "asis") {
+    # nothing to do
+  } else if (analysis_weights == "p99") {
+    w <- p99_weight(w)
+  } else if (analysis_weights == "weight_limits") {
+    w <- limit_weight(w, weight_limits[1], weight_limits[2])
+  } else if (analysis_weights == "unweighted") {
+    w <- rep(1, nrow(data))
+  }
 
   if (!test_data_table(data, any.missing = FALSE)) {
     warning(
@@ -135,7 +133,7 @@ trial_msm <- function(data,
     glm_function = glm_function,
     formula = model_formula,
     data = data,
-    weights = data[["weight"]],
+    weights = w,
     ...
   )
 

@@ -16,7 +16,7 @@ test_that("weight_func works as expected", {
       cense_d_cov = ~ X1 + X2 + X3 + X4 + age_s,
       cense_n_cov = ~ X3 + X4,
       save_weight_models = FALSE,
-      save_dir = save_dir,
+      data_dir = save_dir,
       glm_function = "parglm",
       control = parglm.control(nthreads = 2, method = "FAST")
     )
@@ -61,7 +61,7 @@ test_that("weight_func works saves model objects", {
     cense_d_cov = ~ X1 + X2 + X3 + X4 + age_s,
     cense_n_cov = ~ X3 + X4,
     save_weight_models = TRUE,
-    save_dir = save_dir,
+    data_dir = save_dir,
     quiet = TRUE
   )
 
@@ -135,12 +135,19 @@ test_that("weight_func works with pool_cense = TRUE", {
 
 test_that("select_data_cols works as expected", {
   result <- select_data_cols(
-    data = trial_example,
-    formula_vars = c("nvarA", "nvarC"),
-    where_var = "catvarA",
-    eligible_wts_0 = NA,
-    eligible_wts_1 = NA,
-    cense = NA
+    data = as.data.table(trial_example),
+    args = list(
+      id = "id",
+      period = "period",
+      treatment = "treatment",
+      outcome = "outcome",
+      eligible = "eligible",
+      switch_n_cov = ~ nvarA + nvarC,
+      where_var = "catvarA",
+      eligible_wts_0 = NA,
+      eligible_wts_1 = NA,
+      cense = NA
+    )
   )
   expect_data_frame(
     result,
@@ -157,19 +164,21 @@ test_that("select_data_cols works as expected", {
 })
 
 test_that("select_data_cols works as expected with non-default names", {
-  result <- select_data_cols(
-    data = readRDS(test_path("data/raw_data.rds")),
+  data <- readRDS(test_path("data/raw_data.rds"))
+  args <- list(
     id = "ID",
     period = "t",
     treatment = "A",
     outcome = "Y",
     eligible = "eligible",
-    formula_vars = c("X1", "age"),
+    switch_n_cov = ~ X1 + age,
     where_var = "X3",
     eligible_wts_0 = NA,
     eligible_wts_1 = NA,
     cense = "C"
   )
+
+  result <- select_data_cols(data, args)
   expect_data_frame(
     result,
     nrows = 4926,
@@ -187,16 +196,18 @@ test_that("select_data_cols works as expected with non-default names", {
 test_that("user can select period in select_data_cols", {
   result <- select_data_cols(
     data = readRDS(test_path("data/raw_data.rds")),
-    id = "ID",
-    period = "t",
-    treatment = "A",
-    outcome = "Y",
-    eligible = "eligible",
-    formula_vars = c("X1", "period"),
-    where_var = "X3",
-    eligible_wts_0 = NA,
-    eligible_wts_1 = NA,
-    cense = "C"
+    args = list(
+      id = "ID",
+      period = "t",
+      treatment = "A",
+      outcome = "Y",
+      eligible = "eligible",
+      outcome_cov = ~ X1 + period,
+      where_var = "X3",
+      eligible_wts_0 = NA,
+      eligible_wts_1 = NA,
+      cense = "C"
+    )
   )
   expect_names(
     colnames(result),
@@ -210,16 +221,18 @@ test_that("user can select period in select_data_cols", {
 test_that("select_data_cols allows derived variables in formula vars", {
   result <- select_data_cols(
     data = readRDS(test_path("data/raw_data.rds")),
-    id = "ID",
-    period = "t",
-    treatment = "A",
-    outcome = "Y",
-    eligible = "eligible",
-    formula_vars = c("X1", "time_on_regime"),
-    where_var = "X3",
-    eligible_wts_0 = NA,
-    eligible_wts_1 = NA,
-    cense = "C"
+    args = list(
+      id = "ID",
+      period = "t",
+      treatment = "A",
+      outcome = "Y",
+      eligible = "eligible",
+      outcome_cov = ~ X1 + time_on_regime,
+      where_var = "X3",
+      eligible_wts_0 = NA,
+      eligible_wts_1 = NA,
+      cense = "C"
+    )
   )
   expect_names(
     colnames(result),

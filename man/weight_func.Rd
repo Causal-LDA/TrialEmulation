@@ -18,7 +18,7 @@ weight_func(
   cense_d_cov = NA,
   cense_n_cov = NA,
   save_weight_models = FALSE,
-  save_dir,
+  data_dir,
   quiet = FALSE,
   glm_function = "glm",
   ...
@@ -49,7 +49,7 @@ calculation.}
 
 \item{save_weight_models}{Save weight models objects in \code{data_dir}.}
 
-\item{save_dir}{Directory to save tidy weight model summaries in as 'weight_models.rda'}
+\item{data_dir}{Directory to save model objects in.}
 
 \item{quiet}{Don't print progress messages.}
 
@@ -57,6 +57,8 @@ calculation.}
 
 \item{...}{Additional arguments passed to \code{glm_function}. This may be used to specify initial parameter estimates
 or arguments to \code{control}. See \link[stats:glm]{stats::glm}, \link[parglm:parglm]{parglm::parglm} and \code{\link[parglm:parglm.control]{parglm::parglm.control()}} for more information.}
+
+\item{save_dir}{Directory to save tidy weight model summaries in as 'weight_models.rda'}
 }
 \description{
 This function performs the calculation for weight of the data

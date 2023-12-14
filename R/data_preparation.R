@@ -64,11 +64,144 @@ data_preparation <- function(data,
                              separate_files = FALSE,
                              quiet = FALSE,
                              ...) {
+  data <- as.data.table(data)
+  # Check data_preparation arguments
+  args <- check_args_data_preparation(
+    data = data,
+    id = id,
+    period = period,
+    treatment = treatment,
+    outcome = outcome,
+    eligible = eligible,
+    model_var = model_var,
+    outcome_cov = outcome_cov,
+    estimand_type = estimand_type,
+    switch_n_cov = switch_n_cov,
+    switch_d_cov = switch_d_cov,
+    first_period = first_period,
+    last_period = last_period,
+    use_censor_weights = use_censor_weights,
+    cense = cense,
+    pool_cense = pool_cense,
+    cense_d_cov = cense_d_cov,
+    cense_n_cov = cense_n_cov,
+    eligible_wts_0 = eligible_wts_0,
+    eligible_wts_1 = eligible_wts_1,
+    where_var = where_var,
+    data_dir = data_dir,
+    save_weight_models = save_weight_models,
+    glm_function = glm_function,
+    chunk_size = chunk_size,
+    separate_files = separate_files,
+    quiet = quiet,
+    ...
+  )
+
+  args <- check_estimand_data_prep(args)
+  data <- select_data_cols(data, args)
+
+  quiet_msg(quiet, "Starting data manipulation")
+  data <- data_manipulation(data, use_censor = args$censor_at_switch)
+
+  if (args$use_censor_weights || args$use_switch_weights) {
+    weight_result <- do.call(
+      "weight_func",
+      args = c(list(sw_data = data), args_for_fun(args, "weight_func"), list(...))
+    )
+    data <- weight_result$data
+  } else {
+    set(data, j = "wt", value = 1)
+  }
+
+  args$keeplist <- c(
+    "id", "trial_period", "followup_time", "outcome", "weight", "treatment",
+    args$where_var, all.vars(args$outcome_cov), all.vars(args$model_var)
+  )
+
+  quiet_msg(quiet, "Starting data extension")
+  result <- data_extension(
+    data = data,
+    keeplist = args$keeplist,
+    outcomeCov_var = all.vars(args$outcome_cov),
+    first_period = args$first_period,
+    last_period = args$last_period,
+    use_censor = args$censor_at_switch,
+    where_var = args$where_var,
+    separate_files = args$separate_files,
+    data_dir = args$data_dir,
+    chunk_size = args$chunk_size
+  )
+
+  quiet_msg(quiet, "Summary of extended data:")
+  quiet_msg(quiet, paste0("Number of observations: ", result$N))
+  quiet_line(quiet)
+
+  result$switch_models <- if (args$use_switch_weights) weight_result$switch_models else NULL
+  result$censor_models <- if (args$use_censor_weights) weight_result$censor_models else NULL
+  result$parameters <- args
+
+  class(result) <- c(ifelse(args$separate_files, "TE_data_prep_sep", "TE_data_prep_dt"), "TE_data_prep")
+  return(result)
+}
+
+
+#' Check for valid data_dir and create if necessary
+#'
+#' @param data_dir Directory to check
+#' @noRd
+check_data_dir <- function(data_dir) {
+  if (test_directory_exists(data_dir)) {
+    if (length(list.files(data_dir, pattern = "trial_.*csv"))) {
+      stop("trial_*.csv files already exist in ", data_dir, ". Remove them or specify a different `data_dir`.")
+    }
+    if (length(list.files(data_dir, ".*model.*rds"))) {
+      warning(data_dir, " contains model rds files. These may be overwritten.")
+    }
+  } else {
+    if (!dir.create(data_dir)) {
+      stop(data_dir, " could not be created.")
+    }
+  }
+  data_dir
+}
+
+#' Check arguments to data_preparation and convert types
+#'
+#' @noRd
+check_args_data_preparation <- function(data,
+                                        id,
+                                        period,
+                                        treatment,
+                                        outcome,
+                                        eligible,
+                                        model_var,
+                                        outcome_cov,
+                                        estimand_type,
+                                        switch_n_cov,
+                                        switch_d_cov,
+                                        first_period,
+                                        last_period,
+                                        use_censor_weights,
+                                        cense,
+                                        pool_cense,
+                                        cense_d_cov,
+                                        cense_n_cov,
+                                        eligible_wts_0,
+                                        eligible_wts_1,
+                                        where_var,
+                                        data_dir,
+                                        save_weight_models,
+                                        glm_function,
+                                        chunk_size,
+                                        separate_files,
+                                        quiet,
+                                        ...) {
   arg_checks <- makeAssertCollection()
   assert_flag(use_censor_weights, add = arg_checks)
   assert_flag(save_weight_models, add = arg_checks)
   assert_flag(separate_files, add = arg_checks)
   assert_flag(quiet, add = arg_checks)
+  assert_names(colnames(data), must.include = c(id, period, treatment, outcome, eligible), add = arg_checks)
   assert_multi_class(outcome_cov, classes = c("formula", "character"), add = arg_checks)
   assert_multi_class(switch_n_cov, classes = c("formula", "character"), add = arg_checks)
   assert_multi_class(switch_d_cov, classes = c("formula", "character"), add = arg_checks)
@@ -81,15 +214,55 @@ data_preparation <- function(data,
   reportAssertions(arg_checks)
 
   if ("use_weight" %in% ...names()) {
-    stop("Argument `use_weight` is no longer supported. Use `estimand_type` to control weighting behaviour.")
+    stop(
+      "Argument `use_weight` is no longer supported. Use `estimand_type` to control weighting behaviour.",
+      call. = FALSE
+    )
   }
-  if (isTRUE(separate_files)) check_data_dir(data_dir)
+
+  data_dir <- if (isTRUE(separate_files || save_weight_models)) check_data_dir(data_dir) else NA
 
   outcome_cov <- as_formula(outcome_cov)
   switch_n_cov <- as_formula(switch_n_cov)
   switch_d_cov <- as_formula(switch_d_cov)
   cense_d_cov <- as_formula(cense_d_cov)
   cense_n_cov <- as_formula(cense_n_cov)
+
+  args <- list(
+    id = id,
+    period = period,
+    treatment = treatment,
+    outcome = outcome,
+    eligible = eligible,
+    model_var = model_var,
+    outcome_cov = outcome_cov,
+    estimand_type = estimand_type,
+    switch_n_cov = switch_n_cov,
+    switch_d_cov = switch_d_cov,
+    first_period = first_period,
+    last_period = last_period,
+    use_censor_weights = use_censor_weights,
+    cense = cense,
+    pool_cense = pool_cense,
+    cense_d_cov = cense_d_cov,
+    cense_n_cov = cense_n_cov,
+    eligible_wts_0 = eligible_wts_0,
+    eligible_wts_1 = eligible_wts_1,
+    where_var = where_var,
+    data_dir = data_dir,
+    save_weight_models = save_weight_models,
+    glm_function = glm_function,
+    chunk_size = chunk_size,
+    separate_files = separate_files,
+    quiet = quiet
+  )
+}
+
+check_estimand_data_prep <- function(args) {
+  estimand_type <- args$estimand_type
+  model_var <- args$model_var
+  use_censor_weights <- args$use_censor_weights
+  pool_cense <- args$pool_cense
 
   if (estimand_type == "ITT") {
     model_var <- ~assigned_treatment
@@ -130,94 +303,16 @@ data_preparation <- function(data,
     }
   }
 
-  data <- select_data_cols(
-    data,
-    id = id,
-    period = period,
-    treatment = treatment,
-    outcome = outcome,
-    eligible = eligible,
-    eligible_wts_0 = eligible_wts_0,
-    eligible_wts_1 = eligible_wts_1,
-    formula_vars = unlist(lapply(list(outcome_cov, switch_n_cov, switch_d_cov, cense_n_cov, cense_n_cov), all.vars)),
-    cense = cense,
-    where_var = where_var
-  )
-
-  quiet_msg(quiet, "Starting data manipulation")
-  data <- data_manipulation(data, use_censor = censor_at_switch)
-
-  if (use_censor_weights || use_switch_weights) {
-    weight_result <- weight_func(
-      sw_data = data,
-      use_switch_weights = use_switch_weights,
-      use_censor_weights = use_censor_weights,
-      switch_n_cov = switch_n_cov,
-      switch_d_cov = switch_d_cov,
-      eligible_wts_0 = eligible_wts_0,
-      eligible_wts_1 = eligible_wts_1,
-      cense = cense,
-      pool_cense_n = pool_cense %in% c("both", "numerator"),
-      pool_cense_d = pool_cense == "both",
-      cense_d_cov = cense_d_cov,
-      cense_n_cov = cense_n_cov,
-      save_weight_models = save_weight_models,
-      save_dir = data_dir,
-      quiet = quiet,
-      glm_function = glm_function,
-      ...
-    )
-    data <- weight_result$data
-  } else {
-    set(data, j = "wt", value = 1)
-  }
-
-  keeplist <- c(
-    "id", "trial_period", "followup_time", "outcome", "weight", "treatment",
-    where_var, all.vars(outcome_cov), all.vars(model_var)
-  )
-
-  quiet_msg(quiet, "Starting data extension")
-  result <- data_extension(
-    data = data,
-    keeplist = keeplist,
-    outcomeCov_var = all.vars(outcome_cov),
-    first_period = first_period,
-    last_period = last_period,
-    use_censor = censor_at_switch,
-    where_var = where_var,
-    separate_files = separate_files,
-    data_dir = data_dir,
-    chunk_size = chunk_size
-  )
-
-  quiet_msg(quiet, "Summary of extended data:")
-  quiet_msg(quiet, paste0("Number of observations: ", result$N))
-  quiet_line(quiet)
-
-  result$switch_models <- if (use_switch_weights) weight_result$switch_models else NULL
-  result$censor_models <- if (use_censor_weights) weight_result$censor_models else NULL
-
-  class(result) <- c(ifelse(separate_files, "TE_data_prep_sep", "TE_data_prep_dt"), "TE_data_prep")
-  return(result)
+  args$pool_cense_n <- pool_cense %in% c("both", "numerator")
+  args$pool_cense_d <- pool_cense == "both"
+  args$model_var <- model_var
+  args$censor_at_switch <- censor_at_switch
+  args$use_switch_weights <- use_switch_weights
+  pool_cense <- args$pool_cense
+  args
 }
 
 
-#' Check for valid data_dir and create if necessary
-#'
-#' @param data_dir Directory to check
-#' @noRd
-check_data_dir <- function(data_dir) {
-  if (test_directory_exists(data_dir)) {
-    if (length(list.files(data_dir, pattern = "trial_.*csv"))) {
-      stop("trial_*.csv files already exist in ", data_dir, ". Remove them or specify a different `data_dir`.")
-    }
-    if (length(list.files(data_dir, ".*model.*rds"))) {
-      warning(data_dir, " contains model rds files. These may be overwritten.")
-    }
-  } else {
-    if (!dir.create(data_dir)) {
-      stop(data_dir, " could not be created.")
-    }
-  }
+args_for_fun <- function(args, fun) {
+  args[intersect(names(args), names(formals(fun)))]
 }
