@@ -164,7 +164,7 @@ test_that("select_data_cols works as expected", {
 })
 
 test_that("select_data_cols works as expected with non-default names", {
-  data <- readRDS(test_path("data/raw_data.rds"))
+  data <- as.data.table(readRDS(test_path("data/raw_data.rds")))
   args <- list(
     id = "ID",
     period = "t",
@@ -195,7 +195,7 @@ test_that("select_data_cols works as expected with non-default names", {
 
 test_that("user can select period in select_data_cols", {
   result <- select_data_cols(
-    data = readRDS(test_path("data/raw_data.rds")),
+    data = as.data.table(readRDS(test_path("data/raw_data.rds"))),
     args = list(
       id = "ID",
       period = "t",
@@ -220,7 +220,7 @@ test_that("user can select period in select_data_cols", {
 
 test_that("select_data_cols allows derived variables in formula vars", {
   result <- select_data_cols(
-    data = readRDS(test_path("data/raw_data.rds")),
+    data = as.data.table(readRDS(test_path("data/raw_data.rds"))),
     args = list(
       id = "ID",
       period = "t",

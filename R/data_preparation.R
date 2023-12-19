@@ -34,6 +34,7 @@
 #'   if `estimand_type` is `"PP"` or `"As-Treated"`}
 #'   \item{censor_models}{a list of summaries of the models fitted for probability of censoring treatment,
 #'   if `use_switching_weights=TRUE`}
+#'  \item{args}{a list contain the parameters used to prepare the data and fit the weighting models}
 #'   }
 #'
 data_preparation <- function(data,

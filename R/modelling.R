@@ -15,6 +15,7 @@
 #' \describe{
 #'  \item{model}{a `glm` object}
 #'  \item{robust}{a list containing a coefficient summary table and the robust covariance `matrix`}
+#'  \item{args}{a list contain the parameters used to prepare and fit the model}
 #' }
 #'
 #' @export
@@ -41,6 +42,7 @@ trial_msm <- function(data,
   arg_checks <- makeAssertCollection()
   assert_data_frame(data, add = arg_checks)
   outcome_cov <- as_formula(outcome_cov, add = arg_checks)
+  estimand_type <- assert_choice(estimand_type[1], choices = c("ITT", "PP", "As-Treated"), add = arg_checks)
   assert_multi_class(model_var, classes = c("formula", "character"), null.ok = TRUE, add = arg_checks)
   assert_integerish(first_followup, lower = 0, all.missing = TRUE, len = 1, add = arg_checks)
   assert_integerish(last_followup, lower = 0, all.missing = TRUE, len = 1, add = arg_checks)
@@ -74,17 +76,21 @@ trial_msm <- function(data,
   quiet_msg(quiet, "Preparing for model fitting")
 
 
-  if (is.null(model_var)) {
-    if (estimand_type == "ITT") {
+  if (estimand_type == "ITT") {
+    if (is.null(model_var)) {
       model_var <- ~assigned_treatment
-    } else if (estimand_type == "PP") {
+    }
+  } else if (estimand_type == "PP") {
+    if (is.null(model_var)) {
       model_var <- ~assigned_treatment
-    } else if (estimand_type == "As-Treated") {
+    }
+  } else if (estimand_type == "As-Treated") {
+    if (is.null(model_var)) {
       model_var <- ~ dose + I(dose^2)
     }
-  } else {
-    model_var <- as_formula(model_var)
   }
+  model_var <- as_formula(model_var)
+
 
   model_formula <- outcome ~ 1
   model_formula <- Reduce(
@@ -146,7 +152,23 @@ trial_msm <- function(data,
   quiet_print(quiet, format.data.frame(robust_model$summary, digits = 3))
   quiet_line(quiet)
 
-  result <- list(model = model.full, robust = robust_model)
-  class(result) <- "TE_msm"
+  args <- list(
+    outcome_cov = outcome_cov,
+    estimand_type = estimand_type,
+    model_var = model_var,
+    first_followup = first_followup,
+    last_followup = last_followup,
+    analysis_weights = analysis_weights,
+    weight_limits = weight_limits,
+    include_followup_time = include_followup_time,
+    include_trial_period = include_trial_period,
+    where_case = where_case,
+    glm_function = glm_function,
+    use_sample_weights = use_sample_weights,
+    model_formula = model_formula
+  )
+  result <- list(model = model.full, robust = robust_model, args = args)
+
+  class(result) <- c("TE_msm")
   result
 }

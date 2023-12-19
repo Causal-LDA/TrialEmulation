@@ -121,6 +121,7 @@ It contains the elements
 if \code{estimand_type} is \code{"PP"} or \code{"As-Treated"}}
 \item{censor_models}{a list of summaries of the models fitted for probability of censoring treatment,
 if \code{use_switching_weights=TRUE}}
+\item{args}{a list contain the parameters used to prepare the data and fit the weighting models}
 }
 }
 \description{

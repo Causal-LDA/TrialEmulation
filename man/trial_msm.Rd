@@ -70,6 +70,7 @@ Object of class \code{TE_msm} containing
 \describe{
 \item{model}{a \code{glm} object}
 \item{robust}{a list containing a coefficient summary table and the robust covariance \code{matrix}}
+\item{args}{a list contain the parameters used to prepare and fit the model}
 }
 }
 \description{
