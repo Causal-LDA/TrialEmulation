@@ -33,3 +33,22 @@ test_that("fit_glm works with parglm", {
   expect_equal(results$control, control)
   expect_equal(results$formula, outcome ~ x1 + x2)
 })
+
+
+test_that("p99_weight works as expected", {
+  object <- 1:1000
+  result <- p99_weight(object)
+
+  expected <- 1:1000
+  expected[1:10] <- 10
+  expected[990:1000] <- 990
+
+  expect_equal(result, expected)
+})
+
+test_that("limit_weight works as expected", {
+  object <- 1:10
+  result <- limit_weight(object, 3, 7)
+  expected <- c(3, 3, 3, 4, 5, 6, 7, 7, 7, 7)
+  expect_equal(result, expected)
+})

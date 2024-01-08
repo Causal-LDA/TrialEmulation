@@ -2,10 +2,11 @@
 
     Code
       result <- weight_func(sw_data = data, switch_n_cov = ~1, switch_d_cov = ~ X1 +
-        X2, cense = "C", pool_cense = FALSE, cense_d_cov = ~ X1 + X2 + X3 + X4 +
-      age_s, cense_n_cov = ~ X3 + X4, save_weight_models = FALSE, save_dir = save_dir,
+        X2, use_switch_weights = TRUE, use_censor_weights = TRUE, cense = "C",
+      pool_cense_d = FALSE, pool_cense_n = FALSE, cense_d_cov = ~ X1 + X2 + X3 + X4 +
+        age_s, cense_n_cov = ~ X3 + X4, save_weight_models = FALSE, data_dir = save_dir,
       glm_function = "parglm", control = parglm.control(nthreads = 2, method = "FAST"))
-    Message <simpleMessage>
+    Message
       P(treatment = 1 | previous treatment = 0) for denominator
     Output
       
@@ -31,7 +32,7 @@
       
       Number of Fisher Scoring iterations: 4
       
-    Message <simpleMessage>
+    Message
       P(treatment = 1 | previous treatment = 0) for numerator
     Output
       
@@ -55,7 +56,7 @@
       
       Number of Fisher Scoring iterations: 4
       
-    Message <simpleMessage>
+    Message
       P(treatment = 1 | previous treatment = 1) for denominator
     Output
       
@@ -81,7 +82,7 @@
       
       Number of Fisher Scoring iterations: 4
       
-    Message <simpleMessage>
+    Message
       P(treatment = 1 | previous treatment = 1) for numerator
     Output
       
@@ -105,7 +106,7 @@
       
       Number of Fisher Scoring iterations: 4
       
-    Message <simpleMessage>
+    Message
       Model for P(cense = 0 | X, previous treatment = 0) for denominator
     Output
       
@@ -134,33 +135,7 @@
       
       Number of Fisher Scoring iterations: 5
       
-    Message <simpleMessage>
-      Model for P(cense = 0 | X, previous treatment = 0) for numerator
-    Output
-      
-      Call:
-      glm(formula = 1 - C ~ X3 + X4, family = binomial(link = "logit"), 
-          data = data, control = list(epsilon = 1e-08, maxit = 25, 
-              trace = FALSE, nthreads = 2, block_size = NULL, method = "FAST"), 
-          method = parglm::parglm.fit, singular.ok = FALSE)
-      
-      Coefficients:
-                  Estimate Std. Error z value Pr(>|z|)    
-      (Intercept)  1.51989    0.07547  20.139  < 2e-16 ***
-      X3           0.20212    0.10398   1.944   0.0519 .  
-      X4          -0.24079    0.05398  -4.461 8.17e-06 ***
-      ---
-      Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
-      
-      (Dispersion parameter for binomial family taken to be 1)
-      
-          Null deviance: 2465.6  on 2848  degrees of freedom
-      Residual deviance: 2442.8  on 2846  degrees of freedom
-      AIC: 2448.8
-      
-      Number of Fisher Scoring iterations: 4
-      
-    Message <simpleMessage>
+    Message
       Model for P(cense = 0 | X, previous treatment = 1) for denominator
     Output
       
@@ -189,7 +164,33 @@
       
       Number of Fisher Scoring iterations: 6
       
-    Message <simpleMessage>
+    Message
+      Model for P(cense = 0 | X, previous treatment = 0) for numerator
+    Output
+      
+      Call:
+      glm(formula = 1 - C ~ X3 + X4, family = binomial(link = "logit"), 
+          data = data, control = list(epsilon = 1e-08, maxit = 25, 
+              trace = FALSE, nthreads = 2, block_size = NULL, method = "FAST"), 
+          method = parglm::parglm.fit, singular.ok = FALSE)
+      
+      Coefficients:
+                  Estimate Std. Error z value Pr(>|z|)    
+      (Intercept)  1.51989    0.07547  20.139  < 2e-16 ***
+      X3           0.20212    0.10398   1.944   0.0519 .  
+      X4          -0.24079    0.05398  -4.461 8.17e-06 ***
+      ---
+      Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+      
+      (Dispersion parameter for binomial family taken to be 1)
+      
+          Null deviance: 2465.6  on 2848  degrees of freedom
+      Residual deviance: 2442.8  on 2846  degrees of freedom
+      AIC: 2448.8
+      
+      Number of Fisher Scoring iterations: 4
+      
+    Message
       Model for P(cense = 0 | X, previous treatment = 1) for numerator
     Output
       

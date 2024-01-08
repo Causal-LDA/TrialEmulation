@@ -7,13 +7,12 @@
 trial_msm(
   data,
   outcome_cov = ~1,
+  estimand_type = c("ITT", "PP", "As-Treated"),
   model_var = NULL,
   first_followup = NA,
   last_followup = NA,
-  use_weight = FALSE,
   analysis_weights = c("asis", "unweighted", "p99", "weight_limits"),
   weight_limits = c(0, Inf),
-  use_censor = FALSE,
   include_followup_time = ~followup_time + I(followup_time^2),
   include_trial_period = ~trial_period + I(trial_period^2),
   where_case = NA,
@@ -28,6 +27,8 @@ trial_msm(
 
 \item{outcome_cov}{A RHS formula with baseline covariates to adjust in final model}
 
+\item{estimand_type}{Which estimand is being used. One of \code{"ITT"}, \code{"PP"}, \code{"As-Treated"}.}
+
 \item{model_var}{List of Variables of interest to be used in final model.
 Derived variables to use in outcome models. Typically \code{assigned_treatment} for ITT and per-protocol,
 and \code{dose + dose^2} for as-treated.}
@@ -36,20 +37,15 @@ and \code{dose + dose^2} for as-treated.}
 
 \item{last_followup}{Last follow-up period}
 
-\item{use_weight}{Use weights in analysis. If \code{FALSE} then no weights will be calculated.}
-
 \item{analysis_weights}{One of
 \itemize{
 \item \code{"asis"}: use the weights as calculated
 \item \code{"p99"}: truncate weights at the 1st and 99th percentiles
 \item \code{"weight_limits"}: truncate weights at the values specified in \code{weight_limits}
-\item \code{"unweighted"}: set all analysis weights to 1, even with \code{use_weight = TRUE}
+\item \code{"unweighted"}: set all analysis weights to 1, even if weights switching or censoring weights were calculated.
 }}
 
 \item{weight_limits}{Lower and upper limits to truncate weights, given as \code{c(lower, upper)}}
-
-\item{use_censor}{Use censoring for per-protocol analysis - censor person-times once a person-trial stops taking the
-initial treatment value}
 
 \item{include_followup_time}{The model to include the follow up time of the trial (\code{followup_time}) in outcome model,
 specified as a RHS formula.}
@@ -74,6 +70,7 @@ Object of class \code{TE_msm} containing
 \describe{
 \item{model}{a \code{glm} object}
 \item{robust}{a list containing a coefficient summary table and the robust covariance \code{matrix}}
+\item{args}{a list contain the parameters used to prepare and fit the model}
 }
 }
 \description{

@@ -50,6 +50,10 @@ predict.TE_msm <- function(object,
                            samples = 100,
                            type = c("cum_inc", "survival"),
                            ...) {
+  if (object$args$estimand_type == "As-Treated") {
+    warning("As-Treated estimands are not currently supported by this predict method. Results may be unexpected.")
+  }
+
   assert_class(object$model, "glm")
   model <- object$model
   type <- match.arg(type)

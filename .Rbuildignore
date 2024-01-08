@@ -1,8 +1,9 @@
-.DS_Store
 .Rprofile
 .lintr
+^.*\.DS_Store$
 ^.*\.Rproj$
 ^.DS_Store
+^.DS_Store$
 ^LICENSE\.md$
 ^\.Rproj\.user$
 ^\.github$

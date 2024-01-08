@@ -13,10 +13,10 @@ test_that("predict.TE_msm works as expected", {
     outcome = "outcome",
     model_var = "assigned_treatment",
     outcome_cov = c("catvarA", "catvarB", "catvarC", "nvarA", "nvarB", "nvarC"),
+    estimand_type = "ITT",
     include_followup_time = ~followup_time,
     include_trial_period = ~trial_period,
-    use_censor = FALSE,
-    use_weight = FALSE,
+    use_censor_weights = FALSE,
     quiet = TRUE
   )
 
@@ -43,7 +43,6 @@ test_that("predict.TE_msm works with newdata", {
     include_followup_time = ~followup_time,
     include_trial_period = ~trial_period,
     use_sample_weights = FALSE,
-    use_weight = TRUE,
     glm_function = "glm",
     quiet = TRUE
   )
@@ -93,8 +92,6 @@ test_that("predict.TE_msm works with interactions", {
         data = data,
         outcome_cov = ~ X1 + X2 + age_s,
         model_var = ~ assigned_treatment:followup_time,
-        use_weight = TRUE,
-        use_censor = TRUE,
         include_followup_time = ~followup_time,
         include_trial_period = ~1,
         glm_function = c("glm"),
@@ -102,7 +99,6 @@ test_that("predict.TE_msm works with interactions", {
         quiet = TRUE
       ),
       "non-integer #successes in a binomial glm",
-      fixed = TRUE
     ),
     "fitted probabilities numerically 0 or 1 occurred"
   )
@@ -110,4 +106,31 @@ test_that("predict.TE_msm works with interactions", {
   set.seed(100)
   result <- predict(object, predict_times = 0:8, conf_int = TRUE, samples = 5)
   expect_snapshot_value(result, style = "json2", tolerance = 1e-05)
+})
+
+
+test_that("predict.TE_msm warns for As-Treated", {
+  data <- readRDS(test_path("data/ready_for_modelling.rds"))
+
+  expect_warning(
+    expect_warning(
+      object <- trial_msm(
+        data = data,
+        outcome_cov = ~ X1 + X2 + age_s,
+        model_var = ~ assigned_treatment:followup_time,
+        estimand_type = "As-Treated",
+        include_followup_time = ~followup_time,
+        include_trial_period = ~1,
+        glm_function = c("glm"),
+        use_sample_weights = FALSE,
+        quiet = TRUE
+      ),
+      "non-integer #successes in a binomial glm",
+    ),
+    "fitted probabilities numerically 0 or 1 occurred"
+  )
+  expect_warning(
+    predict(object, predict_times = 0:8, conf_int = TRUE, samples = 5),
+    "As-Treated estimands are not currently supported by this predict method"
+  )
 })

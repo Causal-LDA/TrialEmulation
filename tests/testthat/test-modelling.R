@@ -71,7 +71,7 @@ test_that("trial_msm works with data.tables and weights", {
       include_followup_time = ~followup_time,
       include_trial_period = ~trial_period,
       use_sample_weights = FALSE,
-      use_weight = TRUE,
+      analysis_weights = "asis",
       glm_function = "parglm",
       control = parglm.control(nthreads = 2, method = "FAST"),
       quiet = TRUE
@@ -86,7 +86,7 @@ test_that("trial_msm works with data.tables and weights", {
       include_followup_time = ~followup_time,
       include_trial_period = ~trial_period,
       use_sample_weights = FALSE,
-      use_weight = TRUE,
+      analysis_weights = "asis",
       glm_function = "glm",
       quiet = TRUE
     )
@@ -109,8 +109,8 @@ test_that("Modelling works with where_case", {
       eligible = "eligible",
       outcome_cov = ~ X1 + X2 + X3 + X4 + age_s,
       model_var = "assigned_treatment",
-      use_weight = TRUE,
-      use_censor = TRUE,
+      use_censor_weights = TRUE,
+      estimand_type = "PP",
       switch_d_cov = ~ X1 + X2 + X3 + X4 + age_s,
       switch_n_cov = ~ X3 + X4,
       cense = "C",
@@ -134,8 +134,7 @@ test_that("Modelling works with where_case", {
       data = data,
       outcome_cov = ~ X1 + X2 + X3 + X4 + age_s,
       model_var = "assigned_treatment",
-      use_weight = TRUE,
-      use_censor = TRUE,
+      analysis_weights = "asis",
       include_followup_time = ~ factor(followup_time),
       include_trial_period = ~1,
       glm_function = c("glm"),
@@ -145,8 +144,7 @@ test_that("Modelling works with where_case", {
       where_case = "age > 30",
       quiet = TRUE
     ),
-    "non-integer #successes in a binomial glm",
-    fixed = TRUE
+    "non-integer #successes in a binomial glm"
   )
   expect_class(result$model, "glm")
   expect_snapshot_value(as.data.frame(result$robust$summary), style = "json2")
@@ -164,7 +162,6 @@ test_that("trial_msm works with analysis_weights = unweighted", {
       include_followup_time = ~followup_time,
       include_trial_period = ~trial_period,
       use_sample_weights = FALSE,
-      use_weight = TRUE,
       glm_function = "glm",
       quiet = TRUE,
       analysis_weights = "unweighted"
@@ -186,7 +183,6 @@ test_that("trial_msm works with analysis_weights = p99", {
       include_followup_time = ~followup_time,
       include_trial_period = ~trial_period,
       use_sample_weights = FALSE,
-      use_weight = TRUE,
       glm_function = "glm",
       quiet = TRUE,
       analysis_weights = "p99"
@@ -194,6 +190,14 @@ test_that("trial_msm works with analysis_weights = p99", {
     "non-integer #successes in a binomial glm!"
   )
   expect_snapshot_value(as.data.frame(result_p99$robust$summary), style = "json2")
+
+  quantiles <- quantile(data$weight, prob = c(0.01, 0.99), type = 1)
+  expect_equal(quantiles, c(`1%` = 0.264964755418739, `99%` = 1.67299290397343))
+
+  w <- data$weight
+  w[w > quantiles[2]] <- quantiles[2]
+  w[w < quantiles[1]] <- quantiles[1]
+  expect_equal(result_p99$model$prior.weights, w, ignore_attr = "names")
 })
 
 
@@ -209,7 +213,6 @@ test_that("trial_msm works with analysis_weights = weight_limits", {
       include_followup_time = ~followup_time,
       include_trial_period = ~trial_period,
       use_sample_weights = FALSE,
-      use_weight = TRUE,
       glm_function = "glm",
       quiet = TRUE,
       analysis_weights = "weight_limits",
@@ -233,8 +236,7 @@ test_that("trial_msm works with missing sample weights", {
         model_var = "assigned_treatment",
         include_followup_time = ~followup_time,
         include_trial_period = ~trial_period,
-        use_sample_weights = TRUE,
-        use_weight = TRUE,
+        analysis_weights = "asis",
         glm_function = "glm",
         quiet = TRUE,
       ),
@@ -251,7 +253,7 @@ test_that("trial_msm works with missing sample weights", {
       include_followup_time = ~followup_time,
       include_trial_period = ~trial_period,
       use_sample_weights = FALSE,
-      use_weight = TRUE,
+      analysis_weights = "asis",
       glm_function = "glm",
       quiet = TRUE,
     ),
@@ -274,7 +276,7 @@ test_that("trial_msm works with sample weights", {
       include_followup_time = ~followup_time,
       include_trial_period = ~trial_period,
       use_sample_weights = TRUE,
-      use_weight = TRUE,
+      analysis_weights = "asis",
       glm_function = "glm",
       quiet = TRUE,
     ),
@@ -294,8 +296,8 @@ test_that("trial_msm makes model formula as expected with weight and censor", {
       include_followup_time = ~followup_time,
       include_trial_period = ~trial_period,
       use_sample_weights = FALSE,
-      use_weight = TRUE,
-      use_censor = TRUE,
+      analysis_weights = "asis",
+      estimand_type = "PP",
       glm_function = "glm",
       quiet = TRUE,
     ),
@@ -307,27 +309,8 @@ test_that("trial_msm makes model formula as expected with weight and censor", {
   expect_equal(result_formula, expected_formula)
 })
 
-test_that("trial_msm makes model formula as expected with no weight and no censor", {
-  skip_on_cran()
-  data <- readRDS(test_path("data/prep_data_object.rds"))
-  result_w_c <- trial_msm(
-    data,
-    outcome_cov = ~ X1 + X2 + X3 + X4 + age_s,
-    include_followup_time = ~followup_time,
-    include_trial_period = ~trial_period,
-    use_sample_weights = FALSE,
-    use_weight = FALSE,
-    use_censor = FALSE,
-    glm_function = "glm",
-    quiet = TRUE,
-  )
-  result_formula <- result_w_c$model$formula
-  expected_formula <- outcome ~ assigned_treatment + trial_period + followup_time + X1 + X2 + X3 + X4 + age_s
-  environment(expected_formula) <- environment(result_formula) <- globalenv()
-  expect_equal(result_formula, expected_formula)
-})
 
-test_that("trial_msm makes model formula as expected with weight and no censor", {
+test_that("trial_msm makes model formula as expected with estimand As-Treated", {
   skip_on_cran()
   set.seed(20222022)
   simdata_censored <- data_gen_censored(1000, 10)
@@ -339,8 +322,9 @@ test_that("trial_msm makes model formula as expected with weight and no censor",
     outcome = "Y",
     eligible = "eligible",
     outcome_cov = ~ X1 + X2,
-    use_weight = TRUE,
-    use_censor = FALSE,
+    estimand_type = "As-Treated",
+    pool_cense = "none",
+    use_censor_weights = FALSE,
     switch_d_cov = ~ X1 + X2 + X3 + X4 + age_s,
     switch_n_cov = ~ X3 + X4,
     separate_files = FALSE,
@@ -356,8 +340,8 @@ test_that("trial_msm makes model formula as expected with weight and no censor",
       include_followup_time = ~followup_time,
       include_trial_period = ~trial_period,
       use_sample_weights = FALSE,
-      use_weight = TRUE,
-      use_censor = FALSE,
+      analysis_weights = "asis",
+      estimand_type = "As-Treated",
       glm_function = "glm",
       quiet = TRUE,
     ),
@@ -369,7 +353,7 @@ test_that("trial_msm makes model formula as expected with weight and no censor",
   expect_equal(result_formula, expected_formula)
 })
 
-test_that("trial_msm makes model formula as expected with no weight and censor", {
+test_that("trial_msm makes model formula as expected with estimand_type ITT and unweighted", {
   skip_on_cran()
   data <- readRDS(test_path("data/prep_data_object.rds"))
   result_w_c <- trial_msm(
@@ -377,9 +361,9 @@ test_that("trial_msm makes model formula as expected with no weight and censor",
     outcome_cov = ~ X1 + X2 + X3 + X4 + age_s,
     include_followup_time = ~followup_time,
     include_trial_period = ~trial_period,
+    estimand = "ITT",
     use_sample_weights = FALSE,
-    use_weight = FALSE,
-    use_censor = TRUE,
+    analysis_weights = "unweighted",
     glm_function = "glm",
     quiet = TRUE,
   )

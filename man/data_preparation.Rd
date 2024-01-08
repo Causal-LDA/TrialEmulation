@@ -11,16 +11,16 @@ data_preparation(
   treatment = "treatment",
   outcome = "outcome",
   eligible = "eligible",
-  outcome_cov = ~1,
   model_var = NULL,
+  outcome_cov = ~1,
+  estimand_type = c("ITT", "PP", "As-Treated"),
   switch_n_cov = ~1,
   switch_d_cov = ~1,
   first_period = NA,
   last_period = NA,
-  use_weight = FALSE,
-  use_censor = FALSE,
+  use_censor_weights = FALSE,
   cense = NA,
-  pool_cense = FALSE,
+  pool_cense = c("none", "both", "numerator"),
   cense_d_cov = ~1,
   cense_n_cov = ~1,
   eligible_wts_0 = NA,
@@ -48,11 +48,13 @@ data_preparation(
 
 \item{eligible}{Indicator of whether or not an observation is eligible to be expanded about Defaults to eligible}
 
-\item{outcome_cov}{A RHS formula with baseline covariates to adjust in final model}
-
 \item{model_var}{List of Variables of interest to be used in final model.
 Derived variables to use in outcome models. Typically \code{assigned_treatment} for ITT and per-protocol,
 and \code{dose + dose^2} for as-treated.}
+
+\item{outcome_cov}{A RHS formula with baseline covariates to adjust in final model}
+
+\item{estimand_type}{Which estimand is being used. One of \code{"ITT"}, \code{"PP"}, \code{"As-Treated"}.}
 
 \item{switch_n_cov}{A RHS formula for modelling probability of switching treatment. Used in the numerator of weight
 calculation. May use \code{time_on_regime} to include treatment duration.}
@@ -64,16 +66,14 @@ calculation. May use \code{time_on_regime} to include treatment duration.}
 
 \item{last_period}{Last time period to include as trial baseline in expanded data}
 
-\item{use_weight}{Use weights in analysis. If \code{FALSE} then no weights will be calculated.}
+\item{use_censor_weights}{Use informative censoring weights in analysis.}
 
-\item{use_censor}{Use censoring for per-protocol analysis - censor person-times once a person-trial stops taking the
-initial treatment value}
-
-\item{cense}{Censoring variable}
+\item{cense}{Censoring variable column name. Required if \code{use_censor_weights = TRUE}}
 
 \item{pool_cense}{Fit pooled or separate censoring models for those treated and
-those untreated at the immediately previous visit.
-(default is \code{FALSE}, separate numerator and denominator models for treatment groups)}
+those untreated at the immediately previous visit. Pooling can be specified for numerator and denominator models.
+One of \code{"none"}, \code{"numerator"}, or \code{"both"} (default is \code{"none"} except when \code{estimand_type = "ITT"}
+then it is \code{"numerator"}).}
 
 \item{cense_d_cov}{A RHS formula for modelling probability of being censored. Used in the numerator of weight
 calculation.}
@@ -118,9 +118,10 @@ It contains the elements
 \item{N}{the total number of observations in the expanded data}
 \item{data_template}{a zero-row \code{data.frame} in the with the columns and attributes of the expanded data}
 \item{switch_models}{a list of summaries of the models fitted for probability of switching treatment,
-if \code{use_weight=TRUE}}
+if \code{estimand_type} is \code{"PP"} or \code{"As-Treated"}}
 \item{censor_models}{a list of summaries of the models fitted for probability of censoring treatment,
-if \code{use_weight=TRUE}}
+if \code{use_switching_weights=TRUE}}
+\item{args}{a list contain the parameters used to prepare the data and fit the weighting models}
 }
 }
 \description{

@@ -4,7 +4,8 @@ te_data_ex <- data_preparation(
   data = dat,
   outcome_cov = c("nvarA", "catvarA"),
   first_period = 260,
-  last_period = 280
+  last_period = 280,
+  estimand_type = "ITT"
 )
 
 te_model_ex <- trial_msm(
@@ -12,6 +13,7 @@ te_model_ex <- trial_msm(
   outcome_cov = c("catvarA", "nvarA"),
   last_followup = 40,
   model_var = "assigned_treatment",
+  estimand_type = "ITT",
   include_followup_time = ~followup_time,
   include_trial_period = ~trial_period,
   use_sample_weights = FALSE,

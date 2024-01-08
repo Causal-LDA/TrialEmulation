@@ -1,38 +1,24 @@
 #' P99 Weights Function
 #'
 #' This function truncate the weights of data at the 1st and 99th percentile
-#' @param switch_data The data.table with weight column
+#' @param weight The data.table weight column
 #' @noRd
-p99_weight <- function(switch_data) {
-  # Dummy variables used in data.table calls declared to prevent package check NOTES:
-  weight <- NULL
-
-  p99 <- quantile(switch_data[, weight],
-    prob = c(0.99, 0.1),
-    type = 1
-  )
-
-  len <- nrow(switch_data)
-  switch_data[weight > p99[1], weight := p99[1]]
-  switch_data[weight < p99[2], weight := p99[2]]
-  return(switch_data)
+p99_weight <- function(weight) {
+  p99 <- quantile(weight, prob = c(0.01, 0.99), type = 1)
+  limit_weight(weight, p99[1], p99[2])
 }
 
 #' Limit Weights Function
 #'
 #' This function truncate the weights using user defined limits
-#' @param switch_data The data.table contains weight column
+#' @param weight The data.table weight column
 #' @param lower_limit The user defined minimum possible weight
 #' @param upper_limit The user defined maximum possible weight
 #' @noRd
-limit_weight <- function(switch_data, lower_limit, upper_limit) {
-  # Dummy variables used in data.table calls declared to prevent package check NOTES:
-  weight <- NULL
-
-  len <- nrow(switch_data)
-  switch_data[weight > upper_limit, weight := upper_limit]
-  switch_data[weight < lower_limit, weight := lower_limit]
-  return(switch_data)
+limit_weight <- function(weight, lower_limit, upper_limit) {
+  weight[weight > upper_limit] <- upper_limit
+  weight[weight < lower_limit] <- lower_limit
+  weight
 }
 
 

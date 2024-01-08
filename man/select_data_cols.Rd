@@ -4,44 +4,12 @@
 \alias{select_data_cols}
 \title{Select Data Columns}
 \usage{
-select_data_cols(
-  data,
-  id = "id",
-  period = "period",
-  treatment = "treatment",
-  outcome = "outcome",
-  eligible = "eligible",
-  eligible_wts_0,
-  eligible_wts_1,
-  formula_vars,
-  cense,
-  where_var
-)
+select_data_cols(data, args)
 }
 \arguments{
 \item{data}{A \code{data.frame} containing all the required columns}
 
-\item{id}{Name of the \code{data} column for id feature Defaults to "id"}
-
-\item{period}{Name of the \code{data} column for period feature Defaults to "period"}
-
-\item{treatment}{Name of the \code{data} column for treatment feature Defaults to "treatment"}
-
-\item{outcome}{Name of the \code{data} column for outcome feature Defaults to "outcome"}
-
-\item{eligible}{Name of \code{data} column for indicator of whether or not an observation is eligible for a trial.
-Defaults to "eligible".}
-
-\item{eligible_wts_0}{Eligibility criteria used in weights for model condition Am1 = 0}
-
-\item{eligible_wts_1}{Eligibility criteria used in weights for model condition Am1 = 1}
-
-\item{formula_vars}{Variables used in outcome or weight models.
-the variables not included in the final model.}
-
-\item{cense}{Censoring variable}
-
-\item{where_var}{Variables used in where conditions used in subsetting the data used in final analysis (where_case),}
+\item{args}{List of arguments from \code{data_preparation}}
 }
 \value{
 A data.table with the required columns

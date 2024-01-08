@@ -1,5 +1,9 @@
 # TrialEmulation 0.0.3.4
 
+* Add `estimand_type` argument
+
+* Internal refactoring
+
 * Initial release to CRAN
 
 # TrialEmulation 0.0.2.x

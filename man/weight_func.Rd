@@ -6,16 +6,19 @@
 \usage{
 weight_func(
   sw_data,
+  use_switch_weights = use_switch_weights,
+  use_censor_weights = use_censor_weights,
   switch_n_cov = NA,
   switch_d_cov = NA,
   eligible_wts_0 = NA,
   eligible_wts_1 = NA,
   cense = NA,
-  pool_cense = FALSE,
+  pool_cense_n = FALSE,
+  pool_cense_d = FALSE,
   cense_d_cov = NA,
   cense_n_cov = NA,
   save_weight_models = FALSE,
-  save_dir,
+  data_dir,
   quiet = FALSE,
   glm_function = "glm",
   ...
@@ -23,6 +26,8 @@ weight_func(
 }
 \arguments{
 \item{sw_data}{A data.table}
+
+\item{use_censor_weights}{Use informative censoring weights in analysis.}
 
 \item{switch_n_cov}{A RHS formula for modelling probability of switching treatment. Used in the numerator of weight
 calculation. May use \code{time_on_regime} to include treatment duration.}
@@ -34,11 +39,7 @@ calculation. May use \code{time_on_regime} to include treatment duration.}
 
 \item{eligible_wts_1}{Eligibility criteria used in weights for model condition Am1 = 1}
 
-\item{cense}{Censoring variable}
-
-\item{pool_cense}{Fit pooled or separate censoring models for those treated and
-those untreated at the immediately previous visit.
-(default is \code{FALSE}, separate numerator and denominator models for treatment groups)}
+\item{cense}{Censoring variable column name. Required if \code{use_censor_weights = TRUE}}
 
 \item{cense_d_cov}{A RHS formula for modelling probability of being censored. Used in the numerator of weight
 calculation.}
@@ -48,7 +49,7 @@ calculation.}
 
 \item{save_weight_models}{Save weight models objects in \code{data_dir}.}
 
-\item{save_dir}{Directory to save tidy weight model summaries in as 'weight_models.rda'}
+\item{data_dir}{Directory to save model objects in.}
 
 \item{quiet}{Don't print progress messages.}
 
@@ -56,6 +57,8 @@ calculation.}
 
 \item{...}{Additional arguments passed to \code{glm_function}. This may be used to specify initial parameter estimates
 or arguments to \code{control}. See \link[stats:glm]{stats::glm}, \link[parglm:parglm]{parglm::parglm} and \code{\link[parglm:parglm.control]{parglm::parglm.control()}} for more information.}
+
+\item{save_dir}{Directory to save tidy weight model summaries in as 'weight_models.rda'}
 }
 \description{
 This function performs the calculation for weight of the data

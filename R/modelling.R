@@ -15,6 +15,7 @@
 #' \describe{
 #'  \item{model}{a `glm` object}
 #'  \item{robust}{a list containing a coefficient summary table and the robust covariance `matrix`}
+#'  \item{args}{a list contain the parameters used to prepare and fit the model}
 #' }
 #'
 #' @export
@@ -23,13 +24,12 @@
 
 trial_msm <- function(data,
                       outcome_cov = ~1,
+                      estimand_type = c("ITT", "PP", "As-Treated"),
                       model_var = NULL,
                       first_followup = NA,
                       last_followup = NA,
-                      use_weight = FALSE,
                       analysis_weights = c("asis", "unweighted", "p99", "weight_limits"),
                       weight_limits = c(0, Inf),
-                      use_censor = FALSE,
                       include_followup_time = ~ followup_time + I(followup_time^2),
                       include_trial_period = ~ trial_period + I(trial_period^2),
                       where_case = NA,
@@ -42,14 +42,13 @@ trial_msm <- function(data,
   arg_checks <- makeAssertCollection()
   assert_data_frame(data, add = arg_checks)
   outcome_cov <- as_formula(outcome_cov, add = arg_checks)
+  estimand_type <- assert_choice(estimand_type[1], choices = c("ITT", "PP", "As-Treated"), add = arg_checks)
   assert_multi_class(model_var, classes = c("formula", "character"), null.ok = TRUE, add = arg_checks)
   assert_integerish(first_followup, lower = 0, all.missing = TRUE, len = 1, add = arg_checks)
   assert_integerish(last_followup, lower = 0, all.missing = TRUE, len = 1, add = arg_checks)
-  assert_flag(use_weight, add = arg_checks)
   analysis_weights <-
     assert_choice(analysis_weights[1], choices = c("asis", "unweighted", "p99", "weight_limits"), add = arg_checks)
   assert_numeric(weight_limits, len = 2, lower = 0, upper = Inf, sorted = TRUE, add = arg_checks)
-  assert_flag(use_censor, add = arg_checks)
   include_followup_time <- as_formula(include_followup_time, add = arg_checks)
   include_trial_period <- as_formula(include_trial_period, add = arg_checks)
   assert_multi_class(include_trial_period, classes = c("formula", "character"), add = arg_checks)
@@ -58,6 +57,10 @@ trial_msm <- function(data,
   assert_flag(use_sample_weights, add = arg_checks)
   assert_flag(quiet, add = arg_checks)
   reportAssertions(arg_checks)
+
+  if ("use_weight" %in% ...names()) {
+    stop("Argument `use_weight` is no longer supported. Use `analysis_weights` to control weighting behaviour.")
+  }
 
   # Dummy variables used in data.table calls declared to prevent package check NOTES:
   weight <- sample_weight <- followup_time <- NULL
@@ -72,40 +75,27 @@ trial_msm <- function(data,
 
   quiet_msg(quiet, "Preparing for model fitting")
 
-  # adjust weights if necessary
-  if (use_sample_weights) {
-    if (!"sample_weight" %in% colnames(data)) {
-      warning("'sample_weight' column not found in data. Using sample weights = 1.")
-      data[, weight := weight]
-    } else {
-      data[, weight := weight * sample_weight]
+
+  if (estimand_type == "ITT") {
+    if (is.null(model_var)) {
+      model_var <- ~assigned_treatment
+    }
+  } else if (estimand_type == "PP") {
+    if (is.null(model_var)) {
+      model_var <- ~assigned_treatment
+    }
+  } else if (estimand_type == "As-Treated") {
+    if (is.null(model_var)) {
+      model_var <- ~ dose + I(dose^2)
     }
   }
+  model_var <- as_formula(model_var)
+
 
   model_formula <- outcome ~ 1
-
-  if (!is.null(model_var)) {
-    # if the model_var is not empty, we use the information provided by user
-    model_formula <- add_rhs(model_formula, as_formula(model_var))
-  } else {
-    # if the model_var is empty, we provide the needed variables based on analysis type
-    if (isFALSE(use_censor)) {
-      if (isFALSE(use_weight)) {
-        # for ITT analysis
-        model_formula <- add_rhs(model_formula, ~assigned_treatment)
-      } else {
-        # for as treated analysis
-        model_formula <- add_rhs(model_formula, ~ dose + I(dose^2))
-      }
-    } else {
-      # for per-protocol analysis
-      model_formula <- add_rhs(model_formula, ~assigned_treatment)
-    }
-  }
-
   model_formula <- Reduce(
     add_rhs,
-    c(model_formula, include_trial_period, include_followup_time, outcome_cov)
+    c(model_formula, model_var, include_trial_period, include_followup_time, outcome_cov)
   )
 
   if (any(!is.na(where_case))) {
@@ -115,16 +105,26 @@ trial_msm <- function(data,
     }
   }
 
-  if (analysis_weights == "asis") {
-    # no change
-  } else if (analysis_weights == "p99") {
-    data <- p99_weight(data)
-  } else if (analysis_weights == "weight_limits") {
-    data <- limit_weight(data, weight_limits[1], weight_limits[2])
-  } else if (analysis_weights == "unweighted") {
-    data[["weight"]] <- 1
+  # adjust weights if necessary
+  w <- if (!"weight" %in% colnames(data)) rep(1, nrow(data)) else data[["weight"]]
+
+  if (use_sample_weights) {
+    if (!"sample_weight" %in% colnames(data)) {
+      warning("'sample_weight' column not found in data. Using sample weights = 1.")
+    } else {
+      w <- w * data[["sample_weight"]]
+    }
   }
-  if (isFALSE(use_weight)) data[["weight"]] <- 1
+
+  if (analysis_weights == "asis") {
+    # nothing to do
+  } else if (analysis_weights == "p99") {
+    w <- p99_weight(w)
+  } else if (analysis_weights == "weight_limits") {
+    w <- limit_weight(w, weight_limits[1], weight_limits[2])
+  } else if (analysis_weights == "unweighted") {
+    w <- rep(1, nrow(data))
+  }
 
   if (!test_data_table(data, any.missing = FALSE)) {
     warning(
@@ -139,7 +139,7 @@ trial_msm <- function(data,
     glm_function = glm_function,
     formula = model_formula,
     data = data,
-    weights = data[["weight"]],
+    weights = w,
     ...
   )
 
@@ -152,7 +152,23 @@ trial_msm <- function(data,
   quiet_print(quiet, format.data.frame(robust_model$summary, digits = 3))
   quiet_line(quiet)
 
-  result <- list(model = model.full, robust = robust_model)
-  class(result) <- "TE_msm"
+  args <- list(
+    outcome_cov = outcome_cov,
+    estimand_type = estimand_type,
+    model_var = model_var,
+    first_followup = first_followup,
+    last_followup = last_followup,
+    analysis_weights = analysis_weights,
+    weight_limits = weight_limits,
+    include_followup_time = include_followup_time,
+    include_trial_period = include_trial_period,
+    where_case = where_case,
+    glm_function = glm_function,
+    use_sample_weights = use_sample_weights,
+    model_formula = model_formula
+  )
+  result <- list(model = model.full, robust = robust_model, args = args)
+
+  class(result) <- c("TE_msm")
   result
 }

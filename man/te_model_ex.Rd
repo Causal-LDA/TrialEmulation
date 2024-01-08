@@ -5,7 +5,7 @@
 \alias{te_model_ex}
 \title{Example of a Fitted MSM Model Object}
 \format{
-An object of class \code{TE_msm} of length 2.
+An object of class \code{TE_msm} of length 3.
 }
 \usage{
 te_model_ex
