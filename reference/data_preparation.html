@@ -20,7 +20,7 @@ calculates the weight models and the weights for each time period in the expande
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">TrialEmulation</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.3.3</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.3.4</span>
       </span>
     </div>
 
@@ -76,16 +76,16 @@ calculates the weight models and the weights for each time period in the expande
 <span>  treatment <span class="op">=</span> <span class="st">"treatment"</span>,</span>
 <span>  outcome <span class="op">=</span> <span class="st">"outcome"</span>,</span>
 <span>  eligible <span class="op">=</span> <span class="st">"eligible"</span>,</span>
-<span>  outcome_cov <span class="op">=</span> <span class="op">~</span><span class="fl">1</span>,</span>
 <span>  model_var <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  outcome_cov <span class="op">=</span> <span class="op">~</span><span class="fl">1</span>,</span>
+<span>  estimand_type <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"ITT"</span>, <span class="st">"PP"</span>, <span class="st">"As-Treated"</span><span class="op">)</span>,</span>
 <span>  switch_n_cov <span class="op">=</span> <span class="op">~</span><span class="fl">1</span>,</span>
 <span>  switch_d_cov <span class="op">=</span> <span class="op">~</span><span class="fl">1</span>,</span>
 <span>  first_period <span class="op">=</span> <span class="cn">NA</span>,</span>
 <span>  last_period <span class="op">=</span> <span class="cn">NA</span>,</span>
-<span>  use_weight <span class="op">=</span> <span class="cn">FALSE</span>,</span>
-<span>  use_censor <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  use_censor_weights <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  cense <span class="op">=</span> <span class="cn">NA</span>,</span>
-<span>  pool_cense <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  pool_cense <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"none"</span>, <span class="st">"both"</span>, <span class="st">"numerator"</span><span class="op">)</span>,</span>
 <span>  cense_d_cov <span class="op">=</span> <span class="op">~</span><span class="fl">1</span>,</span>
 <span>  cense_n_cov <span class="op">=</span> <span class="op">~</span><span class="fl">1</span>,</span>
 <span>  eligible_wts_0 <span class="op">=</span> <span class="cn">NA</span>,</span>
@@ -127,14 +127,18 @@ calculates the weight models and the weights for each time period in the expande
 <dd><p>Indicator of whether or not an observation is eligible to be expanded about Defaults to eligible</p></dd>
 
 
-<dt>outcome_cov</dt>
-<dd><p>A RHS formula with baseline covariates to adjust in final model</p></dd>
-
-
 <dt>model_var</dt>
 <dd><p>List of Variables of interest to be used in final model.
 Derived variables to use in outcome models. Typically <code>assigned_treatment</code> for ITT and per-protocol,
 and <code>dose + dose^2</code> for as-treated.</p></dd>
+
+
+<dt>outcome_cov</dt>
+<dd><p>A RHS formula with baseline covariates to adjust in final model</p></dd>
+
+
+<dt>estimand_type</dt>
+<dd><p>Which estimand is being used. One of <code>"ITT"</code>, <code>"PP"</code>, <code>"As-Treated"</code>.</p></dd>
 
 
 <dt>switch_n_cov</dt>
@@ -155,23 +159,19 @@ calculation. May use <code>time_on_regime</code> to include treatment duration.<
 <dd><p>Last time period to include as trial baseline in expanded data</p></dd>
 
 
-<dt>use_weight</dt>
-<dd><p>Use weights in analysis. If <code>FALSE</code> then no weights will be calculated.</p></dd>
-
-
-<dt>use_censor</dt>
-<dd><p>Use censoring for per-protocol analysis - censor person-times once a person-trial stops taking the
-initial treatment value</p></dd>
+<dt>use_censor_weights</dt>
+<dd><p>Use informative censoring weights in analysis.</p></dd>
 
 
 <dt>cense</dt>
-<dd><p>Censoring variable</p></dd>
+<dd><p>Censoring variable column name. Required if <code>use_censor_weights = TRUE</code></p></dd>
 
 
 <dt>pool_cense</dt>
 <dd><p>Fit pooled or separate censoring models for those treated and
-those untreated at the immediately previous visit.
-(default is <code>FALSE</code>, separate numerator and denominator models for treatment groups)</p></dd>
+those untreated at the immediately previous visit. Pooling can be specified for numerator and denominator models.
+One of <code>"none"</code>, <code>"numerator"</code>, or <code>"both"</code> (default is <code>"none"</code> except when <code>estimand_type = "ITT"</code>
+then it is <code>"numerator"</code>).</p></dd>
 
 
 <dt>cense_d_cov</dt>
@@ -253,11 +253,14 @@ It contains the elements</p><dl><dt>data</dt>
 
 <dt>switch_models</dt>
 <dd><p>a list of summaries of the models fitted for probability of switching treatment,
-if <code>use_weight=TRUE</code></p></dd>
+if <code>estimand_type</code> is <code>"PP"</code> or <code>"As-Treated"</code></p></dd>
 
 <dt>censor_models</dt>
 <dd><p>a list of summaries of the models fitted for probability of censoring treatment,
-if <code>use_weight=TRUE</code></p></dd>
+if <code>use_switching_weights=TRUE</code></p></dd>
+
+<dt>args</dt>
+<dd><p>a list contain the parameters used to prepare the data and fit the weighting models</p></dd>
 
 
 </dl></div>
