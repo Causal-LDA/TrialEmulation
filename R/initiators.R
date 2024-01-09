@@ -1,58 +1,87 @@
-#' Initiators Analysis
+#' A wrapper function to perform data preparation and model fitting in a sequence of emulated target trials
 #'
-#' An all-in-one analysis using a sequence of target trials. This provides a simplified
-#' interface to the main working functions [`data_preparation()`] and [`trial_msm()`].
+#' An all-in-one analysis using a sequence of emulated target trials. This provides a simplified
+#' interface to the main functions [`data_preparation()`] and [`trial_msm()`].
 #'
-#' @param data A `data.frame` containing all the required columns.
-#' @param id Name of the data column for id feature Defaults to id
-#' @param period Name of the data column for period feature Defaults to period
-#' @param treatment Name of the data column for treatment feature Defaults to treatment
-#' @param outcome Name of the data column for outcome feature Defaults to outcome
-#' @param eligible Indicator of whether or not an observation is eligible to be expanded about Defaults to eligible
-#' @param outcome_cov A RHS formula with baseline covariates to adjust in final model
-#' @param model_var List of Variables of interest to be used in final model.
-#'   Derived variables to use in outcome models. Typically `assigned_treatment` for ITT and per-protocol,
-#'   and `dose + dose^2` for as-treated.
+#' @param data A `data.frame` containing all the required variables in the person-time format, i.e., the  `long' format.
+#' @param id Name of the variable for identifiers of the individuals.  Default is `id'.
+#' @param period Name of the variable for the visit/period.   Default is `period'.
+#' @param treatment Name of the variable  for the treatment indicator at that visit/period. Default is `treatment'.
+#' @param outcome Name of the variable for the indicator of the outcome event at that visit/period.  Default is `outcome'.
+#' @param eligible Name of the variable for the indicator of eligibility for the target trial at that visit/period.  Default 
+#' is `eligible'.
+#' @param outcome_cov A RHS formula with baseline covariates to be adjusted for in the marginal structural model for the emulated trials. Note that if a time-varying covariate is specified in `outcome_cov`, only its value at each of the trial baselines will be included in the expanded data.
+#' @param model_var Treatment variables to be included in the marginal structural model for the emulated trials. 
+#'  `model_var = "assigned_treatment"` will create a variable `assigned_treatment` that is the assigned treatment at the 
+#' trial baseline, typically used for ITT and per-protocol analyses. 
+#' `model_var = "dose"' will create a variable `dose` that is the cumulative number of  treatments received
+#' since the trial baseline, typically used in as-treated analyses.
 #'
-#' @param first_period First time period to include as trial baseline in expanded data
-#' @param last_period Last time period to include as trial baseline in expanded data
-#' @param first_followup First follow-up period
-#' @param last_followup Last follow-up period
-#' @param save_weight_models Save weight models objects in `data_dir`.
-#' @param analysis_weights One of
-#'  * `"asis"`: use the weights as calculated
-#'  * `"p99"`: truncate weights at the 1st and 99th percentiles
-#'  * `"weight_limits"`: truncate weights at the values specified in `weight_limits`
-#'  * `"unweighted"`: set all analysis weights to 1, even if weights switching or censoring weights were calculated.
+#' @param first_period First time period to be set as trial baseline  to start expanding the data.
+#' @param last_period Last time period to be set as trial baseline  to start expanding the data.
+#' @param first_followup First follow-up time/visit in the trials to be included in the marginal structural model for the 
+#' outcome event.
+#' @param last_followup Last follow-up time/visit in the trials to be included in the marginal structural model for the 
+#' outcome event.
+#' @param save_weight_models Save model objects for estimating the weights in `data_dir`.
+#' @param analysis_weights Choose which type of weights to be used for fitting the marginal structural model for 
+#' the outcome event.
+#'  * `"asis"`: use the weights as calculated.
+#'  * `"p99"`: use weights truncated at the 1st and 99th percentiles (based on the distribution of weights 
+#'  in the entire sample).
+#'  * `"weight_limits"`: use weights truncated at the values specified in `weight_limits`.
+#'  * `"unweighted"`: set all analysis weights to 1, even if treatment weights or censoring weights were calculated.
 #' @param weight_limits Lower and upper limits to truncate weights, given as `c(lower, upper)`
-#' @param estimand_type Which estimand is being used. One of `"ITT"`, `"PP"`, `"As-Treated"`.
-#' @param use_censor_weights Use informative censoring weights in analysis.
-#' @param cense Censoring variable column name. Required if `use_censor_weights = TRUE`
+#' @param estimand_type Specify the estimand for the causal analyses in the sequence of emulated trials. 
+#' `estimand_type = "ITT"` will perform intention-to-treat analyses, where treatment switching after trial baselines 
+#' are ignored.  `estimand_type = "PP"` will perform per-protocol analyses, where individuals' follow-ups are artificially 
+#' censored and inverse probability of treatment weighting is applied. `estimand_type = "As-Treated"` will perform as-treated
+#' analyses, where individuals' follow-ups are not artificially censored but treatment switching after trial baselines are 
+#' accounted for by applying inverse probability of treatment weighting.
+#' @param use_censor_weights Require the inverse probability of censoring weights. If `use_censor_weights = TRUE`, then the
+#' variable name of the censoring indicator needs to be provided in the argument `cense`.
+#' @param cense Variable name for the censoring indicator. Required if `use_censor_weights = TRUE`.
 #' @param pool_cense Fit pooled or separate censoring models for those treated and
-#' those untreated at the immediately previous visit. Pooling can be specified for numerator and denominator models.
+#' those untreated at the immediately previous visit. Pooling can be specified for the models for the numerator and 
+#' denominator terms of the inverse probability of censoring weights.
 #' One of `"none"`, `"numerator"`, or `"both"` (default is `"none"` except when `estimand_type = "ITT"`
-#' then it is `"numerator"`).
-#' @param include_followup_time The model to include the follow up time of the trial (`followup_time`) in outcome model,
+#' then default is `"numerator"`).
+#' @param include_followup_time The model to include the follow up time/visit of the trial (`followup_time`) in the marginal 
+#' structual model, specified as a RHS formula.
+#' @param include_trial_period The model to include the trial period (`trial_period`) in the marginal structural model,
 #'  specified as a RHS formula.
-#' @param include_trial_period The model to include the trial period (`trial_period`) in outcome model,
-#'  specified as a RHS formula.
-#' @param eligible_wts_0 Eligibility criteria used in weights for model condition Am1 = 0
-#' @param eligible_wts_1 Eligibility criteria used in weights for model condition Am1 = 1
-#' @param where_var List of variables used in where conditions used in subsetting the data used in final analysis
-#' (where_case), the variables not included in the final model
-#' @param where_case List of where conditions used in subsetting the data used in final analysis
+#' @param eligible_wts_1 Exclude some observations from the  models for the inverse probability of treatment weights. 
+#' For example, if it is assumed that an individual will stay on treatment for at least 2 visits, the first 2 visits after
+#' treatment initiation by definition have a probability of staying on the treatment of 1.0 and should thus be excluded from
+#' the weight models for those who are on treatment at the immediately previous visit. Users can define a variable that
+#' indicates that these 2 observations are ineligible for the weight model for those who are on treatment at the immediately
+#' previous visit and add the variable name in the argument `eligible_wts_1`. Similar definitions are applied to 
+#' `eligible_wts_0`.
+#' @param eligible_wts_0 See definition for `eligible_wts_1`
+#' @param where_var Specify the variable names that will be used to define subgroup conditions when fitting the marginal 
+#' structural model for a subgroup of individuals. Need to specify jointly with the argument `where\_case`.
+#' @param where_case Define conditions using variables specified in `where_var` when fitting a marginal structural model 
+#' for a subgroup of the individuals. For example, if `where_var= "age"`, `where_case = "age >= 30"` will only fit the
+#' marginal structural model to the subgroup of inividivuals who are 30 years old or above. 
 #' @param data_dir Directory to save model objects in.
-#' @param glm_function Which glm function to use for the final model from `stats` or `parglm` packages
-#' @param quiet Don't print progress messages.
-#' @param switch_n_cov A RHS formula for modelling probability of switching treatment. Used in the numerator of weight
-#' calculation. May use `time_on_regime` to include treatment duration.
-#' @param switch_d_cov A RHS formula for modelling probability of switching treatment. Used in the denominator of weight
-#' calculation. May use `time_on_regime` to include treatment duration.
-#' @param cense_d_cov A RHS formula for modelling probability of being censored. Used in the numerator of weight
-#' calculation.
-#' @param cense_n_cov A RHS formula for modelling probability of being censored. Used in the denominator of weight
-#' calculation.
-#' @param ... Additional arguments passed to `glm_function`. This may be used to specify initial parameter estimates
+#' @param glm_function Specify which glm function to use for the marginal structural model from the `stats` or `parglm` 
+#' packages. The default function is the `glm` function in the `stats` package. Users can also specify   
+#' `glm_function = "parglm"` such that the `parglm` function in the `parglm` package can be used for fitting generalized 
+#' linear models in parallel. The default control setting for  `parglm` is `nthreads = 4` and `method = "FAST"`, 
+#' where four cores and Fisher information are used for faster computation. Users can change the default control setting 
+#' by passing the arguments `nthreads` and `method` in the `parglm.control` function of the `parglm` package, or
+#' alternatively, by passing a `control` argument with a list produced by `parglm.control(nthreads = , method = )`.
+#' @param quiet Suppress the printing of progress messages and summaries of the fitted models.
+#' @param switch_n_cov A RHS formula to specify the logistic models for estimating the numerator terms of the inverse 
+#' probability of treatment weights. A derived variable named `time_on_regime` containing the duration of time that 
+#' the individual has been on the current treatment/non-treatment is available for use in these models.
+#' @param switch_d_cov A RHS formula to specify the logistic models for estimating the denomerator terms of the inverse 
+#' probability of treatment weights.
+#' @param cense_d_cov A RHS formula to specify the logistic models for estimating the numerator terms of the inverse 
+#' probability of censoring weights.
+#' @param cense_n_cov A RHS formula to specify the logistic models for estimating the denomerator terms of the inverse 
+#' probability of censoring weights.
+#' @param ... Additional arguments passed to `glm_function`. This may be used to specify initial values of parameters
 #' or arguments to `control`. See [stats::glm], [parglm::parglm] and [parglm::parglm.control()] for more information.
 #'
 #'
@@ -60,7 +89,7 @@
 #' An object of class `TE_msm` containing
 #' \describe{
 #'  \item{model}{a `glm` object}
-#'  \item{robust}{a list containing a coefficient summary table and the robust covariance `matrix`}
+#'  \item{robust}{a list containing a summary table of estimated regression coefficients and the robust covariance `matrix`}
 #' }
 #' @export
 initiators <- function(data,
