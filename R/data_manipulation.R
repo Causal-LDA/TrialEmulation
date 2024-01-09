@@ -38,8 +38,7 @@ data_manipulation <- function(data, use_censor = TRUE) {
   event_data <- event_data[, list(id, time_of_event)]
 
   sw_data <- data[event_data, on = "id"]
-
-  sw_data <- sw_data[, first := !duplicated(data[, id])]
+  sw_data <- sw_data[, first := !duplicated(id)]
   sw_data <- sw_data[, am_1 := shift(treatment, type = "lag"), by = "id"]
   sw_data[first == TRUE, cumA := 0]
   sw_data[first == TRUE, am_1 := 0]

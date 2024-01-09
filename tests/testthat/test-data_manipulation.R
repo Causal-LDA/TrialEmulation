@@ -27,7 +27,7 @@ test_that("data_manipulation works as expected with censoring", {
   expect_data_table(
     result,
     key = "id",
-    nrow = 38734,
+    nrow = 38820,
     ncol = 20
   )
   expect_set_equal(
