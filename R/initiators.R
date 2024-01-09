@@ -59,7 +59,7 @@
 #' `eligible_wts_0`.
 #' @param eligible_wts_0 See definition for `eligible_wts_1`
 #' @param where_var Specify the variable names that will be used to define subgroup conditions when fitting the marginal 
-#' structural model for a subgroup of individuals. Need to specify jointly with the argument `where\_case`.
+#' structural model for a subgroup of individuals. Need to specify jointly with the argument `where_case`.
 #' @param where_case Define conditions using variables specified in `where_var` when fitting a marginal structural model 
 #' for a subgroup of the individuals. For example, if `where_var= "age"`, `where_case = "age >= 30"` will only fit the
 #' marginal structural model to the subgroup of inividivuals who are 30 years old or above. 
