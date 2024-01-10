@@ -2,7 +2,7 @@
 % Please edit documentation in R/modelling.R
 \name{trial_msm}
 \alias{trial_msm}
-\title{Fit the Marginal Structural Model for the Sequence of Trials}
+\title{Fit the Marginal Structural Model for the Sequence of Emulated Trials}
 \usage{
 trial_msm(
   data,
@@ -75,8 +75,8 @@ and Fisher information are used for faster computation. Users can change the def
 arguments \code{nthreads} and \code{method} in the \code{parglm.control} function of the \code{parglm} package, or alternatively, by
 passing a \code{control} argument with a list produced by \code{parglm.control(nthreads = , method = )}.}
 
-\item{use_sample_weights}{Use sample weights in addition to IP weights. \code{data} must contain a column \code{sample_weight}.
-The weights used in the model are calculated as \code{weight = weight * sample_weight}.}
+\item{use_sample_weights}{Use case-control sampling weights in addition to inverse probability weights for treatment and censoring.
+\code{data} must contain a column \code{sample_weight}. The final weights used in the pooled logistic regression are calculated as \code{weight = weight * sample_weight}.}
 
 \item{quiet}{Suppress the printing of progress messages and summaries of the fitted models.}
 
@@ -87,13 +87,13 @@ arguments to \code{control}. See \link[stats:glm]{stats::glm}, \link[parglm:parg
 Object of class \code{TE_msm} containing
 \describe{
 \item{model}{a \code{glm} object}
-\item{robust}{a list containing a coefficient summary table and the robust covariance \code{matrix}}
+\item{robust}{a list containing a summary table of regression coefficient estimates and the robust covariance \code{matrix}}
 \item{args}{a list contain the parameters used to prepare and fit the model}
 }
 }
 \description{
-Fits a weighted pooled logistic regression model for the sequence of trials and
-calculates a robust covariance matrix using a sandwich estimator.
+Apply a weighted pooled logistic regression to fit the marginal structural model for the sequence of emulated trials and
+calculates the covariance matrix  of parameter using the robust sandwich estimator.
 }
 \details{
 The model formula is constructed by combining the arguments \code{outcome_cov}, \code{model_var},
