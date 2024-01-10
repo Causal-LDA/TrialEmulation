@@ -1,26 +1,23 @@
 #' Prepare data for the sequence of emulated target trials
 #'
-#' This function  expands observational data in the person-time format (i.e., the  `long' format) to emulate a sequence of 
-#' target trials and also estimates the inverse probability of treatment and censoring weights as required.
+#' This function  expands observational data in the person-time format (i.e., the  `long' format) to emulate a sequence
+#' of target trials and also estimates the inverse probability of treatment and censoring weights as required.
 #'
 #' @inheritParams initiators
 #' @param chunk_size Number of individuals whose data to  be processed in one chunk when `separate_files = TRUE`
 #' @param separate_files Save expanded data in separate CSV files for each trial.
-#' @param data_dir Directory to save model objects when `save_weight_models=TRUE` and
-#'   expanded data as separate CSV files names as `trial_i.csv`s if `separate_files = TRUE`.
-#'   If the specified directory does not exist it will be created. If the directory
-#'   already contains trial files an error will occur, other files may be overwritten.
+#' @param data_dir Directory to save model objects when `save_weight_models=TRUE` and expanded data as separate CSV
+#'   files names as `trial_i.csv`s if `separate_files = TRUE`. If the specified directory does not exist it will be
+#'   created. If the directory already contains trial files an error will occur, other files may be overwritten.
 #' @export
 #'
-#' @details
-#' The arguments `chunk_size` and `separate_files` allow for processing of large datasets that
-#' would not fit in memory once expanded. When `separate_files = TRUE`, the input data are processed
-#' in chunks of individuals and saved into separate files for each emulated trial. These separate
-#' files can be sampled by case-control sampling to create the reduced dataset for the modelling.
+#' @details The arguments `chunk_size` and `separate_files` allow for processing of large datasets that would not fit in
+#' memory once expanded. When `separate_files = TRUE`, the input data are processed in chunks of individuals and saved
+#' into separate files for each emulated trial. These separate files can be sampled by case-control sampling to create
+#' the reduced dataset for the modelling.
 #'
-#' @returns An object of class `TE_data_prep`, which can either be sampled from ([case_control_sampling_trials])
-#' or directly used in a model ([trial_msm]).
-#' It contains the elements
+#' @returns An object of class `TE_data_prep`, which can either be sampled from ([case_control_sampling_trials]) or
+#'   directly used in a model ([trial_msm]). It contains the elements
 #' \describe{
 #'   \item{data}{the expanded dataset for all emulated trials. If `separate=FALSE`, it is  a `data.table`; if
 #'   `separate=TRUE`, it is a character vector with the file path of the expanded data as CSV files.}

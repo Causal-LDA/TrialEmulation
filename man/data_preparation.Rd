@@ -105,10 +105,9 @@ definitions are applied to \code{eligible_wts_0}.}
 \item{where_var}{Specify the variable names that will be used to define subgroup conditions when fitting the marginal
 structural model for a subgroup of individuals. Need to specify jointly with the argument \code{where_case}.}
 
-\item{data_dir}{Directory to save model objects when \code{save_weight_models=TRUE} and
-expanded data as separate CSV files names as \code{trial_i.csv}s if \code{separate_files = TRUE}.
-If the specified directory does not exist it will be created. If the directory
-already contains trial files an error will occur, other files may be overwritten.}
+\item{data_dir}{Directory to save model objects when \code{save_weight_models=TRUE} and expanded data as separate CSV
+files names as \code{trial_i.csv}s if \code{separate_files = TRUE}. If the specified directory does not exist it will be
+created. If the directory already contains trial files an error will occur, other files may be overwritten.}
 
 \item{save_weight_models}{Save model objects for estimating the weights in \code{data_dir}.}
 
@@ -129,9 +128,8 @@ passing a \code{control} argument with a list produced by \code{parglm.control(n
 arguments to \code{control}. See \link[stats:glm]{stats::glm}, \link[parglm:parglm]{parglm::parglm} and \code{\link[parglm:parglm.control]{parglm::parglm.control()}} for more information.}
 }
 \value{
-An object of class \code{TE_data_prep}, which can either be sampled from (\link{case_control_sampling_trials})
-or directly used in a model (\link{trial_msm}).
-It contains the elements
+An object of class \code{TE_data_prep}, which can either be sampled from (\link{case_control_sampling_trials}) or
+directly used in a model (\link{trial_msm}). It contains the elements
 \describe{
 \item{data}{the expanded dataset for all emulated trials. If \code{separate=FALSE}, it is  a \code{data.table}; if
 \code{separate=TRUE}, it is a character vector with the file path of the expanded data as CSV files.}
@@ -147,12 +145,12 @@ if \code{use_switching_weights=TRUE}}
 }
 }
 \description{
-This function  expands observational data in the person-time format (i.e., the  `long' format) to emulate a sequence of
-target trials and also estimates the inverse probability of treatment and censoring weights as required.
+This function  expands observational data in the person-time format (i.e., the  `long' format) to emulate a sequence
+of target trials and also estimates the inverse probability of treatment and censoring weights as required.
 }
 \details{
-The arguments \code{chunk_size} and \code{separate_files} allow for processing of large datasets that
-would not fit in memory once expanded. When \code{separate_files = TRUE}, the input data are processed
-in chunks of individuals and saved into separate files for each emulated trial. These separate
-files can be sampled by case-control sampling to create the reduced dataset for the modelling.
+The arguments \code{chunk_size} and \code{separate_files} allow for processing of large datasets that would not fit in
+memory once expanded. When \code{separate_files = TRUE}, the input data are processed in chunks of individuals and saved
+into separate files for each emulated trial. These separate files can be sampled by case-control sampling to create
+the reduced dataset for the modelling.
 }
