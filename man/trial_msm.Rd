@@ -23,47 +23,65 @@ trial_msm(
 )
 }
 \arguments{
-\item{data}{A \code{data.frame} containing all the required columns.}
+\item{data}{A \code{data.frame} containing all the required variables in the person-time format, i.e., the  `long' format.}
 
-\item{outcome_cov}{A RHS formula with baseline covariates to adjust in final model}
+\item{outcome_cov}{A RHS formula with baseline covariates to be adjusted for in the marginal structural model for the
+emulated trials. Note that if a time-varying covariate is specified in \code{outcome_cov}, only its value at each of the
+trial baselines will be included in the expanded data.}
 
-\item{estimand_type}{Which estimand is being used. One of \code{"ITT"}, \code{"PP"}, \code{"As-Treated"}.}
+\item{estimand_type}{Specify the estimand for the causal analyses in the sequence of emulated trials. \code{estimand_type = "ITT"} will perform intention-to-treat analyses, where treatment switching after trial baselines are ignored.
+\code{estimand_type = "PP"} will perform per-protocol analyses, where individuals' follow-ups are artificially censored
+and inverse probability of treatment weighting is applied. \code{estimand_type = "As-Treated"} will perform as-treated
+analyses, where individuals' follow-ups are not artificially censored but treatment switching after trial baselines
+are accounted for by applying inverse probability of treatment weighting.}
 
-\item{model_var}{List of Variables of interest to be used in final model.
-Derived variables to use in outcome models. Typically \code{assigned_treatment} for ITT and per-protocol,
-and \code{dose + dose^2} for as-treated.}
+\item{model_var}{Treatment variables to be included in the marginal structural model for the emulated trials.
+\code{model_var = "assigned_treatment"} will create a variable \code{assigned_treatment} that is the assigned treatment at
+the trial baseline, typically used for ITT and per-protocol analyses. \verb{model_var = "dose"' will create a variable }dose` that is the cumulative number of  treatments received since the trial baseline, typically used in as-treated
+analyses.}
 
-\item{first_followup}{First follow-up period}
+\item{first_followup}{First follow-up time/visit in the trials to be included in the marginal structural model for
+the outcome event.}
 
-\item{last_followup}{Last follow-up period}
+\item{last_followup}{Last follow-up time/visit in the trials to be included in the marginal structural model for the
+outcome event.}
 
-\item{analysis_weights}{One of
+\item{analysis_weights}{Choose which type of weights to be used for fitting the marginal structural model for the
+outcome event.
 \itemize{
-\item \code{"asis"}: use the weights as calculated
-\item \code{"p99"}: truncate weights at the 1st and 99th percentiles
-\item \code{"weight_limits"}: truncate weights at the values specified in \code{weight_limits}
-\item \code{"unweighted"}: set all analysis weights to 1, even if weights switching or censoring weights were calculated.
+\item \code{"asis"}: use the weights as calculated.
+\item \code{"p99"}: use weights truncated at the 1st and 99th percentiles (based on the distribution of weights
+in the entire sample).
+\item \code{"weight_limits"}: use weights truncated at the values specified in \code{weight_limits}.
+\item \code{"unweighted"}: set all analysis weights to 1, even if treatment weights or censoring weights were calculated.
 }}
 
 \item{weight_limits}{Lower and upper limits to truncate weights, given as \code{c(lower, upper)}}
 
-\item{include_followup_time}{The model to include the follow up time of the trial (\code{followup_time}) in outcome model,
+\item{include_followup_time}{The model to include the follow up time/visit of the trial (\code{followup_time}) in the
+marginal structural model, specified as a RHS formula.}
+
+\item{include_trial_period}{The model to include the trial period (\code{trial_period}) in the marginal structural model,
 specified as a RHS formula.}
 
-\item{include_trial_period}{The model to include the trial period (\code{trial_period}) in outcome model,
-specified as a RHS formula.}
+\item{where_case}{Define conditions using variables specified in \code{where_var} when fitting a marginal structural model
+for a subgroup of the individuals. For example, if \code{where_var= "age"}, \code{where_case = "age >= 30"} will only fit the
+marginal structural model to the subgroup of individuals. who are 30 years old or above.}
 
-\item{where_case}{List of where conditions used in subsetting the data used in final analysis}
-
-\item{glm_function}{Which glm function to use for the final model from \code{stats} or \code{parglm} packages}
+\item{glm_function}{Specify which glm function to use for the marginal structural model from the \code{stats} or \code{parglm}
+packages. The default function is the \code{glm} function in the \code{stats} package. Users can also specify \code{glm_function = "parglm"} such that the \code{parglm} function in the \code{parglm} package can be used for fitting generalized linear models
+in parallel. The default control setting for  \code{parglm} is \code{nthreads = 4} and \code{method = "FAST"}, where four cores
+and Fisher information are used for faster computation. Users can change the default control setting by passing the
+arguments \code{nthreads} and \code{method} in the \code{parglm.control} function of the \code{parglm} package, or alternatively, by
+passing a \code{control} argument with a list produced by \code{parglm.control(nthreads = , method = )}.}
 
 \item{use_sample_weights}{Use sample weights in addition to IP weights. \code{data} must contain a column \code{sample_weight}.
 The weights used in the model are calculated as \code{weight = weight * sample_weight}.}
 
-\item{quiet}{Don't print progress messages.}
+\item{quiet}{Suppress the printing of progress messages and summaries of the fitted models.}
 
-\item{...}{Additional arguments passed to \code{glm_function}. This may be used to specify initial parameter estimates
-or arguments to \code{control}. See \link[stats:glm]{stats::glm}, \link[parglm:parglm]{parglm::parglm} and \code{\link[parglm:parglm.control]{parglm::parglm.control()}} for more information.}
+\item{...}{Additional arguments passed to \code{glm_function}. This may be used to specify initial values of parameters or
+arguments to \code{control}. See \link[stats:glm]{stats::glm}, \link[parglm:parglm]{parglm::parglm} and \code{\link[parglm:parglm.control]{parglm::parglm.control()}} for more information.}
 }
 \value{
 Object of class \code{TE_msm} containing

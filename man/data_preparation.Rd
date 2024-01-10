@@ -2,7 +2,7 @@
 % Please edit documentation in R/data_preparation.R
 \name{data_preparation}
 \alias{data_preparation}
-\title{Prepare Sequence of Trial Data}
+\title{Prepare data for the sequence of emulated target trials}
 \usage{
 data_preparation(
   data,
@@ -36,103 +36,123 @@ data_preparation(
 )
 }
 \arguments{
-\item{data}{A \code{data.frame} containing all the required columns.}
+\item{data}{A \code{data.frame} containing all the required variables in the person-time format, i.e., the  `long' format.}
 
-\item{id}{Name of the data column for id feature Defaults to id}
+\item{id}{Name of the variable for identifiers of the individuals.  Default is `id'.}
 
-\item{period}{Name of the data column for period feature Defaults to period}
+\item{period}{Name of the variable for the visit/period.   Default is `period'.}
 
-\item{treatment}{Name of the data column for treatment feature Defaults to treatment}
+\item{treatment}{Name of the variable  for the treatment indicator at that visit/period. Default is `treatment'.}
 
-\item{outcome}{Name of the data column for outcome feature Defaults to outcome}
+\item{outcome}{Name of the variable for the indicator of the outcome event at that visit/period.  Default is
+`outcome'.}
 
-\item{eligible}{Indicator of whether or not an observation is eligible to be expanded about Defaults to eligible}
+\item{eligible}{Name of the variable for the indicator of eligibility for the target trial at that visit/period.
+Default is `eligible'.}
 
-\item{model_var}{List of Variables of interest to be used in final model.
-Derived variables to use in outcome models. Typically \code{assigned_treatment} for ITT and per-protocol,
-and \code{dose + dose^2} for as-treated.}
+\item{model_var}{Treatment variables to be included in the marginal structural model for the emulated trials.
+\code{model_var = "assigned_treatment"} will create a variable \code{assigned_treatment} that is the assigned treatment at
+the trial baseline, typically used for ITT and per-protocol analyses. \verb{model_var = "dose"' will create a variable }dose` that is the cumulative number of  treatments received since the trial baseline, typically used in as-treated
+analyses.}
 
-\item{outcome_cov}{A RHS formula with baseline covariates to adjust in final model}
+\item{outcome_cov}{A RHS formula with baseline covariates to be adjusted for in the marginal structural model for the
+emulated trials. Note that if a time-varying covariate is specified in \code{outcome_cov}, only its value at each of the
+trial baselines will be included in the expanded data.}
 
-\item{estimand_type}{Which estimand is being used. One of \code{"ITT"}, \code{"PP"}, \code{"As-Treated"}.}
+\item{estimand_type}{Specify the estimand for the causal analyses in the sequence of emulated trials. \code{estimand_type = "ITT"} will perform intention-to-treat analyses, where treatment switching after trial baselines are ignored.
+\code{estimand_type = "PP"} will perform per-protocol analyses, where individuals' follow-ups are artificially censored
+and inverse probability of treatment weighting is applied. \code{estimand_type = "As-Treated"} will perform as-treated
+analyses, where individuals' follow-ups are not artificially censored but treatment switching after trial baselines
+are accounted for by applying inverse probability of treatment weighting.}
 
-\item{switch_n_cov}{A RHS formula for modelling probability of switching treatment. Used in the numerator of weight
-calculation. May use \code{time_on_regime} to include treatment duration.}
+\item{switch_n_cov}{A RHS formula to specify the logistic models for estimating the numerator terms of the inverse
+probability of treatment weights. A derived variable named \code{time_on_regime} containing the duration of time that
+the individual has been on the current treatment/non-treatment is available for use in these models.}
 
-\item{switch_d_cov}{A RHS formula for modelling probability of switching treatment. Used in the denominator of weight
-calculation. May use \code{time_on_regime} to include treatment duration.}
+\item{switch_d_cov}{A RHS formula to specify the logistic models for estimating the denominator terms of the inverse
+probability of treatment weights.}
 
-\item{first_period}{First time period to include as trial baseline in expanded data}
+\item{first_period}{First time period to be set as trial baseline  to start expanding the data.}
 
-\item{last_period}{Last time period to include as trial baseline in expanded data}
+\item{last_period}{Last time period to be set as trial baseline  to start expanding the data.}
 
-\item{use_censor_weights}{Use informative censoring weights in analysis.}
+\item{use_censor_weights}{Require the inverse probability of censoring weights. If \code{use_censor_weights = TRUE}, then
+the variable name of the censoring indicator needs to be provided in the argument \code{cense}.}
 
-\item{cense}{Censoring variable column name. Required if \code{use_censor_weights = TRUE}}
+\item{cense}{Variable name for the censoring indicator. Required if \code{use_censor_weights = TRUE}.}
 
-\item{pool_cense}{Fit pooled or separate censoring models for those treated and
-those untreated at the immediately previous visit. Pooling can be specified for numerator and denominator models.
-One of \code{"none"}, \code{"numerator"}, or \code{"both"} (default is \code{"none"} except when \code{estimand_type = "ITT"}
-then it is \code{"numerator"}).}
+\item{pool_cense}{Fit pooled or separate censoring models for those treated and those untreated at the immediately
+previous visit. Pooling can be specified for the models for the numerator and denominator terms of the inverse
+probability of censoring weights. One of \code{"none"}, \code{"numerator"}, or \code{"both"} (default is \code{"none"} except when
+\code{estimand_type = "ITT"} then default is \code{"numerator"}).}
 
-\item{cense_d_cov}{A RHS formula for modelling probability of being censored. Used in the numerator of weight
-calculation.}
+\item{cense_d_cov}{A RHS formula to specify the logistic models for estimating the denominator terms of the inverse
+probability of censoring weights.}
 
-\item{cense_n_cov}{A RHS formula for modelling probability of being censored. Used in the denominator of weight
-calculation.}
+\item{cense_n_cov}{A RHS formula to specify the logistic models for estimating the numerator terms of the inverse
+probability of censoring weights.}
 
-\item{eligible_wts_0}{Eligibility criteria used in weights for model condition Am1 = 0}
+\item{eligible_wts_0}{See definition for \code{eligible_wts_1}}
 
-\item{eligible_wts_1}{Eligibility criteria used in weights for model condition Am1 = 1}
+\item{eligible_wts_1}{Exclude some observations from the  models for the inverse probability of treatment weights.
+For example, if it is assumed that an individual will stay on treatment for at least 2 visits, the first 2 visits
+after treatment initiation by definition have a probability of staying on the treatment of 1.0 and should thus be
+excluded from the weight models for those who are on treatment at the immediately previous visit. Users can define
+a variable that indicates that these 2 observations are ineligible for the weight model for those who are on
+treatment at the immediately previous visit and add the variable name in the argument \code{eligible_wts_1}. Similar
+definitions are applied to \code{eligible_wts_0}.}
 
-\item{where_var}{List of variables used in where conditions used in subsetting the data used in final analysis
-(where_case), the variables not included in the final model}
+\item{where_var}{Specify the variable names that will be used to define subgroup conditions when fitting the marginal
+structural model for a subgroup of individuals. Need to specify jointly with the argument \code{where_case}.}
 
-\item{data_dir}{Directory to model objects when \code{save_weight_models=TRUE} and
-expanded data as \code{trial_i.csv}s if \code{separate_files = TRUE}.
+\item{data_dir}{Directory to save model objects when \code{save_weight_models=TRUE} and
+expanded data as separate CSV files names as \code{trial_i.csv}s if \code{separate_files = TRUE}.
 If the specified directory does not exist it will be created. If the directory
 already contains trial files an error will occur, other files may be overwritten.}
 
-\item{save_weight_models}{Save weight models objects in \code{data_dir}.}
+\item{save_weight_models}{Save model objects for estimating the weights in \code{data_dir}.}
 
-\item{glm_function}{Which glm function to use for the final model from \code{stats} or \code{parglm} packages}
+\item{glm_function}{Specify which glm function to use for the marginal structural model from the \code{stats} or \code{parglm}
+packages. The default function is the \code{glm} function in the \code{stats} package. Users can also specify \code{glm_function = "parglm"} such that the \code{parglm} function in the \code{parglm} package can be used for fitting generalized linear models
+in parallel. The default control setting for  \code{parglm} is \code{nthreads = 4} and \code{method = "FAST"}, where four cores
+and Fisher information are used for faster computation. Users can change the default control setting by passing the
+arguments \code{nthreads} and \code{method} in the \code{parglm.control} function of the \code{parglm} package, or alternatively, by
+passing a \code{control} argument with a list produced by \code{parglm.control(nthreads = , method = )}.}
 
-\item{chunk_size}{Number of patients to process in one chunk when \code{separate_files = TRUE}}
+\item{chunk_size}{Number of individuals whose data to  be processed in one chunk when \code{separate_files = TRUE}}
 
 \item{separate_files}{Save expanded data in separate CSV files for each trial.}
 
-\item{quiet}{Don't print progress messages.}
+\item{quiet}{Suppress the printing of progress messages and summaries of the fitted models.}
 
-\item{...}{Additional arguments passed to \code{glm_function}. This may be used to specify initial parameter estimates
-or arguments to \code{control}. See \link[stats:glm]{stats::glm}, \link[parglm:parglm]{parglm::parglm} and \code{\link[parglm:parglm.control]{parglm::parglm.control()}} for more information.}
+\item{...}{Additional arguments passed to \code{glm_function}. This may be used to specify initial values of parameters or
+arguments to \code{control}. See \link[stats:glm]{stats::glm}, \link[parglm:parglm]{parglm::parglm} and \code{\link[parglm:parglm.control]{parglm::parglm.control()}} for more information.}
 }
 \value{
 An object of class \code{TE_data_prep}, which can either be sampled from (\link{case_control_sampling_trials})
 or directly used in a model (\link{trial_msm}).
 It contains the elements
 \describe{
-\item{data}{the expanded trial dataset for all trial periods. If \code{separate=FALSE} a \code{data.table}, if
-\code{separate=TRUE} a character vector with the file path of the expanded data as csv.}
-\item{min_period}{the first trial period in the expanded data}
-\item{max_period}{the last trial period in the expanded data}
+\item{data}{the expanded dataset for all emulated trials. If \code{separate=FALSE}, it is  a \code{data.table}; if
+\code{separate=TRUE}, it is a character vector with the file path of the expanded data as CSV files.}
+\item{min_period}{index for the first trial in the expanded data}
+\item{max_period}{index for the last trial in the expanded data}
 \item{N}{the total number of observations in the expanded data}
-\item{data_template}{a zero-row \code{data.frame} in the with the columns and attributes of the expanded data}
-\item{switch_models}{a list of summaries of the models fitted for probability of switching treatment,
+\item{data_template}{a zero-row \code{data.frame}  with the columns and attributes of the expanded data}
+\item{switch_models}{a list of summaries of the models fitted for inverse probability of treatment weights,
 if \code{estimand_type} is \code{"PP"} or \code{"As-Treated"}}
-\item{censor_models}{a list of summaries of the models fitted for probability of censoring treatment,
+\item{censor_models}{a list of summaries of the models fitted for inverse probability of censoring weights,
 if \code{use_switching_weights=TRUE}}
-\item{args}{a list contain the parameters used to prepare the data and fit the weighting models}
+\item{args}{a list contain the parameters used to prepare the data and fit the weight models}
 }
 }
 \description{
-This function takes the one row per time period per patient data and constructs
-a dataset with the records for each period in each trial. This considerably expands
-the size of the data. It takes into account the eligibility for each trial and
-calculates the weight models and the weights for each time period in the expanded data.
+This function  expands observational data in the person-time format (i.e., the  `long' format) to emulate a sequence of
+target trials and also estimates the inverse probability of treatment and censoring weights as required.
 }
 \details{
 The arguments \code{chunk_size} and \code{separate_files} allow for processing of large datasets that
 would not fit in memory once expanded. When \code{separate_files = TRUE}, the input data are processed
-in chunks of patients and saved into separate files for each trial starting period. These separate
-files can be sampled to create the dataset for the modelling.
+in chunks of individuals and saved into separate files for each emulated trial. These separate
+files can be sampled by case-control sampling to create the reduced dataset for the modelling.
 }
