@@ -8,19 +8,19 @@
 #' @param separate_files Save expanded data in separate CSV files for each trial.
 #' @param data_dir Directory to save model objects when `save_weight_models=TRUE` and expanded data as separate CSV
 #'   files names as `trial_i.csv`s if `separate_files = TRUE`. If the specified directory does not exist it will be
-#'   created. If the directory already contains trial files an error will occur, other files may be overwritten.
+#'   created. If the directory already contains trial files, an error will occur, other files may be overwritten.
 #' @export
 #'
 #' @details The arguments `chunk_size` and `separate_files` allow for processing of large datasets that would not fit in
 #' memory once expanded. When `separate_files = TRUE`, the input data are processed in chunks of individuals and saved
 #' into separate files for each emulated trial. These separate files can be sampled by case-control sampling to create
-#' the reduced dataset for the modelling.
+#' a reduced dataset for the modelling.
 #'
 #' @returns An object of class `TE_data_prep`, which can either be sampled from ([case_control_sampling_trials]) or
 #'   directly used in a model ([trial_msm]). It contains the elements
 #' \describe{
-#'   \item{data}{the expanded dataset for all emulated trials. If `separate=FALSE`, it is  a `data.table`; if
-#'   `separate=TRUE`, it is a character vector with the file path of the expanded data as CSV files.}
+#'   \item{data}{the expanded dataset for all emulated trials. If `separate_files = FALSE`, it is  a `data.table`; if
+#'   `separate_files = TRUE`, it is a character vector with the file path of the expanded data as CSV files.}
 #'   \item{min_period}{index for the first trial in the expanded data}
 #'   \item{max_period}{index for the last trial in the expanded data}
 #'   \item{N}{the total number of observations in the expanded data}
@@ -28,7 +28,7 @@
 #'   \item{switch_models}{a list of summaries of the models fitted for inverse probability of treatment weights,
 #'   if `estimand_type` is `"PP"` or `"As-Treated"`}
 #'   \item{censor_models}{a list of summaries of the models fitted for inverse probability of censoring weights,
-#'   if `use_switching_weights=TRUE`}
+#'   if `use_censor_weights=TRUE`}
 #'  \item{args}{a list contain the parameters used to prepare the data and fit the weight models}
 #'   }
 #'
