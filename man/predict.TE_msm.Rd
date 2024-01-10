@@ -18,22 +18,22 @@
 \item{object}{Object from \code{\link[=trial_msm]{trial_msm()}} or \code{\link[=initiators]{initiators()}}.}
 
 \item{newdata}{Baseline trial data that characterise the target trial population that marginal cumulative incidences
-or survival probabilities are predicted for.  \code{newdata} must have the same columns and formats of variables as
-in the fitted marginal structural model specified in \code{\link[=trial_msm]{trial_msm()}} or \code{\link[=initiators]{initiators()}}. If \code{newdata} contains
-rows with \code{followup_time > 0} these will be removed.}
+or survival probabilities are predicted for.  \code{newdata} must have the same columns and formats of variables as in
+the fitted marginal structural model specified in \code{\link[=trial_msm]{trial_msm()}} or \code{\link[=initiators]{initiators()}}. If \code{newdata} contains rows with
+\code{followup_time > 0} these will be removed.}
 
-\item{predict_times}{Specify the follow-up visits/times where the marginal cumulative incidences or survival probabilities
-are predicted.}
+\item{predict_times}{Specify the follow-up visits/times where the marginal cumulative incidences or survival
+probabilities are predicted.}
 
-\item{conf_int}{Estimate the point-wise 95\\% confidence intervals of cumulative incidences for the target trial population
-under treatment and non-treatment and their differences by simulating the parameters in the marginal structural model
-from a multivariate normal distribution with mean equal to the marginal structural model parameter estimates and
-the variance equal to the estimated robust covariance matrix.}
+\item{conf_int}{Estimate the point-wise 95\\% confidence intervals of cumulative incidences for the target trial
+population under treatment and non-treatment and their differences by simulating the parameters in the marginal
+structural model from a multivariate normal distribution with mean equal to the marginal structural model parameter
+estimates and the variance equal to the estimated robust covariance matrix.}
 
 \item{samples}{Number of samples used to construct the simulation-based confidence intervals.}
 
-\item{type}{Specify cumulative incidences or survival probabilities to be predicted.
-Either cumulative incidence (\code{"cum_inc"}) or survival probability (\code{"survival"}).}
+\item{type}{Specify cumulative incidences or survival probabilities to be predicted. Either cumulative incidence
+(\code{"cum_inc"}) or survival probability (\code{"survival"}).}
 
 \item{...}{Further arguments passed to or from other methods.}
 }

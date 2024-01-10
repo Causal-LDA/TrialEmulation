@@ -1,23 +1,23 @@
 #' Predict Marginal Cumulative Incidences with Confidence Intervals for a Target Trial Population
 #'
 #' @param object Object from [trial_msm()] or [initiators()].
-#' @param newdata Baseline trial data that characterise the target trial population that marginal cumulative incidences 
-#' or survival probabilities are predicted for.  `newdata` must have the same columns and formats of variables as 
-#' in the fitted marginal structural model specified in [trial_msm()] or [initiators()]. If `newdata` contains
-#' rows with `followup_time > 0` these will be removed.
-#' @param type Specify cumulative incidences or survival probabilities to be predicted. 
-#' Either cumulative incidence (`"cum_inc"`) or survival probability (`"survival"`).
-#' @param predict_times Specify the follow-up visits/times where the marginal cumulative incidences or survival probabilities 
-#' are predicted.
-#' @param conf_int Estimate the point-wise 95\% confidence intervals of cumulative incidences for the target trial population
-#' under treatment and non-treatment and their differences by simulating the parameters in the marginal structural model 
-#' from a multivariate normal distribution with mean equal to the marginal structural model parameter estimates and 
-#'  the variance equal to the estimated robust covariance matrix.
+#' @param newdata Baseline trial data that characterise the target trial population that marginal cumulative incidences
+#'   or survival probabilities are predicted for.  `newdata` must have the same columns and formats of variables as in
+#'   the fitted marginal structural model specified in [trial_msm()] or [initiators()]. If `newdata` contains rows with
+#'   `followup_time > 0` these will be removed.
+#' @param type Specify cumulative incidences or survival probabilities to be predicted. Either cumulative incidence
+#'   (`"cum_inc"`) or survival probability (`"survival"`).
+#' @param predict_times Specify the follow-up visits/times where the marginal cumulative incidences or survival
+#'   probabilities are predicted.
+#' @param conf_int Estimate the point-wise 95\% confidence intervals of cumulative incidences for the target trial
+#'   population under treatment and non-treatment and their differences by simulating the parameters in the marginal
+#'   structural model from a multivariate normal distribution with mean equal to the marginal structural model parameter
+#'   estimates and the variance equal to the estimated robust covariance matrix.
 #' @param samples Number of samples used to construct the simulation-based confidence intervals.
 #' @param ... Further arguments passed to or from other methods.
 #'
 #' @return A list of three data frames containing the cumulative incidences for each of the assigned treatment options
-#' (treatment and non-treatment) and the difference between them.
+#'   (treatment and non-treatment) and the difference between them.
 #' @export
 #' @importFrom stats .checkMFClasses coef delete.response model.frame model.matrix terms setNames
 #' @examples

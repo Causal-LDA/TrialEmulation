@@ -38,10 +38,10 @@
 #' @param estimand_type Specify the estimand for the causal analyses in the sequence of emulated trials. `estimand_type
 #'   = "ITT"` will perform intention-to-treat analyses, where treatment switching after trial baselines are ignored.
 #'   `estimand_type = "PP"` will perform per-protocol analyses, where individuals' follow-ups are artificially censored
-#'   and inverse probability of treatment weighting is applied. `estimand_type = "As-Treated"` will fit a standard 
-#'   marginal structural model for all possible treatment sequences, where individuals' follow-ups 
-#'   are not artificially censored  but treatment switching after trial baselines are accounted for 
-#'   by applying inverse probability of treatment weighting.
+#'   and inverse probability of treatment weighting is applied. `estimand_type = "As-Treated"` will fit a standard
+#'   marginal structural model for all possible treatment sequences, where individuals' follow-ups are not artificially
+#'   censored  but treatment switching after trial baselines are accounted for by applying inverse probability of
+#'   treatment weighting.
 #' @param use_censor_weights Require the inverse probability of censoring weights. If `use_censor_weights = TRUE`, then
 #'   the variable name of the censoring indicator needs to be provided in the argument `cense`.
 #' @param cense Variable name for the censoring indicator. Required if `use_censor_weights = TRUE`.
@@ -53,16 +53,14 @@
 #'   marginal structural model, specified as a RHS formula.
 #' @param include_trial_period The model to include the trial period (`trial_period`) in the marginal structural model,
 #'   specified as a RHS formula.
-#' @param eligible_wts_1 Exclude some observations when fitting the models for the inverse probability 
-#'   of treatment weights. For example, if it is assumed that an individual will stay on treatment 
-#'   for at least 2 visits, the first 2 visits  after treatment initiation by definition have a probability 
-#'   of staying on the treatment of 1.0 and should thus be excluded from the weight models for those 
-#'   who are on treatment at the immediately previous visit. Users can define a variable that indicates 
-#'   that these 2 observations are ineligible for the weight model for those who are on  treatment 
-#'   at the immediately previous visit and add the variable name in the argument `eligible_wts_1`. 
-#'   Similar definitions are applied to `eligible_wts_0` for excluding observations when fitting 
-#'   the models for the inverse  probability of treatment weights for those who are not on treatment 
-#'   at the immediately previous visit.
+#' @param eligible_wts_1 Exclude some observations when fitting the models for the inverse probability of treatment
+#'   weights. For example, if it is assumed that an individual will stay on treatment for at least 2 visits, the first 2
+#'   visits  after treatment initiation by definition have a probability of staying on the treatment of 1.0 and should
+#'   thus be excluded from the weight models for those who are on treatment at the immediately previous visit. Users can
+#'   define a variable that indicates that these 2 observations are ineligible for the weight model for those who are on
+#'   treatment at the immediately previous visit and add the variable name in the argument `eligible_wts_1`. Similar
+#'   definitions are applied to `eligible_wts_0` for excluding observations when fitting the models for the inverse
+#'   probability of treatment weights for those who are not on treatment at the immediately previous visit.
 #' @param eligible_wts_0 See definition for `eligible_wts_1`
 #' @param where_var Specify the variable names that will be used to define subgroup conditions when fitting the marginal
 #'   structural model for a subgroup of individuals. Need to specify jointly with the argument `where_case`.

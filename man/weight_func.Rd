@@ -39,16 +39,14 @@ probability of treatment weights.}
 
 \item{eligible_wts_0}{See definition for \code{eligible_wts_1}}
 
-\item{eligible_wts_1}{Exclude some observations when fitting the models for the inverse probability
-of treatment weights. For example, if it is assumed that an individual will stay on treatment
-for at least 2 visits, the first 2 visits  after treatment initiation by definition have a probability
-of staying on the treatment of 1.0 and should thus be excluded from the weight models for those
-who are on treatment at the immediately previous visit. Users can define a variable that indicates
-that these 2 observations are ineligible for the weight model for those who are on  treatment
-at the immediately previous visit and add the variable name in the argument \code{eligible_wts_1}.
-Similar definitions are applied to \code{eligible_wts_0} for excluding observations when fitting
-the models for the inverse  probability of treatment weights for those who are not on treatment
-at the immediately previous visit.}
+\item{eligible_wts_1}{Exclude some observations when fitting the models for the inverse probability of treatment
+weights. For example, if it is assumed that an individual will stay on treatment for at least 2 visits, the first 2
+visits  after treatment initiation by definition have a probability of staying on the treatment of 1.0 and should
+thus be excluded from the weight models for those who are on treatment at the immediately previous visit. Users can
+define a variable that indicates that these 2 observations are ineligible for the weight model for those who are on
+treatment at the immediately previous visit and add the variable name in the argument \code{eligible_wts_1}. Similar
+definitions are applied to \code{eligible_wts_0} for excluding observations when fitting the models for the inverse
+probability of treatment weights for those who are not on treatment at the immediately previous visit.}
 
 \item{cense}{Variable name for the censoring indicator. Required if \code{use_censor_weights = TRUE}.}
 

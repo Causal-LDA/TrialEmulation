@@ -18,11 +18,11 @@ case_control_sampling_trials(
 
 \item{subset_condition}{Expression used to \code{\link[=subset]{subset()}} the trial data before case-control sampling.}
 
-\item{sort}{Sort data before applying case-control sampling to make sure that the resulting data
-are identical when sampling from the expanded data created with \code{separate_files = TRUE} or \code{separate_files = FALSE}.}
+\item{sort}{Sort data before applying case-control sampling to make sure that the resulting data are identical when
+sampling from the expanded data created with \code{separate_files = TRUE} or \code{separate_files = FALSE}.}
 }
 \value{
-A \code{data.frame} or a \code{\link[=split]{split()}} \code{data.frame} if  \code{length(p_control) > 1}. An additional column `sample_weight'
+A \code{data.frame} or a \code{\link[=split]{split()}} \code{data.frame} if  \code{length(p_control) > 1}. An additional column \code{sample_weight}
 containing the sample weights will be added to the result. These can be included in the models fit with
 \code{\link[=trial_msm]{trial_msm()}}.
 }
