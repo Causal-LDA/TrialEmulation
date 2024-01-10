@@ -57,6 +57,7 @@ test_that("data_manipulation works as expected with observations before eligibil
     nrow = 255,
     ncol = 20
   )
+  expect_equal(min(result[id == 1, ]$period), 262)
 })
 
 test_that("data_manipulation works as expected with observations after outcome", {
@@ -73,4 +74,5 @@ test_that("data_manipulation works as expected with observations after outcome",
     nrow = 210,
     ncol = 20
   )
+  expect_equal(max(result[id == 1, ]$period), 350)
 })
