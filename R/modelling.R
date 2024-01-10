@@ -1,20 +1,21 @@
-#' Fit the Marginal Structural Model for the Sequence of Trials
+#' Fit the Marginal Structural Model for the Sequence of Emulated Trials
 #'
-#' Fits a weighted pooled logistic regression model for the sequence of trials and
-#' calculates a robust covariance matrix using a sandwich estimator.
+#' Apply a weighted pooled logistic regression to fit the marginal structural model for the sequence of emulated trials
+#' and calculates the covariance matrix  of parameter using the robust sandwich estimator.
 #'
-#' @param use_sample_weights Use sample weights in addition to IP weights. `data` must contain a column `sample_weight`.
-#' The weights used in the model are calculated as `weight = weight * sample_weight`.
+#' @param use_sample_weights Use case-control sampling weights in addition to inverse probability weights for treatment
+#'   and censoring. `data` must contain a column `sample_weight`. The final weights used in the pooled logistic
+#'   regression are calculated as `weight = weight * sample_weight`.
 #' @inheritParams initiators
 #'
-#' @details
-#'  The model formula is constructed by combining the arguments `outcome_cov`, `model_var`,
-#'   `include_followup_time`, and `include_trial_period`.
+#' @details The model formula is constructed by combining the arguments `outcome_cov`, `model_var`,
+#' `include_followup_time`, and `include_trial_period`.
 #'
 #' @returns Object of class `TE_msm` containing
 #' \describe{
 #'  \item{model}{a `glm` object}
-#'  \item{robust}{a list containing a coefficient summary table and the robust covariance `matrix`}
+#'  \item{robust}{a list containing a summary table of regression coefficient estimates and the robust covariance
+#'  `matrix`}
 #'  \item{args}{a list contain the parameters used to prepare and fit the model}
 #' }
 #'

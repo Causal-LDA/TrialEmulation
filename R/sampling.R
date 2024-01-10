@@ -1,14 +1,14 @@
 #' Case-control sampling from extended data
 #'
 #' @param data_prep Result from [data_preparation()].
-#' @param p_control Proportion of controls to select at each follow-up time of each trial.
-#' @param subset_condition Expression used to [subset()] the trial data before sampling.
-#' @param sort Sort data before sampling. This ensures results are identical between data prepared with
-#' `separate_files` TRUE and FALSE.
+#' @param p_control Control sampling probability for selecting potential controls at each follow-up time of each trial.
+#' @param subset_condition Expression used to [subset()] the trial data before case-control sampling.
+#' @param sort Sort data before applying case-control sampling to make sure that the resulting data are identical when
+#'   sampling from the expanded data created with `separate_files = TRUE` or `separate_files = FALSE`.
 #'
-#' @return A `data.frame` or a [split()] `data.frame` if  `length(p_control) > 1`. An additional column
-#' containing sample weights will be added to the result. These can be included in the models fit with
-#' [trial_msm()].
+#' @return A `data.frame` or a [split()] `data.frame` if  `length(p_control) > 1`. An additional column `sample_weight`
+#'   containing the sample weights will be added to the result. These can be included in the models fit with
+#'   [trial_msm()].
 #' @export
 #' @examples
 #' # If necessary reduce the number of threads for data.table

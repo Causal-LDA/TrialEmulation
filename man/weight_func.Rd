@@ -27,36 +27,50 @@ weight_func(
 \arguments{
 \item{sw_data}{A data.table}
 
-\item{use_censor_weights}{Use informative censoring weights in analysis.}
+\item{use_censor_weights}{Require the inverse probability of censoring weights. If \code{use_censor_weights = TRUE}, then
+the variable name of the censoring indicator needs to be provided in the argument \code{cense}.}
 
-\item{switch_n_cov}{A RHS formula for modelling probability of switching treatment. Used in the numerator of weight
-calculation. May use \code{time_on_regime} to include treatment duration.}
+\item{switch_n_cov}{A RHS formula to specify the logistic models for estimating the numerator terms of the inverse
+probability of treatment weights. A derived variable named \code{time_on_regime} containing the duration of time that
+the individual has been on the current treatment/non-treatment is available for use in these models.}
 
-\item{switch_d_cov}{A RHS formula for modelling probability of switching treatment. Used in the denominator of weight
-calculation. May use \code{time_on_regime} to include treatment duration.}
+\item{switch_d_cov}{A RHS formula to specify the logistic models for estimating the denominator terms of the inverse
+probability of treatment weights.}
 
-\item{eligible_wts_0}{Eligibility criteria used in weights for model condition Am1 = 0}
+\item{eligible_wts_0}{See definition for \code{eligible_wts_1}}
 
-\item{eligible_wts_1}{Eligibility criteria used in weights for model condition Am1 = 1}
+\item{eligible_wts_1}{Exclude some observations when fitting the models for the inverse probability of treatment
+weights. For example, if it is assumed that an individual will stay on treatment for at least 2 visits, the first 2
+visits  after treatment initiation by definition have a probability of staying on the treatment of 1.0 and should
+thus be excluded from the weight models for those who are on treatment at the immediately previous visit. Users can
+define a variable that indicates that these 2 observations are ineligible for the weight model for those who are on
+treatment at the immediately previous visit and add the variable name in the argument \code{eligible_wts_1}. Similar
+definitions are applied to \code{eligible_wts_0} for excluding observations when fitting the models for the inverse
+probability of treatment weights for those who are not on treatment at the immediately previous visit.}
 
-\item{cense}{Censoring variable column name. Required if \code{use_censor_weights = TRUE}}
+\item{cense}{Variable name for the censoring indicator. Required if \code{use_censor_weights = TRUE}.}
 
-\item{cense_d_cov}{A RHS formula for modelling probability of being censored. Used in the numerator of weight
-calculation.}
+\item{cense_d_cov}{A RHS formula to specify the logistic models for estimating the denominator terms of the inverse
+probability of censoring weights.}
 
-\item{cense_n_cov}{A RHS formula for modelling probability of being censored. Used in the denominator of weight
-calculation.}
+\item{cense_n_cov}{A RHS formula to specify the logistic models for estimating the numerator terms of the inverse
+probability of censoring weights.}
 
-\item{save_weight_models}{Save weight models objects in \code{data_dir}.}
+\item{save_weight_models}{Save model objects for estimating the weights in \code{data_dir}.}
 
 \item{data_dir}{Directory to save model objects in.}
 
-\item{quiet}{Don't print progress messages.}
+\item{quiet}{Suppress the printing of progress messages and summaries of the fitted models.}
 
-\item{glm_function}{Which glm function to use for the final model from \code{stats} or \code{parglm} packages}
+\item{glm_function}{Specify which glm function to use for the marginal structural model from the \code{stats} or \code{parglm}
+packages. The default function is the \code{glm} function in the \code{stats} package. Users can also specify \code{glm_function = "parglm"} such that the \code{parglm} function in the \code{parglm} package can be used for fitting generalized linear models
+in parallel. The default control setting for  \code{parglm} is \code{nthreads = 4} and \code{method = "FAST"}, where four cores
+and Fisher information are used for faster computation. Users can change the default control setting by passing the
+arguments \code{nthreads} and \code{method} in the \code{parglm.control} function of the \code{parglm} package, or alternatively, by
+passing a \code{control} argument with a list produced by \code{parglm.control(nthreads = , method = )}.}
 
-\item{...}{Additional arguments passed to \code{glm_function}. This may be used to specify initial parameter estimates
-or arguments to \code{control}. See \link[stats:glm]{stats::glm}, \link[parglm:parglm]{parglm::parglm} and \code{\link[parglm:parglm.control]{parglm::parglm.control()}} for more information.}
+\item{...}{Additional arguments passed to \code{glm_function}. This may be used to specify initial values of parameters or
+arguments to \code{control}. See \link[stats:glm]{stats::glm}, \link[parglm:parglm]{parglm::parglm} and \code{\link[parglm:parglm.control]{parglm::parglm.control()}} for more information.}
 
 \item{save_dir}{Directory to save tidy weight model summaries in as 'weight_models.rda'}
 }
