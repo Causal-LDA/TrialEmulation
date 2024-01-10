@@ -31,9 +31,10 @@ trial baselines will be included in the expanded data.}
 
 \item{estimand_type}{Specify the estimand for the causal analyses in the sequence of emulated trials. \code{estimand_type = "ITT"} will perform intention-to-treat analyses, where treatment switching after trial baselines are ignored.
 \code{estimand_type = "PP"} will perform per-protocol analyses, where individuals' follow-ups are artificially censored
-and inverse probability of treatment weighting is applied. \code{estimand_type = "As-Treated"} will fit a standard marginal
-structural model for all possible treatment sequences, where individuals' follow-ups are not artificially censored
-but treatment switching after trial baselines are accounted for by applying inverse probability of treatment weighting.}
+and inverse probability of treatment weighting is applied. \code{estimand_type = "As-Treated"} will fit a standard
+marginal structural model for all possible treatment sequences, where individuals' follow-ups
+are not artificially censored  but treatment switching after trial baselines are accounted for
+by applying inverse probability of treatment weighting.}
 
 \item{model_var}{Treatment variables to be included in the marginal structural model for the emulated trials.
 \code{model_var = "assigned_treatment"} will create a variable \code{assigned_treatment} that is the assigned treatment at
