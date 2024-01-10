@@ -1,4 +1,4 @@
-# TrialEmulation 0.0.3.5
+# TrialEmulation 0.0.3.6
 
 * Add `estimand_type` argument
 
