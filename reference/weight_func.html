@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">TrialEmulation</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.3.5</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.3.6</span>
       </span>
     </div>
 
@@ -91,43 +91,52 @@
 
 
 <dt>use_censor_weights</dt>
-<dd><p>Use informative censoring weights in analysis.</p></dd>
+<dd><p>Require the inverse probability of censoring weights. If <code>use_censor_weights = TRUE</code>, then
+the variable name of the censoring indicator needs to be provided in the argument <code>cense</code>.</p></dd>
 
 
 <dt>switch_n_cov</dt>
-<dd><p>A RHS formula for modelling probability of switching treatment. Used in the numerator of weight
-calculation. May use <code>time_on_regime</code> to include treatment duration.</p></dd>
+<dd><p>A RHS formula to specify the logistic models for estimating the numerator terms of the inverse
+probability of treatment weights. A derived variable named <code>time_on_regime</code> containing the duration of time that
+the individual has been on the current treatment/non-treatment is available for use in these models.</p></dd>
 
 
 <dt>switch_d_cov</dt>
-<dd><p>A RHS formula for modelling probability of switching treatment. Used in the denominator of weight
-calculation. May use <code>time_on_regime</code> to include treatment duration.</p></dd>
+<dd><p>A RHS formula to specify the logistic models for estimating the denominator terms of the inverse
+probability of treatment weights.</p></dd>
 
 
 <dt>eligible_wts_0</dt>
-<dd><p>Eligibility criteria used in weights for model condition Am1 = 0</p></dd>
+<dd><p>See definition for <code>eligible_wts_1</code></p></dd>
 
 
 <dt>eligible_wts_1</dt>
-<dd><p>Eligibility criteria used in weights for model condition Am1 = 1</p></dd>
+<dd><p>Exclude some observations when fitting the models for the inverse probability of treatment
+weights. For example, if it is assumed that an individual will stay on treatment for at least 2 visits, the first 2
+visits  after treatment initiation by definition have a probability of staying on the treatment of 1.0 and should
+thus be excluded from the weight models for those who are on treatment at the immediately previous visit. Users can
+define a variable that indicates that these 2 observations are ineligible for the weight model for those who are on
+treatment at the immediately previous visit and add the variable name in the argument <code>eligible_wts_1</code>. Similar
+definitions are applied to <code>eligible_wts_0</code> for excluding observations when fitting the models for the inverse
+probability of treatment weights for those who are not on treatment at the immediately previous visit.</p></dd>
 
 
 <dt>cense</dt>
-<dd><p>Censoring variable column name. Required if <code>use_censor_weights = TRUE</code></p></dd>
+<dd><p>Variable name for the censoring indicator. Required if <code>use_censor_weights = TRUE</code>.</p></dd>
 
 
 <dt>cense_d_cov</dt>
-<dd><p>A RHS formula for modelling probability of being censored. Used in the numerator of weight
-calculation.</p></dd>
+<dd><p>A RHS formula to specify the logistic models for estimating the denominator terms of the inverse
+probability of censoring weights.</p></dd>
 
 
 <dt>cense_n_cov</dt>
-<dd><p>A RHS formula for modelling probability of being censored. Used in the denominator of weight
-calculation.</p></dd>
+<dd><p>A RHS formula to specify the logistic models for estimating the numerator terms of the inverse
+probability of censoring weights.</p></dd>
 
 
 <dt>save_weight_models</dt>
-<dd><p>Save weight models objects in <code>data_dir</code>.</p></dd>
+<dd><p>Save model objects for estimating the weights in <code>data_dir</code>.</p></dd>
 
 
 <dt>data_dir</dt>
@@ -135,16 +144,21 @@ calculation.</p></dd>
 
 
 <dt>quiet</dt>
-<dd><p>Don't print progress messages.</p></dd>
+<dd><p>Suppress the printing of progress messages and summaries of the fitted models.</p></dd>
 
 
 <dt>glm_function</dt>
-<dd><p>Which glm function to use for the final model from <code>stats</code> or <code>parglm</code> packages</p></dd>
+<dd><p>Specify which glm function to use for the marginal structural model from the <code>stats</code> or <code>parglm</code>
+packages. The default function is the <code>glm</code> function in the <code>stats</code> package. Users can also specify <code>glm_function = "parglm"</code> such that the <code>parglm</code> function in the <code>parglm</code> package can be used for fitting generalized linear models
+in parallel. The default control setting for  <code>parglm</code> is <code>nthreads = 4</code> and <code>method = "FAST"</code>, where four cores
+and Fisher information are used for faster computation. Users can change the default control setting by passing the
+arguments <code>nthreads</code> and <code>method</code> in the <code>parglm.control</code> function of the <code>parglm</code> package, or alternatively, by
+passing a <code>control</code> argument with a list produced by <code>parglm.control(nthreads = , method = )</code>.</p></dd>
 
 
 <dt>...</dt>
-<dd><p>Additional arguments passed to <code>glm_function</code>. This may be used to specify initial parameter estimates
-or arguments to <code>control</code>. See <a href="https://rdrr.io/r/stats/glm.html" class="external-link">stats::glm</a>, <a href="https://rdrr.io/pkg/parglm/man/parglm.html" class="external-link">parglm::parglm</a> and <code><a href="https://rdrr.io/pkg/parglm/man/parglm.control.html" class="external-link">parglm::parglm.control()</a></code> for more information.</p></dd>
+<dd><p>Additional arguments passed to <code>glm_function</code>. This may be used to specify initial values of parameters or
+arguments to <code>control</code>. See <a href="https://rdrr.io/r/stats/glm.html" class="external-link">stats::glm</a>, <a href="https://rdrr.io/pkg/parglm/man/parglm.html" class="external-link">parglm::parglm</a> and <code><a href="https://rdrr.io/pkg/parglm/man/parglm.control.html" class="external-link">parglm::parglm.control()</a></code> for more information.</p></dd>
 
 
 <dt>save_dir</dt>

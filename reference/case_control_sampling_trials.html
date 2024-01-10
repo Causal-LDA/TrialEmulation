@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">TrialEmulation</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.3.5</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.3.6</span>
       </span>
     </div>
 
@@ -78,16 +78,16 @@
 
 
 <dt>p_control</dt>
-<dd><p>Proportion of controls to select at each follow-up time of each trial.</p></dd>
+<dd><p>Control sampling probability for selecting potential controls at each follow-up time of each trial.</p></dd>
 
 
 <dt>subset_condition</dt>
-<dd><p>Expression used to <code><a href="https://rdrr.io/r/base/subset.html" class="external-link">subset()</a></code> the trial data before sampling.</p></dd>
+<dd><p>Expression used to <code><a href="https://rdrr.io/r/base/subset.html" class="external-link">subset()</a></code> the trial data before case-control sampling.</p></dd>
 
 
 <dt>sort</dt>
-<dd><p>Sort data before sampling. This ensures results are identical between data prepared with
-<code>separate_files</code> TRUE and FALSE.</p></dd>
+<dd><p>Sort data before applying case-control sampling to make sure that the resulting data are identical when
+sampling from the expanded data created with <code>separate_files = TRUE</code> or <code>separate_files = FALSE</code>.</p></dd>
 
 </dl></div>
     <div id="value">
@@ -96,8 +96,10 @@
 
 <p>A <code>data.frame</code> or a <code><a href="https://rdrr.io/r/base/split.html" class="external-link">split()</a></code></p>
 <p></p>
-<p><code>data.frame</code> if  <code>length(p_control) &gt; 1</code>. An additional column
-containing sample weights will be added to the result. These can be included in the models fit with
+<p><code>data.frame</code> if  <code>length(p_control) &gt; 1</code>. An additional column <code>sample_weight</code></p>
+
+
+<p>containing the sample weights will be added to the result. These can be included in the models fit with
 <code><a href="trial_msm.html">trial_msm()</a></code>.</p>
     </div>
 
