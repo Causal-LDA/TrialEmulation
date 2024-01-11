@@ -27,7 +27,7 @@ containing the sample weights will be added to the result. These can be included
 \code{\link[=trial_msm]{trial_msm()}}.
 }
 \description{
-Perform case-control sampling of expanded data to create a data set of reduced size and calcuate sampling weights
+Perform case-control sampling of expanded data to create a data set of reduced size and calculate sampling weights
 to be used in \code{trial_msm()}.
 }
 \examples{
