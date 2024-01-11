@@ -37,7 +37,7 @@
 #' plot(predicted_ci[[1]]$followup_time, predicted_ci[[1]]$cum_inc,
 #'   type = "l",
 #'   xlab = "Follow-up Time", ylab = "Cumulative Incidence",
-#'   ylab = c(0, 0.05)
+#'   ylim = c(0, 0.7)
 #' )
 #' lines(predicted_ci[[1]]$followup_time, predicted_ci[[1]]$`2.5%`, lty = 2)
 #' lines(predicted_ci[[1]]$followup_time, predicted_ci[[1]]$`97.5%`, lty = 2)
