@@ -16,7 +16,7 @@
 #'   trial baselines will be included in the expanded data.
 #' @param model_var Treatment variables to be included in the marginal structural model for the emulated trials.
 #'   `model_var = "assigned_treatment"` will create a variable `assigned_treatment` that is the assigned treatment at
-#'   the trial baseline, typically used for ITT and per-protocol analyses. `model_var = "dose"' will create a variable
+#'   the trial baseline, typically used for ITT and per-protocol analyses. `model_var = "dose"` will create a variable
 #'   `dose` that is the cumulative number of  treatments received since the trial baseline, typically used in as-treated
 #'   analyses.
 #'
@@ -89,11 +89,11 @@
 #'   arguments to `control`. See [stats::glm], [parglm::parglm] and [parglm::parglm.control()] for more information.
 #'
 #'
-#' @returns Returns the result of [trial_msm()] on the expanded data. An object of class `TE_msm` containing
+#' @returns Returns the result of [trial_msm()] from the expanded data. An object of class `TE_msm` containing
 #' \describe{
 #'  \item{model}{a `glm` object}
 #'  \item{robust}{a list containing a summary table of estimated regression coefficients and the robust covariance
-#'  `matrix`}
+#'  matrix}
 #' }
 #' @export
 initiators <- function(data,
