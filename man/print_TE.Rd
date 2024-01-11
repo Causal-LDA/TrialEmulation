@@ -2,12 +2,12 @@
 % Please edit documentation in R/generics.R
 \name{print.TE_weight_summary}
 \alias{print.TE_weight_summary}
-\title{Print a Weight Summary Object}
+\title{Print a weight summary object}
 \usage{
 \method{print}{TE_weight_summary}(x, full = TRUE, ...)
 }
 \arguments{
-\item{x}{print.TE_weight_summary object.}
+\item{x}{print TE_weight_summary object.}
 
 \item{full}{Print full or short summary.}
 
@@ -17,5 +17,5 @@
 No return value, only for printing.
 }
 \description{
-Print a Weight Summary Object
+Print a weight summary object
 }

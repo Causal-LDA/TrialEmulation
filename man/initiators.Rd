@@ -68,7 +68,8 @@ treatment weighting.}
 
 \item{model_var}{Treatment variables to be included in the marginal structural model for the emulated trials.
 \code{model_var = "assigned_treatment"} will create a variable \code{assigned_treatment} that is the assigned treatment at
-the trial baseline, typically used for ITT and per-protocol analyses. \verb{model_var = "dose"' will create a variable }dose` that is the cumulative number of  treatments received since the trial baseline, typically used in as-treated
+the trial baseline, typically used for ITT and per-protocol analyses. \code{model_var = "dose"} will create a variable
+\code{dose} that is the cumulative number of  treatments received since the trial baseline, typically used in as-treated
 analyses.}
 
 \item{switch_n_cov}{A RHS formula to specify the logistic models for estimating the numerator terms of the inverse
@@ -157,11 +158,11 @@ passing a \code{control} argument with a list produced by \code{parglm.control(n
 arguments to \code{control}. See \link[stats:glm]{stats::glm}, \link[parglm:parglm]{parglm::parglm} and \code{\link[parglm:parglm.control]{parglm::parglm.control()}} for more information.}
 }
 \value{
-Returns the result of \code{\link[=trial_msm]{trial_msm()}} on the expanded data. An object of class \code{TE_msm} containing
+Returns the result of \code{\link[=trial_msm]{trial_msm()}} from the expanded data. An object of class \code{TE_msm} containing
 \describe{
 \item{model}{a \code{glm} object}
 \item{robust}{a list containing a summary table of estimated regression coefficients and the robust covariance
-\code{matrix}}
+matrix}
 }
 }
 \description{
