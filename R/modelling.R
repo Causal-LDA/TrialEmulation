@@ -1,7 +1,7 @@
-#' Fit the Marginal Structural Model for the Sequence of Emulated Trials
+#' Fit the marginal structural model for the sequence of emulated trials
 #'
 #' Apply a weighted pooled logistic regression to fit the marginal structural model for the sequence of emulated trials
-#' and calculates the covariance matrix  of parameter using the robust sandwich estimator.
+#' and calculates the robust covariance matrix  of parameter using the sandwich estimator.
 #'
 #' @param use_sample_weights Use case-control sampling weights in addition to inverse probability weights for treatment
 #'   and censoring. `data` must contain a column `sample_weight`. The final weights used in the pooled logistic
@@ -14,8 +14,8 @@
 #' @returns Object of class `TE_msm` containing
 #' \describe{
 #'  \item{model}{a `glm` object}
-#'  \item{robust}{a list containing a summary table of regression coefficient estimates and the robust covariance
-#'  `matrix`}
+#'  \item{robust}{a list containing a summary table of estimated regression coefficients and the robust covariance
+#'  matrix}
 #'  \item{args}{a list contain the parameters used to prepare and fit the model}
 #' }
 #'
