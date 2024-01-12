@@ -2,7 +2,7 @@
 % Please edit documentation in R/sampling.R
 \name{case_control_sampling_trials}
 \alias{case_control_sampling_trials}
-\title{Case-control sampling from extended data}
+\title{Case-control sampling of expanded data for the sequence of emulated trials}
 \usage{
 case_control_sampling_trials(
   data_prep,
@@ -27,7 +27,8 @@ containing the sample weights will be added to the result. These can be included
 \code{\link[=trial_msm]{trial_msm()}}.
 }
 \description{
-Case-control sampling from extended data
+Perform case-control sampling of expanded data to create a data set of reduced size and calculate sampling weights
+to be used in \code{trial_msm()}.
 }
 \examples{
 # If necessary reduce the number of threads for data.table

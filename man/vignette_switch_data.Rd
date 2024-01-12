@@ -3,7 +3,7 @@
 \docType{data}
 \name{vignette_switch_data}
 \alias{vignette_switch_data}
-\title{Example of expanded longitudinal data for randomised trial emulation}
+\title{Example of expanded longitudinal data for sequential trial emulation}
 \format{
 A data frame with 1939053 rows and 7 variables:
 \describe{
@@ -11,8 +11,8 @@ A data frame with 1939053 rows and 7 variables:
 \item{trial_period}{trial start time period}
 \item{followup_time}{follow up time within trial}
 \item{outcome}{indicator for outcome in this period, 1=event occurred, 0=no event}
-\item{treatment}{indicator for receiving treatment in this period, 1=treatment, 0=no treatment}
-\item{assigned_treatment}{indicator for assigned treatment at baseline of the trial, 1=treatment, 0=no treatment}
+\item{treatment}{indicator for receiving treatment in this period, 1=treatment, 0=non-treatment}
+\item{assigned_treatment}{indicator for assigned treatment at baseline of the trial, 1=treatment, 0=non-treatment}
 \item{weight}{weights for use with model fitting}
 \item{catvarA}{A categorical variable relating to treatment and the outcome}
 \item{catvarB}{A categorical variable relating to treatment and the outcome}

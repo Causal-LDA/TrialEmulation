@@ -2,7 +2,7 @@
 % Please edit documentation in R/modelling.R
 \name{trial_msm}
 \alias{trial_msm}
-\title{Fit the Marginal Structural Model for the Sequence of Emulated Trials}
+\title{Fit the marginal structural model for the sequence of emulated trials}
 \usage{
 trial_msm(
   data,
@@ -38,7 +38,8 @@ treatment weighting.}
 
 \item{model_var}{Treatment variables to be included in the marginal structural model for the emulated trials.
 \code{model_var = "assigned_treatment"} will create a variable \code{assigned_treatment} that is the assigned treatment at
-the trial baseline, typically used for ITT and per-protocol analyses. \verb{model_var = "dose"' will create a variable }dose` that is the cumulative number of  treatments received since the trial baseline, typically used in as-treated
+the trial baseline, typically used for ITT and per-protocol analyses. \code{model_var = "dose"} will create a variable
+\code{dose} that is the cumulative number of  treatments received since the trial baseline, typically used in as-treated
 analyses.}
 
 \item{first_followup}{First follow-up time/visit in the trials to be included in the marginal structural model for
@@ -89,14 +90,14 @@ arguments to \code{control}. See \link[stats:glm]{stats::glm}, \link[parglm:parg
 Object of class \code{TE_msm} containing
 \describe{
 \item{model}{a \code{glm} object}
-\item{robust}{a list containing a summary table of regression coefficient estimates and the robust covariance
-\code{matrix}}
+\item{robust}{a list containing a summary table of estimated regression coefficients and the robust covariance
+matrix}
 \item{args}{a list contain the parameters used to prepare and fit the model}
 }
 }
 \description{
 Apply a weighted pooled logistic regression to fit the marginal structural model for the sequence of emulated trials
-and calculates the covariance matrix  of parameter using the robust sandwich estimator.
+and calculates the robust covariance matrix  of parameter using the sandwich estimator.
 }
 \details{
 The model formula is constructed by combining the arguments \code{outcome_cov}, \code{model_var},

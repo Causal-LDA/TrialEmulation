@@ -88,9 +88,9 @@ summary.TE_robust <- function(object, ...) {
 
 
 
-#' Print a Weight Summary Object
+#' Print a weight summary object
 #'
-#' @param x print.TE_weight_summary object.
+#' @param x print TE_weight_summary object.
 #' @param full Print full or short summary.
 #' @param ... Arguments passed to [print.data.frame].
 #' @export

@@ -2,7 +2,7 @@
 % Please edit documentation in R/predict.R
 \name{predict.TE_msm}
 \alias{predict.TE_msm}
-\title{Predict Marginal Cumulative Incidences with Confidence Intervals for a Target Trial Population}
+\title{Predict marginal cumulative incidences with confidence intervals for a target trial population}
 \usage{
 \method{predict}{TE_msm}(
   object,
@@ -25,10 +25,10 @@ the fitted marginal structural model specified in \code{\link[=trial_msm]{trial_
 \item{predict_times}{Specify the follow-up visits/times where the marginal cumulative incidences or survival
 probabilities are predicted.}
 
-\item{conf_int}{Estimate the point-wise 95\\% confidence intervals of cumulative incidences for the target trial
-population under treatment and non-treatment and their differences by simulating the parameters in the marginal
-structural model from a multivariate normal distribution with mean equal to the marginal structural model parameter
-estimates and the variance equal to the estimated robust covariance matrix.}
+\item{conf_int}{Construct the point-wise 95-percent confidence intervals of cumulative incidences for the target
+trial population under treatment and non-treatment and their differences by simulating the parameters in the
+marginal structural model from a multivariate normal distribution with the mean equal to the marginal structural
+model parameter estimates and the variance equal to the estimated robust covariance matrix.}
 
 \item{samples}{Number of samples used to construct the simulation-based confidence intervals.}
 
@@ -42,7 +42,11 @@ A list of three data frames containing the cumulative incidences for each of the
 (treatment and non-treatment) and the difference between them.
 }
 \description{
-Predict Marginal Cumulative Incidences with Confidence Intervals for a Target Trial Population
+This function predicts the marginal cumulative incidences when a target trial population receives either the
+treatment or non-treatment at baseline (for an intention-to-treat analysis) or either sustained treatment or
+sustained non-treatment (for a per-protocol analysis). The difference between these cumulative incidences is the
+estimated causal effect of treatment. Currently, the \code{predict} function only provides marginal intention-to-treat and
+per-protocol effects, therefore it is only valid when \code{estimand_type = "ITT"} or \code{estimand_type = "PP"}.
 }
 \examples{
 # If necessary set the number of `data.table` threads
@@ -54,7 +58,8 @@ predicted_ci <- predict(te_model_ex, predict_times = 0:30, samples = 10)
 # Plot the cumulative incidence curves under treatment and non-treatment
 plot(predicted_ci[[1]]$followup_time, predicted_ci[[1]]$cum_inc,
   type = "l",
-  xlab = "Follow-up Time", ylab = "Cumulative Incidence"
+  xlab = "Follow-up Time", ylab = "Cumulative Incidence",
+  ylim = c(0, 0.7)
 )
 lines(predicted_ci[[1]]$followup_time, predicted_ci[[1]]$`2.5\%`, lty = 2)
 lines(predicted_ci[[1]]$followup_time, predicted_ci[[1]]$`97.5\%`, lty = 2)
@@ -68,7 +73,7 @@ legend("topleft", title = "Assigned Treatment", legend = c("0", "1"), col = 1:2,
 plot(predicted_ci[[3]]$followup_time, predicted_ci[[3]]$cum_inc_diff,
   type = "l",
   xlab = "Follow-up Time", ylab = "Difference in Cumulative Incidence",
-  ylim = c(-0.1, 0.1)
+  ylim = c(0.0, 0.5)
 )
 lines(predicted_ci[[3]]$followup_time, predicted_ci[[3]]$`2.5\%`, lty = 2)
 lines(predicted_ci[[3]]$followup_time, predicted_ci[[3]]$`97.5\%`, lty = 2)

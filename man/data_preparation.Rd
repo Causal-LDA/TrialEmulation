@@ -52,7 +52,8 @@ Default is `eligible'.}
 
 \item{model_var}{Treatment variables to be included in the marginal structural model for the emulated trials.
 \code{model_var = "assigned_treatment"} will create a variable \code{assigned_treatment} that is the assigned treatment at
-the trial baseline, typically used for ITT and per-protocol analyses. \verb{model_var = "dose"' will create a variable }dose` that is the cumulative number of  treatments received since the trial baseline, typically used in as-treated
+the trial baseline, typically used for ITT and per-protocol analyses. \code{model_var = "dose"} will create a variable
+\code{dose} that is the cumulative number of  treatments received since the trial baseline, typically used in as-treated
 analyses.}
 
 \item{outcome_cov}{A RHS formula with baseline covariates to be adjusted for in the marginal structural model for the

@@ -3,7 +3,7 @@
 \docType{data}
 \name{trial_example}
 \alias{trial_example}
-\title{Example of longitudinal data for randomised trial emulation}
+\title{Example of longitudinal data for sequential trial emulation}
 \format{
 A data frame with 48400 rows and 11 variables:
 \describe{
@@ -24,7 +24,7 @@ A data frame with 48400 rows and 11 variables:
 trial_example
 }
 \description{
-A dataset containing the treatment, outcomes and other attributes of 503 patients for randomised trial emulation.
+A dataset containing the treatment, outcomes and other attributes of 503 patients for sequential trial emulation.
 See \code{vignette("Getting-Started")}.
 }
 \keyword{datasets}

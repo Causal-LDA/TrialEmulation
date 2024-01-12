@@ -1,4 +1,7 @@
-#' Case-control sampling from extended data
+#' Case-control sampling of expanded data for the sequence of emulated trials
+#'
+#' Perform case-control sampling of expanded data to create a data set of reduced size and calculate sampling weights
+#' to be used in `trial_msm()`.
 #'
 #' @param data_prep Result from [data_preparation()].
 #' @param p_control Control sampling probability for selecting potential controls at each follow-up time of each trial.
