@@ -49,9 +49,8 @@ select_data_cols <- function(data, args) {
 #'
 #' This function performs the calculation for weight of the data
 #' @param sw_data A data.table
-#' @param save_dir Directory to save tidy weight model summaries in as 'weight_models.rda'
 #' @inheritParams initiators
-#' @keywords internal
+#' @noRd
 #'
 weight_func <- function(sw_data,
                         use_switch_weights = use_switch_weights,
