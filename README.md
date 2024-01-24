@@ -9,10 +9,23 @@ Coverage](https://raw.githubusercontent.com/Causal-LDA/TrialEmulation/_xml_cover
 
 This package implements algorithms to conduct a **sequence of target trials** analysis.
 
-To install the latest development version from github
+## Installation
+
+The package is available on CRAN:
+
+```r
+install.packages('TrialEmulation')
+```
+
+To install the latest development version from github:
 
 ```r
 remotes::install_github("Causal-LDA/TrialEmulation")
 ```
 
-For more information see the [Getting Started vignette](https://Causal-LDA.github.io/TrialEmulation/articles/Getting-Started.html).
+## Getting Started
+
+Please see our [Getting Started vignette](https://Causal-LDA.github.io/TrialEmulation/articles/Getting-Started.html)
+for information on how to work with this package.
+
+A manuscript is in preparation to fully describe the methodology.
