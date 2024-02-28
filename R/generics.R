@@ -47,7 +47,7 @@ summary.TE_data_prep_sep <- function(object, ...) {
 
   n_files <- length(object$data)
   cat("Expanded data saved in ", n_files, " csv file", if (n_files > 1) "s" else "", ":\n", sep = "")
-  print(data.table(data = object$data), topn = 3, n = 5, col.names = "none", ...)
+  print(data.table(data = object$data), topn = 3, n = 5, col.names = "none", class = FALSE, ...)
   cat("\n\n")
   NextMethod()
 }
@@ -56,7 +56,7 @@ summary.TE_data_prep_sep <- function(object, ...) {
 #' @export
 summary.TE_data_prep_dt <- function(object, ...) {
   cat("Expanded Trial Emulation data\n\n")
-  print(object$data, topn = 3, nrows = 3, ...)
+  print(object$data, topn = 3, nrows = 3, class = FALSE, ...)
   cat("\n")
   NextMethod()
 }
