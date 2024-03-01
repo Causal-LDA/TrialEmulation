@@ -1,0 +1,34 @@
+---
+title: "classes"
+output: html_document
+date: "2024-02-28"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Classes in TrialEmulation
+
+Based on editor feedback we should improve our use of classes and methods.
+
+Some easy things: - add print/show methods - add summary methods - make `trial_msm` take an object from `data_preparation()` (it does but it's said differently in the docs)
+
+Some other things: - allow modularity and extensibility of classes and methods, eg alternative weight or outcome models
+
+## Design
+
+1.  input data object
+2.  weight model class
+
+-   censoring weights object
+    -   fit_glm class
+-   switching weights object
+    -   fit_glm class
+
+3.  data extension method
+
+-   data output object: {data.table, csv, duckdb/sqlite}
+
+4.  MSM model fit
+5.  predict
