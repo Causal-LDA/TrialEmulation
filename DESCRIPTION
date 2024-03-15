@@ -47,3 +47,24 @@ LazyData: true
 LazyDataCompression: xz
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.3.1
+Collate: 
+    'RcppExports.R'
+    'classes.R'
+    'data.R'
+    'data_extension.R'
+    'data_manipulation.R'
+    'data_preparation.R'
+    'data_simulation.R'
+    'data_utils.R'
+    'generics.R'
+    'initiators.R'
+    'lr_utils.R'
+    'modelling.R'
+    'package.R'
+    'predict.R'
+    'robust.R'
+    'sampling.R'
+    'te_data.R'
+    'trial_sequence.R'
+    'utils.R'
+    'weighting.R'

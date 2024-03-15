@@ -36,19 +36,27 @@ Some other things: - allow modularity and extensibility of classes and methods, 
 ```{r}
 #| eval: false
 
-tte <- target_trial_sequence() |> 
-  set_data(my_big_df, id = "ID", treatment = "drug", outcome = "Death", eligibility = "IE") |> 
-  set_estimand("PP")
+tte <- trial_sequence(estimand = "PP") |>
+  set_data(trial_example, id = "ID", treatment = "drug", outcome = "Death", eligible = "IE")
+
+tte <- trial_sequence(estimand = "ITT") |> set_data(trial_example)
+tte_PP <- trial_sequence(estimand = "PP") |> set_data(trial_example)
 # message:
 # A per-protocol analysis requires specification of treatment switching model with set_switch_weight_model()
-tte2 <- tte |> 
-  set_switch_weight_model(numerator = ~ age + biomarker, denominator = ~ age + biomarker, pooled = TRUE, save_models = "~/my_TTE") |> 
+tte2 <- tte |>
+  set_switch_weight_model(
+    numerator = ~ age + biomarker,
+    denominator = ~ age + biomarker,
+    pooled = TRUE,
+    save_models = "~/my_TTE",
+    model_type = glm()
+  ) |>
   set_censor_weight_model(numerator = ~ age + biomarker, denominator = ~ age + biomarker, pooled = TRUE) |>
   set_expansion_options(chunks = 500, output = csv_files(dir = tempdir()))
 
 initiators(tte2) # error! modelling options are not set
 
-tte3 <- calculate_weights(tte2) 
+tte3 <- calculate_weights(tte2)
 expanded_tte3 <- expand_trials(tte3)
 
 expanded_tte3 <- set_outcome_model(expanded_tte3, ~ age + biomarker + time + time^2)
@@ -56,7 +64,6 @@ results <- fit_msm(expanded_tte3)
 
 predict(tte3) # error! run fit_msm on this model
 predict(results)
-
 ```
 
 
@@ -64,3 +71,11 @@ The TTE object always inherits from the "tte" parent class. After expanding it b
 "expanded_TTE" which inherits and then a "msm_TTE" the same.
 
 `initiators()` is, as before, an all in one function but takes a completely specified trial object
+
+
+Arbitrary weighting models could be set
+```{r}
+my_weight_function <- function(formula, data, filename) {
+  return(list(summary, fit_summary, weights))
+}
+```
