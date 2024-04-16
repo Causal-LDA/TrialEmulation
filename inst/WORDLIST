@@ -1,3 +1,6 @@
+catvarA
+catvarB
+catvarC
 CMD
 csv
 Danaei
@@ -19,10 +22,14 @@ lda
 MRC
 msm
 newdata
+nvarA
+nvarC
 ORCID
 rda
 Rezvani
 Roonak
+setClass
+setMethod
 sqlite
 st
 te

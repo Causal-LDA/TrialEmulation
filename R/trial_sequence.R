@@ -1,11 +1,11 @@
-#' @include classes.R te_data.R
+#' @include classes.R te_data.R te_weights.R
 NULL
 
 #' Trial Sequence class
 #'
 #' @slot data te_data.
 #' @slot estimand character. Descriptive name of estimand.
-#' @slot expansion te_expanded_datastore.
+#' @slot expansion te_expansion
 #' @slot outcome_model te_outcome_model.
 #'
 #' @export
@@ -13,8 +13,12 @@ setClass("trial_sequence",
   slots = c(
     data = "te_data",
     estimand = "character",
-    expansion = "te_expanded_datastore",
-    outcome_model = "te_outcome_model"
+    expansion = "te_expansion",
+    outcome_model = "te_outcome_model",
+    censor_weights = "te_weights_spec"
+  ),
+  prototype = prototype(
+    censor_weights = new("te_weights_unset")
   )
 )
 
@@ -29,11 +33,11 @@ setClass(
   "trial_sequence_PP",
   contains = "trial_sequence",
   prototype = list(
-    estimand = "Per-protocol"
+    estimand = "Per-protocol",
+    switch_weights = new("te_weights_unset")
   ),
   slots = c(
-    censor_weight = "te_weight",
-    switch_weight = "te_weight"
+    switch_weights = "te_weights_spec"
   )
 )
 
@@ -45,8 +49,7 @@ setClass(
   contains = "trial_sequence",
   prototype = list(
     estimand = "Intention-to-treat"
-  ),
-  slots = c(censor_weight = "te_weight")
+  )
 )
 
 #' @rdname trial_sequence-class
@@ -55,11 +58,11 @@ setClass(
   "trial_sequence_AT",
   contains = "trial_sequence",
   prototype = list(
-    estimand = "As treated"
+    estimand = "As treated",
+    switch_weights = new("te_weights_unset")
   ),
   slots = c(
-    censor_weight = "te_weight",
-    switch_weight = "te_weight"
+    switch_weights = "te_weights_spec"
   )
 )
 
@@ -91,6 +94,7 @@ trial_sequence <- function(estimand, ...) {
   } else if (!extends(estimand_class, "trial_sequence")) {
     stop(estimand_class_name, " does not extend class trial_sequence")
   }
+
   new(estimand_class_name, ...)
 }
 
@@ -102,9 +106,30 @@ setMethod(
     catn("Trial Sequence Object")
     catn("Estimand:", object@estimand)
     show(object@data)
+    catn("IPW for informative censoring:")
+    show(object@censor_weights)
   }
 )
 
+setMethod(
+  "show",
+  c(object = "trial_sequence_PP"),
+  function(object) {
+    callNextMethod()
+    catn("IPW for treatment switch censoring:")
+    show(object@switch_weights)
+  }
+)
+
+setMethod(
+  "show",
+  c(object = "trial_sequence_AT"),
+  function(object) {
+    callNextMethod()
+    catn("IPW for treatment switch censoring:")
+    show(object@switch_weights)
+  }
+)
 
 #' Set the trial data
 #'
@@ -208,6 +233,7 @@ setMethod(
     assert_names(
       colnames(data),
       must.include = c(id, period, treatment, outcome, eligible),
+      disjunct.from = c("wt", "wtC", "weight"),
       what = "colnames",
       .var.name = "data"
     )
@@ -231,12 +257,182 @@ setMethod(
 
 #' Set censoring weight model
 #'
+#' @param object trial_sequence.
+#' @param numerator
+#' @param denominator
+#' @param pool_models
+#' @param model_fitter
+#' @param censor_event string. Name of column containing censoring indicator.
 #'
+#' @return `object` is returned with `@censor_weights` set
+#' @export
+#'
+#' @examples
 setGeneric("set_censor_weight_model", function(object, ...) standardGeneric("set_censor_weight_model"))
-setMethod()
+
+setMethod(
+  "set_censor_weight_model",
+  c(object = "trial_sequence"),
+  function(object,
+           censor_event,
+           numerator,
+           denominator,
+           pool_models = c("none", "both", "numerator"),
+           model_fitter = stats_glm_logit()) {
+    if (missing(numerator)) numerator <- ~0
+    if (missing(denominator)) denominator <- ~0
+    # check which of these can be a null model TODO
+    assert_formula(numerator)
+    assert_formula(denominator)
+    assert_string(censor_event)
+    assert_names(colnames(object@data@data), must.include = censor_event)
+
+    numerator <- update.formula(numerator, paste("1 -", censor_event, "~ ."))
+    denominator <- update.formula(denominator, paste("1 -", censor_event, "~ ."))
+
+    assert_class(model_fitter, "te_weights_fitter")
+    object@censor_weights <- new(
+      "te_weights_spec",
+      numerator = numerator,
+      denominator = denominator,
+      pool_numerator = pool_models %in% c("numerator", "both"),
+      pool_denominator = pool_models == "both",
+      model_fitter = model_fitter
+    )
+    object
+  }
+)
+
+setMethod(
+  "set_censor_weight_model",
+  c(object = "trial_sequence_PP"),
+  function(object,
+           censor_event,
+           numerator,
+           denominator,
+           pool_models = "none",
+           model_fitter = stats_glm_logit()) {
+    assert_choice(pool_models, c("both", "numerator", "none"))
+    callNextMethod()
+  }
+)
+setMethod(
+  "set_censor_weight_model",
+  c(object = "trial_sequence_ITT"),
+  function(object,
+           censor_event,
+           numerator,
+           denominator,
+           pool_models = "numerator",
+           model_fitter = stats_glm_logit()) {
+    assert_choice(pool_models, c("both", "numerator"))
+    callNextMethod()
+  }
+)
+setMethod(
+  "set_censor_weight_model",
+  c(object = "trial_sequence_AT"),
+  function(object,
+           censor_event,
+           numerator,
+           denominator,
+           pool_models = "none",
+           model_fitter = stats_glm_logit()) {
+    assert_choice(pool_models, c("both", "numerator", "none"))
+    callNextMethod()
+  }
+)
+
+
+setGeneric("set_switch_weight_model", function(object, ..., model_fitter) standardGeneric("set_switch_weight_model"))
 
 
 #' Set switching weight model
 #'
+#' @param object trial_sequence.
+#' @param numerator
+#' @param denominator
+#' @param model_fitter
 #'
-setGeneric("set_switch_weight_model", function(object, ...) standardGeneric("set_switch_weight_model"))
+#' @return `object` is returned with `@switch_weights` set
+#' @export
+#'
+#' @examples
+setMethod(
+  "set_switch_weight_model",
+  c(object = "trial_sequence"),
+  function(object, numerator, denominator, model_fitter) {
+    if (missing(numerator)) numerator <- ~0
+    if (missing(denominator)) denominator <- ~0
+    # check which of these can be a null model
+    assert_formula(numerator)
+    assert_formula(denominator)
+    numerator <- update.formula(numerator, treatment ~ .)
+    denominator <- update.formula(denominator, treatment ~ .)
+
+    object@switch_weights <- new(
+      "te_weights_spec",
+      numerator = numerator,
+      denominator = denominator,
+      model_fitter = model_fitter
+    )
+    object
+  }
+)
+
+setMethod(
+  "set_switch_weight_model",
+  c(object = "trial_sequence_ITT"),
+  function(object, ...) {
+    stop("Switching weights are not support for intention-to-treat analyses")
+  }
+)
+
+
+# Set expansion options
+setGeneric("set_expansion_options", function(object, ...) standardGeneric("set_expansion_options"))
+
+setMethod(
+  "set_expansion_options",
+  c(object = "trial_sequence"),
+  function(object, output, chunks) {
+    assert_class(output, "te_datastore")
+    assert_integerish(chunks)
+    object@expansion <- new("te_expansion", chunks = chunks, datastore = output)
+    object
+  }
+)
+
+# Calculate Weights
+setGeneric("calculate_weights", function(object, ...) standardGeneric("calculate_weights"))
+
+setMethod(
+  "calculate_weights",
+  c(object = "trial_sequence_ITT"),
+  function(object, quiet = FALSE) {
+    use_censor_weights <- !is(object@censor_weights, "te_weights_unset")
+    calculate_weights_trial_seq(object, quiet, switch_weights = FALSE, censor_weights = use_censor_weights)
+  }
+)
+setMethod(
+  "calculate_weights",
+  c(object = "trial_sequence_AT"),
+  function(object, quiet = FALSE) {
+    use_censor_weights <- !is(object@censor_weights, "te_weights_unset")
+    if (is(object@censor_weights, "te_weights_unset")) {
+      stop("Switch weight models are not specified. Use set_switch_weight_model()")
+    }
+    calculate_weights_trial_seq(object, quiet, switch_weights = TRUE, censor_weights = use_censor_weights)
+  }
+)
+setMethod(
+  "calculate_weights",
+  c(object = "trial_sequence_PP"),
+  function(object, quiet = FALSE) {
+    use_censor_weights <- !is(object@censor_weights, "te_weights_unset")
+    if (is(object@censor_weights, "te_weights_unset")) {
+      stop("Switch weight models are not specified. Use set_switch_weight_model()")
+    }
+    calculate_weights_trial_seq(object, quiet, switch_weights = TRUE, censor_weights = use_censor_weights)
+  }
+)

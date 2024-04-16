@@ -36,27 +36,58 @@ Some other things: - allow modularity and extensibility of classes and methods, 
 ```{r}
 #| eval: false
 
-tte <- trial_sequence(estimand = "PP") |>
-  set_data(trial_example, id = "ID", treatment = "drug", outcome = "Death", eligible = "IE")
+# tte <- trial_sequence(estimand = "PP") |>
+# set_data(trial_example, id = "ID", treatment = "drug", outcome = "Death", eligible = "IE")
 
 tte <- trial_sequence(estimand = "ITT") |> set_data(trial_example)
 tte_PP <- trial_sequence(estimand = "PP") |> set_data(trial_example)
+tte_AT <- trial_sequence(estimand = "AT") |> set_data(trial_example)
 # message:
 # A per-protocol analysis requires specification of treatment switching model with set_switch_weight_model()
+
 tte2 <- tte |>
+  set_censor_weight_model(
+    censor_event = "catvarC",
+    numerator = ~ age + biomarker,
+    denominator = ~ age + biomarker,
+    pool_models = "both",
+    model_fitter = stats_glm_logit(save_path = "~/my_TTE")
+  ) |>
+  set_expansion_options(chunks = 500, output = save_to_csv(path = file.path(tempdir(), "expansion_dir")))
+
+tte2_PP <- tte_PP |>
+  set_switch_weight_model(
+    numerator = ~ catvarA + nvarA,
+    denominator = ~ catvarB + nvarA,
+    model_fitter = stats_glm_logit(save_path = "~/my_TTE")
+  ) |>
+  set_censor_weight_model(
+    censor_event = "outcome",
+    numerator = ~ catvarC + catvarB + nvarC,
+    denominator = ~ catvarC + catvarB,
+    pool_models = "none",
+    model_fitter = stats_glm_logit(save_path = "~/my_TTE")
+  ) |>
+  set_expansion_options(chunks = 500, output = save_to_csv(path = file.path(tempdir(), "expansion_dir")))
+
+tte2_AT <- tte_AT |>
   set_switch_weight_model(
     numerator = ~ age + biomarker,
     denominator = ~ age + biomarker,
-    pooled = TRUE,
-    save_models = "~/my_TTE",
-    model_type = glm()
+    model_fitter = stats_glm_logit(save_path = "~/my_TTE")
   ) |>
-  set_censor_weight_model(numerator = ~ age + biomarker, denominator = ~ age + biomarker, pooled = TRUE) |>
-  set_expansion_options(chunks = 500, output = csv_files(dir = tempdir()))
+  set_censor_weight_model(
+    numerator = ~ age + biomarker,
+    denominator = ~ age + biomarker,
+    pool_models = "both",
+    model_fitter = stats_glm_logit(save_path = "~/my_TTE")
+  ) |>
+  set_expansion_options(chunks = 500, output = save_to_csv(path = file.path(tempdir(), "expansion_dir")))
+
 
 initiators(tte2) # error! modelling options are not set
 
-tte3 <- calculate_weights(tte2)
+tte3_PP <- calculate_weights(tte2_PP, quiet = FALSE)
 expanded_tte3 <- expand_trials(tte3)
 
 expanded_tte3 <- set_outcome_model(expanded_tte3, ~ age + biomarker + time + time^2)
@@ -73,9 +104,30 @@ The TTE object always inherits from the "tte" parent class. After expanding it b
 `initiators()` is, as before, an all in one function but takes a completely specified trial object
 
 
-Arbitrary weighting models could be set
+Arbitrary weighting models could be defined with two components:
+1. A new class that inherits from `te_weights_fitter` that contains any parameters
+needed for fitting the model. The parent class `te_weights_fitter` has one slot `save_path`
 ```{r}
-my_weight_function <- function(formula, data, filename) {
-  return(list(summary, fit_summary, weights))
-}
+#| eval: false
+stats_glm_logit <- setClass(
+  "te_stats_glm_logit",
+  contains = "te_weights_fitter",
+  slots = c(save_path = "character")
+)
+```
+
+2. A method for this new class that fits a model. It takes the fitter object, a data.frame, a formula and a label.
+It returns a `te_weights_fitted` object containing a summary of the model and a the fitted values.
+If the `@save_path` slot is not empty, a model object should be saved there.
+
+```{r}
+#| eval: false
+setMethod(
+  f = "fit_weights_model",
+  signature = "te_stats_glm_logit",
+  function(object, data, formula, label) {
+    model <- f()
+    new("te_weights_fitted", specification = c(), fitted = model$fitted)
+  }
+)
 ```

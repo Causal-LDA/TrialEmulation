@@ -17,7 +17,7 @@ Trial Sequence class
 
 \item{\code{estimand}}{character. Descriptive name of estimand.}
 
-\item{\code{expansion}}{te_expanded_datastore.}
+\item{\code{expansion}}{te_expansion}
 
 \item{\code{outcome_model}}{te_outcome_model.}
 
