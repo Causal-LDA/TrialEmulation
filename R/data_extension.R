@@ -51,7 +51,7 @@ data_extension <- function(data,
       N <- N + nrow(switch_data)
       for (p in unique(switch_data[["trial_period"]])) {
         file_p <- file.path(data_dir, paste0("trial_", p, ".csv"))
-        fwrite(switch_data[trial_period == p, ], file_p, append = TRUE)
+        fwrite(switch_data[trial_period == p, ], file = file_p, append = TRUE)
       }
     }
     files <- file.path(data_dir, paste0("trial_", first_period:last_period, ".csv"))
@@ -188,9 +188,9 @@ expand <- function(sw_data,
     switch_data[(switch_new == 0 & time_of_event == period_new & outcome_new == 1), case := 1]
   }
 
-  setnames(switch_data, c("case"), c("outcome"))
-  setnames(switch_data, c("init"), c("assigned_treatment"))
-  setnames(switch_data, c("treatment_new"), c("treatment"))
+  setnames(switch_data, old = c("case"), new = c("outcome"))
+  setnames(switch_data, old = c("init"), new = c("assigned_treatment"))
+  setnames(switch_data, old = c("treatment_new"), new = c("treatment"))
   switch_data <- switch_data[expand == 1]
   switch_data <- switch_data[, keeplist, with = FALSE]
 
