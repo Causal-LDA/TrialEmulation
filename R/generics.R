@@ -47,7 +47,7 @@ summary.TE_data_prep_sep <- function(object, ...) {
 
   n_files <- length(object$data)
   cat("Expanded data saved in ", n_files, " csv file", if (n_files > 1) "s" else "", ":\n", sep = "")
-  print(data.table(data = object$data), topn = 3, nrows = 5, col.names = "none", ...)
+  print(data.table(data = object$data), topn = 3, nrows = 5, col.names = "none", class = FALSE, ...)
   cat("\n\n")
   NextMethod()
 }
