@@ -7,6 +7,7 @@ Danaei
 datatable
 dir
 doi
+dplyr
 duckdb
 eg
 estimand
@@ -23,6 +24,7 @@ MRC
 msm
 newdata
 nvarA
+nvarB
 nvarC
 ORCID
 rda
@@ -32,6 +34,7 @@ setClass
 setMethod
 sqlite
 st
+tbl
 te
 tempdir
 th

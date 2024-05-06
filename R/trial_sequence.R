@@ -134,19 +134,20 @@ setMethod(
 #' Set the trial data
 #'
 #' @param trial_sequence A [trial_sequence-class] object
-#' @param data A `data.frame` containing all the required variables in the
-#'   person-time format, i.e., the <U+2018>long<U+2019> format.
-#' @param id Name of the variable for identifiers of the individuals. Default is
-#'   <U+2018>id<U+2019>.
+#' @param data A `data.frame` containing all the required variables in the person-time format, i.e., the
+#'   <U+2018>long<U+2019> format.
+#' @param id Name of the variable for identifiers of the individuals. Default is <U+2018>id<U+2019>.
 #' @param period Name of the variable for the visit/period. Default is <U+2018>period<U+2019>.
-#' @param treatment Name of the variable for the treatment indicator at that
-#'   visit/period. Default is <U+2018>treatment<U+2019>.
-#' @param outcome Name of the variable for the indicator of the outcome event at
-#'   that visit/period. Default is <U+2018>outcome<U+2019>.
-#' @param eligible Name of the variable for the indicator of eligibility for the
-#'   target trial at that visit/period. Default is <U+2018>eligible<U+2019>.
+#' @param treatment Name of the variable for the treatment indicator at that visit/period. Default is
+#'   <U+2018>treatment<U+2019>.
+#' @param outcome Name of the variable for the indicator of the outcome event at that visit/period. Default is
+#'   <U+2018>outcome<U+2019>.
+#' @param eligible Name of the variable for the indicator of eligibility for the target trial at that visit/period.
+#'   Default is <U+2018>eligible<U+2019>.
+#' @param outcome_variables A character vector of column names of variables that may be used after expansion in the
+#'   marginal structural model. Columns not specified here may be dropped during data expansion.
 #'
-#' @return A `trial_sequence` object with data
+#' @return An updated [trial_sequence][trial_sequence-class] object with data
 #' @export
 #'
 #' @examples
@@ -171,8 +172,9 @@ setMethod(
            period = "period",
            treatment = "treatment",
            outcome = "outcome",
-           eligible = "eligible") {
-    callNextMethod(object, data, censor_at_switch = FALSE, id, period, treatment, outcome, eligible)
+           eligible = "eligible",
+           expand_variables = "") {
+    callNextMethod(object, data, censor_at_switch = FALSE, id, period, treatment, outcome, eligible, expand_variables)
   }
 )
 
@@ -186,7 +188,7 @@ setMethod(
            treatment = "treatment",
            outcome = "outcome",
            eligible = "eligible") {
-    callNextMethod(object, data, censor_at_switch = FALSE, id, period, treatment, outcome, eligible)
+    callNextMethod(object, data, censor_at_switch = FALSE, id, period, treatment, outcome, eligible, expand_variables)
   }
 )
 
@@ -212,7 +214,7 @@ setMethod(
       assert_names(cols, must.include = c(eligible_wts_1))
       colnames(data)[which(cols == eligible_wts_1)] <- "eligible_wts_1"
     }
-    callNextMethod(object, data, censor_at_switch = TRUE, id, period, treatment, outcome, eligible)
+    callNextMethod(object, data, censor_at_switch = TRUE, id, period, treatment, outcome, eligible, expand_variables)
   }
 )
 
@@ -227,12 +229,13 @@ setMethod(
            period = "period",
            treatment = "treatment",
            outcome = "outcome",
-           eligible = "eligible") {
+           eligible = "eligible",
+           expand_variables = "") {
     assert_class(object, "trial_sequence")
     assert_class(data, "data.frame")
     assert_names(
       colnames(data),
-      must.include = c(id, period, treatment, outcome, eligible),
+      must.include = c(id, period, treatment, outcome, eligible, expand_variables),
       disjunct.from = c("wt", "wtC", "weight"),
       what = "colnames",
       .var.name = "data"
@@ -249,7 +252,8 @@ setMethod(
       "te_data",
       data = trial_data,
       nobs = nrow(trial_data),
-      n = uniqueN(trial_data[, "id"])
+      n = uniqueN(trial_data[, "id"]),
+      expand_variables = expand_variables
     )
     object
   }
@@ -389,16 +393,38 @@ setMethod(
 )
 
 
-# Set expansion options
+# Set Outcome Model -----
+setGeneric("set_outcome_model", function(object, ...) standardGeneric("set_outcome_model"))
+setMethod(
+  "set_outcome_model",
+  c(object = "trial_sequence"),
+  function(object, formula, treatment_var, fitter) {
+    object@outcome <- new("te_outcome_model", formula = formula, treatment_var = treatment_var, fitter = fitter)
+    object
+  }
+)
+
+
+# Set expansion options -----
 setGeneric("set_expansion_options", function(object, ...) standardGeneric("set_expansion_options"))
 
 setMethod(
   "set_expansion_options",
   c(object = "trial_sequence"),
-  function(object, output, chunks) {
+  function(object, output, chunks, first_period, last_period) {
     assert_class(output, "te_datastore")
     assert_integerish(chunks)
-    object@expansion <- new("te_expansion", chunks = chunks, datastore = output)
+    if (missing(first_period)) first_period <- min(object@data@data$period)
+    if (missing(last_period)) last_period <- max(object@data@data$period)
+    assert_integerish(first_period)
+    assert_integerish(last_period)
+    object@expansion <- new(
+      "te_expansion",
+      chunks = chunks,
+      datastore = output,
+      first_period = as.integer(first_period),
+      last_period = as.integer(last_period)
+    )
     object
   }
 )
@@ -434,5 +460,32 @@ setMethod(
       stop("Switch weight models are not specified. Use set_switch_weight_model()")
     }
     calculate_weights_trial_seq(object, quiet, switch_weights = TRUE, censor_weights = use_censor_weights)
+  }
+)
+
+# Expand trials
+setGeneric("expand_trials", function(object, ...) standardGeneric("expand_trials"))
+
+setMethod(
+  "expand_trials",
+  c(object = "trial_sequence_PP"),
+  function(object) {
+    expand_trials_trial_seq(object, censor_at_switch = TRUE, keeplist = NULL)
+  }
+)
+
+setMethod(
+  "expand_trials",
+  c(object = "trial_sequence_ITT"),
+  function(object) {
+    expand_trials_trial_seq(object, censor_at_switch = FALSE, keeplist = NULL)
+  }
+)
+
+setMethod(
+  "expand_trials",
+  c(object = "trial_sequence_AT"),
+  function(object) {
+    expand_trials_trial_seq(object, censor_at_switch = FALSE, keeplist = "dose")
   }
 )

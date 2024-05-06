@@ -7,27 +7,29 @@
 set_data(object, data, ...)
 }
 \arguments{
-\item{data}{A \code{data.frame} containing all the required variables in the
-person-time format, i.e., the <U+2018>long<U+2019> format.}
+\item{data}{A \code{data.frame} containing all the required variables in the person-time format, i.e., the
+<U+2018>long<U+2019> format.}
 
 \item{trial_sequence}{A \linkS4class{trial_sequence} object}
 
-\item{id}{Name of the variable for identifiers of the individuals. Default is
-<U+2018>id<U+2019>.}
+\item{id}{Name of the variable for identifiers of the individuals. Default is <U+2018>id<U+2019>.}
 
 \item{period}{Name of the variable for the visit/period. Default is <U+2018>period<U+2019>.}
 
-\item{treatment}{Name of the variable for the treatment indicator at that
-visit/period. Default is <U+2018>treatment<U+2019>.}
+\item{treatment}{Name of the variable for the treatment indicator at that visit/period. Default is
+<U+2018>treatment<U+2019>.}
 
-\item{outcome}{Name of the variable for the indicator of the outcome event at
-that visit/period. Default is <U+2018>outcome<U+2019>.}
+\item{outcome}{Name of the variable for the indicator of the outcome event at that visit/period. Default is
+<U+2018>outcome<U+2019>.}
 
-\item{eligible}{Name of the variable for the indicator of eligibility for the
-target trial at that visit/period. Default is <U+2018>eligible<U+2019>.}
+\item{eligible}{Name of the variable for the indicator of eligibility for the target trial at that visit/period.
+Default is <U+2018>eligible<U+2019>.}
+
+\item{outcome_variables}{A character vector of column names of variables that may be used after expansion in the
+marginal structural model. Columns not specified here may be dropped during data expansion.}
 }
 \value{
-A \code{trial_sequence} object with data
+An updated \link[=trial_sequence-class]{trial_sequence} object with data
 }
 \description{
 Set the trial data

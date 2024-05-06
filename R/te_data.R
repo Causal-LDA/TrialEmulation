@@ -5,7 +5,8 @@ setClass("te_data",
   slots = c(
     data = "data.table",
     nobs = "numeric",
-    n = "numeric"
+    n = "numeric",
+    expand_variables = "character"
   )
 )
 
@@ -16,6 +17,11 @@ setValidity(
     checks["cols_check"] <- check_names(
       colnames(object@data),
       must.include = c("id", "period", "treatment", "outcome", "eligible")
+    )
+
+    checks["expand_vars_check"] <- check_names(
+      colnames(object@data),
+      must.include = object@expand_variables
     )
 
     msg <- unlist(lapply(checks, function(x) if (is.character(x)) x else NULL))
