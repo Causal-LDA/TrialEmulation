@@ -19,10 +19,12 @@ setValidity(
       must.include = c("id", "period", "treatment", "outcome", "eligible")
     )
 
-    checks["expand_vars_check"] <- check_names(
-      colnames(object@data),
-      must.include = object@expand_variables
-    )
+    if (!is.na(object@expand_variables)) {
+      checks["expand_vars_check"] <- check_names(
+        colnames(object@data),
+        must.include = object@expand_variables
+      )
+    }
 
     msg <- unlist(lapply(checks, function(x) if (is.character(x)) x else NULL))
     if (length(msg)) msg else TRUE

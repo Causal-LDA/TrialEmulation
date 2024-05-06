@@ -28,6 +28,7 @@ Imports:
     data.table (>= 1.9.8),
     duckdb,
     formula.tools,
+    methods,
     mvtnorm,
     parglm,
     Rcpp,

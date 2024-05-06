@@ -173,7 +173,7 @@ setMethod(
            treatment = "treatment",
            outcome = "outcome",
            eligible = "eligible",
-           expand_variables = "") {
+           expand_variables = NA_character_) {
     callNextMethod(object, data, censor_at_switch = FALSE, id, period, treatment, outcome, eligible, expand_variables)
   }
 )
@@ -187,7 +187,8 @@ setMethod(
            period = "period",
            treatment = "treatment",
            outcome = "outcome",
-           eligible = "eligible") {
+           eligible = "eligible",
+           expand_variables = NA_character_) {
     callNextMethod(object, data, censor_at_switch = FALSE, id, period, treatment, outcome, eligible, expand_variables)
   }
 )
@@ -204,7 +205,8 @@ setMethod(
            outcome = "outcome",
            eligible = "eligible",
            eligible_wts_0 = NULL,
-           eligible_wts_1 = NULL) {
+           eligible_wts_1 = NULL,
+           expand_variables = NA_character_) {
     cols <- colnames(data)
     if (test_string(eligible_wts_0)) {
       assert_names(cols, must.include = c(eligible_wts_0))
@@ -230,16 +232,19 @@ setMethod(
            treatment = "treatment",
            outcome = "outcome",
            eligible = "eligible",
-           expand_variables = "") {
+           expand_variables = NA_character_) {
     assert_class(object, "trial_sequence")
     assert_class(data, "data.frame")
     assert_names(
       colnames(data),
-      must.include = c(id, period, treatment, outcome, eligible, expand_variables),
+      must.include = c(id, period, treatment, outcome, eligible),
       disjunct.from = c("wt", "wtC", "weight"),
       what = "colnames",
       .var.name = "data"
     )
+    if (!is.na(expand_variables)) {
+      assert_names(colnames(data), must.include = expand_variables, what = "colnames", .var.name = "data")
+    }
 
     trial_data <- as.data.table(data)
     data.table::setnames(
@@ -353,10 +358,11 @@ setGeneric("set_switch_weight_model", function(object, ..., model_fitter) standa
 
 #' Set switching weight model
 #'
-#' @param object trial_sequence.
-#' @param numerator
-#' @param denominator
-#' @param model_fitter
+#' @param object A [trial_sequence] object.
+#' @param numerator Right hand side formula for the numerator model
+#' @param denominator Right hand side formula for the denominator model
+#' @param model_fitter A [te_model_fitter][te_model_fitter-class] object, such as
+#'  [stats_glm_logit]
 #'
 #' @return `object` is returned with `@switch_weights` set
 #' @export

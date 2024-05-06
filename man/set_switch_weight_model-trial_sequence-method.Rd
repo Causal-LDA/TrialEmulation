@@ -7,9 +7,14 @@
 \S4method{set_switch_weight_model}{trial_sequence}(object, numerator, denominator, model_fitter)
 }
 \arguments{
-\item{object}{trial_sequence.}
+\item{object}{A \link{trial_sequence} object.}
 
-\item{model_fitter}{}
+\item{numerator}{Right hand side formula for the numerator model}
+
+\item{denominator}{Right hand side formula for the denominator model}
+
+\item{model_fitter}{A \link[=te_model_fitter-class]{te_model_fitter} object, such as
+\link{stats_glm_logit}}
 }
 \value{
 \code{object} is returned with \verb{@switch_weights} set
