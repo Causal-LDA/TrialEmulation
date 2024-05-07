@@ -103,7 +103,7 @@ sample_from_period <- function(period_data,
                                subset_expr,
                                sort = FALSE) {
   if (use_subset) period_data <- subset(period_data, eval(subset_expr))
-  if (isTRUE(sort)) setorderv(period_data, c("followup_time", "id"))
+  if (isTRUE(sort)) setorderv(period_data, cols = c("followup_time", "id"))
   followup_split <- split(period_data, by = "followup_time")
 
   all_samples <- lapply(p_control, function(p) {

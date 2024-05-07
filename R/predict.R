@@ -112,7 +112,7 @@ predict.TE_msm <- function(object,
           c("followup_time", col_names, "2.5%", "97.5%")
         )
       } else {
-        setNames(data.frame(predict_times, pred_matrix[, 1]), c("followup_time", col_names))
+        setNames(data.frame(predict_times, pred_matrix[, 1]), nm = c("followup_time", col_names))
       }
     }
   )
