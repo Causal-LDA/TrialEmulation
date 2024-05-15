@@ -27,7 +27,9 @@ Imports:
     broom (>= 0.7.10),
     checkmate,
     data.table (>= 1.9.8),
+    duckdb,
     formula.tools,
+    methods,
     mvtnorm,
     parglm,
     sandwich
@@ -46,4 +48,28 @@ Language: en-GB
 LazyData: true
 LazyDataCompression: xz
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.3.0
+RoxygenNote: 7.3.1.9000
+Collate: 
+    'RcppExports.R'
+    'calculate_weights.R'
+    'classes.R'
+    'data.R'
+    'data_extension.R'
+    'data_manipulation.R'
+    'data_preparation.R'
+    'data_simulation.R'
+    'data_utils.R'
+    'expand_trials.R'
+    'generics.R'
+    'initiators.R'
+    'lr_utils.R'
+    'modelling.R'
+    'package.R'
+    'predict.R'
+    'robust.R'
+    'sampling.R'
+    'te_data.R'
+    'te_weights.R'
+    'trial_sequence.R'
+    'utils.R'
+    'weighting.R'

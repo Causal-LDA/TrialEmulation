@@ -134,3 +134,15 @@ extract_baseline <- function(trial_file, baseline_file, quiet = TRUE) {
     assert_file_exists(trial_file)
   }
 }
+
+#' Concatenate and Print with Final NewLine
+#'
+#' @inheritParams base::cat
+#'
+#' @details Simply passes arguments to `cat` with an additional `"\n"` after all arguments.
+#'
+#' @returns None (invisible NULL)
+#' @noRd
+catn <- function(...) {
+  cat(..., "\n")
+}

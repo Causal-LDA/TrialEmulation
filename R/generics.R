@@ -56,7 +56,7 @@ summary.TE_data_prep_sep <- function(object, ...) {
 #' @export
 summary.TE_data_prep_dt <- function(object, ...) {
   cat("Expanded Trial Emulation data\n\n")
-  print(object$data, topn = 3, nrows = 3, ...)
+  print(object$data, topn = 3, nrows = 3, class = FALSE, ...)
   cat("\n")
   NextMethod()
 }
@@ -108,3 +108,12 @@ print.TE_weight_summary <- function(x, full = TRUE, ...) {
     }
   }
 }
+
+
+
+#' Internal Methods
+#' @name internal-methods
+#' @description Various S4 methods which are not directly for use by users.
+#' @keywords internal
+#'
+NULL

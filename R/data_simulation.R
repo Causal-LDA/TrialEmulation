@@ -1,6 +1,6 @@
 #' Simulate Observational Data
 #'
-#' Function to simulate observational data  using the algorithm in Young and Tchetgen Tchetgen (2014)
+#' Function to simulate observational data using the algorithm in Young and Tchetgen Tchetgen (2014)
 #'
 #' @param ns number of subjects
 #' @param nv no of visits including baseline visit
