@@ -31,7 +31,17 @@ setValidity(
   }
 )
 
-
+# For empty slot
+setClass(
+  "te_data_unset",
+  contains = "te_data",
+  prototype = list(
+    data = data.frame(),
+    nobs = 0,
+    n = 0,
+    expand_variables = NA_character_
+  )
+)
 
 # Show
 setMethod(

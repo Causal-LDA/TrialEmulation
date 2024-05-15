@@ -3,9 +3,9 @@
 \docType{class}
 \name{te_weights_fitted-class}
 \alias{te_weights_fitted-class}
-\title{Weighting Method}
+\title{Fitted Weights Object}
 \description{
-Weighting Method
+Fitted Weights Object
 }
 \section{Slots}{
 

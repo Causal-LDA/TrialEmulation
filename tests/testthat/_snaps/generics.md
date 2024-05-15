@@ -123,24 +123,22 @@
     Output
       Expanded Trial Emulation data
       
-               id trial_period followup_time outcome weight treatment    X1
-            <int>        <int>         <int>   <num>  <num>     <num> <num>
-         1:     1            0             0       0  1.000         1     1
-         2:     1            0             1       0  1.011         1     1
-         3:     1            0             2       0  0.994         1     1
-        ---                                                                
-      9474:  1000            0             7       0  0.821         1     0
-      9475:  1000            0             8       0  0.761         1     0
-      9476:  1000            0             9       1  0.698         1     0
-            assigned_treatment  dose
-                         <num> <num>
-         1:                  1     1
-         2:                  1     2
-         3:                  1     3
-        ---                         
-      9474:                  1     8
-      9475:                  1     9
-      9476:                  1    10
+              id trial_period followup_time outcome weight treatment X1
+         1:    1            0             0       0  1.000         1  1
+         2:    1            0             1       0  1.011         1  1
+         3:    1            0             2       0  0.994         1  1
+        ---                                                            
+      9474: 1000            0             7       0  0.821         1  0
+      9475: 1000            0             8       0  0.761         1  0
+      9476: 1000            0             9       1  0.698         1  0
+            assigned_treatment dose
+         1:                  1    1
+         2:                  1    2
+         3:                  1    3
+        ---                        
+      9474:                  1    8
+      9475:                  1    9
+      9476:                  1   10
       
       Number of observations in expanded data: 9476 
       First trial period: 0 

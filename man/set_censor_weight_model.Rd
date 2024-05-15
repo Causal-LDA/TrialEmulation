@@ -2,18 +2,90 @@
 % Please edit documentation in R/trial_sequence.R
 \name{set_censor_weight_model}
 \alias{set_censor_weight_model}
+\alias{set_censor_weight_model,trial_sequence-method}
+\alias{set_censor_weight_model,trial_sequence_PP-method}
+\alias{set_censor_weight_model,trial_sequence_ITT-method}
+\alias{set_censor_weight_model,trial_sequence_AT-method}
 \title{Set censoring weight model}
 \usage{
-set_censor_weight_model(object, ...)
+set_censor_weight_model(
+  object,
+  censor_event,
+  numerator,
+  denominator,
+  pool_models,
+  model_fitter
+)
+
+\S4method{set_censor_weight_model}{trial_sequence}(
+  object,
+  censor_event,
+  numerator,
+  denominator,
+  pool_models = c("none", "both", "numerator"),
+  model_fitter = stats_glm_logit()
+)
+
+\S4method{set_censor_weight_model}{trial_sequence_PP}(
+  object,
+  censor_event,
+  numerator,
+  denominator,
+  pool_models = "none",
+  model_fitter = stats_glm_logit()
+)
+
+\S4method{set_censor_weight_model}{trial_sequence_ITT}(
+  object,
+  censor_event,
+  numerator,
+  denominator,
+  pool_models = "numerator",
+  model_fitter = stats_glm_logit()
+)
+
+\S4method{set_censor_weight_model}{trial_sequence_AT}(
+  object,
+  censor_event,
+  numerator,
+  denominator,
+  pool_models = "none",
+  model_fitter = stats_glm_logit()
+)
 }
 \arguments{
 \item{object}{trial_sequence.}
 
 \item{censor_event}{string. Name of column containing censoring indicator.}
+
+\item{numerator}{A RHS formula to specify the logistic models for estimating the numerator terms of the inverse
+probability of censoring weights.}
+
+\item{denominator}{A RHS formula to specify the logistic models for estimating the denominator terms of the inverse
+probability of censoring weights.}
+
+\item{pool_models}{Fit pooled or separate censoring models for those treated and those untreated at the immediately
+previous visit. Pooling can be specified for the models for the numerator and denominator terms of the inverse
+probability of censoring weights. One of "none", "numerator", or "both" (default is "none" except when estimand =
+"ITT" then default is "numerator").}
+
+\item{model_fitter}{An object of class  \code{te_weights_fitter} which determines the method used for fitting the weight
+models. For logistic regression use \code{\link[=stats_glm_logit]{stats_glm_logit()}}.}
 }
 \value{
 \code{object} is returned with \verb{@censor_weights} set
 }
 \description{
 Set censoring weight model
+}
+\examples{
+trial_sequence("ITT") |>
+  set_data(data = data_censored) |>
+  set_censor_weight_model(
+    censor_event = "censored",
+    numerator = ~ age_s + x1 + x3,
+    denominator = ~ x3 + x4,
+    pool_models = "both",
+    model_fitter = stats_glm_logit(save_path = tempdir())
+  )
 }

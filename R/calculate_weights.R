@@ -1,4 +1,6 @@
 calculate_weights_trial_seq <- function(object, quiet, switch_weights, censor_weights) {
+  wt <- wtS <- wtC <- NULL
+
   set(object@data@data, j = "wt", value = 1)
 
   if (switch_weights) {
@@ -20,6 +22,8 @@ calculate_weights_trial_seq <- function(object, quiet, switch_weights, censor_we
 
 
 calculate_switch_weights <- function(object) {
+  am_1 <- eligible_wts_0 <- eligible_wts_1 <- p_d <- p_n <- treatment <- wtS <- NULL
+
   model_1_index <- if ("eligible_wts_1" %in% colnames(object@data@data)) {
     object@data@data[am_1 == 1 & eligible_wts_1 == 1, which = TRUE]
   } else {
@@ -89,6 +93,8 @@ calculate_switch_weights <- function(object) {
 
 # Calculate censor weights ---------
 calculate_censor_weights <- function(object) {
+  am_1 <- pC_d <- pC_n <- wtC <- NULL
+
   if (!object@censor_weights@pool_numerator || !object@censor_weights@pool_denominator) {
     elig_0_index <- object@data@data[am_1 == 0, which = TRUE]
     elig_1_index <- object@data@data[am_1 == 1, which = TRUE]
