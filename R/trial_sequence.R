@@ -99,7 +99,7 @@ trial_sequence <- function(estimand, ...) {
   new(estimand_class_name, ...)
 }
 
-# Show
+# Show(trial_sequence) ------
 setMethod(
   "show",
   c(object = "trial_sequence"),
@@ -107,6 +107,7 @@ setMethod(
     catn("Trial Sequence Object")
     catn("Estimand:", object@estimand)
     show(object@data)
+    catn("")
     catn("IPW for informative censoring:")
     show(object@censor_weights)
   }
@@ -117,6 +118,7 @@ setMethod(
   c(object = "trial_sequence_PP"),
   function(object) {
     callNextMethod()
+    catn("")
     catn("IPW for treatment switch censoring:")
     show(object@switch_weights)
   }
@@ -127,6 +129,7 @@ setMethod(
   c(object = "trial_sequence_AT"),
   function(object) {
     callNextMethod()
+    catn("")
     catn("IPW for treatment switch censoring:")
     show(object@switch_weights)
   }
@@ -238,7 +241,7 @@ setMethod(
       what = "colnames",
       .var.name = "data"
     )
-    if (!is.na(expand_variables)) {
+    if (test_character(expand_variables, all.missing = FALSE)) {
       assert_names(colnames(data), must.include = expand_variables, what = "colnames", .var.name = "data")
     }
 
@@ -524,7 +527,19 @@ setMethod(
   }
 )
 
-# Calculate Weights
+# Calculate Weights -------
+
+
+#' Calculate Inverse Probability of Censoring Weights
+#'
+#' @param object A [trial_sequence] object
+#' @param quiet Prints model summaries is `TRUE`.
+#' @param ... Other arguments used by methods.
+#'
+#' @return
+#' @export
+#'
+#' @examples
 setGeneric("calculate_weights", function(object, ...) standardGeneric("calculate_weights"))
 
 setMethod(
@@ -557,6 +572,9 @@ setMethod(
     calculate_weights_trial_seq(object, quiet, switch_weights = TRUE, censor_weights = use_censor_weights)
   }
 )
+
+
+# Expand trials --------
 
 #' Expand trials
 #' @param object A [trial_sequence] object

@@ -129,7 +129,7 @@ setMethod(
   f = "show",
   signature = "te_weights_unset",
   function(object) {
-    catn("No weight model specified")
+    catn(" - No weight model specified")
   }
 )
 
@@ -137,19 +137,39 @@ setMethod(
   f = "show",
   signature = "te_weights_spec",
   function(object) {
-    catn("Numerator formula:", as.character(object@numerator))
-    catn("Denominator formula:", as.character(object@denominator))
+    catn(" - Numerator formula:", as.character(object@numerator))
+    catn(" - Denominator formula:", as.character(object@denominator))
     # TODO catn("Pooled numerator:", censor_weights@pool_numerator)censor_weights@pool_denominator)
     catn("Model fitter type:", class(object@model_fitter))
     if (length(object@fitted)) {
-      call <- match.call()
-      show_string <- paste0("show(", call$object, "@fitted)")
-      catn("View weight model summaries with", show_string)
+      catn("View weight model summaries with show_weight_models()")
     } else {
       catn("Weight models not fitted")
     }
   }
 )
+
+#' Show Weight Model Summaries
+#'
+#' @param object A [trial_sequence] object after fitting weight models with [calculate_weights()]
+#'
+#' @return Prints summaries of the censoring models
+#' @export
+show_weight_models <- function(object) {
+  assert_class(object, "trial_sequence")
+  if (.hasSlot(object, "censor_weights")) {
+    if (test_list(object@censor_weights@fitted, types = "te_weights_fitted")) {
+      lapply(object@censor_weights@fitted, show)
+    }
+  }
+
+  if (.hasSlot(object, "switch_weights")) {
+    if (test_list(object@switch_weights@fitted, types = "te_weights_fitted")) {
+      lapply(object@switch_weights@fitted, show)
+    }
+  }
+  invisible()
+}
 
 
 setMethod(

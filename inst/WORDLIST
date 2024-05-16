@@ -9,6 +9,7 @@ dir
 doi
 dplyr
 duckdb
+DuckDB
 eg
 estimand
 estimands
@@ -18,6 +19,7 @@ glm
 Hoffmann
 ie
 io
+IPCW
 knitr
 lda
 MRC

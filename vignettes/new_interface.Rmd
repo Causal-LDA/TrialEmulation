@@ -1,0 +1,286 @@
+---
+title: "new_interface"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{new_interface}
+  %\VignetteEncoding{UTF-8}
+  %\VignetteEngine{knitr::rmarkdown}
+editor_options: 
+  chunk_output_type: console
+---
+
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup}
+library(TrialEmulation)
+```
+
+To improve usability, we have implemented a new user interface. This allows a more structured specification of the 
+target trial emulation process.
+
+It also gives flexibility to add new methods and tools for parts of the analysis. For example, we now allow different
+ways of storing the expanded data: as CSV files and in a DuckDB database. We also allow different weight fitting model
+procedures: using `stats::glm` or `parglm::parglm`. New components can quickly and easily be specified for use with
+this package.
+
+
+## User Interface
+
+A sequence of target trials analysis starts by specifying which estimand will be used:
+
+```{r}
+trial_pp <- trial_sequence(estimand = "PP") # Per-protocol
+trial_itt <- trial_sequence(estimand = "ITT") # Intention-to-treat
+```
+
+Additionally it is useful to create a directory to save files for later inspection.
+```{r}
+trial_pp_dir <- file.path(tempdir(), "trial_pp")
+dir.create(trial_pp_dir)
+trial_itt_dir <- file.path(tempdir(), "trial_itt")
+dir.create(trial_itt_dir)
+```
+
+
+### Data
+
+Next the user must specify the data that will be used. Here we need to specify which columns contain which values
+and how they should be used.
+```{r}
+data("data_censored")
+trial_pp <- trial_pp |>
+  set_data(
+    data = data_censored,
+    id = "id",
+    period = "period",
+    treatment = "treatment",
+    outcome = "outcome",
+    eligible = "eligible",
+    expand_variables = c("x1", "x2", "x3", "x4", "age", "age_s")
+  )
+
+# Function style without pipes
+trial_itt <- set_data(
+  trial_itt,
+  data = data_censored,
+  id = "id",
+  period = "period",
+  treatment = "treatment",
+  outcome = "outcome",
+  eligible = "eligible",
+  expand_variables = c("x1", "x2", "x3", "x4", "age", "age_s")
+)
+```
+
+We can inspect our object by printing:
+```{r}
+trial_itt
+```
+
+
+### Weight Models
+
+To adjust for the effects of informative censoring, inverse probability of censoring weights (IPCW) can be applied. To
+estimate these weights, we construct survival models. Two sets of models are fit for the two censoring mechanisms which
+may apply: censoring due to deviation from assigned treatment, and other informative censoring.
+
+#### Censoring due to treatment switching
+
+We specify model formulas to be used for calculating the probability of receiving treatment in the current period.
+Separate models are fitted for patients who had `treatment = 1` and those who had `treatment = 0` in the previous 
+period. Stabilized weights are used by fitting numerator and denominator models.
+
+There are optional arguments to specify columns which can include/exclude observations from the treatment models. These
+are used in case it is not possible for a patient to deviate from a certain treatment assignment in that period.
+
+```{r}
+trial_pp <- trial_pp |>
+  set_switch_weight_model(
+    numerator = ~ age + x1 + x3,
+    denominator = ~age,
+    model_fitter = stats_glm_logit(save_path = file.path(trial_pp_dir, "switch_models"))
+  )
+trial_pp
+```
+
+This type of censoring is not used with an ITT estimand, so we cannot use `set_switch_weight_model()` with `trial_ITT` objects.
+
+#### Other informative censoring
+
+In case there is other informative censoring occurring in the data, we can create similar models to estimate the IPCW.
+These can be used with all types of estimand. 
+Compared to `set_switch_weight_model` there are additional required arguments:
+
+ - `censor_event` which specifies the column containing the censoring indicator
+ - `pool_models` which species that models may be fit separately (as in `set_switch_weight_model`) or pooled across the
+treatments in the previous period. The choices are `"none"`, `"both"`, or `"numerator"` only. The default and allowed
+choices depends on the estimand.
+
+
+```{r}
+trial_pp <- trial_pp |>
+  set_censor_weight_model(
+    censor_event = "censored",
+    numerator = ~ x1 + x2 + x3,
+    denominator = ~x2,
+    pool_models = "none",
+    model_fitter = stats_glm_logit(save_path = file.path(trial_pp_dir, "switch_models"))
+  )
+trial_pp
+```
+
+```{r}
+trial_itt <- set_censor_weight_model(
+  trial_itt,
+  censor_event = "censored",
+  numerator = ~ x1 + x2 + x3,
+  denominator = ~x2,
+  pool_models = "numerator",
+  model_fitter = stats_glm_logit(save_path = file.path(trial_pp_dir, "switch_models"))
+)
+trial_itt
+```
+
+#### Calculate Weights
+
+Next we need to fit the individual models and combine them into weights. This is done with `calculate_weights()`.
+
+```{r}
+trial_pp <- trial_pp |> calculate_weights()
+trial_pp
+
+
+trial_itt <- calculate_weights(trial_itt)
+```
+
+The full model objects are saved to disk in the directories we created above. The summaries are stored in the trial
+sequence object and can be printed:
+
+```{r}
+show_weight_models(trial_itt)
+```
+
+### Specify Outcome Model
+
+ Not fully implemented. Needs to be preliminarily set at this stage to make sure all required variables are included
+ in the expanded data set
+```{r, eval = FALSE}
+trial_pp <- set_outcome_model(trial_pp)
+trial_itt <- set_outcome_model(trial_itt)
+```
+ 
+
+### Expand Trials
+
+Now we are ready to create the data set with all of the sequence of target trials. First we specify some options for the
+expansion and then expand.
+
+#### Set Expansion Options
+
+There are two options to set
+
+ - output: specifies how and where the expanded data will be saved. As it can be very large, we may need to save it to
+ disk with CSV files or DuckDB, using a `save_to_*` function.
+ - chunk_size: if the expanded data is too large to fit in memory, we need to process it in chunks by specifying how
+ many patients are processed at one time.
+
+```{r}
+trial_pp <- trial_pp |>
+  set_expansion_options(output = save_to_csv(file.path(trial_pp_dir, "trial_csvs")), chunk_size = 500)
+
+trial_itt <- set_expansion_options(
+  trial_itt,
+  output = save_to_csv(file.path(trial_itt_dir, "trial_csvs")), chunk_size = 500
+)
+```
+
+
+#### Create Sequence of Trials Data
+
+```{r}
+trial_pp <- expand_trials(trial_pp)
+trial_itt <- expand_trials(trial_itt)
+```
+
+
+Show method not implemented yet
+```{r}
+trial_pp@expansion
+trial_itt@expansion
+```
+
+
+### Sample from Expanded Data
+
+Sample method not implemented yet
+
+### Fit Marginal Structural Model
+
+Outcome model fitting not implemented yet
+
+### Inference
+
+Model summaries not implemented
+
+## Class Structure
+
+The main class in this new interface is `trial_sequence` which is the parent class of the estimand specific classes
+`trial_sequence_ITT`, `trial_sequence_PP` and `trial_sequence_AT`. These child classes allow for restrictions and 
+differences in processing based on the different estimands. Where necessary we have S4 methods defined for the estimand
+specific classes and otherwise common processing is defined in methods for the `trial_sequence` class.
+
+The `trial_sequence` class contains slots needed to define the sequence of target trials analysis
+
+ - estimand = `character`
+ - data = `te_data`
+ - censor_weights = `te_weights_spec`
+ - expansion = `te_expansion`
+ - outcome_model = `te_outcome_model`
+
+
+### `te_data`
+
+Contains the input data. It under goes some manipulation in `set_data()` to standardise the column names.
+
+### `te_weights_spec`
+
+Contains specification for the IPCW models, including formulas, model fitter, pooling option, and (once fitted) the 
+model summaries. 
+
+#### te_weights_fitter
+
+The model fitter is specified as an object of class `te_weights_fitter`. This class is used to save parameters which are
+used in the method `fit_weights_model(object, data, formula, label)` where object is the `te_weights_fitter`.
+It fits a model and returns a `te_weights_fitted` object containing the label, model summaries and the fitted values 
+from the model.
+
+#### te_weights_fitted
+
+The `te_weights_fitted` objects are saved in a list in `te_weights_spec` in a slot `fitted`.
+
+### `te_outcome_model`
+
+To be finalised.
+
+### `te_expansion`
+
+The `te_expansion` class defines how the sequence of trials should be expanded. It contains slots for chunk_size,
+how censoring is applied, first and last periods, and an object of class `te_datastore` which defines how the data is
+saved.
+
+#### `te_datastore`
+
+This class contains slots needed for saving the expanded data, such as file path. Child classes are defined for each
+storage type, such as `te_datastore_csv`, `te_datastore_duckdb`. Each of these classes has a user-friendly 
+`save_to_*()` method to setup the storage.
+
+To define a new storage type, a method `save_expanded_data(object, data)` needs to be defined. This takes the data store
+object and a `data.frame` to be saved. This method may be called repeatedly if only a chunk of patients are being
+processed and so should appropriately append the data. The method returns an updated `te_datastore_*` object which is
+saved in the `trial_sequence@te_expansion` slot.
