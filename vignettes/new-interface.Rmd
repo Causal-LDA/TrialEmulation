@@ -1,8 +1,8 @@
 ---
-title: "new_interface"
+title: "New Interface"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{new_interface}
+  %\VignetteIndexEntry{New Interface}
   %\VignetteEncoding{UTF-8}
   %\VignetteEngine{knitr::rmarkdown}
 editor_options: 
