@@ -19,7 +19,7 @@ setValidity(
       must.include = c("id", "period", "treatment", "outcome", "eligible")
     )
 
-    if (!is.na(object@expand_variables)) {
+    if (test_character(object@expand_variables, all.missing = FALSE)) {
       checks["expand_vars_check"] <- check_names(
         colnames(object@data),
         must.include = object@expand_variables
@@ -49,7 +49,7 @@ setMethod(
   c(object = "te_data"),
   function(object) {
     catn("Data")
-    catn("N:", object@nobs, "from", object@n, "patients")
+    catn("N:", object@nobs, "observations from", object@n, "patients")
     print(object@data, nrows = 4, topn = 2)
   }
 )
