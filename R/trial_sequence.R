@@ -536,12 +536,13 @@ setMethod(
 #' @param quiet Prints model summaries is `TRUE`.
 #' @param ... Other arguments used by methods.
 #'
-#' @return
+#' @return A [trial_sequence] object with updated `censor_weights` and/or `switch_weights` slots
 #' @export
 #'
 #' @examples
 setGeneric("calculate_weights", function(object, ...) standardGeneric("calculate_weights"))
 
+#' @rdname calculate_weights
 setMethod(
   "calculate_weights",
   c(object = "trial_sequence_ITT"),
@@ -550,6 +551,8 @@ setMethod(
     calculate_weights_trial_seq(object, quiet, switch_weights = FALSE, censor_weights = use_censor_weights)
   }
 )
+
+#' @rdname calculate_weights
 setMethod(
   "calculate_weights",
   c(object = "trial_sequence_AT"),
@@ -561,6 +564,8 @@ setMethod(
     calculate_weights_trial_seq(object, quiet, switch_weights = TRUE, censor_weights = use_censor_weights)
   }
 )
+
+#' @rdname calculate_weights
 setMethod(
   "calculate_weights",
   c(object = "trial_sequence_PP"),

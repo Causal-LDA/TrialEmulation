@@ -2,9 +2,18 @@
 % Please edit documentation in R/trial_sequence.R
 \name{calculate_weights}
 \alias{calculate_weights}
+\alias{calculate_weights,trial_sequence_ITT-method}
+\alias{calculate_weights,trial_sequence_AT-method}
+\alias{calculate_weights,trial_sequence_PP-method}
 \title{Calculate Inverse Probability of Censoring Weights}
 \usage{
 calculate_weights(object, ...)
+
+\S4method{calculate_weights}{trial_sequence_ITT}(object, quiet = FALSE)
+
+\S4method{calculate_weights}{trial_sequence_AT}(object, quiet = FALSE)
+
+\S4method{calculate_weights}{trial_sequence_PP}(object, quiet = FALSE)
 }
 \arguments{
 \item{object}{A \link{trial_sequence} object}
@@ -12,6 +21,9 @@ calculate_weights(object, ...)
 \item{...}{Other arguments used by methods.}
 
 \item{quiet}{Prints model summaries is \code{TRUE}.}
+}
+\value{
+A \link{trial_sequence} object with updated \code{censor_weights} and/or \code{switch_weights} slots
 }
 \description{
 Calculate Inverse Probability of Censoring Weights
