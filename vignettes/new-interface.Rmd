@@ -198,6 +198,11 @@ trial_itt <- set_expansion_options(
   trial_itt,
   output = save_to_csv(file.path(trial_itt_dir, "trial_csvs")), chunk_size = 500
 )
+
+trial_itt <- set_expansion_options(
+  trial_itt,
+  output = save_to_data.table(), chunk_size = 500
+)
 ```
 
 

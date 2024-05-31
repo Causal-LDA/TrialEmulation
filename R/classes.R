@@ -20,6 +20,8 @@ setClass("te_datastore",
   prototype = list(N = 0L)
 )
 
+
+# save to csv -------
 setClass(
   "te_datastore_csv",
   contains = "te_datastore",
@@ -29,7 +31,6 @@ setClass(
     template = "data.frame"
   )
 )
-
 
 #' Save expanded data as CSV
 #' @param path Directory to save CSV files in. Must be empty.
@@ -58,14 +59,27 @@ save_to_csv <- function(path) {
   new("te_datastore_csv", path = path, N = 0L)
 }
 
+
+
+
+# save to data.table -------
+setClass(
+  "te_datastore_datatable",
+  contains = "te_datastore",
+  slots = c(
+    data = "data.table"
+  )
+)
+
+
 #' @family save_to
 save_to_data.table <- function(...) {
-  new("te_datastore")
-  stop("Not implemented yet!")
+  new("te_datastore_datatable", data = data.table(), N = 0L)
 }
 
 
-# duckdb
+
+# save to duckdb -------
 #' @importClassesFrom duckdb duckdb_connection
 setClass(
   "te_datastore_duckdb",
@@ -157,6 +171,18 @@ setMethod(
     object
   }
 )
+
+#' @rdname save_expanded_data
+setMethod(
+  f = "save_expanded_data",
+  signature = "te_datastore_datatable",
+  definition = function(object, data) {
+    object@data <- rbind(object@data, data)
+    object@N <- nrow(object@data)
+    object
+  }
+)
+
 
 #' @rdname save_expanded_data
 setMethod(

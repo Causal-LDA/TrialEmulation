@@ -3,12 +3,15 @@
 \name{save_expanded_data}
 \alias{save_expanded_data}
 \alias{save_expanded_data,te_datastore_csv-method}
+\alias{save_expanded_data,te_datastore_datatable-method}
 \alias{save_expanded_data,te_datastore_duckdb-method}
 \title{Method to save expanded data}
 \usage{
 save_expanded_data(object, data)
 
 \S4method{save_expanded_data}{te_datastore_csv}(object, data)
+
+\S4method{save_expanded_data}{te_datastore_datatable}(object, data)
 
 \S4method{save_expanded_data}{te_datastore_duckdb}(object, data)
 }
