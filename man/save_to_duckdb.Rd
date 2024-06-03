@@ -28,6 +28,7 @@ if (require(duckdb)) {
 \seealso{
 Other save_to: 
 \code{\link{save_to_csv}()},
+\code{\link{save_to_datatable}()},
 \code{\link{set_expansion_options}()}
 }
 \concept{save_to}

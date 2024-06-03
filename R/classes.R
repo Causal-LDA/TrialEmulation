@@ -73,8 +73,14 @@ setClass(
 )
 
 
+#' Save expanded data as a `data.table`
 #' @family save_to
-save_to_data.table <- function(...) {
+#' @export
+#' @examples
+#' trial_to_expand <- trial_sequence("ITT") |>
+#'   set_data(data = data_censored) |>
+#'   set_expansion_options(output = save_to_datatable(), chunk_size = 500)
+save_to_datatable <- function() {
   new("te_datastore_datatable", data = data.table(), N = 0L)
 }
 

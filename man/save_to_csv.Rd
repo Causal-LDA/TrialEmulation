@@ -27,6 +27,7 @@ unlink(csv_dir)
 }
 \seealso{
 Other save_to: 
+\code{\link{save_to_datatable}()},
 \code{\link{save_to_duckdb}()},
 \code{\link{set_expansion_options}()}
 }

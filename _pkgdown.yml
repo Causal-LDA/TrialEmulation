@@ -33,6 +33,7 @@ reference:
 - contents:
   - save_to_csv
   - save_to_duckdb
+  - save_to_datatable
 - subtitle: Model fitters
 - contents:
   - stats_glm_logit
