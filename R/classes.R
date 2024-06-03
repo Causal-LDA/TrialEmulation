@@ -21,7 +21,6 @@ setClass("te_datastore",
   prototype = list(N = 0L)
 )
 
-
 # save to csv -------
 setClass(
   "te_datastore_csv",
@@ -125,16 +124,19 @@ save_to_duckdb <- function(path) {
 }
 
 
-setClass("te_expansion",
+setClass(
+  "te_expansion",
   slots = c(
     chunk_size = "numeric",
     datastore = "te_datastore",
     censor_at_switch = "logical",
-    first_period = "integer",
-    last_period = "integer"
+    first_period = "numeric",
+    last_period = "numeric"
   )
 )
 
+# Dummy class for unset te_expansion
+setClass("te_expansion_unset", contains = "te_expansion")
 
 #' Method to save expanded data
 #'

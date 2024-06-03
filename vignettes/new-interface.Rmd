@@ -192,16 +192,21 @@ There are two options to set
 
 ```{r}
 trial_pp <- trial_pp |>
-  set_expansion_options(output = save_to_csv(file.path(trial_pp_dir, "trial_csvs")), chunk_size = 500)
+  set_expansion_options(
+    output = save_to_csv(file.path(trial_pp_dir, "trial_csvs")),
+    chunk_size = 500
+  )
 
 trial_itt <- set_expansion_options(
   trial_itt,
-  output = save_to_csv(file.path(trial_itt_dir, "trial_csvs")), chunk_size = 500
+  output = save_to_csv(file.path(trial_itt_dir, "trial_csvs")),
+  chunk_size = 500
 )
 
 trial_itt <- set_expansion_options(
   trial_itt,
-  output = save_to_data.table(), chunk_size = 500
+  output = save_to_datatable(),
+  chunk_size = 500
 )
 ```
 

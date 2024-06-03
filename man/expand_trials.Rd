@@ -4,12 +4,10 @@
 \alias{expand_trials}
 \title{Expand trials}
 \usage{
-expand_trials(object, ...)
+expand_trials(object)
 }
 \arguments{
 \item{object}{A \link{trial_sequence} object}
-
-\item{...}{Other arguments used in methods}
 }
 \value{
 The \link{trial_sequence} \code{object} with a data set containing the full sequence of target trials. The data is

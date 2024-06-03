@@ -1,8 +1,9 @@
-expand_trials_trial_seq <- function(object, censor_at_switch) {
+expand_trials_trial_seq <- function(object) {
   data <- object@data@data
   first_period <- object@expansion@first_period
   last_period <- object@expansion@last_period
   chunk_size <- object@expansion@chunk_size
+  censor_at_switch <- object@expansion@censor_at_switch
 
   outcome_adj_vars <- unique(object@data@expand_variables, object@outcome_model@adjustment_vars)
   keeplist <- unique(c(
@@ -11,7 +12,11 @@ expand_trials_trial_seq <- function(object, censor_at_switch) {
   ))
 
   all_ids <- unique(data$id)
-  ids_split <- split(all_ids, ceiling(seq_along(all_ids) / chunk_size))
+  ids_split <- if (chunk_size == 0) {
+    list(all_ids)
+  } else if (chunk_size > 0) {
+    split(all_ids, ceiling(seq_along(all_ids) / chunk_size))
+  }
   for (ids in ids_split) {
     switch_data <- expand(
       sw_data = data[list(ids), ],

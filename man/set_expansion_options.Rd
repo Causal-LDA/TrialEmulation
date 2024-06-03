@@ -7,7 +7,14 @@
 \usage{
 set_expansion_options(object, ...)
 
-\S4method{set_expansion_options}{trial_sequence}(object, output, chunk_size, first_period, last_period)
+\S4method{set_expansion_options}{trial_sequence}(
+  object,
+  output,
+  chunk_size = 0,
+  first_period = 0,
+  last_period = Inf,
+  censor_at_switch
+)
 }
 \arguments{
 \item{object}{A \link{trial_sequence} object}

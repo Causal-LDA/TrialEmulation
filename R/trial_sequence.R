@@ -19,7 +19,8 @@ setClass("trial_sequence",
   ),
   prototype = prototype(
     censor_weights = new("te_weights_unset"),
-    data = new("te_data_unset")
+    data = new("te_data_unset"),
+    expansion = new("te_expansion_unset")
   )
 )
 
@@ -96,7 +97,9 @@ trial_sequence <- function(estimand, ...) {
     stop(estimand_class_name, " does not extend class trial_sequence")
   }
 
-  new(estimand_class_name, ...)
+  object <- new(estimand_class_name, ...)
+  object <- set_outcome_model(object, followup_time_terms = ~0, trial_period_terms = ~0)
+  object
 }
 
 # Show(trial_sequence) ------
@@ -243,6 +246,8 @@ setMethod(
     )
     if (test_character(expand_variables, all.missing = FALSE)) {
       assert_names(colnames(data), must.include = expand_variables, what = "colnames", .var.name = "data")
+    } else {
+      expand_variables <- character(0L) # TODO REMOVE OR KEEP expand_variables?
     }
 
     trial_data <- as.data.table(data)
@@ -581,23 +586,46 @@ setGeneric("set_expansion_options", function(object, ...) standardGeneric("set_e
 setMethod(
   "set_expansion_options",
   c(object = "trial_sequence"),
-  function(object, output, chunk_size, first_period, last_period) {
+  function(object, output, chunk_size = 0, first_period = 0, last_period = Inf, censor_at_switch) {
     assert_class(output, "te_datastore")
-    assert_integerish(chunk_size)
-    if (missing(first_period)) first_period <- min(object@data@data$period)
-    if (missing(last_period)) last_period <- max(object@data@data$period)
-    assert_integerish(first_period)
-    assert_integerish(last_period)
+    assert_integerish(chunk_size, lower = 0, len = 1, any.missing = FALSE)
+    if (first_period != 0) assert_integerish(first_period)
+    if (last_period != Inf) assert_integerish(last_period)
+
     object@expansion <- new(
       "te_expansion",
       chunk_size = chunk_size,
       datastore = output,
-      first_period = as.integer(first_period),
-      last_period = as.integer(last_period)
+      first_period = first_period,
+      last_period = last_period,
+      censor_at_switch = censor_at_switch
     )
     object
   }
 )
+
+setMethod(
+  "set_expansion_options",
+  c(object = "trial_sequence_ITT"),
+  function(object, output, chunk_size = 0, first_period = 0, last_period = Inf) {
+    callNextMethod(object, output, chunk_size, first_period, last_period, censor_at_switch = FALSE)
+  }
+)
+setMethod(
+  "set_expansion_options",
+  c(object = "trial_sequence_PP"),
+  function(object, output, chunk_size, first_period = 0, last_period = Inf) {
+    callNextMethod(object, output, chunk_size, first_period, last_period, censor_at_switch = TRUE)
+  }
+)
+setMethod(
+  "set_expansion_options",
+  c(object = "trial_sequence_ITT"),
+  function(object, output, chunk_size, first_period = 0, last_period = Inf) {
+    callNextMethod(object, output, chunk_size, first_period, last_period, censor_at_switch = FALSE)
+  }
+)
+
 
 # Calculate Weights -------
 
@@ -655,37 +683,47 @@ setMethod(
 
 #' Expand trials
 #' @param object A [trial_sequence] object
-#' @param ... Other arguments used in methods
 #'
 #' @returns The [trial_sequence] `object` with a data set containing the full sequence of target trials. The data is
 #'   stored according to the options set with [set_expansion_options()] and especially the `save_to_*` function.
 #'
 #' @export
-setGeneric("expand_trials", function(object, ...) standardGeneric("expand_trials"))
+setGeneric("expand_trials", function(object) standardGeneric("expand_trials"))
 
 #' @rdname internal-methods
 setMethod(
   "expand_trials",
-  c(object = "trial_sequence_PP"),
+  c(object = "trial_sequence"),
   function(object) {
-    expand_trials_trial_seq(object, censor_at_switch = TRUE)
+    if (test_class(object@expansion, "te_expansion_unset")) stop("Use set_expansion_options() before expand_trials()")
+    if (test_class(object@data, "te_data_unset")) stop("Use set_data() before expand_trials()")
+    expand_trials_trial_seq(object)
   }
 )
-
-#' @rdname internal-methods
-setMethod(
-  "expand_trials",
-  c(object = "trial_sequence_ITT"),
-  function(object) {
-    expand_trials_trial_seq(object, censor_at_switch = FALSE)
-  }
-)
-
-#' @rdname internal-methods
-setMethod(
-  "expand_trials",
-  c(object = "trial_sequence_AT"),
-  function(object) {
-    expand_trials_trial_seq(object, censor_at_switch = FALSE)
-  }
-)
+#'
+#' #' @rdname internal-methods
+#' setMethod(
+#'   "expand_trials",
+#'   c(object = "trial_sequence_PP"),
+#'   function(object) {
+#'     expand_trials_trial_seq(object, censor_at_switch = TRUE)
+#'   }
+#' )
+#'
+#' #' @rdname internal-methods
+#' setMethod(
+#'   "expand_trials",
+#'   c(object = "trial_sequence_ITT"),
+#'   function(object) {
+#'     expand_trials_trial_seq(object, censor_at_switch = FALSE)
+#'   }
+#' )
+#'
+#' #' @rdname internal-methods
+#' setMethod(
+#'   "expand_trials",
+#'   c(object = "trial_sequence_AT"),
+#'   function(object) {
+#'     expand_trials_trial_seq(object, censor_at_switch = FALSE)
+#'   }
+#' )

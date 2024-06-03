@@ -3,9 +3,7 @@
 \name{internal-methods}
 \alias{internal-methods}
 \alias{set_data,trial_sequence,data.frame-method}
-\alias{expand_trials,trial_sequence_PP-method}
-\alias{expand_trials,trial_sequence_ITT-method}
-\alias{expand_trials,trial_sequence_AT-method}
+\alias{expand_trials,trial_sequence-method}
 \title{Internal Methods}
 \usage{
 \S4method{set_data}{trial_sequence,data.frame}(
@@ -20,11 +18,7 @@
   expand_variables = NA_character_
 )
 
-\S4method{expand_trials}{trial_sequence_PP}(object)
-
-\S4method{expand_trials}{trial_sequence_ITT}(object)
-
-\S4method{expand_trials}{trial_sequence_AT}(object)
+\S4method{expand_trials}{trial_sequence}(object)
 }
 \arguments{
 \item{object}{A \linkS4class{trial_sequence} object}
