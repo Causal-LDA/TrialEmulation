@@ -98,7 +98,6 @@ trial_sequence <- function(estimand, ...) {
   }
 
   object <- new(estimand_class_name, ...)
-  object <- set_outcome_model(object, followup_time_terms = ~0, trial_period_terms = ~0)
   object
 }
 
@@ -153,8 +152,6 @@ setMethod(
 #'   <U+2018>outcome<U+2019>.
 #' @param eligible Name of the variable for the indicator of eligibility for the target trial at that visit/period.
 #'   Default is <U+2018>eligible<U+2019>.
-#' @param expand_variables A character vector of column names of variables that may be used after expansion in the
-#'   marginal structural model. Columns not specified here may be dropped during data expansion.
 #' @param ... Other arguments used by methods internally.
 #'
 #' @return An updated [trial_sequence][trial_sequence-class] object with data
@@ -183,9 +180,8 @@ setMethod(
            period = "period",
            treatment = "treatment",
            outcome = "outcome",
-           eligible = "eligible",
-           expand_variables = NA_character_) {
-    callNextMethod(object, data, censor_at_switch = FALSE, id, period, treatment, outcome, eligible, expand_variables)
+           eligible = "eligible") {
+    callNextMethod(object, data, censor_at_switch = FALSE, id, period, treatment, outcome, eligible)
   }
 )
 
@@ -199,9 +195,8 @@ setMethod(
            period = "period",
            treatment = "treatment",
            outcome = "outcome",
-           eligible = "eligible",
-           expand_variables = NA_character_) {
-    callNextMethod(object, data, censor_at_switch = FALSE, id, period, treatment, outcome, eligible, expand_variables)
+           eligible = "eligible") {
+    callNextMethod(object, data, censor_at_switch = FALSE, id, period, treatment, outcome, eligible)
   }
 )
 
@@ -215,9 +210,8 @@ setMethod(
            period = "period",
            treatment = "treatment",
            outcome = "outcome",
-           eligible = "eligible",
-           expand_variables = NA_character_) {
-    callNextMethod(object, data, censor_at_switch = TRUE, id, period, treatment, outcome, eligible, expand_variables)
+           eligible = "eligible") {
+    callNextMethod(object, data, censor_at_switch = TRUE, id, period, treatment, outcome, eligible)
   }
 )
 
@@ -233,8 +227,7 @@ setMethod(
            period = "period",
            treatment = "treatment",
            outcome = "outcome",
-           eligible = "eligible",
-           expand_variables = NA_character_) {
+           eligible = "eligible") {
     assert_class(object, "trial_sequence")
     assert_class(data, "data.frame")
     assert_names(
@@ -244,11 +237,6 @@ setMethod(
       what = "colnames",
       .var.name = "data"
     )
-    if (test_character(expand_variables, all.missing = FALSE)) {
-      assert_names(colnames(data), must.include = expand_variables, what = "colnames", .var.name = "data")
-    } else {
-      expand_variables <- character(0L) # TODO REMOVE OR KEEP expand_variables?
-    }
 
     trial_data <- as.data.table(data)
     data.table::setnames(
@@ -261,8 +249,7 @@ setMethod(
       "te_data",
       data = trial_data,
       nobs = nrow(trial_data),
-      n = uniqueN(trial_data[, "id"]),
-      expand_variables = expand_variables
+      n = uniqueN(trial_data[, "id"])
     )
     object
   }
@@ -485,17 +472,26 @@ setMethod(
            adjustment_terms = ~0,
            followup_time_terms = ~ followup_time + I(followup_time^2),
            trial_period_terms = ~ trial_period + I(trial_period^2)) {
+    if (test_class(object@data, "te_data_unset")) stop("Use set_data() before set_outcome_model()")
     collection <- makeAssertCollection()
     formula_list <- list(
-      treatment = as_formula(treatment_var, add = assertions),
-      adjustment = as_formula(adjustment_terms, add = assertions),
-      followup = as_formula(followup_time_terms, add = assertions),
-      period = as_formula(trial_period_terms, add = assertions)
+      treatment = as_formula(treatment_var, add = collection),
+      adjustment = as_formula(adjustment_terms, add = collection),
+      followup = as_formula(followup_time_terms, add = collection),
+      period = as_formula(trial_period_terms, add = collection)
+    )
+    adjustment <- all.vars(formula_list$adjustment)
+    assert_names(
+      adjustment,
+      subset.of = colnames(object@data@data),
+      what = "Variables in formulas",
+      .var.name = "adjustment_terms",
+      add = collection
     )
     reportAssertions(collection)
+
     formula <- Reduce(add_rhs, formula_list)
     treatment <- all.vars(formula_list$treatment)
-    adjustment <- all.vars(formula_list$adjustment)
     object@outcome_model <- new(
       "te_outcome_model",
       formula = formula,
@@ -561,7 +557,6 @@ setMethod(
 
 # Set expansion options -----
 
-# add roxygen header
 #' Set expansion options
 #' @param object A [trial_sequence] object
 #' @param output A [te_datastore][te_datastore-class] object as created by a `save_to_*` function.
@@ -582,7 +577,7 @@ setMethod(
 #' unlink(output_dir, recursive = TRUE)
 setGeneric("set_expansion_options", function(object, ...) standardGeneric("set_expansion_options"))
 
-#' @rdname set_expansion_options
+#' @rdname internal-methods
 setMethod(
   "set_expansion_options",
   c(object = "trial_sequence"),
@@ -604,6 +599,7 @@ setMethod(
   }
 )
 
+#' @rdname set_expansion_options
 setMethod(
   "set_expansion_options",
   c(object = "trial_sequence_ITT"),
@@ -611,6 +607,8 @@ setMethod(
     callNextMethod(object, output, chunk_size, first_period, last_period, censor_at_switch = FALSE)
   }
 )
+
+#' @rdname set_expansion_options
 setMethod(
   "set_expansion_options",
   c(object = "trial_sequence_PP"),
@@ -618,6 +616,8 @@ setMethod(
     callNextMethod(object, output, chunk_size, first_period, last_period, censor_at_switch = TRUE)
   }
 )
+
+#' @rdname set_expansion_options
 setMethod(
   "set_expansion_options",
   c(object = "trial_sequence_ITT"),

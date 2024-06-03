@@ -3,6 +3,7 @@
 \name{internal-methods}
 \alias{internal-methods}
 \alias{set_data,trial_sequence,data.frame-method}
+\alias{set_expansion_options,trial_sequence-method}
 \alias{expand_trials,trial_sequence-method}
 \title{Internal Methods}
 \usage{
@@ -14,8 +15,16 @@
   period = "period",
   treatment = "treatment",
   outcome = "outcome",
-  eligible = "eligible",
-  expand_variables = NA_character_
+  eligible = "eligible"
+)
+
+\S4method{set_expansion_options}{trial_sequence}(
+  object,
+  output,
+  chunk_size = 0,
+  first_period = 0,
+  last_period = Inf,
+  censor_at_switch
 )
 
 \S4method{expand_trials}{trial_sequence}(object)
@@ -38,9 +47,6 @@
 
 \item{eligible}{Name of the variable for the indicator of eligibility for the target trial at that visit/period.
 Default is <U+2018>eligible<U+2019>.}
-
-\item{expand_variables}{A character vector of column names of variables that may be used after expansion in the
-marginal structural model. Columns not specified here may be dropped during data expansion.}
 }
 \description{
 Various S4 methods which are not directly for use by users.

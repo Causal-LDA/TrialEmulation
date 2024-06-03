@@ -2,18 +2,34 @@
 % Please edit documentation in R/trial_sequence.R
 \name{set_expansion_options}
 \alias{set_expansion_options}
-\alias{set_expansion_options,trial_sequence-method}
+\alias{set_expansion_options,trial_sequence_ITT-method}
+\alias{set_expansion_options,trial_sequence_PP-method}
 \title{Set expansion options}
 \usage{
 set_expansion_options(object, ...)
 
-\S4method{set_expansion_options}{trial_sequence}(
+\S4method{set_expansion_options}{trial_sequence_ITT}(
   object,
   output,
-  chunk_size = 0,
+  chunk_size,
   first_period = 0,
-  last_period = Inf,
-  censor_at_switch
+  last_period = Inf
+)
+
+\S4method{set_expansion_options}{trial_sequence_PP}(
+  object,
+  output,
+  chunk_size,
+  first_period = 0,
+  last_period = Inf
+)
+
+\S4method{set_expansion_options}{trial_sequence_ITT}(
+  object,
+  output,
+  chunk_size,
+  first_period = 0,
+  last_period = Inf
 )
 }
 \arguments{

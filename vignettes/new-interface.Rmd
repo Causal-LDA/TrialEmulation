@@ -61,8 +61,7 @@ trial_pp <- trial_pp |>
     period = "period",
     treatment = "treatment",
     outcome = "outcome",
-    eligible = "eligible",
-    expand_variables = c("x1", "x2", "x3", "x4", "age", "age_s")
+    eligible = "eligible"
   )
 
 # Function style without pipes
@@ -73,8 +72,7 @@ trial_itt <- set_data(
   period = "period",
   treatment = "treatment",
   outcome = "outcome",
-  eligible = "eligible",
-  expand_variables = c("x1", "x2", "x3", "x4", "age", "age_s")
+  eligible = "eligible"
 )
 ```
 

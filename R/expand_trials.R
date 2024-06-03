@@ -5,7 +5,7 @@ expand_trials_trial_seq <- function(object) {
   chunk_size <- object@expansion@chunk_size
   censor_at_switch <- object@expansion@censor_at_switch
 
-  outcome_adj_vars <- unique(object@data@expand_variables, object@outcome_model@adjustment_vars)
+  outcome_adj_vars <- unique(object@outcome_model@adjustment_vars)
   keeplist <- unique(c(
     "id", "trial_period", "followup_time", "outcome", "weight", "treatment",
     outcome_adj_vars, object@outcome_model@treatment_var
