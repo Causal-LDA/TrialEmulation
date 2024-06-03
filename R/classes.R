@@ -1,7 +1,8 @@
 setClass("te_outcome_model",
   slots = c(
     formula = "formula",
-    treatment_var = "character"
+    treatment_var = "character",
+    adjustment_vars = "character"
   )
 )
 

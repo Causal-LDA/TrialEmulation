@@ -475,9 +475,81 @@ setGeneric("set_outcome_model", function(object, ...) standardGeneric("set_outco
 setMethod(
   "set_outcome_model",
   c(object = "trial_sequence"),
-  function(object, formula, treatment_var, fitter) {
-    object@outcome <- new("te_outcome_model", formula = formula, treatment_var = treatment_var, fitter = fitter)
+  function(object,
+           treatment_var = ~0,
+           adjustment_terms = ~0,
+           followup_time_terms = ~ followup_time + I(followup_time^2),
+           trial_period_terms = ~ trial_period + I(trial_period^2)) {
+    collection <- makeAssertCollection()
+    formula_list <- list(
+      treatment = as_formula(treatment_var, add = assertions),
+      adjustment = as_formula(adjustment_terms, add = assertions),
+      followup = as_formula(followup_time_terms, add = assertions),
+      period = as_formula(trial_period_terms, add = assertions)
+    )
+    reportAssertions(collection)
+    formula <- Reduce(add_rhs, formula_list)
+    treatment <- all.vars(formula_list$treatment)
+    adjustment <- all.vars(formula_list$adjustment)
+    object@outcome_model <- new(
+      "te_outcome_model",
+      formula = formula,
+      treatment_var = treatment,
+      adjustment_vars = adjustment
+    )
     object
+  }
+)
+
+setMethod(
+  "set_outcome_model",
+  c(object = "trial_sequence_ITT"),
+  function(object,
+           adjustment_terms = ~0,
+           followup_time_terms = ~ followup_time + I(followup_time^2),
+           trial_period_terms = ~ trial_period + I(trial_period^2)) {
+    callNextMethod(
+      object,
+      treatment_var = "assigned_treatment",
+      adjustment_terms = adjustment_terms,
+      followup_time_terms = followup_time_terms,
+      trial_period_terms = trial_period_terms
+    )
+  }
+)
+
+setMethod(
+  "set_outcome_model",
+  c(object = "trial_sequence_PP"),
+  function(object,
+           adjustment_terms = ~0,
+           followup_time_terms = ~ followup_time + I(followup_time^2),
+           trial_period_terms = ~ trial_period + I(trial_period^2)) {
+    callNextMethod(
+      object,
+      treatment_var = "assigned_treatment",
+      adjustment_terms = adjustment_terms,
+      followup_time_terms = followup_time_terms,
+      trial_period_terms = trial_period_terms
+    )
+  }
+)
+
+setMethod(
+  "set_outcome_model",
+  c(object = "trial_sequence_AT"),
+  function(object,
+           treatment_var = "dose",
+           adjustment_terms = ~0,
+           followup_time_terms = ~ followup_time + I(followup_time^2),
+           trial_period_terms = ~ trial_period + I(trial_period^2)) {
+    callNextMethod(
+      object,
+      treatment_var = treatment_var,
+      adjustment_terms = adjustment_terms,
+      followup_time_terms = followup_time_terms,
+      trial_period_terms = trial_period_terms
+    )
   }
 )
 
@@ -596,7 +668,7 @@ setMethod(
   "expand_trials",
   c(object = "trial_sequence_PP"),
   function(object) {
-    expand_trials_trial_seq(object, censor_at_switch = TRUE, keeplist = NULL)
+    expand_trials_trial_seq(object, censor_at_switch = TRUE)
   }
 )
 
@@ -605,7 +677,7 @@ setMethod(
   "expand_trials",
   c(object = "trial_sequence_ITT"),
   function(object) {
-    expand_trials_trial_seq(object, censor_at_switch = FALSE, keeplist = NULL)
+    expand_trials_trial_seq(object, censor_at_switch = FALSE)
   }
 )
 
@@ -614,6 +686,6 @@ setMethod(
   "expand_trials",
   c(object = "trial_sequence_AT"),
   function(object) {
-    expand_trials_trial_seq(object, censor_at_switch = FALSE, keeplist = "dose")
+    expand_trials_trial_seq(object, censor_at_switch = FALSE)
   }
 )
