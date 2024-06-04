@@ -52,6 +52,8 @@ RoxygenNote: 7.3.1.9000
 Collate: 
     'RcppExports.R'
     'calculate_weights.R'
+    'generics.R'
+    'te_datastore.R'
     'classes.R'
     'data.R'
     'data_extension.R'
@@ -60,7 +62,6 @@ Collate:
     'data_simulation.R'
     'data_utils.R'
     'expand_trials.R'
-    'generics.R'
     'initiators.R'
     'lr_utils.R'
     'modelling.R'

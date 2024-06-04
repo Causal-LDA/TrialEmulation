@@ -117,3 +117,26 @@ print.TE_weight_summary <- function(x, full = TRUE, ...) {
 #' @keywords internal
 #'
 NULL
+
+#' Method to save expanded data
+#'
+#' This method is used internally by [expand_trials] to save the data to the "datastore" defined in
+#' [set_expansion_options].
+#'
+#' @param object An object of class [te_datastore][te_datastore-class] or a child class.
+#' @param data A data frame containing the expanded trial data. The columns `trial_period` and `id` are present, which
+#'  may be used in methods to save the data in an optimal way, such as with indexes, keys or separate files.
+#'
+#' @return An updated `object` with the data stored. Notably `object@N` should be increased
+#' @export
+#'
+#' @examples
+#' temp_dir <- tempfile("csv_dir_")
+#' dir.create(temp_dir)
+#' datastore <- save_to_csv(temp_dir)
+#' data(vignette_switch_data)
+#' save_expanded_data(datastore, vignette_switch_data)
+#'
+#' # delete after use
+#' unlink(temp_dir, recursive = TRUE)
+setGeneric("save_expanded_data", function(object, data) standardGeneric("save_expanded_data"))

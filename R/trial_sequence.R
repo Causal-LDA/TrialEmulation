@@ -1,4 +1,4 @@
-#' @include classes.R te_data.R te_weights.R
+#' @include classes.R te_data.R te_weights.R te_datastore.R
 NULL
 
 #' Trial Sequence class
