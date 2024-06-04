@@ -13,6 +13,9 @@
     <loc>https://causal-lda.github.io/TrialEmulation/articles/index.html</loc>
   </url>
   <url>
+    <loc>https://causal-lda.github.io/TrialEmulation/articles/new-interface.html</loc>
+  </url>
+  <url>
     <loc>https://causal-lda.github.io/TrialEmulation/authors.html</loc>
   </url>
   <url>
@@ -28,6 +31,9 @@
     <loc>https://causal-lda.github.io/TrialEmulation/reference/calculate_predictions.html</loc>
   </url>
   <url>
+    <loc>https://causal-lda.github.io/TrialEmulation/reference/calculate_weights.html</loc>
+  </url>
+  <url>
     <loc>https://causal-lda.github.io/TrialEmulation/reference/case_control_sampling_trials.html</loc>
   </url>
   <url>
@@ -35,6 +41,9 @@
   </url>
   <url>
     <loc>https://causal-lda.github.io/TrialEmulation/reference/check_newdata.html</loc>
+  </url>
+  <url>
+    <loc>https://causal-lda.github.io/TrialEmulation/reference/data_censored.html</loc>
   </url>
   <url>
     <loc>https://causal-lda.github.io/TrialEmulation/reference/data_manipulation.html</loc>
@@ -46,13 +55,22 @@
     <loc>https://causal-lda.github.io/TrialEmulation/reference/expand.html</loc>
   </url>
   <url>
+    <loc>https://causal-lda.github.io/TrialEmulation/reference/expand_trials.html</loc>
+  </url>
+  <url>
     <loc>https://causal-lda.github.io/TrialEmulation/reference/expand_until_switch.html</loc>
+  </url>
+  <url>
+    <loc>https://causal-lda.github.io/TrialEmulation/reference/fit_weights_model.html</loc>
   </url>
   <url>
     <loc>https://causal-lda.github.io/TrialEmulation/reference/index.html</loc>
   </url>
   <url>
     <loc>https://causal-lda.github.io/TrialEmulation/reference/initiators.html</loc>
+  </url>
+  <url>
+    <loc>https://causal-lda.github.io/TrialEmulation/reference/internal-methods.html</loc>
   </url>
   <url>
     <loc>https://causal-lda.github.io/TrialEmulation/reference/predict.TE_msm.html</loc>
@@ -64,22 +82,70 @@
     <loc>https://causal-lda.github.io/TrialEmulation/reference/robust_calculation.html</loc>
   </url>
   <url>
+    <loc>https://causal-lda.github.io/TrialEmulation/reference/save_expanded_data.html</loc>
+  </url>
+  <url>
+    <loc>https://causal-lda.github.io/TrialEmulation/reference/save_to_csv.html</loc>
+  </url>
+  <url>
+    <loc>https://causal-lda.github.io/TrialEmulation/reference/save_to_datatable.html</loc>
+  </url>
+  <url>
+    <loc>https://causal-lda.github.io/TrialEmulation/reference/save_to_duckdb.html</loc>
+  </url>
+  <url>
     <loc>https://causal-lda.github.io/TrialEmulation/reference/select_data_cols.html</loc>
+  </url>
+  <url>
+    <loc>https://causal-lda.github.io/TrialEmulation/reference/set_censor_weight_model.html</loc>
+  </url>
+  <url>
+    <loc>https://causal-lda.github.io/TrialEmulation/reference/set_data.html</loc>
+  </url>
+  <url>
+    <loc>https://causal-lda.github.io/TrialEmulation/reference/set_expansion_options.html</loc>
+  </url>
+  <url>
+    <loc>https://causal-lda.github.io/TrialEmulation/reference/set_switch_weight_model.html</loc>
+  </url>
+  <url>
+    <loc>https://causal-lda.github.io/TrialEmulation/reference/show_weight_models.html</loc>
+  </url>
+  <url>
+    <loc>https://causal-lda.github.io/TrialEmulation/reference/stats_glm_logit.html</loc>
   </url>
   <url>
     <loc>https://causal-lda.github.io/TrialEmulation/reference/summary_TE.html</loc>
   </url>
   <url>
+    <loc>https://causal-lda.github.io/TrialEmulation/reference/te_data-class.html</loc>
+  </url>
+  <url>
     <loc>https://causal-lda.github.io/TrialEmulation/reference/te_data_ex.html</loc>
   </url>
   <url>
+    <loc>https://causal-lda.github.io/TrialEmulation/reference/te_datastore-class.html</loc>
+  </url>
+  <url>
     <loc>https://causal-lda.github.io/TrialEmulation/reference/te_model_ex.html</loc>
+  </url>
+  <url>
+    <loc>https://causal-lda.github.io/TrialEmulation/reference/te_weights_fitted-class.html</loc>
+  </url>
+  <url>
+    <loc>https://causal-lda.github.io/TrialEmulation/reference/te_weights_fitter-class.html</loc>
   </url>
   <url>
     <loc>https://causal-lda.github.io/TrialEmulation/reference/trial_example.html</loc>
   </url>
   <url>
     <loc>https://causal-lda.github.io/TrialEmulation/reference/trial_msm.html</loc>
+  </url>
+  <url>
+    <loc>https://causal-lda.github.io/TrialEmulation/reference/trial_sequence-class.html</loc>
+  </url>
+  <url>
+    <loc>https://causal-lda.github.io/TrialEmulation/reference/trial_sequence.html</loc>
   </url>
   <url>
     <loc>https://causal-lda.github.io/TrialEmulation/reference/vignette_switch_data.html</loc>

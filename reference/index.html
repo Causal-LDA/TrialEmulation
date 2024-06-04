@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">TrialEmulation</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.3.8</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.3.9</span>
       </span>
     </div>
 
@@ -33,6 +33,9 @@
   </a>
   <ul class="dropdown-menu" role="menu"><li>
       <a href="../articles/Getting-Started.html">Getting-Started</a>
+    </li>
+    <li>
+      <a href="../articles/new-interface.html">New Interface</a>
     </li>
   </ul></li>
 <li>
@@ -108,6 +111,106 @@
           <p><code><a href="te_model_ex.html">te_model_ex</a></code> </p>
         </td>
         <td><p>Example of a fitted marginal structural model object</p></td>
+      </tr><tr><td>
+          <p><code><a href="data_censored.html">data_censored</a></code> </p>
+        </td>
+        <td><p>Example of longitudinal data for sequential trial emulation containing censoring</p></td>
+      </tr></tbody><tbody><tr><th colspan="2">
+          <h2 id="new-interface-functions">New Interface Functions <a href="#new-interface-functions" class="anchor" aria-hidden="true"></a></h2>
+          <p class="section-desc"></p><p>Experimental functions for the new interface</p>
+        </th>
+      </tr></tbody><tbody><tr><td>
+          <p><code><a href="trial_sequence.html">trial_sequence()</a></code> </p>
+        </td>
+        <td><p>Create a sequence of emulated target trials object</p></td>
+      </tr><tr><td>
+          <p><code><a href="set_data.html">set_data()</a></code> </p>
+        </td>
+        <td><p>Set the trial data</p></td>
+      </tr><tr><td>
+          <p><code><a href="set_censor_weight_model.html">set_censor_weight_model()</a></code> </p>
+        </td>
+        <td><p>Set censoring weight model</p></td>
+      </tr><tr><td>
+          <p><code><a href="set_switch_weight_model.html">set_switch_weight_model()</a></code> </p>
+        </td>
+        <td><p>Set switching weight model</p></td>
+      </tr><tr><td>
+          <p><code><a href="calculate_weights.html">calculate_weights()</a></code> </p>
+        </td>
+        <td><p>Calculate Inverse Probability of Censoring Weights</p></td>
+      </tr><tr><td>
+          <p><code><a href="show_weight_models.html">show_weight_models()</a></code> </p>
+        </td>
+        <td><p>Show Weight Model Summaries</p></td>
+      </tr><tr><td>
+          <p><code><a href="set_expansion_options.html">set_expansion_options()</a></code> </p>
+        </td>
+        <td><p>Set expansion options</p></td>
+      </tr><tr><td>
+          <p><code><a href="expand_trials.html">expand_trials()</a></code> </p>
+        </td>
+        <td><p>Expand trials</p></td>
+      </tr></tbody><tbody><tr><th colspan="2">
+          <h3 id="data-storage">Data Storage <a href="#data-storage" class="anchor" aria-hidden="true"></a></h3>
+          <p class="section-desc"></p><p>Control how expanded data is stored</p>
+        </th>
+      </tr></tbody><tbody><tr><td>
+          <p><code><a href="save_to_csv.html">save_to_csv()</a></code> </p>
+        </td>
+        <td><p>Save expanded data as CSV</p></td>
+      </tr><tr><td>
+          <p><code><a href="save_to_duckdb.html">save_to_duckdb()</a></code> </p>
+        </td>
+        <td><p>Save expanded data to <code>DuckDB</code></p></td>
+      </tr><tr><td>
+          <p><code><a href="save_to_datatable.html">save_to_datatable()</a></code> </p>
+        </td>
+        <td><p>Save expanded data as a <code>data.table</code></p></td>
+      </tr></tbody><tbody><tr><th colspan="2">
+          <h3 id="model-fitters">Model fitters <a href="#model-fitters" class="anchor" aria-hidden="true"></a></h3>
+          <p class="section-desc"></p>
+        </th>
+      </tr></tbody><tbody><tr><td>
+          <p><code><a href="stats_glm_logit.html">stats_glm_logit()</a></code> </p>
+        </td>
+        <td><p>Fit weight models using <code><a href="https://rdrr.io/r/stats/glm.html" class="external-link">stats::glm</a></code></p></td>
+      </tr></tbody><tbody><tr><th colspan="2">
+          <h2 id="classes">Classes <a href="#classes" class="anchor" aria-hidden="true"></a></h2>
+          <p class="section-desc"></p>
+        </th>
+      </tr></tbody><tbody><tr><td>
+          <p><code><a href="trial_sequence-class.html">trial_sequence-class</a></code> <code><a href="trial_sequence-class.html">trial_sequence_PP-class</a></code> <code><a href="trial_sequence-class.html">trial_sequence_ITT-class</a></code> <code><a href="trial_sequence-class.html">trial_sequence_AT-class</a></code> </p>
+        </td>
+        <td><p>Trial Sequence class</p></td>
+      </tr><tr><td>
+          <p><code><a href="te_data-class.html">te_data-class</a></code> </p>
+        </td>
+        <td><p>TrialEmulation Data Class</p></td>
+      </tr><tr><td>
+          <p><code><a href="te_datastore-class.html">te_datastore-class</a></code> </p>
+        </td>
+        <td><p>te_datastore</p></td>
+      </tr><tr><td>
+          <p><code><a href="te_weights_fitted-class.html">te_weights_fitted-class</a></code> </p>
+        </td>
+        <td><p>Fitted Weights Object</p></td>
+      </tr><tr><td>
+          <p><code><a href="te_weights_fitter-class.html">te_weights_fitter-class</a></code> <code><a href="te_weights_fitter-class.html">te_stats_glm_logit-class</a></code> </p>
+        </td>
+        <td><p>Weight Model Fitter Class</p></td>
+      </tr></tbody><tbody><tr><th colspan="2">
+          <h2 id="internal-methods">Internal Methods <a href="#internal-methods" class="anchor" aria-hidden="true"></a></h2>
+          <p class="section-desc"></p>
+        </th>
+      </tr></tbody><tbody><tr><td>
+          <p><code><a href="save_expanded_data.html">save_expanded_data()</a></code> </p>
+        </td>
+        <td><p>Method to save expanded data</p></td>
+      </tr><tr><td>
+          <p><code><a href="fit_weights_model.html">fit_weights_model()</a></code> </p>
+        </td>
+        <td><p>Method for fitting weight models</p></td>
       </tr></tbody></table></div>
 
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

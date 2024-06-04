@@ -3,7 +3,8 @@ pkgdown: 2.0.9
 pkgdown_sha: ~
 articles:
   Getting-Started: Getting-Started.html
-last_built: 2024-05-06T15:17Z
+  new-interface: new-interface.html
+last_built: 2024-06-04T08:42Z
 urls:
   reference: https://causal-lda.github.io/TrialEmulation/reference
   article: https://causal-lda.github.io/TrialEmulation/articles
