@@ -1,0 +1,171 @@
+---
+title: "classes"
+output: html_document
+date: "2024-02-28"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Classes in TrialEmulation
+
+Based on editor feedback we should improve our use of classes and methods.
+
+Some easy things: - add print/show methods - add summary methods - make `trial_msm` take an object from `data_preparation()` (it does but it's said differently in the docs)
+
+Some other things: - allow modularity and extensibility of classes and methods, eg alternative weight or outcome models
+
+## Design
+
+1.  input data object
+2.  weight model class
+
+-   censoring weights object
+    -   fit_glm class
+-   switching weights object
+    -   fit_glm class
+
+3.  data extension method
+
+-   data output object: {data.table, csv, duckdb/sqlite}
+
+4.  MSM model fit
+5.  predict
+
+```{r}
+#| eval: false
+
+# tte <- trial_sequence(estimand = "PP") |>
+# set_data(trial_example, id = "ID", treatment = "drug", outcome = "Death", eligible = "IE")
+
+tte <- trial_sequence(estimand = "ITT") |> set_data(trial_example, expand_variables = c("catvarA", "nvarB"))
+tte_PP <- trial_sequence(estimand = "PP") |> set_data(trial_example)
+tte_AT <- trial_sequence(estimand = "AT") |> set_data(trial_example)
+# message:
+# A per-protocol analysis requires specification of treatment switching model with set_switch_weight_model()
+
+tte2 <- tte |>
+  set_censor_weight_model(
+    censor_event = "outcome",
+    numerator = ~ catvarA + nvarA,
+    denominator = ~ catvarB + nvarA,
+    pool_models = "both",
+    model_fitter = stats_glm_logit(save_path = "~/my_TTE")
+  ) |>
+  # set_expansion_options(chunks = 500, output = save_to_csv(path = file.path(tempdir(), "expansion_dir")))
+  set_expansion_options(chunks = 500, output = save_to_duckdb(path = file.path(tempdir(), "expansion_dir")))
+
+tte2_PP <- tte_PP |>
+  set_switch_weight_model(
+    numerator = ~ catvarA + nvarA,
+    denominator = ~ catvarB + nvarA,
+    model_fitter = stats_glm_logit(save_path = "~/my_TTE")
+  ) |>
+  set_censor_weight_model(
+    censor_event = "outcome",
+    numerator = ~ catvarC + catvarB + nvarC,
+    denominator = ~ catvarC + catvarB,
+    pool_models = "none",
+    model_fitter = stats_glm_logit(save_path = "~/my_TTE")
+  ) |>
+  set_expansion_options(chunks = 500, output = save_to_csv(path = file.path(tempdir(), "expansion_dir")))
+
+tte2_AT <- tte_AT |>
+  set_switch_weight_model(
+    numerator = ~ age + biomarker,
+    denominator = ~ age + biomarker,
+    model_fitter = stats_glm_logit(save_path = "~/my_TTE")
+  ) |>
+  set_censor_weight_model(
+    numerator = ~ age + biomarker,
+    denominator = ~ age + biomarker,
+    pool_models = "both",
+    model_fitter = stats_glm_logit(save_path = "~/my_TTE")
+  ) |>
+  set_expansion_options(chunks = 500, output = save_to_csv(path = file.path(tempdir(), "expansion_dir")))
+
+
+initiators(tte2) # error! modelling options are not set
+
+tte3_PP <- calculate_weights(tte2_PP, quiet = FALSE)
+expanded_tte3 <- expand_trials(tte3)
+
+expanded_tte3 <- set_outcome_model(expanded_tte3, ~ age + biomarker + time + time^2)
+results <- fit_msm(expanded_tte3)
+
+predict(tte3) # error! run fit_msm on this model
+predict(results)
+```
+
+```{r}
+tte2w <- calculate_weights(tte2)
+expanded_tte2 <- expand_trials(tte2w)
+dplyr::tbl(expanded_tte2@expansion@datastore@con, "trial_data")
+```
+
+
+The TTE object always inherits from the "tte" parent class. After expanding it becomes a 
+"expanded_TTE" which inherits and then a "msm_TTE" the same.
+
+`initiators()` is, as before, an all in one function but takes a completely specified trial object
+
+
+Arbitrary weighting models could be defined with two components:
+1. A new class that inherits from `te_weights_fitter` that contains any parameters
+needed for fitting the model. The parent class `te_weights_fitter` has one slot `save_path`
+```{r}
+#| eval: false
+stats_glm_logit <- setClass(
+  "te_stats_glm_logit",
+  contains = "te_weights_fitter",
+  slots = c(save_path = "character")
+)
+```
+
+2. A method for this new class that fits a model. It takes the fitter object, a data.frame, a formula and a label.
+It returns a `te_weights_fitted` object containing a summary of the model and a the fitted values.
+If the `@save_path` slot is not empty, a model object should be saved there.
+
+```{r}
+#| eval: false
+setMethod(
+  f = "fit_weights_model",
+  signature = "te_stats_glm_logit",
+  function(object, data, formula, label) {
+    model <- f()
+    new("te_weights_fitted", specification = c(), fitted = model$fitted)
+  }
+)
+```
+
+
+# Thoughts on classes
+
+We create a trial_sequence object and then add settings for weights and expansion. Finally we can fit the weight models
+and add these to the data. The next step is expansion. Before that I think it is a good idea to set the analysis model.
+
+The order must be:
+1. Set data
+2a. Set weight models
+2b. Set expansion settings
+2c. Set outcome models
+3. Fit weight models
+4. Expand data
+
+Any changes to a later step will invalidate the later ones. Should this result in an error? Or simply deleting the downstream slots.
+
+5. Sampling (optional)
+6. Fit marginal structural model
+
+When fitting the MSM, the model formula may be modified, as long as no new variables are required.
+
+As a consequence of using data.table's write by reference, objects may be modified unexpectedly.
+Setting the weight model adds columns to the data. These could be overwritten.
+
+One questions is whether the expansion set modifies the data in the original object.
+
+## Sampling
+
+Sampling should quite straightforward. We need another method defined for the `te_datastore` class.
+But what should the output be? The same trial_sequence? or something simpler?

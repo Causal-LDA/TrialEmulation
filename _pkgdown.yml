@@ -16,3 +16,35 @@ reference:
   - vignette_switch_data
   - te_data_ex
   - te_model_ex
+  - data_censored
+- title: New Interface Functions
+  desc: Experimental functions for the new interface
+- contents:
+  - trial_sequence
+  - set_data
+  - set_censor_weight_model
+  - set_switch_weight_model
+  - calculate_weights
+  - show_weight_models
+  - set_expansion_options
+  - expand_trials
+- subtitle: Data Storage
+  desc: Control how expanded data is stored
+- contents:
+  - save_to_csv
+  - save_to_duckdb
+  - save_to_datatable
+- subtitle: Model fitters
+- contents:
+  - stats_glm_logit
+- title: Classes
+- contents:
+  - trial_sequence-class
+  - te_data-class
+  - te_datastore-class
+  - te_weights_fitted-class
+  - te_weights_fitter-class
+- title: Internal Methods
+- contents:
+  - save_expanded_data
+  - fit_weights_model
