@@ -140,3 +140,15 @@ NULL
 #' # delete after use
 #' unlink(temp_dir, recursive = TRUE)
 setGeneric("save_expanded_data", function(object, data) standardGeneric("save_expanded_data"))
+
+
+#' Method to read expanded data
+#'
+#' @param object
+#' @param period
+#'
+#' @return
+#' @export
+#'
+#' @examples
+setGeneric("read_expanded_data", function(object, period) standardGeneric("read_expanded_data"))

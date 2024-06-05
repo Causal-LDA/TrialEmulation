@@ -170,3 +170,45 @@ setMethod(
     object
   }
 )
+
+
+#' @rdname read_expanded_data
+setMethod(
+  f = "read_expanded_data",
+  signature = "te_datastore_csv",
+  definition = function(object, period = NA) {
+    data_dir <- object@path
+    if (is.na(period)[1]) files <- dir(data_dir)
+    else {
+      files <- NULL
+      for (p in period) {
+        files <- append(
+          files,
+          grep(x = dir(data_dir),
+               pattern = paste0("trial_", p, ".csv"),
+               value = TRUE)
+        )
+      }
+    }
+    file_p <- NULL
+    for (f in files) {
+      file_p <- append(
+        file_p,
+        file.path(data_dir, f)
+      )
+    }
+    data_table <- data.table::rbindlist(lapply(file_p, data.table::fread))
+    data_table
+
+    # data_list <- list()
+    # counter <- 0
+    # for (f in files) {
+    #   counter <- counter + 1
+    #   file_p <- file.path(data_dir, f)
+    #   data_list[counter] <- readr::read_csv(file = file_p) #data.table::fread(file = file_p, header = TRUE)
+    # }
+    # #data_table <- rbind(data_list)
+    # #data_table
+    # data_list
+  }
+)
