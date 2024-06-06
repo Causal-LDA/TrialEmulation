@@ -131,7 +131,7 @@ setMethod(
     periods <- unique(data[["trial_period"]])
     for (p in periods) {
       file_p <- file.path(data_dir, paste0("trial_", p, ".csv"))
-      fwrite(data[trial_period == p, ], file = file_p, append = TRUE)
+      fwrite(data[data$trial_period == p, ], file = file_p, append = TRUE)
     }
     object@N <- object@N + nrow(data)
     object@files <- file.path(data_dir, paste0("trial_", periods, ".csv"))
