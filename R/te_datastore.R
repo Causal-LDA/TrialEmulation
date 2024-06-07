@@ -179,17 +179,10 @@ setMethod(
   definition = function(object, period) {
     checkmate::assert_integerish(period, null.ok = TRUE, any.missing = FALSE, lower = 0)
     all_files <- object@files
-    if (is.null(period)) files <- all_files
-    else {
-      files <- NULL
-      for (p in period) {
-        files <- append(
-          files,
-          grep(x = all_files,
-               pattern = paste0("trial_", p, ".csv"),
-               value = TRUE)
-        )
-      }
+    files <- if (is.null(period)) {
+      all_files
+    } else {
+      grep(x = all_files, pattern = paste0("trial_", period, ".csv", collapse = "|"), value = TRUE)
     }
     data_table <- data.table::rbindlist(lapply(files, data.table::fread))
     data_table
