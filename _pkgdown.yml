@@ -47,4 +47,5 @@ reference:
 - title: Internal Methods
 - contents:
   - save_expanded_data
+  - read_expanded_data
   - fit_weights_model

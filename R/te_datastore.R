@@ -131,7 +131,7 @@ setMethod(
     periods <- unique(data[["trial_period"]])
     for (p in periods) {
       file_p <- file.path(data_dir, paste0("trial_", p, ".csv"))
-      fwrite(data[trial_period == p, ], file = file_p, append = TRUE)
+      fwrite(data[data$trial_period == p, ], file = file_p, append = TRUE)
     }
     object@N <- object@N + nrow(data)
     object@files <- file.path(data_dir, paste0("trial_", periods, ".csv"))
@@ -168,5 +168,23 @@ setMethod(
     object@N <- object@N + nrow(data)
 
     object
+  }
+)
+
+
+#' @rdname read_expanded_data
+setMethod(
+  f = "read_expanded_data",
+  signature = "te_datastore_csv",
+  definition = function(object, period) {
+    checkmate::assert_integerish(period, null.ok = TRUE, any.missing = FALSE, lower = 0)
+    all_files <- object@files
+    files <- if (is.null(period)) {
+      all_files
+    } else {
+      grep(x = all_files, pattern = paste0("trial_", period, ".csv", collapse = "|"), value = TRUE)
+    }
+    data_table <- data.table::rbindlist(lapply(files, data.table::fread))
+    data_table
   }
 )
