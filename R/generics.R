@@ -144,10 +144,12 @@ setGeneric("save_expanded_data", function(object, data) standardGeneric("save_ex
 
 #' Method to read expanded data
 #'
-#' This method is used on te_datastore_csv-class [te_datastore-class] objects to read selected csv-files and combine them into one `data.table`.
+#' This method is used on te_datastore_csv-class [te_datastore-class] objects to read selected csv-files and
+#' combine them into one `data.table`.
 #'
 #' @param object An object of class te_datastore_csv-class [te_datastore-class].
-#' @param period An integerish vector of non-zero length to select trial period(s) or `NULL` (default) to select all files.
+#' @param period An integerish vector of non-zero length to select trial period(s) or `NULL` (default) to
+#' select all files.
 #'
 #' @return A `data.frame` of class `data.table`.
 #' @export

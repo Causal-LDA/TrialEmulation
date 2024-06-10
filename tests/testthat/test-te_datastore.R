@@ -19,8 +19,10 @@ test_that("read_expanded_data can read te_datastore_csv data", {
   expect_error(read_expanded_data(expanded_csv_data, "1"))
 
   # check if no new NAs are introduced
-  expect_equal(sum(is.na.data.frame(read_expanded_data(expanded_csv_data))),
-               sum(is.na.data.frame(subset(vignette_switch_data, trial_period %in% 1:12))))
+  expect_equal(
+    sum(is.na.data.frame(read_expanded_data(expanded_csv_data))),
+    sum(is.na.data.frame(subset(vignette_switch_data, trial_period %in% 1:12)))
+  )
 
   unlink(temp_dir, recursive = TRUE)
 })
