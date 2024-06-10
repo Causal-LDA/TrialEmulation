@@ -10,7 +10,7 @@ read_expanded_data(object, period = NULL)
 \S4method{read_expanded_data}{te_datastore_csv}(object, period = NULL)
 }
 \arguments{
-\item{object}{An object of class \linkS4class{te_datastore_csv}.}
+\item{object}{An object of class te_datastore_csv-class \linkS4class{te_datastore}.}
 
 \item{period}{An integerish vector of non-zero length to select trial period(s) or \code{NULL} (default) to select all files.}
 }
@@ -18,7 +18,7 @@ read_expanded_data(object, period = NULL)
 A \code{data.frame} of class \code{data.table}.
 }
 \description{
-This method is used on \linkS4class{te_datastore_csv} objects to read selected csv-files and combine them into one \code{data.table}.
+This method is used on te_datastore_csv-class \linkS4class{te_datastore} objects to read selected csv-files and combine them into one \code{data.table}.
 }
 \examples{
 # create a te_datastore_csv object
