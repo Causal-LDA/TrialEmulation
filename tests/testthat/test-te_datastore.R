@@ -35,6 +35,9 @@ test_that("read_expanded_data can read te_datastore_duckdb data", {
   data(vignette_switch_data)
   expanded_duckdb_data <- save_expanded_data(datastore, subset(vignette_switch_data, trial_period %in% 1:12))
 
+  # check if no columns get added or removed by read_expanded_data
+  expect_equal(ncol(read_expanded_data(expanded_duckdb_data)), ncol(vignette_switch_data))
+
   # check if omitting period reads in all data
   expect_equal(nrow(read_expanded_data(expanded_duckdb_data)), 25948)
 

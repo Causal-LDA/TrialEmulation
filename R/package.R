@@ -10,6 +10,7 @@
 #' @import data.table
 #' @importFrom methods callNextMethod extends getClass is new show .hasSlot
 #' @importFrom Rcpp sourceCpp
+#' @importFrom DBI dbGetQuery
 #' @useDynLib TrialEmulation
 
 NULL
