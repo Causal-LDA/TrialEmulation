@@ -3,12 +3,15 @@
 \name{read_expanded_data}
 \alias{read_expanded_data}
 \alias{read_expanded_data,te_datastore_csv-method}
+\alias{read_expanded_data,te_datastore_datatable-method}
 \alias{read_expanded_data,te_datastore_duckdb-method}
 \title{Method to read expanded data}
 \usage{
 read_expanded_data(object, period = NULL)
 
 \S4method{read_expanded_data}{te_datastore_csv}(object, period = NULL)
+
+\S4method{read_expanded_data}{te_datastore_datatable}(object, period = NULL)
 
 \S4method{read_expanded_data}{te_datastore_duckdb}(object, period = NULL)
 }

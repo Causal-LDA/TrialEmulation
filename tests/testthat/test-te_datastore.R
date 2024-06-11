@@ -28,6 +28,33 @@ test_that("read_expanded_data can read te_datastore_csv data", {
 })
 
 
+test_that("read_expanded_data can read te_datastore_datatable data", {
+  trial_to_expand <- trial_sequence("ITT") |>
+    set_data(data = data_censored) |>
+    set_expansion_options(output = save_to_datatable(), chunk_size = 500)
+  expanded_datatable_data <- save_expanded_data(trial_to_expand@expansion@datastore, trial_to_expand@data@data)
+
+  # check if no columns get added or removed by read_expanded_data
+  expect_equal(ncol(read_expanded_data(expanded_datatable_data)), ncol(trial_to_expand@data@data))
+
+  # check if omitting period reads in all data
+  expect_equal(nrow(read_expanded_data(expanded_datatable_data)), 725)
+
+  # check if period argument subsets data correctly
+  expect_equal(nrow(read_expanded_data(expanded_datatable_data, 1)), 62)
+  expect_equal(nrow(read_expanded_data(expanded_datatable_data, c(5, 8, 12))), 99)
+
+  # check if method throws an error when using a character as period
+  expect_error(read_expanded_data(expanded_datatable_data, "1"))
+
+  # check if no new NAs are introduced
+  expect_equal(
+    sum(is.na.data.frame(read_expanded_data(expanded_datatable_data))),
+    sum(is.na.data.frame(trial_to_expand@data@data))
+  )
+})
+
+
 test_that("read_expanded_data can read te_datastore_duckdb data", {
   temp_dir <- tempfile("duckdb_dir_")
   dir.create(temp_dir)

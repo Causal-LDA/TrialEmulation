@@ -193,6 +193,23 @@ setMethod(
 #' @rdname read_expanded_data
 setMethod(
   f = "read_expanded_data",
+  signature = "te_datastore_datatable",
+  definition = function(object, period) {
+    checkmate::assert_integerish(period, null.ok = TRUE, any.missing = FALSE, lower = 0)
+    p <- period
+    data_table <- if (is.null(period)) {
+      object@data
+    } else {
+      object@data[period %in% p, ]
+    }
+    data_table
+  }
+)
+
+
+#' @rdname read_expanded_data
+setMethod(
+  f = "read_expanded_data",
   signature = "te_datastore_duckdb",
   definition = function(object, period) {
     checkmate::assert_integerish(period, null.ok = TRUE, any.missing = FALSE, lower = 0)
