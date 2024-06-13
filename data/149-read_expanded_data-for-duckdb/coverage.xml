@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE coverage SYSTEM "https://raw.githubusercontent.com/cobertura/cobertura/master/cobertura/src/site/htdocs/xml/coverage-04.dtd">
-<coverage line-rate="0.745650869826035" branch-rate="0" lines-covered="1243" lines-valid="1667" branches-covered="0" branches-valid="0" complexity="0" version="3.6.4" timestamp="2024-06-11 14:26:07.927114">
+<coverage line-rate="0.745650869826035" branch-rate="0" lines-covered="1243" lines-valid="1667" branches-covered="0" branches-valid="0" complexity="0" version="3.6.4" timestamp="2024-06-13 06:33:16.66383">
   <sources>
     <source>/__w/TrialEmulation/TrialEmulation/TrialEmulation</source>
   </sources>
@@ -1596,7 +1596,7 @@
             </method>
             <method name="read_expanded_data" signature="" line-rate="1" branch-rate="0" complexity="0">
               <lines>
-                <line number="169" hits="18" branch="false"/>
+                <line number="169" hits="19" branch="false"/>
               </lines>
             </method>
           </methods>
@@ -1654,7 +1654,7 @@
             <line number="106" hits="0" branch="false"/>
             <line number="107" hits="0" branch="false"/>
             <line number="142" hits="3" branch="false"/>
-            <line number="169" hits="18" branch="false"/>
+            <line number="169" hits="19" branch="false"/>
           </lines>
         </class>
         <class name="initiators.R" filename="R/initiators.R" line-rate="0.979166666666667" branch-rate="0" complexity="0">
@@ -2500,14 +2500,14 @@
                 <line number="165" hits="0" branch="false"/>
                 <line number="168" hits="1" branch="false"/>
                 <line number="170" hits="1" branch="false"/>
-                <line number="215" hits="5" branch="false"/>
-                <line number="216" hits="5" branch="false"/>
-                <line number="217" hits="3" branch="false"/>
-                <line number="218" hits="5" branch="false"/>
+                <line number="215" hits="6" branch="false"/>
+                <line number="216" hits="6" branch="false"/>
+                <line number="217" hits="4" branch="false"/>
+                <line number="218" hits="6" branch="false"/>
                 <line number="219" hits="2" branch="false"/>
-                <line number="220" hits="5" branch="false"/>
-                <line number="221" hits="5" branch="false"/>
-                <line number="222" hits="5" branch="false"/>
+                <line number="220" hits="6" branch="false"/>
+                <line number="221" hits="6" branch="false"/>
+                <line number="222" hits="6" branch="false"/>
               </lines>
             </method>
           </methods>
@@ -2561,14 +2561,14 @@
             <line number="203" hits="2" branch="false"/>
             <line number="204" hits="5" branch="false"/>
             <line number="205" hits="5" branch="false"/>
-            <line number="215" hits="5" branch="false"/>
-            <line number="216" hits="5" branch="false"/>
-            <line number="217" hits="3" branch="false"/>
-            <line number="218" hits="5" branch="false"/>
+            <line number="215" hits="6" branch="false"/>
+            <line number="216" hits="6" branch="false"/>
+            <line number="217" hits="4" branch="false"/>
+            <line number="218" hits="6" branch="false"/>
             <line number="219" hits="2" branch="false"/>
-            <line number="220" hits="5" branch="false"/>
-            <line number="221" hits="5" branch="false"/>
-            <line number="222" hits="5" branch="false"/>
+            <line number="220" hits="6" branch="false"/>
+            <line number="221" hits="6" branch="false"/>
+            <line number="222" hits="6" branch="false"/>
           </lines>
         </class>
         <class name="te_weights.R" filename="R/te_weights.R" line-rate="0" branch-rate="0" complexity="0">
