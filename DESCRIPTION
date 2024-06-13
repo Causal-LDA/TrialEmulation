@@ -27,6 +27,7 @@ Imports:
     checkmate,
     data.table (>= 1.9.8),
     duckdb,
+    DBI,
     formula.tools,
     methods,
     mvtnorm,
