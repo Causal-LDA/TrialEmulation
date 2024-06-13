@@ -42,8 +42,7 @@ reference:
   - trial_sequence-class
   - te_data-class
   - te_datastore-class
-  - te_weights_fitted-class
-  - te_weights_fitter-class
+  - te_model_fitter-class
 - title: Internal Methods
 - contents:
   - save_expanded_data

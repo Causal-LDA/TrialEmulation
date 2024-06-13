@@ -26,7 +26,7 @@ set_switch_weight_model(object, numerator, denominator, model_fitter, ...)
 
 \item{denominator}{Right hand side formula for the denominator model}
 
-\item{model_fitter}{A \linkS4class{te_weights_fitter} object, such as \link{stats_glm_logit}}
+\item{model_fitter}{A \linkS4class{te_model_fitter} object, such as \link{stats_glm_logit}}
 
 \item{...}{Other arguments used by methods.}
 

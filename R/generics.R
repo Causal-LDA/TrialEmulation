@@ -168,3 +168,41 @@ setGeneric("save_expanded_data", function(object, data) standardGeneric("save_ex
 #' # delete after use
 #' unlink(temp_dir, recursive = TRUE)
 setGeneric("read_expanded_data", function(object, period = NULL) standardGeneric("read_expanded_data"))
+
+
+#' Method for fitting outcome models
+#'
+#' @param object A `te_outcome_fitter` object
+#' @param data `data.frame` containing outcomes and covariates as defined in `formula`.
+#' @param formula `formula` describing the model.
+#'
+#' @return An object of class `te_outcome_fitted`
+#' @export
+#'
+#' @examples
+setGeneric("fit_outcome_model", function(object, data, formula) standardGeneric("fit_outcome_model"))
+
+#' Method for fitting weight models
+#'
+#' @param object The object determining which method should be used, containing any slots containing user defined
+#'   parameters.
+#' @param data `data.frame` containing outcomes and covariates as defined in `formula`.
+#' @param formula `formula` describing the model.
+#' @param label A short string describing the model.
+#'
+#' @return An object of class `te_weights_fitted`
+#' @export
+#'
+#' @examples
+#' fitter <- stats_glm_logit(tempdir())
+#' data(data_censored)
+#' # Not usually called directly by a user
+#' fitted <- fit_weights_model(
+#'   object = fitter,
+#'   data = data_censored,
+#'   formula = 1 - censored ~ x1 + age_s + treatment,
+#'   label = "Example model for censoring"
+#' )
+#' fitted
+#' unlink(fitted@summary$save_path$path)
+setGeneric("fit_weights_model", function(object, data, formula, label) standardGeneric("fit_weights_model"))
