@@ -2,7 +2,6 @@ test_that("read_expanded_data can read te_datastore_csv data", {
   temp_dir <- tempfile("csv_dir_")
   dir.create(temp_dir)
   datastore <- save_to_csv(temp_dir)
-  data(vignette_switch_data)
   expanded_csv_data <- save_expanded_data(datastore, subset(vignette_switch_data, trial_period %in% 1:12))
 
   # check if no columns get added or removed by read_expanded_data
@@ -59,7 +58,7 @@ test_that("read_expanded_data can read te_datastore_duckdb data", {
   temp_dir <- tempfile("duckdb_dir_")
   dir.create(temp_dir)
   datastore <- save_to_duckdb(temp_dir)
-  data(vignette_switch_data)
+  vignette_switch_data$id <- as.factor(vignette_switch_data$id)
   expanded_duckdb_data <- save_expanded_data(datastore, subset(vignette_switch_data, trial_period %in% 1:12))
 
   # check if no columns get added or removed by read_expanded_data
@@ -80,6 +79,9 @@ test_that("read_expanded_data can read te_datastore_duckdb data", {
     sum(is.na.data.frame(read_expanded_data(expanded_duckdb_data))),
     sum(is.na.data.frame(subset(vignette_switch_data, trial_period %in% 1:12)))
   )
+
+  # check if factor variables are kept
+  expect_factor(read_expanded_data(expanded_duckdb_data)$id)
 
   DBI::dbDisconnect(expanded_duckdb_data@con)
   unlink(temp_dir, recursive = TRUE)
