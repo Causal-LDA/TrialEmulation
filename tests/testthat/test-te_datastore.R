@@ -23,6 +23,11 @@ test_that("read_expanded_data can read te_datastore_csv data", {
     sum(is.na.data.frame(subset(vignette_switch_data, trial_period %in% 1:12)))
   )
 
+  # check if subset_condition subsets data correctly
+  expect_equal(
+    nrow(read_expanded_data(expanded_csv_data, subset_condition = "followup_time <= 30 & nvarC == 40")), 371
+  )
+
   unlink(temp_dir, recursive = TRUE)
 })
 
@@ -51,6 +56,9 @@ test_that("read_expanded_data can read te_datastore_datatable data", {
     sum(is.na.data.frame(read_expanded_data(expanded_datatable_data))),
     sum(is.na.data.frame(trial_to_expand@data@data))
   )
+
+  # check if subset_condition subsets data correctly
+  expect_equal(nrow(read_expanded_data(expanded_datatable_data, subset_condition = "id <= 30 | cumA == 4")), 256)
 })
 
 
@@ -82,6 +90,11 @@ test_that("read_expanded_data can read te_datastore_duckdb data", {
 
   # check if factor variables are kept
   expect_factor(read_expanded_data(expanded_duckdb_data)$id)
+
+  # check if subset_condition subsets data correctly
+  expect_equal(
+    nrow(read_expanded_data(expanded_duckdb_data, subset_condition = "followup_time <= 30 & nvarC == 40")), 371
+  )
 
   DBI::dbDisconnect(expanded_duckdb_data@con)
   unlink(temp_dir, recursive = TRUE)

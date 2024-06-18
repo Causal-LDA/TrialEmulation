@@ -212,3 +212,65 @@ test_that("case_control_sampling_trials works with sort = TRUE", {
 
   expect_identical(samples_f, samples_t)
 })
+
+
+test_that("sample_controls works", {
+  trial_itt_dir <- file.path(tempdir(), "trial_itt")
+  dir.create(trial_itt_dir)
+
+  trial_itt <- trial_sequence(estimand = "ITT") |>
+    set_data(
+    data = data_censored,
+    id = "id",
+    period = "period",
+    treatment = "treatment",
+    outcome = "outcome",
+    eligible = "eligible"
+  ) |>
+    set_censor_weight_model(
+    censor_event = "censored",
+    numerator = ~ x1 + x2 + x3,
+    denominator = ~x2,
+    pool_models = "numerator",
+    model_fitter = stats_glm_logit(save_path = file.path(trial_itt_dir, "switch_models"))
+  ) |>
+    calculate_weights() |>
+    set_outcome_model(adjustment_terms = ~ x1 + x2)
+
+  trial_itt_csv <- set_expansion_options(
+    trial_itt,
+    output = save_to_csv(file.path(trial_itt_dir, "trial_csvs")),
+    chunk_size = 500
+  ) |>
+  expand_trials()
+
+  # sample_controls works without additional arguments
+  set.seed(1221)
+  sc_01 <- sample_controls(trial_itt_csv)
+  expect_equal(nrow(sc_01), 30)
+
+  # sample_controls works with p_control
+  set.seed(5678)
+  sc_02 <- sample_controls(trial_itt_csv, p_control = 0.5)
+  expect_equal(nrow(sc_02), 765)
+
+  # sample_controls works with p_control = 0
+  sc_03 <- sample_controls(trial_itt_csv, p_control = 0)
+  expect_equal(nrow(sc_03), 14)
+
+  # cases are kept
+  expect_equal(sum(sc_01$outcome), 14)
+  expect_equal(sum(sc_02$outcome), 14)
+  expect_equal(sum(sc_03$outcome), 14)
+
+  # sample_controls subsets data correctly
+  set.seed(2332)
+  sc_04 <- sample_controls(
+        trial_itt_csv,
+        period = 1:10,
+        subset_condition = "followup_time <= 20 & treatment == 1",
+        p_control = 0.2
+  )
+  expect_equal(nrow(sc_04), 50)
+
+})
