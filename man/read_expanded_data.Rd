@@ -7,13 +7,13 @@
 \alias{read_expanded_data,te_datastore_duckdb-method}
 \title{Method to read expanded data}
 \usage{
-read_expanded_data(object, period = NULL)
+read_expanded_data(object, period = NULL, subset_condition)
 
-\S4method{read_expanded_data}{te_datastore_csv}(object, period = NULL)
+\S4method{read_expanded_data}{te_datastore_csv}(object, period = NULL, subset_condition)
 
-\S4method{read_expanded_data}{te_datastore_datatable}(object, period = NULL)
+\S4method{read_expanded_data}{te_datastore_datatable}(object, period = NULL, subset_condition)
 
-\S4method{read_expanded_data}{te_datastore_duckdb}(object, period = NULL)
+\S4method{read_expanded_data}{te_datastore_duckdb}(object, period = NULL, subset_condition)
 }
 \arguments{
 \item{object}{An object of class \linkS4class{te_datastore}.}

@@ -148,7 +148,8 @@ setGeneric("save_expanded_data", function(object, data) standardGeneric("save_ex
 #'
 #' @param object An object of class [te_datastore-class].
 #' @param period An integerish vector of non-zero length to select trial period(s) or `NULL` (default) to
-#' select all files.
+#'  select all files.
+#' @param subset_condition A string of length 1 or missing.
 #'
 #' @return A `data.frame` of class `data.table`.
 #' @export
@@ -166,4 +167,35 @@ setGeneric("save_expanded_data", function(object, data) standardGeneric("save_ex
 #'
 #' # delete after use
 #' unlink(temp_dir, recursive = TRUE)
-setGeneric("read_expanded_data", function(object, period = NULL) standardGeneric("read_expanded_data"))
+setGeneric("read_expanded_data", function(object, period = NULL, subset_condition)
+  standardGeneric("read_expanded_data"))
+
+
+#' Method to read, subset and sample expanded data
+#'
+#' This method is used on [trial_sequence-class] objects to read, subset and sample expanded data.
+#'
+#' @param object An object of class [trial_sequence-class].
+#' @param period An integerish vector of non-zero length to select trial period(s) or `NULL` (default) to
+#'  select all trial periods.
+#' @param subset_condition A string of length 1 or missing.
+#' @param p_control Proportion of controls to select.
+#'
+#' @return A `data.frame` of class `data.table`.
+#' @export
+#'
+#' @examples
+setGeneric("sample_controls", function(object, period = NULL, subset_condition, p_control = 0.01)
+  standardGeneric("sample_controls"))
+
+
+#' Internal method to sample expanded data
+#'
+#' @param object A `data.frame` of class `data.table`.
+#' @param p_control Proportion of controls to select
+#'
+#' @return A `data.frame` of class `data.table`.
+#' @export
+#'
+#' @examples
+setGeneric("sample_expanded_data", function(object, p_control) standardGeneric("sample_expanded_data"))
