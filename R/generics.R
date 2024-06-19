@@ -206,3 +206,24 @@ setGeneric("fit_outcome_model", function(object, data, formula) standardGeneric(
 #' fitted
 #' unlink(fitted@summary$save_path$path)
 setGeneric("fit_weights_model", function(object, data, formula, label) standardGeneric("fit_weights_model"))
+
+
+#' Specify the outcome model
+#'
+#' @param object A trial_sequence object
+#' @param ... Parameters used by methods
+#' @param treatment_var The treatment term, only used for "as treated" estimands. PP and ITT are fixed to use
+#' "assigned_treatment".
+#' @param adjustment_terms Formula terms for any covariates to adjust the outcome model.
+#' @param followup_time_terms Formula terms for `followup_time`, the time period relative to the start of the trial.
+#' @param trial_period_terms Formula terms for `trial_period`, the time period of the start of the trial.
+#' @param model_fitter A `te_model_fitter` object, e.g. from `stats_glm_logit()`.
+#'
+#' @return A modified `object` with the `outcome_model` slot set
+#' @export
+#' @examples
+#' trial_sequence("ITT") |>
+#'   set_data(data_censored) |>
+#'   set_outcome_model(adjustment_terms = ~age_s, followup_time_terms = ~ stats::poly(followup_time, degree = 2))
+#'
+setGeneric("set_outcome_model", function(object, ...) standardGeneric("set_outcome_model"))

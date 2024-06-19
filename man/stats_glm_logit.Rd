@@ -6,6 +6,9 @@
 \usage{
 stats_glm_logit(save_path)
 }
+\arguments{
+\item{save_path}{Directory to save models. Set to \code{NA} if models should not be saved.}
+}
 \value{
 An object of class \code{te_stats_glm_logit} inheriting from \linkS4class{te_model_fitter} which is used for
 dispatching methods for the fitting models.
@@ -17,7 +20,7 @@ Specify that the pooled logistic regression outcome models should be fit using \
 Outcome models additional calculate robust variance estimates using \code{sandwich::vcovCL}.
 }
 \examples{
-stats_glm_logit()
+stats_glm_logit(save_path = tempdir())
 }
 \seealso{
 Other model_fitter: 

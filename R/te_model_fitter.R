@@ -29,14 +29,19 @@ setClass(
 #'
 #' Outcome models additional calculate robust variance estimates using `sandwich::vcovCL`.
 #'
+#' @param save_path Directory to save models. Set to `NA` if models should not be saved.
 #' @return An object of class `te_stats_glm_logit` inheriting from [te_model_fitter-class] which is used for
 #'   dispatching methods for the fitting models.
 #' @export
 #' @family model_fitter
 #' @examples
-#' stats_glm_logit()
+#' stats_glm_logit(save_path = tempdir())
 stats_glm_logit <- function(save_path) {
-  assert_path_for_output(save_path, overwrite = TRUE)
+  if (!is.na(save_path)) {
+    assert_path_for_output(save_path, overwrite = TRUE)
+  } else {
+    save_path <- NA_character_
+  }
   new("te_stats_glm_logit", save_path = save_path)
 }
 
@@ -47,7 +52,7 @@ setMethod(
   signature = "te_stats_glm_logit",
   function(object, data, formula, label) {
     model <- stats::glm(formula, data, family = binomial("logit"))
-    if (length(object@save_path)) {
+    if (!is.na(object@save_path)) {
       if (!dir.exists(object@save_path)) dir.create(object@save_path, recursive = TRUE)
       file <- tempfile(pattern = "model_", tmpdir = object@save_path, fileext = ".rds")
       saveRDS(model, file = file)

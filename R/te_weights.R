@@ -33,7 +33,10 @@ setValidity("te_weights_spec", function(object) {
   if (!is(object, "te_weights_unset") && !hasMethod("fit_weights_model", class(object@model_fitter))) {
     msg <- c(
       msg,
-      paste("No fit_weights_model method found for object with model_fitter class", sQuote(class(object@model_fitter)))
+      paste(
+        "No fit_weights_model method found for object with model_fitter class",
+        sQuote(class(object@model_fitter))
+      )
     )
   }
 
