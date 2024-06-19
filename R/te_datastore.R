@@ -188,3 +188,37 @@ setMethod(
     data_table
   }
 )
+
+
+#' @rdname read_expanded_data
+setMethod(
+  f = "read_expanded_data",
+  signature = "te_datastore_datatable",
+  definition = function(object, period) {
+    checkmate::assert_integerish(period, null.ok = TRUE, any.missing = FALSE, lower = 0)
+    p <- period
+    data_table <- if (is.null(period)) {
+      object@data
+    } else {
+      object@data[period %in% p, ]
+    }
+    data_table
+  }
+)
+
+
+#' @rdname read_expanded_data
+setMethod(
+  f = "read_expanded_data",
+  signature = "te_datastore_duckdb",
+  definition = function(object, period) {
+    checkmate::assert_integerish(period, null.ok = TRUE, any.missing = FALSE, lower = 0)
+    query <- if (is.null(period)) {
+      "SELECT * FROM trial_data"
+    } else {
+      paste0("SELECT * FROM trial_data WHERE trial_period IN (", paste0(period, collapse = ", "), ")")
+    }
+    data_table <- data.table::as.data.table(DBI::dbGetQuery(conn = object@con, statement = query))
+    data_table
+  }
+)
