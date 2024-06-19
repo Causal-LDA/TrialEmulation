@@ -28,3 +28,22 @@ A \link{trial_sequence} object with updated \code{censor_weights} and/or \code{s
 \description{
 Calculate Inverse Probability of Censoring Weights
 }
+\examples{
+save_dir <- file.path(tempdir(), "switch_models")
+ts <- trial_sequence("PP") |>
+  set_data(
+    data = data_censored,
+    id = "id",
+    period = "period",
+    treatment = "treatment",
+    outcome = "outcome",
+    eligible = "eligible"
+  ) |>
+  set_switch_weight_model(
+    numerator = ~ age + x1 + x3,
+    denominator = ~age,
+    model_fitter = stats_glm_logit(save_path = save_dir)
+  ) |>
+  calculate_weights()
+
+}

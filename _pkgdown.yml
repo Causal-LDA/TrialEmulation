@@ -27,6 +27,7 @@ reference:
   - calculate_weights
   - show_weight_models
   - set_expansion_options
+  - set_outcome_model
   - expand_trials
 - subtitle: Data Storage
   desc: Control how expanded data is stored
@@ -42,8 +43,7 @@ reference:
   - trial_sequence-class
   - te_data-class
   - te_datastore-class
-  - te_weights_fitted-class
-  - te_weights_fitter-class
+  - te_model_fitter-class
 - title: Internal Methods
 - contents:
   - save_expanded_data

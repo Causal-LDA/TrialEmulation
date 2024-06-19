@@ -69,7 +69,7 @@ previous visit. Pooling can be specified for the models for the numerator and de
 probability of censoring weights. One of "none", "numerator", or "both" (default is "none" except when estimand =
 "ITT" then default is "numerator").}
 
-\item{model_fitter}{An object of class  \code{te_weights_fitter} which determines the method used for fitting the weight
+\item{model_fitter}{An object of class  \code{te_model_fitter} which determines the method used for fitting the weight
 models. For logistic regression use \code{\link[=stats_glm_logit]{stats_glm_logit()}}.}
 }
 \value{
