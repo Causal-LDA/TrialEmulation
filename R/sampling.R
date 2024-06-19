@@ -153,8 +153,78 @@ setMethod(
       do_sampling, p_control = p_control
     )
     data_table <- data.table::rbindlist(data)
+    data_table
   }
 )
+
+
+#' @rdname sample_expanded_data
+setMethod(
+  f = "sample_expanded_data",
+  signature = "te_datastore_duckdb",
+  definition = function(object, period, subset_condition, p_control) {
+    if (use_subset <- !missing(subset_condition)) {
+      subset_expr <- translate_to_sql(subset_condition)
+    }
+    q_p1 <- "SELECT * FROM (SELECT * FROM trial_data WHERE outcome = 0 "
+    q_p2 <- "UNION SELECT * FROM trial_data WHERE outcome = 1 "
+    q_sample <- paste0("USING SAMPLE ", p_control * 100, " PERCENT (bernoulli) ")
+    q_period <- ""
+    if (!is.null(period)) q_period <- paste0("AND trial_period IN (", paste0(period, collapse = ", "), ") ")
+    q_subset <- ""
+    if (use_subset) q_subset <- paste0("AND (", subset_expr, ")")
+
+    query <- paste0(q_p1, q_period, q_subset, ") ", q_sample, q_p2, q_period, q_subset)
+
+    data <- DBI::dbGetQuery(conn = object@con, statement = query)
+    data["sample_weight"] <- ifelse(data$outcome == 1, 1, 1 / p_control)
+    data_table <- data.table::as.data.table(data)
+    data_table
+  }
+)
+
+
+#' Translate subset_condition to SQL syntax
+#'
+#' @param string subset_condition as a string
+#'
+#' @return a string
+#'
+#' @noRd
+translate_to_sql <- function(string) {
+  replacement <- c("\\|" = "OR", "&" = "AND", "==" = "=", "%in%" = "IN", "^c\\(" = "\\(")
+  rt <- data.table::as.data.table(replacement, keep.rownames = "pattern")
+
+  vec <- strsplit(string, " ")[[1]]
+
+  if (length(grep(":", vec)) != 0) {
+    vec <- translate_num_vec(vec)
+  }
+
+  for (i in 1:nrow(rt)) {
+    vec <- gsub(pattern = rt$pattern[i], replacement = rt$replacement[i], vec)
+  }
+  string <- paste0(vec, collapse = " ")
+  string
+}
+
+
+#' Translate numerical vectors to SQL syntax
+#'
+#' @param vec a vector obtained by splitting subset_condition string from sample_controls
+#'
+#' @return a vector
+#'
+#' @noRd
+translate_num_vec <- function(vec) {
+  for (i in grep(":", vec)) {
+    vec <- replace(vec, i, paste0("(", paste0(seq(strsplit(vec[i], ":")[[1]][1],
+                                                  strsplit(vec[i], ":")[[1]][2]),
+                                              collapse = ", "), ")"))
+  }
+  vec
+}
+
 
 #' @rdname sample_controls
 setMethod(
@@ -167,9 +237,9 @@ setMethod(
     if (!missing(subset_condition)) {
       checkmate::assert(is.character(subset_condition), length(subset_condition) == 1, combine = "and")
     }
-    data <- sample_expanded_data(
+    data_table <- sample_expanded_data(
       object@expansion@datastore, period = period, subset_condition = subset_condition, p_control = p_control
     )
-    data
+    data_table
   }
 )

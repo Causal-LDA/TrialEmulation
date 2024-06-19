@@ -192,7 +192,10 @@ setGeneric("sample_controls", function(object, period = NULL, subset_condition, 
 #' Internal method to sample expanded data
 #'
 #' @param object A `data.frame` of class `data.table`.
-#' @param p_control Proportion of controls to select
+#' @param period An integerish vector of non-zero length to select trial period(s) or `NULL` (default) to
+#'  select all trial periods.
+#' @param subset_condition A string of length 1 or missing.
+#' @param p_control Proportion of controls to select.
 #'
 #' @return A `data.frame` of class `data.table`.
 #' @export

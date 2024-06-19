@@ -2,15 +2,25 @@
 % Please edit documentation in R/generics.R, R/sampling.R
 \name{sample_expanded_data}
 \alias{sample_expanded_data}
-\alias{sample_expanded_data,data.frame-method}
+\alias{sample_expanded_data,te_datastore-method}
+\alias{sample_expanded_data,te_datastore_duckdb-method}
 \title{Internal method to sample expanded data}
 \usage{
-sample_expanded_data(object, p_control)
+sample_expanded_data(object, period, subset_condition, p_control)
 
-\S4method{sample_expanded_data}{data.frame}(object, p_control)
+\S4method{sample_expanded_data}{te_datastore}(object, period, subset_condition, p_control)
+
+\S4method{sample_expanded_data}{te_datastore_duckdb}(object, period, subset_condition, p_control)
 }
 \arguments{
-\item{p_control}{Proportion of controls to select}
+\item{object}{A \code{data.frame} of class \code{data.table}.}
+
+\item{period}{An integerish vector of non-zero length to select trial period(s) or \code{NULL} (default) to
+select all trial periods.}
+
+\item{subset_condition}{A string of length 1 or missing.}
+
+\item{p_control}{Proportion of controls to select.}
 }
 \value{
 A \code{data.frame} of class \code{data.table}.

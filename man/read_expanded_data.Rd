@@ -20,6 +20,8 @@ read_expanded_data(object, period = NULL, subset_condition)
 
 \item{period}{An integerish vector of non-zero length to select trial period(s) or \code{NULL} (default) to
 select all files.}
+
+\item{subset_condition}{A string of length 1 or missing.}
 }
 \value{
 A \code{data.frame} of class \code{data.table}.
