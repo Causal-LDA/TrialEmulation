@@ -19,3 +19,4 @@ An object of class \code{te_outcome_fitted}
 \description{
 Method for fitting outcome models
 }
+\keyword{internal}

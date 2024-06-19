@@ -54,7 +54,9 @@ test_that("show works for trial_sequence_AT with nothing set", {
 
 # Set Censoring Model -------
 
-# Set Outcome Model -----
+# Calculate weights -------
+
+# Set Outcome Model -------
 test_that("set_outcome_model works for PP with defaults", {
   result <- trial_sequence("PP") |>
     set_data(data_censored) |>

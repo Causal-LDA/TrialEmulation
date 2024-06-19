@@ -69,6 +69,9 @@ Specify the outcome model
 \examples{
 trial_sequence("ITT") |>
   set_data(data_censored) |>
-  set_outcome_model(adjustment_terms = ~age_s, followup_time_terms = ~ stats::poly(followup_time, degree = 2))
+  set_outcome_model(
+    adjustment_terms = ~age_s,
+    followup_time_terms = ~ stats::poly(followup_time, degree = 2)
+ )
 
 }

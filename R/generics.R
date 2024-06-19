@@ -178,7 +178,7 @@ setGeneric("read_expanded_data", function(object, period = NULL) standardGeneric
 #'
 #' @return An object of class `te_outcome_fitted`
 #' @export
-#'
+#' @keywords internal
 #' @examples
 setGeneric("fit_outcome_model", function(object, data, formula) standardGeneric("fit_outcome_model"))
 
@@ -224,6 +224,9 @@ setGeneric("fit_weights_model", function(object, data, formula, label) standardG
 #' @examples
 #' trial_sequence("ITT") |>
 #'   set_data(data_censored) |>
-#'   set_outcome_model(adjustment_terms = ~age_s, followup_time_terms = ~ stats::poly(followup_time, degree = 2))
+#'   set_outcome_model(
+#'     adjustment_terms = ~age_s,
+#'     followup_time_terms = ~ stats::poly(followup_time, degree = 2)
+#'  )
 #'
 setGeneric("set_outcome_model", function(object, ...) standardGeneric("set_outcome_model"))
