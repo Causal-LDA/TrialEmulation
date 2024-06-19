@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">TrialEmulation</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.3.11</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.3.12</span>
       </span>
     </div>
 
@@ -148,6 +148,10 @@
         </td>
         <td><p>Set expansion options</p></td>
       </tr><tr><td>
+          <p><code><a href="set_outcome_model.html">set_outcome_model()</a></code> </p>
+        </td>
+        <td><p>Specify the outcome model</p></td>
+      </tr><tr><td>
           <p><code><a href="expand_trials.html">expand_trials()</a></code> </p>
         </td>
         <td><p>Expand trials</p></td>
@@ -174,7 +178,7 @@
       </tr></tbody><tbody><tr><td>
           <p><code><a href="stats_glm_logit.html">stats_glm_logit()</a></code> </p>
         </td>
-        <td><p>Fit weight models using <code><a href="https://rdrr.io/r/stats/glm.html" class="external-link">stats::glm</a></code></p></td>
+        <td><p>Fit outcome models using <code><a href="https://rdrr.io/r/stats/glm.html" class="external-link">stats::glm</a></code></p></td>
       </tr></tbody><tbody><tr><th colspan="2">
           <h2 id="classes">Classes <a href="#classes" class="anchor" aria-hidden="true"></a></h2>
           <p class="section-desc"></p>
@@ -192,13 +196,9 @@
         </td>
         <td><p>te_datastore</p></td>
       </tr><tr><td>
-          <p><code><a href="te_weights_fitted-class.html">te_weights_fitted-class</a></code> </p>
+          <p><code><a href="te_model_fitter-class.html">te_model_fitter-class</a></code> <code><a href="te_model_fitter-class.html">te_stats_glm_logit-class</a></code> </p>
         </td>
-        <td><p>Fitted Weights Object</p></td>
-      </tr><tr><td>
-          <p><code><a href="te_weights_fitter-class.html">te_weights_fitter-class</a></code> <code><a href="te_weights_fitter-class.html">te_stats_glm_logit-class</a></code> </p>
-        </td>
-        <td><p>Weight Model Fitter Class</p></td>
+        <td><p>Outcome Model Fitter Class</p></td>
       </tr></tbody><tbody><tr><th colspan="2">
           <h2 id="internal-methods">Internal Methods <a href="#internal-methods" class="anchor" aria-hidden="true"></a></h2>
           <p class="section-desc"></p>

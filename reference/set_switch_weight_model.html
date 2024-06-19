@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">TrialEmulation</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.3.11</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.3.12</span>
       </span>
     </div>
 
@@ -97,7 +97,7 @@
 
 
 <dt>model_fitter</dt>
-<dd><p>A <a href="te_weights_fitter-class.html">te_weights_fitter</a> object, such as <a href="stats_glm_logit.html">stats_glm_logit</a></p></dd>
+<dd><p>A <a href="te_model_fitter-class.html">te_model_fitter</a> object, such as <a href="stats_glm_logit.html">stats_glm_logit</a></p></dd>
 
 
 <dt>...</dt>
@@ -167,8 +167,8 @@ probability of treatment weights for those who are not on treatment at the immed
 <span class="r-out co"><span class="r-pr">#&gt;</span>  - No weight model specified </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> IPW for treatment switch censoring: </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  - Numerator formula: ~ treatment age_s + x1 + x3 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  - Denominator formula: ~ treatment x3 + x4 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  - Numerator formula: treatment ~ age_s + x1 + x3 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  - Denominator formula: treatment ~ x3 + x4 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Model fitter type: te_stats_glm_logit </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Weight models not fitted </span>
 </code></pre></div>

@@ -61,6 +61,9 @@
     <loc>https://causal-lda.github.io/TrialEmulation/reference/expand_until_switch.html</loc>
   </url>
   <url>
+    <loc>https://causal-lda.github.io/TrialEmulation/reference/fit_outcome_model.html</loc>
+  </url>
+  <url>
     <loc>https://causal-lda.github.io/TrialEmulation/reference/fit_weights_model.html</loc>
   </url>
   <url>
@@ -109,6 +112,9 @@
     <loc>https://causal-lda.github.io/TrialEmulation/reference/set_expansion_options.html</loc>
   </url>
   <url>
+    <loc>https://causal-lda.github.io/TrialEmulation/reference/set_outcome_model.html</loc>
+  </url>
+  <url>
     <loc>https://causal-lda.github.io/TrialEmulation/reference/set_switch_weight_model.html</loc>
   </url>
   <url>
@@ -133,10 +139,7 @@
     <loc>https://causal-lda.github.io/TrialEmulation/reference/te_model_ex.html</loc>
   </url>
   <url>
-    <loc>https://causal-lda.github.io/TrialEmulation/reference/te_weights_fitted-class.html</loc>
-  </url>
-  <url>
-    <loc>https://causal-lda.github.io/TrialEmulation/reference/te_weights_fitter-class.html</loc>
+    <loc>https://causal-lda.github.io/TrialEmulation/reference/te_model_fitter-class.html</loc>
   </url>
   <url>
     <loc>https://causal-lda.github.io/TrialEmulation/reference/trial_example.html</loc>
