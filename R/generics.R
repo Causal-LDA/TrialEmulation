@@ -226,6 +226,6 @@ setGeneric("fit_weights_model", function(object, data, formula, label) standardG
 #'   set_outcome_model(
 #'     adjustment_terms = ~age_s,
 #'     followup_time_terms = ~ stats::poly(followup_time, degree = 2)
-#'  )
+#'   )
 #'
 setGeneric("set_outcome_model", function(object, ...) standardGeneric("set_outcome_model"))
