@@ -145,10 +145,11 @@ do_sampling <- function(data, p_control = 0.01) {
 #' @rdname sample_expanded_data
 setMethod(
   f = "sample_expanded_data",
-  signature = "data.frame",
-  definition = function(object, p_control) {
+  signature = "te_datastore",
+  definition = function(object, period, subset_condition, p_control) {
+    data <- read_expanded_data(object, period = period, subset_condition = subset_condition)
     data <- lapply(
-      split(object, list(object$trial_period, object$followup_time), drop = TRUE),
+      split(data, list(data$trial_period, data$followup_time), drop = TRUE),
       do_sampling, p_control = p_control
     )
     data_table <- data.table::rbindlist(data)
@@ -166,8 +167,9 @@ setMethod(
     if (!missing(subset_condition)) {
       checkmate::assert(is.character(subset_condition), length(subset_condition) == 1, combine = "and")
     }
-    data <- read_expanded_data(object@expansion@datastore, period = period, subset_condition = subset_condition)
-    data <- sample_expanded_data(data, p_control = p_control)
+    data <- sample_expanded_data(
+      object@expansion@datastore, period = period, subset_condition = subset_condition, p_control = p_control
+    )
     data
   }
 )

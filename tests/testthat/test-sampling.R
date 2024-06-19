@@ -263,6 +263,9 @@ test_that("sample_controls works", {
   expect_equal(sum(sc_02$outcome), 14)
   expect_equal(sum(sc_03$outcome), 14)
 
+  # sample_controls creates one additional column
+  expect_equal(ncol(trial_itt_csv@expansion@datastore@template) + 1, ncol(sc_01))
+
   # sample_controls subsets data correctly
   set.seed(2332)
   sc_04 <- sample_controls(
@@ -272,5 +275,6 @@ test_that("sample_controls works", {
         p_control = 0.2
   )
   expect_equal(nrow(sc_04), 50)
+
 
 })

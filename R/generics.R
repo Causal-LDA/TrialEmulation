@@ -198,4 +198,5 @@ setGeneric("sample_controls", function(object, period = NULL, subset_condition, 
 #' @export
 #'
 #' @examples
-setGeneric("sample_expanded_data", function(object, p_control) standardGeneric("sample_expanded_data"))
+setGeneric("sample_expanded_data", function(object, period, subset_condition, p_control)
+  standardGeneric("sample_expanded_data"))
