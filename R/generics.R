@@ -210,3 +210,66 @@ setGeneric("sample_controls", function(object, period = NULL, subset_condition, 
 #' @examples
 setGeneric("sample_expanded_data", function(object, period, subset_condition, p_control, seed)
   standardGeneric("sample_expanded_data"))
+
+
+#' Method for fitting outcome models
+#'
+#' @param object A `te_outcome_fitter` object
+#' @param data `data.frame` containing outcomes and covariates as defined in `formula`.
+#' @param formula `formula` describing the model.
+#'
+#' @return An object of class `te_outcome_fitted`
+#' @export
+#' @keywords internal
+#' @examples
+setGeneric("fit_outcome_model", function(object, data, formula) standardGeneric("fit_outcome_model"))
+
+#' Method for fitting weight models
+#'
+#' @param object The object determining which method should be used, containing any slots containing user defined
+#'   parameters.
+#' @param data `data.frame` containing outcomes and covariates as defined in `formula`.
+#' @param formula `formula` describing the model.
+#' @param label A short string describing the model.
+#'
+#' @return An object of class `te_weights_fitted`
+#' @export
+#'
+#' @examples
+#' fitter <- stats_glm_logit(tempdir())
+#' data(data_censored)
+#' # Not usually called directly by a user
+#' fitted <- fit_weights_model(
+#'   object = fitter,
+#'   data = data_censored,
+#'   formula = 1 - censored ~ x1 + age_s + treatment,
+#'   label = "Example model for censoring"
+#' )
+#' fitted
+#' unlink(fitted@summary$save_path$path)
+setGeneric("fit_weights_model", function(object, data, formula, label) standardGeneric("fit_weights_model"))
+
+
+#' Specify the outcome model
+#'
+#' @param object A trial_sequence object
+#' @param ... Parameters used by methods
+#' @param treatment_var The treatment term, only used for "as treated" estimands. PP and ITT are fixed to use
+#' "assigned_treatment".
+#' @param adjustment_terms Formula terms for any covariates to adjust the outcome model.
+#' @param followup_time_terms Formula terms for `followup_time`, the time period relative to the start of the trial.
+#' @param trial_period_terms Formula terms for `trial_period`, the time period of the start of the trial.
+#' @param model_fitter A `te_model_fitter` object, e.g. from `stats_glm_logit()`.
+#'
+#' @return A modified `object` with the `outcome_model` slot set
+#' @export
+#' @examples
+#' trial_sequence("ITT") |>
+#'   set_data(data_censored) |>
+#'   set_outcome_model(
+#'     adjustment_terms = ~age_s,
+#'     followup_time_terms = ~ stats::poly(followup_time, degree = 2)
+#'   )
+#'
+setGeneric("set_outcome_model", function(object, ...) standardGeneric("set_outcome_model"))
+

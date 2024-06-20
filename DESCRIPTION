@@ -1,6 +1,6 @@
 Package: TrialEmulation
 Title: Causal Analysis of Observational Time-to-Event Data
-Version: 0.0.3.12
+Version: 0.0.3.13
 Authors@R: c(
     person("Roonak", "Rezvani", , "roonak.r74@gmail.com", role = "aut",
            comment = c(ORCID = "0000-0001-5580-5058", "Original package author")),
@@ -71,6 +71,8 @@ Collate:
     'robust.R'
     'sampling.R'
     'te_data.R'
+    'te_model_fitter.R'
+    'te_outcome_model.R'
     'te_weights.R'
     'trial_sequence.R'
     'utils.R'

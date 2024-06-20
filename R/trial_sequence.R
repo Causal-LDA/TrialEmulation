@@ -83,21 +83,19 @@ setClass(
 #' trial_sequence("ITT")
 #'
 trial_sequence <- function(estimand, ...) {
-  estimand_class_name <- switch(
+  estimand <- switch(
     EXPR = estimand,
     ITT = "trial_sequence_ITT",
     PP = "trial_sequence_PP",
     AT = "trial_sequence_AT",
     estimand
   )
-  estimand_class <- getClass(estimand_class_name, .Force = TRUE)
-  if (is.null(estimand_class)) {
-    stop("No class found with name ", estimand_class_name)
-  } else if (!extends(estimand_class, "trial_sequence")) {
-    stop(estimand_class_name, " does not extend class trial_sequence")
+  estimand_class <- getClass(estimand)
+  if (!extends(estimand_class, "trial_sequence")) {
+    stop(estimand, " does not extend class trial_sequence")
   }
 
-  object <- new(estimand_class_name, ...)
+  object <- new(estimand, ...)
   object
 }
 
@@ -268,7 +266,7 @@ setMethod(
 #'   previous visit. Pooling can be specified for the models for the numerator and denominator terms of the inverse
 #'   probability of censoring weights. One of "none", "numerator", or "both" (default is "none" except when estimand =
 #'   "ITT" then default is "numerator").
-#' @param model_fitter An object of class  `te_weights_fitter` which determines the method used for fitting the weight
+#' @param model_fitter An object of class  `te_model_fitter` which determines the method used for fitting the weight
 #'   models. For logistic regression use [stats_glm_logit()].
 #' @param censor_event string. Name of column containing censoring indicator.
 #'
@@ -318,7 +316,7 @@ setMethod(
     numerator <- update.formula(numerator, paste("1 -", censor_event, "~ ."))
     denominator <- update.formula(denominator, paste("1 -", censor_event, "~ ."))
 
-    assert_class(model_fitter, "te_weights_fitter")
+    assert_class(model_fitter, "te_model_fitter")
     object@censor_weights <- new(
       "te_weights_spec",
       numerator = numerator,
@@ -385,7 +383,7 @@ setMethod(
 #' @param object A [trial_sequence] object.
 #' @param numerator Right hand side formula for the numerator model
 #' @param denominator Right hand side formula for the denominator model
-#' @param model_fitter A [te_weights_fitter-class] object, such as [stats_glm_logit]
+#' @param model_fitter A [te_model_fitter-class] object, such as [stats_glm_logit]
 #' @param eligible_wts_0 Name of column containing indicator (0/1) for observation to be excluded/included in weight
 #'   model.
 #' @param eligible_wts_1 Exclude some observations when fitting the models for the inverse probability of treatment
@@ -463,15 +461,16 @@ setMethod(
 
 # Set Outcome Model -----
 
-setGeneric("set_outcome_model", function(object, ...) standardGeneric("set_outcome_model"))
+#' @rdname set_outcome_model
 setMethod(
   "set_outcome_model",
   c(object = "trial_sequence"),
   function(object,
            treatment_var = ~0,
-           adjustment_terms = ~0,
+           adjustment_terms = ~1,
            followup_time_terms = ~ followup_time + I(followup_time^2),
-           trial_period_terms = ~ trial_period + I(trial_period^2)) {
+           trial_period_terms = ~ trial_period + I(trial_period^2),
+           model_fitter) {
     if (test_class(object@data, "te_data_unset")) stop("Use set_data() before set_outcome_model()")
     collection <- makeAssertCollection()
     formula_list <- list(
@@ -496,60 +495,70 @@ setMethod(
       "te_outcome_model",
       formula = formula,
       treatment_var = treatment,
-      adjustment_vars = adjustment
+      adjustment_vars = adjustment,
+      model_fitter = model_fitter
     )
     object
   }
 )
 
+#' @rdname set_outcome_model
 setMethod(
   "set_outcome_model",
   c(object = "trial_sequence_ITT"),
   function(object,
-           adjustment_terms = ~0,
+           adjustment_terms = ~1,
            followup_time_terms = ~ followup_time + I(followup_time^2),
-           trial_period_terms = ~ trial_period + I(trial_period^2)) {
+           trial_period_terms = ~ trial_period + I(trial_period^2),
+           model_fitter = stats_glm_logit(save_path = NA)) {
     callNextMethod(
       object,
       treatment_var = "assigned_treatment",
       adjustment_terms = adjustment_terms,
       followup_time_terms = followup_time_terms,
-      trial_period_terms = trial_period_terms
+      trial_period_terms = trial_period_terms,
+      model_fitter = model_fitter
     )
   }
 )
 
+#' @rdname set_outcome_model
 setMethod(
   "set_outcome_model",
   c(object = "trial_sequence_PP"),
   function(object,
-           adjustment_terms = ~0,
+           adjustment_terms = ~1,
            followup_time_terms = ~ followup_time + I(followup_time^2),
-           trial_period_terms = ~ trial_period + I(trial_period^2)) {
+           trial_period_terms = ~ trial_period + I(trial_period^2),
+           model_fitter = stats_glm_logit(save_path = NA)) {
     callNextMethod(
       object,
       treatment_var = "assigned_treatment",
       adjustment_terms = adjustment_terms,
       followup_time_terms = followup_time_terms,
-      trial_period_terms = trial_period_terms
+      trial_period_terms = trial_period_terms,
+      model_fitter = model_fitter
     )
   }
 )
 
+#' @rdname set_outcome_model
 setMethod(
   "set_outcome_model",
   c(object = "trial_sequence_AT"),
   function(object,
            treatment_var = "dose",
-           adjustment_terms = ~0,
+           adjustment_terms = ~1,
            followup_time_terms = ~ followup_time + I(followup_time^2),
-           trial_period_terms = ~ trial_period + I(trial_period^2)) {
+           trial_period_terms = ~ trial_period + I(trial_period^2),
+           model_fitter = stats_glm_logit(save_path = NA)) {
     callNextMethod(
       object,
       treatment_var = treatment_var,
       adjustment_terms = adjustment_terms,
       followup_time_terms = followup_time_terms,
-      trial_period_terms = trial_period_terms
+      trial_period_terms = trial_period_terms,
+      model_fitter = model_fitter
     )
   }
 )
@@ -640,6 +649,23 @@ setMethod(
 #' @export
 #'
 #' @examples
+#' save_dir <- file.path(tempdir(), "switch_models")
+#' ts <- trial_sequence("PP") |>
+#'   set_data(
+#'     data = data_censored,
+#'     id = "id",
+#'     period = "period",
+#'     treatment = "treatment",
+#'     outcome = "outcome",
+#'     eligible = "eligible"
+#'   ) |>
+#'   set_switch_weight_model(
+#'     numerator = ~ age + x1 + x3,
+#'     denominator = ~age,
+#'     model_fitter = stats_glm_logit(save_path = save_dir)
+#'   ) |>
+#'   calculate_weights()
+#'
 setGeneric("calculate_weights", function(object, ...) standardGeneric("calculate_weights"))
 
 #' @rdname calculate_weights
@@ -671,7 +697,7 @@ setMethod(
   c(object = "trial_sequence_PP"),
   function(object, quiet = FALSE) {
     use_censor_weights <- !is(object@censor_weights, "te_weights_unset")
-    if (is(object@censor_weights, "te_weights_unset")) {
+    if (is(object@switch_weights, "te_weights_unset")) {
       stop("Switch weight models are not specified. Use set_switch_weight_model()")
     }
     calculate_weights_trial_seq(object, quiet, switch_weights = TRUE, censor_weights = use_censor_weights)
