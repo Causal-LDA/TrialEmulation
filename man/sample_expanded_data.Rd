@@ -6,14 +6,14 @@
 \alias{sample_expanded_data,te_datastore_duckdb-method}
 \title{Internal method to sample expanded data}
 \usage{
-sample_expanded_data(object, period, subset_condition, p_control)
+sample_expanded_data(object, period, subset_condition, p_control, seed)
 
-\S4method{sample_expanded_data}{te_datastore}(object, period, subset_condition, p_control)
+\S4method{sample_expanded_data}{te_datastore}(object, period, subset_condition, p_control, seed)
 
-\S4method{sample_expanded_data}{te_datastore_duckdb}(object, period, subset_condition, p_control)
+\S4method{sample_expanded_data}{te_datastore_duckdb}(object, period, subset_condition, p_control, seed)
 }
 \arguments{
-\item{object}{A \code{data.frame} of class \code{data.table}.}
+\item{object}{An object of class \linkS4class{te_datastore}.}
 
 \item{period}{An integerish vector of non-zero length to select trial period(s) or \code{NULL} (default) to
 select all trial periods.}
@@ -21,6 +21,8 @@ select all trial periods.}
 \item{subset_condition}{A string of length 1 or missing.}
 
 \item{p_control}{Proportion of controls to select.}
+
+\item{seed}{A single value, interpreted as an integer, or \code{NULL} (default).}
 }
 \value{
 A \code{data.frame} of class \code{data.table}.

@@ -146,7 +146,7 @@ do_sampling <- function(data, p_control = 0.01) {
 setMethod(
   f = "sample_expanded_data",
   signature = "te_datastore",
-  definition = function(object, period, subset_condition, p_control) {
+  definition = function(object, period, subset_condition, p_control, seed) {
     data <- read_expanded_data(object, period = period, subset_condition = subset_condition)
     data <- lapply(
       split(data, list(data$trial_period, data$followup_time), drop = TRUE),
@@ -162,13 +162,14 @@ setMethod(
 setMethod(
   f = "sample_expanded_data",
   signature = "te_datastore_duckdb",
-  definition = function(object, period, subset_condition, p_control) {
+  definition = function(object, period, subset_condition, p_control, seed) {
     if (use_subset <- !missing(subset_condition)) {
       subset_expr <- translate_to_sql(subset_condition)
     }
     q_p1 <- "SELECT * FROM (SELECT * FROM trial_data WHERE outcome = 0 "
     q_p2 <- "UNION SELECT * FROM trial_data WHERE outcome = 1 "
-    q_sample <- paste0("USING SAMPLE ", p_control * 100, " PERCENT (bernoulli) ")
+    if (is.null(seed)) q_sample <- paste0("USING SAMPLE ", p_control * 100, " PERCENT (bernoulli) ")
+    else q_sample <- paste0("USING SAMPLE ", p_control * 100, " PERCENT (bernoulli, ", seed, ") ")
     q_period <- ""
     if (!is.null(period)) q_period <- paste0("AND trial_period IN (", paste0(period, collapse = ", "), ") ")
     q_subset <- ""
@@ -201,7 +202,7 @@ translate_to_sql <- function(string) {
     vec <- translate_num_vec(vec)
   }
 
-  for (i in 1:nrow(rt)) {
+  for (i in seq_len(nrow(rt))) {
     vec <- gsub(pattern = rt$pattern[i], replacement = rt$replacement[i], vec)
   }
   string <- paste0(vec, collapse = " ")
@@ -230,15 +231,21 @@ translate_num_vec <- function(vec) {
 setMethod(
   f = "sample_controls",
   signature = "trial_sequence",
-  definition = function(object, period, subset_condition, p_control) {
-    checkmate::assert_integerish(period, null.ok = TRUE, any.missing = FALSE, lower = 0)
+  definition = function(object, period, subset_condition, p_control, seed) {
     checkmate::assert_count(object@expansion@datastore@N, positive = TRUE)
-    checkmate::assert_number(p_control, lower = 0, upper = 1)
+    checkmate::assert_integerish(period, null.ok = TRUE, any.missing = FALSE, lower = 0)
     if (!missing(subset_condition)) {
       checkmate::assert(is.character(subset_condition), length(subset_condition) == 1, combine = "and")
     }
+    checkmate::assert_number(p_control, lower = 0, upper = 1)
+    checkmate::assert_integerish(seed, null.ok = TRUE, len = 1, any.missing = FALSE)
+
     data_table <- sample_expanded_data(
-      object@expansion@datastore, period = period, subset_condition = subset_condition, p_control = p_control
+      object@expansion@datastore,
+      period = period,
+      subset_condition = subset_condition,
+      p_control = p_control,
+      seed = seed
     )
     data_table
   }

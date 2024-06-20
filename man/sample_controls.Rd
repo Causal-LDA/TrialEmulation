@@ -5,9 +5,21 @@
 \alias{sample_controls,trial_sequence-method}
 \title{Method to read, subset and sample expanded data}
 \usage{
-sample_controls(object, period = NULL, subset_condition, p_control = 0.01)
+sample_controls(
+  object,
+  period = NULL,
+  subset_condition,
+  p_control = 0.01,
+  seed = NULL
+)
 
-\S4method{sample_controls}{trial_sequence}(object, period = NULL, subset_condition, p_control = 0.01)
+\S4method{sample_controls}{trial_sequence}(
+  object,
+  period = NULL,
+  subset_condition,
+  p_control = 0.01,
+  seed = NULL
+)
 }
 \arguments{
 \item{object}{An object of class \linkS4class{trial_sequence}.}
@@ -15,9 +27,16 @@ sample_controls(object, period = NULL, subset_condition, p_control = 0.01)
 \item{period}{An integerish vector of non-zero length to select trial period(s) or \code{NULL} (default) to
 select all trial periods.}
 
-\item{subset_condition}{A string of length 1 or missing.}
+\item{subset_condition}{A string of length 1 or missing. \code{subset_condition} will be translated to a call
+(in case the expanded data is saved as a data.table or in the csv format) or to a SQL-query
+(in case the expanded data is saved as a duckdb file).
 
-\item{p_control}{Proportion of controls to select.}
+The operators \verb{"==", "!=", ">", ">=", "<", "<=", \%in\%", "&", "|"} are supported.
+Numeric vectors can be written as \code{c(1, 2, 3)} or \code{1:3}. Variables are not supported.}
+
+\item{p_control}{Proportion of controls to select, default is 0.01.}
+
+\item{seed}{A single value, interpreted as an integer, or \code{NULL} (default).}
 }
 \value{
 A \code{data.frame} of class \code{data.table}.
