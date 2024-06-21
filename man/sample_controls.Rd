@@ -44,3 +44,46 @@ A \code{data.frame} of class \code{data.table}.
 \description{
 This method is used on \linkS4class{trial_sequence} objects to read, subset and sample expanded data.
 }
+\examples{
+# create a trial_sequence-class object
+trial_itt_dir <- file.path(tempdir(), "trial_itt")
+dir.create(trial_itt_dir)
+trial_itt <- trial_sequence(estimand = "ITT") |>
+  set_data(
+    data = data_censored,
+    id = "id",
+    period = "period",
+    treatment = "treatment",
+    outcome = "outcome",
+    eligible = "eligible"
+  ) |>
+  set_censor_weight_model(
+    censor_event = "censored",
+    numerator = ~ x1 + x2 + x3,
+    denominator = ~x2,
+    pool_models = "numerator",
+    model_fitter = stats_glm_logit(save_path = file.path(trial_itt_dir, "switch_models"))
+  ) |>
+  calculate_weights() |>
+  set_outcome_model(adjustment_terms = ~ x1 + x2)
+trial_itt_csv <- set_expansion_options(
+  trial_itt,
+  output = save_to_csv(file.path(trial_itt_dir, "trial_csvs")),
+  chunk_size = 500
+) |>
+  expand_trials()
+
+# sample_controls without any additional arguments returns all trial_periods and samples 1\% of controls
+sample_controls(trial_itt_csv)
+
+# sample_controls can subset the data before sampling
+sample_controls(
+  trial_itt_csv,
+  period = 1:20,
+  subset_condition = "followup_time \%in\% 1:20 & treatment == 1",
+  p_control = 0.2
+)
+
+# delete after use
+unlink(trial_itt_dir, recursive = TRUE)
+}

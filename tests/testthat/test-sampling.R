@@ -247,7 +247,10 @@ test_that("sample_controls works with trial_sequence objects containing te_datas
   # sample_controls works without additional arguments
   set.seed(1221)
   sc_01 <- sample_controls(trial_itt_csv)
-  expect_equal(nrow(sc_01), 30)
+  expect_equal(
+    sort(sc_01$id),
+    c(10,14,14,15,17,21,27,29,32,38,38,44,44,49,49,54,54,54,59,61,68,71,71,71,74,74,89,98,98,99)
+  )
 
   # sample_controls works with p_control
   set.seed(5678)
@@ -263,8 +266,8 @@ test_that("sample_controls works with trial_sequence objects containing te_datas
   expect_equal(sum(sc_02$outcome), 14)
   expect_equal(sum(sc_03$outcome), 14)
 
-  # sample_controls creates one additional column
-  expect_equal(ncol(trial_itt_csv@expansion@datastore@template) + 1, ncol(sc_01))
+  # all columns are kept and sample_weight column is added
+  expect_equal(colnames(sc_01), c(colnames(trial_itt_csv@expansion@datastore@template), "sample_weight"))
 
   # sample_controls subsets data correctly
   set.seed(2332)
@@ -274,7 +277,14 @@ test_that("sample_controls works with trial_sequence objects containing te_datas
         subset_condition = "followup_time <= 20 & treatment == 1",
         p_control = 0.2
   )
-  expect_equal(nrow(sc_04), 50)
+  expect_equal(
+    sort(sc_04$id),
+    c(14,16,20,27,27,33,33,33,33,34,34,34,44,44,44,44,44,44,44,44,47,54,54,54,54,59,59,59,59,59,59,59,60,60,60,65,71,
+      73,74,74,74,83,95,95,95,95,95,95,95,96)
+  )
+
+  # sample_controls returns a data.table
+  expect_class(sc_04, "data.table")
 
   unlink(trial_itt_dir, recursive = TRUE)
 })
@@ -313,7 +323,10 @@ test_that("sample_controls works with trial_sequence objects containing te_datas
 
   # sample_controls works without additional arguments
   sc_01 <- sample_controls(trial_itt_duckdb, seed = 1221)
-  expect_equal(nrow(sc_01), 31)
+  expect_equal(
+    sort(sc_01$id),
+    c(1,10,13,14,15,21,27,29,32,38,38,40,44,44,44,44,49,49,58,61,68,71,71,74,84,89,95,95,95,98,99)
+  )
 
   # sample_controls works with p_control
   sc_02 <- sample_controls(trial_itt_duckdb, p_control = 0.5, seed = 5678)
@@ -328,7 +341,10 @@ test_that("sample_controls works with trial_sequence objects containing te_datas
   expect_equal(sum(sc_02$outcome), 14)
   expect_equal(sum(sc_03$outcome), 14)
 
-  # sample_weight column created and calculated correctly
+  # all columns are kept and sample_weight column is added
+  expect_equal(colnames(sc_01), c(colnames(read_expanded_data(trial_itt_duckdb@expansion@datastore)), "sample_weight"))
+
+  # sample_weight calculated correctly
   expect_equal(sort(sc_01$sample_weight), c(rep(1, 14), rep(100, 17)))
   expect_equal(sort(sc_02$sample_weight), c(rep(1, 14), rep(2, 742)))
 
@@ -340,7 +356,13 @@ test_that("sample_controls works with trial_sequence objects containing te_datas
     p_control = 0.2,
     seed = 2332
   )
-  expect_equal(nrow(sc_04), 29)
+  expect_equal(
+    sort(sc_04$id),
+    c(21,27,34,34,44,44,44,44,44,44,44,53,53,54,59,59,59,59,60,65,65,70,71,73,74,74,74,83,95)
+  )
+
+  # sample_controls returns a data.table
+  expect_class(sc_04, "data.table")
 
   DBI::dbDisconnect(trial_itt_duckdb@expansion@datastore@con)
   unlink(trial_itt_dir, recursive = TRUE)
