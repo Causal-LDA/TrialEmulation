@@ -73,7 +73,7 @@ trial_itt_csv <- set_expansion_options(
 ) |>
   expand_trials()
 
-# sample_controls without any additional arguments returns all trial_periods and samples 1\% of controls
+# sample_controls default behaviour returns all trial_periods and samples 1\% of controls
 sample_controls(trial_itt_csv)
 
 # sample_controls can subset the data before sampling
