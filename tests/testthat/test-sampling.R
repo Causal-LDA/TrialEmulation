@@ -220,20 +220,20 @@ test_that("sample_controls works with trial_sequence objects containing te_datas
 
   trial_itt <- trial_sequence(estimand = "ITT") |>
     set_data(
-    data = data_censored,
-    id = "id",
-    period = "period",
-    treatment = "treatment",
-    outcome = "outcome",
-    eligible = "eligible"
-  ) |>
+      data = data_censored,
+      id = "id",
+      period = "period",
+      treatment = "treatment",
+      outcome = "outcome",
+      eligible = "eligible"
+    ) |>
     set_censor_weight_model(
-    censor_event = "censored",
-    numerator = ~ x1 + x2 + x3,
-    denominator = ~x2,
-    pool_models = "numerator",
-    model_fitter = stats_glm_logit(save_path = file.path(trial_itt_dir, "switch_models"))
-  ) |>
+      censor_event = "censored",
+      numerator = ~ x1 + x2 + x3,
+      denominator = ~x2,
+      pool_models = "numerator",
+      model_fitter = stats_glm_logit(save_path = file.path(trial_itt_dir, "switch_models"))
+    ) |>
     calculate_weights() |>
     set_outcome_model(adjustment_terms = ~ x1 + x2)
 
@@ -242,14 +242,17 @@ test_that("sample_controls works with trial_sequence objects containing te_datas
     output = save_to_csv(file.path(trial_itt_dir, "trial_csvs")),
     chunk_size = 500
   ) |>
-  expand_trials()
+    expand_trials()
 
   # sample_controls works without additional arguments
   set.seed(1221)
   sc_01 <- sample_controls(trial_itt_csv)
   expect_equal(
     sort(sc_01$id),
-    c(10,14,14,15,17,21,27,29,32,38,38,44,44,49,49,54,54,54,59,61,68,71,71,71,74,74,89,98,98,99)
+    c(
+      10, 14, 14, 15, 17, 21, 27, 29, 32, 38, 38, 44, 44, 49, 49,
+      54, 54, 54, 59, 61, 68, 71, 71, 71, 74, 74, 89, 98, 98, 99
+    )
   )
 
   # sample_controls works with p_control
@@ -272,15 +275,17 @@ test_that("sample_controls works with trial_sequence objects containing te_datas
   # sample_controls subsets data correctly
   set.seed(2332)
   sc_04 <- sample_controls(
-        trial_itt_csv,
-        period = 1:10,
-        subset_condition = "followup_time <= 20 & treatment == 1",
-        p_control = 0.2
+    trial_itt_csv,
+    period = 1:10,
+    subset_condition = "followup_time <= 20 & treatment == 1",
+    p_control = 0.2
   )
   expect_equal(
     sort(sc_04$id),
-    c(14,16,20,27,27,33,33,33,33,34,34,34,44,44,44,44,44,44,44,44,47,54,54,54,54,59,59,59,59,59,59,59,60,60,60,65,71,
-      73,74,74,74,83,95,95,95,95,95,95,95,96)
+    c(
+      14, 16, 20, 27, 27, 33, 33, 33, 33, 34, 34, 34, 44, 44, 44, 44, 44, 44, 44, 44, 47, 54, 54, 54, 54,
+      59, 59, 59, 59, 59, 59, 59, 60, 60, 60, 65, 71, 73, 74, 74, 74, 83, 95, 95, 95, 95, 95, 95, 95, 96
+    )
   )
 
   # sample_controls returns a data.table
@@ -325,7 +330,10 @@ test_that("sample_controls works with trial_sequence objects containing te_datas
   sc_01 <- sample_controls(trial_itt_duckdb, seed = 1221)
   expect_equal(
     sort(sc_01$id),
-    c(1,10,13,14,15,21,27,29,32,38,38,40,44,44,44,44,49,49,58,61,68,71,71,74,84,89,95,95,95,98,99)
+    c(
+      1, 10, 13, 14, 15, 21, 27, 29, 32, 38, 38, 40, 44, 44, 44, 44,
+      49, 49, 58, 61, 68, 71, 71, 74, 84, 89, 95, 95, 95, 98, 99
+    )
   )
 
   # sample_controls works with p_control
@@ -358,7 +366,10 @@ test_that("sample_controls works with trial_sequence objects containing te_datas
   )
   expect_equal(
     sort(sc_04$id),
-    c(21,27,34,34,44,44,44,44,44,44,44,53,53,54,59,59,59,59,60,65,65,70,71,73,74,74,74,83,95)
+    c(
+      21, 27, 34, 34, 44, 44, 44, 44, 44, 44, 44, 53, 53, 54, 59,
+      59, 59, 59, 60, 65, 65, 70, 71, 73, 74, 74, 74, 83, 95
+    )
   )
 
   # sample_controls returns a data.table

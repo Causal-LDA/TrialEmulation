@@ -167,8 +167,9 @@ setGeneric("save_expanded_data", function(object, data) standardGeneric("save_ex
 #'
 #' # delete after use
 #' unlink(temp_dir, recursive = TRUE)
-setGeneric("read_expanded_data", function(object, period = NULL, subset_condition)
-  standardGeneric("read_expanded_data"))
+setGeneric("read_expanded_data", function(object, period = NULL, subset_condition) {
+  standardGeneric("read_expanded_data")
+})
 
 
 #' Method to read, subset and sample expanded data
@@ -232,8 +233,9 @@ setGeneric("read_expanded_data", function(object, period = NULL, subset_conditio
 #'
 #' # delete after use
 #' unlink(trial_itt_dir, recursive = TRUE)
-setGeneric("sample_controls", function(object, period = NULL, subset_condition, p_control = 0.01, seed = NULL)
-  standardGeneric("sample_controls"))
+setGeneric("sample_controls", function(object, period = NULL, subset_condition, p_control = 0.01, seed = NULL) {
+  standardGeneric("sample_controls")
+})
 
 
 #' Internal method to sample expanded data
@@ -249,8 +251,9 @@ setGeneric("sample_controls", function(object, period = NULL, subset_condition, 
 #' @export
 #'
 #' @examples
-setGeneric("sample_expanded_data", function(object, period, subset_condition, p_control, seed)
-  standardGeneric("sample_expanded_data"))
+setGeneric("sample_expanded_data", function(object, period, subset_condition, p_control, seed) {
+  standardGeneric("sample_expanded_data")
+})
 
 
 #' Method for fitting outcome models
@@ -313,4 +316,3 @@ setGeneric("fit_weights_model", function(object, data, formula, label) standardG
 #'   )
 #'
 setGeneric("set_outcome_model", function(object, ...) standardGeneric("set_outcome_model"))
-

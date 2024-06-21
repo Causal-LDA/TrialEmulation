@@ -150,7 +150,8 @@ setMethod(
     data <- read_expanded_data(object, period = period, subset_condition = subset_condition)
     data <- lapply(
       split(data, list(data$trial_period, data$followup_time), drop = TRUE),
-      do_sampling, p_control = p_control
+      do_sampling,
+      p_control = p_control
     )
     data_table <- data.table::rbindlist(data)
     data_table
@@ -168,8 +169,11 @@ setMethod(
     }
     q_p1 <- "SELECT * FROM (SELECT * FROM trial_data WHERE outcome = 0 "
     q_p2 <- "UNION SELECT * FROM trial_data WHERE outcome = 1 "
-    if (is.null(seed)) q_sample <- paste0("USING SAMPLE ", p_control * 100, " PERCENT (bernoulli) ")
-    else q_sample <- paste0("USING SAMPLE ", p_control * 100, " PERCENT (bernoulli, ", seed, ") ")
+    if (is.null(seed)) {
+      q_sample <- paste0("USING SAMPLE ", p_control * 100, " PERCENT (bernoulli) ")
+    } else {
+      q_sample <- paste0("USING SAMPLE ", p_control * 100, " PERCENT (bernoulli, ", seed, ") ")
+    }
     q_period <- ""
     if (!is.null(period)) q_period <- paste0("AND trial_period IN (", paste0(period, collapse = ", "), ") ")
     q_subset <- ""
@@ -219,9 +223,13 @@ translate_to_sql <- function(string) {
 #' @noRd
 translate_num_vec <- function(vec) {
   for (i in grep(":", vec)) {
-    vec <- replace(vec, i, paste0("(", paste0(seq(strsplit(vec[i], ":")[[1]][1],
-                                                  strsplit(vec[i], ":")[[1]][2]),
-                                              collapse = ", "), ")"))
+    vec <- replace(vec, i, paste0("(", paste0(
+      seq(
+        strsplit(vec[i], ":")[[1]][1],
+        strsplit(vec[i], ":")[[1]][2]
+      ),
+      collapse = ", "
+    ), ")"))
   }
   vec
 }
