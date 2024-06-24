@@ -8,7 +8,7 @@
 sample_controls(
   object,
   period = NULL,
-  subset_condition,
+  subset_condition = NULL,
   p_control = 0.01,
   seed = NULL
 )
@@ -16,7 +16,7 @@ sample_controls(
 \S4method{sample_controls}{trial_sequence}(
   object,
   period = NULL,
-  subset_condition,
+  subset_condition = NULL,
   p_control = 0.01,
   seed = NULL
 )
@@ -27,7 +27,7 @@ sample_controls(
 \item{period}{An integerish vector of non-zero length to select trial period(s) or \code{NULL} (default) to
 select all trial periods.}
 
-\item{subset_condition}{A string of length 1 or missing. \code{subset_condition} will be translated to a call
+\item{subset_condition}{A string of length 1 or \code{NULL} (default). \code{subset_condition} will be translated to a call
 (in case the expanded data is saved as a data.table or in the csv format) or to a SQL-query
 (in case the expanded data is saved as a duckdb file).
 
