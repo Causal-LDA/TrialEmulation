@@ -74,19 +74,20 @@ setMethod(
   f = "fit_outcome_model",
   signature = "te_stats_glm_logit",
   function(object, data, formula, weights) {
-    data$.weights <- if (is.null(weights)) rep(1, nrow(data)) else weights
+    data$weights <- if (is.null(weights)) rep(1, nrow(data)) else weights
     model <- glm(
       formula = formula,
       data = data,
       family = binomial("logit"),
       x = FALSE,
       y = FALSE,
-      weights = .weights
+      weights = weights
     )
     if (!is.na(object@save_path)) {
       if (!dir.exists(object@save_path)) dir.create(object@save_path, recursive = TRUE)
       file <- tempfile(pattern = "model_", tmpdir = object@save_path, fileext = ".rds")
       saveRDS(model, file = file)
+      save_path <- data.frame(save = file)
     }
 
     vcov <- sandwich::vcovCL(
@@ -103,11 +104,10 @@ setMethod(
     )
 
     coef_obj <- lmtest::coeftest(model, vcov. = vcov, save = TRUE)
-    summary_list <- list(
-      tidy = broom::tidy(coef_obj, conf.int = TRUE),
-      glance = broom::glance(coef_obj),
-      save_path = data.frame(save = object@save_path)
-    )
+    summary_list <- list()
+    summary_list[["tidy"]] <- broom::tidy(coef_obj, conf.int = TRUE)
+    summary_list[["glance"]] <- broom::glance(coef_obj)
+    if (!is.na(object@save_path)) summary_list[["save_path"]] <- save_path
 
     new(
       "te_stats_glm_logit_outcome_fitted",

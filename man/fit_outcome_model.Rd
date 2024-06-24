@@ -5,9 +5,9 @@
 \alias{fit_outcome_model,te_stats_glm_logit-method}
 \title{Method for fitting outcome models}
 \usage{
-fit_outcome_model(object, data, formula, weights)
+fit_outcome_model(object, data, formula, weights = NULL)
 
-\S4method{fit_outcome_model}{te_stats_glm_logit}(object, data, formula, weights)
+\S4method{fit_outcome_model}{te_stats_glm_logit}(object, data, formula, weights = NULL)
 }
 \arguments{
 \item{object}{A \code{te_outcome_fitter} object}
@@ -15,11 +15,16 @@ fit_outcome_model(object, data, formula, weights)
 \item{data}{\code{data.frame} containing outcomes and covariates as defined in \code{formula}.}
 
 \item{formula}{\code{formula} describing the model.}
+
+\item{weights}{\code{numeric} vector of weights.}
 }
 \value{
 An object of class \code{te_outcome_fitted}
 }
 \description{
 Method for fitting outcome models
+}
+\examples{
+fit_outcome_model
 }
 \keyword{internal}
