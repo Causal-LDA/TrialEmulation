@@ -27,3 +27,37 @@ test_that("fit_weights_model works for stats_glm_logit", {
   saved_model <- readRDS(result@summary$save_path$path)
   expect_class(saved_model, "glm")
 })
+
+
+test_that("fit_outcome_model works for stats_glm_logit", {
+  object <- stats_glm_logit(NA)
+  result <- fit_outcome_model(
+    object,
+    data = vignette_switch_data,
+    formula = outcome ~ assigned_treatment + followup_time + nvarC,
+    weights = vignette_switch_data$weight
+  )
+
+  expect_class(result, "te_outcome_fitted")
+  expect_class(result, "te_stats_glm_logit_outcome_fitted")
+
+  expect_equal(
+    result@summary[["tidy"]]$estimate,
+    c(-3.23428770614918, 0.0429082229813285, -0.000849656189863374, -0.0370118224213905)
+  )
+
+  expect_equal(
+    as.data.frame(result@summary[["tidy"]][2, c("conf.low", "conf.high")]),
+    data.frame(conf.low = -0.501620572971525, conf.high = 0.587437018934182)
+  )
+  expect_equal(result@summary[["glance"]]$df.null, 1939052)
+
+  expect_matrix(result@model$vcov, nrows = 4, ncols = 4)
+  expect_equal(
+    diag(result@model$vcov),
+    c(
+      `(Intercept)` = 0.145504452458149, assigned_treatment = 0.0771872414783003,
+      followup_time = 1.59771524178973e-06, nvarC = 4.40825112262011e-05
+    )
+  )
+})

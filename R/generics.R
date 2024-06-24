@@ -179,7 +179,7 @@ setGeneric("read_expanded_data", function(object, period = NULL) standardGeneric
 #' @export
 #' @keywords internal
 #' @examples
-setGeneric("fit_outcome_model", function(object, data, formula) standardGeneric("fit_outcome_model"))
+setGeneric("fit_outcome_model", function(object, data, formula, weights) standardGeneric("fit_outcome_model"))
 
 #' Method for fitting weight models
 #'
