@@ -149,7 +149,7 @@ setGeneric("save_expanded_data", function(object, data) standardGeneric("save_ex
 #' @param object An object of class [te_datastore-class].
 #' @param period An integerish vector of non-zero length to select trial period(s) or `NULL` (default) to
 #'  select all files.
-#' @param subset_condition A string of length 1 or missing.
+#' @param subset_condition A string of length 1 or `NULL` (default).
 #'
 #' @return A `data.frame` of class `data.table`.
 #' @export
@@ -167,7 +167,7 @@ setGeneric("save_expanded_data", function(object, data) standardGeneric("save_ex
 #'
 #' # delete after use
 #' unlink(temp_dir, recursive = TRUE)
-setGeneric("read_expanded_data", function(object, period = NULL, subset_condition) {
+setGeneric("read_expanded_data", function(object, period = NULL, subset_condition = NULL) {
   standardGeneric("read_expanded_data")
 })
 
@@ -179,12 +179,15 @@ setGeneric("read_expanded_data", function(object, period = NULL, subset_conditio
 #' @param object An object of class [trial_sequence-class].
 #' @param period An integerish vector of non-zero length to select trial period(s) or `NULL` (default) to
 #'  select all trial periods.
-#' @param subset_condition A string of length 1 or missing. `subset_condition` will be translated to a call
+#' @param subset_condition A string of length 1 or `NULL` (default). `subset_condition` will be translated to a call
 #'  (in case the expanded data is saved as a data.table or in the csv format) or to a SQL-query
 #'  (in case the expanded data is saved as a duckdb file).
 #'
 #'  The operators `"==", "!=", ">", ">=", "<", "<=", %in%", "&", "|"` are supported.
 #'  Numeric vectors can be written as `c(1, 2, 3)` or `1:3`. Variables are not supported.
+#'
+#'  *Note*: Make sure numeric vectors written as `1:3` are surrounded by spaces, e.g. `a %in% c( 1:4 , 6:9 )`,
+#'    otherwise the code will fail.
 #' @param p_control Proportion of controls to select, default is 0.01.
 #' @param seed A single value, interpreted as an integer, or `NULL` (default).
 #'
@@ -236,7 +239,7 @@ setGeneric("read_expanded_data", function(object, period = NULL, subset_conditio
 #'
 #' # delete after use
 #' unlink(trial_itt_dir, recursive = TRUE)
-setGeneric("sample_controls", function(object, period = NULL, subset_condition, p_control = 0.01, seed = NULL) {
+setGeneric("sample_controls", function(object, period = NULL, subset_condition = NULL, p_control = 0.01, seed = NULL) {
   standardGeneric("sample_controls")
 })
 

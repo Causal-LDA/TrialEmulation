@@ -152,7 +152,6 @@ setMethod(
     set.seed(seed)
 
     data <- read_expanded_data(object, period = period, subset_condition = subset_condition)
-    data <- read_expanded_data(object, period = period, subset_condition = subset_condition)
     data <- lapply(
       split(data, list(data$trial_period, data$followup_time), drop = TRUE),
       do_sampling,
@@ -169,7 +168,7 @@ setMethod(
   f = "sample_expanded_data",
   signature = "te_datastore_duckdb",
   definition = function(object, period, subset_condition, p_control, seed) {
-    if (use_subset <- !missing(subset_condition)) {
+    if (use_subset <- !is.null(subset_condition)) {
       subset_expr <- translate_to_sql(subset_condition)
     }
     q_p1 <- "SELECT * FROM (SELECT * FROM trial_data WHERE outcome = 0 "
@@ -228,13 +227,13 @@ translate_to_sql <- function(string) {
 #' @noRd
 translate_num_vec <- function(vec) {
   for (i in grep(":", vec)) {
-    vec <- replace(vec, i, paste0("(", paste0(
+    vec[i] <- paste0("(", paste0(
       seq(
         strsplit(vec[i], ":")[[1]][1],
         strsplit(vec[i], ":")[[1]][2]
       ),
       collapse = ", "
-    ), ")"))
+    ), ")")
   }
   vec
 }
@@ -247,8 +246,8 @@ setMethod(
   definition = function(object, period, subset_condition, p_control, seed) {
     checkmate::assert_count(object@expansion@datastore@N, positive = TRUE)
     checkmate::assert_integerish(period, null.ok = TRUE, any.missing = FALSE, lower = 0)
-    if (!missing(subset_condition)) {
-      checkmate::assert_string(subset_condition)
+    if (!is.null(subset_condition)) {
+      checkmate::assert_string(subset_condition, null.ok = TRUE)
     }
     checkmate::assert_number(p_control, lower = 0, upper = 1)
     checkmate::assert_integerish(seed, null.ok = TRUE, len = 1, any.missing = FALSE)

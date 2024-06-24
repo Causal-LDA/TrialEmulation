@@ -178,7 +178,7 @@ setMethod(
   signature = "te_datastore_csv",
   definition = function(object, period, subset_condition) {
     checkmate::assert_integerish(period, null.ok = TRUE, any.missing = FALSE, lower = 0)
-    if (use_subset <- !missing(subset_condition)) {
+    if (use_subset <- !is.null(subset_condition)) {
       subset_expr <- str2lang(subset_condition)
     }
     all_files <- object@files
@@ -202,7 +202,7 @@ setMethod(
   signature = "te_datastore_datatable",
   definition = function(object, period, subset_condition) {
     checkmate::assert_integerish(period, null.ok = TRUE, any.missing = FALSE, lower = 0)
-    if (use_subset <- !missing(subset_condition)) {
+    if (use_subset <- !is.null(subset_condition)) {
       subset_expr <- str2lang(subset_condition)
     }
     p <- period
@@ -225,7 +225,7 @@ setMethod(
   signature = "te_datastore_duckdb",
   definition = function(object, period, subset_condition) {
     checkmate::assert_integerish(period, null.ok = TRUE, any.missing = FALSE, lower = 0)
-    if (use_subset <- !missing(subset_condition)) {
+    if (use_subset <- !is.null(subset_condition)) {
       subset_expr <- str2lang(subset_condition)
     }
     query <- if (is.null(period)) {

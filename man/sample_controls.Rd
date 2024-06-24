@@ -32,7 +32,10 @@ select all trial periods.}
 (in case the expanded data is saved as a duckdb file).
 
 The operators \verb{"==", "!=", ">", ">=", "<", "<=", \%in\%", "&", "|"} are supported.
-Numeric vectors can be written as \code{c(1, 2, 3)} or \code{1:3}. Variables are not supported.}
+Numeric vectors can be written as \code{c(1, 2, 3)} or \code{1:3}. Variables are not supported.
+
+\emph{Note}: Make sure numeric vectors written as \code{1:3} are surrounded by spaces, e.g. \code{a \%in\% c( 1:4 , 6:9 )},
+otherwise the code will fail.}
 
 \item{p_control}{Proportion of controls to select, default is 0.01.}
 
