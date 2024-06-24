@@ -36,7 +36,10 @@ Numeric vectors can be written as \code{c(1, 2, 3)} or \code{1:3}. Variables are
 
 \item{p_control}{Proportion of controls to select, default is 0.01.}
 
-\item{seed}{A single value, interpreted as an integer, or \code{NULL} (default).}
+\item{seed}{A single value, interpreted as an integer, or \code{NULL} (default).
+
+\emph{Note}: The same seed will return a different result depending on the class of the \linkS4class{te_datastore}
+object contained in the \linkS4class{trial_sequence} object.}
 }
 \value{
 A \code{data.frame} of class \code{data.table}.

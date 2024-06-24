@@ -188,6 +188,9 @@ setGeneric("read_expanded_data", function(object, period = NULL, subset_conditio
 #' @param p_control Proportion of controls to select, default is 0.01.
 #' @param seed A single value, interpreted as an integer, or `NULL` (default).
 #'
+#'  *Note*: The same seed will return a different result depending on the class of the [te_datastore-class]
+#'    object contained in the [trial_sequence-class] object.
+#'
 #' @return A `data.frame` of class `data.table`.
 #' @export
 #'

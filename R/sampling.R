@@ -147,6 +147,11 @@ setMethod(
   f = "sample_expanded_data",
   signature = "te_datastore",
   definition = function(object, period, subset_condition, p_control, seed) {
+    old_seed <- globalenv()$.Random.seed
+    on.exit(suspendInterrupts(set_random_seed(old_seed)))
+    set.seed(seed)
+
+    data <- read_expanded_data(object, period = period, subset_condition = subset_condition)
     data <- read_expanded_data(object, period = period, subset_condition = subset_condition)
     data <- lapply(
       split(data, list(data$trial_period, data$followup_time), drop = TRUE),
@@ -243,7 +248,7 @@ setMethod(
     checkmate::assert_count(object@expansion@datastore@N, positive = TRUE)
     checkmate::assert_integerish(period, null.ok = TRUE, any.missing = FALSE, lower = 0)
     if (!missing(subset_condition)) {
-      checkmate::assert(is.character(subset_condition), length(subset_condition) == 1, combine = "and")
+      checkmate::assert_string(subset_condition)
     }
     checkmate::assert_number(p_control, lower = 0, upper = 1)
     checkmate::assert_integerish(seed, null.ok = TRUE, len = 1, any.missing = FALSE)
@@ -258,3 +263,13 @@ setMethod(
     data_table
   }
 )
+
+
+# Restore the RNG back to a previous state using the global .Random.seed
+set_random_seed <- function(old_seed) {
+  if (is.null(old_seed)) {
+    rm(".Random.seed", envir = globalenv(), inherits = FALSE)
+  } else {
+    assign(".Random.seed", value = old_seed, envir = globalenv(), inherits = FALSE)
+  }
+}

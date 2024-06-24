@@ -245,8 +245,7 @@ test_that("sample_controls works with trial_sequence objects containing te_datas
     expand_trials()
 
   # sample_controls works without additional arguments
-  set.seed(1221)
-  sc_01 <- sample_controls(trial_itt_csv)
+  sc_01 <- sample_controls(trial_itt_csv, seed = 1221)
   expect_equal(
     sort(sc_01$id),
     c(
@@ -255,9 +254,15 @@ test_that("sample_controls works with trial_sequence objects containing te_datas
     )
   )
 
+  random_01 <- sample_controls(trial_itt_csv)
+
+  # seed gets reset
+  sc_01_1 <- sample_controls(trial_itt_csv, seed = 1221)
+  random_02 <- sample_controls(trial_itt_csv)
+  expect_false(identical(sort(random_01$id), sort(random_02$id)))
+
   # sample_controls works with p_control
-  set.seed(5678)
-  sc_02 <- sample_controls(trial_itt_csv, p_control = 0.5)
+  sc_02 <- sample_controls(trial_itt_csv, p_control = 0.5, seed = 5678)
   expect_equal(nrow(sc_02), 765)
 
   # sample_controls works with p_control = 0
@@ -273,12 +278,12 @@ test_that("sample_controls works with trial_sequence objects containing te_datas
   expect_equal(colnames(sc_01), c(colnames(trial_itt_csv@expansion@datastore@template), "sample_weight"))
 
   # sample_controls subsets data correctly
-  set.seed(2332)
   sc_04 <- sample_controls(
     trial_itt_csv,
     period = 1:10,
     subset_condition = "followup_time <= 20 & treatment == 1",
-    p_control = 0.2
+    p_control = 0.2,
+    seed = 2332
   )
   expect_equal(
     sort(sc_04$id),
