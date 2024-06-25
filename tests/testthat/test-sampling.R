@@ -212,3 +212,175 @@ test_that("case_control_sampling_trials works with sort = TRUE", {
 
   expect_identical(samples_f, samples_t)
 })
+
+
+test_that("sample_controls works with trial_sequence objects containing te_datastore_csv objects", {
+  trial_itt_dir <- file.path(tempdir(), "trial_itt")
+  dir.create(trial_itt_dir)
+
+  trial_itt <- trial_sequence(estimand = "ITT") |>
+    set_data(
+      data = data_censored,
+      id = "id",
+      period = "period",
+      treatment = "treatment",
+      outcome = "outcome",
+      eligible = "eligible"
+    ) |>
+    set_censor_weight_model(
+      censor_event = "censored",
+      numerator = ~ x1 + x2 + x3,
+      denominator = ~x2,
+      pool_models = "numerator",
+      model_fitter = stats_glm_logit(save_path = file.path(trial_itt_dir, "switch_models"))
+    ) |>
+    calculate_weights() |>
+    set_outcome_model(adjustment_terms = ~ x1 + x2)
+
+  trial_itt_csv <- set_expansion_options(
+    trial_itt,
+    output = save_to_csv(file.path(trial_itt_dir, "trial_csvs")),
+    chunk_size = 500
+  ) |>
+    expand_trials()
+
+  # sample_controls works without additional arguments
+  sc_01 <- sample_controls(trial_itt_csv, p_control = 0.01, seed = 1221)
+  expect_equal(
+    sort(sc_01$id),
+    c(
+      10, 14, 14, 15, 17, 21, 27, 29, 32, 38, 38, 44, 44, 49, 49,
+      54, 54, 54, 59, 61, 68, 71, 71, 71, 74, 74, 89, 98, 98, 99
+    )
+  )
+
+  random_01 <- sample_controls(trial_itt_csv, p_control = 0.01)
+
+  # seed gets reset
+  sc_01_1 <- sample_controls(trial_itt_csv, p_control = 0.01, seed = 1221)
+  random_02 <- sample_controls(trial_itt_csv, p_control = 0.01)
+  expect_false(identical(sort(random_01$id), sort(random_02$id)))
+
+  # sample_controls works with p_control
+  sc_02 <- sample_controls(trial_itt_csv, p_control = 0.5, seed = 5678)
+  expect_equal(nrow(sc_02), 765)
+
+  # sample_controls works with p_control = 0
+  sc_03 <- sample_controls(trial_itt_csv, p_control = 0)
+  expect_equal(nrow(sc_03), 14)
+
+  # cases are kept
+  expect_equal(sum(sc_01$outcome), 14)
+  expect_equal(sum(sc_02$outcome), 14)
+  expect_equal(sum(sc_03$outcome), 14)
+
+  # all columns are kept and sample_weight column is added
+  expect_equal(colnames(sc_01), c(colnames(trial_itt_csv@expansion@datastore@template), "sample_weight"))
+
+  # sample_controls subsets data correctly
+  sc_04 <- sample_controls(
+    trial_itt_csv,
+    period = 1:10,
+    subset_condition = "followup_time <= 20 & treatment == 1",
+    p_control = 0.2,
+    seed = 2332
+  )
+  expect_equal(
+    sort(sc_04$id),
+    c(
+      14, 16, 20, 27, 27, 33, 33, 33, 33, 34, 34, 34, 44, 44, 44, 44, 44, 44, 44, 44, 47, 54, 54, 54, 54,
+      59, 59, 59, 59, 59, 59, 59, 60, 60, 60, 65, 71, 73, 74, 74, 74, 83, 95, 95, 95, 95, 95, 95, 95, 96
+    )
+  )
+
+  # sample_controls returns a data.table
+  expect_class(sc_04, "data.table")
+
+  unlink(trial_itt_dir, recursive = TRUE)
+})
+
+
+test_that("sample_controls works with trial_sequence objects containing te_datastore_duckdb objects", {
+  trial_itt_dir <- withr::local_tempdir("trial_itt", tempdir(TRUE))
+
+  trial_itt <- trial_sequence(estimand = "ITT") |>
+    set_data(data = data_censored) |>
+    set_outcome_model(adjustment_terms = ~ x1 + x2)
+
+  trial_itt_duckdb <- set_expansion_options(
+    trial_itt,
+    output = save_to_duckdb(file.path(trial_itt_dir, "trial_duckdb")),
+    chunk_size = 500
+  ) |>
+    expand_trials()
+
+
+  # sample_controls works without additional arguments
+  sc_01 <- sample_controls(trial_itt_duckdb, p_control = 0.01, seed = 1221)
+  expect_equal(
+    sort(sc_01$id),
+    c(
+      1, 10, 13, 14, 15, 21, 27, 29, 32, 38, 38, 40, 44, 44, 44, 44,
+      49, 49, 58, 61, 68, 71, 71, 74, 84, 89, 95, 95, 95, 98, 99
+    )
+  )
+
+  # sample_controls works with p_control
+  sc_02 <- sample_controls(trial_itt_duckdb, p_control = 0.5, seed = 5678)
+  expect_equal(nrow(sc_02), 756)
+
+  # sample_controls works with p_control = 0
+  sc_03 <- sample_controls(trial_itt_duckdb, p_control = 0)
+  expect_equal(nrow(sc_03), 14)
+
+  # cases are kept
+  expect_equal(sum(sc_01$outcome), 14)
+  expect_equal(sum(sc_02$outcome), 14)
+  expect_equal(sum(sc_03$outcome), 14)
+
+  # all columns are kept and sample_weight column is added
+  expect_equal(colnames(sc_01), c(colnames(read_expanded_data(trial_itt_duckdb@expansion@datastore)), "sample_weight"))
+
+  # sample_weight calculated correctly
+  expect_equal(sort(sc_01$sample_weight), c(rep(1, 14), rep(100, 17)))
+  expect_equal(sort(sc_02$sample_weight), c(rep(1, 14), rep(2, 742)))
+
+  # sample_controls subsets data correctly
+  sc_04 <- sample_controls(
+    trial_itt_duckdb,
+    period = 1:20,
+    subset_condition = "x2 <= 1 & treatment == 1 & (id %in% 40:90 | followup_time %in% c(2, 3, 4, 5, 6))",
+    p_control = 0.2,
+    seed = 2332
+  )
+  expect_equal(
+    sort(sc_04$id),
+    c(
+      21, 27, 34, 34, 44, 44, 44, 44, 44, 44, 44, 53, 53, 54, 59,
+      59, 59, 59, 60, 65, 65, 70, 71, 73, 74, 74, 74, 83, 95
+    )
+  )
+
+  # sample_controls returns a data.table
+  expect_class(sc_04, "data.table")
+
+  DBI::dbDisconnect(trial_itt_duckdb@expansion@datastore@con)
+})
+
+
+test_that("translate_to_sql works as intended", {
+  input_string <- "a == 1 & b >= 0 & c < 10 & d != -1 & (e %in% 1:10 | f %in% c(4, 7, 9)"
+  output_string <- translate_to_sql(input_string)
+  expect_equal(
+    output_string,
+    "a = 1 AND b >= 0 AND c < 10 AND d != -1 AND (e IN (1, 2, 3, 4, 5, 6, 7, 8, 9, 10) OR f IN (4, 7, 9)"
+  )
+})
+
+test_that("translate_to_sql catches the error and provides a message", {
+  input_string <- "(e%in%1:10|f%in%c(4, 7, 9)"
+  expect_warning(expect_error(
+    translate_to_sql(input_string),
+    "Error translating"
+  ))
+})

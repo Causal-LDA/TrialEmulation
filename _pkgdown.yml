@@ -29,6 +29,7 @@ reference:
   - set_expansion_options
   - set_outcome_model
   - expand_trials
+  - sample_controls
 - subtitle: Data Storage
   desc: Control how expanded data is stored
 - contents:
@@ -50,4 +51,5 @@ reference:
 - contents:
   - save_expanded_data
   - read_expanded_data
+  - sample_expanded_data
   - fit_weights_model

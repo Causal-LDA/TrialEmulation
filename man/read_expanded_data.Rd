@@ -7,19 +7,21 @@
 \alias{read_expanded_data,te_datastore_duckdb-method}
 \title{Method to read expanded data}
 \usage{
-read_expanded_data(object, period = NULL)
+read_expanded_data(object, period = NULL, subset_condition = NULL)
 
-\S4method{read_expanded_data}{te_datastore_csv}(object, period = NULL)
+\S4method{read_expanded_data}{te_datastore_csv}(object, period = NULL, subset_condition = NULL)
 
-\S4method{read_expanded_data}{te_datastore_datatable}(object, period = NULL)
+\S4method{read_expanded_data}{te_datastore_datatable}(object, period = NULL, subset_condition = NULL)
 
-\S4method{read_expanded_data}{te_datastore_duckdb}(object, period = NULL)
+\S4method{read_expanded_data}{te_datastore_duckdb}(object, period = NULL, subset_condition = NULL)
 }
 \arguments{
 \item{object}{An object of class \linkS4class{te_datastore}.}
 
 \item{period}{An integerish vector of non-zero length to select trial period(s) or \code{NULL} (default) to
 select all files.}
+
+\item{subset_condition}{A string of length 1 or \code{NULL} (default).}
 }
 \value{
 A \code{data.frame} of class \code{data.table}.
@@ -28,12 +30,12 @@ A \code{data.frame} of class \code{data.table}.
 This method is used on \linkS4class{te_datastore} objects to read selected data and return one \code{data.table}.
 }
 \examples{
-# create a te_datastore_csv object
+# create a te_datastore_csv object and save some data
 temp_dir <- tempfile("csv_dir_")
 dir.create(temp_dir)
 datastore <- save_to_csv(temp_dir)
 data(vignette_switch_data)
-expanded_csv_data <- save_expanded_data(datastore, vignette_switch_data)
+expanded_csv_data <- save_expanded_data(datastore, vignette_switch_data[1:200, ])
 
 # read expanded data
 read_expanded_data(expanded_csv_data)

@@ -158,7 +158,6 @@ setMethod(
   signature = "te_datastore_duckdb",
   definition = function(object, data) {
     assert_file_exists(object@path)
-
     if (!duckdb::dbExistsTable(conn = object@con, name = "trial_data")) {
       duckdb::dbWriteTable(conn = object@con, name = "trial_data", value = data)
     } else {
@@ -176,8 +175,11 @@ setMethod(
 setMethod(
   f = "read_expanded_data",
   signature = "te_datastore_csv",
-  definition = function(object, period) {
+  definition = function(object, period, subset_condition) {
     checkmate::assert_integerish(period, null.ok = TRUE, any.missing = FALSE, lower = 0)
+    if (use_subset <- !is.null(subset_condition)) {
+      subset_expr <- str2lang(subset_condition)
+    }
     all_files <- object@files
     files <- if (is.null(period)) {
       all_files
@@ -185,6 +187,9 @@ setMethod(
       grep(x = all_files, pattern = paste0("trial_", period, ".csv", collapse = "|"), value = TRUE)
     }
     data_table <- data.table::rbindlist(lapply(files, data.table::fread))
+    if (use_subset) {
+      data_table <- data_table[eval(subset_expr)]
+    }
     data_table
   }
 )
@@ -194,13 +199,19 @@ setMethod(
 setMethod(
   f = "read_expanded_data",
   signature = "te_datastore_datatable",
-  definition = function(object, period) {
+  definition = function(object, period, subset_condition) {
+    trial_period <- NULL
     checkmate::assert_integerish(period, null.ok = TRUE, any.missing = FALSE, lower = 0)
-    p <- period
+
     data_table <- if (is.null(period)) {
       object@data
     } else {
-      object@data[period %in% p, ]
+      object@data[trial_period %in% period, ]
+    }
+
+    if (!is.null(subset_condition)) {
+      subset_expr <- str2lang(subset_condition)
+      data_table <- data_table[eval(subset_expr)]
     }
     data_table
   }
@@ -211,14 +222,20 @@ setMethod(
 setMethod(
   f = "read_expanded_data",
   signature = "te_datastore_duckdb",
-  definition = function(object, period) {
+  definition = function(object, period, subset_condition) {
     checkmate::assert_integerish(period, null.ok = TRUE, any.missing = FALSE, lower = 0)
+    if (use_subset <- !is.null(subset_condition)) {
+      subset_expr <- str2lang(subset_condition)
+    }
     query <- if (is.null(period)) {
       "SELECT * FROM trial_data"
     } else {
       paste0("SELECT * FROM trial_data WHERE trial_period IN (", paste0(period, collapse = ", "), ")")
     }
     data_table <- data.table::as.data.table(DBI::dbGetQuery(conn = object@con, statement = query))
+    if (use_subset) {
+      data_table <- data_table[eval(subset_expr)]
+    }
     data_table
   }
 )
