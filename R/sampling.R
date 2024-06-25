@@ -146,7 +146,7 @@ do_sampling <- function(data, p_control = 0.01) {
 setMethod(
   f = "sample_expanded_data",
   signature = "te_datastore",
-  definition = function(object, period, subset_condition, p_control, seed) {
+  definition = function(object, p_control, period, subset_condition = NULL, seed) {
     old_seed <- globalenv()$.Random.seed
     on.exit(suspendInterrupts(set_random_seed(old_seed)))
     set.seed(seed)
@@ -167,7 +167,7 @@ setMethod(
 setMethod(
   f = "sample_expanded_data",
   signature = "te_datastore_duckdb",
-  definition = function(object, period, subset_condition, p_control, seed) {
+  definition = function(object, p_control, period, subset_condition, seed) {
     if (use_subset <- !is.null(subset_condition)) {
       subset_expr <- translate_to_sql(subset_condition)
     }
@@ -201,20 +201,29 @@ setMethod(
 #'
 #' @noRd
 translate_to_sql <- function(string) {
-  replacement <- c("\\|" = "OR", "&" = "AND", "==" = "=", "%in%" = "IN", "^c\\(" = "\\(")
-  rt <- data.table::as.data.table(replacement, keep.rownames = "pattern")
+  tryCatch(
+    {
+      replacement <- c("\\|" = "OR", "&" = "AND", "==" = "=", "%in%" = "IN", "^c\\(" = "\\(")
 
-  vec <- strsplit(string, " ")[[1]]
+      vec <- strsplit(string, " ")[[1]]
 
-  if (length(grep(":", vec)) != 0) {
-    vec <- translate_num_vec(vec)
-  }
+      if (length(grep(":", vec)) != 0) {
+        vec <- translate_num_vec(vec)
+      }
 
-  for (i in seq_len(nrow(rt))) {
-    vec <- gsub(pattern = rt$pattern[i], replacement = rt$replacement[i], vec)
-  }
-  string <- paste0(vec, collapse = " ")
-  string
+      for (i in seq_len(length(replacement))) {
+        vec <- gsub(pattern = names(replacement)[i], replacement = replacement[i], vec)
+      }
+      string <- paste0(vec, collapse = " ")
+      string
+    },
+    error = function(e) {
+      stop("Error translating subset_condition to SQL. See ?sample_controls for me information.\n",
+        as.character(e),
+        call. = FALSE
+      )
+    }
+  )
 }
 
 
@@ -243,13 +252,14 @@ translate_num_vec <- function(vec) {
 setMethod(
   f = "sample_controls",
   signature = "trial_sequence",
-  definition = function(object, period, subset_condition, p_control, seed) {
+  definition = function(object, p_control, period, subset_condition, seed) {
     checkmate::assert_count(object@expansion@datastore@N, positive = TRUE)
+    checkmate::assert_number(p_control, lower = 0, upper = 1)
     checkmate::assert_integerish(period, null.ok = TRUE, any.missing = FALSE, lower = 0)
     if (!is.null(subset_condition)) {
       checkmate::assert_string(subset_condition, null.ok = TRUE)
     }
-    checkmate::assert_number(p_control, lower = 0, upper = 1)
+
     checkmate::assert_integerish(seed, null.ok = TRUE, len = 1, any.missing = FALSE)
 
     data_table <- sample_expanded_data(

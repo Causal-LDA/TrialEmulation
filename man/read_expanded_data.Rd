@@ -30,12 +30,12 @@ A \code{data.frame} of class \code{data.table}.
 This method is used on \linkS4class{te_datastore} objects to read selected data and return one \code{data.table}.
 }
 \examples{
-# create a te_datastore_csv object
+# create a te_datastore_csv object and save some data
 temp_dir <- tempfile("csv_dir_")
 dir.create(temp_dir)
 datastore <- save_to_csv(temp_dir)
 data(vignette_switch_data)
-expanded_csv_data <- save_expanded_data(datastore, vignette_switch_data)
+expanded_csv_data <- save_expanded_data(datastore, vignette_switch_data[1:200, ])
 
 # read expanded data
 read_expanded_data(expanded_csv_data)

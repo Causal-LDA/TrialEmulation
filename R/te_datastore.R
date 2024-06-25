@@ -158,7 +158,6 @@ setMethod(
   signature = "te_datastore_duckdb",
   definition = function(object, data) {
     assert_file_exists(object@path)
-
     if (!duckdb::dbExistsTable(conn = object@con, name = "trial_data")) {
       duckdb::dbWriteTable(conn = object@con, name = "trial_data", value = data)
     } else {
@@ -201,17 +200,17 @@ setMethod(
   f = "read_expanded_data",
   signature = "te_datastore_datatable",
   definition = function(object, period, subset_condition) {
+    trial_period <- NULL
     checkmate::assert_integerish(period, null.ok = TRUE, any.missing = FALSE, lower = 0)
-    if (use_subset <- !is.null(subset_condition)) {
-      subset_expr <- str2lang(subset_condition)
-    }
-    p <- period
+
     data_table <- if (is.null(period)) {
       object@data
     } else {
-      object@data[period %in% p, ]
+      object@data[trial_period %in% period, ]
     }
-    if (use_subset) {
+
+    if (!is.null(subset_condition)) {
+      subset_expr <- str2lang(subset_condition)
       data_table <- data_table[eval(subset_expr)]
     }
     data_table

@@ -135,7 +135,7 @@ NULL
 #' dir.create(temp_dir)
 #' datastore <- save_to_csv(temp_dir)
 #' data(vignette_switch_data)
-#' save_expanded_data(datastore, vignette_switch_data)
+#' save_expanded_data(datastore, vignette_switch_data[1:200, ])
 #'
 #' # delete after use
 #' unlink(temp_dir, recursive = TRUE)
@@ -155,12 +155,12 @@ setGeneric("save_expanded_data", function(object, data) standardGeneric("save_ex
 #' @export
 #'
 #' @examples
-#' # create a te_datastore_csv object
+#' # create a te_datastore_csv object and save some data
 #' temp_dir <- tempfile("csv_dir_")
 #' dir.create(temp_dir)
 #' datastore <- save_to_csv(temp_dir)
 #' data(vignette_switch_data)
-#' expanded_csv_data <- save_expanded_data(datastore, vignette_switch_data)
+#' expanded_csv_data <- save_expanded_data(datastore, vignette_switch_data[1:200, ])
 #'
 #' # read expanded data
 #' read_expanded_data(expanded_csv_data)
@@ -177,9 +177,10 @@ setGeneric("read_expanded_data", function(object, period = NULL, subset_conditio
 #' This method is used on [trial_sequence-class] objects to read, subset and sample expanded data.
 #'
 #' @param object An object of class [trial_sequence-class].
+#' @param p_control Probability of selecting a control, default is 0.01.
 #' @param period An integerish vector of non-zero length to select trial period(s) or `NULL` (default) to
 #'  select all trial periods.
-#' @param subset_condition A string of length 1 or `NULL` (default). `subset_condition` will be translated to a call
+#' @param subset_condition A string or `NULL` (default). `subset_condition` will be translated to a call
 #'  (in case the expanded data is saved as a data.table or in the csv format) or to a SQL-query
 #'  (in case the expanded data is saved as a duckdb file).
 #'
@@ -188,8 +189,7 @@ setGeneric("read_expanded_data", function(object, period = NULL, subset_conditio
 #'
 #'  *Note*: Make sure numeric vectors written as `1:3` are surrounded by spaces, e.g. `a %in% c( 1:4 , 6:9 )`,
 #'    otherwise the code will fail.
-#' @param p_control Proportion of controls to select, default is 0.01.
-#' @param seed A single value, interpreted as an integer, or `NULL` (default).
+#' @param seed An integer seed or `NULL` (default).
 #'
 #'  *Note*: The same seed will return a different result depending on the class of the [te_datastore-class]
 #'    object contained in the [trial_sequence-class] object.
@@ -202,23 +202,9 @@ setGeneric("read_expanded_data", function(object, period = NULL, subset_conditio
 #' trial_itt_dir <- file.path(tempdir(), "trial_itt")
 #' dir.create(trial_itt_dir)
 #' trial_itt <- trial_sequence(estimand = "ITT") |>
-#'   set_data(
-#'     data = data_censored,
-#'     id = "id",
-#'     period = "period",
-#'     treatment = "treatment",
-#'     outcome = "outcome",
-#'     eligible = "eligible"
-#'   ) |>
-#'   set_censor_weight_model(
-#'     censor_event = "censored",
-#'     numerator = ~ x1 + x2 + x3,
-#'     denominator = ~x2,
-#'     pool_models = "numerator",
-#'     model_fitter = stats_glm_logit(save_path = file.path(trial_itt_dir, "switch_models"))
-#'   ) |>
-#'   calculate_weights() |>
+#'   set_data(data = data_censored) |>
 #'   set_outcome_model(adjustment_terms = ~ x1 + x2)
+#'
 #' trial_itt_csv <- set_expansion_options(
 #'   trial_itt,
 #'   output = save_to_csv(file.path(trial_itt_dir, "trial_csvs")),
@@ -226,40 +212,47 @@ setGeneric("read_expanded_data", function(object, period = NULL, subset_conditio
 #' ) |>
 #'   expand_trials()
 #'
-#' # sample_controls default behaviour returns all trial_periods and samples 1% of controls
-#' sample_controls(trial_itt_csv)
+#' # sample_controls default behaviour returns all trial_periods
+#' sample_controls(trial_itt_csv, p_control = 0.01)
 #'
 #' # sample_controls can subset the data before sampling
 #' sample_controls(
 #'   trial_itt_csv,
+#'   p_control = 0.2,
 #'   period = 1:20,
 #'   subset_condition = "followup_time %in% 1:20 & treatment == 1",
-#'   p_control = 0.2
 #' )
 #'
 #' # delete after use
 #' unlink(trial_itt_dir, recursive = TRUE)
-setGeneric("sample_controls", function(object, period = NULL, subset_condition = NULL, p_control = 0.01, seed = NULL) {
-  standardGeneric("sample_controls")
-})
+setGeneric(
+  "sample_controls",
+  function(object, p_control, period = NULL, subset_condition = NULL, seed = NULL) standardGeneric("sample_controls")
+)
 
 
 #' Internal method to sample expanded data
 #'
 #' @param object An object of class [te_datastore-class].
+#' @param p_control Probability of selecting a control.
 #' @param period An integerish vector of non-zero length to select trial period(s) or `NULL` (default) to
 #'  select all trial periods.
-#' @param subset_condition A string of length 1 or missing.
-#' @param p_control Proportion of controls to select.
-#' @param seed A single value, interpreted as an integer, or `NULL` (default).
+#' @param subset_condition A string or `NULL`.
+
+#' @param seed An integer seed or `NULL` (default).
 #'
 #' @return A `data.frame` of class `data.table`.
 #' @export
 #'
 #' @examples
-setGeneric("sample_expanded_data", function(object, period, subset_condition, p_control, seed) {
-  standardGeneric("sample_expanded_data")
-})
+#' # Data object normally created by [expand_trials]
+#' datastore <- new("te_datastore_datatable", data = te_data_ex$data, N = 50139L)
+#'
+#' sample_expanded_data(datastore, period = 260:275, p_control = 0.2, seed = 123)
+setGeneric(
+  "sample_expanded_data",
+  function(object, p_control, period = NULL, subset_condition = NULL, seed) standardGeneric("sample_expanded_data")
+)
 
 
 #' Method for fitting outcome models

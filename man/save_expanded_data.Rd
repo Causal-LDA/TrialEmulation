@@ -33,7 +33,7 @@ temp_dir <- tempfile("csv_dir_")
 dir.create(temp_dir)
 datastore <- save_to_csv(temp_dir)
 data(vignette_switch_data)
-save_expanded_data(datastore, vignette_switch_data)
+save_expanded_data(datastore, vignette_switch_data[1:200, ])
 
 # delete after use
 unlink(temp_dir, recursive = TRUE)

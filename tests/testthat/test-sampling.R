@@ -245,7 +245,7 @@ test_that("sample_controls works with trial_sequence objects containing te_datas
     expand_trials()
 
   # sample_controls works without additional arguments
-  sc_01 <- sample_controls(trial_itt_csv, seed = 1221)
+  sc_01 <- sample_controls(trial_itt_csv, p_control = 0.01, seed = 1221)
   expect_equal(
     sort(sc_01$id),
     c(
@@ -254,11 +254,11 @@ test_that("sample_controls works with trial_sequence objects containing te_datas
     )
   )
 
-  random_01 <- sample_controls(trial_itt_csv)
+  random_01 <- sample_controls(trial_itt_csv, p_control = 0.01)
 
   # seed gets reset
-  sc_01_1 <- sample_controls(trial_itt_csv, seed = 1221)
-  random_02 <- sample_controls(trial_itt_csv)
+  sc_01_1 <- sample_controls(trial_itt_csv, p_control = 0.01, seed = 1221)
+  random_02 <- sample_controls(trial_itt_csv, p_control = 0.01)
   expect_false(identical(sort(random_01$id), sort(random_02$id)))
 
   # sample_controls works with p_control
@@ -301,26 +301,10 @@ test_that("sample_controls works with trial_sequence objects containing te_datas
 
 
 test_that("sample_controls works with trial_sequence objects containing te_datastore_duckdb objects", {
-  trial_itt_dir <- file.path(tempdir(), "trial_itt")
-  dir.create(trial_itt_dir)
+  trial_itt_dir <- withr::local_tempdir("trial_itt", tempdir(TRUE))
 
   trial_itt <- trial_sequence(estimand = "ITT") |>
-    set_data(
-      data = data_censored,
-      id = "id",
-      period = "period",
-      treatment = "treatment",
-      outcome = "outcome",
-      eligible = "eligible"
-    ) |>
-    set_censor_weight_model(
-      censor_event = "censored",
-      numerator = ~ x1 + x2 + x3,
-      denominator = ~x2,
-      pool_models = "numerator",
-      model_fitter = stats_glm_logit(save_path = file.path(trial_itt_dir, "switch_models"))
-    ) |>
-    calculate_weights() |>
+    set_data(data = data_censored) |>
     set_outcome_model(adjustment_terms = ~ x1 + x2)
 
   trial_itt_duckdb <- set_expansion_options(
@@ -332,7 +316,7 @@ test_that("sample_controls works with trial_sequence objects containing te_datas
 
 
   # sample_controls works without additional arguments
-  sc_01 <- sample_controls(trial_itt_duckdb, seed = 1221)
+  sc_01 <- sample_controls(trial_itt_duckdb, p_control = 0.01, seed = 1221)
   expect_equal(
     sort(sc_01$id),
     c(
@@ -381,7 +365,6 @@ test_that("sample_controls works with trial_sequence objects containing te_datas
   expect_class(sc_04, "data.table")
 
   DBI::dbDisconnect(trial_itt_duckdb@expansion@datastore@con)
-  unlink(trial_itt_dir, recursive = TRUE)
 })
 
 
@@ -392,4 +375,12 @@ test_that("translate_to_sql works as intended", {
     output_string,
     "a = 1 AND b >= 0 AND c < 10 AND d != -1 AND (e IN (1, 2, 3, 4, 5, 6, 7, 8, 9, 10) OR f IN (4, 7, 9)"
   )
+})
+
+test_that("translate_to_sql catches the error and provides a message", {
+  input_string <- "(e%in%1:10|f%in%c(4, 7, 9)"
+  expect_warning(expect_error(
+    translate_to_sql(input_string),
+    "Error translating"
+  ))
 })

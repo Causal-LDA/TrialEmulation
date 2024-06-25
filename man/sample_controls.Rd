@@ -7,27 +7,29 @@
 \usage{
 sample_controls(
   object,
+  p_control,
   period = NULL,
   subset_condition = NULL,
-  p_control = 0.01,
   seed = NULL
 )
 
 \S4method{sample_controls}{trial_sequence}(
   object,
+  p_control,
   period = NULL,
   subset_condition = NULL,
-  p_control = 0.01,
   seed = NULL
 )
 }
 \arguments{
 \item{object}{An object of class \linkS4class{trial_sequence}.}
 
+\item{p_control}{Probability of selecting a control, default is 0.01.}
+
 \item{period}{An integerish vector of non-zero length to select trial period(s) or \code{NULL} (default) to
 select all trial periods.}
 
-\item{subset_condition}{A string of length 1 or \code{NULL} (default). \code{subset_condition} will be translated to a call
+\item{subset_condition}{A string or \code{NULL} (default). \code{subset_condition} will be translated to a call
 (in case the expanded data is saved as a data.table or in the csv format) or to a SQL-query
 (in case the expanded data is saved as a duckdb file).
 
@@ -37,9 +39,7 @@ Numeric vectors can be written as \code{c(1, 2, 3)} or \code{1:3}. Variables are
 \emph{Note}: Make sure numeric vectors written as \code{1:3} are surrounded by spaces, e.g. \code{a \%in\% c( 1:4 , 6:9 )},
 otherwise the code will fail.}
 
-\item{p_control}{Proportion of controls to select, default is 0.01.}
-
-\item{seed}{A single value, interpreted as an integer, or \code{NULL} (default).
+\item{seed}{An integer seed or \code{NULL} (default).
 
 \emph{Note}: The same seed will return a different result depending on the class of the \linkS4class{te_datastore}
 object contained in the \linkS4class{trial_sequence} object.}
@@ -55,23 +55,9 @@ This method is used on \linkS4class{trial_sequence} objects to read, subset and 
 trial_itt_dir <- file.path(tempdir(), "trial_itt")
 dir.create(trial_itt_dir)
 trial_itt <- trial_sequence(estimand = "ITT") |>
-  set_data(
-    data = data_censored,
-    id = "id",
-    period = "period",
-    treatment = "treatment",
-    outcome = "outcome",
-    eligible = "eligible"
-  ) |>
-  set_censor_weight_model(
-    censor_event = "censored",
-    numerator = ~ x1 + x2 + x3,
-    denominator = ~x2,
-    pool_models = "numerator",
-    model_fitter = stats_glm_logit(save_path = file.path(trial_itt_dir, "switch_models"))
-  ) |>
-  calculate_weights() |>
+  set_data(data = data_censored) |>
   set_outcome_model(adjustment_terms = ~ x1 + x2)
+
 trial_itt_csv <- set_expansion_options(
   trial_itt,
   output = save_to_csv(file.path(trial_itt_dir, "trial_csvs")),
@@ -79,15 +65,15 @@ trial_itt_csv <- set_expansion_options(
 ) |>
   expand_trials()
 
-# sample_controls default behaviour returns all trial_periods and samples 1\% of controls
-sample_controls(trial_itt_csv)
+# sample_controls default behaviour returns all trial_periods
+sample_controls(trial_itt_csv, p_control = 0.01)
 
 # sample_controls can subset the data before sampling
 sample_controls(
   trial_itt_csv,
+  p_control = 0.2,
   period = 1:20,
   subset_condition = "followup_time \%in\% 1:20 & treatment == 1",
-  p_control = 0.2
 )
 
 # delete after use

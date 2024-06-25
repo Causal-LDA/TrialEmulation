@@ -6,27 +6,51 @@
 \alias{sample_expanded_data,te_datastore_duckdb-method}
 \title{Internal method to sample expanded data}
 \usage{
-sample_expanded_data(object, period, subset_condition, p_control, seed)
+sample_expanded_data(
+  object,
+  p_control,
+  period = NULL,
+  subset_condition = NULL,
+  seed
+)
 
-\S4method{sample_expanded_data}{te_datastore}(object, period, subset_condition, p_control, seed)
+\S4method{sample_expanded_data}{te_datastore}(
+  object,
+  p_control,
+  period = NULL,
+  subset_condition = NULL,
+  seed
+)
 
-\S4method{sample_expanded_data}{te_datastore_duckdb}(object, period, subset_condition, p_control, seed)
+\S4method{sample_expanded_data}{te_datastore_duckdb}(
+  object,
+  p_control,
+  period = NULL,
+  subset_condition = NULL,
+  seed
+)
 }
 \arguments{
 \item{object}{An object of class \linkS4class{te_datastore}.}
 
+\item{p_control}{Probability of selecting a control.}
+
 \item{period}{An integerish vector of non-zero length to select trial period(s) or \code{NULL} (default) to
 select all trial periods.}
 
-\item{subset_condition}{A string of length 1 or missing.}
+\item{subset_condition}{A string or \code{NULL}.}
 
-\item{p_control}{Proportion of controls to select.}
-
-\item{seed}{A single value, interpreted as an integer, or \code{NULL} (default).}
+\item{seed}{An integer seed or \code{NULL} (default).}
 }
 \value{
 A \code{data.frame} of class \code{data.table}.
 }
 \description{
 Internal method to sample expanded data
+}
+\examples{
+# Data object normally created by [expand_trials]
+datastore <- new("te_datastore_datatable", data = te_data_ex$data, N = 50139L)
+
+sample_expanded_data(datastore, period = 260:275, p_control = 0.2, seed = 123)
 }
