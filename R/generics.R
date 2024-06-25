@@ -174,12 +174,14 @@ setGeneric("read_expanded_data", function(object, period = NULL) standardGeneric
 #' @param object A `te_outcome_fitter` object
 #' @param data `data.frame` containing outcomes and covariates as defined in `formula`.
 #' @param formula `formula` describing the model.
+#' @param weights `numeric` vector of weights.
 #'
 #' @return An object of class `te_outcome_fitted`
 #' @export
 #' @keywords internal
 #' @examples
-setGeneric("fit_outcome_model", function(object, data, formula) standardGeneric("fit_outcome_model"))
+#' fit_outcome_model
+setGeneric("fit_outcome_model", function(object, data, formula, weights = NULL) standardGeneric("fit_outcome_model"))
 
 #' Method for fitting weight models
 #'

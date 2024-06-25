@@ -2,7 +2,7 @@
 
 #' Fitted Weights Object
 #'
-#' @slot specification list. The parameters specifying how the model should be fit
+#' @slot label string. A short description of the model
 #' @slot summary list of data.frames. Tidy model summaries a la `broom()` and `glance()`
 #' @slot fitted list. Saves the model objects or at least summaries if large
 setClass("te_weights_fitted",
