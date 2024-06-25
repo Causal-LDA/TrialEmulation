@@ -143,6 +143,7 @@ do_sampling <- function(data, p_control = 0.01) {
 
 
 #' @rdname sample_expanded_data
+#' @include trial_sequence.R
 setMethod(
   f = "sample_expanded_data",
   signature = "te_datastore",

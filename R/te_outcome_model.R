@@ -1,3 +1,6 @@
+#' @include te_model_fitter.R
+NULL
+
 #' Fitted Outcome Model Object
 #'
 #' @slot model list containing fitted model objects.
