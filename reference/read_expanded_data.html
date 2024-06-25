@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">TrialEmulation</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.3.13</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.3.14</span>
       </span>
     </div>
 
@@ -66,16 +66,16 @@
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">read_expanded_data</span><span class="op">(</span><span class="va">object</span>, period <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">read_expanded_data</span><span class="op">(</span><span class="va">object</span>, period <span class="op">=</span> <span class="cn">NULL</span>, subset_condition <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># S4 method for te_datastore_csv</span></span>
-<span><span class="fu">read_expanded_data</span><span class="op">(</span><span class="va">object</span>, period <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span>
+<span><span class="fu">read_expanded_data</span><span class="op">(</span><span class="va">object</span>, period <span class="op">=</span> <span class="cn">NULL</span>, subset_condition <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># S4 method for te_datastore_datatable</span></span>
-<span><span class="fu">read_expanded_data</span><span class="op">(</span><span class="va">object</span>, period <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span>
+<span><span class="fu">read_expanded_data</span><span class="op">(</span><span class="va">object</span>, period <span class="op">=</span> <span class="cn">NULL</span>, subset_condition <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># S4 method for te_datastore_duckdb</span></span>
-<span><span class="fu">read_expanded_data</span><span class="op">(</span><span class="va">object</span>, period <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu">read_expanded_data</span><span class="op">(</span><span class="va">object</span>, period <span class="op">=</span> <span class="cn">NULL</span>, subset_condition <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -88,6 +88,10 @@
 <dd><p>An integerish vector of non-zero length to select trial period(s) or <code>NULL</code> (default) to
 select all files.</p></dd>
 
+
+<dt>subset_condition</dt>
+<dd><p>A string of length 1 or <code>NULL</code> (default).</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
@@ -98,41 +102,41 @@ select all files.</p></dd>
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># create a te_datastore_csv object</span></span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># create a te_datastore_csv object and save some data</span></span></span>
 <span class="r-in"><span><span class="va">temp_dir</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempfile</a></span><span class="op">(</span><span class="st">"csv_dir_"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/files2.html" class="external-link">dir.create</a></span><span class="op">(</span><span class="va">temp_dir</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">datastore</span> <span class="op">&lt;-</span> <span class="fu"><a href="save_to_csv.html">save_to_csv</a></span><span class="op">(</span><span class="va">temp_dir</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">vignette_switch_data</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">expanded_csv_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="save_expanded_data.html">save_expanded_data</a></span><span class="op">(</span><span class="va">datastore</span>, <span class="va">vignette_switch_data</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">expanded_csv_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="save_expanded_data.html">save_expanded_data</a></span><span class="op">(</span><span class="va">datastore</span>, <span class="va">vignette_switch_data</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">200</span>, <span class="op">]</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># read expanded data</span></span></span>
 <span class="r-in"><span><span class="fu">read_expanded_data</span><span class="op">(</span><span class="va">expanded_csv_data</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>             id trial_period followup_time outcome weight treatment catvarA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>          &lt;int&gt;        &lt;int&gt;         &lt;int&gt;   &lt;int&gt;  &lt;int&gt;     &lt;int&gt;   &lt;int&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>       1:     1          261             0       0      1         0       2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>       2:     1          261             1       0      1         0       2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>       3:     1          261             2       0      1         0       2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>       4:     1          261             3       0      1         0       2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>       5:     1          261             4       0      1         0       2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>      ---                                                                  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1939049:   501           57            79       0      1         1       7</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1939050:   501           57            80       0      1         1       7</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1939051:   501           57            81       0      1         1       7</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1939052:   501           57            82       0      1         1       7</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1939053:   501           57            83       1      1         1       7</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>          catvarB catvarC nvarA nvarB nvarC assigned_treatment</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>            &lt;int&gt;   &lt;int&gt; &lt;int&gt; &lt;int&gt; &lt;int&gt;              &lt;int&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>       1:       1       0     1    15    70                  0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>       2:       1       0     1    15    70                  0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>       3:       1       0     1    15    70                  0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>       4:       1       0     1    15    70                  0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>       5:       1       0     1    15    70                  0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>      ---                                                     </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1939049:       7       7     0    20    51                  0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1939050:       7       7     0    20    51                  0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1939051:       7       7     0    20    51                  0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1939052:       7       7     0    20    51                  0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1939053:       7       7     0    20    51                  0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         id trial_period followup_time outcome weight treatment catvarA catvarB</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      &lt;int&gt;        &lt;int&gt;         &lt;int&gt;   &lt;int&gt;  &lt;int&gt;     &lt;int&gt;   &lt;int&gt;   &lt;int&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   1:     1          261             0       0      1         0       2       1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   2:     1          261             1       0      1         0       2       1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   3:     1          261             2       0      1         0       2       1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   4:     1          261             3       0      1         0       2       1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   5:     1          261             4       0      1         0       2       1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  ---                                                                          </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 196:     1          277             1       0      1         0       1       1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 197:     1          277             2       0      1         0       1       1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 198:     1          278             0       0      1         0       1       1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 199:     1          278             1       0      1         0       1       1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 200:     1          279             0       0      1         0       1       1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      catvarC nvarA nvarB nvarC assigned_treatment</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>        &lt;int&gt; &lt;int&gt; &lt;int&gt; &lt;int&gt;              &lt;int&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   1:       0     1    15    70                  0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   2:       0     1    15    70                  0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   3:       0     1    15    70                  0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   4:       0     1    15    70                  0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   5:       0     1    15    70                  0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  ---                                             </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 196:       0     0    10    72                  0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 197:       0     0    10    72                  0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 198:       1     0    10    72                  0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 199:       1     0    10    72                  0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 200:       1     0    11    72                  0</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># delete after use</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/unlink.html" class="external-link">unlink</a></span><span class="op">(</span><span class="va">temp_dir</span>, recursive <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>

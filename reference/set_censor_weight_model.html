@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">TrialEmulation</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.3.13</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.3.14</span>
       </span>
     </div>
 
@@ -194,8 +194,8 @@ models. For logistic regression use <code><a href="stats_glm_logit.html">stats_g
 <span class="r-out co"><span class="r-pr">#&gt;</span> 725:            7              2         0         1</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> IPW for informative censoring: </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  - Numerator formula: ~ 1 - censored age_s + x1 + x3 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  - Denominator formula: ~ 1 - censored x3 + x4 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  - Numerator formula: 1 - censored ~ age_s + x1 + x3 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  - Denominator formula: 1 - censored ~ x3 + x4 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Model fitter type: te_stats_glm_logit </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Weight models not fitted </span>
 </code></pre></div>

@@ -33,7 +33,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">TrialEmulation</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.3.13</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.3.14</span>
       </span>
     </div>
 
@@ -319,7 +319,7 @@ only. The default and allowed choices depends on the estimand.</li>
 <span>  numerator <span class="op">=</span> <span class="op">~</span> <span class="va">x1</span> <span class="op">+</span> <span class="va">x2</span> <span class="op">+</span> <span class="va">x3</span>,</span>
 <span>  denominator <span class="op">=</span> <span class="op">~</span><span class="va">x2</span>,</span>
 <span>  pool_models <span class="op">=</span> <span class="st">"numerator"</span>,</span>
-<span>  model_fitter <span class="op">=</span> <span class="fu"><a href="../reference/stats_glm_logit.html">stats_glm_logit</a></span><span class="op">(</span>save_path <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">trial_pp_dir</span>, <span class="st">"switch_models"</span><span class="op">)</span><span class="op">)</span></span>
+<span>  model_fitter <span class="op">=</span> <span class="fu"><a href="../reference/stats_glm_logit.html">stats_glm_logit</a></span><span class="op">(</span>save_path <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">trial_itt_dir</span>, <span class="st">"switch_models"</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="op">)</span></span>
 <span><span class="va">trial_itt</span></span>
 <span><span class="co">#&gt; Trial Sequence Object </span></span>
@@ -429,8 +429,8 @@ can be printed:</p>
 <span><span class="co">#&gt;  null.deviance df.null logLik    AIC      BIC      deviance df.residual nobs</span></span>
 <span><span class="co">#&gt;  404.2156      724     -193.6748 395.3495 413.6942 387.3495 721         725 </span></span>
 <span><span class="co">#&gt;  </span></span>
-<span><span class="co">#&gt;  path                                                         </span></span>
-<span><span class="co">#&gt;  /tmp/Rtmpyj50Mn/trial_pp/switch_models/model_1a2578d4c000.rds</span></span>
+<span><span class="co">#&gt;  path                                                          </span></span>
+<span><span class="co">#&gt;  /tmp/RtmpghaThl/trial_itt/switch_models/model_19df504d3deb.rds</span></span>
 <span><span class="co">#&gt;  </span></span>
 <span><span class="co">#&gt; Model: P(censor_event = 0 | X, previous treatment = 0) for denominator </span></span>
 <span><span class="co">#&gt;  </span></span>
@@ -441,8 +441,8 @@ can be printed:</p>
 <span><span class="co">#&gt;  null.deviance df.null logLik    AIC      BIC      deviance df.residual nobs</span></span>
 <span><span class="co">#&gt;  283.0723      425     -135.4361 274.8722 282.9811 270.8722 424         426 </span></span>
 <span><span class="co">#&gt;  </span></span>
-<span><span class="co">#&gt;  path                                                         </span></span>
-<span><span class="co">#&gt;  /tmp/Rtmpyj50Mn/trial_pp/switch_models/model_1a2541034bf4.rds</span></span>
+<span><span class="co">#&gt;  path                                                          </span></span>
+<span><span class="co">#&gt;  /tmp/RtmpghaThl/trial_itt/switch_models/model_19df6d6beae3.rds</span></span>
 <span><span class="co">#&gt;  </span></span>
 <span><span class="co">#&gt; Model: P(censor_event = 0 | X, previous treatment = 1) for denominator </span></span>
 <span><span class="co">#&gt;  </span></span>
@@ -453,8 +453,8 @@ can be printed:</p>
 <span><span class="co">#&gt;  null.deviance df.null logLik    AIC      BIC      deviance df.residual nobs</span></span>
 <span><span class="co">#&gt;  113.0528      298     -56.52619 117.0524 124.4533 113.0524 297         299 </span></span>
 <span><span class="co">#&gt;  </span></span>
-<span><span class="co">#&gt;  path                                                         </span></span>
-<span><span class="co">#&gt;  /tmp/Rtmpyj50Mn/trial_pp/switch_models/model_1a255f1aed6b.rds</span></span>
+<span><span class="co">#&gt;  path                                                          </span></span>
+<span><span class="co">#&gt;  /tmp/RtmpghaThl/trial_itt/switch_models/model_19df36053dde.rds</span></span>
 <span><span class="co">#&gt; </span></span></code></pre></div>
 </div>
 </div>
@@ -503,6 +503,12 @@ processed at one time.</li>
 <span>  <span class="va">trial_itt</span>,</span>
 <span>  output <span class="op">=</span> <span class="fu"><a href="../reference/save_to_datatable.html">save_to_datatable</a></span><span class="op">(</span><span class="op">)</span>,</span>
 <span>  chunk_size <span class="op">=</span> <span class="fl">500</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">trial_itt</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/set_expansion_options.html">set_expansion_options</a></span><span class="op">(</span></span>
+<span>  <span class="va">trial_itt</span>,</span>
+<span>  output <span class="op">=</span> <span class="fu"><a href="../reference/save_to_duckdb.html">save_to_duckdb</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">trial_itt_dir</span>, <span class="st">"trial_duckdb"</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>  chunk_size <span class="op">=</span> <span class="fl">500</span></span>
 <span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level4">
@@ -521,27 +527,27 @@ processed at one time.</li>
 <span><span class="co">#&gt; Slot "datastore":</span></span>
 <span><span class="co">#&gt; An object of class "te_datastore_csv"</span></span>
 <span><span class="co">#&gt; Slot "path":</span></span>
-<span><span class="co">#&gt; [1] "/tmp/Rtmpyj50Mn/trial_pp/trial_csvs"</span></span>
+<span><span class="co">#&gt; [1] "/tmp/RtmpghaThl/trial_pp/trial_csvs"</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Slot "files":</span></span>
-<span><span class="co">#&gt;  [1] "/tmp/Rtmpyj50Mn/trial_pp/trial_csvs/trial_0.csv" </span></span>
-<span><span class="co">#&gt;  [2] "/tmp/Rtmpyj50Mn/trial_pp/trial_csvs/trial_1.csv" </span></span>
-<span><span class="co">#&gt;  [3] "/tmp/Rtmpyj50Mn/trial_pp/trial_csvs/trial_2.csv" </span></span>
-<span><span class="co">#&gt;  [4] "/tmp/Rtmpyj50Mn/trial_pp/trial_csvs/trial_3.csv" </span></span>
-<span><span class="co">#&gt;  [5] "/tmp/Rtmpyj50Mn/trial_pp/trial_csvs/trial_4.csv" </span></span>
-<span><span class="co">#&gt;  [6] "/tmp/Rtmpyj50Mn/trial_pp/trial_csvs/trial_5.csv" </span></span>
-<span><span class="co">#&gt;  [7] "/tmp/Rtmpyj50Mn/trial_pp/trial_csvs/trial_6.csv" </span></span>
-<span><span class="co">#&gt;  [8] "/tmp/Rtmpyj50Mn/trial_pp/trial_csvs/trial_7.csv" </span></span>
-<span><span class="co">#&gt;  [9] "/tmp/Rtmpyj50Mn/trial_pp/trial_csvs/trial_8.csv" </span></span>
-<span><span class="co">#&gt; [10] "/tmp/Rtmpyj50Mn/trial_pp/trial_csvs/trial_9.csv" </span></span>
-<span><span class="co">#&gt; [11] "/tmp/Rtmpyj50Mn/trial_pp/trial_csvs/trial_10.csv"</span></span>
-<span><span class="co">#&gt; [12] "/tmp/Rtmpyj50Mn/trial_pp/trial_csvs/trial_11.csv"</span></span>
-<span><span class="co">#&gt; [13] "/tmp/Rtmpyj50Mn/trial_pp/trial_csvs/trial_12.csv"</span></span>
-<span><span class="co">#&gt; [14] "/tmp/Rtmpyj50Mn/trial_pp/trial_csvs/trial_13.csv"</span></span>
-<span><span class="co">#&gt; [15] "/tmp/Rtmpyj50Mn/trial_pp/trial_csvs/trial_14.csv"</span></span>
-<span><span class="co">#&gt; [16] "/tmp/Rtmpyj50Mn/trial_pp/trial_csvs/trial_15.csv"</span></span>
-<span><span class="co">#&gt; [17] "/tmp/Rtmpyj50Mn/trial_pp/trial_csvs/trial_16.csv"</span></span>
-<span><span class="co">#&gt; [18] "/tmp/Rtmpyj50Mn/trial_pp/trial_csvs/trial_17.csv"</span></span>
+<span><span class="co">#&gt;  [1] "/tmp/RtmpghaThl/trial_pp/trial_csvs/trial_0.csv" </span></span>
+<span><span class="co">#&gt;  [2] "/tmp/RtmpghaThl/trial_pp/trial_csvs/trial_1.csv" </span></span>
+<span><span class="co">#&gt;  [3] "/tmp/RtmpghaThl/trial_pp/trial_csvs/trial_2.csv" </span></span>
+<span><span class="co">#&gt;  [4] "/tmp/RtmpghaThl/trial_pp/trial_csvs/trial_3.csv" </span></span>
+<span><span class="co">#&gt;  [5] "/tmp/RtmpghaThl/trial_pp/trial_csvs/trial_4.csv" </span></span>
+<span><span class="co">#&gt;  [6] "/tmp/RtmpghaThl/trial_pp/trial_csvs/trial_5.csv" </span></span>
+<span><span class="co">#&gt;  [7] "/tmp/RtmpghaThl/trial_pp/trial_csvs/trial_6.csv" </span></span>
+<span><span class="co">#&gt;  [8] "/tmp/RtmpghaThl/trial_pp/trial_csvs/trial_7.csv" </span></span>
+<span><span class="co">#&gt;  [9] "/tmp/RtmpghaThl/trial_pp/trial_csvs/trial_8.csv" </span></span>
+<span><span class="co">#&gt; [10] "/tmp/RtmpghaThl/trial_pp/trial_csvs/trial_9.csv" </span></span>
+<span><span class="co">#&gt; [11] "/tmp/RtmpghaThl/trial_pp/trial_csvs/trial_10.csv"</span></span>
+<span><span class="co">#&gt; [12] "/tmp/RtmpghaThl/trial_pp/trial_csvs/trial_11.csv"</span></span>
+<span><span class="co">#&gt; [13] "/tmp/RtmpghaThl/trial_pp/trial_csvs/trial_12.csv"</span></span>
+<span><span class="co">#&gt; [14] "/tmp/RtmpghaThl/trial_pp/trial_csvs/trial_13.csv"</span></span>
+<span><span class="co">#&gt; [15] "/tmp/RtmpghaThl/trial_pp/trial_csvs/trial_14.csv"</span></span>
+<span><span class="co">#&gt; [16] "/tmp/RtmpghaThl/trial_pp/trial_csvs/trial_15.csv"</span></span>
+<span><span class="co">#&gt; [17] "/tmp/RtmpghaThl/trial_pp/trial_csvs/trial_16.csv"</span></span>
+<span><span class="co">#&gt; [18] "/tmp/RtmpghaThl/trial_pp/trial_csvs/trial_17.csv"</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Slot "template":</span></span>
 <span><span class="co">#&gt; Empty data.table (0 rows and 6 cols): id,trial_period,followup_time,outcome,weight,treatment</span></span>
@@ -565,21 +571,15 @@ processed at one time.</li>
 <span><span class="co">#&gt; [1] 500</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Slot "datastore":</span></span>
-<span><span class="co">#&gt; An object of class "te_datastore_datatable"</span></span>
-<span><span class="co">#&gt; Slot "data":</span></span>
-<span><span class="co">#&gt;          id trial_period followup_time outcome    weight treatment</span></span>
-<span><span class="co">#&gt;       &lt;int&gt;        &lt;int&gt;         &lt;int&gt;   &lt;num&gt;     &lt;num&gt;     &lt;num&gt;</span></span>
-<span><span class="co">#&gt;    1:     1            0             0       0 1.0000000         1</span></span>
-<span><span class="co">#&gt;    2:     1            0             1       0 0.9991778         1</span></span>
-<span><span class="co">#&gt;    3:     1            0             2       0 0.9706253         1</span></span>
-<span><span class="co">#&gt;    4:     1            0             3       0 0.9250241         1</span></span>
-<span><span class="co">#&gt;    5:     1            0             4       0 0.9196129         1</span></span>
-<span><span class="co">#&gt;   ---                                                             </span></span>
-<span><span class="co">#&gt; 1554:    99            0             3       0 0.8017062         0</span></span>
-<span><span class="co">#&gt; 1555:    99            0             4       0 0.7903901         0</span></span>
-<span><span class="co">#&gt; 1556:    99            0             5       0 0.8348576         1</span></span>
-<span><span class="co">#&gt; 1557:    99            0             6       0 0.8272091         1</span></span>
-<span><span class="co">#&gt; 1558:    99            0             7       1 0.8157754         0</span></span>
+<span><span class="co">#&gt; An object of class "te_datastore_duckdb"</span></span>
+<span><span class="co">#&gt; Slot "path":</span></span>
+<span><span class="co">#&gt; [1] "/tmp/RtmpghaThl/trial_itt/trial_duckdb/expanded_data_19df4a4d678f.duckdb"</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Slot "table":</span></span>
+<span><span class="co">#&gt; character(0)</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Slot "con":</span></span>
+<span><span class="co">#&gt; &lt;duckdb_connection 81b80 driver=&lt;duckdb_driver dbdir='/tmp/RtmpghaThl/trial_itt/trial_duckdb/expanded_data_19df4a4d678f.duckdb' read_only=FALSE bigint=numeric&gt;&gt;</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Slot "N":</span></span>
 <span><span class="co">#&gt; [1] 1558</span></span>
