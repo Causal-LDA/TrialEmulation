@@ -45,6 +45,8 @@ reference:
   - te_data-class
   - te_datastore-class
   - te_model_fitter-class
+  - te_outcome_fitted-class
+  - te_outcome_model-class
 - title: Internal Methods
 - contents:
   - save_expanded_data

@@ -29,6 +29,7 @@ Imports:
     DBI,
     duckdb,
     formula.tools,
+    lmtest,
     methods,
     mvtnorm,
     parglm,
