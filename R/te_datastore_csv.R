@@ -1,4 +1,4 @@
-#' @includes te_datastore.R generics.R
+#' @include te_datastore.R generics.R
 NULL
 
 

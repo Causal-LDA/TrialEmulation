@@ -76,5 +76,7 @@ Collate:
     'te_data.R'
     'trial_sequence.R'
     'sampling.R'
+    'te_datastore_csv.R'
+    'te_datastore_duckdb.R'
     'utils.R'
     'weighting.R'
