@@ -29,11 +29,23 @@ This would load the full expanded data and fit the model
 
 ### with sampling
 
+-> Maybe delete `sample_controls` and just have a single method like `load_trial_data()`
+
 This should be done simply
 ```{r}
 trial_itt <- sample_controls(trial_itt, p_control = 0.3, seed = 444)
 fit_msm(trial_itt)
 ```
+
+### simple filtering
+
+with small data it should just work
+
+```{r}
+trial_itt <- load_trial_data(trial_itt, period = 1:100, subset_condition = "age > 30", p_control = NULL, seed = NULL)
+fit_msm(trial_itt)
+```
+
 
 ### some complex filtering
 
