@@ -1,0 +1,91 @@
+---
+title: "outcome_data_model"
+output: html_document
+date: "2024-06-26"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## User interface
+
+After expansion, we need to fit the outcome model. Before that we need to prepare the outcome data set.
+This might involve sampling, or some other filtering or variable derivation.
+
+```{r}
+trial_itt <- trial_sequence(...) |> ... |> set_outcome_model(...) |> expand_trials()
+```
+
+### simple case
+
+with small data it should just work
+
+```{r}
+fit_msm(trial_itt)
+```
+
+This would load the full expanded data and fit the model
+
+### with sampling
+
+This should be done simply
+```{r}
+trial_itt <- sample_controls(trial_itt, p_control = 0.3, seed = 444)
+fit_msm(trial_itt)
+```
+
+### some complex filtering
+
+```{r}
+model_data(trial_itt) <- model_data(trial_itt) |> group_by() |> mutate()
+fit_msm(trial_itt)
+```
+
+
+## Internal Representation
+
+Currently the input data has a slot `@data` and a class `te_data` which has some validation, eg on
+columns.
+
+We could have a second slot eg `@model_data`. We would need a different or modified `te_data` class, at
+least the validation. Alternatively we could directly have the data.table in the slot and validation could
+occur in the getter/setter methods.
+
+
+### Option: data.table
+
+Remove `te_data` class and do all validation in setter methods.
+
+- lose class validation
+- lose N and Nobs slots
+- lose `te_data_unset` class
++ don't need `@data@data`
+
+### Option: te_data classes
+
+Modify class
+
+- don't validate in class, but have a required columns slot
+- can store vector of periods
+- lose `te_data_unset` class
+
+### Option: te_data_model, te_data_input
+
+More subclasses which inherit from `te_data`
+
+- natural in OO
+- can have all validation built in
+- have slots with N, nobs, period etc
+
+## Internal flow
+
+If we have the two data slots, `@data`, `@model_data`
+
+- `sample_controls()` would save the data.table to this slot
+- could have a getter/setter `model_data(object)`/`model_data(object)<-` to access `@model_data@data`
+- and maybe the save for the input data, `input_data(object)`/`input_data(object)<-` to access `@data@data`
+- If `trial_msm()` is called, but `@model_data` is empty, it will be read from the `te_datastore`.
+   - do we need to check that expansion has been done? --> further consider different class post expansion
+   
+- 
