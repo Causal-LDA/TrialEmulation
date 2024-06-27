@@ -2,7 +2,12 @@
 NULL
 
 
-# save to duckdb -------
+#' @title te_datastore_duckdb, functions and methods
+#' @slot path Path to the duckdb file containing the data.
+#' @slot table .
+#' @slot con S4 object of class duckdb_connection.
+#' @name te_datastore_duckdb-class
+#' @return A 'te_datastore_duckdb' object.
 #' @importClassesFrom duckdb duckdb_connection
 setClass(
   "te_datastore_duckdb",
