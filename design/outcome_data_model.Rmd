@@ -5,7 +5,7 @@ date: "2024-06-26"
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(echo = TRUE, eval = FALSE)
 ```
 
 ## User interface
@@ -87,5 +87,5 @@ If we have the two data slots, `@data`, `@model_data`
 - and maybe the save for the input data, `input_data(object)`/`input_data(object)<-` to access `@data@data`
 - If `trial_msm()` is called, but `@model_data` is empty, it will be read from the `te_datastore`.
    - do we need to check that expansion has been done? --> further consider different class post expansion
-   
-- 
+   - If `is(@model_data, "te_data_unset")` give error: run data expansion
+   - If `is(@outcome_model, "te_outcome_unset")` give error: run set outcome model
