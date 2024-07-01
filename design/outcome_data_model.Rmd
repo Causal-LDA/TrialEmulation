@@ -101,3 +101,12 @@ If we have the two data slots, `@data`, `@model_data`
    - do we need to check that expansion has been done? --> further consider different class post expansion
    - If `is(@model_data, "te_data_unset")` give error: run data expansion
    - If `is(@outcome_model, "te_outcome_unset")` give error: run set outcome model
+
+## Chosen Design
+
+ - New class `te_input_data` which inherits from `te_data`. This used in `@data` and created by `set_data()`
+ - New class `te_outcome_data` which inherits from `te_data`. This used in `@outcome_data` and created by `read_expanded_data`, `sample_expanded_data`. It would also have a slot for `trial_periods`.
+ - TrialSequence would still have `te_data` as the class of the slots to allow `te_data_unset` to be used.
+ - Implement new getter and setter for `@outcome_data` to allow complex modifications.
+ - `set_model_data` would check the validity of the data.table to ensure correct columns, as well as update `@N`, `periods`
+ - `get_model_data` would return data.table
