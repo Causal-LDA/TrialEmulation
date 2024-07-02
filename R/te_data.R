@@ -53,13 +53,14 @@ setMethod(
 #' @slot n_ids Number of IDs
 #' @slot periods Vector of periods
 #'   "treatment", "outcome", "eligible"
-setClass("te_outcome_data",
-         slots = c(
-           data = "data.table",
-           n_rows = "numeric",
-           n_ids = "numeric",
-           periods = "numeric"
-         )
+setClass(
+  "te_outcome_data",
+  slots = c(
+    data = "data.table",
+    n_rows = "numeric",
+    n_ids = "numeric",
+    periods = "numeric"
+  )
 )
 
 setValidity(

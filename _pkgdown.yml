@@ -46,6 +46,7 @@ reference:
   - te_datastore-class
   - te_datastore_duckdb-class
   - te_model_fitter-class
+  - te_outcome_data-class
   - te_outcome_fitted-class
   - te_outcome_model-class
 - title: Internal Methods
