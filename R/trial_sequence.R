@@ -7,6 +7,7 @@ NULL
 #' @slot estimand character. Descriptive name of estimand.
 #' @slot expansion te_expansion
 #' @slot outcome_model te_outcome_model.
+#' @slot outcome_data te_outcome_data.
 #'
 #' @export
 setClass("trial_sequence",
@@ -15,7 +16,8 @@ setClass("trial_sequence",
     estimand = "character",
     expansion = "te_expansion",
     outcome_model = "te_outcome_model",
-    censor_weights = "te_weights_spec"
+    censor_weights = "te_weights_spec",
+    outcome_data = "te_outcome_data"
   ),
   prototype = prototype(
     censor_weights = new("te_weights_unset"),
