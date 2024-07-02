@@ -1,4 +1,4 @@
-# TrialEmulation 0.0.3.17
+# TrialEmulation 0.0.3.18
 
 * Improve documentation
 
