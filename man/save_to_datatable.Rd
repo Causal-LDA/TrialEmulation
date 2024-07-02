@@ -16,8 +16,8 @@ trial_to_expand <- trial_sequence("ITT") |>
 }
 \seealso{
 Other save_to: 
-\code{\link{set_expansion_options}()},
-\code{\link{te_datastore_csv-class}},
-\code{\link{te_datastore_duckdb-class}}
+\code{\link{save_to_csv}()},
+\code{\link{save_to_duckdb}()},
+\code{\link{set_expansion_options}()}
 }
 \concept{save_to}

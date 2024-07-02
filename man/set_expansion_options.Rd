@@ -62,8 +62,8 @@ unlink(output_dir, recursive = TRUE)
 }
 \seealso{
 Other save_to: 
+\code{\link{save_to_csv}()},
 \code{\link{save_to_datatable}()},
-\code{\link{te_datastore_csv-class}},
-\code{\link{te_datastore_duckdb-class}}
+\code{\link{save_to_duckdb}()}
 }
 \concept{save_to}

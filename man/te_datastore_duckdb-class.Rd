@@ -3,14 +3,11 @@
 \docType{class}
 \name{te_datastore_duckdb-class}
 \alias{te_datastore_duckdb-class}
-\alias{save_to_duckdb}
 \alias{save_expanded_data,te_datastore_duckdb-method}
 \alias{read_expanded_data,te_datastore_duckdb-method}
 \alias{sample_expanded_data,te_datastore_duckdb-method}
 \title{te_datastore_duckdb, functions and methods}
 \usage{
-save_to_duckdb(path)
-
 \S4method{save_expanded_data}{te_datastore_duckdb}(object, data)
 
 \S4method{read_expanded_data}{te_datastore_duckdb}(object, period = NULL, subset_condition = NULL)
@@ -24,8 +21,6 @@ save_to_duckdb(path)
 )
 }
 \arguments{
-\item{path}{Directory to save \code{DuckDB} database file in.}
-
 \item{object}{An object of class \link[=te_datastore-class]{te_datastore} or a child class.}
 
 \item{data}{A data frame containing the expanded trial data. The columns \code{trial_period} and \code{id} are present, which
@@ -58,22 +53,13 @@ This method is used internally by \link{expand_trials} to save the data to the "
 }}
 
 \examples{
-if (require(duckdb)) {
-  duckdb_dir <- file.path(tempdir(), "expanded_trials_duckdb")
+temp_dir <- tempfile("csv_dir_")
+dir.create(temp_dir)
+datastore <- save_to_csv(temp_dir)
+data(vignette_switch_data)
+save_expanded_data(datastore, vignette_switch_data[1:200, ])
 
-  trial_to_expand <- trial_sequence("ITT") |>
-    set_data(data = data_censored) |>
-    set_expansion_options(output = save_to_duckdb(path = duckdb_dir), chunk_size = 500)
-
-  # Delete directory after use
-  unlink(duckdb_dir)
+# delete after use
+unlink(temp_dir, recursive = TRUE)
 }
-
-}
-\seealso{
-Other save_to: 
-\code{\link{save_to_datatable}()},
-\code{\link{set_expansion_options}()},
-\code{\link{te_datastore_csv-class}}
-}
-\concept{save_to}
+\keyword{internal}

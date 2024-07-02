@@ -3,12 +3,15 @@ NULL
 
 
 #' @title te_datastore_duckdb, functions and methods
+#'
 #' @slot path Path to the duckdb file containing the data.
 #' @slot table .
 #' @slot con S4 object of class duckdb_connection.
-#' @name te_datastore_duckdb-class
+#'
 #' @return A 'te_datastore_duckdb' object.
 #' @importClassesFrom duckdb duckdb_connection
+#' @keywords internal
+#'
 setClass(
   "te_datastore_duckdb",
   contains = "te_datastore",
@@ -21,9 +24,9 @@ setClass(
 
 
 #' Save expanded data to `DuckDB`
-#' @rdname te_datastore_duckdb-class
 #' @param path Directory to save `DuckDB` database file in.
 #' @family save_to
+#' @return A [te_datastore_duckdb-class] object.
 #' @export
 #' @examples
 #' if (require(duckdb)) {

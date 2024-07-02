@@ -9,7 +9,7 @@ NULL
 #' @slot template data.frame template.
 #'
 #' @return A 'te_datastore_csv' object.
-#' @export
+#' @keywords internal
 #'
 setClass(
   "te_datastore_csv",
@@ -23,9 +23,9 @@ setClass(
 
 
 #' Save expanded data as CSV
-#' @rdname te_datastore_csv-class
 #' @param path Directory to save CSV files in. Must be empty.
 #' @family save_to
+#' @return A [te_datastore_csv-class] object.
 #' @export
 #' @examples
 #' csv_dir <- file.path(tempdir(), "expanded_trials_csv")

@@ -3,20 +3,15 @@
 \docType{class}
 \name{te_datastore_csv-class}
 \alias{te_datastore_csv-class}
-\alias{save_to_csv}
 \alias{save_expanded_data,te_datastore_csv-method}
 \alias{read_expanded_data,te_datastore_csv-method}
 \title{te_datastore_csv, functions and methods}
 \usage{
-save_to_csv(path)
-
 \S4method{save_expanded_data}{te_datastore_csv}(object, data)
 
 \S4method{read_expanded_data}{te_datastore_csv}(object, period = NULL, subset_condition = NULL)
 }
 \arguments{
-\item{path}{Directory to save CSV files in. Must be empty.}
-
 \item{object}{An object of class \link[=te_datastore-class]{te_datastore} or a child class.}
 
 \item{data}{A data frame containing the expanded trial data. The columns \code{trial_period} and \code{id} are present, which
@@ -45,22 +40,13 @@ This method is used internally by \link{expand_trials} to save the data to the "
 }}
 
 \examples{
-csv_dir <- file.path(tempdir(), "expanded_trials_csv")
-dir.create(csv_dir)
-csv_datastore <- save_to_csv(path = csv_dir)
+temp_dir <- tempfile("csv_dir_")
+dir.create(temp_dir)
+datastore <- save_to_csv(temp_dir)
+data(vignette_switch_data)
+save_expanded_data(datastore, vignette_switch_data[1:200, ])
 
-trial_to_expand <- trial_sequence("ITT") |>
-  set_data(data = data_censored) |>
-  set_expansion_options(output = csv_datastore, chunk_size = 500)
-
-# Delete directory after use
-unlink(csv_dir)
-
+# delete after use
+unlink(temp_dir, recursive = TRUE)
 }
-\seealso{
-Other save_to: 
-\code{\link{save_to_datatable}()},
-\code{\link{set_expansion_options}()},
-\code{\link{te_datastore_duckdb-class}}
-}
-\concept{save_to}
+\keyword{internal}
