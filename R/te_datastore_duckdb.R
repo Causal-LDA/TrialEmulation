@@ -21,6 +21,7 @@ setClass(
 
 
 #' Save expanded data to `DuckDB`
+#' @rdname te_datastore_duckdb-class
 #' @param path Directory to save `DuckDB` database file in.
 #' @family save_to
 #' @export
@@ -47,7 +48,8 @@ save_to_duckdb <- function(path) {
 }
 
 
-#' @rdname save_expanded_data
+#' @rdname te_datastore_duckdb-class
+#' @inherit save_expanded_data
 setMethod(
   f = "save_expanded_data",
   signature = "te_datastore_duckdb",
@@ -66,7 +68,8 @@ setMethod(
 )
 
 
-#' @rdname read_expanded_data
+#' @rdname te_datastore_duckdb-class
+#' @inherit read_expanded_data
 setMethod(
   f = "read_expanded_data",
   signature = "te_datastore_duckdb",
@@ -89,7 +92,8 @@ setMethod(
 )
 
 
-#' @rdname sample_expanded_data
+#' @rdname te_datastore_duckdb-class
+#' @inherit sample_expanded_data
 setMethod(
   f = "sample_expanded_data",
   signature = "te_datastore_duckdb",

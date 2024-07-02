@@ -3,12 +3,49 @@
 \docType{class}
 \name{te_datastore_duckdb-class}
 \alias{te_datastore_duckdb-class}
+\alias{save_to_duckdb}
+\alias{save_expanded_data,te_datastore_duckdb-method}
+\alias{read_expanded_data,te_datastore_duckdb-method}
+\alias{sample_expanded_data,te_datastore_duckdb-method}
 \title{te_datastore_duckdb, functions and methods}
+\usage{
+save_to_duckdb(path)
+
+\S4method{save_expanded_data}{te_datastore_duckdb}(object, data)
+
+\S4method{read_expanded_data}{te_datastore_duckdb}(object, period = NULL, subset_condition = NULL)
+
+\S4method{sample_expanded_data}{te_datastore_duckdb}(
+  object,
+  p_control,
+  period = NULL,
+  subset_condition = NULL,
+  seed
+)
+}
+\arguments{
+\item{path}{Directory to save \code{DuckDB} database file in.}
+
+\item{object}{An object of class \link[=te_datastore-class]{te_datastore} or a child class.}
+
+\item{data}{A data frame containing the expanded trial data. The columns \code{trial_period} and \code{id} are present, which
+may be used in methods to save the data in an optimal way, such as with indexes, keys or separate files.}
+
+\item{period}{An integerish vector of non-zero length to select trial period(s) or \code{NULL} (default) to
+select all files.}
+
+\item{subset_condition}{A string of length 1 or \code{NULL} (default).}
+
+\item{p_control}{Probability of selecting a control.}
+
+\item{seed}{An integer seed or \code{NULL} (default).}
+}
 \value{
 A 'te_datastore_duckdb' object.
 }
 \description{
-te_datastore_duckdb, functions and methods
+This method is used internally by \link{expand_trials} to save the data to the "datastore" defined in
+\link{set_expansion_options}.
 }
 \section{Slots}{
 
@@ -20,3 +57,23 @@ te_datastore_duckdb, functions and methods
 \item{\code{con}}{S4 object of class duckdb_connection.}
 }}
 
+\examples{
+if (require(duckdb)) {
+  duckdb_dir <- file.path(tempdir(), "expanded_trials_duckdb")
+
+  trial_to_expand <- trial_sequence("ITT") |>
+    set_data(data = data_censored) |>
+    set_expansion_options(output = save_to_duckdb(path = duckdb_dir), chunk_size = 500)
+
+  # Delete directory after use
+  unlink(duckdb_dir)
+}
+
+}
+\seealso{
+Other save_to: 
+\code{\link{save_to_datatable}()},
+\code{\link{set_expansion_options}()},
+\code{\link{te_datastore_csv-class}}
+}
+\concept{save_to}

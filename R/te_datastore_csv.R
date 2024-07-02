@@ -2,7 +2,15 @@
 NULL
 
 
-# save to csv -------
+#' @title te_datastore_csv, functions and methods
+#'
+#' @slot path path to csv files.
+#' @slot files names of csv files.
+#' @slot template data.frame template.
+#'
+#' @return A 'te_datastore_csv' object.
+#' @export
+#'
 setClass(
   "te_datastore_csv",
   contains = "te_datastore",
@@ -15,6 +23,7 @@ setClass(
 
 
 #' Save expanded data as CSV
+#' @rdname te_datastore_csv-class
 #' @param path Directory to save CSV files in. Must be empty.
 #' @family save_to
 #' @export
@@ -42,7 +51,8 @@ save_to_csv <- function(path) {
 }
 
 
-#' @rdname save_expanded_data
+#' @rdname te_datastore_csv-class
+#' @inherit save_expanded_data
 setMethod(
   f = "save_expanded_data",
   signature = "te_datastore_csv",
@@ -63,7 +73,8 @@ setMethod(
 )
 
 
-#' @rdname read_expanded_data
+#' @rdname te_datastore_csv-class
+#' @inherit read_expanded_data
 setMethod(
   f = "read_expanded_data",
   signature = "te_datastore_csv",
