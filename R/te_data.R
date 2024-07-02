@@ -84,6 +84,7 @@ setValidity(
 #'  `c("id", "trial_period", "followup_time", "outcome", "weight")`
 #'
 #' @return A `te_outcome_data` object
+#' @noRd
 te_outcome_data <- function(data) {
   checkmate::assert_data_table(data)
   checkmate::assert_names(colnames(data), must.include = c("id", "trial_period", "followup_time", "outcome", "weight"))
