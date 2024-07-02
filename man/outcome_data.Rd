@@ -28,7 +28,7 @@ Generic function to outcome data
 }
 \examples{
 ts <- trial_sequence("ITT")
-new_data <- data.table(vignette_switch_data[1:200, ])
+new_data <- data.table::data.table(vignette_switch_data[1:200, ])
 new_data$weight <- 1
 outcome_data(ts) <- new_data
 }

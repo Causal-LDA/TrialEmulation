@@ -745,7 +745,7 @@ setMethod(
   "outcome_data<-",
   c(object = "trial_sequence"),
   function(object, value) {
-    if (is(object, "trial_sequence_PP") || is(object, "trial_sequence_PP")) {
+    if (is(object, "trial_sequence_PP") || is(object, "trial_sequence_ITT")) {
       if (!"assigned_treatment" %in% colnames(value)) stop("assigned_treatment column is not found.")
     }
     new_outcome_data <- te_outcome_data(value)
