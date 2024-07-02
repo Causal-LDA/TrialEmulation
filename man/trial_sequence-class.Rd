@@ -21,6 +21,8 @@ Trial Sequence class
 
 \item{\code{outcome_model}}{te_outcome_model.}
 
+\item{\code{outcome_data}}{te_outcome_data.}
+
 \item{\code{censor_weight}}{te_weight. Object to define weighting to account for
 informative censoring}
 
