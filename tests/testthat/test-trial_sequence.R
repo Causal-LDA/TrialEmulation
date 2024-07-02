@@ -125,3 +125,18 @@ test_that("set_outcome_model works with strings", {
     "~assigned_treatment + age + x2 + followup_time + I(followup_time^2) + trial_period + I(trial_period^2)"
   )
 })
+
+# Outcome Data ----
+
+test_that("outcome_data accessor/setter works", {
+  data <- readRDS(test_path("data/ready_for_modelling.rds"))
+  ts <- trial_sequence("ITT")
+  outcome_data(ts) <- data
+  expect_equal(ts@outcome_data@n_rows, 1041L)
+  expect_equal(ts@outcome_data@n_ids, 181L)
+  expect_equal(ts@outcome_data@periods, c(2, 3, 4, 5, 6, 7, 8))
+  expect_data_table(ts@outcome_data@data, ncols = 13, nrows = 1041)
+
+  new_data <- outcome_data(ts)
+  expect_equal(data, new_data)
+})

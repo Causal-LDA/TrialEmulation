@@ -30,6 +30,7 @@ reference:
   - set_outcome_model
   - expand_trials
   - sample_controls
+  - outcome_data
 - subtitle: Data Storage
   desc: Control how expanded data is stored
 - contents:
