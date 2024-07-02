@@ -8,7 +8,7 @@
 #' @import checkmate
 #' @importFrom stats formula update update.formula as.formula glm
 #' @import data.table
-#' @importFrom methods callNextMethod extends getClass is new show .hasSlot
+#' @import methods
 #' @importFrom Rcpp sourceCpp
 #' @importFrom DBI dbGetQuery
 #' @useDynLib TrialEmulation

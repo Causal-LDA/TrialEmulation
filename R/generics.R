@@ -317,3 +317,26 @@ setGeneric("fit_weights_model", function(object, data, formula, label) standardG
 #'   )
 #'
 setGeneric("set_outcome_model", function(object, ...) standardGeneric("set_outcome_model"))
+
+
+
+
+#' Outcome Data Accessor and Setter
+#'
+#' Generic function to outcome data
+#'
+#' @param object `trial_sequence` object
+#'
+#' @return The `object` with updated outcome data
+#' @export
+#' @examples
+#' ts <- trial_sequence("ITT")
+#' new_data <- data.table(vignette_switch_data[1:200, ])
+#' new_data$weight <- 1
+#' outcome_data(ts) <- new_data
+setGeneric("outcome_data", function(object) standardGeneric("outcome_data"))
+
+#' @rdname outcome_data
+#' @param value `data.table` to replace and update in `@outcome_data`
+#' @export
+setGeneric("outcome_data<-", function(object, value) standardGeneric("outcome_data<-"))
