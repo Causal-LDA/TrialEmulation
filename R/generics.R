@@ -177,7 +177,7 @@ setGeneric("read_expanded_data", function(object, period = NULL, subset_conditio
 #' This method is used on [trial_sequence-class] objects to read, subset and sample expanded data.
 #'
 #' @param object An object of class [trial_sequence-class].
-#' @param p_control Probability of selecting a control, default is 0.01.
+#' @param p_control Probability of selecting a control.
 #' @param period An integerish vector of non-zero length to select trial period(s) or `NULL` (default) to
 #'  select all trial periods.
 #' @param subset_condition A string or `NULL` (default). `subset_condition` will be translated to a call
@@ -194,7 +194,8 @@ setGeneric("read_expanded_data", function(object, period = NULL, subset_conditio
 #'  *Note*: The same seed will return a different result depending on the class of the [te_datastore-class]
 #'    object contained in the [trial_sequence-class] object.
 #'
-#' @return A `data.frame` of class `data.table`.
+#' @return An updated [trial_sequence-class] object, the data is stored in slot `@outcome_data`
+#'    as a [te_outcome_data-class] object.
 #' @export
 #'
 #' @examples

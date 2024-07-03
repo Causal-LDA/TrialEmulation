@@ -58,7 +58,7 @@ test_that("sample_controls works with trial_sequence objects containing te_datas
   # sample_controls works without additional arguments
   sc_01 <- sample_controls(trial_itt_duckdb, p_control = 0.01, seed = 1221)
   expect_equal(
-    sort(sc_01$id),
+    sort(sc_01@outcome_data@data$id),
     c(
       1, 10, 13, 14, 15, 21, 27, 29, 32, 38, 38, 40, 44, 44, 44, 44,
       49, 49, 58, 61, 68, 71, 71, 74, 84, 89, 95, 95, 95, 98, 99
@@ -67,23 +67,26 @@ test_that("sample_controls works with trial_sequence objects containing te_datas
 
   # sample_controls works with p_control
   sc_02 <- sample_controls(trial_itt_duckdb, p_control = 0.5, seed = 5678)
-  expect_equal(nrow(sc_02), 756)
+  expect_equal(sc_02@outcome_data@n_rows, 756)
 
   # sample_controls works with p_control = 0
   sc_03 <- sample_controls(trial_itt_duckdb, p_control = 0)
-  expect_equal(nrow(sc_03), 14)
+  expect_equal(sc_03@outcome_data@n_rows, 14)
 
   # cases are kept
-  expect_equal(sum(sc_01$outcome), 14)
-  expect_equal(sum(sc_02$outcome), 14)
-  expect_equal(sum(sc_03$outcome), 14)
+  expect_equal(sum(sc_01@outcome_data@data$outcome), 14)
+  expect_equal(sum(sc_02@outcome_data@data$outcome), 14)
+  expect_equal(sum(sc_03@outcome_data@data$outcome), 14)
 
   # all columns are kept and sample_weight column is added
-  expect_equal(colnames(sc_01), c(colnames(read_expanded_data(trial_itt_duckdb@expansion@datastore)), "sample_weight"))
+  expect_equal(
+    colnames(sc_01@outcome_data@data),
+    c(colnames(read_expanded_data(trial_itt_duckdb@expansion@datastore)), "sample_weight")
+  )
 
   # sample_weight calculated correctly
-  expect_equal(sort(sc_01$sample_weight), c(rep(1, 14), rep(100, 17)))
-  expect_equal(sort(sc_02$sample_weight), c(rep(1, 14), rep(2, 742)))
+  expect_equal(sort(sc_01@outcome_data@data$sample_weight), c(rep(1, 14), rep(100, 17)))
+  expect_equal(sort(sc_02@outcome_data@data$sample_weight), c(rep(1, 14), rep(2, 742)))
 
   # sample_controls subsets data correctly
   sc_04 <- sample_controls(
@@ -94,15 +97,17 @@ test_that("sample_controls works with trial_sequence objects containing te_datas
     seed = 2332
   )
   expect_equal(
-    sort(sc_04$id),
+    sort(sc_04@outcome_data@data$id),
     c(
       21, 27, 34, 34, 44, 44, 44, 44, 44, 44, 44, 53, 53, 54, 59,
       59, 59, 59, 60, 65, 65, 70, 71, 73, 74, 74, 74, 83, 95
     )
   )
 
-  # sample_controls returns a data.table
-  expect_class(sc_04, "data.table")
+  # sample_controls returns the correct classes
+  expect_class(sc_04, "trial_sequence_ITT")
+  expect_class(sc_04@outcome_data, "te_outcome_data")
+  expect_class(sc_04@outcome_data@data, "data.table")
 
   DBI::dbDisconnect(trial_itt_duckdb@expansion@datastore@con)
 })

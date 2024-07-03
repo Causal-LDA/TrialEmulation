@@ -24,7 +24,7 @@ sample_controls(
 \arguments{
 \item{object}{An object of class \linkS4class{trial_sequence}.}
 
-\item{p_control}{Probability of selecting a control, default is 0.01.}
+\item{p_control}{Probability of selecting a control.}
 
 \item{period}{An integerish vector of non-zero length to select trial period(s) or \code{NULL} (default) to
 select all trial periods.}
@@ -45,7 +45,8 @@ otherwise the code will fail.}
 object contained in the \linkS4class{trial_sequence} object.}
 }
 \value{
-A \code{data.frame} of class \code{data.table}.
+An updated \linkS4class{trial_sequence} object, the data is stored in slot \verb{@outcome_data}
+as a \linkS4class{te_outcome_data} object.
 }
 \description{
 This method is used on \linkS4class{trial_sequence} objects to read, subset and sample expanded data.

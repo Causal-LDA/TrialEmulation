@@ -247,7 +247,7 @@ test_that("sample_controls works with trial_sequence objects containing te_datas
   # sample_controls works without additional arguments
   sc_01 <- sample_controls(trial_itt_csv, p_control = 0.01, seed = 1221)
   expect_equal(
-    sort(sc_01$id),
+    sort(sc_01@outcome_data@data$id),
     c(
       10, 14, 14, 15, 17, 21, 27, 29, 32, 38, 38, 44, 44, 49, 49,
       54, 54, 54, 59, 61, 68, 71, 71, 71, 74, 74, 89, 98, 98, 99
@@ -259,23 +259,25 @@ test_that("sample_controls works with trial_sequence objects containing te_datas
   # seed gets reset
   sc_01_1 <- sample_controls(trial_itt_csv, p_control = 0.01, seed = 1221)
   random_02 <- sample_controls(trial_itt_csv, p_control = 0.01)
-  expect_false(identical(sort(random_01$id), sort(random_02$id)))
+  expect_false(identical(sort(random_01@outcome_data@data$id), sort(random_02@outcome_data@data$id)))
 
   # sample_controls works with p_control
   sc_02 <- sample_controls(trial_itt_csv, p_control = 0.5, seed = 5678)
-  expect_equal(nrow(sc_02), 765)
+  expect_equal(sc_02@outcome_data@n_rows, 765)
 
   # sample_controls works with p_control = 0
   sc_03 <- sample_controls(trial_itt_csv, p_control = 0)
-  expect_equal(nrow(sc_03), 14)
+  expect_equal(sc_03@outcome_data@n_rows, 14)
 
   # cases are kept
-  expect_equal(sum(sc_01$outcome), 14)
-  expect_equal(sum(sc_02$outcome), 14)
-  expect_equal(sum(sc_03$outcome), 14)
+  expect_equal(sum(sc_01@outcome_data@data$outcome), 14)
+  expect_equal(sum(sc_02@outcome_data@data$outcome), 14)
+  expect_equal(sum(sc_03@outcome_data@data$outcome), 14)
 
   # all columns are kept and sample_weight column is added
-  expect_equal(colnames(sc_01), c(colnames(trial_itt_csv@expansion@datastore@template), "sample_weight"))
+  expect_equal(
+    colnames(sc_01@outcome_data@data), c(colnames(trial_itt_csv@expansion@datastore@template), "sample_weight")
+  )
 
   # sample_controls subsets data correctly
   sc_04 <- sample_controls(
@@ -286,15 +288,17 @@ test_that("sample_controls works with trial_sequence objects containing te_datas
     seed = 2332
   )
   expect_equal(
-    sort(sc_04$id),
+    sort(sc_04@outcome_data@data$id),
     c(
       14, 16, 20, 27, 27, 33, 33, 33, 33, 34, 34, 34, 44, 44, 44, 44, 44, 44, 44, 44, 47, 54, 54, 54, 54,
       59, 59, 59, 59, 59, 59, 59, 60, 60, 60, 65, 71, 73, 74, 74, 74, 83, 95, 95, 95, 95, 95, 95, 95, 96
     )
   )
 
-  # sample_controls returns a data.table
-  expect_class(sc_04, "data.table")
+  # sample_controls returns the correct classes
+  expect_class(sc_04, "trial_sequence_ITT")
+  expect_class(sc_04@outcome_data, "te_outcome_data")
+  expect_class(sc_04@outcome_data@data, "data.table")
 
   unlink(trial_itt_dir, recursive = TRUE)
 })
