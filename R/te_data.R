@@ -69,10 +69,34 @@ setValidity(
     checks <- list()
     checks["cols_check"] <- check_names(
       colnames(object@data),
-      must.include = c("id", "trial_period", "followup_time", "outcome", "weights")
+      must.include = c("id", "trial_period", "followup_time", "outcome", "weight")
     )
 
     msg <- unlist(lapply(checks, function(x) if (is.character(x)) x else NULL))
     if (length(msg)) msg else TRUE
   }
 )
+
+
+#' Create te_outcome_data
+#'
+#' @param data A data.table derived from expanded data, containing columns
+#'  `c("id", "trial_period", "followup_time", "outcome", "weight")`
+#'
+#' @return A `te_outcome_data` object
+#' @noRd
+te_outcome_data <- function(data) {
+  checkmate::assert_data_table(data)
+  checkmate::assert_names(colnames(data), must.include = c("id", "trial_period", "followup_time", "outcome", "weight"))
+  n_rows <- nrow(data)
+  if (n_rows == 0) warning("Outcome data has 0 rows")
+  n_ids <- data.table::uniqueN(data[, "id"])
+  periods <- sort(unique(data$trial_period))
+  new(
+    "te_outcome_data",
+    data = data,
+    n_rows = n_rows,
+    n_ids = n_ids,
+    periods = periods
+  )
+}
