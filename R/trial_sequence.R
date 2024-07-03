@@ -728,30 +728,29 @@ setMethod(
     expand_trials_trial_seq(object)
   }
 )
-#'
-#' #' @rdname internal-methods
-#' setMethod(
-#'   "expand_trials",
-#'   c(object = "trial_sequence_PP"),
-#'   function(object) {
-#'     expand_trials_trial_seq(object, censor_at_switch = TRUE)
-#'   }
-#' )
-#'
-#' #' @rdname internal-methods
-#' setMethod(
-#'   "expand_trials",
-#'   c(object = "trial_sequence_ITT"),
-#'   function(object) {
-#'     expand_trials_trial_seq(object, censor_at_switch = FALSE)
-#'   }
-#' )
-#'
-#' #' @rdname internal-methods
-#' setMethod(
-#'   "expand_trials",
-#'   c(object = "trial_sequence_AT"),
-#'   function(object) {
-#'     expand_trials_trial_seq(object, censor_at_switch = FALSE)
-#'   }
-#' )
+
+
+#' @rdname outcome_data
+setMethod(
+  "outcome_data",
+  c(object = "trial_sequence"),
+  function(object) {
+    object@outcome_data@data
+  }
+)
+
+
+#' @rdname outcome_data
+setMethod(
+  "outcome_data<-",
+  c(object = "trial_sequence"),
+  function(object, value) {
+    if (is(object, "trial_sequence_PP") || is(object, "trial_sequence_ITT")) {
+      if (!"assigned_treatment" %in% colnames(value)) stop("assigned_treatment column is not found.")
+    }
+    new_outcome_data <- te_outcome_data(value)
+    object@outcome_data <- new_outcome_data
+    validObject(object)
+    object
+  }
+)
