@@ -192,6 +192,40 @@ setMethod(
 )
 
 
+#' @rdname load_expanded_data
+setMethod(
+  f = "load_expanded_data",
+  signature = "trial_sequence",
+  definition = function(object, p_control, period, subset_condition, seed) {
+    checkmate::assert_count(object@expansion@datastore@N, positive = TRUE)
+    checkmate::assert_number(p_control, lower = 0, upper = 1, null.ok = TRUE)
+    checkmate::assert_integerish(period, null.ok = TRUE, any.missing = FALSE, lower = 0)
+    if (!is.null(subset_condition)) {
+      checkmate::assert_string(subset_condition, null.ok = TRUE)
+    }
+
+    checkmate::assert_integerish(seed, null.ok = TRUE, len = 1, any.missing = FALSE)
+
+    if (is.null(p_control)) {
+      data_table <- read_expanded_data(object@expansion@datastore, period = period, subset_condition = subset_condition)
+      data_table <- cbind(data_table, "sample_weight" = 1)
+    } else {
+      data_table <- sample_expanded_data(
+        object@expansion@datastore,
+        period = period,
+        subset_condition = subset_condition,
+        p_control = p_control,
+        seed = seed
+      )
+    }
+
+    object@outcome_data <- te_outcome_data(data_table)
+
+    object
+  }
+)
+
+
 # Restore the RNG back to a previous state using the global .Random.seed
 set_random_seed <- function(old_seed) {
   if (is.null(old_seed)) {
