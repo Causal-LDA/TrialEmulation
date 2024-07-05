@@ -402,3 +402,20 @@ setGeneric("outcome_data", function(object) standardGeneric("outcome_data"))
 #' @param value `data.table` to replace and update in `@outcome_data`
 #' @export
 setGeneric("outcome_data<-", function(object, value) standardGeneric("outcome_data<-"))
+
+
+#' Title
+#'
+#' @param object A `trial_sequence` object
+#' @param use_sample_weights logical statement if sample weights should be used, default is `TRUE`
+#' @param analysis_weights a string, one of "asis", "unweighted", "p99", "weight_limits"
+#' @param weight_limits a numerical vector of length 2
+#'
+#' @return A modified `trial_sequence` object
+#' @export
+#'
+#' @examples
+setGeneric("fit_msm", function(object,
+                               use_sample_weights = TRUE,
+                               analysis_weights = c("asis", "unweighted", "p99", "weight_limits"),
+                               weight_limits = c(0, Inf)) standardGeneric("fit_msm"))
