@@ -79,17 +79,22 @@ setMethod(
   definition = function(object, period, subset_condition) {
     checkmate::assert_integerish(period, null.ok = TRUE, any.missing = FALSE, lower = 0)
     if (use_subset <- !is.null(subset_condition)) {
-      subset_expr <- str2lang(subset_condition)
+      subset_expr <- translate_to_sql(subset_condition)
     }
-    query <- if (is.null(period)) {
-      "SELECT * FROM trial_data"
-    } else {
-      paste0("SELECT * FROM trial_data WHERE trial_period IN (", paste0(period, collapse = ", "), ")")
-    }
+    q_p1 <- "SELECT * FROM trial_data"
+    q_p2 <- ""
+    if (!is.null(period) | use_subset) q_p2 <- " WHERE"
+    q_period <- ""
+    if (!is.null(period)) q_period <- paste0(" trial_period IN (", paste0(period, collapse = ", "), ")")
+    q_p3 <- ""
+    if (!is.null(period) & use_subset) q_p3 <- " AND"
+    q_subset <- ""
+    if (use_subset) q_subset <- paste0(" (", subset_expr, ")")
+
+    query <- paste0(q_p1, q_p2, q_period, q_p3, q_subset)
+
     data_table <- data.table::as.data.table(DBI::dbGetQuery(conn = object@con, statement = query))
-    if (use_subset) {
-      data_table <- data_table[eval(subset_expr)]
-    }
+
     data_table
   }
 )
