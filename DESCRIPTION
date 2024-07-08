@@ -50,7 +50,7 @@ Language: en-GB
 LazyData: true
 LazyDataCompression: xz
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.3.2
+RoxygenNote: 7.3.1.9000
 Collate: 
     'RcppExports.R'
     'calculate_weights.R'
@@ -66,15 +66,15 @@ Collate:
     'expand_trials.R'
     'initiators.R'
     'lr_utils.R'
-    'modelling.R'
-    'package.R'
-    'predict.R'
-    'robust.R'
     'te_model_fitter.R'
     'te_outcome_model.R'
     'te_weights.R'
     'te_data.R'
     'trial_sequence.R'
+    'modelling.R'
+    'package.R'
+    'predict.R'
+    'robust.R'
     'sampling.R'
     'te_datastore_csv.R'
     'te_datastore_duckdb.R'

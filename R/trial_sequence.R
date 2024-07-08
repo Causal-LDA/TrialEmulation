@@ -492,6 +492,7 @@ setMethod(
     reportAssertions(collection)
 
     formula <- Reduce(add_rhs, formula_list)
+    formula.tools::lhs(formula) <- quote(outcome)
     treatment <- all.vars(formula_list$treatment)
     object@outcome_model <- new(
       "te_outcome_model",

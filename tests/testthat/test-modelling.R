@@ -373,3 +373,50 @@ test_that("trial_msm makes model formula as expected with estimand_type ITT and 
   environment(expected_formula) <- environment(result_formula) <- globalenv()
   expect_equal(result_formula, expected_formula)
 })
+
+
+test_that("fit_msm works", {
+  trial_itt_dir <- file.path(tempdir(), "trial_itt")
+  dir.create(trial_itt_dir)
+
+  trial_itt <- trial_sequence(estimand = "ITT") |>
+    set_data(
+      data = data_censored,
+      id = "id",
+      period = "period",
+      treatment = "treatment",
+      outcome = "outcome",
+      eligible = "eligible"
+    ) |>
+    set_censor_weight_model(
+      censor_event = "censored",
+      numerator = ~ x1 + x2 + x3,
+      denominator = ~x2,
+      pool_models = "numerator",
+      model_fitter = stats_glm_logit(save_path = file.path(trial_itt_dir, "switch_models"))
+    ) |>
+    calculate_weights() |>
+    set_outcome_model(adjustment_terms = ~ x1 + x2)
+
+  trial_itt_expanded <- set_expansion_options(
+    trial_itt,
+    output = save_to_csv(file.path(trial_itt_dir, "trial_csvs")),
+    chunk_size = 500
+  ) |>
+    expand_trials() |>
+    load_expanded_data()
+
+  # fit_msm returns a trial_sequence object
+  fm_01 <- fit_msm(trial_itt_expanded, analysis_weights = "asis")
+  expect_class(fm_01, "trial_sequence")
+
+  # all columns in @outcome_data@data are kept and w column is added
+  expect_equal(
+    colnames(fm_01@outcome_data@data), c(colnames(trial_itt_expanded@outcome_data@data), "w")
+  )
+
+  # fit_msm saves result into @outcome_model@fitted
+  expect_class(fm_01@outcome_model@fitted@model$model, "glm")
+
+  unlink(trial_itt_dir, recursive = TRUE)
+})

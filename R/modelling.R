@@ -1,3 +1,6 @@
+#' @include trial_sequence.R generics.R
+NULL
+
 #' Fit the marginal structural model for the sequence of emulated trials
 #'
 #' Apply a weighted pooled logistic regression to fit the marginal structural model for the sequence of emulated trials
@@ -175,6 +178,7 @@ trial_msm <- function(data,
 }
 
 
+#' @rdname fit_msm
 setMethod(
   f = "fit_msm",
   signature = "trial_sequence",
