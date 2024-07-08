@@ -290,7 +290,8 @@ setGeneric(
   "load_expanded_data",
   function(object, p_control = NULL, period = NULL, subset_condition = NULL, seed = NULL) {
     standardGeneric("load_expanded_data")
-})
+  }
+)
 
 
 #' Internal method to sample expanded data
@@ -418,4 +419,6 @@ setGeneric("outcome_data<-", function(object, value) standardGeneric("outcome_da
 setGeneric("fit_msm", function(object,
                                use_sample_weights = TRUE,
                                analysis_weights = c("asis", "unweighted", "p99", "weight_limits"),
-                               weight_limits = c(0, Inf)) standardGeneric("fit_msm"))
+                               weight_limits = c(0, Inf)) {
+  standardGeneric("fit_msm")
+})
