@@ -187,7 +187,6 @@ setMethod(
     if (object@expansion@datastore@N == 0) stop("datastore is empty, please run expand_trials")
     if (!length(object@outcome_data@n_rows)) stop("outcome_data is empty, please run load_expanded_data")
     checkmate::assert_numeric(weight_limits, len = 2)
-    checkmate::assert_string(analysis_weights)
     checkmate::assert_choice(analysis_weights, c("asis", "p99", "weight_limits", "unweighted"))
 
     w <- object@outcome_data@data$weight
