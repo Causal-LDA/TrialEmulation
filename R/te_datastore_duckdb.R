@@ -83,12 +83,9 @@ setMethod(
     }
     q_p1 <- "SELECT * FROM trial_data"
     q_p2 <- if (!is.null(period) | use_subset) " WHERE" else ""
-    q_period <- ""
-    if (!is.null(period)) q_period <- paste0(" trial_period IN (", paste0(period, collapse = ", "), ")")
-    q_p3 <- ""
-    if (!is.null(period) & use_subset) q_p3 <- " AND"
-    q_subset <- ""
-    if (use_subset) q_subset <- paste0(" (", subset_expr, ")")
+    q_period <- if (!is.null(period)) paste0(" trial_period IN (", paste0(period, collapse = ", "), ")") else ""
+    q_p3 <- if (!is.null(period) & use_subset) " AND" else ""
+    q_subset <- if (use_subset) paste0(" (", subset_expr, ")") else ""
 
     query <- paste0(q_p1, q_p2, q_period, q_p3, q_subset)
 
@@ -115,10 +112,8 @@ setMethod(
     } else {
       q_sample <- paste0("USING SAMPLE ", p_control * 100, " PERCENT (bernoulli, ", seed, ") ")
     }
-    q_period <- ""
-    if (!is.null(period)) q_period <- paste0("AND trial_period IN (", paste0(period, collapse = ", "), ") ")
-    q_subset <- ""
-    if (use_subset) q_subset <- paste0("AND (", subset_expr, ")")
+    q_period <- if (!is.null(period)) paste0("AND trial_period IN (", paste0(period, collapse = ", "), ") ") else ""
+    q_subset <- if (use_subset) paste0("AND (", subset_expr, ")") else ""
 
     query <- paste0(q_p1, q_period, q_subset, ") ", q_sample, q_p2, q_period, q_subset)
 
