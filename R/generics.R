@@ -288,8 +288,9 @@ setGeneric(
 #' unlink(trial_itt_dir, recursive = TRUE)
 setGeneric(
   "load_expanded_data",
-  function(object, p_control = NULL, period = NULL, subset_condition = NULL, seed = NULL) 
+  function(object, p_control = NULL, period = NULL, subset_condition = NULL, seed = NULL) {
     standardGeneric("load_expanded_data")
+  }
 )
 
 
