@@ -82,8 +82,7 @@ setMethod(
       subset_expr <- translate_to_sql(subset_condition)
     }
     q_p1 <- "SELECT * FROM trial_data"
-    q_p2 <- ""
-    if (!is.null(period) | use_subset) q_p2 <- " WHERE"
+    q_p2 <- if (!is.null(period) | use_subset) " WHERE" else ""
     q_period <- ""
     if (!is.null(period)) q_period <- paste0(" trial_period IN (", paste0(period, collapse = ", "), ")")
     q_p3 <- ""
