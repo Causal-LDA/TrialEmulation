@@ -12,14 +12,13 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
 <!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
 <script src="../pkgdown.js"></script><meta property="og:title" content="New Interface">
-<meta property="og:description" content="TrialEmulation">
 <!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 <![endif]-->
 </head>
 <body data-spy="scroll" data-target="#toc">
-    
+
 
     <div class="container template-article">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -33,7 +32,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">TrialEmulation</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.3.20</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.3.21</span>
       </span>
     </div>
 
@@ -45,7 +44,7 @@
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Articles
-     
+
     <span class="caret"></span>
   </a>
   <ul class="dropdown-menu" role="menu">
@@ -65,7 +64,7 @@
 <li>
   <a href="https://github.com/Causal-LDA/TrialEmulation/" class="external-link">
     <span class="fab fa-github fa-lg"></span>
-     
+
   </a>
 </li>
       </ul>
@@ -76,7 +75,7 @@
 </div>
 <!--/.navbar -->
 
-      
+
 
       </header><div class="row">
   <div class="col-md-9 contents">
@@ -84,7 +83,7 @@
       <h1 data-toc-skip>New Interface</h1>
             
       
-      <small class="dont-index">Source: <a href="https://github.com/Causal-LDA/TrialEmulation/blob/HEAD/vignettes/new-interface.Rmd" class="external-link"><code>vignettes/new-interface.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/Causal-LDA/TrialEmulation/blob/main/vignettes/new-interface.Rmd" class="external-link"><code>vignettes/new-interface.Rmd</code></a></small>
       <div class="hidden name"><code>new-interface.Rmd</code></div>
 
     </div>
@@ -408,15 +407,14 @@ weights. This is done with <code><a href="../reference/calculate_weights.html">c
 <span><span class="co">#&gt;  - Numerator formula: ~ treatment age + x1 + x3 </span></span>
 <span><span class="co">#&gt;  - Denominator formula: ~ treatment age </span></span>
 <span><span class="co">#&gt; Model fitter type: te_stats_glm_logit </span></span>
-<span><span class="co">#&gt; View weight model summaries with show_weight_models()</span></span></code></pre></div>
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span></span>
+<span><span class="co">#&gt; View weight model summaries with show_weight_models()</span></span>
+<span></span>
 <span></span>
 <span><span class="va">trial_itt</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/calculate_weights.html">calculate_weights</a></span><span class="op">(</span><span class="va">trial_itt</span><span class="op">)</span></span></code></pre></div>
 <p>The full model objects are saved to disk in the directories we
 created above. The summaries are stored in the trial sequence object and
 can be printed:</p>
-<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/show_weight_models.html">show_weight_models</a></span><span class="op">(</span><span class="va">trial_itt</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Model: P(censor_event = 0 | X) for numerator </span></span>
 <span><span class="co">#&gt;  </span></span>
@@ -429,8 +427,8 @@ can be printed:</p>
 <span><span class="co">#&gt;  null.deviance df.null logLik    AIC      BIC      deviance df.residual nobs</span></span>
 <span><span class="co">#&gt;  404.2156      724     -193.6748 395.3495 413.6942 387.3495 721         725 </span></span>
 <span><span class="co">#&gt;  </span></span>
-<span><span class="co">#&gt;  path                                                         </span></span>
-<span><span class="co">#&gt;  /tmp/RtmpOav03d/trial_itt/switch_models/model_1a82d743ec4.rds</span></span>
+<span><span class="co">#&gt;  path                                                          </span></span>
+<span><span class="co">#&gt;  /tmp/RtmpKdtE5A/trial_itt/switch_models/model_248743f68b24.rds</span></span>
 <span><span class="co">#&gt;  </span></span>
 <span><span class="co">#&gt; Model: P(censor_event = 0 | X, previous treatment = 0) for denominator </span></span>
 <span><span class="co">#&gt;  </span></span>
@@ -442,7 +440,7 @@ can be printed:</p>
 <span><span class="co">#&gt;  283.0723      425     -135.4361 274.8722 282.9811 270.8722 424         426 </span></span>
 <span><span class="co">#&gt;  </span></span>
 <span><span class="co">#&gt;  path                                                          </span></span>
-<span><span class="co">#&gt;  /tmp/RtmpOav03d/trial_itt/switch_models/model_1a8214c65af4.rds</span></span>
+<span><span class="co">#&gt;  /tmp/RtmpKdtE5A/trial_itt/switch_models/model_2487339cd6ba.rds</span></span>
 <span><span class="co">#&gt;  </span></span>
 <span><span class="co">#&gt; Model: P(censor_event = 0 | X, previous treatment = 1) for denominator </span></span>
 <span><span class="co">#&gt;  </span></span>
@@ -454,7 +452,7 @@ can be printed:</p>
 <span><span class="co">#&gt;  113.0528      298     -56.52619 117.0524 124.4533 113.0524 297         299 </span></span>
 <span><span class="co">#&gt;  </span></span>
 <span><span class="co">#&gt;  path                                                          </span></span>
-<span><span class="co">#&gt;  /tmp/RtmpOav03d/trial_itt/switch_models/model_1a821ebd4e95.rds</span></span>
+<span><span class="co">#&gt;  /tmp/RtmpKdtE5A/trial_itt/switch_models/model_248745220093.rds</span></span>
 <span><span class="co">#&gt; </span></span></code></pre></div>
 </div>
 </div>
@@ -464,7 +462,7 @@ can be printed:</p>
 <p>Not fully implemented. Needs to be preliminarily set at this stage to
 make sure all required variables are included in the expanded data
 set</p>
-<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">trial_pp</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/set_outcome_model.html">set_outcome_model</a></span><span class="op">(</span><span class="va">trial_pp</span><span class="op">)</span></span>
 <span><span class="va">trial_itt</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/set_outcome_model.html">set_outcome_model</a></span><span class="op">(</span><span class="va">trial_itt</span>, adjustment_terms <span class="op">=</span> <span class="op">~</span> <span class="va">x1</span> <span class="op">+</span> <span class="va">x2</span><span class="op">)</span></span></code></pre></div>
 </div>
@@ -486,7 +484,7 @@ DuckDB, using a <code>save_to_*</code> function.</li>
 need to process it in chunks by specifying how many patients are
 processed at one time.</li>
 </ul>
-<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">trial_pp</span> <span class="op">&lt;-</span> <span class="va">trial_pp</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="../reference/set_expansion_options.html">set_expansion_options</a></span><span class="op">(</span></span>
 <span>    output <span class="op">=</span> <span class="fu"><a href="../reference/save_to_csv.html">save_to_csv</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">trial_pp_dir</span>, <span class="st">"trial_csvs"</span><span class="op">)</span><span class="op">)</span>,</span>
@@ -514,11 +512,11 @@ processed at one time.</li>
 <div class="section level4">
 <h4 id="create-sequence-of-trials-data">Create Sequence of Trials Data<a class="anchor" aria-label="anchor" href="#create-sequence-of-trials-data"></a>
 </h4>
-<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">trial_pp</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/expand_trials.html">expand_trials</a></span><span class="op">(</span><span class="va">trial_pp</span><span class="op">)</span></span>
 <span><span class="va">trial_itt</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/expand_trials.html">expand_trials</a></span><span class="op">(</span><span class="va">trial_itt</span><span class="op">)</span></span></code></pre></div>
 <p>Show method not implemented yet</p>
-<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">trial_pp</span><span class="op">@</span><span class="va">expansion</span></span>
 <span><span class="co">#&gt; An object of class "te_expansion"</span></span>
 <span><span class="co">#&gt; Slot "chunk_size":</span></span>
@@ -527,27 +525,27 @@ processed at one time.</li>
 <span><span class="co">#&gt; Slot "datastore":</span></span>
 <span><span class="co">#&gt; An object of class "te_datastore_csv"</span></span>
 <span><span class="co">#&gt; Slot "path":</span></span>
-<span><span class="co">#&gt; [1] "/tmp/RtmpOav03d/trial_pp/trial_csvs"</span></span>
+<span><span class="co">#&gt; [1] "/tmp/RtmpKdtE5A/trial_pp/trial_csvs"</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Slot "files":</span></span>
-<span><span class="co">#&gt;  [1] "/tmp/RtmpOav03d/trial_pp/trial_csvs/trial_0.csv" </span></span>
-<span><span class="co">#&gt;  [2] "/tmp/RtmpOav03d/trial_pp/trial_csvs/trial_1.csv" </span></span>
-<span><span class="co">#&gt;  [3] "/tmp/RtmpOav03d/trial_pp/trial_csvs/trial_2.csv" </span></span>
-<span><span class="co">#&gt;  [4] "/tmp/RtmpOav03d/trial_pp/trial_csvs/trial_3.csv" </span></span>
-<span><span class="co">#&gt;  [5] "/tmp/RtmpOav03d/trial_pp/trial_csvs/trial_4.csv" </span></span>
-<span><span class="co">#&gt;  [6] "/tmp/RtmpOav03d/trial_pp/trial_csvs/trial_5.csv" </span></span>
-<span><span class="co">#&gt;  [7] "/tmp/RtmpOav03d/trial_pp/trial_csvs/trial_6.csv" </span></span>
-<span><span class="co">#&gt;  [8] "/tmp/RtmpOav03d/trial_pp/trial_csvs/trial_7.csv" </span></span>
-<span><span class="co">#&gt;  [9] "/tmp/RtmpOav03d/trial_pp/trial_csvs/trial_8.csv" </span></span>
-<span><span class="co">#&gt; [10] "/tmp/RtmpOav03d/trial_pp/trial_csvs/trial_9.csv" </span></span>
-<span><span class="co">#&gt; [11] "/tmp/RtmpOav03d/trial_pp/trial_csvs/trial_10.csv"</span></span>
-<span><span class="co">#&gt; [12] "/tmp/RtmpOav03d/trial_pp/trial_csvs/trial_11.csv"</span></span>
-<span><span class="co">#&gt; [13] "/tmp/RtmpOav03d/trial_pp/trial_csvs/trial_12.csv"</span></span>
-<span><span class="co">#&gt; [14] "/tmp/RtmpOav03d/trial_pp/trial_csvs/trial_13.csv"</span></span>
-<span><span class="co">#&gt; [15] "/tmp/RtmpOav03d/trial_pp/trial_csvs/trial_14.csv"</span></span>
-<span><span class="co">#&gt; [16] "/tmp/RtmpOav03d/trial_pp/trial_csvs/trial_15.csv"</span></span>
-<span><span class="co">#&gt; [17] "/tmp/RtmpOav03d/trial_pp/trial_csvs/trial_16.csv"</span></span>
-<span><span class="co">#&gt; [18] "/tmp/RtmpOav03d/trial_pp/trial_csvs/trial_17.csv"</span></span>
+<span><span class="co">#&gt;  [1] "/tmp/RtmpKdtE5A/trial_pp/trial_csvs/trial_0.csv" </span></span>
+<span><span class="co">#&gt;  [2] "/tmp/RtmpKdtE5A/trial_pp/trial_csvs/trial_1.csv" </span></span>
+<span><span class="co">#&gt;  [3] "/tmp/RtmpKdtE5A/trial_pp/trial_csvs/trial_2.csv" </span></span>
+<span><span class="co">#&gt;  [4] "/tmp/RtmpKdtE5A/trial_pp/trial_csvs/trial_3.csv" </span></span>
+<span><span class="co">#&gt;  [5] "/tmp/RtmpKdtE5A/trial_pp/trial_csvs/trial_4.csv" </span></span>
+<span><span class="co">#&gt;  [6] "/tmp/RtmpKdtE5A/trial_pp/trial_csvs/trial_5.csv" </span></span>
+<span><span class="co">#&gt;  [7] "/tmp/RtmpKdtE5A/trial_pp/trial_csvs/trial_6.csv" </span></span>
+<span><span class="co">#&gt;  [8] "/tmp/RtmpKdtE5A/trial_pp/trial_csvs/trial_7.csv" </span></span>
+<span><span class="co">#&gt;  [9] "/tmp/RtmpKdtE5A/trial_pp/trial_csvs/trial_8.csv" </span></span>
+<span><span class="co">#&gt; [10] "/tmp/RtmpKdtE5A/trial_pp/trial_csvs/trial_9.csv" </span></span>
+<span><span class="co">#&gt; [11] "/tmp/RtmpKdtE5A/trial_pp/trial_csvs/trial_10.csv"</span></span>
+<span><span class="co">#&gt; [12] "/tmp/RtmpKdtE5A/trial_pp/trial_csvs/trial_11.csv"</span></span>
+<span><span class="co">#&gt; [13] "/tmp/RtmpKdtE5A/trial_pp/trial_csvs/trial_12.csv"</span></span>
+<span><span class="co">#&gt; [14] "/tmp/RtmpKdtE5A/trial_pp/trial_csvs/trial_13.csv"</span></span>
+<span><span class="co">#&gt; [15] "/tmp/RtmpKdtE5A/trial_pp/trial_csvs/trial_14.csv"</span></span>
+<span><span class="co">#&gt; [16] "/tmp/RtmpKdtE5A/trial_pp/trial_csvs/trial_15.csv"</span></span>
+<span><span class="co">#&gt; [17] "/tmp/RtmpKdtE5A/trial_pp/trial_csvs/trial_16.csv"</span></span>
+<span><span class="co">#&gt; [18] "/tmp/RtmpKdtE5A/trial_pp/trial_csvs/trial_17.csv"</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Slot "template":</span></span>
 <span><span class="co">#&gt; Empty data.table (0 rows and 6 cols): id,trial_period,followup_time,outcome,weight,treatment</span></span>
@@ -563,9 +561,8 @@ processed at one time.</li>
 <span><span class="co">#&gt; [1] 0</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Slot "last_period":</span></span>
-<span><span class="co">#&gt; [1] Inf</span></span></code></pre></div>
-<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">trial_itt</span><span class="op">@</span><span class="va">expansion</span></span>
+<span><span class="co">#&gt; [1] Inf</span></span>
+<span><span class="va">trial_itt</span><span class="op">@</span><span class="va">expansion</span></span>
 <span><span class="co">#&gt; An object of class "te_expansion"</span></span>
 <span><span class="co">#&gt; Slot "chunk_size":</span></span>
 <span><span class="co">#&gt; [1] 500</span></span>
@@ -573,13 +570,13 @@ processed at one time.</li>
 <span><span class="co">#&gt; Slot "datastore":</span></span>
 <span><span class="co">#&gt; An object of class "te_datastore_duckdb"</span></span>
 <span><span class="co">#&gt; Slot "path":</span></span>
-<span><span class="co">#&gt; [1] "/tmp/RtmpOav03d/trial_itt/trial_duckdb/expanded_data_1a8256f845f6.duckdb"</span></span>
+<span><span class="co">#&gt; [1] "/tmp/RtmpKdtE5A/trial_itt/trial_duckdb/expanded_data_2487b9ebb56.duckdb"</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Slot "table":</span></span>
 <span><span class="co">#&gt; character(0)</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Slot "con":</span></span>
-<span><span class="co">#&gt; &lt;duckdb_connection 68190 driver=&lt;duckdb_driver dbdir='/tmp/RtmpOav03d/trial_itt/trial_duckdb/expanded_data_1a8256f845f6.duckdb' read_only=FALSE bigint=numeric&gt;&gt;</span></span>
+<span><span class="co">#&gt; &lt;duckdb_connection eb460 driver=&lt;duckdb_driver dbdir='/tmp/RtmpKdtE5A/trial_itt/trial_duckdb/expanded_data_2487b9ebb56.duckdb' read_only=FALSE bigint=numeric&gt;&gt;</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Slot "N":</span></span>
 <span><span class="co">#&gt; [1] 1558</span></span>
@@ -704,9 +701,7 @@ the <code>trial_sequence@te_expansion</code> slot.</p>
 
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
 
-        <nav id="toc" data-toggle="toc"><h2 data-toc-skip>Contents</h2>
-    </nav>
-</div>
+      </div>
 
 </div>
 
@@ -719,16 +714,16 @@ the <code>trial_sequence@te_expansion</code> slot.</p>
 
 <div class="pkgdown">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.9.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.0.</p>
 </div>
 
       </footer>
 </div>
 
-  
 
 
-  
+
+
 
   </body>
 </html>
