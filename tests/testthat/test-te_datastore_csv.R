@@ -113,6 +113,18 @@ test_that("sample_controls works with trial_sequence objects containing te_datas
     )
   )
 
+  # if non-existing periods are entered sample_controls omits the missing periods, runs the code and returns a warning
+  expect_warning(
+    sc_05 <- sample_controls(
+      trial_itt_csv,
+      period = c(1:10, 20),
+      subset_condition = "followup_time <= 20 & treatment == 1",
+      p_control = 0.2,
+      seed = 2332
+    ),
+    "The following periods don't exist in the data and were omitted: 20")
+  expect_equal(sort(sc_04@outcome_data@data$id), sort(sc_05@outcome_data@data$id))
+
   # sample_controls returns the correct classes
   expect_class(sc_04, "trial_sequence_ITT")
   expect_class(sc_04@outcome_data, "te_outcome_data")
