@@ -108,16 +108,25 @@ setMethod(
     on.exit(suspendInterrupts(set_random_seed(old_seed)))
     set.seed(seed)
 
+    all_periods <- NULL
+    for (n in seq_len(length(object@files))) {
+      all_periods[n] <- substr(object@files[n], nchar(object@path) + 8, nchar(object@files)[n] - 4)
+    }
+    all_periods <- as.numeric(all_periods)
+
     if (is.null(period)) {
-      for (n in seq_len(length(object@files))) {
-        period[n] <- substr(object@files[n], nchar(object@path) + 8, nchar(object@files)[n] - 4)
-      }
-    period <- as.numeric(period)
+      periods <- all_periods
+    } else if (all(period %in% all_periods)) {
+      periods <- period
+    } else {
+      periods <- period[period %in% all_periods]
+      warning(paste0("The following periods don't exist in the data and were omitted: ",
+                     paste0(period[!(period %in% all_periods)], collapse = ", ")))
     }
 
     i <- 0
     data <- list()
-    for (p in period) {
+    for (p in periods) {
       i <- i + 1
       data[[i]] <- read_expanded_data(object, period = p, subset_condition = subset_condition)
       data[[i]] <- lapply(
