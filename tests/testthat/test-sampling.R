@@ -304,6 +304,7 @@ test_that("sample_controls works with trial_sequence objects containing te_datas
 })
 
 
+
 test_that("load_expanded_data works with trial_sequence objects containing te_datastore_datatable objects", {
   trial_itt_dir <- file.path(tempdir(), "trial_itt")
   dir.create(trial_itt_dir)
