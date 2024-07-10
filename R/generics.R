@@ -232,6 +232,68 @@ setGeneric(
 )
 
 
+#' Method to read, subset and sample expanded data
+#'
+#' This method is used on [trial_sequence-class] objects to read, subset and sample expanded data.
+#'
+#' @param object An object of class [trial_sequence-class].
+#' @param p_control Probability of selecting a control, `NULL` for no sampling (default).
+#' @param period An integerish vector of non-zero length to select trial period(s) or `NULL` (default) to
+#'  select all trial periods.
+#' @param subset_condition A string or `NULL` (default). `subset_condition` will be translated to a call
+#'  (in case the expanded data is saved as a data.table or in the csv format) or to a SQL-query
+#'  (in case the expanded data is saved as a duckdb file).
+#'
+#'  The operators `"==", "!=", ">", ">=", "<", "<=", %in%", "&", "|"` are supported.
+#'  Numeric vectors can be written as `c(1, 2, 3)` or `1:3`. Variables are not supported.
+#'
+#'  *Note*: Make sure numeric vectors written as `1:3` are surrounded by spaces, e.g. `a %in% c( 1:4 , 6:9 )`,
+#'    otherwise the code will fail.
+#' @param seed An integer seed or `NULL` (default).
+#'
+#'  *Note*: The same seed will return a different result depending on the class of the [te_datastore-class]
+#'    object contained in the [trial_sequence-class] object.
+#'
+#' @return An updated [trial_sequence-class] object, the data is stored in slot `@outcome_data`
+#'    as a [te_outcome_data-class] object.
+#' @export
+#'
+#' @examples
+#' # create a trial_sequence-class object
+#' trial_itt_dir <- file.path(tempdir(), "trial_itt")
+#' dir.create(trial_itt_dir)
+#' trial_itt <- trial_sequence(estimand = "ITT") |>
+#'   set_data(data = data_censored) |>
+#'   set_outcome_model(adjustment_terms = ~ x1 + x2)
+#'
+#' trial_itt_csv <- set_expansion_options(
+#'   trial_itt,
+#'   output = save_to_csv(file.path(trial_itt_dir, "trial_csvs")),
+#'   chunk_size = 500
+#' ) |>
+#'   expand_trials()
+#'
+#' # load_expanded_data default behaviour returns all trial_periods and doesn't sample
+#' load_expanded_data(trial_itt_csv)
+#'
+#' # load_expanded_data can subset the data before sampling
+#' load_expanded_data(
+#'   trial_itt_csv,
+#'   p_control = 0.2,
+#'   period = 1:20,
+#'   subset_condition = "followup_time %in% 1:20 & treatment == 1",
+#' )
+#'
+#' # delete after use
+#' unlink(trial_itt_dir, recursive = TRUE)
+setGeneric(
+  "load_expanded_data",
+  function(object, p_control = NULL, period = NULL, subset_condition = NULL, seed = NULL) {
+    standardGeneric("load_expanded_data")
+  }
+)
+
+
 #' Internal method to sample expanded data
 #'
 #' @param object An object of class [te_datastore-class].
@@ -341,3 +403,38 @@ setGeneric("outcome_data", function(object) standardGeneric("outcome_data"))
 #' @param value `data.table` to replace and update in `@outcome_data`
 #' @export
 setGeneric("outcome_data<-", function(object, value) standardGeneric("outcome_data<-"))
+
+
+#' Fit the marginal structural model for the sequence of emulated trials
+#'
+#' @param object A `trial_sequence` object
+#' @param use_sample_weights logical statement if sample weights should be used, default is `TRUE`
+#' @param analysis_weights a string, one of `"asis"``, `"unweighted"``, `"p99"``, `"weight_limits"`.
+#' @param weight_limits a numeric vector of length 2 . If `analysis_weights = "weight_limits` this specifies the upper
+#' and lower limits for truncating the weights.
+#'
+#' Before the outcome marginal structural model can be fit, the outcome model must be specified with
+#' [set_outcome_model()] and the data must be expanded into the trial sequence with [expand_trials()].
+#'
+#' The model is fit based on the `model_fitter` specified in [set_outcome_model] using the internal `fit_outcome_model`
+#' method.
+#' @return A modified `trial_sequence` object with updated `outcome_model` slot.
+#' @export
+#' @examples
+#' trial_seq_object <- trial_sequence("ITT") |>
+#'   set_data(data_censored) |>
+#'   set_outcome_model(
+#'     adjustment_terms = ~age_s,
+#'     followup_time_terms = ~ stats::poly(followup_time, degree = 2)
+#'   ) |>
+#'   set_expansion_options(output = save_to_datatable(), chunk_size = 500) |>
+#'   expand_trials() |>
+#'   load_expanded_data()
+#'
+#' fit_msm(trial_seq_object)
+setGeneric("fit_msm", function(object,
+                               use_sample_weights = TRUE,
+                               analysis_weights = c("asis", "unweighted", "p99", "weight_limits"),
+                               weight_limits = c(0, Inf)) {
+  standardGeneric("fit_msm")
+})

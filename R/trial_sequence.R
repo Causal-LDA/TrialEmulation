@@ -492,6 +492,7 @@ setMethod(
     reportAssertions(collection)
 
     formula <- Reduce(add_rhs, formula_list)
+    formula.tools::lhs(formula) <- quote(outcome)
     treatment <- all.vars(formula_list$treatment)
     object@outcome_model <- new(
       "te_outcome_model",
@@ -751,6 +752,40 @@ setMethod(
     new_outcome_data <- te_outcome_data(value)
     object@outcome_data <- new_outcome_data
     validObject(object)
+    object
+  }
+)
+
+
+#' @rdname load_expanded_data
+setMethod(
+  f = "load_expanded_data",
+  signature = "trial_sequence",
+  definition = function(object, p_control, period, subset_condition, seed) {
+    checkmate::assert_count(object@expansion@datastore@N, positive = TRUE)
+    checkmate::assert_number(p_control, lower = 0, upper = 1, null.ok = TRUE)
+    checkmate::assert_integerish(period, null.ok = TRUE, any.missing = FALSE, lower = 0)
+    if (!is.null(subset_condition)) {
+      checkmate::assert_string(subset_condition, null.ok = TRUE)
+    }
+
+    checkmate::assert_integerish(seed, null.ok = TRUE, len = 1, any.missing = FALSE)
+
+    if (is.null(p_control)) {
+      data_table <- read_expanded_data(object@expansion@datastore, period = period, subset_condition = subset_condition)
+      data_table <- cbind(data_table, "sample_weight" = 1)
+    } else {
+      data_table <- sample_expanded_data(
+        object@expansion@datastore,
+        period = period,
+        subset_condition = subset_condition,
+        p_control = p_control,
+        seed = seed
+      )
+    }
+
+    object@outcome_data <- te_outcome_data(data_table)
+
     object
   }
 )

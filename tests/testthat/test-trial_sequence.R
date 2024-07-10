@@ -67,7 +67,7 @@ test_that("set_outcome_model works for PP with defaults", {
   expect_formula(result@outcome_model@formula)
   expect_equal(
     as.character(result@outcome_model@formula),
-    "~assigned_treatment + followup_time + I(followup_time^2) + trial_period + I(trial_period^2)"
+    "outcome ~ assigned_treatment + followup_time + I(followup_time^2) + trial_period + I(trial_period^2)"
   )
   expect_class(result@outcome_model@model_fitter, "te_stats_glm_logit")
 })
@@ -82,7 +82,7 @@ test_that("set_outcome_model works for ITT", {
   expect_formula(result@outcome_model@formula)
   expect_equal(
     as.character(result@outcome_model@formula),
-    "~assigned_treatment + followup_time + I(followup_time^2) + trial_period + I(trial_period^2)"
+    "outcome ~ assigned_treatment + followup_time + I(followup_time^2) + trial_period + I(trial_period^2)"
   )
   expect_class(result@outcome_model@model_fitter, "te_stats_glm_logit")
 })
@@ -97,7 +97,7 @@ test_that("set_outcome_model works for ATT", {
   expect_formula(result@outcome_model@formula)
   expect_equal(
     as.character(result@outcome_model@formula),
-    "~dose + followup_time + I(followup_time^2) + trial_period + I(trial_period^2)"
+    "outcome ~ dose + followup_time + I(followup_time^2) + trial_period + I(trial_period^2)"
   )
   expect_class(result@outcome_model@model_fitter, "te_stats_glm_logit")
 })
@@ -122,7 +122,7 @@ test_that("set_outcome_model works with strings", {
   expect_formula(result@outcome_model@formula)
   expect_equal(
     as.character(result@outcome_model@formula),
-    "~assigned_treatment + age + x2 + followup_time + I(followup_time^2) + trial_period + I(trial_period^2)"
+    "outcome ~ assigned_treatment + age + x2 + followup_time + I(followup_time^2) + trial_period + I(trial_period^2)"
   )
 })
 
