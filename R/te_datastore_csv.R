@@ -96,3 +96,38 @@ setMethod(
     data_table
   }
 )
+
+
+#' @rdname te_datastore_csv-class
+#' @include trial_sequence.R
+setMethod(
+  f = "sample_expanded_data",
+  signature = "te_datastore_csv",
+  definition = function(object, p_control, period, subset_condition = NULL, seed) {
+    old_seed <- globalenv()$.Random.seed
+    on.exit(suspendInterrupts(set_random_seed(old_seed)))
+    set.seed(seed)
+
+    if (is.null(period)) {
+      for (n in seq_len(length(object@files))) {
+        period[n] <- substr(object@files[n], nchar(object@path) + 8, nchar(object@files)[n] - 4)
+      }
+    period <- as.numeric(period)
+    }
+
+    i <- 0
+    data <- list()
+    for (p in period) {
+      i <- i + 1
+      data[[i]] <- read_expanded_data(object, period = p, subset_condition = subset_condition)
+      data[[i]] <- lapply(
+        split(data[[i]], data[[i]]$followup_time, drop = TRUE),
+        do_sampling,
+        p_control = p_control
+      )
+    }
+
+    data_table <- data.table::rbindlist(lapply(data, data.table::rbindlist))
+    data_table
+  }
+)

@@ -220,7 +220,7 @@ setGeneric("read_expanded_data", function(object, period = NULL, subset_conditio
 #' sample_controls(
 #'   trial_itt_csv,
 #'   p_control = 0.2,
-#'   period = 1:20,
+#'   period = 1:10,
 #'   subset_condition = "followup_time %in% 1:20 & treatment == 1",
 #' )
 #'

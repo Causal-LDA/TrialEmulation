@@ -146,7 +146,7 @@ do_sampling <- function(data, p_control = 0.01) {
 #' @include trial_sequence.R
 setMethod(
   f = "sample_expanded_data",
-  signature = "te_datastore",
+  signature = "te_datastore_datatable",
   definition = function(object, p_control, period, subset_condition = NULL, seed) {
     old_seed <- globalenv()$.Random.seed
     on.exit(suspendInterrupts(set_random_seed(old_seed)))
