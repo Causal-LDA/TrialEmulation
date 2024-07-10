@@ -3,7 +3,7 @@
 \name{fit_msm}
 \alias{fit_msm}
 \alias{fit_msm,trial_sequence-method}
-\title{Title}
+\title{Fit the marginal structural model for the sequence of emulated trials}
 \usage{
 fit_msm(
   object,
@@ -24,13 +24,33 @@ fit_msm(
 
 \item{use_sample_weights}{logical statement if sample weights should be used, default is \code{TRUE}}
 
-\item{analysis_weights}{a string, one of "asis", "unweighted", "p99", "weight_limits"}
+\item{analysis_weights}{a string, one of \verb{"asis"``, }"unweighted"\verb{, `"p99"}, \code{"weight_limits"}.}
 
-\item{weight_limits}{a numerical vector of length 2}
+\item{weight_limits}{a numeric vector of length 2 . If \verb{analysis_weights = "weight_limits} this specifies the upper
+and lower limits for truncating the weights.
+
+Before the outcome marginal structural model can be fit, the outcome model must be specified with
+\code{\link[=set_outcome_model]{set_outcome_model()}} and the data must be expanded into the trial sequence with \code{\link[=expand_trials]{expand_trials()}}.
+
+The model is fit based on the \code{model_fitter} specified in \link{set_outcome_model} using the internal \code{fit_outcome_model}
+method.}
 }
 \value{
-A modified \code{trial_sequence} object
+A modified \code{trial_sequence} object with updated \code{outcome_model} slot.
 }
 \description{
-Title
+Fit the marginal structural model for the sequence of emulated trials
+}
+\examples{
+trial_seq_object <- trial_sequence("ITT") |>
+  set_data(data_censored) |>
+  set_outcome_model(
+    adjustment_terms = ~age_s,
+    followup_time_terms = ~ stats::poly(followup_time, degree = 2)
+  ) |>
+  set_expansion_options(output = save_to_datatable(), chunk_size = 500) |>
+  expand_trials() |>
+  load_expanded_data()
+
+fit_msm(trial_seq_object)
 }

@@ -405,17 +405,33 @@ setGeneric("outcome_data", function(object) standardGeneric("outcome_data"))
 setGeneric("outcome_data<-", function(object, value) standardGeneric("outcome_data<-"))
 
 
-#' Title
+#' Fit the marginal structural model for the sequence of emulated trials
 #'
 #' @param object A `trial_sequence` object
 #' @param use_sample_weights logical statement if sample weights should be used, default is `TRUE`
-#' @param analysis_weights a string, one of "asis", "unweighted", "p99", "weight_limits"
-#' @param weight_limits a numerical vector of length 2
+#' @param analysis_weights a string, one of `"asis"``, `"unweighted"``, `"p99"``, `"weight_limits"`.
+#' @param weight_limits a numeric vector of length 2 . If `analysis_weights = "weight_limits` this specifies the upper
+#' and lower limits for truncating the weights.
 #'
-#' @return A modified `trial_sequence` object
+#' Before the outcome marginal structural model can be fit, the outcome model must be specified with
+#' [set_outcome_model()] and the data must be expanded into the trial sequence with [expand_trials()].
+#'
+#' The model is fit based on the `model_fitter` specified in [set_outcome_model] using the internal `fit_outcome_model`
+#' method.
+#' @return A modified `trial_sequence` object with updated `outcome_model` slot.
 #' @export
-#'
 #' @examples
+#' trial_seq_object <- trial_sequence("ITT") |>
+#'   set_data(data_censored) |>
+#'   set_outcome_model(
+#'     adjustment_terms = ~age_s,
+#'     followup_time_terms = ~ stats::poly(followup_time, degree = 2)
+#'   ) |>
+#'   set_expansion_options(output = save_to_datatable(), chunk_size = 500) |>
+#'   expand_trials() |>
+#'   load_expanded_data()
+#'
+#' fit_msm(trial_seq_object)
 setGeneric("fit_msm", function(object,
                                use_sample_weights = TRUE,
                                analysis_weights = c("asis", "unweighted", "p99", "weight_limits"),

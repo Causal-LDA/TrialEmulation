@@ -186,8 +186,9 @@ setMethod(
     if (is(object@outcome_model, "te_outcome_unset")) stop("outcome_model not set, please run set_outcome_model")
     if (object@expansion@datastore@N == 0) stop("datastore is empty, please run expand_trials")
     if (!length(object@outcome_data@n_rows)) stop("outcome_data is empty, please run load_expanded_data")
-    checkmate::assert_numeric(weight_limits, len = 2)
-    checkmate::assert_choice(analysis_weights, c("asis", "p99", "weight_limits", "unweighted"))
+
+    analysis_weights <- checkmate::matchArg(analysis_weights, c("asis", "unweighted", "p99", "weight_limits"))
+    if (analysis_weights == "weight_limits") checkmate::assert_numeric(weight_limits, len = 2)
 
     w <- object@outcome_data@data$weight
 
