@@ -214,7 +214,7 @@ test_that("case_control_sampling_trials works with sort = TRUE", {
 })
 
 
-test_that("sample_controls works with trial_sequence objects containing te_datastore_csv objects", {
+test_that("sample_controls works with trial_sequence objects containing te_datastore_datatable objects", {
   trial_itt_dir <- file.path(tempdir(), "trial_itt")
   dir.create(trial_itt_dir)
 
@@ -237,15 +237,15 @@ test_that("sample_controls works with trial_sequence objects containing te_datas
     calculate_weights() |>
     set_outcome_model(adjustment_terms = ~ x1 + x2)
 
-  trial_itt_csv <- set_expansion_options(
+  trial_itt_datatable <- set_expansion_options(
     trial_itt,
-    output = save_to_csv(file.path(trial_itt_dir, "trial_csvs")),
+    output = save_to_datatable(),
     chunk_size = 500
   ) |>
     expand_trials()
 
   # sample_controls works without additional arguments
-  sc_01 <- sample_controls(trial_itt_csv, p_control = 0.01, seed = 1221)
+  sc_01 <- sample_controls(trial_itt_datatable, p_control = 0.01, seed = 1221)
   expect_equal(
     sort(sc_01@outcome_data@data$id),
     c(
@@ -254,19 +254,19 @@ test_that("sample_controls works with trial_sequence objects containing te_datas
     )
   )
 
-  random_01 <- sample_controls(trial_itt_csv, p_control = 0.01)
+  random_01 <- sample_controls(trial_itt_datatable, p_control = 0.01)
 
   # seed gets reset
-  sc_01_1 <- sample_controls(trial_itt_csv, p_control = 0.01, seed = 1221)
-  random_02 <- sample_controls(trial_itt_csv, p_control = 0.01)
+  sc_01_1 <- sample_controls(trial_itt_datatable, p_control = 0.01, seed = 1221)
+  random_02 <- sample_controls(trial_itt_datatable, p_control = 0.01)
   expect_false(identical(sort(random_01@outcome_data@data$id), sort(random_02@outcome_data@data$id)))
 
   # sample_controls works with p_control
-  sc_02 <- sample_controls(trial_itt_csv, p_control = 0.5, seed = 5678)
+  sc_02 <- sample_controls(trial_itt_datatable, p_control = 0.5, seed = 5678)
   expect_equal(sc_02@outcome_data@n_rows, 765)
 
   # sample_controls works with p_control = 0
-  sc_03 <- sample_controls(trial_itt_csv, p_control = 0)
+  sc_03 <- sample_controls(trial_itt_datatable, p_control = 0)
   expect_equal(sc_03@outcome_data@n_rows, 14)
 
   # cases are kept
@@ -276,12 +276,12 @@ test_that("sample_controls works with trial_sequence objects containing te_datas
 
   # all columns are kept and sample_weight column is added
   expect_equal(
-    colnames(sc_01@outcome_data@data), c(colnames(trial_itt_csv@expansion@datastore@template), "sample_weight")
+    colnames(sc_01@outcome_data@data), c(colnames(trial_itt_datatable@expansion@datastore@data), "sample_weight")
   )
 
   # sample_controls subsets data correctly
   sc_04 <- sample_controls(
-    trial_itt_csv,
+    trial_itt_datatable,
     period = 1:10,
     subset_condition = "followup_time <= 20 & treatment == 1",
     p_control = 0.2,
@@ -304,7 +304,8 @@ test_that("sample_controls works with trial_sequence objects containing te_datas
 })
 
 
-test_that("load_expanded_data works with trial_sequence objects containing te_datastore_csv objects", {
+
+test_that("load_expanded_data works with trial_sequence objects containing te_datastore_datatable objects", {
   trial_itt_dir <- file.path(tempdir(), "trial_itt")
   dir.create(trial_itt_dir)
 
@@ -327,19 +328,19 @@ test_that("load_expanded_data works with trial_sequence objects containing te_da
     calculate_weights() |>
     set_outcome_model(adjustment_terms = ~ x1 + x2)
 
-  trial_itt_csv <- set_expansion_options(
+  trial_itt_datatable <- set_expansion_options(
     trial_itt,
-    output = save_to_csv(file.path(trial_itt_dir, "trial_csvs")),
+    output = save_to_datatable(),
     chunk_size = 500
   ) |>
     expand_trials()
 
   # load_expanded_data works without additional arguments
-  sc_00 <- load_expanded_data(trial_itt_csv)
+  sc_00 <- load_expanded_data(trial_itt_datatable)
   expect_equal(sc_00@outcome_data@n_rows, 1558)
 
   # load_expanded_data works with p_control
-  sc_01 <- load_expanded_data(trial_itt_csv, p_control = 0.01, seed = 1221)
+  sc_01 <- load_expanded_data(trial_itt_datatable, p_control = 0.01, seed = 1221)
   expect_equal(
     sort(sc_01@outcome_data@data$id),
     c(
@@ -348,19 +349,19 @@ test_that("load_expanded_data works with trial_sequence objects containing te_da
     )
   )
 
-  random_01 <- load_expanded_data(trial_itt_csv, p_control = 0.01)
+  random_01 <- load_expanded_data(trial_itt_datatable, p_control = 0.01)
 
   # seed gets reset
-  sc_01_1 <- load_expanded_data(trial_itt_csv, p_control = 0.01, seed = 1221)
-  random_02 <- load_expanded_data(trial_itt_csv, p_control = 0.01)
+  sc_01_1 <- load_expanded_data(trial_itt_datatable, p_control = 0.01, seed = 1221)
+  random_02 <- load_expanded_data(trial_itt_datatable, p_control = 0.01)
   expect_false(identical(sort(random_01@outcome_data@data$id), sort(random_02@outcome_data@data$id)))
 
   # load_expanded_data works with p_control
-  sc_02 <- load_expanded_data(trial_itt_csv, p_control = 0.5, seed = 5678)
+  sc_02 <- load_expanded_data(trial_itt_datatable, p_control = 0.5, seed = 5678)
   expect_equal(sc_02@outcome_data@n_rows, 765)
 
   # load_expanded_data works with p_control = 0
-  sc_03 <- load_expanded_data(trial_itt_csv, p_control = 0)
+  sc_03 <- load_expanded_data(trial_itt_datatable, p_control = 0)
   expect_equal(sc_03@outcome_data@n_rows, 14)
 
   # cases are kept
@@ -371,17 +372,17 @@ test_that("load_expanded_data works with trial_sequence objects containing te_da
 
   # all columns are kept and sample_weight column is added
   expect_equal(
-    colnames(sc_00@outcome_data@data), c(colnames(trial_itt_csv@expansion@datastore@template), "sample_weight")
+    colnames(sc_00@outcome_data@data), c(colnames(trial_itt_datatable@expansion@datastore@data), "sample_weight")
   )
   expect_equal(sort(sc_00@outcome_data@data$sample_weight), rep(1, 1558))
 
   expect_equal(
-    colnames(sc_01@outcome_data@data), c(colnames(trial_itt_csv@expansion@datastore@template), "sample_weight")
+    colnames(sc_01@outcome_data@data), c(colnames(trial_itt_datatable@expansion@datastore@data), "sample_weight")
   )
 
   # load_expanded_data subsets data correctly with p_control
   sc_04 <- load_expanded_data(
-    trial_itt_csv,
+    trial_itt_datatable,
     period = 1:10,
     subset_condition = "followup_time <= 20 & treatment == 1",
     p_control = 0.2,
@@ -397,7 +398,7 @@ test_that("load_expanded_data works with trial_sequence objects containing te_da
 
   # load_expanded_data subsets data correctly without p_control
   sc_05 <- load_expanded_data(
-    trial_itt_csv,
+    trial_itt_datatable,
     period = 1:10,
     subset_condition = "followup_time <= 20 & treatment == 1",
   )

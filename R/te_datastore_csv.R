@@ -96,3 +96,43 @@ setMethod(
     data_table
   }
 )
+
+
+#' @rdname te_datastore_csv-class
+#' @include trial_sequence.R
+setMethod(
+  f = "sample_expanded_data",
+  signature = "te_datastore_csv",
+  definition = function(object, p_control, period, subset_condition = NULL, seed) {
+    old_seed <- globalenv()$.Random.seed
+    on.exit(suspendInterrupts(set_random_seed(old_seed)))
+    set.seed(seed)
+
+    all_periods <- NULL
+    for (n in seq_along(object@files)) {
+      all_periods[n] <- substr(object@files[n], nchar(object@path) + 8, nchar(object@files)[n] - 4)
+    }
+    all_periods <- as.numeric(all_periods)
+
+    if (is.null(period)) {
+      periods <- all_periods
+    } else if (all(period %in% all_periods)) {
+      periods <- period
+    } else {
+      periods <- period[period %in% all_periods]
+      warning(
+        "The following periods don't exist in the data and were omitted: ",
+        toString(period[!(period %in% all_periods)])
+      )
+    }
+
+    rbindlist(
+      lapply(periods, function(p) {
+        dt <- read_expanded_data(object, period = p, subset_condition)
+        dt_sample <- dt[, do_sampling(.SD, p_control = p_control), by = "followup_time"]
+        setcolorder(dt_sample, colnames(dt))
+        dt_sample
+      })
+    )
+  }
+)

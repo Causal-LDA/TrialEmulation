@@ -5,11 +5,20 @@
 \alias{te_datastore_csv-class}
 \alias{save_expanded_data,te_datastore_csv-method}
 \alias{read_expanded_data,te_datastore_csv-method}
+\alias{sample_expanded_data,te_datastore_csv-method}
 \title{te_datastore_csv, functions and methods}
 \usage{
 \S4method{save_expanded_data}{te_datastore_csv}(object, data)
 
 \S4method{read_expanded_data}{te_datastore_csv}(object, period = NULL, subset_condition = NULL)
+
+\S4method{sample_expanded_data}{te_datastore_csv}(
+  object,
+  p_control,
+  period = NULL,
+  subset_condition = NULL,
+  seed
+)
 }
 \arguments{
 \item{object}{An object of class \link[=te_datastore-class]{te_datastore} or a child class.}

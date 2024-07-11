@@ -91,7 +91,7 @@ test_that("sample_controls works with trial_sequence objects containing te_datas
   # sample_controls subsets data correctly
   sc_04 <- sample_controls(
     trial_itt_duckdb,
-    period = 1:20,
+    period = 1:10,
     subset_condition = "x2 <= 1 & treatment == 1 & (id %in% 40:90 | followup_time %in% c(2, 3, 4, 5, 6))",
     p_control = 0.2,
     seed = 2332
@@ -99,10 +99,13 @@ test_that("sample_controls works with trial_sequence objects containing te_datas
   expect_equal(
     sort(sc_04@outcome_data@data$id),
     c(
-      21, 27, 34, 34, 44, 44, 44, 44, 44, 44, 44, 53, 53, 54, 59,
-      59, 59, 59, 60, 65, 65, 70, 71, 73, 74, 74, 74, 83, 95
+      2, 14, 16, 33, 34, 44, 44, 44, 44, 44, 44, 44, 53, 53, 54, 59, 59, 59, 60, 70, 70, 71, 71, 71, 74, 74, 95, 95
     )
   )
+  expect_true(all(sc_04@outcome_data@data$x2 <= 1))
+  expect_true(all(sc_04@outcome_data@data$treatment == 1))
+  expect_true(all(sc_04@outcome_data@data$id %in% 40:90 | sc_04@outcome_data@data$followup_time %in% 2:6))
+  expect_true(all(sc_04@outcome_data@data$period %in% 1:10))
 
   # sample_controls returns the correct classes
   expect_class(sc_04, "trial_sequence_ITT")
@@ -169,7 +172,7 @@ test_that("load_expanded_data works with trial_sequence objects containing te_da
   # load_expanded_data subsets data correctly
   sc_04 <- load_expanded_data(
     trial_itt_duckdb,
-    period = 1:20,
+    period = 1:10,
     subset_condition = "x2 <= 1 & treatment == 1 & (id %in% 40:90 | followup_time %in% c(2, 3, 4, 5, 6))",
     p_control = 0.2,
     seed = 2332
@@ -177,10 +180,13 @@ test_that("load_expanded_data works with trial_sequence objects containing te_da
   expect_equal(
     sort(sc_04@outcome_data@data$id),
     c(
-      21, 27, 34, 34, 44, 44, 44, 44, 44, 44, 44, 53, 53, 54, 59,
-      59, 59, 59, 60, 65, 65, 70, 71, 73, 74, 74, 74, 83, 95
+      2, 14, 16, 33, 34, 44, 44, 44, 44, 44, 44, 44, 53, 53, 54, 59, 59, 59, 60, 70, 70, 71, 71, 71, 74, 74, 95, 95
     )
   )
+  expect_true(all(sc_04@outcome_data@data$x2 <= 1))
+  expect_true(all(sc_04@outcome_data@data$treatment == 1))
+  expect_true(all(sc_04@outcome_data@data$id %in% 40:90 | sc_04@outcome_data@data$followup_time %in% 2:6))
+  expect_true(all(sc_04@outcome_data@data$period %in% 1:10))
 
   # load_expanded_data subsets data correctly without p_control
   sc_05 <- load_expanded_data(
