@@ -74,7 +74,7 @@ load_expanded_data(
   trial_itt_csv,
   p_control = 0.2,
   period = 1:20,
-  subset_condition = "followup_time \%in\% 1:20 & treatment == 1",
+  subset_condition = "followup_time \%in\% 1:20 & x2 < 1",
 )
 
 # delete after use

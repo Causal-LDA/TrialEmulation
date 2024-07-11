@@ -2,7 +2,7 @@
 % Please edit documentation in R/generics.R, R/sampling.R
 \name{sample_expanded_data}
 \alias{sample_expanded_data}
-\alias{sample_expanded_data,te_datastore_datatable-method}
+\alias{sample_expanded_data,te_datastore-method}
 \title{Internal method to sample expanded data}
 \usage{
 sample_expanded_data(
@@ -13,7 +13,7 @@ sample_expanded_data(
   seed
 )
 
-\S4method{sample_expanded_data}{te_datastore_datatable}(
+\S4method{sample_expanded_data}{te_datastore}(
   object,
   p_control,
   period = NULL,
