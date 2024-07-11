@@ -134,4 +134,5 @@ setMethod(
         dt_sample
       })
     )
+  }
 )

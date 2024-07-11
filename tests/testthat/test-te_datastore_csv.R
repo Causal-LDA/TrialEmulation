@@ -108,10 +108,13 @@ test_that("sample_controls works with trial_sequence objects containing te_datas
   expect_equal(
     sort(sc_04@outcome_data@data$id),
     c(
-      21, 21, 21, 27, 27, 33, 33, 33, 34, 34, 44, 44, 44, 44, 44, 47, 50, 53, 54, 54, 59, 59, 59, 59, 59, 59,
-      59, 60, 60, 60, 60, 60, 65, 65, 73, 74, 74, 74, 74, 83, 95, 95, 95, 95, 95, 95, 95, 95, 95, 95, 95, 96
+      21, 21, 21, 27, 33, 33, 33, 34, 34, 44, 44, 44, 44, 44, 44, 44, 44, 44, 47, 47, 49, 50, 50, 54, 54, 59,
+      59, 59, 59, 59, 59, 59, 60, 65, 65, 65, 71, 73, 74, 74, 74, 74, 74, 74, 74, 83, 95, 95, 95, 95, 95, 95
     )
   )
+  expect_true(all(sc_04@outcome_data@data$followup_time <= 20))
+  expect_true(all(sc_04@outcome_data@data$treatment == 1))
+  expect_true(all(sc_04@outcome_data@data$period %in% 1:10))
 
   # if non-existing periods are entered sample_controls omits the missing periods, runs the code and returns a warning
   expect_warning(
@@ -221,10 +224,13 @@ test_that("load_expanded_data works with trial_sequence objects containing te_da
   expect_equal(
     sort(sc_04@outcome_data@data$id),
     c(
-      21, 21, 21, 27, 27, 33, 33, 33, 34, 34, 44, 44, 44, 44, 44, 47, 50, 53, 54, 54, 59, 59, 59, 59, 59, 59,
-      59, 60, 60, 60, 60, 60, 65, 65, 73, 74, 74, 74, 74, 83, 95, 95, 95, 95, 95, 95, 95, 95, 95, 95, 95, 96
+      21, 21, 21, 27, 33, 33, 33, 34, 34, 44, 44, 44, 44, 44, 44, 44, 44, 44, 47, 47, 49, 50, 50, 54, 54, 59,
+      59, 59, 59, 59, 59, 59, 60, 65, 65, 65, 71, 73, 74, 74, 74, 74, 74, 74, 74, 83, 95, 95, 95, 95, 95, 95
     )
   )
+  expect_true(all(sc_04@outcome_data@data$followup_time <= 20))
+  expect_true(all(sc_04@outcome_data@data$treatment == 1))
+  expect_true(all(sc_04@outcome_data@data$period %in% 1:10))
 
   # load_expanded_data subsets data correctly without p_control
   sc_05 <- load_expanded_data(
