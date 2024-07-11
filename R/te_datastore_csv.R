@@ -120,10 +120,10 @@ setMethod(
       periods <- period
     } else {
       periods <- period[period %in% all_periods]
-      warning(paste0(
+      warning(
         "The following periods don't exist in the data and were omitted: ",
-        paste0(period[!(period %in% all_periods)], collapse = ", ")
-      ))
+        toString(period[!(period %in% all_periods)])
+      )
     }
 
     i <- 0
