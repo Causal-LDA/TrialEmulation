@@ -221,7 +221,7 @@ setGeneric("read_expanded_data", function(object, period = NULL, subset_conditio
 #'   trial_itt_csv,
 #'   p_control = 0.2,
 #'   period = 1:10,
-#'   subset_condition = "followup_time %in% 1:20 & treatment == 1",
+#'   subset_condition = "followup_time %in% 1:20 & x2 < 1",
 #' )
 #'
 #' # delete after use
@@ -281,7 +281,7 @@ setGeneric(
 #'   trial_itt_csv,
 #'   p_control = 0.2,
 #'   period = 1:20,
-#'   subset_condition = "followup_time %in% 1:20 & treatment == 1",
+#'   subset_condition = "followup_time %in% 1:20 & x2 < 1",
 #' )
 #'
 #' # delete after use
