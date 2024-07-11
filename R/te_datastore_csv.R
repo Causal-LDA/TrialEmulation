@@ -109,7 +109,7 @@ setMethod(
     set.seed(seed)
 
     all_periods <- NULL
-    for (n in seq_len(length(object@files))) {
+    for (n in seq_along(object@files)) {
       all_periods[n] <- substr(object@files[n], nchar(object@path) + 8, nchar(object@files)[n] - 4)
     }
     all_periods <- as.numeric(all_periods)
