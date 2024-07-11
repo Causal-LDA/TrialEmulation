@@ -126,19 +126,12 @@ setMethod(
       )
     }
 
-    i <- 0
-    data <- list()
-    for (p in periods) {
-      i <- i + 1
-      data[[i]] <- read_expanded_data(object, period = p, subset_condition = subset_condition)
-      data[[i]] <- lapply(
-        split(data[[i]], data[[i]]$followup_time, drop = TRUE),
-        do_sampling,
-        p_control = p_control
-      )
-    }
-
-    data_table <- data.table::rbindlist(lapply(data, data.table::rbindlist))
-    data_table
-  }
+    rbindlist(
+      lapply(periods, function(p) {
+        dt <- read_expanded_data(object, period = p, subset_condition)
+        dt_sample <- dt[, do_sampling(.SD, p_control = p_control), by = "followup_time"]
+        setcolorder(dt_sample, colnames(dt))
+        dt_sample
+      })
+    )
 )
