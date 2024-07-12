@@ -22,12 +22,15 @@ setClass(
 )
 
 setValidity("te_datastore_csv", function(object) {
-  all(for (n in seq_along(object@files$file)) {
-    grepl(
+  check <- NULL
+  for (n in seq_along(object@files$file)) {
+    check[n] <- grepl(
       x = object@files$file[n],
       pattern = paste0("trial_", object@files$period[n], ".csv")
     )
-  })
+  }
+  if (all(check)) TRUE
+  else "@files$file and @files$period don't match"
 })
 
 
@@ -80,6 +83,7 @@ setMethod(
       "period" = periods
     )
     if (!ncol(object@template)) object@template <- data[0, ]
+    validObject(object)
     object
   }
 )
