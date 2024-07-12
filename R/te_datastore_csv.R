@@ -29,8 +29,11 @@ setValidity("te_datastore_csv", function(object) {
       pattern = paste0("trial_", object@files$period[n], ".csv")
     )
   }
-  if (all(check)) TRUE
-  else "@files$file and @files$period don't match"
+  if (all(check)) {
+    TRUE
+  } else {
+    "@files$file and @files$period don't match"
+  }
 })
 
 
