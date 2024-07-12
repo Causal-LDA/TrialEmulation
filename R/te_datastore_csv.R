@@ -18,6 +18,9 @@ setClass(
     path = "character",
     files = "data.frame",
     template = "data.frame"
+  ),
+  prototype = list(
+    files = data.frame(file = character(0L), period = numeric(0L))
   )
 )
 
