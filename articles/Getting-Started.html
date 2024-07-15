@@ -32,7 +32,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">TrialEmulation</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.3.21</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.3.22</span>
       </span>
     </div>
 
@@ -400,13 +400,13 @@ data.</p>
 <span><span class="co">#&gt; Expanded Trial Emulation data</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Expanded data saved in 396 csv files:</span></span>
-<span><span class="co">#&gt;   1:   /tmp/RtmpxBFiHZ/trial_emu/trial_1.csv</span></span>
-<span><span class="co">#&gt;   2:   /tmp/RtmpxBFiHZ/trial_emu/trial_2.csv</span></span>
-<span><span class="co">#&gt;   3:   /tmp/RtmpxBFiHZ/trial_emu/trial_3.csv</span></span>
+<span><span class="co">#&gt;   1:   /tmp/RtmpT7ZTBz/trial_emu/trial_1.csv</span></span>
+<span><span class="co">#&gt;   2:   /tmp/RtmpT7ZTBz/trial_emu/trial_2.csv</span></span>
+<span><span class="co">#&gt;   3:   /tmp/RtmpT7ZTBz/trial_emu/trial_3.csv</span></span>
 <span><span class="co">#&gt;  ---                                        </span></span>
-<span><span class="co">#&gt; 394: /tmp/RtmpxBFiHZ/trial_emu/trial_394.csv</span></span>
-<span><span class="co">#&gt; 395: /tmp/RtmpxBFiHZ/trial_emu/trial_395.csv</span></span>
-<span><span class="co">#&gt; 396: /tmp/RtmpxBFiHZ/trial_emu/trial_396.csv</span></span>
+<span><span class="co">#&gt; 394: /tmp/RtmpT7ZTBz/trial_emu/trial_394.csv</span></span>
+<span><span class="co">#&gt; 395: /tmp/RtmpT7ZTBz/trial_emu/trial_395.csv</span></span>
+<span><span class="co">#&gt; 396: /tmp/RtmpT7ZTBz/trial_emu/trial_396.csv</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Number of observations in expanded data: 963883 </span></span>
@@ -466,7 +466,7 @@ individually</p>
 <span><span class="co">#&gt;  null.deviance df.null logLik  AIC  BIC deviance df.residual  nobs</span></span>
 <span><span class="co">#&gt;           4330   21263  -2165 4335 4359     4329       21261 21264</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Object saved at "/tmp/RtmpxBFiHZ/trial_emu/weight_model_switch_n0.rds"</span></span></code></pre></div>
+<span><span class="co">#&gt; Object saved at "/tmp/RtmpT7ZTBz/trial_emu/weight_model_switch_n0.rds"</span></span></code></pre></div>
 <p>If <code>save_weight_models = TRUE,</code> the full model objects are
 saved in <code>working_dir</code>, so you can inspect the data used in
 those models and further investigate how well those models fit.</p>
@@ -503,12 +503,12 @@ those models and further investigate how well those models fit.</p>
 <p>We also see the expanded trial files:</p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">prep_data</span><span class="op">$</span><span class="va">data</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] "/tmp/RtmpxBFiHZ/trial_emu/trial_1.csv"</span></span>
-<span><span class="co">#&gt; [2] "/tmp/RtmpxBFiHZ/trial_emu/trial_2.csv"</span></span>
-<span><span class="co">#&gt; [3] "/tmp/RtmpxBFiHZ/trial_emu/trial_3.csv"</span></span>
-<span><span class="co">#&gt; [4] "/tmp/RtmpxBFiHZ/trial_emu/trial_4.csv"</span></span>
-<span><span class="co">#&gt; [5] "/tmp/RtmpxBFiHZ/trial_emu/trial_5.csv"</span></span>
-<span><span class="co">#&gt; [6] "/tmp/RtmpxBFiHZ/trial_emu/trial_6.csv"</span></span></code></pre></div>
+<span><span class="co">#&gt; [1] "/tmp/RtmpT7ZTBz/trial_emu/trial_1.csv"</span></span>
+<span><span class="co">#&gt; [2] "/tmp/RtmpT7ZTBz/trial_emu/trial_2.csv"</span></span>
+<span><span class="co">#&gt; [3] "/tmp/RtmpT7ZTBz/trial_emu/trial_3.csv"</span></span>
+<span><span class="co">#&gt; [4] "/tmp/RtmpT7ZTBz/trial_emu/trial_4.csv"</span></span>
+<span><span class="co">#&gt; [5] "/tmp/RtmpT7ZTBz/trial_emu/trial_5.csv"</span></span>
+<span><span class="co">#&gt; [6] "/tmp/RtmpT7ZTBz/trial_emu/trial_6.csv"</span></span></code></pre></div>
 <p>Each of these csv files contains the data for the trial starting at
 period <code>_i</code>. To create a manageable dataset for the final
 analysis we can sample from these trials.</p>
