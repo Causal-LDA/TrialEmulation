@@ -26,7 +26,7 @@ setClass(
 
 setValidity("te_datastore_csv", function(object) {
   checkmate::check_data_frame(object@files, ncols = 2)
-  checkmate::check_names(colnames(object@files), identical.to = c("file","period"))
+  checkmate::check_names(colnames(object@files), identical.to = c("file", "period"))
   check <- NULL
   for (n in seq_along(object@files$file)) {
     check[n] <- grepl(
