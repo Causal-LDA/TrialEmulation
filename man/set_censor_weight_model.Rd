@@ -13,7 +13,7 @@ set_censor_weight_model(
   censor_event,
   numerator,
   denominator,
-  pool_models,
+  pool_models = NULL,
   model_fitter
 )
 

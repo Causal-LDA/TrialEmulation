@@ -298,7 +298,7 @@ setGeneric(
            censor_event,
            numerator,
            denominator,
-           pool_models,
+           pool_models = NULL,
            model_fitter) {
     standardGeneric("set_censor_weight_model")
   }
@@ -348,7 +348,11 @@ setMethod(
            denominator,
            pool_models = "none",
            model_fitter = stats_glm_logit()) {
-    assert_choice(pool_models, c("both", "numerator", "none"))
+    pool_models <- if (is.null(pool_models)) {
+      "none"
+    } else {
+      checkmate::matchArg(pool_models, c("both", "numerator", "none"))
+    }
     callNextMethod()
   }
 )
@@ -363,7 +367,11 @@ setMethod(
            denominator,
            pool_models = "numerator",
            model_fitter = stats_glm_logit()) {
-    assert_choice(pool_models, c("both", "numerator"))
+    pool_models <- if (is.null(pool_models)) {
+      "numerator"
+    } else {
+      checkmate::matchArg(pool_models, c("both", "numerator"))
+    }
     callNextMethod()
   }
 )
@@ -378,7 +386,11 @@ setMethod(
            denominator,
            pool_models = "none",
            model_fitter = stats_glm_logit()) {
-    assert_choice(pool_models, c("both", "numerator", "none"))
+    pool_models <- if (is.null(pool_models)) {
+      "none"
+    } else {
+      checkmate::matchArg(pool_models, c("both", "numerator", "none"))
+    }
     callNextMethod()
   }
 )
@@ -463,7 +475,7 @@ setMethod(
   "set_switch_weight_model",
   c(object = "trial_sequence_ITT"),
   function(object, numerator, denominator, model_fitter) {
-    stop("Switching weights are not support for intention-to-treat analyses")
+    stop("Switching weights are not supported for intention-to-treat analyses", call. = FALSE)
   }
 )
 
