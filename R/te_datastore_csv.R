@@ -25,20 +25,22 @@ setClass(
 )
 
 setValidity("te_datastore_csv", function(object) {
-  checkmate::check_data_frame(object@files, ncols = 2)
-  checkmate::check_names(colnames(object@files), identical.to = c("file", "period"))
-  check <- NULL
+  msg <- character(0L)
+
+  if (!(check1 <- check_data_frame(object@files, ncols = 2))) msg <- c(msg, check1)
+  if (!(check2 <- check_names(colnames(object@files), identical.to = c("file", "period")))) msg <- c(msg, check2)
+
+  check3 <- NULL
   for (n in seq_along(object@files$file)) {
-    check[n] <- grepl(
+    check3[n] <- grepl(
       x = object@files$file[n],
       pattern = paste0("trial_", object@files$period[n], ".csv")
     )
   }
-  if (all(check)) {
-    TRUE
-  } else {
-    "@files$file and @files$period don't match"
+  if (!all(check3)) {
+    msg <- c(msg, "@files$file and @files$period don't match")
   }
+  if (length(msg)) msg else TRUE
 })
 
 

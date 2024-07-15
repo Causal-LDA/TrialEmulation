@@ -50,6 +50,99 @@ test_that("show works for trial_sequence_AT with nothing set", {
 })
 # Set Data ----
 
+test_that("set_data works for trial_sequence_ITT", {
+  data(trial_example)
+  result <- trial_sequence("ITT") |>
+    set_data(
+      data = trial_example,
+      id = "id",
+      period = "period",
+      eligible = "eligible",
+      treatment = "treatment"
+    )
+  expect_class(result, "trial_sequence_ITT")
+  expect_class(result@data, "te_data")
+  expect_data_table(result@data@data, nrows = 48400, ncols = 20)
+})
+
+test_that("set_data works for trial_sequence_PP", {
+  data(trial_example)
+  result <- trial_sequence("PP") |>
+    set_data(
+      data = trial_example,
+      id = "id",
+      period = "period",
+      eligible = "eligible",
+      treatment = "treatment"
+    )
+  expect_class(result, "trial_sequence_PP")
+  expect_class(result@data, "te_data")
+  expect_data_table(result@data@data, nrows = 38820, ncols = 20)
+})
+
+
+test_that("set_data works for trial_sequence_AT", {
+  data(trial_example)
+  result <- trial_sequence("AT") |>
+    set_data(
+      data = trial_example,
+      id = "id",
+      period = "period",
+      eligible = "eligible",
+      treatment = "treatment"
+    )
+  expect_class(result, "trial_sequence_AT")
+  expect_class(result@data, "te_data")
+  expect_data_table(result@data@data, nrows = 48400, ncols = 20)
+})
+
+test_that("set_data errors if reserved colnames are used", {
+  dat <- trial_example
+  colnames(dat)[6:10] <- c("wt", "wtC", "weight", "dose", "assigned_treatment")
+  expect_error(
+    trial_sequence("ITT") |>
+      set_data(
+        data = dat[1:500, ],
+        id = "id",
+        period = "period",
+        eligible = "eligible",
+        treatment = "treatment"
+      ),
+    fixed = TRUE,
+    regexp = "has elements {'wt','wtC','weight','dose','assigned_treatment'}"
+  )
+})
+
+test_that("set_data errors if column not found", {
+  expect_error(
+    trial_sequence("ITT") |>
+      set_data(
+        data = trial_example[1:500, ],
+        id = "USUBJID",
+        period = "period",
+        eligible = "eligible",
+        treatment = "treatment"
+      ),
+    fixed = TRUE,
+    regexp = "must include the elements {'USUBJID'"
+  )
+})
+
+test_that("set_data errors if columns used twice", {
+  expect_error(
+    trial_sequence("ITT") |>
+      set_data(
+        data = trial_example[1:500, ],
+        id = "id",
+        period = "id",
+        eligible = "eligible",
+        treatment = "eligible"
+      ),
+    fixed = TRUE,
+    regexp = "Duplicate column names specified: period = \"id\", eligible = \"eligible\""
+  )
+})
+
 # Set Switching Model -------
 
 # Set Censoring Model -------

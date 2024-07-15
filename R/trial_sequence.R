@@ -230,20 +230,27 @@ setMethod(
            eligible = "eligible") {
     assert_class(object, "trial_sequence")
     assert_class(data, "data.frame")
+
+    data_cols <- c(id, period, treatment, outcome, eligible)
+    new_col_names <- c("id", "period", "treatment", "outcome", "eligible")
+
     assert_names(
       colnames(data),
-      must.include = c(id, period, treatment, outcome, eligible),
-      disjunct.from = c("wt", "wtC", "weight"),
+      must.include = data_cols,
+      disjunct.from = c("wt", "wtC", "weight", "dose", "assigned_treatment"),
       what = "colnames",
       .var.name = "data"
     )
 
+    if (any(dups <- duplicated(data_cols))) {
+      stop(
+        "Duplicate column names specified: ",
+        toString(paste0(new_col_names[dups], " = ", dQuote(data_cols[dups], FALSE)))
+      )
+    }
+
     trial_data <- as.data.table(data)
-    data.table::setnames(
-      trial_data,
-      old = c(id, period, treatment, outcome, eligible),
-      new = c("id", "period", "treatment", "outcome", "eligible")
-    )
+    data.table::setnames(trial_data, old = data_cols, new = new_col_names)
     trial_data <- data_manipulation(trial_data, use_censor = censor_at_switch)
     object@data <- new(
       "te_data",
