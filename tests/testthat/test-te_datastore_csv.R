@@ -1,3 +1,20 @@
+test_that("te_datastore_csv validator works", {
+  temp_dir <- tempfile("csv_dir_")
+  dir.create(temp_dir)
+  datastore <- save_to_csv(temp_dir)
+  expanded_csv_data <- save_expanded_data(datastore, subset(vignette_switch_data, trial_period %in% 1:12))
+
+  # validObject returns true
+  expect_true(validObject(expanded_csv_data))
+
+  # validObject returns error
+  expanded_csv_data@files$period <- 12:1
+  expect_error(validObject(expanded_csv_data))
+
+  unlink(temp_dir, recursive = TRUE)
+})
+
+
 test_that("read_expanded_data can read te_datastore_csv data", {
   temp_dir <- tempfile("csv_dir_")
   dir.create(temp_dir)

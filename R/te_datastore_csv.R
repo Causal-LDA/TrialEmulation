@@ -16,10 +16,30 @@ setClass(
   contains = "te_datastore",
   slots = c(
     path = "character",
-    files = "character",
+    files = "data.frame",
     template = "data.frame"
+  ),
+  prototype = list(
+    files = data.frame(file = character(0L), period = numeric(0L))
   )
 )
+
+setValidity("te_datastore_csv", function(object) {
+  checkmate::check_data_frame(object@files, ncols = 2)
+  checkmate::check_names(colnames(object@files), identical.to = c("file", "period"))
+  check <- NULL
+  for (n in seq_along(object@files$file)) {
+    check[n] <- grepl(
+      x = object@files$file[n],
+      pattern = paste0("trial_", object@files$period[n], ".csv")
+    )
+  }
+  if (all(check)) {
+    TRUE
+  } else {
+    "@files$file and @files$period don't match"
+  }
+})
 
 
 #' Save expanded data as CSV
@@ -66,8 +86,12 @@ setMethod(
       fwrite(data[data$trial_period == p, ], file = file_p, append = TRUE)
     }
     object@N <- object@N + nrow(data)
-    object@files <- file.path(data_dir, paste0("trial_", periods, ".csv"))
+    object@files <- data.frame(
+      "file" = file.path(data_dir, paste0("trial_", periods, ".csv")),
+      "period" = periods
+    )
     if (!ncol(object@template)) object@template <- data[0, ]
+    validObject(object)
     object
   }
 )
@@ -83,11 +107,11 @@ setMethod(
     if (use_subset <- !is.null(subset_condition)) {
       subset_expr <- str2lang(subset_condition)
     }
-    all_files <- object@files
+
     files <- if (is.null(period)) {
-      all_files
+      object@files$file
     } else {
-      grep(x = all_files, pattern = paste0("trial_", period, ".csv", collapse = "|"), value = TRUE)
+      object@files[object@files$period %in% period, ]$file
     }
     data_table <- data.table::rbindlist(lapply(files, data.table::fread))
     if (use_subset) {
@@ -108,11 +132,7 @@ setMethod(
     on.exit(suspendInterrupts(set_random_seed(old_seed)))
     set.seed(seed)
 
-    all_periods <- NULL
-    for (n in seq_along(object@files)) {
-      all_periods[n] <- substr(object@files[n], nchar(object@path) + 8, nchar(object@files)[n] - 4)
-    }
-    all_periods <- as.numeric(all_periods)
+    all_periods <- object@files$period
 
     if (is.null(period)) {
       periods <- all_periods
