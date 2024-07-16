@@ -407,7 +407,16 @@ test_that("fit_msm works", {
     load_expanded_data()
 
   # fit_msm returns a trial_sequence object
-  fm_01 <- fit_msm(trial_itt_expanded, analysis_weights = "asis")
+  expect_warning(
+    expect_warning(
+      {
+        fm_01 <- fit_msm(trial_itt_expanded, analysis_weights = "asis")
+      },
+      "non-integer"
+    ),
+    "fitted probabilities numerically 0 or 1 occurred"
+  )
+
   expect_class(fm_01, "trial_sequence")
 
   # all columns in @outcome_data@data are kept and w column is added
