@@ -36,3 +36,38 @@ setClass(
   "te_stats_glm_logit_outcome_fitted",
   contains = "te_outcome_fitted"
 )
+
+# show method for te_outcome_model -----
+setMethod(
+  "show",
+  c(object = "te_outcome_model"),
+  function(object) {
+    catn("TE Outcome Model Object")
+    catn("Formula:", paste0(object@formula))
+    catn("Treatment_var:", object@treatment_var)
+    catn("Adjustment_vars:", object@adjustment_vars)
+    catn("")
+    # model_fitter?
+    show(object@fitted)
+    # outcome_data?
+  }
+)
+
+# show method for te_stats_glm_logit_outcome_fitted -----
+setMethod(
+  "show",
+  c(object = "te_stats_glm_logit_outcome_fitted"),
+  function(object) {
+    catn("te_stats_glm_logit_outcome_fitted object")
+    catn("")
+    catn("Model:")
+    show(object@model$model)
+    catn("")
+    # matrix @model$vcov omitted
+    catn("Model Summary:")
+    catn("")
+    show(object@summary$tidy)
+    catn("")
+    show(object@summary$glance)
+  }
+)

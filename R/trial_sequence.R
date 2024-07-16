@@ -112,28 +112,16 @@ setMethod(
     catn("")
     catn("IPW for informative censoring:")
     show(object@censor_weights)
-  }
-)
-
-setMethod(
-  "show",
-  c(object = "trial_sequence_PP"),
-  function(object) {
-    callNextMethod()
+    if (.hasSlot(object, "switch_weights")) {
+      catn("")
+      catn("IPW for treatment switch censoring:")
+      show(object@switch_weights)
+    }
+    #expansion
     catn("")
-    catn("IPW for treatment switch censoring:")
-    show(object@switch_weights)
-  }
-)
+    show(object@outcome_model)
+    #outcome_data
 
-setMethod(
-  "show",
-  c(object = "trial_sequence_AT"),
-  function(object) {
-    callNextMethod()
-    catn("")
-    catn("IPW for treatment switch censoring:")
-    show(object@switch_weights)
   }
 )
 
