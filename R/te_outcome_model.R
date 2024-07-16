@@ -66,8 +66,8 @@ setMethod(
     # matrix @model$vcov omitted
     catn("Model Summary:")
     catn("")
-    show(object@summary$tidy)
+    show(as.data.frame(object@summary$tidy))
     catn("")
-    show(object@summary$glance)
+    show(as.data.frame(object@summary$glance))
   }
 )
