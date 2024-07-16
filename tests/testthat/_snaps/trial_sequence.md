@@ -14,6 +14,19 @@
        
       IPW for treatment switch censoring: 
        - No weight model specified 
+       
+      TE Outcome Model Object 
+      Formula: new("formula", .S3Class = "formula", structure(list(), class = "formula", .Environment = <environment>)) 
+      Treatment_var:  
+      Adjustment_vars:  
+       
+      An object of class "te_outcome_fitted"
+      Slot "model":
+      list()
+      
+      Slot "summary":
+      list()
+      
 
 # show works for trial_sequence_ITT with nothing set
 
@@ -28,6 +41,19 @@
        
       IPW for informative censoring: 
        - No weight model specified 
+       
+      TE Outcome Model Object 
+      Formula: new("formula", .S3Class = "formula", structure(list(), class = "formula", .Environment = <environment>)) 
+      Treatment_var:  
+      Adjustment_vars:  
+       
+      An object of class "te_outcome_fitted"
+      Slot "model":
+      list()
+      
+      Slot "summary":
+      list()
+      
 
 # show works for trial_sequence_AT with nothing set
 
@@ -45,4 +71,17 @@
        
       IPW for treatment switch censoring: 
        - No weight model specified 
+       
+      TE Outcome Model Object 
+      Formula: new("formula", .S3Class = "formula", structure(list(), class = "formula", .Environment = <environment>)) 
+      Treatment_var:  
+      Adjustment_vars:  
+       
+      An object of class "te_outcome_fitted"
+      Slot "model":
+      list()
+      
+      Slot "summary":
+      list()
+      
 
