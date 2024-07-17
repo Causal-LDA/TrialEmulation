@@ -69,12 +69,12 @@ setMethod(
   c(object = "te_outcome_fitted"),
   function(object) {
     if (length(object@summary)) {
-    catn("TE Outcome Fitted Object")
-    catn("Model Summary:")
-    catn("")
-    show(as.data.frame(object@summary$tidy))
-    catn("")
-    show(as.data.frame(object@summary$glance))
+      catn("TE Outcome Fitted Object")
+      catn("Model Summary:")
+      catn("")
+      show(as.data.frame(object@summary$tidy))
+      catn("")
+      show(as.data.frame(object@summary$glance))
     }
   }
 )
