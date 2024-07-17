@@ -22,7 +22,8 @@ setClass("trial_sequence",
   prototype = prototype(
     censor_weights = new("te_weights_unset"),
     data = new("te_data_unset"),
-    expansion = new("te_expansion_unset")
+    expansion = new("te_expansion_unset"),
+    outcome_model = new("te_outcome_model_unset")
   )
 )
 

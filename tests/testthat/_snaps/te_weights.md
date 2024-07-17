@@ -65,18 +65,7 @@
       Model fitter type: te_stats_glm_logit 
       View weight model summaries with show_weight_models() 
        
-      TE Outcome Model Object 
-      Formula: new("formula", .S3Class = "formula", structure(list(), class = "formula", .Environment = <environment>)) 
-      Treatment_var:  
-      Adjustment_vars:  
-       
-      An object of class "te_outcome_fitted"
-      Slot "model":
-      list()
-      
-      Slot "summary":
-      list()
-      
+      Outcome model not specified. See set_outcome_model()
 
 ---
 

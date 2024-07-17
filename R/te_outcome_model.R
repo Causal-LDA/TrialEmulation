@@ -30,6 +30,9 @@ setClass("te_outcome_model",
   )
 )
 
+# te_outcome_model_unset -----
+setClass("te_outcome_model_unset", contains = "te_outcome_model")
+
 # te_stats_glm_logit_outcome_fitted -----
 
 setClass(
@@ -53,21 +56,25 @@ setMethod(
   }
 )
 
-# show method for te_stats_glm_logit_outcome_fitted -----
+# show method for te_outcome_model_unset -----
 setMethod(
   "show",
-  c(object = "te_stats_glm_logit_outcome_fitted"),
+  c(object = "te_outcome_model_unset"),
+  function(object) cat("Outcome model not specified. See set_outcome_model()")
+)
+
+# show method for te_outcome_fitted -----
+setMethod(
+  "show",
+  c(object = "te_outcome_fitted"),
   function(object) {
-    catn("te_stats_glm_logit_outcome_fitted object")
-    catn("")
-    catn("Model:")
-    show(object@model$model)
-    catn("")
-    # matrix @model$vcov omitted
+    if (length(object@summary)) {
+    catn("TE Outcome Fitted Object")
     catn("Model Summary:")
     catn("")
     show(as.data.frame(object@summary$tidy))
     catn("")
     show(as.data.frame(object@summary$glance))
+    }
   }
 )
