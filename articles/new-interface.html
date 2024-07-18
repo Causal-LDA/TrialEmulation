@@ -32,7 +32,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">TrialEmulation</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.3.23</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.3.24</span>
       </span>
     </div>
 
@@ -175,7 +175,10 @@ used.</p>
 <span><span class="co">#&gt; 725:            7              2         0         1</span></span>
 <span><span class="co">#&gt;  </span></span>
 <span><span class="co">#&gt; IPW for informative censoring: </span></span>
-<span><span class="co">#&gt;  - No weight model specified</span></span></code></pre></div>
+<span><span class="co">#&gt;  - No weight model specified </span></span>
+<span><span class="co">#&gt;  </span></span>
+<span><span class="co">#&gt; Outcome model: </span></span>
+<span><span class="co">#&gt;  - Outcome model not specified. Use set_outcome_model()</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="weight-models">Weight Models<a class="anchor" aria-label="anchor" href="#weight-models"></a>
@@ -239,7 +242,10 @@ treatment assignment in that period.</p>
 <span><span class="co">#&gt;  - Numerator formula: ~ treatment age + x1 + x3 </span></span>
 <span><span class="co">#&gt;  - Denominator formula: ~ treatment age </span></span>
 <span><span class="co">#&gt; Model fitter type: te_stats_glm_logit </span></span>
-<span><span class="co">#&gt; Weight models not fitted</span></span></code></pre></div>
+<span><span class="co">#&gt; Weight models not fitted </span></span>
+<span><span class="co">#&gt;  </span></span>
+<span><span class="co">#&gt; Outcome model: </span></span>
+<span><span class="co">#&gt;  - Outcome model not specified. Use set_outcome_model()</span></span></code></pre></div>
 <p>This type of censoring is not used with an ITT estimand, so we cannot
 use <code><a href="../reference/set_switch_weight_model.html">set_switch_weight_model()</a></code> with <code>trial_ITT</code>
 objects.</p>
@@ -310,7 +316,10 @@ only. The default and allowed choices depends on the estimand.</li>
 <span><span class="co">#&gt;  - Numerator formula: ~ treatment age + x1 + x3 </span></span>
 <span><span class="co">#&gt;  - Denominator formula: ~ treatment age </span></span>
 <span><span class="co">#&gt; Model fitter type: te_stats_glm_logit </span></span>
-<span><span class="co">#&gt; Weight models not fitted</span></span></code></pre></div>
+<span><span class="co">#&gt; Weight models not fitted </span></span>
+<span><span class="co">#&gt;  </span></span>
+<span><span class="co">#&gt; Outcome model: </span></span>
+<span><span class="co">#&gt;  - Outcome model not specified. Use set_outcome_model()</span></span></code></pre></div>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">trial_itt</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/set_censor_weight_model.html">set_censor_weight_model</a></span><span class="op">(</span></span>
 <span>  <span class="va">trial_itt</span>,</span>
@@ -352,7 +361,10 @@ only. The default and allowed choices depends on the estimand.</li>
 <span><span class="co">#&gt;  - Numerator formula: ~ 1 - censored x1 + x2 + x3 </span></span>
 <span><span class="co">#&gt;  - Denominator formula: ~ 1 - censored x2 </span></span>
 <span><span class="co">#&gt; Model fitter type: te_stats_glm_logit </span></span>
-<span><span class="co">#&gt; Weight models not fitted</span></span></code></pre></div>
+<span><span class="co">#&gt; Weight models not fitted </span></span>
+<span><span class="co">#&gt;  </span></span>
+<span><span class="co">#&gt; Outcome model: </span></span>
+<span><span class="co">#&gt;  - Outcome model not specified. Use set_outcome_model()</span></span></code></pre></div>
 </div>
 <div class="section level4">
 <h4 id="calculate-weights">Calculate Weights<a class="anchor" aria-label="anchor" href="#calculate-weights"></a>
@@ -407,7 +419,10 @@ weights. This is done with <code><a href="../reference/calculate_weights.html">c
 <span><span class="co">#&gt;  - Numerator formula: ~ treatment age + x1 + x3 </span></span>
 <span><span class="co">#&gt;  - Denominator formula: ~ treatment age </span></span>
 <span><span class="co">#&gt; Model fitter type: te_stats_glm_logit </span></span>
-<span><span class="co">#&gt; View weight model summaries with show_weight_models()</span></span>
+<span><span class="co">#&gt; View weight model summaries with show_weight_models() </span></span>
+<span><span class="co">#&gt;  </span></span>
+<span><span class="co">#&gt; Outcome model: </span></span>
+<span><span class="co">#&gt;  - Outcome model not specified. Use set_outcome_model()</span></span>
 <span></span>
 <span></span>
 <span><span class="va">trial_itt</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/calculate_weights.html">calculate_weights</a></span><span class="op">(</span><span class="va">trial_itt</span><span class="op">)</span></span></code></pre></div>
@@ -428,7 +443,7 @@ can be printed:</p>
 <span><span class="co">#&gt;  404.2156      724     -193.6748 395.3495 413.6942 387.3495 721         725 </span></span>
 <span><span class="co">#&gt;  </span></span>
 <span><span class="co">#&gt;  path                                                          </span></span>
-<span><span class="co">#&gt;  /tmp/Rtmp09KfUH/trial_itt/switch_models/model_1b08711b43bc.rds</span></span>
+<span><span class="co">#&gt;  /tmp/RtmpMSw9s2/trial_itt/switch_models/model_1a1e3c4115cc.rds</span></span>
 <span><span class="co">#&gt;  </span></span>
 <span><span class="co">#&gt; Model: P(censor_event = 0 | X, previous treatment = 0) for denominator </span></span>
 <span><span class="co">#&gt;  </span></span>
@@ -440,7 +455,7 @@ can be printed:</p>
 <span><span class="co">#&gt;  283.0723      425     -135.4361 274.8722 282.9811 270.8722 424         426 </span></span>
 <span><span class="co">#&gt;  </span></span>
 <span><span class="co">#&gt;  path                                                          </span></span>
-<span><span class="co">#&gt;  /tmp/Rtmp09KfUH/trial_itt/switch_models/model_1b082536a645.rds</span></span>
+<span><span class="co">#&gt;  /tmp/RtmpMSw9s2/trial_itt/switch_models/model_1a1e4545aca0.rds</span></span>
 <span><span class="co">#&gt;  </span></span>
 <span><span class="co">#&gt; Model: P(censor_event = 0 | X, previous treatment = 1) for denominator </span></span>
 <span><span class="co">#&gt;  </span></span>
@@ -452,7 +467,7 @@ can be printed:</p>
 <span><span class="co">#&gt;  113.0528      298     -56.52619 117.0524 124.4533 113.0524 297         299 </span></span>
 <span><span class="co">#&gt;  </span></span>
 <span><span class="co">#&gt;  path                                                          </span></span>
-<span><span class="co">#&gt;  /tmp/Rtmp09KfUH/trial_itt/switch_models/model_1b082ed17113.rds</span></span>
+<span><span class="co">#&gt;  /tmp/RtmpMSw9s2/trial_itt/switch_models/model_1a1e7fbe2110.rds</span></span>
 <span><span class="co">#&gt; </span></span></code></pre></div>
 </div>
 </div>
@@ -525,28 +540,28 @@ processed at one time.</li>
 <span><span class="co">#&gt; Slot "datastore":</span></span>
 <span><span class="co">#&gt; An object of class "te_datastore_csv"</span></span>
 <span><span class="co">#&gt; Slot "path":</span></span>
-<span><span class="co">#&gt; [1] "/tmp/Rtmp09KfUH/trial_pp/trial_csvs"</span></span>
+<span><span class="co">#&gt; [1] "/tmp/RtmpMSw9s2/trial_pp/trial_csvs"</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Slot "files":</span></span>
 <span><span class="co">#&gt;                                                file period</span></span>
-<span><span class="co">#&gt; 1   /tmp/Rtmp09KfUH/trial_pp/trial_csvs/trial_0.csv      0</span></span>
-<span><span class="co">#&gt; 2   /tmp/Rtmp09KfUH/trial_pp/trial_csvs/trial_1.csv      1</span></span>
-<span><span class="co">#&gt; 3   /tmp/Rtmp09KfUH/trial_pp/trial_csvs/trial_2.csv      2</span></span>
-<span><span class="co">#&gt; 4   /tmp/Rtmp09KfUH/trial_pp/trial_csvs/trial_3.csv      3</span></span>
-<span><span class="co">#&gt; 5   /tmp/Rtmp09KfUH/trial_pp/trial_csvs/trial_4.csv      4</span></span>
-<span><span class="co">#&gt; 6   /tmp/Rtmp09KfUH/trial_pp/trial_csvs/trial_5.csv      5</span></span>
-<span><span class="co">#&gt; 7   /tmp/Rtmp09KfUH/trial_pp/trial_csvs/trial_6.csv      6</span></span>
-<span><span class="co">#&gt; 8   /tmp/Rtmp09KfUH/trial_pp/trial_csvs/trial_7.csv      7</span></span>
-<span><span class="co">#&gt; 9   /tmp/Rtmp09KfUH/trial_pp/trial_csvs/trial_8.csv      8</span></span>
-<span><span class="co">#&gt; 10  /tmp/Rtmp09KfUH/trial_pp/trial_csvs/trial_9.csv      9</span></span>
-<span><span class="co">#&gt; 11 /tmp/Rtmp09KfUH/trial_pp/trial_csvs/trial_10.csv     10</span></span>
-<span><span class="co">#&gt; 12 /tmp/Rtmp09KfUH/trial_pp/trial_csvs/trial_11.csv     11</span></span>
-<span><span class="co">#&gt; 13 /tmp/Rtmp09KfUH/trial_pp/trial_csvs/trial_12.csv     12</span></span>
-<span><span class="co">#&gt; 14 /tmp/Rtmp09KfUH/trial_pp/trial_csvs/trial_13.csv     13</span></span>
-<span><span class="co">#&gt; 15 /tmp/Rtmp09KfUH/trial_pp/trial_csvs/trial_14.csv     14</span></span>
-<span><span class="co">#&gt; 16 /tmp/Rtmp09KfUH/trial_pp/trial_csvs/trial_15.csv     15</span></span>
-<span><span class="co">#&gt; 17 /tmp/Rtmp09KfUH/trial_pp/trial_csvs/trial_16.csv     16</span></span>
-<span><span class="co">#&gt; 18 /tmp/Rtmp09KfUH/trial_pp/trial_csvs/trial_17.csv     17</span></span>
+<span><span class="co">#&gt; 1   /tmp/RtmpMSw9s2/trial_pp/trial_csvs/trial_0.csv      0</span></span>
+<span><span class="co">#&gt; 2   /tmp/RtmpMSw9s2/trial_pp/trial_csvs/trial_1.csv      1</span></span>
+<span><span class="co">#&gt; 3   /tmp/RtmpMSw9s2/trial_pp/trial_csvs/trial_2.csv      2</span></span>
+<span><span class="co">#&gt; 4   /tmp/RtmpMSw9s2/trial_pp/trial_csvs/trial_3.csv      3</span></span>
+<span><span class="co">#&gt; 5   /tmp/RtmpMSw9s2/trial_pp/trial_csvs/trial_4.csv      4</span></span>
+<span><span class="co">#&gt; 6   /tmp/RtmpMSw9s2/trial_pp/trial_csvs/trial_5.csv      5</span></span>
+<span><span class="co">#&gt; 7   /tmp/RtmpMSw9s2/trial_pp/trial_csvs/trial_6.csv      6</span></span>
+<span><span class="co">#&gt; 8   /tmp/RtmpMSw9s2/trial_pp/trial_csvs/trial_7.csv      7</span></span>
+<span><span class="co">#&gt; 9   /tmp/RtmpMSw9s2/trial_pp/trial_csvs/trial_8.csv      8</span></span>
+<span><span class="co">#&gt; 10  /tmp/RtmpMSw9s2/trial_pp/trial_csvs/trial_9.csv      9</span></span>
+<span><span class="co">#&gt; 11 /tmp/RtmpMSw9s2/trial_pp/trial_csvs/trial_10.csv     10</span></span>
+<span><span class="co">#&gt; 12 /tmp/RtmpMSw9s2/trial_pp/trial_csvs/trial_11.csv     11</span></span>
+<span><span class="co">#&gt; 13 /tmp/RtmpMSw9s2/trial_pp/trial_csvs/trial_12.csv     12</span></span>
+<span><span class="co">#&gt; 14 /tmp/RtmpMSw9s2/trial_pp/trial_csvs/trial_13.csv     13</span></span>
+<span><span class="co">#&gt; 15 /tmp/RtmpMSw9s2/trial_pp/trial_csvs/trial_14.csv     14</span></span>
+<span><span class="co">#&gt; 16 /tmp/RtmpMSw9s2/trial_pp/trial_csvs/trial_15.csv     15</span></span>
+<span><span class="co">#&gt; 17 /tmp/RtmpMSw9s2/trial_pp/trial_csvs/trial_16.csv     16</span></span>
+<span><span class="co">#&gt; 18 /tmp/RtmpMSw9s2/trial_pp/trial_csvs/trial_17.csv     17</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Slot "template":</span></span>
 <span><span class="co">#&gt; Empty data.table (0 rows and 6 cols): id,trial_period,followup_time,outcome,weight,treatment</span></span>
@@ -571,13 +586,13 @@ processed at one time.</li>
 <span><span class="co">#&gt; Slot "datastore":</span></span>
 <span><span class="co">#&gt; An object of class "te_datastore_duckdb"</span></span>
 <span><span class="co">#&gt; Slot "path":</span></span>
-<span><span class="co">#&gt; [1] "/tmp/Rtmp09KfUH/trial_itt/trial_duckdb/expanded_data_1b08ab90f61.duckdb"</span></span>
+<span><span class="co">#&gt; [1] "/tmp/RtmpMSw9s2/trial_itt/trial_duckdb/expanded_data_1a1e2faf1f3d.duckdb"</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Slot "table":</span></span>
 <span><span class="co">#&gt; character(0)</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Slot "con":</span></span>
-<span><span class="co">#&gt; &lt;duckdb_connection cbb20 driver=&lt;duckdb_driver dbdir='/tmp/Rtmp09KfUH/trial_itt/trial_duckdb/expanded_data_1b08ab90f61.duckdb' read_only=FALSE bigint=numeric&gt;&gt;</span></span>
+<span><span class="co">#&gt; &lt;duckdb_connection 6e2e0 driver=&lt;duckdb_driver dbdir='/tmp/RtmpMSw9s2/trial_itt/trial_duckdb/expanded_data_1a1e2faf1f3d.duckdb' read_only=FALSE bigint=numeric&gt;&gt;</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Slot "N":</span></span>
 <span><span class="co">#&gt; [1] 1558</span></span>

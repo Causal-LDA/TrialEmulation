@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">TrialEmulation</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.3.23</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.3.24</span>
       </span>
     </div>
 
@@ -154,6 +154,22 @@ method.</p></dd>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> IPW for informative censoring: </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  - No weight model specified </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Outcome model: </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> TE Outcome Model Object </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Formula: outcome ~ assigned_treatment + age_s + stats::poly(followup_time, degree = 2) + trial_period + I(trial_period^2) </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Treatment_var: assigned_treatment </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Adjustment_vars: age_s </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Model Summary: </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  term               estimate std.error statistic p.value  conf.low conf.high</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  (Intercept)        -22.0    0.42      -52.6      0.0e+00 -22.8    -21.20   </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  assigned_treatment  18.3    0.79       23.3     8.3e-120  16.7     19.81   </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  age_s               -1.8    0.54       -3.4      6.5e-04  -2.9     -0.78   </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  null.deviance df.null logLik AIC  BIC  deviance df.residual nobs</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  19.1          88      -7.03  20.1 27.5 14.1     86          89  </span>
 </code></pre></div>
     </div>
   </div>

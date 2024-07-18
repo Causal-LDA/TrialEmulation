@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">TrialEmulation</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.3.23</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.3.24</span>
       </span>
     </div>
 
@@ -170,6 +170,14 @@ as a <a href="te_outcome_data-class.html">te_outcome_data</a> object.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> IPW for informative censoring: </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  - No weight model specified </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Outcome model: </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> TE Outcome Model Object </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Formula: outcome ~ assigned_treatment + x1 + x2 + followup_time + I(followup_time^2) + trial_period + I(trial_period^2) </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Treatment_var: assigned_treatment </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Adjustment_vars: x1 x2 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Use fit_msm() to fit the outcome model </span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># load_expanded_data can subset the data before sampling</span></span></span>
 <span class="r-in"><span><span class="fu">load_expanded_data</span><span class="op">(</span></span></span>
@@ -208,6 +216,14 @@ as a <a href="te_outcome_data-class.html">te_outcome_data</a> object.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> IPW for informative censoring: </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  - No weight model specified </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Outcome model: </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> TE Outcome Model Object </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Formula: outcome ~ assigned_treatment + x1 + x2 + followup_time + I(followup_time^2) + trial_period + I(trial_period^2) </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Treatment_var: assigned_treatment </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Adjustment_vars: x1 x2 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Use fit_msm() to fit the outcome model </span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># delete after use</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/unlink.html" class="external-link">unlink</a></span><span class="op">(</span><span class="va">trial_itt_dir</span>, recursive <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
