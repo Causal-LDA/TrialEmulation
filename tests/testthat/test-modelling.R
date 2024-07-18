@@ -427,5 +427,8 @@ test_that("fit_msm works", {
   # fit_msm saves result into @outcome_model@fitted
   expect_class(fm_01@outcome_model@fitted@model$model, "glm")
 
+  # show method works
+  expect_snapshot(fm_01)
+
   unlink(trial_itt_dir, recursive = TRUE)
 })
