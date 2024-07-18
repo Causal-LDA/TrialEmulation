@@ -75,7 +75,7 @@ setMethod(
       catn("")
       show(as.data.frame(object@summary$glance))
     } else {
-    Use fit_msm() to fit the outcome model
+      catn("Use fit_msm() to fit the outcome model")
     }
   }
 )

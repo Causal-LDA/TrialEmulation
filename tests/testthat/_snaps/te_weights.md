@@ -65,7 +65,8 @@
       Model fitter type: te_stats_glm_logit 
       View weight model summaries with show_weight_models() 
        
-      Outcome model not specified. See set_outcome_model()
+      Outcome model: 
+       - Outcome model not specified. Use set_outcome_model()
 
 ---
 
