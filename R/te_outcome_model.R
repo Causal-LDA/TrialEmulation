@@ -71,9 +71,9 @@ setMethod(
     if (length(object@summary)) {
       catn("Model Summary:")
       catn("")
-      show(as.data.frame(object@summary$tidy))
+      print.data.frame(as.data.frame(object@summary$tidy), row.names = FALSE, digits = 2, right = FALSE)
       catn("")
-      show(as.data.frame(object@summary$glance))
+      print.data.frame(as.data.frame(object@summary$glance), row.names = FALSE, digits = 3, right = FALSE)
     } else {
       catn("Use fit_msm() to fit the outcome model")
     }
