@@ -48,6 +48,14 @@ test_that("show works for trial_sequence_ITT with nothing set", {
 test_that("show works for trial_sequence_AT with nothing set", {
   expect_snapshot(show(trial_sequence("AT")))
 })
+
+test_that("show works for trial_sequence_PP with data and outcome_model set", {
+  result <- trial_sequence("PP") |>
+    set_data(data_censored) |>
+    set_outcome_model()
+  expect_snapshot(show(result))
+})
+
 # Set Data ----
 
 test_that("set_data works for trial_sequence_ITT", {

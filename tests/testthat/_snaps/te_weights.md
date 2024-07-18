@@ -64,6 +64,9 @@
        - Denominator formula: treatment ~ age + x2 + x4 
       Model fitter type: te_stats_glm_logit 
       View weight model summaries with show_weight_models() 
+       
+      Outcome model: 
+       - Outcome model not specified. Use set_outcome_model()
 
 ---
 

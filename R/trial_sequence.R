@@ -22,7 +22,8 @@ setClass("trial_sequence",
   prototype = prototype(
     censor_weights = new("te_weights_unset"),
     data = new("te_data_unset"),
-    expansion = new("te_expansion_unset")
+    expansion = new("te_expansion_unset"),
+    outcome_model = new("te_outcome_model_unset")
   )
 )
 
@@ -112,28 +113,16 @@ setMethod(
     catn("")
     catn("IPW for informative censoring:")
     show(object@censor_weights)
-  }
-)
-
-setMethod(
-  "show",
-  c(object = "trial_sequence_PP"),
-  function(object) {
-    callNextMethod()
+    if (.hasSlot(object, "switch_weights")) {
+      catn("")
+      catn("IPW for treatment switch censoring:")
+      show(object@switch_weights)
+    }
+    # expansion
     catn("")
-    catn("IPW for treatment switch censoring:")
-    show(object@switch_weights)
-  }
-)
-
-setMethod(
-  "show",
-  c(object = "trial_sequence_AT"),
-  function(object) {
-    callNextMethod()
-    catn("")
-    catn("IPW for treatment switch censoring:")
-    show(object@switch_weights)
+    catn("Outcome model:")
+    show(object@outcome_model)
+    # outcome_data
   }
 )
 

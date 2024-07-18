@@ -376,6 +376,7 @@ test_that("trial_msm makes model formula as expected with estimand_type ITT and 
 
 
 test_that("fit_msm works", {
+  set.seed(2024)
   trial_itt_dir <- file.path(tempdir(), "trial_itt")
   dir.create(trial_itt_dir)
 
@@ -396,7 +397,11 @@ test_that("fit_msm works", {
       model_fitter = stats_glm_logit(save_path = file.path(trial_itt_dir, "switch_models"))
     ) |>
     calculate_weights() |>
-    set_outcome_model(adjustment_terms = ~ x1 + x2)
+    set_outcome_model(
+      adjustment_terms = ~ x1 + x2,
+      followup_time_terms = ~followup_time,
+      trial_period_terms = ~1
+    )
 
   trial_itt_expanded <- set_expansion_options(
     trial_itt,
@@ -408,13 +413,8 @@ test_that("fit_msm works", {
 
   # fit_msm returns a trial_sequence object
   expect_warning(
-    expect_warning(
-      {
-        fm_01 <- fit_msm(trial_itt_expanded, analysis_weights = "asis")
-      },
-      "non-integer"
-    ),
-    "fitted probabilities numerically 0 or 1 occurred"
+    fm_01 <- fit_msm(trial_itt_expanded, analysis_weights = "asis"),
+    "non-integer"
   )
 
   expect_class(fm_01, "trial_sequence")
@@ -426,6 +426,9 @@ test_that("fit_msm works", {
 
   # fit_msm saves result into @outcome_model@fitted
   expect_class(fm_01@outcome_model@fitted@model$model, "glm")
+
+  # show method works
+  expect_snapshot(fm_01)
 
   unlink(trial_itt_dir, recursive = TRUE)
 })
