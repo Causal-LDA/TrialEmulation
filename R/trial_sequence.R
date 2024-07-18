@@ -120,6 +120,7 @@ setMethod(
     }
     # expansion
     catn("")
+    catn("Outcome model:")
     show(object@outcome_model)
     # outcome_data
   }
