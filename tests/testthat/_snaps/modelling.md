@@ -346,22 +346,19 @@
        
       Outcome model: 
       TE Outcome Model Object 
-      Formula: outcome ~ assigned_treatment + x1 + x2 + followup_time + I(followup_time^2) + trial_period + I(trial_period^2) 
+      Formula: outcome ~ assigned_treatment + x1 + x2 + followup_time 
       Treatment_var: assigned_treatment 
       Adjustment_vars: x1 x2 
        
       Model Summary: 
        
        term               estimate std.error statistic p.value conf.low conf.high
-       (Intercept)        -5.868   0.771      -7.61    2.7e-14 -7.38    -4.3572  
-       assigned_treatment  1.630   0.520       3.13    1.7e-03  0.61     2.6489  
-       x1                 -0.322   0.561      -0.57    5.7e-01 -1.42     0.7772  
-       x2                  0.222   0.409       0.54    5.9e-01 -0.58     1.0223  
-       followup_time       0.343   0.240       1.43    1.5e-01 -0.13     0.8139  
-       I(followup_time^2) -0.022   0.014      -1.50    1.3e-01 -0.05     0.0066  
-       trial_period        6.876   0.962       7.15    8.6e-13  4.99     8.7603  
-       I(trial_period^2)  -7.395   0.535     -13.82    1.9e-43 -8.44    -6.3462  
+       (Intercept)        -5.688   0.663     -8.576    9.8e-18 -6.988   -4.388   
+       assigned_treatment  1.905   0.556      3.426    6.1e-04  0.815    2.994   
+       x1                 -0.374   0.516     -0.724    4.7e-01 -1.385    0.638   
+       x2                 -0.013   0.289     -0.044    9.6e-01 -0.579    0.553   
+       followup_time      -0.011   0.045     -0.237    8.1e-01 -0.098    0.077   
        
        null.deviance df.null logLik AIC BIC deviance df.residual nobs
-       155           1557    -69.2  154 197 132      1550        1558
+       155           1557    -75.5  161 188 144      1553        1558
 
