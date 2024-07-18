@@ -60,7 +60,7 @@ setMethod(
 setMethod(
   "show",
   c(object = "te_outcome_model_unset"),
-  function(object) cat("Outcome model not specified. See set_outcome_model()")
+  function(object) cat(" - Outcome model not specified. Use set_outcome_model()")
 )
 
 # show method for te_outcome_fitted -----
