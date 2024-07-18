@@ -376,6 +376,7 @@ test_that("trial_msm makes model formula as expected with estimand_type ITT and 
 
 
 test_that("fit_msm works", {
+  set.seed(2024)
   trial_itt_dir <- file.path(tempdir(), "trial_itt")
   dir.create(trial_itt_dir)
 
@@ -427,8 +428,16 @@ test_that("fit_msm works", {
   # fit_msm saves result into @outcome_model@fitted
   expect_class(fm_01@outcome_model@fitted@model$model, "glm")
 
+  expect_equal(
+    fm_01@outcome_model@fitted@summary$tidy$conf.high,
+    c(
+      -4.35723730175218, 2.64893293199985, 0.777189660751972, 1.02229521674603,
+      0.813911470820005, 0.00662060657726689, 8.76045268138266, -6.34608055262732
+    )
+  )
   # show method works
-  expect_snapshot(fm_01)
+  mac_variant <- ifelse(R.version$platform == "aarch64-apple-darwin20", "aarch64-apple-darwin20", NULL)
+  expect_snapshot(fm_01, variant = mac_variant)
 
   unlink(trial_itt_dir, recursive = TRUE)
 })
