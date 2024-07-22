@@ -100,8 +100,8 @@ are used in case it is not possible for a patient to deviate from a certain trea
 ```{r}
 trial_pp <- trial_pp |>
   set_switch_weight_model(
-    numerator = ~ age + x1 + x3,
-    denominator = ~age,
+    numerator = ~age,
+    denominator = ~ age + x1 + x3,
     model_fitter = stats_glm_logit(save_path = file.path(trial_pp_dir, "switch_models"))
   )
 trial_pp
@@ -125,8 +125,8 @@ choices depends on the estimand.
 trial_pp <- trial_pp |>
   set_censor_weight_model(
     censor_event = "censored",
-    numerator = ~ x1 + x2 + x3,
-    denominator = ~x2,
+    numerator = ~x2,
+    denominator = ~ x2 + x1,
     pool_models = "none",
     model_fitter = stats_glm_logit(save_path = file.path(trial_pp_dir, "switch_models"))
   )
@@ -137,8 +137,8 @@ trial_pp
 trial_itt <- set_censor_weight_model(
   trial_itt,
   censor_event = "censored",
-  numerator = ~ x1 + x2 + x3,
-  denominator = ~x2,
+  numerator = ~x2,
+  denominator = ~ x2 + x1,
   pool_models = "numerator",
   model_fitter = stats_glm_logit(save_path = file.path(trial_itt_dir, "switch_models"))
 )
@@ -168,9 +168,9 @@ show_weight_models(trial_itt)
 
  Not fully implemented. Needs to be preliminarily set at this stage to make sure all required variables are included
  in the expanded data set
-```{r, eval = FALSE}
+```{r}
 trial_pp <- set_outcome_model(trial_pp)
-trial_itt <- set_outcome_model(trial_itt, adjustment_terms = ~ x1 + x2)
+trial_itt <- set_outcome_model(trial_itt, adjustment_terms = ~x2)
 ```
  
 
@@ -189,29 +189,34 @@ There are two options to set
  many patients are processed at one time.
 
 ```{r}
-trial_pp <- trial_pp |>
-  set_expansion_options(
-    output = save_to_csv(file.path(trial_pp_dir, "trial_csvs")),
-    chunk_size = 500
-  )
+# trial_pp <- trial_pp |>
+#   set_expansion_options(
+#     output = save_to_csv(file.path(trial_pp_dir, "trial_csvs")),
+#     chunk_size = 500
+#   )
+# 
+# trial_itt <- set_expansion_options(
+#   trial_itt,
+#   output = save_to_csv(file.path(trial_itt_dir, "trial_csvs")),
+#   chunk_size = 500
+# )
 
-trial_itt <- set_expansion_options(
-  trial_itt,
-  output = save_to_csv(file.path(trial_itt_dir, "trial_csvs")),
+trial_pp <- set_expansion_options(
+  trial_pp,
+  output = save_to_datatable(),
   chunk_size = 500
 )
-
 trial_itt <- set_expansion_options(
   trial_itt,
   output = save_to_datatable(),
   chunk_size = 500
 )
 
-trial_itt <- set_expansion_options(
-  trial_itt,
-  output = save_to_duckdb(file.path(trial_itt_dir, "trial_duckdb")),
-  chunk_size = 500
-)
+# trial_itt <- set_expansion_options(
+#   trial_itt,
+#   output = save_to_duckdb(file.path(trial_itt_dir, "trial_duckdb")),
+#   chunk_size = 500
+# )
 ```
 
 
@@ -230,17 +235,38 @@ trial_itt@expansion
 ```
 
 
-### Sample from Expanded Data
+### Sample or Load from Expanded Data
 
-Sample method not implemented yet
+```{r}
+trial_itt <- sample_controls(trial_itt, seed = 1234, p_control = 1)
+outcome_data(trial_itt)
+```
+
 
 ### Fit Marginal Structural Model
 
-Outcome model fitting not implemented yet
+```{r}
+trial_itt@outcome_model@model_fitter
+trial_itt <- fit_msm(trial_itt)
+```
 
 ### Inference
 
 Model summaries not implemented
+
+```{r}
+preds <- predict(
+  trial_itt,
+  newdata = outcome_data(trial_itt)[trial_period == 1,],
+  predict_times = 0:10,
+  type = "survival",
+)
+plot(preds$difference$followup_time, preds$difference$survival_diff, type = "l", xlab = "Follow up", ylab = "Survival difference")
+lines(preds$difference$followup_time, preds$difference$`2.5%`, type = "l", col = "red", lty = 2)
+lines(preds$difference$followup_time, preds$difference$`97.5%`, type = "l", col = "red", lty = 2)
+```
+
+```
 
 ## Class Structure
 

@@ -480,7 +480,7 @@ setMethod(
            adjustment_terms = ~1,
            followup_time_terms = ~ followup_time + I(followup_time^2),
            trial_period_terms = ~ trial_period + I(trial_period^2),
-           model_fitter) {
+           model_fitter = stats_glm_logit(save_path = NA)) {
     if (test_class(object@data, "te_data_unset")) stop("Use set_data() before set_outcome_model()")
     collection <- makeAssertCollection()
     formula_list <- list(
@@ -795,5 +795,50 @@ setMethod(
     object@outcome_data <- te_outcome_data(data_table)
 
     object
+  }
+)
+
+
+
+
+#' @rdname predict_marginal
+setMethod(
+  f = "predict",
+  signature = "trial_sequence_ITT",
+  function(object,
+           newdata,
+           predict_times,
+           conf_int = TRUE,
+           samples = 100,
+           type = c("cum_inc", "survival")) {
+    predict(
+      object = object@outcome_model@fitted,
+      newdata = newdata,
+      predict_times = predict_times,
+      conf_int = conf_int,
+      samples = samples,
+      type = type
+    )
+  }
+)
+
+#' @rdname predict_marginal
+setMethod(
+  f = "predict",
+  signature = "trial_sequence_PP",
+  function(object,
+           newdata,
+           predict_times,
+           conf_int = TRUE,
+           samples = 100,
+           type = c("cum_inc", "survival")) {
+    predict(
+      object = object@outcome_model@fitted,
+      newdata = newdata,
+      predict_times = predict_times,
+      conf_int = conf_int,
+      samples = samples,
+      type = type
+    )
   }
 )
