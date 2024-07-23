@@ -2,6 +2,7 @@
 % Please edit documentation in R/generics.R, R/trial_sequence.R, R/predict.R
 \name{predict_marginal}
 \alias{predict_marginal}
+\alias{predict}
 \alias{predict,trial_sequence_ITT-method}
 \alias{predict,trial_sequence_PP-method}
 \alias{predict.TE_msm}
@@ -27,7 +28,7 @@ predict(object, ...)
   type = c("cum_inc", "survival")
 )
 
-predict.TE_msm(
+\method{predict}{TE_msm}(
   object,
   newdata,
   predict_times,

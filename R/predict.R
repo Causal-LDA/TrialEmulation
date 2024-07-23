@@ -1,5 +1,6 @@
 #' @rdname predict_marginal
 #' @importFrom stats .checkMFClasses coef delete.response model.frame model.matrix terms setNames
+#' @exportS3Method stats::predict
 #' @examples
 #' # Prediction for initiators() or trial_msm() objects -----
 #'
@@ -168,12 +169,12 @@ calculate_survival <- function(p_mat) {
   assert_matrix(p_mat, mode = "numeric")
   # result <- rowMeans(apply(1 - p_mat, 1, cumprod))
   # colMeans(cumprod.matrix(1 - p_mat, "rows"))
-  result <- .colMeans(cumprod.matrix(1 - p_mat, "rows"), nrow(p_mat), ncol(p_mat))
+  result <- .colMeans(cumprod_matrix(1 - p_mat, "rows"), nrow(p_mat), ncol(p_mat))
   assert_monotonic(result, increasing = FALSE)
   result
 }
 
-cumprod.matrix <- function(x, by = c("rows", "cols")) {
+cumprod_matrix <- function(x, by = c("rows", "cols")) {
   by <- match.arg(by, choices = c("rows", "cols"), several.ok = FALSE)
   y <- matrix(1, nrow = nrow(x), ncol = ncol(x))
 

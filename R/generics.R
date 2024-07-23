@@ -466,5 +466,6 @@ setGeneric("fit_msm", function(object,
 #' @return A list of three data frames containing the cumulative incidences for each of the assigned treatment options
 #'   (treatment and non-treatment) and the difference between them.
 #' @name predict_marginal
+#' @aliases predict
 #' @export
 setGeneric("predict", def = function(object, ...) standardGeneric("predict"))

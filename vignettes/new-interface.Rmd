@@ -194,7 +194,7 @@ There are two options to set
 #     output = save_to_csv(file.path(trial_pp_dir, "trial_csvs")),
 #     chunk_size = 500
 #   )
-# 
+#
 # trial_itt <- set_expansion_options(
 #   trial_itt,
 #   output = save_to_csv(file.path(trial_itt_dir, "trial_csvs")),
@@ -257,7 +257,7 @@ Model summaries not implemented
 ```{r}
 preds <- predict(
   trial_itt,
-  newdata = outcome_data(trial_itt)[trial_period == 1,],
+  newdata = outcome_data(trial_itt)[trial_period == 1, ],
   predict_times = 0:10,
   type = "survival",
 )

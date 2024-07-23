@@ -3,12 +3,20 @@ NULL
 
 # stats::glm ---------
 
-#' @rdname te_model_fitter-class
+
+#' Fit Models using logistic stats::glm
+#'
+#' The classes and (internal) methods defined for using [stats::glm] to fit the logistic regression models.
+#'
+#' @rdname te_stats_glm_logit-class
+#' @family model_fitter_classes
+#' @keywords internal
 setClass(
   "te_stats_glm_logit",
   contains = "te_model_fitter"
 )
 
+#' @rdname te_stats_glm_logit-class
 setClass(
   "te_stats_glm_logit_outcome_fitted",
   contains = "te_outcome_fitted"
@@ -37,8 +45,8 @@ stats_glm_logit <- function(save_path) {
   new("te_stats_glm_logit", save_path = save_path)
 }
 
-
-#' @rdname fit_weights_model
+#' @describeIn te_stats_glm_logit-class Fit the weight models object via [calculate_weights] on `trial_sequence`
+#' @inheritParams fit_weights_model
 setMethod(
   f = "fit_weights_model",
   signature = "te_stats_glm_logit",
@@ -58,7 +66,8 @@ setMethod(
   }
 )
 
-#' @rdname fit_outcome_model
+#' @describeIn te_stats_glm_logit-class Fit the outcome model object via [fit_msm] on `trial_sequence`
+#' @inheritParams fit_outcome_model
 setMethod(
   f = "fit_outcome_model",
   signature = "te_stats_glm_logit",
@@ -106,6 +115,9 @@ setMethod(
   }
 )
 
+#' @describeIn te_stats_glm_logit-class Predict from the fitted model object via [predict] on `trial_sequence`
+#' @inheritParams predict_marginal
+#' @param object Object to dispatch method on
 setMethod(
   f = "predict",
   signature = "te_stats_glm_logit_outcome_fitted",
