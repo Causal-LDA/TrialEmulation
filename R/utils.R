@@ -146,3 +146,10 @@ extract_baseline <- function(trial_file, baseline_file, quiet = TRUE) {
 catn <- function(...) {
   cat(..., "\n")
 }
+
+
+drop_path <- function(x) {
+  output <- sub("Path: [[:graph:]]*", "Path:", strsplit(x, "\n")[[1]]) |>
+    paste0(collapse = "\n")
+  output
+}

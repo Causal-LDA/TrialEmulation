@@ -428,7 +428,7 @@ test_that("fit_msm works", {
   expect_class(fm_01@outcome_model@fitted@model$model, "glm")
 
   # show method works
-  expect_snapshot(fm_01)
+  expect_snapshot(fm_01)#, transform = drop_path) <--- doesn't work for whatever reason
 
   unlink(trial_itt_dir, recursive = TRUE)
 })

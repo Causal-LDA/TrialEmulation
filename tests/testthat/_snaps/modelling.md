@@ -344,6 +344,17 @@
       Model fitter type: te_stats_glm_logit 
       View weight model summaries with show_weight_models() 
        
+      Expansion: 
+      Chunk size: 500 
+      Censor at switch: FALSE 
+      First period: 0 | Last period: Inf 
+       
+      A TE Datastore CSV object 
+      N: 1558 observations 
+      Periods: 0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 
+      Path: C:\Users\moeschm\AppData\Local\Temp\RtmpCgB7PC/trial_itt/trial_csvs 
+      Template columns: id, trial_period, followup_time, outcome, weight, treatment, x1, x2, assigned_treatment 
+       
       Outcome model: 
       TE Outcome Model Object 
       Formula: outcome ~ assigned_treatment + x1 + x2 + followup_time 
@@ -361,4 +372,22 @@
        
        null.deviance df.null logLik AIC BIC deviance df.residual nobs
        155           1557    -75.5  161 188 144      1553        1558
+       
+      Outcome data 
+      N: 1558 observations from 89 patients in 18 trial periods 
+      Periods: 0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 
+               id trial_period followup_time outcome    weight treatment    x1
+            <int>        <int>         <int>   <int>     <num>     <int> <int>
+         1:     1            0             0       0 1.0000000         1     1
+         2:     1            0             1       0 0.9991778         1     1
+        ---                                                                   
+      1557:    54           17             1       0 0.9412692         0     0
+      1558:    54           17             2       0 0.9816871         0     0
+                  x2 assigned_treatment sample_weight         w
+               <num>              <int>         <num>     <num>
+         1: 1.146148                  1             1 1.0000000
+         2: 1.146148                  1             1 0.9991778
+        ---                                                    
+      1557: 1.846423                  1             1 0.9412692
+      1558: 1.846423                  1             1 0.9816871
 

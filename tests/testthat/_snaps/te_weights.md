@@ -65,8 +65,11 @@
       Model fitter type: te_stats_glm_logit 
       View weight model summaries with show_weight_models() 
        
+      No expanded data, use expand_trials() 
+       
       Outcome model: 
-       - Outcome model not specified. Use set_outcome_model()
+       - Outcome model not specified. Use set_outcome_model() 
+      No outcome data, use load_expanded_data() 
 
 ---
 
