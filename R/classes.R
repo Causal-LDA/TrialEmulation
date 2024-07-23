@@ -16,7 +16,7 @@ setMethod(
   "show",
   c(object = "te_expansion"),
   function(object) {
-    catn("Expansion")
+    catn("Expansion:")
     catn("Chunk size:", object@chunk_size)
     catn("Censor at switch:", object@censor_at_switch)
     catn("First period:", object@first_period, "| Last period:", object@last_period)

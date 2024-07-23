@@ -85,7 +85,7 @@ setMethod(
   c(object = "te_outcome_data"),
   function(object) {
     if (!length(object@data)) {
-      catn("No outcome data found, use load_expanded_data()")
+      catn("No outcome data, use load_expanded_data()")
     } else {
     catn("Outcome data")
     catn("N:", object@n_rows, "observations from", object@n_ids, "patients in", length(object@periods), "trial periods")

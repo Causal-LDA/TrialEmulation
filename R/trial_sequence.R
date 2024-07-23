@@ -118,7 +118,8 @@ setMethod(
       catn("IPW for treatment switch censoring:")
       show(object@switch_weights)
     }
-    # expansion
+    catn("")
+    show(object@expansion)
     catn("")
     catn("Outcome model:")
     show(object@outcome_model)
