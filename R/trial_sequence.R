@@ -122,7 +122,8 @@ setMethod(
     catn("")
     catn("Outcome model:")
     show(object@outcome_model)
-    # outcome_data
+    catn("")
+    show(object@outcome_data)
   }
 )
 
