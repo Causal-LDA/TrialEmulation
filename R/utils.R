@@ -149,7 +149,6 @@ catn <- function(...) {
 
 
 drop_path <- function(x) {
-  output <- sub("Path: [[:graph:]]*", "Path:", strsplit(x, "\n")[[1]]) |>
-    paste0(collapse = "\n")
+  output <- sub("Path: [[:graph:]]*", "Path:", x)
   output
 }
