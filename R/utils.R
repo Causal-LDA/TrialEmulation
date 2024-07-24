@@ -148,6 +148,12 @@ catn <- function(...) {
 }
 
 
+#' Drop paths in snapshot tests
+#'
+#' @param x snapshot
+#'
+#' @return snapshot without paths
+#' @noRd
 drop_path <- function(x) {
   output <- sub("Path: [[:graph:]]*", "Path:", x)
   output
