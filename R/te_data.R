@@ -88,7 +88,9 @@ setMethod(
       catn("No outcome data, use load_expanded_data()")
     } else {
       catn("Outcome data")
-      catn("N:", object@n_rows, "observations from", object@n_ids, "patients in", length(object@periods), "trial periods")
+      catn(
+        "N:", object@n_rows, "observations from", object@n_ids, "patients in", length(object@periods), "trial periods"
+      )
       catn("Periods:", object@periods)
       if (length(object@subset_condition)) catn("Subset condition:", object@subset_condition)
       if (length(object@p_control)) catn("P-control:", object@p_control)
