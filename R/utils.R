@@ -146,3 +146,15 @@ extract_baseline <- function(trial_file, baseline_file, quiet = TRUE) {
 catn <- function(...) {
   cat(..., "\n")
 }
+
+
+#' Drop paths in snapshot tests
+#'
+#' @param x snapshot
+#'
+#' @return snapshot without paths
+#' @noRd
+drop_path <- function(x) {
+  output <- sub("Path: [[:graph:]]*", "Path:", x)
+  output
+}

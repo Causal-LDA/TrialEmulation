@@ -118,11 +118,13 @@ setMethod(
       catn("IPW for treatment switch censoring:")
       show(object@switch_weights)
     }
-    # expansion
+    catn("")
+    show(object@expansion)
     catn("")
     catn("Outcome model:")
     show(object@outcome_model)
-    # outcome_data
+    catn("")
+    show(object@outcome_data)
   }
 )
 
@@ -792,7 +794,7 @@ setMethod(
       )
     }
 
-    object@outcome_data <- te_outcome_data(data_table)
+    object@outcome_data <- te_outcome_data(data_table, p_control, subset_condition)
 
     object
   }

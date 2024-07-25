@@ -43,6 +43,19 @@ setValidity("te_datastore_csv", function(object) {
   if (length(msg)) msg else TRUE
 })
 
+# Show
+setMethod(
+  "show",
+  c(object = "te_datastore_csv"),
+  function(object) {
+    catn("A TE Datastore CSV object")
+    catn("N:", object@N, "observations")
+    catn("Periods:", object@files$period)
+    catn("Path:", object@path)
+    catn("Columns:", paste0(colnames(object@template), collapse = ", "))
+  }
+)
+
 
 #' Save expanded data as CSV
 #' @param path Directory to save CSV files in. Must be empty.
