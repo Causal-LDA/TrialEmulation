@@ -52,7 +52,7 @@ setMethod(
     catn("N:", object@N, "observations")
     catn("Periods:", object@files$period)
     catn("Path:", object@path)
-    catn("Template columns:", paste0(colnames(object@template), collapse = ", "))
+    catn("Columns:", paste0(colnames(object@template), collapse = ", "))
   }
 )
 
