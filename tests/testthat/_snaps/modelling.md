@@ -353,7 +353,7 @@
       N: 1558 observations 
       Periods: 0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 
       Path: 
-      Template columns: id, trial_period, followup_time, outcome, weight, treatment, x1, x2, assigned_treatment 
+      Columns: id, trial_period, followup_time, outcome, weight, treatment, x1, x2, assigned_treatment 
        
       Outcome model: 
       TE Outcome Model Object 
