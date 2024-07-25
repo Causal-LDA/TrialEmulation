@@ -416,6 +416,24 @@ test_that("set_outcome_model works with strings", {
   )
 })
 
+# Expand
+test_that("weights are 1 when not calculated by calculate_weights", {
+  trial_ex <- TrialEmulation::trial_example
+
+  itt <- trial_sequence("ITT") |>
+    set_data(trial_ex) |>
+    set_outcome_model(
+      ~ catvarA + catvarB,
+      followup_time_terms = ~followup_time,
+      trial_period_terms = ~trial_period
+    ) |>
+    set_expansion_options(save_to_datatable(), chunk_size = 500) |>
+    expand_trials() |>
+    load_expanded_data()
+  expect_numeric(itt@data@data$wt, lower = 1, upper = 1)
+  expect_numeric(outcome_data(itt)$weight, lower = 1, upper = 1)
+})
+
 # Outcome Data ----
 
 test_that("outcome_data accessor/setter works", {

@@ -33,12 +33,6 @@ setClass("te_outcome_model",
 # te_outcome_model_unset -----
 setClass("te_outcome_model_unset", contains = "te_outcome_model")
 
-# te_stats_glm_logit_outcome_fitted -----
-
-setClass(
-  "te_stats_glm_logit_outcome_fitted",
-  contains = "te_outcome_fitted"
-)
 
 # show method for te_outcome_model -----
 setMethod(

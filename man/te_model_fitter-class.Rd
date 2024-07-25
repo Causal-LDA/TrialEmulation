@@ -3,7 +3,6 @@
 \docType{class}
 \name{te_model_fitter-class}
 \alias{te_model_fitter-class}
-\alias{te_stats_glm_logit-class}
 \title{Outcome Model Fitter Class}
 \description{
 This is a virtual class which other outcome model fitter classes should inherit from. Objects of these class exist to

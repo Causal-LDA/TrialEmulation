@@ -16,7 +16,7 @@ set_outcome_model(object, ...)
   adjustment_terms = ~1,
   followup_time_terms = ~followup_time + I(followup_time^2),
   trial_period_terms = ~trial_period + I(trial_period^2),
-  model_fitter
+  model_fitter = stats_glm_logit(save_path = NA)
 )
 
 \S4method{set_outcome_model}{trial_sequence_ITT}(
