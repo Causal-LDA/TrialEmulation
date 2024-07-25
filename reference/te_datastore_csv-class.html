@@ -18,7 +18,7 @@ set_expansion_options.'><!-- mathjax --><script src="https://cdnjs.cloudflare.co
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">TrialEmulation</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.3.24</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.3.25</span>
       </span>
     </div>
 
@@ -135,42 +135,11 @@ select all files.</p></dd>
 <span class="r-in"><span><span class="va">datastore</span> <span class="op">&lt;-</span> <span class="fu"><a href="save_to_csv.html">save_to_csv</a></span><span class="op">(</span><span class="va">temp_dir</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">vignette_switch_data</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="save_expanded_data.html">save_expanded_data</a></span><span class="op">(</span><span class="va">datastore</span>, <span class="va">vignette_switch_data</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">200</span>, <span class="op">]</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> An object of class "te_datastore_csv"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Slot "path":</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "/tmp/RtmpoLzcfN/csv_dir_165b71cd98d4"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Slot "files":</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                                                  file period</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1  /tmp/RtmpoLzcfN/csv_dir_165b71cd98d4/trial_261.csv    261</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2  /tmp/RtmpoLzcfN/csv_dir_165b71cd98d4/trial_262.csv    262</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3  /tmp/RtmpoLzcfN/csv_dir_165b71cd98d4/trial_263.csv    263</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4  /tmp/RtmpoLzcfN/csv_dir_165b71cd98d4/trial_264.csv    264</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5  /tmp/RtmpoLzcfN/csv_dir_165b71cd98d4/trial_265.csv    265</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6  /tmp/RtmpoLzcfN/csv_dir_165b71cd98d4/trial_266.csv    266</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 7  /tmp/RtmpoLzcfN/csv_dir_165b71cd98d4/trial_267.csv    267</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 8  /tmp/RtmpoLzcfN/csv_dir_165b71cd98d4/trial_268.csv    268</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 9  /tmp/RtmpoLzcfN/csv_dir_165b71cd98d4/trial_269.csv    269</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 10 /tmp/RtmpoLzcfN/csv_dir_165b71cd98d4/trial_270.csv    270</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 11 /tmp/RtmpoLzcfN/csv_dir_165b71cd98d4/trial_271.csv    271</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 12 /tmp/RtmpoLzcfN/csv_dir_165b71cd98d4/trial_272.csv    272</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 13 /tmp/RtmpoLzcfN/csv_dir_165b71cd98d4/trial_273.csv    273</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 14 /tmp/RtmpoLzcfN/csv_dir_165b71cd98d4/trial_274.csv    274</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 15 /tmp/RtmpoLzcfN/csv_dir_165b71cd98d4/trial_275.csv    275</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 16 /tmp/RtmpoLzcfN/csv_dir_165b71cd98d4/trial_276.csv    276</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 17 /tmp/RtmpoLzcfN/csv_dir_165b71cd98d4/trial_277.csv    277</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 18 /tmp/RtmpoLzcfN/csv_dir_165b71cd98d4/trial_278.csv    278</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 19 /tmp/RtmpoLzcfN/csv_dir_165b71cd98d4/trial_279.csv    279</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Slot "template":</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [1] id                 trial_period       followup_time      outcome           </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [5] weight             treatment          catvarA            catvarB           </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [9] catvarC            nvarA              nvarB              nvarC             </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [13] assigned_treatment</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;0 rows&gt; (or 0-length row.names)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Slot "N":</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 200</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> A TE Datastore CSV object </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> N: 200 observations </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Periods: 261 262 263 264 265 266 267 268 269 270 271 272 273 274 275 276 277 278 279 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Path: /tmp/RtmpKQVg9H/csv_dir_20af50b6d9f3 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Columns: id, trial_period, followup_time, outcome, weight, treatment, catvarA, catvarB, catvarC, nvarA, nvarB, nvarC, assigned_treatment </span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># delete after use</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/unlink.html" class="external-link">unlink</a></span><span class="op">(</span><span class="va">temp_dir</span>, recursive <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
