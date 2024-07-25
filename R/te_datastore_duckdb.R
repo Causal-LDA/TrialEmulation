@@ -22,6 +22,17 @@ setClass(
   )
 )
 
+# Show
+setMethod(
+  "show",
+  c(object = "te_datastore_duckdb"),
+  function(object) {
+    catn("A TE Datastore DuckDB object")
+    catn("N:", object@N, "observations")
+    catn("Path:", object@path)
+  }
+)
+
 
 #' Save expanded data to `DuckDB`
 #' @param path Directory to save `DuckDB` database file in.

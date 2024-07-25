@@ -59,7 +59,9 @@ setClass(
     data = "data.table",
     n_rows = "numeric",
     n_ids = "numeric",
-    periods = "numeric"
+    periods = "numeric",
+    p_control = "numeric",
+    subset_condition = "character"
   )
 )
 
@@ -77,26 +79,51 @@ setValidity(
   }
 )
 
+# Show
+setMethod(
+  "show",
+  c(object = "te_outcome_data"),
+  function(object) {
+    if (!length(object@data)) {
+      catn("No outcome data, use load_expanded_data()")
+    } else {
+      catn("Outcome data")
+      catn(
+        "N:", object@n_rows, "observations from", object@n_ids, "patients in", length(object@periods), "trial periods"
+      )
+      catn("Periods:", object@periods)
+      if (length(object@subset_condition)) catn("Subset condition:", object@subset_condition)
+      if (length(object@p_control)) catn("Sampling control observations with probability:", object@p_control)
+      print(object@data, nrows = 4, topn = 2)
+    }
+  }
+)
+
 
 #' Create te_outcome_data
 #'
 #' @param data A data.table derived from expanded data, containing columns
 #'  `c("id", "trial_period", "followup_time", "outcome", "weight")`
-#'
+#' @param p_control p_control used for sampling
+#' @param subset_condition subset_condition parameters used for loading/sampling
 #' @return A `te_outcome_data` object
 #' @noRd
-te_outcome_data <- function(data) {
+te_outcome_data <- function(data, p_control = NULL, subset_condition = NULL) {
   checkmate::assert_data_table(data)
   checkmate::assert_names(colnames(data), must.include = c("id", "trial_period", "followup_time", "outcome", "weight"))
   n_rows <- nrow(data)
   if (n_rows == 0) warning("Outcome data has 0 rows")
   n_ids <- data.table::uniqueN(data[, "id"])
   periods <- sort(unique(data$trial_period))
+  if (is.null(subset_condition)) subset_condition <- character()
+  if (is.null(p_control)) p_control <- numeric()
   new(
     "te_outcome_data",
     data = data,
     n_rows = n_rows,
     n_ids = n_ids,
-    periods = periods
+    periods = periods,
+    p_control = p_control,
+    subset_condition = subset_condition
   )
 }

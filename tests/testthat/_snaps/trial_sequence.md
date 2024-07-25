@@ -15,8 +15,11 @@
       IPW for treatment switch censoring: 
        - No weight model specified 
        
+      No expanded data, use expand_trials() 
+       
       Outcome model: 
-       - Outcome model not specified. Use set_outcome_model()
+       - Outcome model not specified. Use set_outcome_model() 
+      No outcome data, use load_expanded_data() 
 
 # show works for trial_sequence_ITT with nothing set
 
@@ -32,8 +35,11 @@
       IPW for informative censoring: 
        - No weight model specified 
        
+      No expanded data, use expand_trials() 
+       
       Outcome model: 
-       - Outcome model not specified. Use set_outcome_model()
+       - Outcome model not specified. Use set_outcome_model() 
+      No outcome data, use load_expanded_data() 
 
 # show works for trial_sequence_AT with nothing set
 
@@ -52,8 +58,11 @@
       IPW for treatment switch censoring: 
        - No weight model specified 
        
+      No expanded data, use expand_trials() 
+       
       Outcome model: 
-       - Outcome model not specified. Use set_outcome_model()
+       - Outcome model not specified. Use set_outcome_model() 
+      No outcome data, use load_expanded_data() 
 
 # show works for trial_sequence_PP with data and outcome_model set
 
@@ -93,6 +102,8 @@
       IPW for treatment switch censoring: 
        - No weight model specified 
        
+      No expanded data, use expand_trials() 
+       
       Outcome model: 
       TE Outcome Model Object 
       Formula: outcome ~ assigned_treatment + followup_time + I(followup_time^2) + trial_period + I(trial_period^2) 
@@ -100,4 +111,6 @@
       Adjustment_vars:  
        
       Use fit_msm() to fit the outcome model 
+       
+      No outcome data, use load_expanded_data() 
 

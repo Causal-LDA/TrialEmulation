@@ -26,6 +26,17 @@ setClass(
   )
 )
 
+# Show
+setMethod(
+  "show",
+  c(object = "te_datastore_datatable"),
+  function(object) {
+    catn("A TE Datastore Datatable object")
+    catn("N:", object@N, "observations")
+    print(object@data, nrows = 4, topn = 2)
+  }
+)
+
 
 #' Save expanded data as a `data.table`
 #' @family save_to
