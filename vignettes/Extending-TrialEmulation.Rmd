@@ -1,0 +1,92 @@
+---
+title: "Extending-TrialEmulation"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Extending-TrialEmulation}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup}
+library(TrialEmulation)
+```
+
+Due to the extensive use of classes, TrialEmulation can be expanded by the user to fit their own specific needs.
+
+This document gives a quick overview of the extensible classes, the current implementations and the requirements for
+adding your own child classes.
+
+## Model fitters
+
+## Data Stores
+
+### Classes and Slots
+
+- **te_datastore**: Parent class, placed as a place holder in trial_sequence objects before setting expansion options, 
+will be replaced with the corresponding child class when expansion options are set.
+  - @N: Number of observations
+
+Currently the following Data Store child classes are available for saving expanded data:
+
+- **te_datastore_csv**: Expanded data is saved as csv files, one file per trial period. When reading the data, only the
+files corresponding to the selected trial periods are read.
+  - @path: Path to temp folder containing the csv files
+  - @files: Paths to all available files
+  - @template: empty data.frame, used as a template when reading the data
+  - @N: inherited from te_datastore
+- **te_datastore_datatable**: Expanded data is saved as a data.table in memory, only viable for smaller datasets.
+  - @data: data.table containing expanded data
+  - @N: inherited from te_datastore
+- **te_datastore_duckdb**: Expanded data is saved as a duckdb file containing all trial periods. Reading, subsetting and
+sampling can be done efficiently with an SQL query (currently constructed with a translator helper function).
+  - @path: Path to temp folder containing the duckdb file
+  - @table:
+  - @con: A duckdb_connection object, used to connect to the file in a query
+  - @N: inherited from te_datastore
+
+
+
+
+### Constructor
+
+A constructor function is required to be used in `set_expansion_options()` to replace te_datastore with the
+corresponding child class. Saving of the data happens when calling `expand_trials()` which internally calls the
+corresponding `save_expanded_data()` method.
+
+See the following currently available constructor functions for further insights: 
+`save_to_csv()`, `save_to_datatable()`, `save_to_duckdb()`
+
+### Methods
+
+#### show
+
+*Note:* Since the child classes differ quite significantly from each other, every child class has its own show method. 
+There is no show method for the te_datastore parent class.
+
+#### save_expanded_data
+
+This method defines how the expanded data gets saved. Method is chosen based on the te_datastore child class.
+It gets called internally by `expand_trials()`.
+
+#### read_expanded_data
+
+This method is used for reading the expanded data into memory. The data can be subset by period or any other subset
+condition. It gets called internally by `load_expanded_data()` if p_control isn't specified and by
+`sample_expanded_data()` if no specific sampling method exists for a te_datastore child class.
+
+#### sample_expanded_data
+
+This method is used for reading and sampling the expanded data. The data can be subset by period or any other subset
+condition plus it can be sampled using the p_control argument. It gets called internally by `load_expanded_data()` if
+p_control is specified. 
+
+If no method for the child class exists, the method of the parent class will be used instead which will read and subset
+the data using `read_expanded_data()`. Then the sampling happens in bulk, which might cause problems for large datasets.
+Because of memory limitations it might be necessary to implement a more efficient method for a new child class.
