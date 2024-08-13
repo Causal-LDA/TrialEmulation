@@ -27,6 +27,14 @@ adding your own child classes.
 
 ## Data Stores
 
+In order to add a new data store, a child class must be defined that inherits from te_datastore.
+
+You must also add at least a new constructor `save_to_xxx()` as well as new methods for `save_expanded_data()`
+and `read_expanded_data()`. 
+
+A new method for `sample_expanded_data()` is optional (e.g. in case sampling is not required or the implemented method
+for te_datastore is sufficient, see below under *sample_expanded_data*), but it might be necessary for large datasets.
+
 ### Classes and Slots
 
 - **te_datastore**: Parent class, placed as a place holder in trial_sequence objects before setting expansion options, 
@@ -56,9 +64,9 @@ sampling can be done efficiently with an SQL query (currently constructed with a
 
 ### Constructor
 
-A constructor function is required to be used in `set_expansion_options()` to replace te_datastore with the
-corresponding child class. Saving of the data happens when calling `expand_trials()` which internally calls the
-corresponding `save_expanded_data()` method.
+A constructor function is required to be used in `set_expansion_options()` to replace the te_datastore object in
+`trial_sequence@expansion@datastore` with an object of the corresponding child class. Saving of the data happens when
+calling `expand_trials()` which internally calls the corresponding `save_expanded_data()` method.
 
 See the following currently available constructor functions for further insights: 
 `save_to_csv()`, `save_to_datatable()`, `save_to_duckdb()`
@@ -75,11 +83,23 @@ There is no show method for the te_datastore parent class.
 This method defines how the expanded data gets saved. Method is chosen based on the te_datastore child class.
 It gets called internally by `expand_trials()`.
 
+- **Arguments**
+  - object: a te_datastore child class object
+  - data: data to be saved
+- **Returns**: a modified te_datastore child class object
+
 #### read_expanded_data
 
 This method is used for reading the expanded data into memory. The data can be subset by period or any other subset
 condition. It gets called internally by `load_expanded_data()` if p_control isn't specified and by
 `sample_expanded_data()` if no specific sampling method exists for a te_datastore child class.
+
+- **Arguments**
+  - object: a te_datastore child class object
+  - period: integerish vector to select trial periods, if missing defaults to `NULL` and selects all available trial
+  periods
+  - subset_condition: subset condition as a string, if missing defaults to `NULL` and skips subsetting
+- **Returns**: a data.table object
 
 #### sample_expanded_data
 
@@ -90,3 +110,12 @@ p_control is specified.
 If no method for the child class exists, the method of the parent class will be used instead which will read and subset
 the data using `read_expanded_data()`. Then the sampling happens in bulk, which might cause problems for large datasets.
 Because of memory limitations it might be necessary to implement a more efficient method for a new child class.
+
+- **Arguments**
+  - object: a te_datastore child class object
+  - p_control: numeric value between 0 and 1, probability to sample a control value
+  - period: integerish vector to select trial periods, if missing defaults to `NULL` and selects all available trial
+  periods
+  - subset_condition: subset condition as a string, if missing defaults to `NULL` and skips subsetting
+  - seed: a seed to be used for sampling, if missing sampling is randomised
+- **Returns**: a data.table object
