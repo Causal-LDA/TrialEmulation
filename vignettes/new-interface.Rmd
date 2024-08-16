@@ -189,18 +189,6 @@ There are two options to set
  many patients are processed at one time.
 
 ```{r}
-# trial_pp <- trial_pp |>
-#   set_expansion_options(
-#     output = save_to_csv(file.path(trial_pp_dir, "trial_csvs")),
-#     chunk_size = 500
-#   )
-#
-# trial_itt <- set_expansion_options(
-#   trial_itt,
-#   output = save_to_csv(file.path(trial_itt_dir, "trial_csvs")),
-#   chunk_size = 500
-# )
-
 trial_pp <- set_expansion_options(
   trial_pp,
   output = save_to_datatable(),
@@ -211,12 +199,28 @@ trial_itt <- set_expansion_options(
   output = save_to_datatable(),
   chunk_size = 500
 )
+```
 
-# trial_itt <- set_expansion_options(
-#   trial_itt,
-#   output = save_to_duckdb(file.path(trial_itt_dir, "trial_duckdb")),
-#   chunk_size = 500
-# )
+Other options for big data are to save to csv or DuckDB:
+
+```{r, eval = FALSE}
+trial_pp <- trial_pp |>
+  set_expansion_options(
+    output = save_to_csv(file.path(trial_pp_dir, "trial_csvs")),
+    chunk_size = 500
+  )
+
+trial_itt <- set_expansion_options(
+  trial_itt,
+  output = save_to_csv(file.path(trial_itt_dir, "trial_csvs")),
+  chunk_size = 500
+)
+
+trial_itt <- set_expansion_options(
+  trial_itt,
+  output = save_to_duckdb(file.path(trial_itt_dir, "trial_duckdb")),
+  chunk_size = 500
+)
 ```
 
 
@@ -228,7 +232,6 @@ trial_itt <- expand_trials(trial_itt)
 ```
 
 
-Show method not implemented yet
 ```{r}
 trial_pp@expansion
 trial_itt@expansion
@@ -261,7 +264,9 @@ preds <- predict(
   predict_times = 0:10,
   type = "survival",
 )
-plot(preds$difference$followup_time, preds$difference$survival_diff, type = "l", xlab = "Follow up", ylab = "Survival difference")
+plot(preds$difference$followup_time, preds$difference$survival_diff,
+  type = "l", xlab = "Follow up", ylab = "Survival difference"
+)
 lines(preds$difference$followup_time, preds$difference$`2.5%`, type = "l", col = "red", lty = 2)
 lines(preds$difference$followup_time, preds$difference$`97.5%`, type = "l", col = "red", lty = 2)
 ```
