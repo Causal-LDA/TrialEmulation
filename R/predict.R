@@ -167,8 +167,6 @@ calculate_cum_inc <- function(p_mat) {
 #' TrialEmulation:::calculate_survival(surv_prob)
 calculate_survival <- function(p_mat) {
   assert_matrix(p_mat, mode = "numeric")
-  # result <- rowMeans(apply(1 - p_mat, 1, cumprod))
-  # colMeans(cumprod.matrix(1 - p_mat, "rows"))
   result <- .colMeans(cumprod_matrix(1 - p_mat, "rows"), nrow(p_mat), ncol(p_mat))
   assert_monotonic(result, increasing = FALSE)
   result
