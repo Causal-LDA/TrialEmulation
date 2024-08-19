@@ -76,7 +76,7 @@ models. For logistic regression use \code{\link[=stats_glm_logit]{stats_glm_logi
 \code{object} is returned with \verb{@censor_weights} set
 }
 \description{
-Set censoring weight model
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
 }
 \examples{
 trial_sequence("ITT") |>

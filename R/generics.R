@@ -234,6 +234,8 @@ setGeneric(
 
 #' Method to read, subset and sample expanded data
 #'
+#' `r lifecycle::badge('experimental')`
+#'
 #' This method is used on [trial_sequence-class] objects to read, subset and sample expanded data.
 #'
 #' @param object An object of class [trial_sequence-class].
@@ -360,6 +362,8 @@ setGeneric("fit_weights_model", function(object, data, formula, label) standardG
 
 #' Specify the outcome model
 #'
+#' `r lifecycle::badge('experimental')`
+#'
 #' @param object A trial_sequence object
 #' @param ... Parameters used by methods
 #' @param treatment_var The treatment term, only used for "as treated" estimands. PP and ITT are fixed to use
@@ -406,6 +410,8 @@ setGeneric("outcome_data<-", function(object, value) standardGeneric("outcome_da
 
 
 #' Fit the marginal structural model for the sequence of emulated trials
+#'
+#' `r lifecycle::badge('experimental')`
 #'
 #' @param object A `trial_sequence` object
 #' @param use_sample_weights logical statement if sample weights should be used, default is `TRUE`

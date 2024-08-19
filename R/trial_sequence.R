@@ -74,6 +74,8 @@ setClass(
 
 #' Create a sequence of emulated target trials object
 #'
+#' `r lifecycle::badge('experimental')`
+#'
 #' @param estimand The name of the estimand for this analysis, either one of `"ITT"`, `"PP"`, `"AT"` for
 #' intention-to-treat, per-protocol, as-treated estimands respectively, or the name of a class extending
 #' [trial_sequence-class]
@@ -131,6 +133,8 @@ setMethod(
 # set_data --------
 
 #' Set the trial data
+#'
+#' `r lifecycle::badge('experimental')`
 #'
 #' @param object A [trial_sequence-class] object
 #' @param data A `data.frame` containing all the required variables in the person-time format, i.e., the
@@ -256,6 +260,8 @@ setMethod(
 # set_censor_weight_model -------------
 
 #' Set censoring weight model
+#'
+#' `r lifecycle::badge('experimental')`
 #'
 #' @param object trial_sequence.
 #' @param numerator A RHS formula to specify the logistic models for estimating the numerator terms of the inverse
@@ -391,6 +397,8 @@ setMethod(
 # set_switch_weight_model --------
 
 #' Set switching weight model
+#'
+#' `r lifecycle::badge('experimental')`
 #'
 #' @param object A [trial_sequence] object.
 #' @param numerator Right hand side formula for the numerator model
@@ -580,6 +588,9 @@ setMethod(
 # Set expansion options -----
 
 #' Set expansion options
+#'
+#' `r lifecycle::badge('experimental')`
+#'
 #' @param object A [trial_sequence] object
 #' @param output A [te_datastore][te_datastore-class] object as created by a `save_to_*` function.
 #' @param chunk_size An integer specifying the number of patients to include in each expansion iteration
@@ -654,6 +665,8 @@ setMethod(
 
 #' Calculate Inverse Probability of Censoring Weights
 #'
+#' `r lifecycle::badge('experimental')`
+#'
 #' @param object A [trial_sequence] object
 #' @param quiet Prints model summaries is `TRUE`.
 #' @param ... Other arguments used by methods.
@@ -721,6 +734,9 @@ setMethod(
 # Expand trials --------
 
 #' Expand trials
+#'
+#' `r lifecycle::badge('experimental')`
+#'
 #' @param object A [trial_sequence] object
 #'
 #' @returns The [trial_sequence] `object` with a data set containing the full sequence of target trials. The data is

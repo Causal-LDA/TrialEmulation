@@ -148,10 +148,12 @@ if \code{use_censor_weights=TRUE}}
 }
 }
 \description{
-This function  expands observational data in the person-time format (i.e., the  `long' format) to emulate a sequence
-of target trials and also estimates the inverse probability of treatment and censoring weights as required.
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#maturing}{\figure{lifecycle-maturing.svg}{options: alt='[Maturing]'}}}{\strong{[Maturing]}}
 }
 \details{
+This function  expands observational data in the person-time format (i.e., the  `long' format) to emulate a sequence
+of target trials and also estimates the inverse probability of treatment and censoring weights as required.
+
 The arguments \code{chunk_size} and \code{separate_files} allow for processing of large datasets that would not fit in
 memory once expanded. When \code{separate_files = TRUE}, the input data are processed in chunks of individuals and saved
 into separate files for each emulated trial. These separate files can be sampled by case-control sampling to create

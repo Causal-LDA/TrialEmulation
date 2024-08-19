@@ -27,6 +27,9 @@ containing the sample weights will be added to the result. These can be included
 \code{\link[=trial_msm]{trial_msm()}}.
 }
 \description{
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#maturing}{\figure{lifecycle-maturing.svg}{options: alt='[Maturing]'}}}{\strong{[Maturing]}}
+}
+\details{
 Perform case-control sampling of expanded data to create a data set of reduced size and calculate sampling weights
 to be used in \code{trial_msm()}.
 }

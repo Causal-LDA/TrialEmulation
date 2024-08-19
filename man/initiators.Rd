@@ -166,6 +166,9 @@ matrix}
 }
 }
 \description{
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#maturing}{\figure{lifecycle-maturing.svg}{options: alt='[Maturing]'}}}{\strong{[Maturing]}}
+}
+\details{
 An all-in-one analysis using a sequence of emulated target trials. This provides a simplified interface to the main
 functions \code{\link[=data_preparation]{data_preparation()}} and \code{\link[=trial_msm]{trial_msm()}}.
 }
