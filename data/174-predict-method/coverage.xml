@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE coverage SYSTEM "https://raw.githubusercontent.com/cobertura/cobertura/master/cobertura/src/site/htdocs/xml/coverage-04.dtd">
-<coverage line-rate="0.898809523809524" branch-rate="0" lines-covered="1812" lines-valid="2016" branches-covered="0" branches-valid="0" complexity="0" version="3.6.4" timestamp="2024-08-16 10:43:56.928426">
+<coverage line-rate="0.898809523809524" branch-rate="0" lines-covered="1812" lines-valid="2016" branches-covered="0" branches-valid="0" complexity="0" version="3.6.4" timestamp="2024-08-19 11:39:54.535351">
   <sources>
     <source>/__w/TrialEmulation/TrialEmulation/TrialEmulation</source>
   </sources>
@@ -2408,38 +2408,38 @@
             <method name="calculate_survival" signature="" line-rate="1" branch-rate="0" complexity="0">
               <lines>
                 <line number="169" hits="30" branch="false"/>
+                <line number="170" hits="30" branch="false"/>
+                <line number="171" hits="30" branch="false"/>
                 <line number="172" hits="30" branch="false"/>
-                <line number="173" hits="30" branch="false"/>
-                <line number="174" hits="30" branch="false"/>
               </lines>
             </method>
             <method name="cumprod_matrix" signature="" line-rate="0.777777777777778" branch-rate="0" complexity="0">
               <lines>
-                <line number="178" hits="30" branch="false"/>
+                <line number="176" hits="30" branch="false"/>
+                <line number="177" hits="30" branch="false"/>
                 <line number="179" hits="30" branch="false"/>
-                <line number="181" hits="30" branch="false"/>
-                <line number="182" hits="0" branch="false"/>
-                <line number="183" hits="0" branch="false"/>
+                <line number="180" hits="0" branch="false"/>
+                <line number="181" hits="0" branch="false"/>
+                <line number="182" hits="30" branch="false"/>
+                <line number="183" hits="30" branch="false"/>
                 <line number="184" hits="30" branch="false"/>
-                <line number="185" hits="30" branch="false"/>
                 <line number="186" hits="30" branch="false"/>
-                <line number="188" hits="30" branch="false"/>
               </lines>
             </method>
             <method name="calculate_predictions" signature="" line-rate="1" branch-rate="0" complexity="0">
               <lines>
+                <line number="202" hits="4" branch="false"/>
+                <line number="203" hits="4" branch="false"/>
                 <line number="204" hits="4" branch="false"/>
-                <line number="205" hits="4" branch="false"/>
                 <line number="206" hits="4" branch="false"/>
                 <line number="208" hits="4" branch="false"/>
+                <line number="209" hits="4" branch="false"/>
                 <line number="210" hits="4" branch="false"/>
                 <line number="211" hits="4" branch="false"/>
                 <line number="212" hits="4" branch="false"/>
                 <line number="213" hits="4" branch="false"/>
                 <line number="214" hits="4" branch="false"/>
                 <line number="215" hits="4" branch="false"/>
-                <line number="216" hits="4" branch="false"/>
-                <line number="217" hits="4" branch="false"/>
               </lines>
             </method>
           </methods>
@@ -2516,30 +2516,30 @@
             <line number="160" hits="29" branch="false"/>
             <line number="161" hits="29" branch="false"/>
             <line number="169" hits="30" branch="false"/>
+            <line number="170" hits="30" branch="false"/>
+            <line number="171" hits="30" branch="false"/>
             <line number="172" hits="30" branch="false"/>
-            <line number="173" hits="30" branch="false"/>
-            <line number="174" hits="30" branch="false"/>
-            <line number="178" hits="30" branch="false"/>
+            <line number="176" hits="30" branch="false"/>
+            <line number="177" hits="30" branch="false"/>
             <line number="179" hits="30" branch="false"/>
-            <line number="181" hits="30" branch="false"/>
-            <line number="182" hits="0" branch="false"/>
-            <line number="183" hits="0" branch="false"/>
+            <line number="180" hits="0" branch="false"/>
+            <line number="181" hits="0" branch="false"/>
+            <line number="182" hits="30" branch="false"/>
+            <line number="183" hits="30" branch="false"/>
             <line number="184" hits="30" branch="false"/>
-            <line number="185" hits="30" branch="false"/>
             <line number="186" hits="30" branch="false"/>
-            <line number="188" hits="30" branch="false"/>
+            <line number="202" hits="4" branch="false"/>
+            <line number="203" hits="4" branch="false"/>
             <line number="204" hits="4" branch="false"/>
-            <line number="205" hits="4" branch="false"/>
             <line number="206" hits="4" branch="false"/>
             <line number="208" hits="4" branch="false"/>
+            <line number="209" hits="4" branch="false"/>
             <line number="210" hits="4" branch="false"/>
             <line number="211" hits="4" branch="false"/>
             <line number="212" hits="4" branch="false"/>
             <line number="213" hits="4" branch="false"/>
             <line number="214" hits="4" branch="false"/>
             <line number="215" hits="4" branch="false"/>
-            <line number="216" hits="4" branch="false"/>
-            <line number="217" hits="4" branch="false"/>
           </lines>
         </class>
         <class name="robust.R" filename="R/robust.R" line-rate="1" branch-rate="0" complexity="0">
