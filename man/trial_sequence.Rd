@@ -17,7 +17,7 @@ intention-to-treat, per-protocol, as-treated estimands respectively, or the name
 An estimand specific trial sequence object
 }
 \description{
-Create a sequence of emulated target trials object
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
 }
 \examples{
 trial_sequence("ITT")

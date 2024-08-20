@@ -26,7 +26,7 @@ calculate_weights(object, ...)
 A \link{trial_sequence} object with updated \code{censor_weights} and/or \code{switch_weights} slots
 }
 \description{
-Calculate Inverse Probability of Censoring Weights
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
 }
 \examples{
 save_dir <- file.path(tempdir(), "switch_models")

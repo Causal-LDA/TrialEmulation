@@ -75,6 +75,8 @@ setMethod(
 
 #' Show Weight Model Summaries
 #'
+#' `r lifecycle::badge('experimental')`
+#'
 #' @param object A [trial_sequence] object after fitting weight models with [calculate_weights()]
 #'
 #' @return Prints summaries of the censoring models

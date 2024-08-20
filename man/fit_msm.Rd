@@ -39,7 +39,7 @@ method.}
 A modified \code{trial_sequence} object with updated \code{outcome_model} slot.
 }
 \description{
-Fit the marginal structural model for the sequence of emulated trials
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
 }
 \examples{
 trial_seq_object <- trial_sequence("ITT") |>
