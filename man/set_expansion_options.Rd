@@ -49,7 +49,7 @@ set_expansion_options(object, ...)
 \code{object} is returned with \verb{@expansion} set
 }
 \description{
-Set expansion options
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
 }
 \examples{
 output_dir <- file.path(tempdir(check = TRUE), "expanded_data")

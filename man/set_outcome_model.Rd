@@ -16,7 +16,7 @@ set_outcome_model(object, ...)
   adjustment_terms = ~1,
   followup_time_terms = ~followup_time + I(followup_time^2),
   trial_period_terms = ~trial_period + I(trial_period^2),
-  model_fitter
+  model_fitter = stats_glm_logit(save_path = NA)
 )
 
 \S4method{set_outcome_model}{trial_sequence_ITT}(
@@ -64,7 +64,7 @@ set_outcome_model(object, ...)
 A modified \code{object} with the \code{outcome_model} slot set
 }
 \description{
-Specify the outcome model
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
 }
 \examples{
 trial_sequence("ITT") |>

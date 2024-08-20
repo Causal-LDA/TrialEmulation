@@ -14,5 +14,5 @@ The \link{trial_sequence} \code{object} with a data set containing the full sequ
 stored according to the options set with \code{\link[=set_expansion_options]{set_expansion_options()}} and especially the \verb{save_to_*} function.
 }
 \description{
-Expand trials
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
 }

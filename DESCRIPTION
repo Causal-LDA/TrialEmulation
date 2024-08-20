@@ -1,6 +1,6 @@
 Package: TrialEmulation
 Title: Causal Analysis of Observational Time-to-Event Data
-Version: 0.0.3.26
+Version: 0.0.3.28
 Authors@R: c(
     person("Roonak", "Rezvani", , "roonak.r74@gmail.com", role = "aut",
            comment = c(ORCID = "0000-0001-5580-5058", "Original package author")),
@@ -29,6 +29,7 @@ Imports:
     DBI,
     duckdb,
     formula.tools,
+    lifecycle,
     lmtest,
     methods,
     mvtnorm,
@@ -78,5 +79,6 @@ Collate:
     'sampling.R'
     'te_datastore_csv.R'
     'te_datastore_duckdb.R'
+    'te_stats_glm_logit.R'
     'utils.R'
     'weighting.R'

@@ -13,5 +13,5 @@ show_weight_models(object)
 Prints summaries of the censoring models
 }
 \description{
-Show Weight Model Summaries
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
 }

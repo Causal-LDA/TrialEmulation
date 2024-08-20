@@ -46,7 +46,7 @@ probability of treatment weights for those who are not on treatment at the immed
 \code{object} is returned with \verb{@switch_weights} set
 }
 \description{
-Set switching weight model
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
 }
 \examples{
 trial_sequence("PP") |>

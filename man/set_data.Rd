@@ -64,7 +64,7 @@ Default is <U+2018>eligible<U+2019>.}
 An updated \link[=trial_sequence-class]{trial_sequence} object with data
 }
 \description{
-Set the trial data
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
 }
 \examples{
 data(trial_example)

@@ -1,5 +1,7 @@
 #' Case-control sampling of expanded data for the sequence of emulated trials
 #'
+#' `r lifecycle::badge('stable')`
+#'
 #' Perform case-control sampling of expanded data to create a data set of reduced size and calculate sampling weights
 #' to be used in `trial_msm()`.
 #'

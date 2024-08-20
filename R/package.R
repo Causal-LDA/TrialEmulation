@@ -11,6 +11,7 @@
 #' @import methods
 #' @importFrom Rcpp sourceCpp
 #' @importFrom DBI dbGetQuery
+#' @importFrom lifecycle deprecated
 #' @useDynLib TrialEmulation
 
 NULL

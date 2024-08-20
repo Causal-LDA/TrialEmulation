@@ -96,10 +96,12 @@ matrix}
 }
 }
 \description{
-Apply a weighted pooled logistic regression to fit the marginal structural model for the sequence of emulated trials
-and calculates the robust covariance matrix  of parameter using the sandwich estimator.
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
 }
 \details{
+Apply a weighted pooled logistic regression to fit the marginal structural model for the sequence of emulated trials
+and calculates the robust covariance matrix  of parameter using the sandwich estimator.
+
 The model formula is constructed by combining the arguments \code{outcome_cov}, \code{model_var},
 \code{include_followup_time}, and \code{include_trial_period}.
 }

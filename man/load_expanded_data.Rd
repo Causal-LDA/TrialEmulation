@@ -49,6 +49,9 @@ An updated \linkS4class{trial_sequence} object, the data is stored in slot \verb
 as a \linkS4class{te_outcome_data} object.
 }
 \description{
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
+}
+\details{
 This method is used on \linkS4class{trial_sequence} objects to read, subset and sample expanded data.
 }
 \examples{
