@@ -209,7 +209,6 @@ setMethod(
     }
 
     object@outcome_data@data <- cbind(object@outcome_data@data, w)
-
     object@outcome_model@fitted <- fit_outcome_model(object@outcome_model@model_fitter,
       data = object@outcome_data@data,
       formula = object@outcome_model@formula,
