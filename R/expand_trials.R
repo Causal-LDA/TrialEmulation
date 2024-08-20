@@ -11,6 +11,9 @@ expand_trials_trial_seq <- function(object) {
     outcome_adj_vars, object@outcome_model@treatment_var
   ))
 
+  wt <- NULL
+  if (is.null(data$wt)) data[, wt := 1]
+
   all_ids <- unique(data$id)
   ids_split <- if (chunk_size == 0) {
     list(all_ids)

@@ -25,7 +25,7 @@ test_that("read_expanded_data can read te_datastore_duckdb data", {
   expect_error(read_expanded_data(expanded_duckdb_data, period = "1"), "period")
 
   # check if no new NAs are introduced
-  expect_equal(sum(is.na.data.frame(read_expanded_data(expanded_duckdb_data))), 1469)
+  expect_equal(sum(is.na.data.frame(read_expanded_data(expanded_duckdb_data))), 0)
 
   # check if factor variables are kept
   expect_factor(read_expanded_data(expanded_duckdb_data)$id)
