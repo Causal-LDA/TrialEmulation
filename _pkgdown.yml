@@ -29,7 +29,6 @@ reference:
   - set_expansion_options
   - set_outcome_model
   - expand_trials
-  - sample_controls
   - load_expanded_data
   - outcome_data
   - fit_msm

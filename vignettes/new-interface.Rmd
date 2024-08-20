@@ -241,7 +241,7 @@ trial_itt@expansion
 ### Sample or Load from Expanded Data
 
 ```{r}
-trial_itt <- sample_controls(trial_itt, seed = 1234, p_control = 1)
+trial_itt <- load_expanded_data(trial_itt, seed = 1234, p_control = 1)
 outcome_data(trial_itt)
 ```
 
