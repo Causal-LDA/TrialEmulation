@@ -148,7 +148,7 @@ if \code{use_censor_weights=TRUE}}
 }
 }
 \description{
-\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#maturing}{\figure{lifecycle-maturing.svg}{options: alt='[Maturing]'}}}{\strong{[Maturing]}}
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
 }
 \details{
 This function  expands observational data in the person-time format (i.e., the  `long' format) to emulate a sequence

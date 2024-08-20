@@ -3,7 +3,7 @@ NULL
 
 #' Fit the marginal structural model for the sequence of emulated trials
 #'
-#' `r lifecycle::badge('maturing')`
+#' `r lifecycle::badge('stable')`
 #'
 #' Apply a weighted pooled logistic regression to fit the marginal structural model for the sequence of emulated trials
 #' and calculates the robust covariance matrix  of parameter using the sandwich estimator.

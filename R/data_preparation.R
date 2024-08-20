@@ -1,6 +1,6 @@
 #' Prepare data for the sequence of emulated target trials
 #'
-#' `r lifecycle::badge('maturing')`
+#' `r lifecycle::badge('stable')`
 #'
 #' This function  expands observational data in the person-time format (i.e., the  `long' format) to emulate a sequence
 #' of target trials and also estimates the inverse probability of treatment and censoring weights as required.

@@ -1,6 +1,6 @@
 #' A wrapper function to perform data preparation and model fitting in a sequence of emulated target trials
 #'
-#' `r lifecycle::badge('maturing')`
+#' `r lifecycle::badge('stable')`
 #'
 #' An all-in-one analysis using a sequence of emulated target trials. This provides a simplified interface to the main
 #' functions [`data_preparation()`] and [`trial_msm()`].
