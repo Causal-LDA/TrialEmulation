@@ -196,7 +196,7 @@ setGeneric("read_expanded_data", function(object, period = NULL, subset_conditio
 #'
 #' @return An updated [trial_sequence-class] object, the data is stored in slot `@outcome_data`
 #'    as a [te_outcome_data-class] object.
-#' @export
+#' @noRd
 #'
 #' @examples
 #' # create a trial_sequence-class object

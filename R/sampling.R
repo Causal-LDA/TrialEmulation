@@ -167,6 +167,7 @@ setMethod(
 
 
 #' @rdname sample_controls
+#' @noRd
 setMethod(
   f = "sample_controls",
   signature = "trial_sequence",

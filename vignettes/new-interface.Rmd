@@ -271,7 +271,10 @@ lines(preds$difference$followup_time, preds$difference$`2.5%`, type = "l", col =
 lines(preds$difference$followup_time, preds$difference$`97.5%`, type = "l", col = "red", lty = 2)
 ```
 
-```
+### Flowchart
+
+![Flowchart](img/trial_sequence_functions_overview_solid.png)
+
 
 ## Class Structure
 
