@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">TrialEmulation</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.3.25</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.3.26</span>
       </span>
     </div>
 
@@ -75,7 +75,7 @@
 <span>  adjustment_terms <span class="op">=</span> <span class="op">~</span><span class="fl">1</span>,</span>
 <span>  followup_time_terms <span class="op">=</span> <span class="op">~</span><span class="va">followup_time</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/r/base/AsIs.html" class="external-link">I</a></span><span class="op">(</span><span class="va">followup_time</span><span class="op">^</span><span class="fl">2</span><span class="op">)</span>,</span>
 <span>  trial_period_terms <span class="op">=</span> <span class="op">~</span><span class="va">trial_period</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/r/base/AsIs.html" class="external-link">I</a></span><span class="op">(</span><span class="va">trial_period</span><span class="op">^</span><span class="fl">2</span><span class="op">)</span>,</span>
-<span>  <span class="va">model_fitter</span></span>
+<span>  model_fitter <span class="op">=</span> <span class="fu"><a href="stats_glm_logit.html">stats_glm_logit</a></span><span class="op">(</span>save_path <span class="op">=</span> <span class="cn">NA</span><span class="op">)</span></span>
 <span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># S4 method for class 'trial_sequence_ITT'</span></span>

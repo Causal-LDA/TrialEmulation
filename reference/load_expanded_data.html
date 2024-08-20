@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">TrialEmulation</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.3.25</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.3.26</span>
       </span>
     </div>
 
@@ -160,13 +160,13 @@ as a <a href="te_outcome_data-class.html">te_outcome_data</a> object.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  ---                                                                  </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 724:       0        0        0             7  FALSE     1     4      0</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 725:       1        0        0             7  FALSE     1     4      1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>      regime_start time_on_regime eligible0 eligible1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>             &lt;int&gt;          &lt;num&gt;     &lt;num&gt;     &lt;num&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   1:            0              0         1         0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   2:            0              1         0         1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  ---                                                </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 724:            5              1         0         1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 725:            7              2         0         1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      regime_start time_on_regime eligible0 eligible1    wt</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>             &lt;int&gt;          &lt;num&gt;     &lt;num&gt;     &lt;num&gt; &lt;num&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   1:            0              0         1         0     1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   2:            0              1         0         1     1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  ---                                                      </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 724:            5              1         0         1     1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 725:            7              2         0         1     1</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> IPW for informative censoring: </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  - No weight model specified </span>
@@ -179,7 +179,7 @@ as a <a href="te_outcome_data-class.html">te_outcome_data</a> object.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> A TE Datastore CSV object </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> N: 1558 observations </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Periods: 0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Path: /tmp/RtmpKQVg9H/trial_itt/trial_csvs </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Path: /tmp/RtmpS5NpAh/trial_itt/trial_csvs </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Columns: id, trial_period, followup_time, outcome, weight, treatment, x1, x2, assigned_treatment </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Outcome model: </span>
@@ -196,10 +196,10 @@ as a <a href="te_outcome_data-class.html">te_outcome_data</a> object.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span>          id trial_period followup_time outcome weight treatment    x1       x2</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>       &lt;int&gt;        &lt;int&gt;         &lt;int&gt;   &lt;int&gt;  &lt;int&gt;     &lt;int&gt; &lt;int&gt;    &lt;num&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    1:     1            0             0       0      1         1     1 1.146148</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    2:     1            0             1       0     NA         1     1 1.146148</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    2:     1            0             1       0      1         1     1 1.146148</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   ---                                                                         </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1557:    54           17             1       0     NA         0     0 1.846423</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1558:    54           17             2       0     NA         0     0 1.846423</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1557:    54           17             1       0      1         0     0 1.846423</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1558:    54           17             2       0      1         0     0 1.846423</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>       assigned_treatment sample_weight</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                    &lt;int&gt;         &lt;num&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    1:                  1             1</span>
@@ -235,13 +235,13 @@ as a <a href="te_outcome_data-class.html">te_outcome_data</a> object.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  ---                                                                  </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 724:       0        0        0             7  FALSE     1     4      0</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 725:       1        0        0             7  FALSE     1     4      1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>      regime_start time_on_regime eligible0 eligible1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>             &lt;int&gt;          &lt;num&gt;     &lt;num&gt;     &lt;num&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   1:            0              0         1         0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   2:            0              1         0         1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  ---                                                </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 724:            5              1         0         1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 725:            7              2         0         1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      regime_start time_on_regime eligible0 eligible1    wt</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>             &lt;int&gt;          &lt;num&gt;     &lt;num&gt;     &lt;num&gt; &lt;num&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   1:            0              0         1         0     1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   2:            0              1         0         1     1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  ---                                                      </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 724:            5              1         0         1     1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 725:            7              2         0         1     1</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> IPW for informative censoring: </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  - No weight model specified </span>
@@ -254,7 +254,7 @@ as a <a href="te_outcome_data-class.html">te_outcome_data</a> object.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> A TE Datastore CSV object </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> N: 1558 observations </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Periods: 0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Path: /tmp/RtmpKQVg9H/trial_itt/trial_csvs </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Path: /tmp/RtmpS5NpAh/trial_itt/trial_csvs </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Columns: id, trial_period, followup_time, outcome, weight, treatment, x1, x2, assigned_treatment </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Outcome model: </span>
@@ -266,24 +266,24 @@ as a <a href="te_outcome_data-class.html">te_outcome_data</a> object.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Use fit_msm() to fit the outcome model </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Outcome data </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> N: 130 observations from 25 patients in 14 trial periods </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Periods: 1 2 3 4 5 6 7 8 9 10 12 13 15 16 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> N: 120 observations from 23 patients in 13 trial periods </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Periods: 1 2 3 4 5 6 7 8 9 13 14 15 16 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Subset condition: followup_time %in% 1:20 &amp; x2 &lt; 1 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Sampling control observations with probability: 0.2 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         id trial_period followup_time outcome weight treatment    x1        x2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>      &lt;int&gt;        &lt;int&gt;         &lt;int&gt;   &lt;int&gt; &lt;lgcl&gt;     &lt;int&gt; &lt;int&gt;     &lt;num&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   1:     4            1             1       0     NA         0     1 0.6936485</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   2:    27            1             1       0     NA         0     0 0.6897105</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  ---                                                                          </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 129:    54           15             4       0     NA         0     0 0.6850722</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 130:    54           16             3       0     NA         0     1 0.8179964</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         id trial_period followup_time outcome weight treatment    x1         x2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      &lt;int&gt;        &lt;int&gt;         &lt;int&gt;   &lt;int&gt;  &lt;int&gt;     &lt;int&gt; &lt;int&gt;      &lt;num&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   1:    88            1             1       0      1         0     1 -0.3808923</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   2:    21            1             1       0      1         0     1  0.5070821</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  ---                                                                           </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 119:    54           15             1       0      1         0     0  0.6850722</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 120:    54           16             1       0      1         1     1  0.8179964</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>      assigned_treatment sample_weight</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                   &lt;int&gt;         &lt;num&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   1:                  0             5</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   2:                  0             5</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  ---                                 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 129:                  0             5</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 130:                  0             5</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 119:                  0             5</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 120:                  0             5</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># delete after use</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/unlink.html" class="external-link">unlink</a></span><span class="op">(</span><span class="va">trial_itt_dir</span>, recursive <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
