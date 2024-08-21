@@ -4,6 +4,7 @@ catvarA
 catvarB
 catvarC
 CMD
+conf
 csv
 Danaei
 datatable
@@ -21,6 +22,7 @@ github
 glm
 Hoffmann
 ie
+int
 integerish
 io
 IPCW

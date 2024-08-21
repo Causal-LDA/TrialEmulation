@@ -1,6 +1,8 @@
 ---
 title: "Extending-TrialEmulation"
-output: rmarkdown::html_vignette
+output: 
+  rmarkdown::html_vignette:
+    toc: true
 vignette: >
   %\VignetteIndexEntry{Extending-TrialEmulation}
   %\VignetteEngine{knitr::rmarkdown}
@@ -14,17 +16,15 @@ knitr::opts_chunk$set(
 )
 ```
 
-```{r setup}
-library(TrialEmulation)
-```
+## Introduction 
 
 Due to the extensive use of classes, TrialEmulation can be expanded by the user to fit their own specific needs.
 
 This document gives a quick overview of the extensible classes, the current implementations and the requirements for
 adding your own child classes.
 
-This vignette describes two areas where new functionality could be implemented: regression model fitting and data
-storage.
+This vignette describes two areas where new functionality could be implemented: 
+[regression model fitting](#model-fitters) and [data storage](#data-stores).
 
 ## Model fitters
 
@@ -70,36 +70,53 @@ See `stats_glm_logit()` for a simple implementation.
 
 ### Methods
 
-There are XXX generic methods that are required for model fitting
+There are 3 generic methods that are required when implementing a new model, `fit_weights_model()`, 
+`fit_outcome_model()`, and `predict()`.
 
 
 #### fit_weights_model
 
-This method defines how the expanded data gets saved. Method is chosen based on the `te_datastore` child class.
-It gets called internally by `expand_trials()`. For large datasets `save_expanded_data()` may be called multiple times,
-so the method must be able to "append" data in some way.
+This method uses the model object to fit a model for probability of censoring and returns the fitted probabilities which
+are later combined and used to construct the inverse probability of censoring weights. The method should also save the
+fitted model object to disk if a save path is specified.
 
 - **Arguments**
-  - object: a `te_datastore` child class object
-  - data: `data.table` to be saved to the data store
-- **Returns**: a modified `te_datastore` child class object
+  - object: the `te_model_fitter` object
+  - data: `data.frame` containing the outcome (here the censoring indicator) and covariate data
+  - formula: the model formula
+  - label: a `character` label describing the model to be attached to the result
+- **Returns**: a `te_weights_fitted` object containing a summary of the fitted model and the fitted probabilities.
 
 #### fit_outcome_model
 
-This method defines how the expanded data gets saved. Method is chosen based on the `te_datastore` child class.
-It gets called internally by `expand_trials()`. For large datasets `save_expanded_data()` may be called multiple times,
-so the method must be able to "append" data in some way.
-
+This method fits the outcome model.
+object, data, formula, weights = NULL
 - **Arguments**
-  - object: a `te_datastore` child class object
-  - data: `data.table` to be saved to the data store
-- **Returns**: a modified `te_datastore` child class object
+  - object: the `te_model_fitter` object
+  - data: `data.frame` containing the outcome and covariate data
+  - formula: the model formula
+  - weights: a numeric vector containing weights for all observations in `data`
+- **Returns**: The fitted model as an object inheriting from a `te_outcome_fitted` child class corresponding to the 
+  fitter model class used. This object contains a summary of the results as well as the raw result from the model.
 
 #### predict
 
-- predict
+This method calculates the marginal survival or cumulative incidences based on the outcome model object. The method should
+take the baseline covariates and construct data for `assigned_treatment = 0` and `1` as well as the follow up times
+given in `predict_times`.
+
+- **Arguments**
+  - object: the fitted model object inheriting from `te_outcome_fitted`, eg `te_stats_glm_logit_outcome_fitted`
+  - newdata: a `data.frame` containing baseline covariates to predict probabilities for
+  - predict_times: a contiguous numeric vector of times to calculate predictions for
+  - type: a string indicating the type of prediction to calculate: `"cum_inc"` or `"survival"`
+  - conf_int: logical indicating whether or not to calculate the 95% confidence interval
+  - samples: an integer giving the number of iterations used to calculate the confidence interval using a sampling
+  approach
+- **Returns**: a list containing the predicted values for assigned treatment 0, 1 and the difference between them.
 
 
+  
 
 
 ## Data Stores
