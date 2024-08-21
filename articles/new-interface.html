@@ -32,7 +32,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">TrialEmulation</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.3.27</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.3.28</span>
       </span>
     </div>
 
@@ -456,7 +456,7 @@ can be printed:</p>
 <span><span class="co">#&gt;  404.2156      724     -196.7002 397.4004 406.5727 393.4004 723         725 </span></span>
 <span><span class="co">#&gt;  </span></span>
 <span><span class="co">#&gt;  path                                                          </span></span>
-<span><span class="co">#&gt;  /tmp/RtmprTHYwL/trial_itt/switch_models/model_1b1d64373831.rds</span></span>
+<span><span class="co">#&gt;  /tmp/RtmpfrBJRc/trial_itt/switch_models/model_1b491d975497.rds</span></span>
 <span><span class="co">#&gt;  </span></span>
 <span><span class="co">#&gt; Model: P(censor_event = 0 | X, previous treatment = 0) for denominator </span></span>
 <span><span class="co">#&gt;  </span></span>
@@ -469,7 +469,7 @@ can be printed:</p>
 <span><span class="co">#&gt;  283.0723      425     -132.1655 270.3309 282.4943 264.3309 423         426 </span></span>
 <span><span class="co">#&gt;  </span></span>
 <span><span class="co">#&gt;  path                                                          </span></span>
-<span><span class="co">#&gt;  /tmp/RtmprTHYwL/trial_itt/switch_models/model_1b1d508cc4bc.rds</span></span>
+<span><span class="co">#&gt;  /tmp/RtmpfrBJRc/trial_itt/switch_models/model_1b4971eaf683.rds</span></span>
 <span><span class="co">#&gt;  </span></span>
 <span><span class="co">#&gt; Model: P(censor_event = 0 | X, previous treatment = 1) for denominator </span></span>
 <span><span class="co">#&gt;  </span></span>
@@ -482,7 +482,7 @@ can be printed:</p>
 <span><span class="co">#&gt;  113.0528      298     -55.72938 117.4588 128.5601 111.4588 296         299 </span></span>
 <span><span class="co">#&gt;  </span></span>
 <span><span class="co">#&gt;  path                                                          </span></span>
-<span><span class="co">#&gt;  /tmp/RtmprTHYwL/trial_itt/switch_models/model_1b1d51d5c49f.rds</span></span>
+<span><span class="co">#&gt;  /tmp/RtmpfrBJRc/trial_itt/switch_models/model_1b4925fb4f91.rds</span></span>
 <span><span class="co">#&gt; </span></span></code></pre></div>
 </div>
 </div>
@@ -602,7 +602,7 @@ processed at one time.</li>
 <h3 id="sample-or-load-from-expanded-data">Sample or Load from Expanded Data<a class="anchor" aria-label="anchor" href="#sample-or-load-from-expanded-data"></a>
 </h3>
 <div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">trial_itt</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/sample_controls.html">sample_controls</a></span><span class="op">(</span><span class="va">trial_itt</span>, seed <span class="op">=</span> <span class="fl">1234</span>, p_control <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">trial_itt</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/load_expanded_data.html">load_expanded_data</a></span><span class="op">(</span><span class="va">trial_itt</span>, seed <span class="op">=</span> <span class="fl">1234</span>, p_control <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span>
 <span><span class="fu"><a href="../reference/outcome_data.html">outcome_data</a></span><span class="op">(</span><span class="va">trial_itt</span><span class="op">)</span></span>
 <span><span class="co">#&gt;          id trial_period followup_time outcome    weight treatment         x2</span></span>
 <span><span class="co">#&gt;       &lt;int&gt;        &lt;int&gt;         &lt;int&gt;   &lt;num&gt;     &lt;num&gt;     &lt;num&gt;      &lt;num&gt;</span></span>
@@ -660,7 +660,13 @@ processed at one time.</li>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/lines.html" class="external-link">lines</a></span><span class="op">(</span><span class="va">preds</span><span class="op">$</span><span class="va">difference</span><span class="op">$</span><span class="va">followup_time</span>, <span class="va">preds</span><span class="op">$</span><span class="va">difference</span><span class="op">$</span><span class="va">`2.5%`</span>, type <span class="op">=</span> <span class="st">"l"</span>, col <span class="op">=</span> <span class="st">"red"</span>, lty <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/lines.html" class="external-link">lines</a></span><span class="op">(</span><span class="va">preds</span><span class="op">$</span><span class="va">difference</span><span class="op">$</span><span class="va">followup_time</span>, <span class="va">preds</span><span class="op">$</span><span class="va">difference</span><span class="op">$</span><span class="va">`97.5%`</span>, type <span class="op">=</span> <span class="st">"l"</span>, col <span class="op">=</span> <span class="st">"red"</span>, lty <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span></code></pre></div>
 <p><img src="new-interface_files/figure-html/unnamed-chunk-18-1.png" width="700"></p>
-<p>```</p>
+</div>
+<div class="section level3">
+<h3 id="flowchart">Flowchart<a class="anchor" aria-label="anchor" href="#flowchart"></a>
+</h3>
+<div class="float">
+<img src="img/trial_sequence_functions_overview_solid.png" alt="Flowchart"><div class="figcaption">Flowchart</div>
+</div>
 </div>
 </div>
 <div class="section level2">
