@@ -241,7 +241,7 @@ trial_itt@expansion
 ### Sample or Load from Expanded Data
 
 ```{r}
-trial_itt <- sample_controls(trial_itt, seed = 1234, p_control = 1)
+trial_itt <- load_expanded_data(trial_itt, seed = 1234, p_control = 1)
 outcome_data(trial_itt)
 ```
 
@@ -271,7 +271,10 @@ lines(preds$difference$followup_time, preds$difference$`2.5%`, type = "l", col =
 lines(preds$difference$followup_time, preds$difference$`97.5%`, type = "l", col = "red", lty = 2)
 ```
 
-```
+### Flowchart
+
+![Flowchart](img/trial_sequence_functions_overview_solid.png)
+
 
 ## Class Structure
 
