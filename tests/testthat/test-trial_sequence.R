@@ -569,4 +569,3 @@ test_that("load_expanded_data works with trial_sequence objects containing te_da
 
   unlink(trial_itt_dir, recursive = TRUE)
 })
-
