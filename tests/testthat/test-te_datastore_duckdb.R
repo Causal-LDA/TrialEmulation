@@ -1,3 +1,12 @@
+test_that("save_to_duckdb works as expected", {
+  temp_dir <- withr::local_tempdir(pattern = "duckdb_dir", tempdir(TRUE))
+  ddb <- save_to_duckdb(temp_dir)
+  expect_equal(ddb@N, 0)
+  expect_class(ddb@con, "duckdb_connection")
+  expect_equal(ddb@table, "trial_data")
+  expect_equal(dirname(ddb@path), temp_dir)
+})
+
 test_that("read_expanded_data can read te_datastore_duckdb data", {
   temp_dir <- withr::local_tempdir(pattern = "duckdb_dir", tempdir(TRUE))
   data <- data_censored
