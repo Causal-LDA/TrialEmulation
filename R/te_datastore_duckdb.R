@@ -58,7 +58,7 @@ save_to_duckdb <- function(path) {
   }
   file_path <- tempfile(pattern = "expanded_data_", tmpdir = path, fileext = ".duckdb")
   con <- duckdb::dbConnect(duckdb::duckdb(), dbdir = file_path, read_only = FALSE)
-  new("te_datastore_duckdb", path = file_path, N = 0L, con = con)
+  new("te_datastore_duckdb", path = file_path, N = 0L, table = "trial_data", con = con)
 }
 
 
@@ -69,10 +69,10 @@ setMethod(
   signature = "te_datastore_duckdb",
   definition = function(object, data) {
     assert_file_exists(object@path)
-    if (!duckdb::dbExistsTable(conn = object@con, name = "trial_data")) {
-      duckdb::dbWriteTable(conn = object@con, name = "trial_data", value = data)
+    if (!duckdb::dbExistsTable(conn = object@con, name = object@table)) {
+      duckdb::dbWriteTable(conn = object@con, name = object@table, value = data)
     } else {
-      duckdb::dbAppendTable(conn = object@con, name = "trial_data", value = data)
+      duckdb::dbAppendTable(conn = object@con, name = object@table, value = data)
     }
 
     object@N <- object@N + nrow(data)
@@ -92,7 +92,7 @@ setMethod(
     if (use_subset <- !is.null(subset_condition)) {
       subset_expr <- translate_to_sql(subset_condition)
     }
-    q_p1 <- "SELECT * FROM trial_data"
+    q_p1 <- paste0("SELECT * FROM ", object@table)
     q_p2 <- if (!is.null(period) | use_subset) " WHERE" else ""
     q_period <- if (!is.null(period)) paste0(" trial_period IN (", paste0(period, collapse = ", "), ")") else ""
     q_p3 <- if (!is.null(period) & use_subset) " AND" else ""
@@ -116,8 +116,8 @@ setMethod(
     if (use_subset <- !is.null(subset_condition)) {
       subset_expr <- translate_to_sql(subset_condition)
     }
-    q_p1 <- "SELECT * FROM (SELECT * FROM trial_data WHERE outcome = 0 "
-    q_p2 <- "UNION SELECT * FROM trial_data WHERE outcome = 1 "
+    q_p1 <- paste0("SELECT * FROM (SELECT * FROM ", object@table, " WHERE outcome = 0 ")
+    q_p2 <- paste0("UNION SELECT * FROM ", object@table, " WHERE outcome = 1 ")
     if (is.null(seed)) {
       q_sample <- paste0("USING SAMPLE ", p_control * 100, " PERCENT (bernoulli) ")
     } else {
