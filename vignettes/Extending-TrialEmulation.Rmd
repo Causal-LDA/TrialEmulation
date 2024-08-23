@@ -39,12 +39,12 @@ allow the definition of child classes.
 - **te_outcome_fitted**: Parent class. This class contains the results of the fitting an outcome model. A class 
   inheriting from `te_outcome_fitted` must be defined for a new model fitter implementation.
   - @model: A list containing the fitted model objects
-  - @summary:  A list of data frames containing a summary of the fitted model (`tidy`, `glace`) and the saved file
+  - @summary:  A list of data frames containing a summary of the fitted model (`tidy`, `glance`) and the saved file
     (`save_path`)
 
 - **te_weights_fitted**: Parent class. This class contains the results of the fitting a weight model. 
   - @label: A label which is supplied to the fitting function to describe the model
-  - @summary: A list of data frames containing a summary of the fitted model (`tidy`, `glace`) and the saved file
+  - @summary: A list of data frames containing a summary of the fitted model (`tidy`, `glance`) and the saved file
     (`save_path`)
   - @fitted: The fitted values (predicted probabilities)
   
