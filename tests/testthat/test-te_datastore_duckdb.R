@@ -1,10 +1,13 @@
 test_that("save_to_duckdb works as expected", {
-  temp_dir <- normalizePath(withr::local_tempdir(pattern = "duckdb_dir", tempdir(TRUE)))
+  temp_dir <- withr::local_tempdir(pattern = "duckdb_dir", tempdir(TRUE))
   ddb <- save_to_duckdb(temp_dir)
   expect_equal(ddb@N, 0)
   expect_class(ddb@con, "duckdb_connection")
   expect_equal(ddb@table, "trial_data")
-  expect_equal(dirname(ddb@path), temp_dir)
+  expect_equal(
+    normalizePath(dirname(ddb@path)),
+    normalizePath(temp_dir)
+  )
   DBI::dbDisconnect(ddb@con)
 })
 
