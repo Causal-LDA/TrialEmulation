@@ -12,9 +12,20 @@ Fitted Outcome Model Object
 \describe{
 \item{\code{formula}}{\code{formula} object for the model fitting}
 
-\item{\code{treatment_var}}{character. The treatment variable}
-
 \item{\code{adjustment_vars}}{character. Adjustment variables}
+
+\item{\code{treatment_var}}{Variable used for treatment}
+
+\item{\code{stabilised_weights_terms}}{formula. Adjustment terms from numerator models of stabilised weights. These must be
+included in the outcome model.}
+
+\item{\code{adjustment_terms}}{formula. User specified terms to include in the outcome model}
+
+\item{\code{treatment_terms}}{formula. Estimand defined treatment term}
+
+\item{\code{followup_time_terms}}{formula. Terms to model follow up time within an emulated trial}
+
+\item{\code{trial_period_terms}}{formula. Terms to model start time ("trial_period") of an emulated trial}
 
 \item{\code{model_fitter}}{Model fitter object}
 

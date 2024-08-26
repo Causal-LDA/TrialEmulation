@@ -16,15 +16,26 @@ setClass(
 #' Fitted Outcome Model Object
 #'
 #' @slot formula `formula` object for the model fitting
-#' @slot treatment_var character. The treatment variable
 #' @slot adjustment_vars character. Adjustment variables
+#' @slot treatment_var Variable used for treatment
+#' @slot stabilised_weights_terms formula. Adjustment terms from numerator models of stabilised weights. These must be
+#' included in the outcome model.
+#' @slot adjustment_terms formula. User specified terms to include in the outcome model
+#' @slot treatment_terms formula. Estimand defined treatment term
+#' @slot followup_time_terms formula. Terms to model follow up time within an emulated trial
+#' @slot trial_period_terms formula. Terms to model start time ("trial_period") of an emulated trial
 #' @slot model_fitter Model fitter object
 #' @slot fitted list. Saves the model objects
 setClass("te_outcome_model",
   slots = c(
     formula = "formula",
-    treatment_var = "character",
     adjustment_vars = "character",
+    treatment_var = "character",
+    adjustment_terms = "formula",
+    treatment_terms = "formula",
+    followup_time_terms = "formula",
+    trial_period_terms = "formula",
+    stabilised_weights_terms = "formula",
     model_fitter = "te_model_fitter",
     fitted = "te_outcome_fitted"
   )
