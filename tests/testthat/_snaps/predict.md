@@ -530,3 +530,255 @@
       ]
     }
 
+# predict.TE_msm gives the same results as new predict
+
+    {
+      "type": "list",
+      "attributes": {
+        "names": {
+          "type": "character",
+          "attributes": {},
+          "value": ["assigned_treatment_0", "assigned_treatment_1", "difference"]
+        }
+      },
+      "value": [
+        {
+          "type": "list",
+          "attributes": {
+            "names": {
+              "type": "character",
+              "attributes": {},
+              "value": ["followup_time", "cum_inc"]
+            },
+            "class": {
+              "type": "character",
+              "attributes": {},
+              "value": ["data.frame"]
+            },
+            "row.names": {
+              "type": "integer",
+              "attributes": {},
+              "value": [1, 2, 3, 4, 5, 6]
+            }
+          },
+          "value": [
+            {
+              "type": "integer",
+              "attributes": {},
+              "value": [0, 1, 2, 3, 4, 5]
+            },
+            {
+              "type": "double",
+              "attributes": {},
+              "value": [0.0046817, 0.00933138, 0.01394965, 0.01853709, 0.02309424, 0.02762164]
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "attributes": {
+            "names": {
+              "type": "character",
+              "attributes": {},
+              "value": ["followup_time", "cum_inc"]
+            },
+            "class": {
+              "type": "character",
+              "attributes": {},
+              "value": ["data.frame"]
+            },
+            "row.names": {
+              "type": "integer",
+              "attributes": {},
+              "value": [1, 2, 3, 4, 5, 6]
+            }
+          },
+          "value": [
+            {
+              "type": "integer",
+              "attributes": {},
+              "value": [0, 1, 2, 3, 4, 5]
+            },
+            {
+              "type": "double",
+              "attributes": {},
+              "value": [0.00358595, 0.00715416, 0.0107049, 0.01423843, 0.01775497, 0.02125478]
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "attributes": {
+            "names": {
+              "type": "character",
+              "attributes": {},
+              "value": ["followup_time", "cum_inc_diff"]
+            },
+            "class": {
+              "type": "character",
+              "attributes": {},
+              "value": ["data.frame"]
+            },
+            "row.names": {
+              "type": "integer",
+              "attributes": {},
+              "value": [1, 2, 3, 4, 5, 6]
+            }
+          },
+          "value": [
+            {
+              "type": "integer",
+              "attributes": {},
+              "value": [0, 1, 2, 3, 4, 5]
+            },
+            {
+              "type": "double",
+              "attributes": {},
+              "value": [-0.00109575, -0.00217722, -0.00324475, -0.00429866, -0.00533927, -0.00636686]
+            }
+          ]
+        }
+      ]
+    }
+
+---
+
+    {
+      "type": "list",
+      "attributes": {
+        "names": {
+          "type": "character",
+          "attributes": {},
+          "value": ["assigned_treatment_0", "assigned_treatment_1", "difference"]
+        }
+      },
+      "value": [
+        {
+          "type": "list",
+          "attributes": {
+            "names": {
+              "type": "character",
+              "attributes": {},
+              "value": ["followup_time", "survival", "2.5%", "97.5%"]
+            },
+            "class": {
+              "type": "character",
+              "attributes": {},
+              "value": ["data.frame"]
+            },
+            "row.names": {
+              "type": "integer",
+              "attributes": {},
+              "value": [1, 2, 3, 4, 5, 6, 7, 8, 9]
+            }
+          },
+          "value": [
+            {
+              "type": "integer",
+              "attributes": {},
+              "value": [0, 1, 2, 3, 4, 5, 6, 7, 8]
+            },
+            {
+              "type": "double",
+              "attributes": {},
+              "value": [0.9953183, 0.99066862, 0.98605035, 0.98146291, 0.97690576, 0.97237836, 0.96788021, 0.96341084, 0.95896979]
+            },
+            {
+              "type": "double",
+              "attributes": {},
+              "value": [0.99499569, 0.99003141, 0.98510663, 0.98022086, 0.97537359, 0.97056435, 0.96579266, 0.96105805, 0.95636006]
+            },
+            {
+              "type": "double",
+              "attributes": {},
+              "value": [0.99540472, 0.99084715, 0.98632598, 0.98184003, 0.97738819, 0.97296946, 0.96858291, 0.96422768, 0.95990297]
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "attributes": {
+            "names": {
+              "type": "character",
+              "attributes": {},
+              "value": ["followup_time", "survival", "2.5%", "97.5%"]
+            },
+            "class": {
+              "type": "character",
+              "attributes": {},
+              "value": ["data.frame"]
+            },
+            "row.names": {
+              "type": "integer",
+              "attributes": {},
+              "value": [1, 2, 3, 4, 5, 6, 7, 8, 9]
+            }
+          },
+          "value": [
+            {
+              "type": "integer",
+              "attributes": {},
+              "value": [0, 1, 2, 3, 4, 5, 6, 7, 8]
+            },
+            {
+              "type": "double",
+              "attributes": {},
+              "value": [0.99641405, 0.99284584, 0.9892951, 0.98576157, 0.98224503, 0.97874522, 0.97526193, 0.97179493, 0.96834403]
+            },
+            {
+              "type": "double",
+              "attributes": {},
+              "value": [0.99339918, 0.98687506, 0.98042615, 0.97405096, 0.9677481, 0.96151618, 0.95535388, 0.94925992, 0.94323306]
+            },
+            {
+              "type": "double",
+              "attributes": {},
+              "value": [0.99641886, 0.99285977, 0.98932211, 0.98580535, 0.98231057, 0.97883728, 0.97538425, 0.97195098, 0.96853703]
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "attributes": {
+            "names": {
+              "type": "character",
+              "attributes": {},
+              "value": ["followup_time", "survival_diff", "2.5%", "97.5%"]
+            },
+            "class": {
+              "type": "character",
+              "attributes": {},
+              "value": ["data.frame"]
+            },
+            "row.names": {
+              "type": "integer",
+              "attributes": {},
+              "value": [1, 2, 3, 4, 5, 6, 7, 8, 9]
+            }
+          },
+          "value": [
+            {
+              "type": "integer",
+              "attributes": {},
+              "value": [0, 1, 2, 3, 4, 5, 6, 7, 8]
+            },
+            {
+              "type": "double",
+              "attributes": {},
+              "value": [0.00109575, 0.00217722, 0.00324475, 0.00429866, 0.00533927, 0.00636686, 0.00738171, 0.00838409, 0.00937425]
+            },
+            {
+              "type": "double",
+              "attributes": {},
+              "value": [-0.0016633, -0.0032937, -0.00489202, -0.00645904, -0.00799553, -0.00950221, -0.01097979, -0.01242897, -0.01385039]
+            },
+            {
+              "type": "double",
+              "attributes": {},
+              "value": [0.0012563, 0.00249007, 0.0037025, 0.00489461, 0.00606734, 0.00722151, 0.00835785, 0.00947702, 0.01057963]
+            }
+          ]
+        }
+      ]
+    }
+
