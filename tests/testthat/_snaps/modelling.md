@@ -307,8 +307,6 @@
       Estimand: Intention-to-treat 
       Data 
       N: 725 observations from 89 patients 
-      Key: <id>
-      Index: <am_1>
               id period treatment    x1           x2    x3        x4   age      age_s
            <int>  <int>     <num> <num>        <num> <int>     <num> <num>      <num>
         1:     1      0         1     1  1.146148362     0 0.7342030    36 0.08333333
@@ -325,22 +323,22 @@
       725:       1        0        0             7  FALSE     1     4      1
            regime_start time_on_regime eligible0 eligible1        wt      pC_n
                   <int>          <num>     <num>     <num>     <num>     <num>
-        1:            0              0         1         0 1.1087474 0.9205042
-        2:            0              1         0         1 0.9991778 0.9523103
+        1:            0              0         1         0 1.0111849 0.9247312
+        2:            0              1         0         1 0.9562510 0.9247312
        ---                                                                    
-      724:            5              1         0         1 0.9908385 0.9443712
-      725:            7              2         0         1 0.9861780 0.9402561
+      724:            5              1         0         1 0.9269537 0.9150142
+      725:            7              2         0         1 0.9448756 0.9150142
                 pC_d       wtC
                <num>     <num>
-        1: 0.8302199 1.1087474
-        2: 0.9530939 0.9991778
+        1: 0.9145026 1.0111849
+        2: 0.9670381 0.9562510
        ---                    
-      724: 0.9531031 0.9908385
-      725: 0.9534345 0.9861780
+      724: 0.9871196 0.9269537
+      725: 0.9683964 0.9448756
        
       IPW for informative censoring: 
-       - Numerator formula: 1 - censored ~ x1 + x2 + x3 
-       - Denominator formula: 1 - censored ~ x2 
+       - Numerator formula: 1 - censored ~ x3 
+       - Denominator formula: 1 - censored ~ x1 + x2 + x3 
       Model fitter type: te_stats_glm_logit 
       View weight model summaries with show_weight_models() 
        
@@ -353,25 +351,26 @@
       N: 1558 observations 
       Periods: 0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 
       Path: 
-      Columns: id, trial_period, followup_time, outcome, weight, treatment, x1, x2, assigned_treatment 
+      Columns: id, trial_period, followup_time, outcome, weight, treatment, x1, x2, x3, assigned_treatment 
        
       Outcome model: 
       TE Outcome Model Object 
-      Formula: outcome ~ assigned_treatment + x1 + x2 + followup_time 
+      Formula: outcome ~ assigned_treatment + x1 + x2 + followup_time + x3 
       Treatment_var: assigned_treatment 
-      Adjustment_vars: x1 x2 
+      Adjustment_vars: x1 x2 x3 
        
       Model Summary: 
        
        term               estimate std.error statistic p.value conf.low conf.high
-       (Intercept)        -5.688   0.663     -8.576    9.8e-18 -6.988   -4.388   
-       assigned_treatment  1.905   0.556      3.426    6.1e-04  0.815    2.994   
-       x1                 -0.374   0.516     -0.724    4.7e-01 -1.385    0.638   
-       x2                 -0.013   0.289     -0.044    9.6e-01 -0.579    0.553   
-       followup_time      -0.011   0.045     -0.237    8.1e-01 -0.098    0.077   
+       (Intercept)        -6.2053  0.846     -7.337    2.2e-13 -7.863   -4.548   
+       assigned_treatment  2.0802  0.603      3.451    5.6e-04  0.899    3.262   
+       x1                 -0.5030  0.543     -0.926    3.5e-01 -1.567    0.561   
+       x2                  0.1017  0.308      0.330    7.4e-01 -0.503    0.706   
+       followup_time      -0.0029  0.046     -0.062    9.5e-01 -0.094    0.088   
+       x3                  0.7231  0.713      1.014    3.1e-01 -0.675    2.121   
        
        null.deviance df.null logLik AIC BIC deviance df.residual nobs
-       155           1557    -75.5  161 188 144      1553        1558
+       148           1557    -74.8  162 194 136      1552        1558
        
       Outcome data 
       N: 1558 observations from 89 patients in 18 trial periods 
@@ -379,15 +378,15 @@
                id trial_period followup_time outcome    weight treatment    x1
             <int>        <int>         <int>   <int>     <num>     <int> <int>
          1:     1            0             0       0 1.0000000         1     1
-         2:     1            0             1       0 0.9991778         1     1
+         2:     1            0             1       0 0.9562510         1     1
         ---                                                                   
-      1557:    54           17             1       0 0.9412692         0     0
-      1558:    54           17             2       0 0.9816871         0     0
-                  x2 assigned_treatment sample_weight         w
-               <num>              <int>         <num>     <num>
-         1: 1.146148                  1             1 1.0000000
-         2: 1.146148                  1             1 0.9991778
-        ---                                                    
-      1557: 1.846423                  1             1 0.9412692
-      1558: 1.846423                  1             1 0.9816871
+      1557:    54           17             1       0 0.9456885         0     0
+      1558:    54           17             2       0 0.9373179         0     0
+                  x2    x3 assigned_treatment sample_weight         w
+               <num> <int>              <int>         <num>     <num>
+         1: 1.146148     0                  1             1 1.0000000
+         2: 1.146148     0                  1             1 0.9562510
+        ---                                                          
+      1557: 1.846423     1                  1             1 0.9456885
+      1558: 1.846423     1                  1             1 0.9373179
 

@@ -41,7 +41,7 @@ setMethod(
   function(object) {
     catn("Data")
     catn("N:", object@nobs, "observations from", object@n, "patients")
-    print(object@data, nrows = 4, topn = 2)
+    print(object@data, nrows = 4, topn = 2, show.indices = FALSE, print.keys = FALSE)
   }
 )
 
@@ -94,7 +94,7 @@ setMethod(
       catn("Periods:", object@periods)
       if (length(object@subset_condition)) catn("Subset condition:", object@subset_condition)
       if (length(object@p_control)) catn("Sampling control observations with probability:", object@p_control)
-      print(object@data, nrows = 4, topn = 2)
+      print(object@data, nrows = 4, topn = 2, show.indices = FALSE, print.keys = FALSE)
     }
   }
 )

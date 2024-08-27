@@ -184,31 +184,25 @@ trial_msm <- function(data,
 setMethod(
   f = "fit_msm",
   signature = "trial_sequence",
-  definition = function(object, use_sample_weights, analysis_weights, weight_limits) {
+  definition = function(object, weight_cols, modify_weights) {
     if (is(object@outcome_model, "te_outcome_unset")) stop("outcome_model not set, please run set_outcome_model")
     if (object@expansion@datastore@N == 0) stop("datastore is empty, please run expand_trials")
     if (!length(object@outcome_data@n_rows)) stop("outcome_data is empty, please run load_expanded_data")
 
-    analysis_weights <- checkmate::matchArg(analysis_weights, c("asis", "unweighted", "p99", "weight_limits"))
-    if (analysis_weights == "weight_limits") checkmate::assert_numeric(weight_limits, len = 2)
-
-    w <- object@outcome_data@data$weight
-
-    if (use_sample_weights) {
-      w <- w * object@outcome_data@data$sample_weight
+    if (!is.null(weight_cols)) {
+      assert_subset(weight_cols, choices = colnames(outcome_data(object)))
+      object@outcome_data@data$w <- object@outcome_data@data[, Reduce(`*`, .SD), .SDcols = weight_cols]
+    } else {
+      object@outcome_data@data$w <- 1
     }
 
-    if (analysis_weights == "asis") {
-      # nothing to do
-    } else if (analysis_weights == "p99") {
-      w <- p99_weight(w)
-    } else if (analysis_weights == "weight_limits") {
-      w <- limit_weight(w, weight_limits[1], weight_limits[2])
-    } else if (analysis_weights == "unweighted") {
-      w <- rep(1, object@outcome_data@n_rows)
+    if (!is.null(modify_weights)) {
+      assert_function(modify_weights)
+      temp_weights <- modify_weights(object@outcome_data@data$w)
+      assert_numeric(temp_weights, lower = 0, finite = TRUE)
+      object@outcome_data@data$w <- temp_weights
     }
 
-    object@outcome_data@data <- cbind(object@outcome_data@data, w)
     object@outcome_model@fitted <- fit_outcome_model(object@outcome_model@model_fitter,
       data = object@outcome_data@data,
       formula = object@outcome_model@formula,
