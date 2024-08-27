@@ -391,8 +391,8 @@ test_that("fit_msm works", {
     ) |>
     set_censor_weight_model(
       censor_event = "censored",
-      numerator = ~ x1 + x2 + x3,
-      denominator = ~x2,
+      numerator = ~x3,
+      denominator = ~ x1 + x2 + x3,
       pool_models = "numerator",
       model_fitter = stats_glm_logit(save_path = file.path(trial_itt_dir, "switch_models"))
     ) |>
