@@ -73,7 +73,6 @@
       Estimand: Per-protocol 
       Data 
       N: 321 observations from 89 patients 
-      Key: <id>
               id period treatment    x1           x2    x3        x4   age      age_s
            <int>  <int>     <num> <num>        <num> <int>     <num> <num>      <num>
         1:     1      0         1     1  1.146148362     0 0.7342030    36 0.08333333
