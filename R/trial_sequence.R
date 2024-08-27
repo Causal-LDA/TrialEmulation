@@ -311,8 +311,8 @@ setMethod(
            denominator,
            pool_models = c("none", "both", "numerator"),
            model_fitter = stats_glm_logit()) {
-    if (missing(numerator)) numerator <- ~0
-    if (missing(denominator)) denominator <- ~0
+    if (missing(numerator)) numerator <- ~1
+    if (missing(denominator)) denominator <- ~1
     # check which of these can be a null model TODO
     assert_formula(numerator)
     assert_formula(denominator)
@@ -331,6 +331,7 @@ setMethod(
       pool_denominator = pool_models == "both",
       model_fitter = model_fitter
     )
+    object <- update_outcome_formula(object)
     object
   }
 )
@@ -451,8 +452,8 @@ setMethod(
       colnames(object@data@data)[which(cols == eligible_wts_1)] <- "eligible_wts_1"
     }
 
-    if (missing(numerator)) numerator <- ~0
-    if (missing(denominator)) denominator <- ~0
+    if (missing(numerator)) numerator <- ~1
+    if (missing(denominator)) denominator <- ~1
     # check which of these can be a null model
     assert_formula(numerator)
     assert_formula(denominator)
@@ -465,6 +466,7 @@ setMethod(
       denominator = denominator,
       model_fitter = model_fitter
     )
+    object <- update_outcome_formula(object)
     object
   }
 )
@@ -497,9 +499,10 @@ setMethod(
       treatment = as_formula(treatment_var, add = collection),
       adjustment = as_formula(adjustment_terms, add = collection),
       followup = as_formula(followup_time_terms, add = collection),
-      period = as_formula(trial_period_terms, add = collection)
+      period = as_formula(trial_period_terms, add = collection),
+      stabilised = as_formula(get_stabilised_weights_terms(object), add = collection)
     )
-    adjustment <- all.vars(formula_list$adjustment)
+    adjustment <- unique(c(all.vars(formula_list$adjustment), all.vars(formula_list$stabilised)))
     assert_names(
       adjustment,
       subset.of = colnames(object@data@data),
@@ -508,17 +511,20 @@ setMethod(
       add = collection
     )
     reportAssertions(collection)
-
-    formula <- Reduce(add_rhs, formula_list)
-    formula.tools::lhs(formula) <- quote(outcome)
     treatment <- all.vars(formula_list$treatment)
+
     object@outcome_model <- new(
       "te_outcome_model",
-      formula = formula,
       treatment_var = treatment,
       adjustment_vars = adjustment,
-      model_fitter = model_fitter
+      model_fitter = model_fitter,
+      adjustment_terms = formula_list$adjustment,
+      treatment_terms = formula_list$treatment,
+      followup_time_terms = formula_list$followup,
+      trial_period_terms = formula_list$period,
+      stabilised_weights_terms = formula_list$stabilised
     )
+    object <- update_outcome_formula(object)
     object
   }
 )
@@ -584,6 +590,47 @@ setMethod(
   }
 )
 
+get_stabilised_weights_terms <- function(object) {
+  assert_class(object, "trial_sequence")
+  stabilised_terms <- ~1
+
+  if (.hasSlot(object, "censor_weights")) {
+    if (!is(object@censor_weights, "te_weights_unset")) {
+      stabilised_terms <- add_rhs(stabilised_terms, object@censor_weights@numerator)
+    }
+  }
+  if (.hasSlot(object, "switch_weights")) {
+    if (!is(object@switch_weights, "te_weights_unset")) {
+      stabilised_terms <- add_rhs(stabilised_terms, object@switch_weights@numerator)
+    }
+  }
+  stabilised_terms
+}
+
+update_outcome_formula <- function(object) {
+  assert_class(object, "trial_sequence")
+
+  object@outcome_model@stabilised_weights_terms <- get_stabilised_weights_terms(object)
+
+  formula_list <- list(
+    ~1,
+    treatment_terms = object@outcome_model@treatment_terms,
+    adjustment_terms = object@outcome_model@adjustment_terms,
+    followup_time_terms = object@outcome_model@followup_time_terms,
+    trial_period_terms = object@outcome_model@trial_period_terms,
+    stabilised_weights_terms = object@outcome_model@stabilised_weights_terms
+  )
+  keep <- lengths(formula_list) > 0
+  outcome_formula <- Reduce(add_rhs, formula_list[keep])
+  formula.tools::lhs(outcome_formula) <- quote(outcome)
+  object@outcome_model@formula <- outcome_formula
+
+  object@outcome_model@adjustment_vars <- unique(
+    c(all.vars(formula_list$adjustment), all.vars(formula_list$stabilised))
+  )
+
+  object
+}
 
 # Set expansion options -----
 

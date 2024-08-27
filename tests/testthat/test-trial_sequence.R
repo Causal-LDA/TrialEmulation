@@ -416,6 +416,44 @@ test_that("set_outcome_model works with strings", {
   )
 })
 
+test_that("stabilised weight terms are included in outcome model", {
+  result <- trial_sequence("PP") |>
+    set_data(data_censored) |>
+    set_outcome_model(adjustment_terms = c("age", "x2"), trial_period_terms = ~trial_period)
+
+
+  ex <- "outcome ~ assigned_treatment + age + x2 + followup_time + I(followup_time^2) + trial_period"
+  expect_equal(
+    as.character(result@outcome_model@formula),
+    ex
+  )
+
+  result <- result |> set_switch_weight_model(
+    numerator = ~x3,
+    denominator = ~ x3 + x4,
+    model_fitter = stats_glm_logit(NA_character_)
+  )
+
+  # adds x3 term from numerator
+  expect_equal(
+    as.character(result@outcome_model@formula),
+    paste(ex, "+ x3")
+  )
+
+  result <- result |> set_censor_weight_model(
+    numerator = ~x4,
+    denominator = ~ x1 + x4,
+    censor_event = "censored",
+    model_fitter = stats_glm_logit(NA_character_)
+  )
+
+  # adds x4 term from numerator
+  expect_equal(
+    as.character(result@outcome_model@formula),
+    paste(ex, "+ x4 + x3")
+  )
+})
+
 # Expand
 test_that("weights are 1 when not calculated by calculate_weights", {
   trial_ex <- TrialEmulation::trial_example
