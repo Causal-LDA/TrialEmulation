@@ -846,7 +846,7 @@ setMethod(
 
     if (is.null(p_control)) {
       data_table <- read_expanded_data(object@expansion@datastore, period = period, subset_condition = subset_condition)
-      data_table <- cbind(data_table, "sample_weight" = 1)
+      data_table$sample_weight <- 1
     } else {
       data_table <- sample_expanded_data(
         object@expansion@datastore,
