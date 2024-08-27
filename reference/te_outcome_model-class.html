@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">TrialEmulation</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.3.29</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.3.30</span>
       </span>
     </div>
 
@@ -77,12 +77,33 @@
 <dd><p><code>formula</code> object for the model fitting</p></dd>
 
 
-<dt><code>treatment_var</code></dt>
-<dd><p>character. The treatment variable</p></dd>
-
-
 <dt><code>adjustment_vars</code></dt>
 <dd><p>character. Adjustment variables</p></dd>
+
+
+<dt><code>treatment_var</code></dt>
+<dd><p>Variable used for treatment</p></dd>
+
+
+<dt><code>stabilised_weights_terms</code></dt>
+<dd><p>formula. Adjustment terms from numerator models of stabilised weights. These must be
+included in the outcome model.</p></dd>
+
+
+<dt><code>adjustment_terms</code></dt>
+<dd><p>formula. User specified terms to include in the outcome model</p></dd>
+
+
+<dt><code>treatment_terms</code></dt>
+<dd><p>formula. Estimand defined treatment term</p></dd>
+
+
+<dt><code>followup_time_terms</code></dt>
+<dd><p>formula. Terms to model follow up time within an emulated trial</p></dd>
+
+
+<dt><code>trial_period_terms</code></dt>
+<dd><p>formula. Terms to model start time ("trial_period") of an emulated trial</p></dd>
 
 
 <dt><code>model_fitter</code></dt>

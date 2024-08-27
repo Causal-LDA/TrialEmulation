@@ -32,7 +32,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">TrialEmulation</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.3.29</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.3.30</span>
       </span>
     </div>
 
@@ -245,8 +245,8 @@ treatment assignment in that period.</p>
 <span><span class="co">#&gt;  - No weight model specified </span></span>
 <span><span class="co">#&gt;  </span></span>
 <span><span class="co">#&gt; IPW for treatment switch censoring: </span></span>
-<span><span class="co">#&gt;  - Numerator formula: ~ treatment age </span></span>
-<span><span class="co">#&gt;  - Denominator formula: ~ treatment age + x1 + x3 </span></span>
+<span><span class="co">#&gt;  - Numerator formula: treatment ~ age </span></span>
+<span><span class="co">#&gt;  - Denominator formula: treatment ~ age + x1 + x3 </span></span>
 <span><span class="co">#&gt; Model fitter type: te_stats_glm_logit </span></span>
 <span><span class="co">#&gt; Weight models not fitted </span></span>
 <span><span class="co">#&gt;  </span></span>
@@ -316,14 +316,14 @@ only. The default and allowed choices depends on the estimand.</li>
 <span><span class="co">#&gt; 321:            2              2         0         1</span></span>
 <span><span class="co">#&gt;  </span></span>
 <span><span class="co">#&gt; IPW for informative censoring: </span></span>
-<span><span class="co">#&gt;  - Numerator formula: ~ 1 - censored x2 </span></span>
-<span><span class="co">#&gt;  - Denominator formula: ~ 1 - censored x2 + x1 </span></span>
+<span><span class="co">#&gt;  - Numerator formula: 1 - censored ~ x2 </span></span>
+<span><span class="co">#&gt;  - Denominator formula: 1 - censored ~ x2 + x1 </span></span>
 <span><span class="co">#&gt; Model fitter type: te_stats_glm_logit </span></span>
 <span><span class="co">#&gt; Weight models not fitted </span></span>
 <span><span class="co">#&gt;  </span></span>
 <span><span class="co">#&gt; IPW for treatment switch censoring: </span></span>
-<span><span class="co">#&gt;  - Numerator formula: ~ treatment age </span></span>
-<span><span class="co">#&gt;  - Denominator formula: ~ treatment age + x1 + x3 </span></span>
+<span><span class="co">#&gt;  - Numerator formula: treatment ~ age </span></span>
+<span><span class="co">#&gt;  - Denominator formula: treatment ~ age + x1 + x3 </span></span>
 <span><span class="co">#&gt; Model fitter type: te_stats_glm_logit </span></span>
 <span><span class="co">#&gt; Weight models not fitted </span></span>
 <span><span class="co">#&gt;  </span></span>
@@ -370,8 +370,8 @@ only. The default and allowed choices depends on the estimand.</li>
 <span><span class="co">#&gt; 725:            7              2         0         1</span></span>
 <span><span class="co">#&gt;  </span></span>
 <span><span class="co">#&gt; IPW for informative censoring: </span></span>
-<span><span class="co">#&gt;  - Numerator formula: ~ 1 - censored x2 </span></span>
-<span><span class="co">#&gt;  - Denominator formula: ~ 1 - censored x2 + x1 </span></span>
+<span><span class="co">#&gt;  - Numerator formula: 1 - censored ~ x2 </span></span>
+<span><span class="co">#&gt;  - Denominator formula: 1 - censored ~ x2 + x1 </span></span>
 <span><span class="co">#&gt; Model fitter type: te_stats_glm_logit </span></span>
 <span><span class="co">#&gt; Weight models not fitted </span></span>
 <span><span class="co">#&gt;  </span></span>
@@ -425,14 +425,14 @@ weights. This is done with <code><a href="../reference/calculate_weights.html">c
 <span><span class="co">#&gt; 321: 0.5545296 0.9959067 0.9261254 0.9080719 1.0198811</span></span>
 <span><span class="co">#&gt;  </span></span>
 <span><span class="co">#&gt; IPW for informative censoring: </span></span>
-<span><span class="co">#&gt;  - Numerator formula: ~ 1 - censored x2 </span></span>
-<span><span class="co">#&gt;  - Denominator formula: ~ 1 - censored x2 + x1 </span></span>
+<span><span class="co">#&gt;  - Numerator formula: 1 - censored ~ x2 </span></span>
+<span><span class="co">#&gt;  - Denominator formula: 1 - censored ~ x2 + x1 </span></span>
 <span><span class="co">#&gt; Model fitter type: te_stats_glm_logit </span></span>
 <span><span class="co">#&gt; View weight model summaries with show_weight_models() </span></span>
 <span><span class="co">#&gt;  </span></span>
 <span><span class="co">#&gt; IPW for treatment switch censoring: </span></span>
-<span><span class="co">#&gt;  - Numerator formula: ~ treatment age </span></span>
-<span><span class="co">#&gt;  - Denominator formula: ~ treatment age + x1 + x3 </span></span>
+<span><span class="co">#&gt;  - Numerator formula: treatment ~ age </span></span>
+<span><span class="co">#&gt;  - Denominator formula: treatment ~ age + x1 + x3 </span></span>
 <span><span class="co">#&gt; Model fitter type: te_stats_glm_logit </span></span>
 <span><span class="co">#&gt; View weight model summaries with show_weight_models() </span></span>
 <span><span class="co">#&gt;  </span></span>
@@ -459,7 +459,7 @@ can be printed:</p>
 <span><span class="co">#&gt;  404.2156      724     -196.7002 397.4004 406.5727 393.4004 723         725 </span></span>
 <span><span class="co">#&gt;  </span></span>
 <span><span class="co">#&gt;  path                                                          </span></span>
-<span><span class="co">#&gt;  /tmp/RtmpfIcutl/trial_itt/switch_models/model_1ba878f74b76.rds</span></span>
+<span><span class="co">#&gt;  /tmp/RtmpRRca87/trial_itt/switch_models/model_1b7213de2a6d.rds</span></span>
 <span><span class="co">#&gt;  </span></span>
 <span><span class="co">#&gt; Model: P(censor_event = 0 | X, previous treatment = 0) for denominator </span></span>
 <span><span class="co">#&gt;  </span></span>
@@ -471,8 +471,8 @@ can be printed:</p>
 <span><span class="co">#&gt;  null.deviance df.null logLik    AIC      BIC      deviance df.residual nobs</span></span>
 <span><span class="co">#&gt;  283.0723      425     -132.1655 270.3309 282.4943 264.3309 423         426 </span></span>
 <span><span class="co">#&gt;  </span></span>
-<span><span class="co">#&gt;  path                                                         </span></span>
-<span><span class="co">#&gt;  /tmp/RtmpfIcutl/trial_itt/switch_models/model_1ba89d52d45.rds</span></span>
+<span><span class="co">#&gt;  path                                                          </span></span>
+<span><span class="co">#&gt;  /tmp/RtmpRRca87/trial_itt/switch_models/model_1b72417a6f1d.rds</span></span>
 <span><span class="co">#&gt;  </span></span>
 <span><span class="co">#&gt; Model: P(censor_event = 0 | X, previous treatment = 1) for denominator </span></span>
 <span><span class="co">#&gt;  </span></span>
@@ -484,8 +484,8 @@ can be printed:</p>
 <span><span class="co">#&gt;  null.deviance df.null logLik    AIC      BIC      deviance df.residual nobs</span></span>
 <span><span class="co">#&gt;  113.0528      298     -55.72938 117.4588 128.5601 111.4588 296         299 </span></span>
 <span><span class="co">#&gt;  </span></span>
-<span><span class="co">#&gt;  path                                                          </span></span>
-<span><span class="co">#&gt;  /tmp/RtmpfIcutl/trial_itt/switch_models/model_1ba872952a24.rds</span></span>
+<span><span class="co">#&gt;  path                                                         </span></span>
+<span><span class="co">#&gt;  /tmp/RtmpRRca87/trial_itt/switch_models/model_1b7251b015a.rds</span></span>
 <span><span class="co">#&gt; </span></span></code></pre></div>
 </div>
 </div>
@@ -563,20 +563,20 @@ processed at one time.</li>
 <span><span class="co">#&gt;  </span></span>
 <span><span class="co">#&gt; A TE Datastore Datatable object </span></span>
 <span><span class="co">#&gt; N: 500 observations </span></span>
-<span><span class="co">#&gt;         id trial_period followup_time outcome    weight treatment</span></span>
-<span><span class="co">#&gt;      &lt;int&gt;        &lt;int&gt;         &lt;int&gt;   &lt;num&gt;     &lt;num&gt;     &lt;num&gt;</span></span>
-<span><span class="co">#&gt;   1:     1            0             0       0 1.0000000         1</span></span>
-<span><span class="co">#&gt;   2:     1            0             1       0 0.8951447         1</span></span>
-<span><span class="co">#&gt;  ---                                                             </span></span>
-<span><span class="co">#&gt; 499:    99            0             0       0 1.0000000         1</span></span>
-<span><span class="co">#&gt; 500:    99            0             1       0 1.0122336         1</span></span>
-<span><span class="co">#&gt;      assigned_treatment</span></span>
-<span><span class="co">#&gt;                   &lt;num&gt;</span></span>
-<span><span class="co">#&gt;   1:                  1</span></span>
-<span><span class="co">#&gt;   2:                  1</span></span>
-<span><span class="co">#&gt;  ---                   </span></span>
-<span><span class="co">#&gt; 499:                  1</span></span>
-<span><span class="co">#&gt; 500:                  1</span></span>
+<span><span class="co">#&gt;         id trial_period followup_time outcome    weight treatment         x2</span></span>
+<span><span class="co">#&gt;      &lt;int&gt;        &lt;int&gt;         &lt;int&gt;   &lt;num&gt;     &lt;num&gt;     &lt;num&gt;      &lt;num&gt;</span></span>
+<span><span class="co">#&gt;   1:     1            0             0       0 1.0000000         1  1.1461484</span></span>
+<span><span class="co">#&gt;   2:     1            0             1       0 0.8951447         1  1.1461484</span></span>
+<span><span class="co">#&gt;  ---                                                                        </span></span>
+<span><span class="co">#&gt; 499:    99            0             0       0 1.0000000         1 -0.3463778</span></span>
+<span><span class="co">#&gt; 500:    99            0             1       0 1.0122336         1 -0.3463778</span></span>
+<span><span class="co">#&gt;        age assigned_treatment</span></span>
+<span><span class="co">#&gt;      &lt;num&gt;              &lt;num&gt;</span></span>
+<span><span class="co">#&gt;   1:    36                  1</span></span>
+<span><span class="co">#&gt;   2:    36                  1</span></span>
+<span><span class="co">#&gt;  ---                         </span></span>
+<span><span class="co">#&gt; 499:    65                  1</span></span>
+<span><span class="co">#&gt; 500:    65                  1</span></span>
 <span><span class="va">trial_itt</span><span class="op">@</span><span class="va">expansion</span></span>
 <span><span class="co">#&gt; Expansion: </span></span>
 <span><span class="co">#&gt; Chunk size: 500 </span></span>
