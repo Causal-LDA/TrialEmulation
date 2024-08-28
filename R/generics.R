@@ -414,10 +414,12 @@ setGeneric("outcome_data<-", function(object, value) standardGeneric("outcome_da
 #' `r lifecycle::badge('experimental')`
 #'
 #' @param object A `trial_sequence` object
-#' @param use_sample_weights logical statement if sample weights should be used, default is `TRUE`
-#' @param analysis_weights a string, one of `"asis"``, `"unweighted"``, `"p99"``, `"weight_limits"`.
-#' @param weight_limits a numeric vector of length 2 . If `analysis_weights = "weight_limits` this specifies the upper
-#' and lower limits for truncating the weights.
+#' @param weight_cols character vector of column names in expanded outcome dataset, ie `outcome_data(object)`. If
+#' multiple columns are specified, the element wise product will be used. Specify `NULL` if no weight columns should be
+#' used.
+#' @param modify_weights a function to transform the weights (or `NULL` for no transformation).
+#' Must take a numeric vector of weights and a vector of positive, finite weights of the same length.
+#' See examples for some possible function definitions.
 #'
 #' Before the outcome marginal structural model can be fit, the outcome model must be specified with
 #' [set_outcome_model()] and the data must be expanded into the trial sequence with [expand_trials()].
@@ -438,10 +440,34 @@ setGeneric("outcome_data<-", function(object, value) standardGeneric("outcome_da
 #'   load_expanded_data()
 #'
 #' fit_msm(trial_seq_object)
+#'
+#' # Using modify_weights functions ----
+#'
+#' # returns a function that truncates weights to limits
+#' limit_weight <- function(lower_limit, upper_limit) {
+#'   function(w) {
+#'     w[w > upper_limit] <- upper_limit
+#'     w[w < lower_limit] <- lower_limit
+#'     w
+#'   }
+#' }
+#'
+#' # calculate 1st and 99th percentile limits and truncate
+#' p99_weight <- function(w) {
+#'   p99 <- quantile(w, prob = c(0.01, 0.99), type = 1)
+#'   limit_weight(p99[1], p99[2])(w)
+#' }
+#'
+#' # set all weights to 1
+#' all_ones <- function(w) {
+#'   rep(1, length(w))
+#' }
+#'
+#' fit_msm(trial_seq_object, modify_weights = limit_weight(0.01, 4))
+#' fit_msm(trial_seq_object, modify_weights = p99_weight)
 setGeneric("fit_msm", function(object,
-                               use_sample_weights = TRUE,
-                               analysis_weights = c("asis", "unweighted", "p99", "weight_limits"),
-                               weight_limits = c(0, Inf)) {
+                               weight_cols = c("weight", "sample_weight"),
+                               modify_weights = NULL) {
   standardGeneric("fit_msm")
 })
 

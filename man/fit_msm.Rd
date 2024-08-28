@@ -7,27 +7,26 @@
 \usage{
 fit_msm(
   object,
-  use_sample_weights = TRUE,
-  analysis_weights = c("asis", "unweighted", "p99", "weight_limits"),
-  weight_limits = c(0, Inf)
+  weight_cols = c("weight", "sample_weight"),
+  modify_weights = NULL
 )
 
 \S4method{fit_msm}{trial_sequence}(
   object,
-  use_sample_weights = TRUE,
-  analysis_weights = c("asis", "unweighted", "p99", "weight_limits"),
-  weight_limits = c(0, Inf)
+  weight_cols = c("weight", "sample_weight"),
+  modify_weights = NULL
 )
 }
 \arguments{
 \item{object}{A \code{trial_sequence} object}
 
-\item{use_sample_weights}{logical statement if sample weights should be used, default is \code{TRUE}}
+\item{weight_cols}{character vector of column names in expanded outcome dataset, ie \code{outcome_data(object)}. If
+multiple columns are specified, the element wise product will be used. Specify \code{NULL} if no weight columns should be
+used.}
 
-\item{analysis_weights}{a string, one of \verb{"asis"``, }"unweighted"\verb{, `"p99"}, \code{"weight_limits"}.}
-
-\item{weight_limits}{a numeric vector of length 2 . If \verb{analysis_weights = "weight_limits} this specifies the upper
-and lower limits for truncating the weights.
+\item{modify_weights}{a function to transform the weights (or \code{NULL} for no transformation).
+Must take a numeric vector of weights and a vector of positive, finite weights of the same length.
+See examples for some possible function definitions.
 
 Before the outcome marginal structural model can be fit, the outcome model must be specified with
 \code{\link[=set_outcome_model]{set_outcome_model()}} and the data must be expanded into the trial sequence with \code{\link[=expand_trials]{expand_trials()}}.
@@ -53,4 +52,29 @@ trial_seq_object <- trial_sequence("ITT") |>
   load_expanded_data()
 
 fit_msm(trial_seq_object)
+
+# Using modify_weights functions ----
+
+# returns a function that truncates weights to limits
+limit_weight <- function(lower_limit, upper_limit) {
+  function(w) {
+    w[w > upper_limit] <- upper_limit
+    w[w < lower_limit] <- lower_limit
+    w
+  }
+}
+
+# calculate 1st and 99th percentile limits and truncate
+p99_weight <- function(w) {
+  p99 <- quantile(w, prob = c(0.01, 0.99), type = 1)
+  limit_weight(p99[1], p99[2])(w)
+}
+
+# set all weights to 1
+all_ones <- function(w) {
+  rep(1, length(w))
+}
+
+fit_msm(trial_seq_object, modify_weights = limit_weight(0.01, 4))
+fit_msm(trial_seq_object, modify_weights = p99_weight)
 }

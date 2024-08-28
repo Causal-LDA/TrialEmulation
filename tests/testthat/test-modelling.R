@@ -413,7 +413,7 @@ test_that("fit_msm works", {
 
   # fit_msm returns a trial_sequence object
   expect_warning(
-    fm_01 <- fit_msm(trial_itt_expanded, analysis_weights = "asis"),
+    fm_01 <- fit_msm(trial_itt_expanded),
     "non-integer"
   )
 
@@ -431,4 +431,62 @@ test_that("fit_msm works", {
   expect_snapshot(fm_01, transform = drop_path)
 
   unlink(trial_itt_dir, recursive = TRUE)
+})
+
+
+
+
+test_that("fit_msm works with weight functions", {
+  set.seed(2024)
+  trial_itt_dir <- withr::local_tempdir(pattern = "all", tempdir(TRUE))
+
+  trial_itt <- trial_sequence(estimand = "ITT") |>
+    set_data(
+      data = data_censored,
+      id = "id",
+      period = "period",
+      treatment = "treatment",
+      outcome = "outcome",
+      eligible = "eligible"
+    ) |>
+    set_censor_weight_model(
+      censor_event = "censored",
+      numerator = ~ x1 + x2 + x3,
+      denominator = ~x2,
+      pool_models = "numerator",
+      model_fitter = stats_glm_logit(save_path = file.path(trial_itt_dir, "switch_models"))
+    ) |>
+    calculate_weights() |>
+    set_outcome_model(
+      adjustment_terms = ~ x1 + x2,
+      followup_time_terms = ~followup_time,
+      trial_period_terms = ~1
+    )
+
+  trial_itt_expanded <- set_expansion_options(
+    trial_itt,
+    output = save_to_csv(file.path(trial_itt_dir, "trial_csvs")),
+    chunk_size = 500
+  ) |>
+    expand_trials() |>
+    load_expanded_data()
+
+  # fit_msm returns a trial_sequence object
+  expect_warning(
+    fitted_object <- fit_msm(trial_itt_expanded, modify_weights = function(x) pmin(x, 1)),
+    "non-integer"
+  )
+
+  expected <- pmin(fitted_object@outcome_data@data$weight * fitted_object@outcome_data@data$sample_weight, 1)
+  expect_equal(fitted_object@outcome_data@data$w, expected)
+
+  # no weights, ie weights == 1
+  fitted_no_weights <- fit_msm(trial_itt_expanded, weight_cols = NULL)
+
+  fitted_all_ones_weights <- fit_msm(trial_itt_expanded, modify_weights = function(w) rep(1, length(w)))
+
+  expect_equal(
+    fitted_no_weights@outcome_model@fitted@summary$tidy,
+    fitted_all_ones_weights@outcome_model@fitted@summary$tidy
+  )
 })
