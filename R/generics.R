@@ -362,7 +362,13 @@ setGeneric("fit_weights_model", function(object, data, formula, label) standardG
 
 #' Specify the outcome model
 #'
+#' @description
 #' `r lifecycle::badge('experimental')`
+#'
+#' The time-to-event model for `outcome` is specified with this method. Any adjustment terms can be specified.
+#' For ITT and PP estimands the `treatment_var` is not specified as it is automatically defined as
+#' `assigned_treatment`. Importantly, the modelling of "time" is specified in this model with arguments for
+#' trial start time and follow up time within the trial.
 #'
 #' @param object A trial_sequence object
 #' @param ... Parameters used by methods
