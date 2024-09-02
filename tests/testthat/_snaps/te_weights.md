@@ -10,8 +10,9 @@
     Output
        - Numerator formula: 1 - censored ~ age + x4 
        - Denominator formula: 1 - censored ~ age + x2 + x4 
-      Model fitter type: te_stats_glm_logit 
-      Weight models not fitted 
+       - Numerator model is pooled across treatment arms. Denominator model is not pooled. 
+       - Model fitter type: te_stats_glm_logit 
+       - Weight models not fitted. Use calculate_weights() 
 
 ---
 
@@ -41,16 +42,18 @@
       IPW for informative censoring: 
        - Numerator formula: 1 - censored ~ age + x4 
        - Denominator formula: 1 - censored ~ age + x2 + x4 
-      Model fitter type: te_stats_glm_logit 
-      View weight model summaries with show_weight_models() 
+       - Numerator model is pooled across treatment arms. Denominator model is not pooled. 
+       - Model fitter type: te_stats_glm_logit 
+       - View weight model summaries with show_weight_models() 
        
       IPW for treatment switch censoring: 
        - Numerator formula: treatment ~ age + x4 
        - Denominator formula: treatment ~ age + x2 + x4 
-      Model fitter type: te_stats_glm_logit 
-      View weight model summaries with show_weight_models() 
+       - Model fitter type: te_stats_glm_logit 
+       - View weight model summaries with show_weight_models() 
        
-      No expanded data, use expand_trials() 
+      Sequence of Trials Data: 
+      - Use set_expansion_options() and expand_trials() to construct the sequence of trials dataset. 
        
       Outcome model: 
        - Outcome model not specified. Use set_outcome_model() 

@@ -86,13 +86,14 @@
       IPW for treatment switch censoring: 
        - No weight model specified 
        
-      No expanded data, use expand_trials() 
+      Sequence of Trials Data: 
+      - Use set_expansion_options() and expand_trials() to construct the sequence of trials dataset. 
        
       Outcome model: 
-      TE Outcome Model Object 
-      Formula: outcome ~ assigned_treatment + followup_time + I(followup_time^2) + trial_period + I(trial_period^2) 
-      Treatment_var: assigned_treatment 
-      Adjustment_vars:  
+      - Formula: outcome ~ assigned_treatment + followup_time + I(followup_time^2) + trial_period + I(trial_period^2) 
+      - Treatment variable: assigned_treatment 
+      - Adjustment variables:  
+      - Model fitter type: te_stats_glm_logit 
        
       Use fit_msm() to fit the outcome model 
        

@@ -326,13 +326,14 @@
       IPW for informative censoring: 
        - Numerator formula: 1 - censored ~ x3 
        - Denominator formula: 1 - censored ~ x1 + x2 + x3 
-      Model fitter type: te_stats_glm_logit 
-      View weight model summaries with show_weight_models() 
+       - Numerator model is pooled across treatment arms. Denominator model is not pooled. 
+       - Model fitter type: te_stats_glm_logit 
+       - View weight model summaries with show_weight_models() 
        
-      Expansion: 
-      Chunk size: 500 
-      Censor at switch: FALSE 
-      First period: 0 | Last period: Inf 
+      Sequence of Trials Data: 
+      - Chunk size: 500 
+      - Censor at switch: FALSE 
+      - First period: 0 | Last period: Inf 
        
       A TE Datastore CSV object 
       N: 1558 observations 
@@ -341,10 +342,10 @@
       Columns: id, trial_period, followup_time, outcome, weight, treatment, x1, x2, x3, assigned_treatment 
        
       Outcome model: 
-      TE Outcome Model Object 
-      Formula: outcome ~ assigned_treatment + x1 + x2 + followup_time + x3 
-      Treatment_var: assigned_treatment 
-      Adjustment_vars: x1 x2 x3 
+      - Formula: outcome ~ assigned_treatment + x1 + x2 + followup_time + x3 
+      - Treatment variable: assigned_treatment 
+      - Adjustment variables: x1 x2 x3 
+      - Model fitter type: te_stats_glm_logit 
        
       Model Summary: 
        

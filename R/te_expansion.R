@@ -39,6 +39,6 @@ setMethod(
   c(object = "te_expansion_unset"),
   function(object) {
     catn("Sequence of Trials Data:")
-    catn("- Use set_expansion_options() and expand_trials() to construct sequence of trials dataset.")
+    catn("- Use set_expansion_options() and expand_trials() to construct the sequence of trials dataset.")
   }
 )

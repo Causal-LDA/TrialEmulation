@@ -50,7 +50,6 @@ setMethod(
   "show",
   c(object = "te_outcome_model"),
   function(object) {
-    catn("Outcome Model")
     catn("- Formula:", paste0(object@formula))
     catn("- Treatment variable:", object@treatment_var)
     catn("- Adjustment variables:", object@adjustment_vars)
