@@ -13,7 +13,7 @@
 * Add `estimand_type` argument
 
 * Fix partial matching in data.table calls. Thanks @joshhwuu
-
+* Additional internal refactoring
 # TrialEmulation 0.0.3.2
 
 * Initial release to CRAN
