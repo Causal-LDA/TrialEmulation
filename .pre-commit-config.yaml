@@ -38,6 +38,8 @@ repos:
           .*\.Rds|
           .*\.Rproj|
           .*\.sh|
+          .*\.svg|
+          .*\.ico|
           .*\.cpp|
           (.*/|)\.gitignore|
           (.*/|)\.gitlab-ci\.yml|
