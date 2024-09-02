@@ -4,6 +4,7 @@ catvarA
 catvarB
 catvarC
 CMD
+com
 conf
 csv
 Danaei
@@ -21,6 +22,7 @@ eval
 github
 glm
 Hoffmann
+href
 ie
 int
 integerish
@@ -30,6 +32,7 @@ knitr
 lda
 MRC
 msm
+navbar
 newdata
 nvarA
 nvarB
