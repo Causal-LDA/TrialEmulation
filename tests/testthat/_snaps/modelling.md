@@ -305,8 +305,9 @@
     Output
       Trial Sequence Object 
       Estimand: Intention-to-treat 
-      Data 
-      N: 725 observations from 89 patients 
+       
+      Observational Data: 
+       - N: 725 observations from 89 patients 
               id period treatment    x1           x2    x3        x4   age      age_s
            <int>  <int>     <num> <num>        <num> <int>     <num> <num>      <num>
         1:     1      0         1     1  1.146148362     0 0.7342030    36 0.08333333
@@ -314,27 +315,13 @@
        ---                                                                           
       724:    99      6         1     1 -0.033762356     1 0.5752681    71 3.00000000
       725:    99      7         0     0 -1.340496520     1 0.5752681    72 3.08333333
-           outcome censored eligible time_of_event  first  am_1  cumA switch
-             <num>    <int>    <num>         <num> <lgcl> <num> <num>  <num>
-        1:       0        0        1          9999   TRUE     0     1      0
-        2:       0        0        0          9999  FALSE     1     2      0
-       ---                                                                  
-      724:       0        0        0             7  FALSE     1     4      0
-      725:       1        0        0             7  FALSE     1     4      1
-           regime_start time_on_regime eligible0 eligible1        wt      pC_n
-                  <int>          <num>     <num>     <num>     <num>     <num>
-        1:            0              0         1         0 1.0111849 0.9247312
-        2:            0              1         0         1 0.9562510 0.9247312
-       ---                                                                    
-      724:            5              1         0         1 0.9269537 0.9150142
-      725:            7              2         0         1 0.9448756 0.9150142
-                pC_d       wtC
-               <num>     <num>
-        1: 0.9145026 1.0111849
-        2: 0.9670381 0.9562510
-       ---                    
-      724: 0.9871196 0.9269537
-      725: 0.9683964 0.9448756
+           outcome censored eligible time_on_regime        wt       wtC
+             <num>    <int>    <num>          <num>     <num>     <num>
+        1:       0        0        1              0 1.0111849 1.0111849
+        2:       0        0        0              1 0.9562510 0.9562510
+       ---                                                             
+      724:       0        0        0              1 0.9269537 0.9269537
+      725:       1        0        0              2 0.9448756 0.9448756
        
       IPW for informative censoring: 
        - Numerator formula: 1 - censored ~ x3 

@@ -50,10 +50,10 @@ dir.create(trial_itt_dir)
 ```
 
 
-### Data
+### Observational Data
 
-Next the user must specify the data that will be used. Here we need to specify which columns contain
-which values and how they should be used.
+Next the user must specify the observational input data that will be used to for the target trial emulation.
+Here we need to specify which columns contain which values and how they should be used.
 ```{r}
 data("data_censored")
 trial_pp <- trial_pp |>
@@ -110,7 +110,7 @@ trial_pp <- trial_pp |>
     denominator = ~ age + x1 + x3,
     model_fitter = stats_glm_logit(save_path = file.path(trial_pp_dir, "switch_models"))
   )
-trial_pp
+trial_pp@switch_weights
 ```
 
 This type of censoring is not used with an ITT estimand, so we cannot use `set_switch_weight_model()` with `trial_ITT`
@@ -140,7 +140,7 @@ trial_pp <- trial_pp |>
     pool_models = "none",
     model_fitter = stats_glm_logit(save_path = file.path(trial_pp_dir, "switch_models"))
   )
-trial_pp
+trial_pp@censor_weights
 ```
 
 ```{r}
@@ -152,7 +152,7 @@ trial_itt <- set_censor_weight_model(
   pool_models = "numerator",
   model_fitter = stats_glm_logit(save_path = file.path(trial_itt_dir, "switch_models"))
 )
-trial_itt
+trial_itt@censor_weights
 ```
 
 #### Calculate Weights
@@ -161,9 +161,6 @@ Next we need to fit the individual models and combine them into weights. This is
 
 ```{r}
 trial_pp <- trial_pp |> calculate_weights()
-trial_pp
-
-
 trial_itt <- calculate_weights(trial_itt)
 ```
 
@@ -260,7 +257,6 @@ saved.
 
 ```{r}
 trial_pp@expansion
-trial_itt@expansion
 ```
 
 
@@ -274,9 +270,13 @@ reproducibility.
 Additionally, a vector of periods to can be specified to include, eg `period = 1:60`, and/or a subsetting condition,
 `subset_condition = "age > 65"`.
 
-The loaded data can be accessed and or modified with `outcome_data()`.
+
 ```{r}
 trial_itt <- load_expanded_data(trial_itt, seed = 1234, p_control = 0.5)
+```
+
+The loaded data can be accessed and or modified with `outcome_data()`.
+```{r}
 x2_sq <- outcome_data(trial_itt)$x2^2
 outcome_data(trial_itt)$x2_sq <- x2_sq
 head(outcome_data(trial_itt))

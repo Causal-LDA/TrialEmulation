@@ -50,12 +50,13 @@ setMethod(
   "show",
   c(object = "te_outcome_model"),
   function(object) {
-    catn("TE Outcome Model Object")
-    catn("Formula:", paste0(object@formula))
-    catn("Treatment_var:", object@treatment_var)
-    catn("Adjustment_vars:", object@adjustment_vars)
+    catn("Outcome Model")
+    catn("- Formula:", paste0(object@formula))
+    catn("- Treatment variable:", object@treatment_var)
+    catn("- Adjustment variables:", object@adjustment_vars)
+    catn("- Model fitter type:", class(object@model_fitter))
     catn("")
-    # model_fitter?
+
     show(object@fitted)
     # outcome_data?
   }

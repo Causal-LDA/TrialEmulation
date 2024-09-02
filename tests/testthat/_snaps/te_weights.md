@@ -20,8 +20,9 @@
     Output
       Trial Sequence Object 
       Estimand: Per-protocol 
-      Data 
-      N: 321 observations from 89 patients 
+       
+      Observational Data: 
+       - N: 321 observations from 89 patients 
               id period treatment    x1           x2    x3        x4   age      age_s
            <int>  <int>     <num> <num>        <num> <int>     <num> <num>      <num>
         1:     1      0         1     1  1.146148362     0 0.7342030    36 0.08333333
@@ -29,27 +30,13 @@
        ---                                                                           
       320:    99      1         1     0 -1.106480738     1 0.5752681    66 2.58333333
       321:    99      2         0     0  1.650478074     1 0.5752681    67 2.66666667
-           outcome censored eligible time_of_event  first  am_1  cumA switch
-             <num>    <int>    <num>         <num> <lgcl> <num> <num>  <num>
-        1:       0        0        1          9999   TRUE     0     1      0
-        2:       0        0        0          9999  FALSE     1     2      0
-       ---                                                                  
-      320:       0        0        0             7  FALSE     1     2      0
-      321:       0        0        0             7  FALSE     1     2      1
-           regime_start time_on_regime eligible0 eligible1        wt       p_n
-                  <int>          <num>     <num>     <num>     <num>     <num>
-        1:            0              0         1         0 1.8629733 0.7181453
-        2:            0              1         0         1 0.8873368 0.7861863
-       ---                                                                    
-      320:            0              1         0         1 1.1119420 0.6832182
-      321:            2              2         0         1 1.6082501 0.6801701
-                 p_d       wtS      pC_n      pC_d       wtC
-               <num>     <num>     <num>     <num>     <num>
-        1: 0.7431677 0.9663301 0.8154994 0.4230021 1.9278851
-        2: 0.8017946 0.9805333 0.8303162 0.9175238 0.9049533
-       ---                                                  
-      320: 0.6145486 1.1117399 0.9896890 0.9895092 1.0001818
-      321: 0.7997821 1.5974091 0.9906770 0.9839990 1.0067866
+           outcome censored eligible time_on_regime        wt       wtS       wtC
+             <num>    <int>    <num>          <num>     <num>     <num>     <num>
+        1:       0        0        1              0 1.8629733 0.9663301 1.9278851
+        2:       0        0        0              1 0.8873368 0.9805333 0.9049533
+       ---                                                                       
+      320:       0        0        0              1 1.1119420 1.1117399 1.0001818
+      321:       0        0        0              2 1.6082501 1.5974091 1.0067866
        
       IPW for informative censoring: 
        - Numerator formula: 1 - censored ~ age + x4 
@@ -67,7 +54,6 @@
        
       Outcome model: 
        - Outcome model not specified. Use set_outcome_model() 
-      No outcome data, use load_expanded_data() 
 
 ---
 

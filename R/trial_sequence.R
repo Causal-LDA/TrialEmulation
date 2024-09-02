@@ -1,4 +1,4 @@
-#' @include classes.R te_data.R te_weights.R te_datastore.R te_outcome_model.R
+#' @include te_expansion.R te_data.R te_weights.R te_datastore.R te_outcome_model.R
 NULL
 
 #' Trial Sequence class
@@ -110,23 +110,35 @@ setMethod(
   c(object = "trial_sequence"),
   function(object) {
     catn("Trial Sequence Object")
+
     catn("Estimand:", object@estimand)
+    catn("")
+    catn("Observational Data:")
     show(object@data)
     catn("")
+
     catn("IPW for informative censoring:")
     show(object@censor_weights)
+
     if (.hasSlot(object, "switch_weights")) {
       catn("")
       catn("IPW for treatment switch censoring:")
       show(object@switch_weights)
     }
     catn("")
-    show(object@expansion)
-    catn("")
+
+    if (!is(object@data, "te_data_unset")) {
+      show(object@expansion)
+      catn("")
+    }
+
     catn("Outcome model:")
     show(object@outcome_model)
     catn("")
-    show(object@outcome_data)
+
+    if (object@expansion@datastore@N > 0) {
+      show(object@outcome_data)
+    }
   }
 )
 
@@ -313,7 +325,6 @@ setMethod(
            model_fitter = stats_glm_logit()) {
     if (missing(numerator)) numerator <- ~1
     if (missing(denominator)) denominator <- ~1
-    # check which of these can be a null model TODO
     assert_formula(numerator)
     assert_formula(denominator)
     assert_string(censor_event)

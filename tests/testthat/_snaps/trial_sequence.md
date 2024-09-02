@@ -5,9 +5,9 @@
     Output
       Trial Sequence Object 
       Estimand: Per-protocol 
-      Data 
-      N: 0 observations from 0 patients 
-      data frame with 0 columns and 0 rows
+       
+      Observational Data: 
+       - No observational data has been set. Use set_data() 
        
       IPW for informative censoring: 
        - No weight model specified 
@@ -15,11 +15,8 @@
       IPW for treatment switch censoring: 
        - No weight model specified 
        
-      No expanded data, use expand_trials() 
-       
       Outcome model: 
        - Outcome model not specified. Use set_outcome_model() 
-      No outcome data, use load_expanded_data() 
 
 # show works for trial_sequence_ITT with nothing set
 
@@ -28,18 +25,15 @@
     Output
       Trial Sequence Object 
       Estimand: Intention-to-treat 
-      Data 
-      N: 0 observations from 0 patients 
-      data frame with 0 columns and 0 rows
+       
+      Observational Data: 
+       - No observational data has been set. Use set_data() 
        
       IPW for informative censoring: 
        - No weight model specified 
        
-      No expanded data, use expand_trials() 
-       
       Outcome model: 
        - Outcome model not specified. Use set_outcome_model() 
-      No outcome data, use load_expanded_data() 
 
 # show works for trial_sequence_AT with nothing set
 
@@ -48,9 +42,9 @@
     Output
       Trial Sequence Object 
       Estimand: As treated 
-      Data 
-      N: 0 observations from 0 patients 
-      data frame with 0 columns and 0 rows
+       
+      Observational Data: 
+       - No observational data has been set. Use set_data() 
        
       IPW for informative censoring: 
        - No weight model specified 
@@ -58,11 +52,8 @@
       IPW for treatment switch censoring: 
        - No weight model specified 
        
-      No expanded data, use expand_trials() 
-       
       Outcome model: 
        - Outcome model not specified. Use set_outcome_model() 
-      No outcome data, use load_expanded_data() 
 
 # show works for trial_sequence_PP with data and outcome_model set
 
@@ -71,8 +62,9 @@
     Output
       Trial Sequence Object 
       Estimand: Per-protocol 
-      Data 
-      N: 321 observations from 89 patients 
+       
+      Observational Data: 
+       - N: 321 observations from 89 patients 
               id period treatment    x1           x2    x3        x4   age      age_s
            <int>  <int>     <num> <num>        <num> <int>     <num> <num>      <num>
         1:     1      0         1     1  1.146148362     0 0.7342030    36 0.08333333
@@ -80,20 +72,13 @@
        ---                                                                           
       320:    99      1         1     0 -1.106480738     1 0.5752681    66 2.58333333
       321:    99      2         0     0  1.650478074     1 0.5752681    67 2.66666667
-           outcome censored eligible time_of_event  first  am_1  cumA switch
-             <num>    <int>    <num>         <num> <lgcl> <num> <num>  <num>
-        1:       0        0        1          9999   TRUE     0     1      0
-        2:       0        0        0          9999  FALSE     1     2      0
-       ---                                                                  
-      320:       0        0        0             7  FALSE     1     2      0
-      321:       0        0        0             7  FALSE     1     2      1
-           regime_start time_on_regime eligible0 eligible1
-                  <int>          <num>     <num>     <num>
-        1:            0              0         1         0
-        2:            0              1         0         1
-       ---                                                
-      320:            0              1         0         1
-      321:            2              2         0         1
+           outcome censored eligible time_on_regime
+             <num>    <int>    <num>          <num>
+        1:       0        0        1              0
+        2:       0        0        0              1
+       ---                                         
+      320:       0        0        0              1
+      321:       0        0        0              2
        
       IPW for informative censoring: 
        - No weight model specified 
@@ -111,5 +96,4 @@
        
       Use fit_msm() to fit the outcome model 
        
-      No outcome data, use load_expanded_data() 
 

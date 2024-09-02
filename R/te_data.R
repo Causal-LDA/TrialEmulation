@@ -37,11 +37,29 @@ setClass(
 # Show
 setMethod(
   "show",
+  c(object = "te_data_unset"),
+  function(object) {
+    catn(" - No observational data has been set. Use set_data()")
+  }
+)
+
+setMethod(
+  "show",
   c(object = "te_data"),
   function(object) {
-    catn("Data")
-    catn("N:", object@nobs, "observations from", object@n, "patients")
-    print(object@data, nrows = 4, topn = 2, show.indices = FALSE, print.keys = FALSE)
+    catn(" - N:", object@nobs, "observations from", object@n, "patients")
+    # hide the derived columns except for "time_on_regime" which may be added to weight models
+    show_cols <- setdiff(
+      colnames(object@data),
+      c(
+        "time_of_event", "first", "am_1", "cumA", "switch", "regime_start", "eligible0", "eligible1",
+        "p_n", "p_d", "pC_n", "pC_d"
+      )
+    )
+    print(
+      data.table(object@data)[, show_cols, with = FALSE],
+      nrows = 4, topn = 2, show.indices = FALSE, print.keys = FALSE
+    )
   }
 )
 
