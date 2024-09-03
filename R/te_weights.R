@@ -43,8 +43,10 @@ setValidity("te_weights_spec", function(object) {
   if (length(msg)) msg else TRUE
 })
 
+setClass("te_weights_switch", contains = "te_weights_spec")
+setClass("te_weights_censoring", contains = "te_weights_spec")
 
-# te_weights_unstet -------
+# te_weights_unset -------
 setClass("te_weights_unset", contains = "te_weights_spec")
 
 
@@ -57,22 +59,28 @@ setMethod(
   }
 )
 
+
 setMethod(
   f = "show",
   signature = "te_weights_spec",
   function(object) {
     catn(" - Numerator formula:", as.character(object@numerator))
     catn(" - Denominator formula:", as.character(object@denominator))
-    # TODO catn("Pooled numerator:", censor_weights@pool_numerator)censor_weights@pool_denominator)
-    catn("Model fitter type:", class(object@model_fitter))
+    if (isTRUE(object@pool_numerator)) {
+      if (isTRUE(object@pool_denominator)) {
+        catn(" - Numerator and denominotor models are pooled across treatment arms.")
+      } else {
+        catn(" - Numerator model is pooled across treatment arms. Denominator model is not pooled.")
+      }
+    }
+    catn(" - Model fitter type:", class(object@model_fitter))
     if (length(object@fitted)) {
-      catn("View weight model summaries with show_weight_models()")
+      catn(" - View weight model summaries with show_weight_models()")
     } else {
-      catn("Weight models not fitted")
+      catn(" - Weight models not fitted. Use calculate_weights()")
     }
   }
 )
-
 #' Show Weight Model Summaries
 #'
 #' `r lifecycle::badge('experimental')`

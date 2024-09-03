@@ -65,6 +65,11 @@ A modified \code{object} with the \code{outcome_model} slot set
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
+
+The time-to-event model for \code{outcome} is specified with this method. Any adjustment terms can be specified.
+For ITT and PP estimands the \code{treatment_var} is not specified as it is automatically defined as
+\code{assigned_treatment}. Importantly, the modelling of "time" is specified in this model with arguments for
+trial start time and follow up time within the trial.
 }
 \examples{
 trial_sequence("ITT") |>
