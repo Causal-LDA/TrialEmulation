@@ -52,7 +52,7 @@ dir.create(trial_itt_dir)
 
 ### Observational Data
 
-Next the user must specify the observational input data that will be used to for the target trial emulation.
+Next the user must specify the observational input data that will be used for the target trial emulation.
 Here we need to specify which columns contain which values and how they should be used.
 ```{r}
 data("data_censored")
@@ -244,7 +244,7 @@ trial_itt <- set_expansion_options(
 
 #### Create Sequence of Trials Data
 
-Now we are ready to construct the sequence of trials dataset using the `expand()` method.
+Now we are ready to construct the sequence of trials dataset using the `expand_trials()` method.
 This can take some time for large input data.
 
 ```{r}
@@ -267,7 +267,7 @@ For data that can fit comfortably in memory, this is a trivial step using `load_
 For large datasets, it may be necessary to sample from the expanded by setting the `p_control` argument. This
 sets the probability that an observation with`outcome == 0` will be included in the loaded data. A seed can be set for
 reproducibility.
-Additionally, a vector of periods to can be specified to include, eg `period = 1:60`, and/or a subsetting condition,
+Additionally, a vector of periods to include can be specified, eg `period = 1:60`, and/or a subsetting condition,
 `subset_condition = "age > 65"`.
 
 
@@ -275,7 +275,7 @@ Additionally, a vector of periods to can be specified to include, eg `period = 1
 trial_itt <- load_expanded_data(trial_itt, seed = 1234, p_control = 0.5)
 ```
 
-The loaded data can be accessed and or modified with `outcome_data()`.
+The loaded data can be accessed and/or modified with `outcome_data()`.
 ```{r}
 x2_sq <- outcome_data(trial_itt)$x2^2
 outcome_data(trial_itt)$x2_sq <- x2_sq
