@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">TrialEmulation</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.3.33</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.3.34</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -136,8 +136,9 @@ Default is &lt;U+2018&gt;eligible&lt;U+2019&gt;.</p></dd>
 <span class="r-in"><span>  <span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Trial Sequence Object </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Estimand: Intention-to-treat </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Data </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> N: 48400 observations from 503 patients </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Observational Data: </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  - N: 48400 observations from 503 patients </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>           id eligible period outcome treatment catvarA catvarB catvarC nvarA</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>        &lt;int&gt;    &lt;int&gt;  &lt;int&gt;   &lt;int&gt;     &lt;int&gt;   &lt;int&gt;   &lt;int&gt;   &lt;int&gt; &lt;int&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     1:     1        1    261       0         0       2       1       0     1</span>
@@ -145,29 +146,22 @@ Default is &lt;U+2018&gt;eligible&lt;U+2019&gt;.</p></dd>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    ---                                                                      </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 48399:   503        0    271       0         0       0       2       0     0</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 48400:   503        0    272       1         1       0       2       0     0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>        nvarB nvarC time_of_event  first  am_1  cumA switch regime_start</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>        &lt;int&gt; &lt;int&gt;         &lt;num&gt; &lt;lgcl&gt; &lt;int&gt; &lt;num&gt;  &lt;num&gt;        &lt;int&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     1:    15    70          9999   TRUE     0     0      0          261</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     2:    15    70          9999  FALSE     0     0      0          261</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    ---                                                                 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 48399:    63    64           272  FALSE     1    37      1          271</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 48400:    78    64           272  FALSE     0    38      1          272</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>        time_on_regime eligible0 eligible1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                 &lt;num&gt;     &lt;num&gt;     &lt;num&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     1:              0         1         0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     2:              1         1         0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    ---                                   </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 48399:             37         0         1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 48400:              1         1         0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>        nvarB nvarC time_on_regime</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>        &lt;int&gt; &lt;int&gt;          &lt;num&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     1:    15    70              0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     2:    15    70              1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    ---                           </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 48399:    63    64             37</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 48400:    78    64              1</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> IPW for informative censoring: </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  - No weight model specified </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> No expanded data, use expand_trials() </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Sequence of Trials Data: </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> - Use set_expansion_options() and expand_trials() to construct the sequence of trials dataset. </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Outcome model: </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  - Outcome model not specified. Use set_outcome_model() </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> No outcome data, use load_expanded_data() </span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>

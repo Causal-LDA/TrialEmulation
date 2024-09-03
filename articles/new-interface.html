@@ -26,7 +26,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">TrialEmulation</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.3.33</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.3.34</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -96,11 +96,11 @@ later inspection.</p>
 <span><span class="va">trial_itt_dir</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span>, <span class="st">"trial_itt"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/files2.html" class="external-link">dir.create</a></span><span class="op">(</span><span class="va">trial_itt_dir</span><span class="op">)</span></span></code></pre></div>
 <div class="section level3">
-<h3 id="data">Data<a class="anchor" aria-label="anchor" href="#data"></a>
+<h3 id="observational-data">Observational Data<a class="anchor" aria-label="anchor" href="#observational-data"></a>
 </h3>
-<p>Next the user must specify the data that will be used. Here we need
-to specify which columns contain which values and how they should be
-used.</p>
+<p>Next the user must specify the observational input data that will be
+used for the target trial emulation. Here we need to specify which
+columns contain which values and how they should be used.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"data_censored"</span><span class="op">)</span></span>
 <span><span class="va">trial_pp</span> <span class="op">&lt;-</span> <span class="va">trial_pp</span> <span class="op">|&gt;</span></span>
@@ -128,8 +128,9 @@ used.</p>
 <code class="sourceCode R"><span><span class="va">trial_itt</span></span>
 <span><span class="co">#&gt; Trial Sequence Object </span></span>
 <span><span class="co">#&gt; Estimand: Intention-to-treat </span></span>
-<span><span class="co">#&gt; Data </span></span>
-<span><span class="co">#&gt; N: 725 observations from 89 patients </span></span>
+<span><span class="co">#&gt;  </span></span>
+<span><span class="co">#&gt; Observational Data: </span></span>
+<span><span class="co">#&gt;  - N: 725 observations from 89 patients </span></span>
 <span><span class="co">#&gt;         id period treatment    x1           x2    x3        x4   age      age_s</span></span>
 <span><span class="co">#&gt;      &lt;int&gt;  &lt;int&gt;     &lt;num&gt; &lt;num&gt;        &lt;num&gt; &lt;int&gt;     &lt;num&gt; &lt;num&gt;      &lt;num&gt;</span></span>
 <span><span class="co">#&gt;   1:     1      0         1     1  1.146148362     0 0.7342030    36 0.08333333</span></span>
@@ -137,38 +138,37 @@ used.</p>
 <span><span class="co">#&gt;  ---                                                                           </span></span>
 <span><span class="co">#&gt; 724:    99      6         1     1 -0.033762356     1 0.5752681    71 3.00000000</span></span>
 <span><span class="co">#&gt; 725:    99      7         0     0 -1.340496520     1 0.5752681    72 3.08333333</span></span>
-<span><span class="co">#&gt;      outcome censored eligible time_of_event  first  am_1  cumA switch</span></span>
-<span><span class="co">#&gt;        &lt;num&gt;    &lt;int&gt;    &lt;num&gt;         &lt;num&gt; &lt;lgcl&gt; &lt;num&gt; &lt;num&gt;  &lt;num&gt;</span></span>
-<span><span class="co">#&gt;   1:       0        0        1          9999   TRUE     0     1      0</span></span>
-<span><span class="co">#&gt;   2:       0        0        0          9999  FALSE     1     2      0</span></span>
-<span><span class="co">#&gt;  ---                                                                  </span></span>
-<span><span class="co">#&gt; 724:       0        0        0             7  FALSE     1     4      0</span></span>
-<span><span class="co">#&gt; 725:       1        0        0             7  FALSE     1     4      1</span></span>
-<span><span class="co">#&gt;      regime_start time_on_regime eligible0 eligible1</span></span>
-<span><span class="co">#&gt;             &lt;int&gt;          &lt;num&gt;     &lt;num&gt;     &lt;num&gt;</span></span>
-<span><span class="co">#&gt;   1:            0              0         1         0</span></span>
-<span><span class="co">#&gt;   2:            0              1         0         1</span></span>
-<span><span class="co">#&gt;  ---                                                </span></span>
-<span><span class="co">#&gt; 724:            5              1         0         1</span></span>
-<span><span class="co">#&gt; 725:            7              2         0         1</span></span>
+<span><span class="co">#&gt;      outcome censored eligible time_on_regime</span></span>
+<span><span class="co">#&gt;        &lt;num&gt;    &lt;int&gt;    &lt;num&gt;          &lt;num&gt;</span></span>
+<span><span class="co">#&gt;   1:       0        0        1              0</span></span>
+<span><span class="co">#&gt;   2:       0        0        0              1</span></span>
+<span><span class="co">#&gt;  ---                                         </span></span>
+<span><span class="co">#&gt; 724:       0        0        0              1</span></span>
+<span><span class="co">#&gt; 725:       1        0        0              2</span></span>
 <span><span class="co">#&gt;  </span></span>
 <span><span class="co">#&gt; IPW for informative censoring: </span></span>
 <span><span class="co">#&gt;  - No weight model specified </span></span>
 <span><span class="co">#&gt;  </span></span>
-<span><span class="co">#&gt; No expanded data, use expand_trials() </span></span>
+<span><span class="co">#&gt; Sequence of Trials Data: </span></span>
+<span><span class="co">#&gt; - Use set_expansion_options() and expand_trials() to construct the sequence of trials dataset. </span></span>
 <span><span class="co">#&gt;  </span></span>
 <span><span class="co">#&gt; Outcome model: </span></span>
-<span><span class="co">#&gt;  - Outcome model not specified. Use set_outcome_model() </span></span>
-<span><span class="co">#&gt; No outcome data, use load_expanded_data()</span></span></code></pre></div>
+<span><span class="co">#&gt;  - Outcome model not specified. Use set_outcome_model()</span></span></code></pre></div>
+<p>We see the newly attached data. Some pre-processing has occurred: the
+id, period, treatment, outcome and eligible columns are renamed to have
+those names, and some additional columns required for later processing
+have been created. We also see some hints that other components of the
+analysis are not yet defined.</p>
 </div>
 <div class="section level3">
 <h3 id="weight-models">Weight Models<a class="anchor" aria-label="anchor" href="#weight-models"></a>
 </h3>
 <p>To adjust for the effects of informative censoring, inverse
 probability of censoring weights (IPCW) can be applied. To estimate
-these weights, we construct survival models. Two sets of models are fit
-for the two censoring mechanisms which may apply: censoring due to
-deviation from assigned treatment, and other informative censoring.</p>
+these weights, we construct time-to-(censoring-)event models. Two sets
+of models are fit for the two censoring mechanisms which may apply:
+censoring due to deviation from assigned treatment and other informative
+censoring.</p>
 <div class="section level4">
 <h4 id="censoring-due-to-treatment-switching">Censoring due to treatment switching<a class="anchor" aria-label="anchor" href="#censoring-due-to-treatment-switching"></a>
 </h4>
@@ -188,50 +188,17 @@ treatment assignment in that period.</p>
 <span>    denominator <span class="op">=</span> <span class="op">~</span> <span class="va">age</span> <span class="op">+</span> <span class="va">x1</span> <span class="op">+</span> <span class="va">x3</span>,</span>
 <span>    model_fitter <span class="op">=</span> <span class="fu"><a href="../reference/stats_glm_logit.html">stats_glm_logit</a></span><span class="op">(</span>save_path <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">trial_pp_dir</span>, <span class="st">"switch_models"</span><span class="op">)</span><span class="op">)</span></span>
 <span>  <span class="op">)</span></span>
-<span><span class="va">trial_pp</span></span>
-<span><span class="co">#&gt; Trial Sequence Object </span></span>
-<span><span class="co">#&gt; Estimand: Per-protocol </span></span>
-<span><span class="co">#&gt; Data </span></span>
-<span><span class="co">#&gt; N: 321 observations from 89 patients </span></span>
-<span><span class="co">#&gt;         id period treatment    x1           x2    x3        x4   age      age_s</span></span>
-<span><span class="co">#&gt;      &lt;int&gt;  &lt;int&gt;     &lt;num&gt; &lt;num&gt;        &lt;num&gt; &lt;int&gt;     &lt;num&gt; &lt;num&gt;      &lt;num&gt;</span></span>
-<span><span class="co">#&gt;   1:     1      0         1     1  1.146148362     0 0.7342030    36 0.08333333</span></span>
-<span><span class="co">#&gt;   2:     1      1         1     1  0.002200337     0 0.7342030    37 0.16666667</span></span>
-<span><span class="co">#&gt;  ---                                                                           </span></span>
-<span><span class="co">#&gt; 320:    99      1         1     0 -1.106480738     1 0.5752681    66 2.58333333</span></span>
-<span><span class="co">#&gt; 321:    99      2         0     0  1.650478074     1 0.5752681    67 2.66666667</span></span>
-<span><span class="co">#&gt;      outcome censored eligible time_of_event  first  am_1  cumA switch</span></span>
-<span><span class="co">#&gt;        &lt;num&gt;    &lt;int&gt;    &lt;num&gt;         &lt;num&gt; &lt;lgcl&gt; &lt;num&gt; &lt;num&gt;  &lt;num&gt;</span></span>
-<span><span class="co">#&gt;   1:       0        0        1          9999   TRUE     0     1      0</span></span>
-<span><span class="co">#&gt;   2:       0        0        0          9999  FALSE     1     2      0</span></span>
-<span><span class="co">#&gt;  ---                                                                  </span></span>
-<span><span class="co">#&gt; 320:       0        0        0             7  FALSE     1     2      0</span></span>
-<span><span class="co">#&gt; 321:       0        0        0             7  FALSE     1     2      1</span></span>
-<span><span class="co">#&gt;      regime_start time_on_regime eligible0 eligible1</span></span>
-<span><span class="co">#&gt;             &lt;int&gt;          &lt;num&gt;     &lt;num&gt;     &lt;num&gt;</span></span>
-<span><span class="co">#&gt;   1:            0              0         1         0</span></span>
-<span><span class="co">#&gt;   2:            0              1         0         1</span></span>
-<span><span class="co">#&gt;  ---                                                </span></span>
-<span><span class="co">#&gt; 320:            0              1         0         1</span></span>
-<span><span class="co">#&gt; 321:            2              2         0         1</span></span>
-<span><span class="co">#&gt;  </span></span>
-<span><span class="co">#&gt; IPW for informative censoring: </span></span>
-<span><span class="co">#&gt;  - No weight model specified </span></span>
-<span><span class="co">#&gt;  </span></span>
-<span><span class="co">#&gt; IPW for treatment switch censoring: </span></span>
+<span><span class="va">trial_pp</span><span class="op">@</span><span class="va">switch_weights</span></span>
 <span><span class="co">#&gt;  - Numerator formula: treatment ~ age </span></span>
 <span><span class="co">#&gt;  - Denominator formula: treatment ~ age + x1 + x3 </span></span>
-<span><span class="co">#&gt; Model fitter type: te_stats_glm_logit </span></span>
-<span><span class="co">#&gt; Weight models not fitted </span></span>
-<span><span class="co">#&gt;  </span></span>
-<span><span class="co">#&gt; No expanded data, use expand_trials() </span></span>
-<span><span class="co">#&gt;  </span></span>
-<span><span class="co">#&gt; Outcome model: </span></span>
-<span><span class="co">#&gt;  - Outcome model not specified. Use set_outcome_model() </span></span>
-<span><span class="co">#&gt; No outcome data, use load_expanded_data()</span></span></code></pre></div>
+<span><span class="co">#&gt;  - Model fitter type: te_stats_glm_logit </span></span>
+<span><span class="co">#&gt;  - Weight models not fitted. Use calculate_weights()</span></span></code></pre></div>
 <p>This type of censoring is not used with an ITT estimand, so we cannot
 use <code><a href="../reference/set_switch_weight_model.html">set_switch_weight_model()</a></code> with <code>trial_ITT</code>
-objects.</p>
+objects. Note that we calculated stabilised weights, so a numerator and
+denominator model is required. The numerator should contain terms that
+are not time varying. These terms are later included in the final
+time-to-event model for the outcome.</p>
 </div>
 <div class="section level4">
 <h4 id="other-informative-censoring">Other informative censoring<a class="anchor" aria-label="anchor" href="#other-informative-censoring"></a>
@@ -261,50 +228,11 @@ only. The default and allowed choices depends on the estimand.</li>
 <span>    pool_models <span class="op">=</span> <span class="st">"none"</span>,</span>
 <span>    model_fitter <span class="op">=</span> <span class="fu"><a href="../reference/stats_glm_logit.html">stats_glm_logit</a></span><span class="op">(</span>save_path <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">trial_pp_dir</span>, <span class="st">"switch_models"</span><span class="op">)</span><span class="op">)</span></span>
 <span>  <span class="op">)</span></span>
-<span><span class="va">trial_pp</span></span>
-<span><span class="co">#&gt; Trial Sequence Object </span></span>
-<span><span class="co">#&gt; Estimand: Per-protocol </span></span>
-<span><span class="co">#&gt; Data </span></span>
-<span><span class="co">#&gt; N: 321 observations from 89 patients </span></span>
-<span><span class="co">#&gt;         id period treatment    x1           x2    x3        x4   age      age_s</span></span>
-<span><span class="co">#&gt;      &lt;int&gt;  &lt;int&gt;     &lt;num&gt; &lt;num&gt;        &lt;num&gt; &lt;int&gt;     &lt;num&gt; &lt;num&gt;      &lt;num&gt;</span></span>
-<span><span class="co">#&gt;   1:     1      0         1     1  1.146148362     0 0.7342030    36 0.08333333</span></span>
-<span><span class="co">#&gt;   2:     1      1         1     1  0.002200337     0 0.7342030    37 0.16666667</span></span>
-<span><span class="co">#&gt;  ---                                                                           </span></span>
-<span><span class="co">#&gt; 320:    99      1         1     0 -1.106480738     1 0.5752681    66 2.58333333</span></span>
-<span><span class="co">#&gt; 321:    99      2         0     0  1.650478074     1 0.5752681    67 2.66666667</span></span>
-<span><span class="co">#&gt;      outcome censored eligible time_of_event  first  am_1  cumA switch</span></span>
-<span><span class="co">#&gt;        &lt;num&gt;    &lt;int&gt;    &lt;num&gt;         &lt;num&gt; &lt;lgcl&gt; &lt;num&gt; &lt;num&gt;  &lt;num&gt;</span></span>
-<span><span class="co">#&gt;   1:       0        0        1          9999   TRUE     0     1      0</span></span>
-<span><span class="co">#&gt;   2:       0        0        0          9999  FALSE     1     2      0</span></span>
-<span><span class="co">#&gt;  ---                                                                  </span></span>
-<span><span class="co">#&gt; 320:       0        0        0             7  FALSE     1     2      0</span></span>
-<span><span class="co">#&gt; 321:       0        0        0             7  FALSE     1     2      1</span></span>
-<span><span class="co">#&gt;      regime_start time_on_regime eligible0 eligible1</span></span>
-<span><span class="co">#&gt;             &lt;int&gt;          &lt;num&gt;     &lt;num&gt;     &lt;num&gt;</span></span>
-<span><span class="co">#&gt;   1:            0              0         1         0</span></span>
-<span><span class="co">#&gt;   2:            0              1         0         1</span></span>
-<span><span class="co">#&gt;  ---                                                </span></span>
-<span><span class="co">#&gt; 320:            0              1         0         1</span></span>
-<span><span class="co">#&gt; 321:            2              2         0         1</span></span>
-<span><span class="co">#&gt;  </span></span>
-<span><span class="co">#&gt; IPW for informative censoring: </span></span>
+<span><span class="va">trial_pp</span><span class="op">@</span><span class="va">censor_weights</span></span>
 <span><span class="co">#&gt;  - Numerator formula: 1 - censored ~ x2 </span></span>
 <span><span class="co">#&gt;  - Denominator formula: 1 - censored ~ x2 + x1 </span></span>
-<span><span class="co">#&gt; Model fitter type: te_stats_glm_logit </span></span>
-<span><span class="co">#&gt; Weight models not fitted </span></span>
-<span><span class="co">#&gt;  </span></span>
-<span><span class="co">#&gt; IPW for treatment switch censoring: </span></span>
-<span><span class="co">#&gt;  - Numerator formula: treatment ~ age </span></span>
-<span><span class="co">#&gt;  - Denominator formula: treatment ~ age + x1 + x3 </span></span>
-<span><span class="co">#&gt; Model fitter type: te_stats_glm_logit </span></span>
-<span><span class="co">#&gt; Weight models not fitted </span></span>
-<span><span class="co">#&gt;  </span></span>
-<span><span class="co">#&gt; No expanded data, use expand_trials() </span></span>
-<span><span class="co">#&gt;  </span></span>
-<span><span class="co">#&gt; Outcome model: </span></span>
-<span><span class="co">#&gt;  - Outcome model not specified. Use set_outcome_model() </span></span>
-<span><span class="co">#&gt; No outcome data, use load_expanded_data()</span></span></code></pre></div>
+<span><span class="co">#&gt;  - Model fitter type: te_stats_glm_logit </span></span>
+<span><span class="co">#&gt;  - Weight models not fitted. Use calculate_weights()</span></span></code></pre></div>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">trial_itt</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/set_censor_weight_model.html">set_censor_weight_model</a></span><span class="op">(</span></span>
 <span>  <span class="va">trial_itt</span>,</span>
@@ -314,44 +242,12 @@ only. The default and allowed choices depends on the estimand.</li>
 <span>  pool_models <span class="op">=</span> <span class="st">"numerator"</span>,</span>
 <span>  model_fitter <span class="op">=</span> <span class="fu"><a href="../reference/stats_glm_logit.html">stats_glm_logit</a></span><span class="op">(</span>save_path <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">trial_itt_dir</span>, <span class="st">"switch_models"</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="op">)</span></span>
-<span><span class="va">trial_itt</span></span>
-<span><span class="co">#&gt; Trial Sequence Object </span></span>
-<span><span class="co">#&gt; Estimand: Intention-to-treat </span></span>
-<span><span class="co">#&gt; Data </span></span>
-<span><span class="co">#&gt; N: 725 observations from 89 patients </span></span>
-<span><span class="co">#&gt;         id period treatment    x1           x2    x3        x4   age      age_s</span></span>
-<span><span class="co">#&gt;      &lt;int&gt;  &lt;int&gt;     &lt;num&gt; &lt;num&gt;        &lt;num&gt; &lt;int&gt;     &lt;num&gt; &lt;num&gt;      &lt;num&gt;</span></span>
-<span><span class="co">#&gt;   1:     1      0         1     1  1.146148362     0 0.7342030    36 0.08333333</span></span>
-<span><span class="co">#&gt;   2:     1      1         1     1  0.002200337     0 0.7342030    37 0.16666667</span></span>
-<span><span class="co">#&gt;  ---                                                                           </span></span>
-<span><span class="co">#&gt; 724:    99      6         1     1 -0.033762356     1 0.5752681    71 3.00000000</span></span>
-<span><span class="co">#&gt; 725:    99      7         0     0 -1.340496520     1 0.5752681    72 3.08333333</span></span>
-<span><span class="co">#&gt;      outcome censored eligible time_of_event  first  am_1  cumA switch</span></span>
-<span><span class="co">#&gt;        &lt;num&gt;    &lt;int&gt;    &lt;num&gt;         &lt;num&gt; &lt;lgcl&gt; &lt;num&gt; &lt;num&gt;  &lt;num&gt;</span></span>
-<span><span class="co">#&gt;   1:       0        0        1          9999   TRUE     0     1      0</span></span>
-<span><span class="co">#&gt;   2:       0        0        0          9999  FALSE     1     2      0</span></span>
-<span><span class="co">#&gt;  ---                                                                  </span></span>
-<span><span class="co">#&gt; 724:       0        0        0             7  FALSE     1     4      0</span></span>
-<span><span class="co">#&gt; 725:       1        0        0             7  FALSE     1     4      1</span></span>
-<span><span class="co">#&gt;      regime_start time_on_regime eligible0 eligible1</span></span>
-<span><span class="co">#&gt;             &lt;int&gt;          &lt;num&gt;     &lt;num&gt;     &lt;num&gt;</span></span>
-<span><span class="co">#&gt;   1:            0              0         1         0</span></span>
-<span><span class="co">#&gt;   2:            0              1         0         1</span></span>
-<span><span class="co">#&gt;  ---                                                </span></span>
-<span><span class="co">#&gt; 724:            5              1         0         1</span></span>
-<span><span class="co">#&gt; 725:            7              2         0         1</span></span>
-<span><span class="co">#&gt;  </span></span>
-<span><span class="co">#&gt; IPW for informative censoring: </span></span>
+<span><span class="va">trial_itt</span><span class="op">@</span><span class="va">censor_weights</span></span>
 <span><span class="co">#&gt;  - Numerator formula: 1 - censored ~ x2 </span></span>
 <span><span class="co">#&gt;  - Denominator formula: 1 - censored ~ x2 + x1 </span></span>
-<span><span class="co">#&gt; Model fitter type: te_stats_glm_logit </span></span>
-<span><span class="co">#&gt; Weight models not fitted </span></span>
-<span><span class="co">#&gt;  </span></span>
-<span><span class="co">#&gt; No expanded data, use expand_trials() </span></span>
-<span><span class="co">#&gt;  </span></span>
-<span><span class="co">#&gt; Outcome model: </span></span>
-<span><span class="co">#&gt;  - Outcome model not specified. Use set_outcome_model() </span></span>
-<span><span class="co">#&gt; No outcome data, use load_expanded_data()</span></span></code></pre></div>
+<span><span class="co">#&gt;  - Numerator model is pooled across treatment arms. Denominator model is not pooled. </span></span>
+<span><span class="co">#&gt;  - Model fitter type: te_stats_glm_logit </span></span>
+<span><span class="co">#&gt;  - Weight models not fitted. Use calculate_weights()</span></span></code></pre></div>
 </div>
 <div class="section level4">
 <h4 id="calculate-weights">Calculate Weights<a class="anchor" aria-label="anchor" href="#calculate-weights"></a>
@@ -360,59 +256,6 @@ only. The default and allowed choices depends on the estimand.</li>
 weights. This is done with <code><a href="../reference/calculate_weights.html">calculate_weights()</a></code>.</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">trial_pp</span> <span class="op">&lt;-</span> <span class="va">trial_pp</span> <span class="op">|&gt;</span> <span class="fu"><a href="../reference/calculate_weights.html">calculate_weights</a></span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="va">trial_pp</span></span>
-<span><span class="co">#&gt; Trial Sequence Object </span></span>
-<span><span class="co">#&gt; Estimand: Per-protocol </span></span>
-<span><span class="co">#&gt; Data </span></span>
-<span><span class="co">#&gt; N: 321 observations from 89 patients </span></span>
-<span><span class="co">#&gt;         id period treatment    x1           x2    x3        x4   age      age_s</span></span>
-<span><span class="co">#&gt;      &lt;int&gt;  &lt;int&gt;     &lt;num&gt; &lt;num&gt;        &lt;num&gt; &lt;int&gt;     &lt;num&gt; &lt;num&gt;      &lt;num&gt;</span></span>
-<span><span class="co">#&gt;   1:     1      0         1     1  1.146148362     0 0.7342030    36 0.08333333</span></span>
-<span><span class="co">#&gt;   2:     1      1         1     1  0.002200337     0 0.7342030    37 0.16666667</span></span>
-<span><span class="co">#&gt;  ---                                                                           </span></span>
-<span><span class="co">#&gt; 320:    99      1         1     0 -1.106480738     1 0.5752681    66 2.58333333</span></span>
-<span><span class="co">#&gt; 321:    99      2         0     0  1.650478074     1 0.5752681    67 2.66666667</span></span>
-<span><span class="co">#&gt;      outcome censored eligible time_of_event  first  am_1  cumA switch</span></span>
-<span><span class="co">#&gt;        &lt;num&gt;    &lt;int&gt;    &lt;num&gt;         &lt;num&gt; &lt;lgcl&gt; &lt;num&gt; &lt;num&gt;  &lt;num&gt;</span></span>
-<span><span class="co">#&gt;   1:       0        0        1          9999   TRUE     0     1      0</span></span>
-<span><span class="co">#&gt;   2:       0        0        0          9999  FALSE     1     2      0</span></span>
-<span><span class="co">#&gt;  ---                                                                  </span></span>
-<span><span class="co">#&gt; 320:       0        0        0             7  FALSE     1     2      0</span></span>
-<span><span class="co">#&gt; 321:       0        0        0             7  FALSE     1     2      1</span></span>
-<span><span class="co">#&gt;      regime_start time_on_regime eligible0 eligible1        wt       p_n</span></span>
-<span><span class="co">#&gt;             &lt;int&gt;          &lt;num&gt;     &lt;num&gt;     &lt;num&gt;     &lt;num&gt;     &lt;num&gt;</span></span>
-<span><span class="co">#&gt;   1:            0              0         1         0 0.6994385 0.4706283</span></span>
-<span><span class="co">#&gt;   2:            0              1         0         1 0.8951447 0.7174218</span></span>
-<span><span class="co">#&gt;  ---                                                                    </span></span>
-<span><span class="co">#&gt; 320:            0              1         0         1 1.0122336 0.5621482</span></span>
-<span><span class="co">#&gt; 321:            2              2         0         1 1.0157064 0.5563530</span></span>
-<span><span class="co">#&gt;            p_d       wtS      pC_n      pC_d       wtC</span></span>
-<span><span class="co">#&gt;          &lt;num&gt;     &lt;num&gt;     &lt;num&gt;     &lt;num&gt;     &lt;num&gt;</span></span>
-<span><span class="co">#&gt;   1: 0.5908820 0.7964844 0.6855809 0.7807041 0.8781572</span></span>
-<span><span class="co">#&gt;   2: 0.7735665 0.9274210 0.9391313 0.9729936 0.9651978</span></span>
-<span><span class="co">#&gt;  ---                                                  </span></span>
-<span><span class="co">#&gt; 320: 0.5602335 1.0034178 0.9466406 0.9383961 1.0087858</span></span>
-<span><span class="co">#&gt; 321: 0.5545296 0.9959067 0.9261254 0.9080719 1.0198811</span></span>
-<span><span class="co">#&gt;  </span></span>
-<span><span class="co">#&gt; IPW for informative censoring: </span></span>
-<span><span class="co">#&gt;  - Numerator formula: 1 - censored ~ x2 </span></span>
-<span><span class="co">#&gt;  - Denominator formula: 1 - censored ~ x2 + x1 </span></span>
-<span><span class="co">#&gt; Model fitter type: te_stats_glm_logit </span></span>
-<span><span class="co">#&gt; View weight model summaries with show_weight_models() </span></span>
-<span><span class="co">#&gt;  </span></span>
-<span><span class="co">#&gt; IPW for treatment switch censoring: </span></span>
-<span><span class="co">#&gt;  - Numerator formula: treatment ~ age </span></span>
-<span><span class="co">#&gt;  - Denominator formula: treatment ~ age + x1 + x3 </span></span>
-<span><span class="co">#&gt; Model fitter type: te_stats_glm_logit </span></span>
-<span><span class="co">#&gt; View weight model summaries with show_weight_models() </span></span>
-<span><span class="co">#&gt;  </span></span>
-<span><span class="co">#&gt; No expanded data, use expand_trials() </span></span>
-<span><span class="co">#&gt;  </span></span>
-<span><span class="co">#&gt; Outcome model: </span></span>
-<span><span class="co">#&gt;  - Outcome model not specified. Use set_outcome_model() </span></span>
-<span><span class="co">#&gt; No outcome data, use load_expanded_data()</span></span>
-<span></span>
-<span></span>
 <span><span class="va">trial_itt</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/calculate_weights.html">calculate_weights</a></span><span class="op">(</span><span class="va">trial_itt</span><span class="op">)</span></span></code></pre></div>
 <p>The full model objects are saved to disk in the directories we
 created above. The summaries are stored in the trial sequence object and
@@ -429,7 +272,7 @@ can be printed:</p>
 <span><span class="co">#&gt;  404.2156      724     -196.7002 397.4004 406.5727 393.4004 723         725 </span></span>
 <span><span class="co">#&gt;  </span></span>
 <span><span class="co">#&gt;  path                                                          </span></span>
-<span><span class="co">#&gt;  /tmp/RtmpIu5Hd0/trial_itt/switch_models/model_1b6022df7376.rds</span></span>
+<span><span class="co">#&gt;  /tmp/RtmpryafBr/trial_itt/switch_models/model_1b626c77c686.rds</span></span>
 <span><span class="co">#&gt;  </span></span>
 <span><span class="co">#&gt; Model: P(censor_event = 0 | X, previous treatment = 0) for denominator </span></span>
 <span><span class="co">#&gt;  </span></span>
@@ -441,8 +284,8 @@ can be printed:</p>
 <span><span class="co">#&gt;  null.deviance df.null logLik    AIC      BIC      deviance df.residual nobs</span></span>
 <span><span class="co">#&gt;  283.0723      425     -132.1655 270.3309 282.4943 264.3309 423         426 </span></span>
 <span><span class="co">#&gt;  </span></span>
-<span><span class="co">#&gt;  path                                                        </span></span>
-<span><span class="co">#&gt;  /tmp/RtmpIu5Hd0/trial_itt/switch_models/model_1b601f1eb7.rds</span></span>
+<span><span class="co">#&gt;  path                                                          </span></span>
+<span><span class="co">#&gt;  /tmp/RtmpryafBr/trial_itt/switch_models/model_1b6260efdea7.rds</span></span>
 <span><span class="co">#&gt;  </span></span>
 <span><span class="co">#&gt; Model: P(censor_event = 0 | X, previous treatment = 1) for denominator </span></span>
 <span><span class="co">#&gt;  </span></span>
@@ -454,20 +297,31 @@ can be printed:</p>
 <span><span class="co">#&gt;  null.deviance df.null logLik    AIC      BIC      deviance df.residual nobs</span></span>
 <span><span class="co">#&gt;  113.0528      298     -55.72938 117.4588 128.5601 111.4588 296         299 </span></span>
 <span><span class="co">#&gt;  </span></span>
-<span><span class="co">#&gt;  path                                                          </span></span>
-<span><span class="co">#&gt;  /tmp/RtmpIu5Hd0/trial_itt/switch_models/model_1b605c6bf4ae.rds</span></span>
+<span><span class="co">#&gt;  path                                                         </span></span>
+<span><span class="co">#&gt;  /tmp/RtmpryafBr/trial_itt/switch_models/model_1b62ea82c12.rds</span></span>
 <span><span class="co">#&gt; </span></span></code></pre></div>
 </div>
 </div>
 <div class="section level3">
 <h3 id="specify-outcome-model">Specify Outcome Model<a class="anchor" aria-label="anchor" href="#specify-outcome-model"></a>
 </h3>
-<p>Not fully implemented. Needs to be preliminarily set at this stage to
-make sure all required variables are included in the expanded data
-set</p>
+<p>Now we can specify the outcome model. Here we can include adjustment
+terms for any variables in the dataset. We can also specify how
+<code>followup_time</code> and <code>trial_period</code> terms should be
+included in the model. As for the weight models, we can specify a
+<code>model_fitter</code>. The numerator terms from the stabilised
+weight models are automatically included in the outcome model
+formula.</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">trial_pp</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/set_outcome_model.html">set_outcome_model</a></span><span class="op">(</span><span class="va">trial_pp</span><span class="op">)</span></span>
 <span><span class="va">trial_itt</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/set_outcome_model.html">set_outcome_model</a></span><span class="op">(</span><span class="va">trial_itt</span>, adjustment_terms <span class="op">=</span> <span class="op">~</span><span class="va">x2</span><span class="op">)</span></span></code></pre></div>
+<p>It is necessary to specify the outcome model at this stage because we
+need to know which columns should be retained and expanded in the
+construction of the sequence of trials data set. After expansion it is
+possible to set the outcome model again to modify how covariates are
+modelled, e.g. to add an interaction or squared term. To add a term for
+a variable not in the expanded data, the expansion procedure will need
+to be repeated.</p>
 </div>
 <div class="section level3">
 <h3 id="expand-trials">Expand Trials<a class="anchor" aria-label="anchor" href="#expand-trials"></a>
@@ -516,20 +370,28 @@ processed at one time.</li>
 <span>  <span class="va">trial_itt</span>,</span>
 <span>  output <span class="op">=</span> <span class="fu"><a href="../reference/save_to_duckdb.html">save_to_duckdb</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">trial_itt_dir</span>, <span class="st">"trial_duckdb"</span><span class="op">)</span><span class="op">)</span>,</span>
 <span>  chunk_size <span class="op">=</span> <span class="fl">500</span></span>
-<span><span class="op">)</span></span></code></pre></div>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># For the purposes of this vignette the previous `save_to_datatable()` output</span></span>
+<span><span class="co"># option is used in the following code.</span></span></code></pre></div>
 </div>
 <div class="section level4">
 <h4 id="create-sequence-of-trials-data">Create Sequence of Trials Data<a class="anchor" aria-label="anchor" href="#create-sequence-of-trials-data"></a>
 </h4>
+<p>Now we are ready to construct the sequence of trials dataset using
+the <code><a href="../reference/expand_trials.html">expand_trials()</a></code> method. This can take some time for
+large input data.</p>
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">trial_pp</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/expand_trials.html">expand_trials</a></span><span class="op">(</span><span class="va">trial_pp</span><span class="op">)</span></span>
 <span><span class="va">trial_itt</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/expand_trials.html">expand_trials</a></span><span class="op">(</span><span class="va">trial_itt</span><span class="op">)</span></span></code></pre></div>
+<p>The resulting object shows the settings used for the expansion and
+where the expanded data has been saved.</p>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">trial_pp</span><span class="op">@</span><span class="va">expansion</span></span>
-<span><span class="co">#&gt; Expansion: </span></span>
-<span><span class="co">#&gt; Chunk size: 500 </span></span>
-<span><span class="co">#&gt; Censor at switch: TRUE </span></span>
-<span><span class="co">#&gt; First period: 0 | Last period: Inf </span></span>
+<span><span class="co">#&gt; Sequence of Trials Data: </span></span>
+<span><span class="co">#&gt; - Chunk size: 500 </span></span>
+<span><span class="co">#&gt; - Censor at switch: TRUE </span></span>
+<span><span class="co">#&gt; - First period: 0 | Last period: Inf </span></span>
 <span><span class="co">#&gt;  </span></span>
 <span><span class="co">#&gt; A TE Datastore Datatable object </span></span>
 <span><span class="co">#&gt; N: 500 observations </span></span>
@@ -546,12 +408,158 @@ processed at one time.</li>
 <span><span class="co">#&gt;   2:    36                  1</span></span>
 <span><span class="co">#&gt;  ---                         </span></span>
 <span><span class="co">#&gt; 499:    65                  1</span></span>
-<span><span class="co">#&gt; 500:    65                  1</span></span>
-<span><span class="va">trial_itt</span><span class="op">@</span><span class="va">expansion</span></span>
-<span><span class="co">#&gt; Expansion: </span></span>
-<span><span class="co">#&gt; Chunk size: 500 </span></span>
-<span><span class="co">#&gt; Censor at switch: FALSE </span></span>
-<span><span class="co">#&gt; First period: 0 | Last period: Inf </span></span>
+<span><span class="co">#&gt; 500:    65                  1</span></span></code></pre></div>
+</div>
+</div>
+<div class="section level3">
+<h3 id="sample-or-load-from-expanded-data">Sample or Load from Expanded Data<a class="anchor" aria-label="anchor" href="#sample-or-load-from-expanded-data"></a>
+</h3>
+<p>Now that the expanded data has been created, we can prepare the data
+to fit the outcome model. For data that can fit comfortably in memory,
+this is a trivial step using <code>load_expanded_data</code>. For large
+datasets, it may be necessary to sample from the expanded by setting the
+<code>p_control</code> argument. This sets the probability that an
+observation with<code>outcome == 0</code> will be included in the loaded
+data. A seed can be set for reproducibility. Additionally, a vector of
+periods to include can be specified, eg <code>period = 1:60</code>,
+and/or a subsetting condition,
+<code>subset_condition = "age &gt; 65"</code>.</p>
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">trial_itt</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/load_expanded_data.html">load_expanded_data</a></span><span class="op">(</span><span class="va">trial_itt</span>, seed <span class="op">=</span> <span class="fl">1234</span>, p_control <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span></span></code></pre></div>
+<p>The loaded data can be accessed and/or modified with
+<code><a href="../reference/outcome_data.html">outcome_data()</a></code>.</p>
+<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">x2_sq</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/outcome_data.html">outcome_data</a></span><span class="op">(</span><span class="va">trial_itt</span><span class="op">)</span><span class="op">$</span><span class="va">x2</span><span class="op">^</span><span class="fl">2</span></span>
+<span><span class="fu"><a href="../reference/outcome_data.html">outcome_data</a></span><span class="op">(</span><span class="va">trial_itt</span><span class="op">)</span><span class="op">$</span><span class="va">x2_sq</span> <span class="op">&lt;-</span> <span class="va">x2_sq</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="fu"><a href="../reference/outcome_data.html">outcome_data</a></span><span class="op">(</span><span class="va">trial_itt</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt;       id trial_period followup_time outcome weight treatment          x2</span></span>
+<span><span class="co">#&gt;    &lt;int&gt;        &lt;int&gt;         &lt;int&gt;   &lt;num&gt;  &lt;num&gt;     &lt;num&gt;       &lt;num&gt;</span></span>
+<span><span class="co">#&gt; 1:    15            0             0       1      1         1 -0.73652563</span></span>
+<span><span class="co">#&gt; 2:    32            0             0       1      1         1  1.98613804</span></span>
+<span><span class="co">#&gt; 3:    26            0             0       0      1         0  1.64332982</span></span>
+<span><span class="co">#&gt; 4:    10            0             0       0      1         1  0.05091841</span></span>
+<span><span class="co">#&gt; 5:     5            0             0       0      1         1  0.74909203</span></span>
+<span><span class="co">#&gt; 6:    46            0             0       0      1         1 -0.88598258</span></span>
+<span><span class="co">#&gt;    assigned_treatment sample_weight       x2_sq</span></span>
+<span><span class="co">#&gt;                 &lt;num&gt;         &lt;num&gt;       &lt;num&gt;</span></span>
+<span><span class="co">#&gt; 1:                  1             1 0.542470010</span></span>
+<span><span class="co">#&gt; 2:                  1             1 3.944744297</span></span>
+<span><span class="co">#&gt; 3:                  0             2 2.700532894</span></span>
+<span><span class="co">#&gt; 4:                  1             2 0.002592685</span></span>
+<span><span class="co">#&gt; 5:                  1             2 0.561138869</span></span>
+<span><span class="co">#&gt; 6:                  1             2 0.784965131</span></span></code></pre></div>
+</div>
+<div class="section level3">
+<h3 id="fit-marginal-structural-model">Fit Marginal Structural Model<a class="anchor" aria-label="anchor" href="#fit-marginal-structural-model"></a>
+</h3>
+<p>To fit the outcome model we use <code><a href="../reference/fit_msm.html">fit_msm()</a></code>. There are two
+options to specify how weights are used in the model. First we can
+select which weights columns are used, by default the product of columns
+<code>weight</code> and <code>sample_weight</code> is used. We can also
+apply a modifier function, for example, to trim large weights to some
+fixed value or a percentile.</p>
+<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">trial_itt</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/fit_msm.html">fit_msm</a></span><span class="op">(</span></span>
+<span>  <span class="va">trial_itt</span>,</span>
+<span>  weight_cols <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"weight"</span>, <span class="st">"sample_weight"</span><span class="op">)</span>,</span>
+<span>  modify_weights <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">w</span><span class="op">)</span> <span class="op">{</span></span>
+<span>    <span class="va">q99</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/quantile.html" class="external-link">quantile</a></span><span class="op">(</span><span class="va">w</span>, probs <span class="op">=</span> <span class="fl">0.99</span><span class="op">)</span></span>
+<span>    <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">pmin</a></span><span class="op">(</span><span class="va">w</span>, <span class="va">q99</span><span class="op">)</span></span>
+<span>  <span class="op">}</span></span>
+<span><span class="op">)</span></span>
+<span><span class="co">#&gt; Warning in eval(family$initialize): non-integer #successes in a binomial glm!</span></span>
+<span><span class="co">#&gt; Warning: glm.fit: fitted probabilities numerically 0 or 1 occurred</span></span></code></pre></div>
+<p>The summary of the model fit is shown:</p>
+<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">trial_itt</span><span class="op">@</span><span class="va">outcome_model</span></span>
+<span><span class="co">#&gt; - Formula: outcome ~ assigned_treatment + x2 + followup_time + I(followup_time^2) + trial_period + I(trial_period^2) </span></span>
+<span><span class="co">#&gt; - Treatment variable: assigned_treatment </span></span>
+<span><span class="co">#&gt; - Adjustment variables: x2 </span></span>
+<span><span class="co">#&gt; - Model fitter type: te_stats_glm_logit </span></span>
+<span><span class="co">#&gt;  </span></span>
+<span><span class="co">#&gt; Model Summary: </span></span>
+<span><span class="co">#&gt;  </span></span>
+<span><span class="co">#&gt;  term               estimate std.error statistic p.value conf.low conf.high</span></span>
+<span><span class="co">#&gt;  (Intercept)        -6.02    0.780      -7.72    1.2e-14 -7.550   -4.4916  </span></span>
+<span><span class="co">#&gt;  assigned_treatment  1.63    0.496       3.28    1.0e-03  0.654    2.5977  </span></span>
+<span><span class="co">#&gt;  x2                  0.31    0.418       0.74    4.6e-01 -0.511    1.1282  </span></span>
+<span><span class="co">#&gt;  followup_time       0.34    0.244       1.38    1.7e-01 -0.141    0.8148  </span></span>
+<span><span class="co">#&gt;  I(followup_time^2) -0.02    0.014      -1.42    1.5e-01 -0.049    0.0077  </span></span>
+<span><span class="co">#&gt;  trial_period        7.29    0.978       7.45    9.2e-14  5.371    9.2042  </span></span>
+<span><span class="co">#&gt;  I(trial_period^2)  -7.68    0.537     -14.31    2.0e-46 -8.738   -6.6320  </span></span>
+<span><span class="co">#&gt;  </span></span>
+<span><span class="co">#&gt;  null.deviance df.null logLik AIC BIC deviance df.residual nobs</span></span>
+<span><span class="co">#&gt;  158           800     -69.1  152 185 135      794         801</span></span></code></pre></div>
+<p>Depending on the model fitter used, we can also access the model
+object. For the default <code><a href="https://rdrr.io/r/stats/glm.html" class="external-link">stats::glm</a></code> logistic model, we have
+the <code>glm</code> object as well as the <code>sandwich</code>
+variance-covariance matrix.</p>
+<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">trial_itt</span><span class="op">@</span><span class="va">outcome_model</span><span class="op">@</span><span class="va">fitted</span><span class="op">@</span><span class="va">model</span><span class="op">$</span><span class="va">model</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Call:  glm(formula = formula, family = binomial("logit"), data = data, </span></span>
+<span><span class="co">#&gt;     weights = weights, x = FALSE, y = FALSE)</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Coefficients:</span></span>
+<span><span class="co">#&gt;        (Intercept)  assigned_treatment                  x2       followup_time  </span></span>
+<span><span class="co">#&gt;           -6.02067             1.62585             0.30837             0.33673  </span></span>
+<span><span class="co">#&gt; I(followup_time^2)        trial_period   I(trial_period^2)  </span></span>
+<span><span class="co">#&gt;           -0.02049             7.28762            -7.68478  </span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Degrees of Freedom: 800 Total (i.e. Null);  794 Residual</span></span>
+<span><span class="co">#&gt; Null Deviance:       157.8 </span></span>
+<span><span class="co">#&gt; Residual Deviance: 134.7     AIC: 152.2</span></span>
+<span><span class="va">trial_itt</span><span class="op">@</span><span class="va">outcome_model</span><span class="op">@</span><span class="va">fitted</span><span class="op">@</span><span class="va">model</span><span class="op">$</span><span class="va">vcov</span></span>
+<span><span class="co">#&gt;                     (Intercept) assigned_treatment           x2 followup_time</span></span>
+<span><span class="co">#&gt; (Intercept)         0.608651263       -0.007606479  0.042942422  -0.143451214</span></span>
+<span><span class="co">#&gt; assigned_treatment -0.007606479        0.245882729  0.087953406  -0.052364376</span></span>
+<span><span class="co">#&gt; x2                  0.042942422        0.087953406  0.174977954  -0.045052691</span></span>
+<span><span class="co">#&gt; followup_time      -0.143451214       -0.052364376 -0.045052691   0.059487800</span></span>
+<span><span class="co">#&gt; I(followup_time^2)  0.007130666        0.002815736  0.002843807  -0.003362158</span></span>
+<span><span class="co">#&gt; trial_period       -0.105885453       -0.341609248 -0.097440741   0.104454026</span></span>
+<span><span class="co">#&gt; I(trial_period^2)   0.049055894        0.165009684  0.046219048  -0.054969078</span></span>
+<span><span class="co">#&gt;                    I(followup_time^2) trial_period I(trial_period^2)</span></span>
+<span><span class="co">#&gt; (Intercept)              0.0071306658 -0.105885452        0.04905589</span></span>
+<span><span class="co">#&gt; assigned_treatment       0.0028157357 -0.341609248        0.16500968</span></span>
+<span><span class="co">#&gt; x2                       0.0028438066 -0.097440741        0.04621905</span></span>
+<span><span class="co">#&gt; followup_time           -0.0033621580  0.104454026       -0.05496908</span></span>
+<span><span class="co">#&gt; I(followup_time^2)       0.0002067028 -0.005143791        0.00265172</span></span>
+<span><span class="co">#&gt; trial_period            -0.0051437905  0.956232062       -0.51353487</span></span>
+<span><span class="co">#&gt; I(trial_period^2)        0.0026517200 -0.513573594        0.28851494</span></span></code></pre></div>
+<p>The complete object shows all the specifications:</p>
+<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">trial_itt</span></span>
+<span><span class="co">#&gt; Trial Sequence Object </span></span>
+<span><span class="co">#&gt; Estimand: Intention-to-treat </span></span>
+<span><span class="co">#&gt;  </span></span>
+<span><span class="co">#&gt; Observational Data: </span></span>
+<span><span class="co">#&gt;  - N: 725 observations from 89 patients </span></span>
+<span><span class="co">#&gt;         id period treatment    x1           x2    x3        x4   age      age_s</span></span>
+<span><span class="co">#&gt;      &lt;int&gt;  &lt;int&gt;     &lt;num&gt; &lt;num&gt;        &lt;num&gt; &lt;int&gt;     &lt;num&gt; &lt;num&gt;      &lt;num&gt;</span></span>
+<span><span class="co">#&gt;   1:     1      0         1     1  1.146148362     0 0.7342030    36 0.08333333</span></span>
+<span><span class="co">#&gt;   2:     1      1         1     1  0.002200337     0 0.7342030    37 0.16666667</span></span>
+<span><span class="co">#&gt;  ---                                                                           </span></span>
+<span><span class="co">#&gt; 724:    99      6         1     1 -0.033762356     1 0.5752681    71 3.00000000</span></span>
+<span><span class="co">#&gt; 725:    99      7         0     0 -1.340496520     1 0.5752681    72 3.08333333</span></span>
+<span><span class="co">#&gt;      outcome censored eligible time_on_regime        wt       wtC</span></span>
+<span><span class="co">#&gt;        &lt;num&gt;    &lt;int&gt;    &lt;num&gt;          &lt;num&gt;     &lt;num&gt;     &lt;num&gt;</span></span>
+<span><span class="co">#&gt;   1:       0        0        1              0 0.9835463 0.9835463</span></span>
+<span><span class="co">#&gt;   2:       0        0        0              1 0.9429254 0.9429254</span></span>
+<span><span class="co">#&gt;  ---                                                             </span></span>
+<span><span class="co">#&gt; 724:       0        0        0              1 0.9440988 0.9440988</span></span>
+<span><span class="co">#&gt; 725:       1        0        0              2 1.0092093 1.0092093</span></span>
+<span><span class="co">#&gt;  </span></span>
+<span><span class="co">#&gt; IPW for informative censoring: </span></span>
+<span><span class="co">#&gt;  - Numerator formula: 1 - censored ~ x2 </span></span>
+<span><span class="co">#&gt;  - Denominator formula: 1 - censored ~ x2 + x1 </span></span>
+<span><span class="co">#&gt;  - Numerator model is pooled across treatment arms. Denominator model is not pooled. </span></span>
+<span><span class="co">#&gt;  - Model fitter type: te_stats_glm_logit </span></span>
+<span><span class="co">#&gt;  - View weight model summaries with show_weight_models() </span></span>
+<span><span class="co">#&gt;  </span></span>
+<span><span class="co">#&gt; Sequence of Trials Data: </span></span>
+<span><span class="co">#&gt; - Chunk size: 500 </span></span>
+<span><span class="co">#&gt; - Censor at switch: FALSE </span></span>
+<span><span class="co">#&gt; - First period: 0 | Last period: Inf </span></span>
 <span><span class="co">#&gt;  </span></span>
 <span><span class="co">#&gt; A TE Datastore Datatable object </span></span>
 <span><span class="co">#&gt; N: 1558 observations </span></span>
@@ -568,59 +576,58 @@ processed at one time.</li>
 <span><span class="co">#&gt;    2:                  1</span></span>
 <span><span class="co">#&gt;   ---                   </span></span>
 <span><span class="co">#&gt; 1557:                  1</span></span>
-<span><span class="co">#&gt; 1558:                  1</span></span></code></pre></div>
-</div>
-</div>
-<div class="section level3">
-<h3 id="sample-or-load-from-expanded-data">Sample or Load from Expanded Data<a class="anchor" aria-label="anchor" href="#sample-or-load-from-expanded-data"></a>
-</h3>
-<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">trial_itt</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/load_expanded_data.html">load_expanded_data</a></span><span class="op">(</span><span class="va">trial_itt</span>, seed <span class="op">=</span> <span class="fl">1234</span>, p_control <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span>
-<span><span class="fu"><a href="../reference/outcome_data.html">outcome_data</a></span><span class="op">(</span><span class="va">trial_itt</span><span class="op">)</span></span>
-<span><span class="co">#&gt;          id trial_period followup_time outcome    weight treatment         x2</span></span>
-<span><span class="co">#&gt;       &lt;int&gt;        &lt;int&gt;         &lt;int&gt;   &lt;num&gt;     &lt;num&gt;     &lt;num&gt;      &lt;num&gt;</span></span>
-<span><span class="co">#&gt;    1:    15            0             0       1 1.0000000         1 -0.7365256</span></span>
-<span><span class="co">#&gt;    2:    32            0             0       1 1.0000000         1  1.9861380</span></span>
-<span><span class="co">#&gt;    3:    33            0             0       0 1.0000000         0 -0.2655281</span></span>
-<span><span class="co">#&gt;    4:    92            0             0       0 1.0000000         1 -0.5578694</span></span>
-<span><span class="co">#&gt;    5:    26            0             0       0 1.0000000         0  1.6433298</span></span>
-<span><span class="co">#&gt;   ---                                                                        </span></span>
-<span><span class="co">#&gt; 1554:    51            0            19       0 0.6208347         1 -0.1352684</span></span>
-<span><span class="co">#&gt; 1555:    76            0            19       0 0.5602988         0  0.1274581</span></span>
-<span><span class="co">#&gt; 1556:    39            0            19       0 1.3517560         1  0.2189413</span></span>
-<span><span class="co">#&gt; 1557:     7            0            19       0 0.9499071         1 -1.1510304</span></span>
-<span><span class="co">#&gt; 1558:    33            0            19       0 0.8185893         1 -0.2655281</span></span>
-<span><span class="co">#&gt;       assigned_treatment sample_weight</span></span>
-<span><span class="co">#&gt;                    &lt;num&gt;         &lt;num&gt;</span></span>
-<span><span class="co">#&gt;    1:                  1             1</span></span>
-<span><span class="co">#&gt;    2:                  1             1</span></span>
-<span><span class="co">#&gt;    3:                  0             1</span></span>
-<span><span class="co">#&gt;    4:                  1             1</span></span>
-<span><span class="co">#&gt;    5:                  0             1</span></span>
-<span><span class="co">#&gt;   ---                                 </span></span>
-<span><span class="co">#&gt; 1554:                  1             1</span></span>
-<span><span class="co">#&gt; 1555:                  1             1</span></span>
-<span><span class="co">#&gt; 1556:                  1             1</span></span>
-<span><span class="co">#&gt; 1557:                  1             1</span></span>
-<span><span class="co">#&gt; 1558:                  0             1</span></span></code></pre></div>
-</div>
-<div class="section level3">
-<h3 id="fit-marginal-structural-model">Fit Marginal Structural Model<a class="anchor" aria-label="anchor" href="#fit-marginal-structural-model"></a>
-</h3>
-<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">trial_itt</span><span class="op">@</span><span class="va">outcome_model</span><span class="op">@</span><span class="va">model_fitter</span></span>
-<span><span class="co">#&gt; An object of class "te_stats_glm_logit"</span></span>
-<span><span class="co">#&gt; Slot "save_path":</span></span>
-<span><span class="co">#&gt; [1] NA</span></span>
-<span><span class="va">trial_itt</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/fit_msm.html">fit_msm</a></span><span class="op">(</span><span class="va">trial_itt</span><span class="op">)</span></span>
-<span><span class="co">#&gt; Warning in eval(family$initialize): non-integer #successes in a binomial glm!</span></span>
-<span><span class="co">#&gt; Warning: glm.fit: fitted probabilities numerically 0 or 1 occurred</span></span></code></pre></div>
+<span><span class="co">#&gt; 1558:                  1</span></span>
+<span><span class="co">#&gt;  </span></span>
+<span><span class="co">#&gt; Outcome model: </span></span>
+<span><span class="co">#&gt; - Formula: outcome ~ assigned_treatment + x2 + followup_time + I(followup_time^2) + trial_period + I(trial_period^2) </span></span>
+<span><span class="co">#&gt; - Treatment variable: assigned_treatment </span></span>
+<span><span class="co">#&gt; - Adjustment variables: x2 </span></span>
+<span><span class="co">#&gt; - Model fitter type: te_stats_glm_logit </span></span>
+<span><span class="co">#&gt;  </span></span>
+<span><span class="co">#&gt; Model Summary: </span></span>
+<span><span class="co">#&gt;  </span></span>
+<span><span class="co">#&gt;  term               estimate std.error statistic p.value conf.low conf.high</span></span>
+<span><span class="co">#&gt;  (Intercept)        -6.02    0.780      -7.72    1.2e-14 -7.550   -4.4916  </span></span>
+<span><span class="co">#&gt;  assigned_treatment  1.63    0.496       3.28    1.0e-03  0.654    2.5977  </span></span>
+<span><span class="co">#&gt;  x2                  0.31    0.418       0.74    4.6e-01 -0.511    1.1282  </span></span>
+<span><span class="co">#&gt;  followup_time       0.34    0.244       1.38    1.7e-01 -0.141    0.8148  </span></span>
+<span><span class="co">#&gt;  I(followup_time^2) -0.02    0.014      -1.42    1.5e-01 -0.049    0.0077  </span></span>
+<span><span class="co">#&gt;  trial_period        7.29    0.978       7.45    9.2e-14  5.371    9.2042  </span></span>
+<span><span class="co">#&gt;  I(trial_period^2)  -7.68    0.537     -14.31    2.0e-46 -8.738   -6.6320  </span></span>
+<span><span class="co">#&gt;  </span></span>
+<span><span class="co">#&gt;  null.deviance df.null logLik AIC BIC deviance df.residual nobs</span></span>
+<span><span class="co">#&gt;  158           800     -69.1  152 185 135      794         801 </span></span>
+<span><span class="co">#&gt;  </span></span>
+<span><span class="co">#&gt; Outcome data </span></span>
+<span><span class="co">#&gt; N: 801 observations from 76 patients in 18 trial periods </span></span>
+<span><span class="co">#&gt; Periods: 0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 </span></span>
+<span><span class="co">#&gt;         id trial_period followup_time outcome   weight treatment         x2</span></span>
+<span><span class="co">#&gt;      &lt;int&gt;        &lt;int&gt;         &lt;int&gt;   &lt;num&gt;    &lt;num&gt;     &lt;num&gt;      &lt;num&gt;</span></span>
+<span><span class="co">#&gt;   1:    15            0             0       1 1.000000         1 -0.7365256</span></span>
+<span><span class="co">#&gt;   2:    32            0             0       1 1.000000         1  1.9861380</span></span>
+<span><span class="co">#&gt;  ---                                                                       </span></span>
+<span><span class="co">#&gt; 800:    39            0            19       0 1.351756         1  0.2189413</span></span>
+<span><span class="co">#&gt; 801:    54            0            19       0 1.359294         0  1.2924128</span></span>
+<span><span class="co">#&gt;      assigned_treatment sample_weight     x2_sq        w</span></span>
+<span><span class="co">#&gt;                   &lt;num&gt;         &lt;num&gt;     &lt;num&gt;    &lt;num&gt;</span></span>
+<span><span class="co">#&gt;   1:                  1             1 0.5424700 1.000000</span></span>
+<span><span class="co">#&gt;   2:                  1             1 3.9447443 1.000000</span></span>
+<span><span class="co">#&gt;  ---                                                    </span></span>
+<span><span class="co">#&gt; 800:                  1             2 0.0479353 2.703512</span></span>
+<span><span class="co">#&gt; 801:                  0             2 1.6703309 2.718587</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="inference">Inference<a class="anchor" aria-label="anchor" href="#inference"></a>
 </h3>
-<p>Model summaries not implemented</p>
-<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
+<p>We use the <code><a href="../reference/predict_marginal.html">predict()</a></code> method to estimate survival
+probabilities or cumulative incidences for different values of
+<code>assigned_treatment</code>. The <code>predict</code> method takes
+the baseline of the provided <code>newdata</code>, i.e. observations
+with <code>followup_time == 0</code> and constructs data with
+<code>followup_time</code> for the given <code>predict_times</code>. It
+is important to specify <code>newdata</code> correctly for a meaningful
+interpretation of the differences in survival.</p>
+<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">preds</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/predict_marginal.html">predict</a></span><span class="op">(</span></span>
 <span>  <span class="va">trial_itt</span>,</span>
 <span>  newdata <span class="op">=</span> <span class="fu"><a href="../reference/outcome_data.html">outcome_data</a></span><span class="op">(</span><span class="va">trial_itt</span><span class="op">)</span><span class="op">[</span><span class="va">trial_period</span> <span class="op">==</span> <span class="fl">1</span>, <span class="op">]</span>,</span>
@@ -632,102 +639,14 @@ processed at one time.</li>
 <span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/lines.html" class="external-link">lines</a></span><span class="op">(</span><span class="va">preds</span><span class="op">$</span><span class="va">difference</span><span class="op">$</span><span class="va">followup_time</span>, <span class="va">preds</span><span class="op">$</span><span class="va">difference</span><span class="op">$</span><span class="va">`2.5%`</span>, type <span class="op">=</span> <span class="st">"l"</span>, col <span class="op">=</span> <span class="st">"red"</span>, lty <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/lines.html" class="external-link">lines</a></span><span class="op">(</span><span class="va">preds</span><span class="op">$</span><span class="va">difference</span><span class="op">$</span><span class="va">followup_time</span>, <span class="va">preds</span><span class="op">$</span><span class="va">difference</span><span class="op">$</span><span class="va">`97.5%`</span>, type <span class="op">=</span> <span class="st">"l"</span>, col <span class="op">=</span> <span class="st">"red"</span>, lty <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span></code></pre></div>
-<p><img src="new-interface_files/figure-html/unnamed-chunk-18-1.png" width="700"></p>
+<p><img src="new-interface_files/figure-html/unnamed-chunk-22-1.png" width="700"></p>
 </div>
 <div class="section level3">
 <h3 id="flowchart">Flowchart<a class="anchor" aria-label="anchor" href="#flowchart"></a>
 </h3>
+<p>This flow chart helps visualise the complete workflow.</p>
 <div class="float">
-<img src="img/trial_sequence_functions_overview_solid.png" alt="Flowchart"><div class="figcaption">Flowchart</div>
-</div>
-</div>
-</div>
-<div class="section level2">
-<h2 id="class-structure">Class Structure<a class="anchor" aria-label="anchor" href="#class-structure"></a>
-</h2>
-<p>The main class in this new interface is <code>trial_sequence</code>
-which is the parent class of the estimand specific classes
-<code>trial_sequence_ITT</code>, <code>trial_sequence_PP</code> and
-<code>trial_sequence_AT</code>. These child classes allow for
-restrictions and differences in processing based on the different
-estimands. Where necessary we have S4 methods defined for the estimand
-specific classes and otherwise common processing is defined in methods
-for the <code>trial_sequence</code> class.</p>
-<p>The <code>trial_sequence</code> class contains slots needed to define
-the sequence of target trials analysis</p>
-<ul>
-<li>estimand = <code>character</code>
-</li>
-<li>data = <code>te_data</code>
-</li>
-<li>censor_weights = <code>te_weights_spec</code>
-</li>
-<li>expansion = <code>te_expansion</code>
-</li>
-<li>outcome_model = <code>te_outcome_model</code>
-</li>
-</ul>
-<div class="section level3">
-<h3 id="te_data">
-<code>te_data</code><a class="anchor" aria-label="anchor" href="#te_data"></a>
-</h3>
-<p>Contains the input data. It under goes some manipulation in
-<code><a href="../reference/set_data.html">set_data()</a></code> to standardise the column names.</p>
-</div>
-<div class="section level3">
-<h3 id="te_weights_spec">
-<code>te_weights_spec</code><a class="anchor" aria-label="anchor" href="#te_weights_spec"></a>
-</h3>
-<p>Contains specification for the IPCW models, including formulas, model
-fitter, pooling option, and (once fitted) the model summaries.</p>
-<div class="section level4">
-<h4 id="te_weights_fitter">te_weights_fitter<a class="anchor" aria-label="anchor" href="#te_weights_fitter"></a>
-</h4>
-<p>The model fitter is specified as an object of class
-<code>te_weights_fitter</code>. This class is used to save parameters
-which are used in the method
-<code>fit_weights_model(object, data, formula, label)</code> where
-object is the <code>te_weights_fitter</code>. It fits a model and
-returns a <code>te_weights_fitted</code> object containing the label,
-model summaries and the fitted values from the model.</p>
-</div>
-<div class="section level4">
-<h4 id="te_weights_fitted">te_weights_fitted<a class="anchor" aria-label="anchor" href="#te_weights_fitted"></a>
-</h4>
-<p>The <code>te_weights_fitted</code> objects are saved in a list in
-<code>te_weights_spec</code> in a slot <code>fitted</code>.</p>
-</div>
-</div>
-<div class="section level3">
-<h3 id="te_outcome_model">
-<code>te_outcome_model</code><a class="anchor" aria-label="anchor" href="#te_outcome_model"></a>
-</h3>
-<p>To be finalised.</p>
-</div>
-<div class="section level3">
-<h3 id="te_expansion">
-<code>te_expansion</code><a class="anchor" aria-label="anchor" href="#te_expansion"></a>
-</h3>
-<p>The <code>te_expansion</code> class defines how the sequence of
-trials should be expanded. It contains slots for chunk_size, how
-censoring is applied, first and last periods, and an object of class
-<code>te_datastore</code> which defines how the data is saved.</p>
-<div class="section level4">
-<h4 id="te_datastore">
-<code>te_datastore</code><a class="anchor" aria-label="anchor" href="#te_datastore"></a>
-</h4>
-<p>This class contains slots needed for saving the expanded data, such
-as file path. Child classes are defined for each storage type, such as
-<code>te_datastore_csv</code>, <code>te_datastore_duckdb</code>. Each of
-these classes has a user-friendly <code>save_to_*()</code> method to
-setup the storage.</p>
-<p>To define a new storage type, a method
-<code>save_expanded_data(object, data)</code> needs to be defined. This
-takes the data store object and a <code>data.frame</code> to be saved.
-This method may be called repeatedly if only a chunk of patients are
-being processed and so should appropriately append the data. The method
-returns an updated <code>te_datastore_*</code> object which is saved in
-the <code>trial_sequence@te_expansion</code> slot.</p>
+<img src="img/trial_sequence_functions_overview_solid.png" style="width:80.0%" alt="Flowchart"><div class="figcaption">Flowchart</div>
 </div>
 </div>
 </div>
