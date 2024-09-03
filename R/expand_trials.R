@@ -1,7 +1,11 @@
 expand_trials_trial_seq <- function(object) {
+  # Avoid NOTE for data.table
+  period <- eligible <- NULL
+
   data <- object@data@data
-  first_period <- object@expansion@first_period
-  last_period <- object@expansion@last_period
+  # Use the observed min/max periods if they are within the specified limits
+  first_period <- max(c(object@expansion@first_period, object@data@data[eligible == 1, min(period)]))
+  last_period <- min(c(object@expansion@last_period, object@data@data[eligible == 1, max(period)]))
   chunk_size <- object@expansion@chunk_size
   censor_at_switch <- object@expansion@censor_at_switch
 
