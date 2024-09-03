@@ -13,6 +13,7 @@
 ^design$
 ^docs$
 ^local$
+^pkgdown$
 ^renv$
 ^renv\.lock$
 ^testing$
