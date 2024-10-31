@@ -815,6 +815,17 @@ setMethod(
 )
 
 
+#' @rdname observed_data
+setMethod(
+  "observed_data",
+  c(object = "trial_sequence"),
+  function(object) {
+    object@data@data
+  }
+)
+
+
+
 #' @rdname outcome_data
 setMethod(
   "outcome_data",

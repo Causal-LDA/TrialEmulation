@@ -392,6 +392,20 @@ setGeneric("fit_weights_model", function(object, data, formula, label) standardG
 setGeneric("set_outcome_model", function(object, ...) standardGeneric("set_outcome_model"))
 
 
+#' Observed Data Accessor and Setter
+#'
+#' Generic function to observed data
+#'
+#' @param object `trial_sequence` object
+#'
+#' @return The observed data from the `@data` slot of `object`.
+#' @export
+#' @examples
+#' ts <- trial_sequence("ITT")
+#' ts <- set_data(ts, data_censored)
+#' observed_data(ts)
+#' data.table::set(observed_data(ts), j = "dummy", value = TRUE)
+setGeneric("observed_data", function(object) standardGeneric("observed_data"))
 
 
 #' Outcome Data Accessor and Setter

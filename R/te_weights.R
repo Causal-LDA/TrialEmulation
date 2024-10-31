@@ -23,7 +23,8 @@ setClass("te_weights_spec",
     pool_numerator = "logical",
     pool_denominator = "logical",
     model_fitter = "te_model_fitter",
-    fitted = "list"
+    fitted = "list",
+    data_subset_expr = "list"
   )
 )
 
@@ -93,13 +94,21 @@ show_weight_models <- function(object) {
   assert_class(object, "trial_sequence")
   if (.hasSlot(object, "censor_weights")) {
     if (test_list(object@censor_weights@fitted, types = "te_weights_fitted")) {
-      lapply(object@censor_weights@fitted, show)
+      cat_underline("Weight Models for Informative Censoring")
+      for (i in names(object@censor_weights@fitted)) {
+        catn("[[", i, "]]", sep = "")
+        show(object@censor_weights@fitted[[i]])
+      }
     }
   }
 
   if (.hasSlot(object, "switch_weights")) {
     if (test_list(object@switch_weights@fitted, types = "te_weights_fitted")) {
-      lapply(object@switch_weights@fitted, show)
+      cat_underline("Weight Models for Treatment Switching")
+      for (i in names(object@switch_weights@fitted)) {
+        catn("[[", i, "]]", sep = "")
+        show(object@switch_weights@fitted[[i]])
+      }
     }
   }
   invisible()
@@ -117,3 +126,50 @@ setMethod(
     }
   }
 )
+
+
+#' Data used in weight model fitting
+#'
+#' @param object A [trial_sequence] object
+#' @param type Select a censoring or switching model
+#' @param model The model name
+#' @param set_col A character string to specifying a new column to contain indicators for observations used in
+#' fitting this model.
+#'
+#' @return If `set_col` is not specified a logical `data.table` column is returned. Otherwise
+#' @export
+#' @examples
+#' trial_pp <- trial_pp |>
+#'   set_data(data_censored) |>
+#'   set_switch_weight_model(
+#'     numerator = ~age,
+#'     denominator = ~ age + x1 + x3,
+#'     model_fitter = stats_glm_logit(tempdir())
+#'   ) |>
+#'   calculate_weights()
+#' observed_data(trial_pp)
+#' show_weight_models(trial_pp)
+#'
+#' # get logical column for own processing
+#' i <- weight_model_data_indices(trial_pp, "switch", "d0")
+#'
+#' # set column in data
+#' weight_model_data_indices(trial_pp, "switch", "d0", set_col = "sw_d0")
+#' weight_model_data_indices(trial_pp, "switch", "d1", set_col = "sw_d1")
+#' observed_data(trial_pp)
+weight_model_data_indices <- function(object, type = c("switch", "censor"), model, set_col = NULL) {
+  assert_choice(type, c("switch", "censor"))
+  model_names <- switch(type,
+    "switch" = names(object@switch_weights@data_subset_expr),
+    "censor" = names(object@censor_weights@data_subset_expr)
+  )
+  model <- assert_choice(model, model_names)
+  expr <- object@switch_weights@data_subset_expr[[model]]
+
+  if (!is.null(set_col)) {
+    assert_names(set_col)
+    object@data@data[, (set_col) := eval(expr)]
+  } else {
+    object@data@data[, list(i = eval(expr))]
+  }
+}
