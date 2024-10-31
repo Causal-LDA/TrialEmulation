@@ -139,7 +139,7 @@ setMethod(
 #' @return If `set_col` is not specified a logical `data.table` column is returned. Otherwise
 #' @export
 #' @examples
-#' trial_pp <- trial_pp |>
+#' trial_pp <- trial_sequence("PP") |>
 #'   set_data(data_censored) |>
 #'   set_switch_weight_model(
 #'     numerator = ~age,

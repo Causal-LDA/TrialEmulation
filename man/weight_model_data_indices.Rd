@@ -28,7 +28,7 @@ If \code{set_col} is not specified a logical \code{data.table} column is returne
 Data used in weight model fitting
 }
 \examples{
-trial_pp <- trial_pp |>
+trial_pp <- trial_sequence("PP") |>
   set_data(data_censored) |>
   set_switch_weight_model(
     numerator = ~age,
