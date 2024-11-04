@@ -89,3 +89,9 @@ test_that("assert_monotonic works as expected", {
   expect_null(assert_monotonic(1:4))
   expect_null(assert_monotonic(4:-1, increasing = FALSE))
 })
+
+
+test_that("rhs_vars works as expected", {
+  result <- rhs_vars(a ~ b + c - 1 + e:f)
+  expect_equal(result, c("b", "c", "e", "f"))
+})
