@@ -151,6 +151,25 @@ test_that("set_data errors if columns used twice", {
   )
 })
 
+# Access data -----
+
+test_that("ipw_data works as expected", {
+  ts <- trial_sequence("ITT") |>
+    set_data(
+      data = trial_example[1:500, ],
+      id = "id",
+      period = "period",
+      eligible = "eligible",
+      treatment = "treatment"
+    )
+  expect_equal(ipw_data(ts), ts@data@data)
+
+  new_data <- copy(ipw_data(ts))
+  new_data$sq_nvarC <- new_data$nvarC^2
+  ipw_data(ts) <- new_data
+  expect_equal(ipw_data(ts), new_data)
+})
+
 # Set Switching Model -------
 
 test_that("set_switch_weight_model fails for ITT", {

@@ -94,6 +94,12 @@ To adjust for the effects of informative censoring, inverse probability of censo
 estimate these weights, we construct time-to-(censoring-)event models. Two sets of models are fit for the two censoring mechanisms which
 may apply: censoring due to deviation from assigned treatment and other informative censoring.
 
+The data which will be used for fitting those weight models is accessible with the `ipw_data` method.
+
+```{r}
+ipw_data(trial_itt)
+```
+
 #### Censoring due to treatment switching
 
 We specify model formulas to be used for calculating the probability of receiving treatment in the current period.
