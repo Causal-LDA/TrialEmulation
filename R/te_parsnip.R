@@ -6,9 +6,7 @@ NULL
 #'
 #' The classes and (internal) methods defined for using [parsnip] to fit the weight models.
 #'
-#' @rdname te_parsnip-class
 #' @family model_fitter_classes
-#' @import parsnip
 #' @keywords internal
 setClass(
   "te_parsnip_model",
@@ -52,6 +50,7 @@ setValidity(
 #' @examples
 #' stats_glm_logit(save_path = tempdir())
 parsnip_model <- function(model_spec, save_path) {
+  if (!requireNamespace("parsnip")) stop("Package 'parsnip' must be installed to use parsnip_model()")
   if (!is.na(save_path)) {
     assert_path_for_output(save_path, overwrite = TRUE)
   } else {
