@@ -80,6 +80,7 @@ Collate:
     'sampling.R'
     'te_datastore_csv.R'
     'te_datastore_duckdb.R'
+    'te_parsnip.R'
     'te_stats_glm_logit.R'
     'utils.R'
     'weighting.R'

@@ -11,6 +11,7 @@ define how the outcome models are fit. They are used for the dispatch of the int
 }
 \seealso{
 Other model_fitter: 
+\code{\link{parsnip_model}()},
 \code{\link{stats_glm_logit}()}
 }
 \concept{model_fitter}
