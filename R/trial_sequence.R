@@ -113,7 +113,7 @@ setMethod(
 
     catn("Estimand:", object@estimand)
     catn("")
-    catn("Observational Data:")
+    catn("Data:")
     show(object@data)
     catn("")
 
@@ -816,16 +816,30 @@ setMethod(
 )
 
 
-#' @rdname observed_data
+#' @rdname ipw_data
 setMethod(
-  "observed_data",
+  "ipw_data",
   c(object = "trial_sequence"),
   function(object) {
     object@data@data
   }
 )
 
-
+#' @rdname ipw_data
+setMethod(
+  "ipw_data<-",
+  c(object = "trial_sequence"),
+  function(object, value) {
+    object@data <- new(
+      "te_data",
+      data = value,
+      nobs = nrow(value),
+      n = uniqueN(value[, "id"])
+    )
+    validObject(object)
+    object
+  }
+)
 
 #' @rdname outcome_data
 setMethod(

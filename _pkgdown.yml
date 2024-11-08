@@ -60,7 +60,7 @@ reference:
   - set_switch_weight_model
   - calculate_weights
   - show_weight_models
-  - observed_data
+  - ipw_data
   - weight_model_data_indices
   - set_expansion_options
   - set_outcome_model

@@ -36,7 +36,7 @@ trial_pp <- trial_sequence("PP") |>
     model_fitter = stats_glm_logit(tempdir())
   ) |>
   calculate_weights()
-observed_data(trial_pp)
+ipw_data(trial_pp)
 show_weight_models(trial_pp)
 
 # get logical column for own processing
@@ -45,5 +45,5 @@ i <- weight_model_data_indices(trial_pp, "switch", "d0")
 # set column in data
 weight_model_data_indices(trial_pp, "switch", "d0", set_col = "sw_d0")
 weight_model_data_indices(trial_pp, "switch", "d1", set_col = "sw_d1")
-observed_data(trial_pp)
+ipw_data(trial_pp)
 }

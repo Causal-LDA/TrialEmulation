@@ -392,20 +392,35 @@ setGeneric("fit_weights_model", function(object, data, formula, label) standardG
 setGeneric("set_outcome_model", function(object, ...) standardGeneric("set_outcome_model"))
 
 
-#' Observed Data Accessor and Setter
+#' IPW Data Accessor and Setter
 #'
-#' Generic function to observed data
+#' Generic function to access and update the data used for inverse probability weighting.
 #'
 #' @param object `trial_sequence` object
 #'
-#' @return The observed data from the `@data` slot of `object`.
+#' @return The data from the `@data` slot of `object` used for inverse probability weighting.
 #' @export
 #' @examples
 #' ts <- trial_sequence("ITT")
 #' ts <- set_data(ts, data_censored)
-#' observed_data(ts)
-#' data.table::set(observed_data(ts), j = "dummy", value = TRUE)
-setGeneric("observed_data", function(object) standardGeneric("observed_data"))
+#' ipw_data(ts)
+#' data.table::set(ipw_data(ts), j = "dummy", value = TRUE)
+#'
+#' # or with the setter method:
+#' new_data <- ipw_data(ts)
+#' new_data$x2sq <- new_data$x2^2
+#' ipw_data(ts) <- new_data
+setGeneric("ipw_data", function(object) standardGeneric("ipw_data"))
+
+#' @rdname ipw_data
+#' @param value `data.table` to replace and update in `@data`
+#' @details
+#' The setter method `ipw_data(object) <- value` does not perform the same checks and manipulations
+#' as [set_data()]. To completely replace the data please use [set_data()]. This `ipw_data<-` method allows
+#' small changes such as adding a new column.
+#'
+#' @export
+setGeneric("ipw_data<-", function(object, value) standardGeneric("ipw_data<-"))
 
 
 #' Outcome Data Accessor and Setter

@@ -6,8 +6,8 @@
       Trial Sequence Object 
       Estimand: Per-protocol 
        
-      Observational Data: 
-       - No observational data has been set. Use set_data() 
+      Data: 
+       - No data has been set. Use set_data() 
        
       IPW for informative censoring: 
        - No weight model specified 
@@ -26,8 +26,8 @@
       Trial Sequence Object 
       Estimand: Intention-to-treat 
        
-      Observational Data: 
-       - No observational data has been set. Use set_data() 
+      Data: 
+       - No data has been set. Use set_data() 
        
       IPW for informative censoring: 
        - No weight model specified 
@@ -43,8 +43,8 @@
       Trial Sequence Object 
       Estimand: As treated 
        
-      Observational Data: 
-       - No observational data has been set. Use set_data() 
+      Data: 
+       - No data has been set. Use set_data() 
        
       IPW for informative censoring: 
        - No weight model specified 
@@ -63,7 +63,7 @@
       Trial Sequence Object 
       Estimand: Per-protocol 
        
-      Observational Data: 
+      Data: 
        - N: 321 observations from 89 patients 
               id period treatment    x1           x2    x3        x4   age      age_s
            <int>  <int>     <num> <num>        <num> <int>     <num> <num>      <num>

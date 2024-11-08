@@ -306,7 +306,7 @@
       Trial Sequence Object 
       Estimand: Intention-to-treat 
        
-      Observational Data: 
+      Data: 
        - N: 725 observations from 89 patients 
               id period treatment    x1           x2    x3        x4   age      age_s
            <int>  <int>     <num> <num>        <num> <int>     <num> <num>      <num>
