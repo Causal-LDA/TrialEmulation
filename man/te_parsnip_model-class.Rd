@@ -19,13 +19,19 @@ parameters.}
 \item{label}{A short string describing the model.}
 }
 \description{
-The classes and (internal) methods defined for using \link{parsnip} to fit the weight models.
+The classes and (internal) methods defined for using parsnip to fit the weight models.
 }
 \section{Functions}{
 \itemize{
 \item \code{fit_weights_model(te_parsnip_model)}: Fit the weight models object via \link{calculate_weights} on \code{trial_sequence}
 
 }}
+\section{Slots}{
+
+\describe{
+\item{\code{model_spec}}{A model specification defined with the \code{parsnip} package.}
+}}
+
 \seealso{
 Other model_fitter_classes: 
 \code{\link{te_stats_glm_logit-class}}

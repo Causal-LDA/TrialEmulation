@@ -2,25 +2,39 @@
 % Please edit documentation in R/te_parsnip.R
 \name{parsnip_model}
 \alias{parsnip_model}
-\title{Fit outcome models using \code{stats::glm}}
+\title{Fit outcome models using \code{parsnip} models}
 \usage{
 parsnip_model(model_spec, save_path)
 }
 \arguments{
+\item{model_spec}{A \code{parsnip} model definition with \code{mode = "classification"}.}
+
 \item{save_path}{Directory to save models. Set to \code{NA} if models should not be saved.}
 }
 \value{
-An object of class \code{te_stats_glm_logit} inheriting from \linkS4class{te_model_fitter} which is used for
+An object of class \code{te_parsnip_model} inheriting from \linkS4class{te_model_fitter} which is used for
 dispatching methods for the fitting models.
 }
 \description{
-Specify that the pooled logistic regression outcome models should be fit using \link[stats:glm]{stats::glm} with \code{family = binomial(link = "logit")}.
-}
-\details{
-Outcome models additional calculate robust variance estimates using \code{sandwich::vcovCL}.
+Specify that the pooled logistic regression outcome models should be fit using one of the classification
+type models in \code{parsnip}
 }
 \examples{
-stats_glm_logit(save_path = tempdir())
+\dontrun{
+if (
+  requireNamespace("parsnip", quietly = TRUE) &&
+    requireNamespace("rpart", quietly = TRUE)
+) {
+  # Use a decision tree model fitted with the rpart package
+  parsnip_model(
+    model_spec = parsnip::decision_tree(tree_depth = 30) |>
+      set_mode("classification") |>
+      set_engine("rpart"),
+    save_path = tempdir()
+  )
+}
+}
+
 }
 \seealso{
 Other model_fitter: 

@@ -4,8 +4,8 @@ NULL
 
 #' Fit Models using parsnip
 #'
-#' The classes and (internal) methods defined for using [parsnip] to fit the weight models.
-#'
+#' The classes and (internal) methods defined for using parsnip to fit the weight models.
+#' @slot model_spec A model specification defined with the `parsnip` package.
 #' @family model_fitter_classes
 #' @keywords internal
 setClass(
@@ -35,22 +35,34 @@ setValidity(
 
 
 
-#' Fit outcome models using `stats::glm`
+#' Fit outcome models using `parsnip` models
 #'
-#' Specify that the pooled logistic regression outcome models should be fit using [stats::glm] with `family =
-#' binomial(link = "logit")`.
+#' Specify that the pooled logistic regression outcome models should be fit using one of the classification
+#' type models in `parsnip`
 #'
-#' Outcome models additional calculate robust variance estimates using `sandwich::vcovCL`.
-#'
+#' @param model_spec A `parsnip` model definition with `mode = "classification"`.
 #' @param save_path Directory to save models. Set to `NA` if models should not be saved.
-#' @return An object of class `te_stats_glm_logit` inheriting from [te_model_fitter-class] which is used for
+#' @return An object of class `te_parsnip_model` inheriting from [te_model_fitter-class] which is used for
 #'   dispatching methods for the fitting models.
 #' @export
 #' @family model_fitter
 #' @examples
-#' stats_glm_logit(save_path = tempdir())
+#' \dontrun{
+#' if (
+#'   requireNamespace("parsnip", quietly = TRUE) &&
+#'     requireNamespace("rpart", quietly = TRUE)
+#' ) {
+#'   # Use a decision tree model fitted with the rpart package
+#'   parsnip_model(
+#'     model_spec = parsnip::decision_tree(tree_depth = 30) |>
+#'       set_mode("classification") |>
+#'       set_engine("rpart"),
+#'     save_path = tempdir()
+#'   )
+#' }
+#' }
+#'
 parsnip_model <- function(model_spec, save_path) {
-  if (!requireNamespace("parsnip")) stop("Package 'parsnip' must be installed to use parsnip_model()")
   if (!is.na(save_path)) {
     assert_path_for_output(save_path, overwrite = TRUE)
   } else {
@@ -67,8 +79,9 @@ setMethod(
   f = "fit_weights_model",
   signature = "te_parsnip_model",
   function(object, data, formula, label) {
+    if (!requireNamespace("parsnip")) stop("Package 'parsnip' must be installed to use parsnip models.")
     data$treatment <- factor(data$treatment, levels = c(0, 1))
-    parsnip_fit <- fit(
+    parsnip_fit <- parsnip::fit(
       object@model_spec,
       formula,
       data = data
@@ -82,8 +95,8 @@ setMethod(
 
     fitted <- predict(parsnip_fit, data, type = "prob")[[".pred_1"]]
     # TODO how can we show the nice name of the type of model, not just "parsnip" when we print.
-    tidy <- tryCatch(broom::tidy(model), error = function(e) data.frame(error = as.character(e)))
-    glance <- tryCatch(broom::glance(model), error = function(e) data.frame(error = as.character(e)))
+    tidy <- tryCatch(broom::tidy(parsnip_fit), error = function(e) data.frame(error = as.character(e)))
+    glance <- tryCatch(broom::glance(parsnip_fit), error = function(e) data.frame(error = as.character(e)))
     new(
       "te_weights_fitted",
       label = label,

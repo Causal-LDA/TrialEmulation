@@ -20,8 +20,14 @@ test_that("fit_weights_model works for stats_glm_logit", {
   expect_equal(result@summary[["tidy"]]$estimate, c(1.88674470, -0.04206803))
   expect_equal(result@summary[["glance"]]$df.null, 724)
 
-  expect_numeric(result@fitted, len = 725, any.missing = FALSE, lower = 0.1986804563, upper = 0.7479016204)
-  expect_equal(mean(result@fitted), 0.4675862069)
+  expect_numeric(result@fitted, len = 725, any.missing = FALSE)
+  expect_equal(
+    summary(result@fitted) |> unclass(),
+    c(
+      Min. = 0.198680456313765, `1st Qu.` = 0.384837510987622, Median = 0.456463281021062,
+      Mean = 0.467586206896568, `3rd Qu.` = 0.55082963205744, Max. = 0.747901620375074
+    )
+  )
 
   expect_file_exists(result@summary$save_path$path)
   saved_model <- readRDS(result@summary$save_path$path)
