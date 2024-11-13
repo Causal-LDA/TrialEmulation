@@ -26,6 +26,7 @@
 <url><loc>https://causal-lda.github.io/TrialEmulation/reference/index.html</loc></url>
 <url><loc>https://causal-lda.github.io/TrialEmulation/reference/initiators.html</loc></url>
 <url><loc>https://causal-lda.github.io/TrialEmulation/reference/internal-methods.html</loc></url>
+<url><loc>https://causal-lda.github.io/TrialEmulation/reference/ipw_data.html</loc></url>
 <url><loc>https://causal-lda.github.io/TrialEmulation/reference/load_expanded_data.html</loc></url>
 <url><loc>https://causal-lda.github.io/TrialEmulation/reference/outcome_data.html</loc></url>
 <url><loc>https://causal-lda.github.io/TrialEmulation/reference/predict_marginal.html</loc></url>
@@ -62,5 +63,6 @@
 <url><loc>https://causal-lda.github.io/TrialEmulation/reference/trial_sequence-class.html</loc></url>
 <url><loc>https://causal-lda.github.io/TrialEmulation/reference/trial_sequence.html</loc></url>
 <url><loc>https://causal-lda.github.io/TrialEmulation/reference/vignette_switch_data.html</loc></url>
+<url><loc>https://causal-lda.github.io/TrialEmulation/reference/weight_model_data_indices.html</loc></url>
 </urlset>
 
