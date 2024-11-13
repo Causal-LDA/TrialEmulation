@@ -111,6 +111,15 @@ add_rhs <- function(f1, f2) {
   update.formula(f1, substitute(~ . + add, list(add = formula.tools::rhs(f2))))
 }
 
+#' Get variables from RHS of formula
+#' @noRd
+rhs_vars <- function(f) {
+  setdiff(
+    all.vars(f),
+    formula.tools::lhs.vars(f)
+  )
+}
+
 #' Extract Baseline Observations
 #'
 #' @param trial_file Path to an expanded trial csv file

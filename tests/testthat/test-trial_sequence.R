@@ -151,6 +151,25 @@ test_that("set_data errors if columns used twice", {
   )
 })
 
+# Access data -----
+
+test_that("ipw_data works as expected", {
+  ts <- trial_sequence("ITT") |>
+    set_data(
+      data = trial_example[1:500, ],
+      id = "id",
+      period = "period",
+      eligible = "eligible",
+      treatment = "treatment"
+    )
+  expect_equal(ipw_data(ts), ts@data@data)
+
+  new_data <- copy(ipw_data(ts))
+  new_data$sq_nvarC <- new_data$nvarC^2
+  ipw_data(ts) <- new_data
+  expect_equal(ipw_data(ts), new_data)
+})
+
 # Set Switching Model -------
 
 test_that("set_switch_weight_model fails for ITT", {
@@ -178,6 +197,18 @@ test_that("set_switch_weight_model works for PP", {
   expect_class(result@switch_weights@model_fitter, "te_stats_glm_logit")
 })
 
+test_that("time_on_sequence doesn't get included in numerator", {
+  expect_error(
+    trial_sequence("PP") |>
+      set_data(data_censored) |>
+      set_switch_weight_model(
+        numerator = ~ age_s + x4 + time_on_regime,
+        denominator = ~ age_s + x4 + x2 + x1 + time_on_regime,
+        model_fitter = stats_glm_logit(save_dir)
+      ),
+    "time_on_regime"
+  )
+})
 
 # Set Censoring Model -------
 test_that("set_censor_weight_model works for ITT", {
@@ -216,6 +247,21 @@ test_that("set_censor_weight_model works for PP", {
   expect_equal(result@censor_weights@denominator, 1 - censored ~ age_s + x4 + x2 + x1)
   expect_equal(result@censor_weights@fitted, list())
   expect_class(result@censor_weights@model_fitter, "te_stats_glm_logit")
+})
+
+test_that("time_on_sequence doesn't get included in numerator", {
+  expect_error(
+    trial_sequence("PP") |>
+      set_data(data_censored) |>
+      set_censor_weight_model(
+        censor_event = "censored",
+        numerator = ~ age_s + x4 + time_on_regime,
+        denominator = ~ age_s + x4 + x2 + x1 + time_on_regime,
+        pool_models = "both",
+        model_fitter = stats_glm_logit(save_dir)
+      ),
+    "time_on_regime"
+  )
 })
 
 # Calculate weights -------

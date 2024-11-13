@@ -2,6 +2,13 @@
 
     Code
       show_weight_models(object)
+    Output
+      Weight Models for Informative Censoring
+      ---------------------------------------
+      
+      Weight Models for Treatment Switching
+      -------------------------------------
+      
 
 ---
 
@@ -22,7 +29,7 @@
       Trial Sequence Object 
       Estimand: Per-protocol 
        
-      Observational Data: 
+      Data: 
        - N: 321 observations from 89 patients 
               id period treatment    x1           x2    x3        x4   age      age_s
            <int>  <int>     <num> <num>        <num> <int>     <num> <num>      <num>
@@ -63,6 +70,10 @@
     Code
       show_weight_models(object_w_weights)
     Output
+      Weight Models for Informative Censoring
+      ---------------------------------------
+      
+      [[n]]
       Model: P(censor_event = 0 | X) for numerator 
        
        term        estimate   std.error  statistic p.value     
@@ -76,6 +87,7 @@
        path                
        /tempdir/model_n.rds
        
+      [[d0]]
       Model: P(censor_event = 0 | X, previous treatment = 0) for denominator 
        
        term        estimate   std.error  statistic p.value     
@@ -90,6 +102,7 @@
        path                 
        /tempdir/model_d0.rds
        
+      [[d1]]
       Model: P(censor_event = 0 | X, previous treatment = 1) for denominator 
        
        term        estimate    std.error  statistic  p.value   
@@ -104,6 +117,10 @@
        path                 
        /tempdir/model_d1.rds
        
+      Weight Models for Treatment Switching
+      -------------------------------------
+      
+      [[n1]]
       Model: P(treatment = 1 | previous treatment = 1) for numerator 
        
        term        estimate    std.error statistic  p.value     
@@ -117,6 +134,7 @@
        path                 
        /tempdir/model_n1.rds
        
+      [[d1]]
       Model: P(treatment = 1 | previous treatment = 1) for denominator 
        
        term        estimate    std.error  statistic  p.value     
@@ -131,6 +149,7 @@
        path                 
        /tempdir/model_d1.rds
        
+      [[n0]]
       Model: P(treatment = 1 | previous treatment = 0) for numerator 
        
        term        estimate    std.error  statistic  p.value     
@@ -144,6 +163,7 @@
        path                 
        /tempdir/model_n0.rds
        
+      [[d0]]
       Model: P(treatment = 1 | previous treatment = 0) for denominator 
        
        term        estimate     std.error  statistic  p.value     

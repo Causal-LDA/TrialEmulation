@@ -113,7 +113,7 @@ setMethod(
 
     catn("Estimand:", object@estimand)
     catn("")
-    catn("Observational Data:")
+    catn("Data:")
     show(object@data)
     catn("")
 
@@ -326,10 +326,10 @@ setMethod(
     if (missing(numerator)) numerator <- ~1
     if (missing(denominator)) denominator <- ~1
     assert_formula(numerator)
+    if ("time_on_regime" %in% rhs_vars(numerator)) stop("time_on_regime should not be used in numerator", call. = FALSE)
     assert_formula(denominator)
     assert_string(censor_event)
     assert_names(colnames(object@data@data), must.include = censor_event)
-
     numerator <- update.formula(numerator, paste("1 -", censor_event, "~ ."))
     denominator <- update.formula(denominator, paste("1 -", censor_event, "~ ."))
 
@@ -467,6 +467,7 @@ setMethod(
     if (missing(denominator)) denominator <- ~1
     # check which of these can be a null model
     assert_formula(numerator)
+    if ("time_on_regime" %in% rhs_vars(numerator)) stop("time_on_regime should not be used in numerator", call. = FALSE)
     assert_formula(denominator)
     numerator <- update.formula(numerator, treatment ~ .)
     denominator <- update.formula(denominator, treatment ~ .)
@@ -814,6 +815,31 @@ setMethod(
   }
 )
 
+
+#' @rdname ipw_data
+setMethod(
+  "ipw_data",
+  c(object = "trial_sequence"),
+  function(object) {
+    object@data@data
+  }
+)
+
+#' @rdname ipw_data
+setMethod(
+  "ipw_data<-",
+  c(object = "trial_sequence"),
+  function(object, value) {
+    object@data <- new(
+      "te_data",
+      data = value,
+      nobs = nrow(value),
+      n = uniqueN(value[, "id"])
+    )
+    validObject(object)
+    object
+  }
+)
 
 #' @rdname outcome_data
 setMethod(

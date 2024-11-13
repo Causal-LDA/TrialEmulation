@@ -28,6 +28,8 @@ int
 integerish
 io
 IPCW
+IPW
+ipw
 knitr
 lda
 MRC

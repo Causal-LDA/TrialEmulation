@@ -24,11 +24,13 @@ calculate_weights_trial_seq <- function(object, quiet, switch_weights, censor_we
 calculate_switch_weights <- function(object) {
   am_1 <- eligible_wts_0 <- eligible_wts_1 <- p_d <- p_n <- treatment <- wtS <- NULL
 
-  model_1_index <- if ("eligible_wts_1" %in% colnames(object@data@data)) {
-    object@data@data[am_1 == 1 & eligible_wts_1 == 1, which = TRUE]
+  # Switch from Treatment = 1
+  data_1_expr <- if ("eligible_wts_1" %in% colnames(object@data@data)) {
+    expression(am_1 == 1 & eligible_wts_1 == 1)
   } else {
-    object@data@data[am_1 == 1, which = TRUE]
+    expression(am_1 == 1)
   }
+  model_1_index <- object@data@data[eval(data_1_expr), which = TRUE]
 
   object@switch_weights@fitted[["n1"]] <- fit_weights_model(
     object = object@switch_weights@model_fitter,
@@ -37,6 +39,7 @@ calculate_switch_weights <- function(object) {
     label = "P(treatment = 1 | previous treatment = 1) for numerator"
   )
   set(object@data@data, i = model_1_index, j = "p_n", value = object@switch_weights@fitted[["n1"]]@fitted)
+  object@switch_weights@data_subset_expr[["n1"]] <- data_1_expr
 
   object@switch_weights@fitted[["d1"]] <- fit_weights_model(
     object = object@switch_weights@model_fitter,
@@ -45,13 +48,17 @@ calculate_switch_weights <- function(object) {
     label = "P(treatment = 1 | previous treatment = 1) for denominator"
   )
   set(object@data@data, i = model_1_index, j = "p_d", value = object@switch_weights@fitted[["d1"]]@fitted)
+  object@switch_weights@data_subset_expr[["d1"]] <- data_1_expr
   rm(model_1_index)
 
-  model_0_index <- if ("eligible_wts_0" %in% colnames(object@data@data)) {
-    object@data@data[am_1 == 0 & eligible_wts_1 == 0, which = TRUE]
+
+  # Switch from Treatment = 0
+  data_0_expr <- if ("eligible_wts_1" %in% colnames(object@data@data)) {
+    expression(am_1 == 0 & eligible_wts_1 == 0)
   } else {
-    object@data@data[am_1 == 0, which = TRUE]
+    expression(am_1 == 0)
   }
+  model_0_index <- object@data@data[eval(data_0_expr), which = TRUE]
 
   object@switch_weights@fitted[["n0"]] <- fit_weights_model(
     object = object@switch_weights@model_fitter,
@@ -60,6 +67,7 @@ calculate_switch_weights <- function(object) {
     label = "P(treatment = 1 | previous treatment = 0) for numerator"
   )
   set(object@data@data, i = model_0_index, j = "p_n", value = object@switch_weights@fitted[["n0"]]@fitted)
+  object@switch_weights@data_subset_expr[["n0"]] <- data_0_expr
 
   object@switch_weights@fitted[["d0"]] <- fit_weights_model(
     object = object@switch_weights@model_fitter,
@@ -68,9 +76,11 @@ calculate_switch_weights <- function(object) {
     label = "P(treatment = 1 | previous treatment = 0) for denominator"
   )
   set(object@data@data, i = model_0_index, j = "p_d", value = object@switch_weights@fitted[["d0"]]@fitted)
+  object@switch_weights@data_subset_expr[["d0"]] <- data_0_expr
   rm(model_0_index)
 
 
+  # Combine weights
   if (any(c("eligible_wts_0", "eligible_wts_1") %in% colnames(object@data@data))) {
     object@data@data[
       (eligible_wts_0 == 1 | eligible_wts_1 == 1) & treatment == 0,
@@ -96,9 +106,12 @@ calculate_censor_weights <- function(object) {
   am_1 <- pC_d <- pC_n <- wtC <- NULL
 
   if (!object@censor_weights@pool_numerator || !object@censor_weights@pool_denominator) {
-    elig_0_index <- object@data@data[am_1 == 0, which = TRUE]
-    elig_1_index <- object@data@data[am_1 == 1, which = TRUE]
+    data_0_expr <- expression(am_1 == 0)
+    data_1_expr <- expression(am_1 == 1)
+    elig_0_index <- object@data@data[eval(data_0_expr), which = TRUE]
+    elig_1_index <- object@data@data[eval(data_1_expr), which = TRUE]
   }
+  data_pool_expr <- expression(TRUE)
 
   if (object@censor_weights@pool_numerator) {
     object@censor_weights@fitted[["n"]] <- fit_weights_model(
@@ -108,6 +121,7 @@ calculate_censor_weights <- function(object) {
       label = "P(censor_event = 0 | X) for numerator"
     )
     set(object@data@data, j = "pC_n", value = object@censor_weights@fitted[["n"]]@fitted)
+    object@censor_weights@data_subset_expr[["n"]] <- data_pool_expr
   } else {
     object@censor_weights@fitted[["n0"]] <- fit_weights_model(
       object = object@censor_weights@model_fitter,
@@ -116,6 +130,7 @@ calculate_censor_weights <- function(object) {
       label = "P(censor_event = 0 | X, previous treatment = 0) for numerator"
     )
     set(object@data@data, i = elig_0_index, j = "pC_n", value = object@censor_weights@fitted[["n0"]]@fitted)
+    object@censor_weights@data_subset_expr[["n0"]] <- data_0_expr
 
     object@censor_weights@fitted[["n1"]] <- fit_weights_model(
       object = object@censor_weights@model_fitter,
@@ -124,6 +139,7 @@ calculate_censor_weights <- function(object) {
       label = "P(censor_event = 0 | X, previous treatment = 1) for numerator"
     )
     set(object@data@data, i = elig_1_index, j = "pC_n", value = object@censor_weights@fitted[["n1"]]@fitted)
+    object@censor_weights@data_subset_expr[["n1"]] <- data_1_expr
   }
 
   if (object@censor_weights@pool_denominator) {
@@ -134,6 +150,7 @@ calculate_censor_weights <- function(object) {
       label = "P(censor_event = 0 | X) for denominator"
     )
     set(object@data@data, j = "pC_d", value = object@censor_weights@fitted[["d"]]@fitted)
+    object@censor_weights@data_subset_expr[["d"]] <- data_pool_expr
   } else {
     object@censor_weights@fitted[["d0"]] <- fit_weights_model(
       object = object@censor_weights@model_fitter,
@@ -142,6 +159,7 @@ calculate_censor_weights <- function(object) {
       label = "P(censor_event = 0 | X, previous treatment = 0) for denominator"
     )
     set(object@data@data, i = elig_0_index, j = "pC_d", value = object@censor_weights@fitted[["d0"]]@fitted)
+    object@censor_weights@data_subset_expr[["d0"]] <- data_0_expr
 
     object@censor_weights@fitted[["d1"]] <- fit_weights_model(
       object = object@censor_weights@model_fitter,
@@ -150,6 +168,7 @@ calculate_censor_weights <- function(object) {
       label = "P(censor_event = 0 | X, previous treatment = 1) for denominator"
     )
     set(object@data@data, i = elig_1_index, j = "pC_d", value = object@censor_weights@fitted[["d1"]]@fitted)
+    object@censor_weights@data_subset_expr[["d1"]] <- data_1_expr
   }
 
   object@data@data[is.na(pC_d), pC_d := 1]

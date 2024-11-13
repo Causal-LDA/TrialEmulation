@@ -39,7 +39,7 @@ setMethod(
   "show",
   c(object = "te_data_unset"),
   function(object) {
-    catn(" - No observational data has been set. Use set_data()")
+    catn(" - No data has been set. Use set_data()")
   }
 )
 
