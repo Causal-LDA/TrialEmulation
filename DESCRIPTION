@@ -1,6 +1,6 @@
 Package: TrialEmulation
 Title: Causal Analysis of Observational Time-to-Event Data
-Version: 0.0.3.38
+Version: 0.0.3.39
 Authors@R: c(
     person("Roonak", "Rezvani", , "roonak.r74@gmail.com", role = "aut",
            comment = c(ORCID = "0000-0001-5580-5058", "Original package author")),
@@ -39,11 +39,11 @@ Imports:
     sandwich
 Suggests: 
     knitr,
-    rmarkdown,
-    testthat (>= 3.0.0),
-    withr,
     parsnip,
-    rpart
+    rmarkdown,
+    rpart,
+    testthat (>= 3.0.0),
+    withr
 LinkingTo: 
     Rcpp
 VignetteBuilder: 
