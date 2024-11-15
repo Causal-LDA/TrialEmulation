@@ -24,6 +24,7 @@ stats_glm_logit(save_path = tempdir())
 }
 \seealso{
 Other model_fitter: 
+\code{\link{parsnip_model}()},
 \code{\link{te_model_fitter-class}}
 }
 \concept{model_fitter}

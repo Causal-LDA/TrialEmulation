@@ -63,5 +63,9 @@ The classes and (internal) methods defined for using \link[stats:glm]{stats::glm
 \item \code{predict(te_stats_glm_logit_outcome_fitted)}: Predict from the fitted model object via \link{predict} on \code{trial_sequence}
 
 }}
+\seealso{
+Other model_fitter_classes: 
+\code{\link{te_parsnip_model-class}}
+}
 \concept{model_fitter_classes}
 \keyword{internal}
