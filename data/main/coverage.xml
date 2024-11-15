@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE coverage SYSTEM "https://raw.githubusercontent.com/cobertura/cobertura/master/cobertura/src/site/htdocs/xml/coverage-04.dtd">
-<coverage line-rate="0.897448015122873" branch-rate="0" lines-covered="1899" lines-valid="2116" branches-covered="0" branches-valid="0" complexity="0" version="3.6.4" timestamp="2024-11-13 14:52:08.991946">
+<coverage line-rate="0.897292250233427" branch-rate="0" lines-covered="1922" lines-valid="2142" branches-covered="0" branches-valid="0" complexity="0" version="3.6.4" timestamp="2024-11-15 08:32:49.461474">
   <sources>
     <source>/__w/TrialEmulation/TrialEmulation/TrialEmulation</source>
   </sources>
   <packages>
-    <package name="TrialEmulation" line-rate="0.897448015122873" branch-rate="0" complexity="0">
+    <package name="TrialEmulation" line-rate="0.897292250233427" branch-rate="0" complexity="0">
       <classes>
         <class name="calculate_weights.R" filename="R/calculate_weights.R" line-rate="0.803030303030303" branch-rate="0" complexity="0">
           <methods>
@@ -1657,7 +1657,7 @@
             </method>
             <method name="fit_weights_model" signature="" line-rate="1" branch-rate="0" complexity="0">
               <lines>
-                <line number="360" hits="29" branch="false"/>
+                <line number="360" hits="31" branch="false"/>
               </lines>
             </method>
             <method name="set_outcome_model" signature="" line-rate="1" branch-rate="0" complexity="0">
@@ -1750,7 +1750,7 @@
             <line number="294" hits="29" branch="false"/>
             <line number="319" hits="38" branch="false"/>
             <line number="335" hits="7" branch="false"/>
-            <line number="360" hits="29" branch="false"/>
+            <line number="360" hits="31" branch="false"/>
             <line number="392" hits="21" branch="false"/>
             <line number="413" hits="3" branch="false"/>
             <line number="423" hits="1" branch="false"/>
@@ -3512,6 +3512,72 @@
             <line number="80" hits="1" branch="false"/>
             <line number="81" hits="1" branch="false"/>
             <line number="83" hits="1" branch="false"/>
+          </lines>
+        </class>
+        <class name="te_parsnip.R" filename="R/te_parsnip.R" line-rate="0.884615384615385" branch-rate="0" complexity="0">
+          <methods>
+            <method name="parsnip_model" signature="" line-rate="0.833333333333333" branch-rate="0" complexity="0">
+              <lines>
+                <line number="66" hits="6" branch="false"/>
+                <line number="67" hits="6" branch="false"/>
+                <line number="69" hits="0" branch="false"/>
+                <line number="71" hits="6" branch="false"/>
+                <line number="72" hits="2" branch="false"/>
+                <line number="73" hits="3" branch="false"/>
+              </lines>
+            </method>
+            <method name="te_parsnip_model" signature="" line-rate="0.9" branch-rate="0" complexity="0">
+              <lines>
+                <line number="82" hits="0" branch="false"/>
+                <line number="83" hits="2" branch="false"/>
+                <line number="84" hits="2" branch="false"/>
+                <line number="85" hits="2" branch="false"/>
+                <line number="86" hits="2" branch="false"/>
+                <line number="87" hits="2" branch="false"/>
+                <line number="88" hits="2" branch="false"/>
+                <line number="90" hits="2" branch="false"/>
+                <line number="91" hits="0" branch="false"/>
+                <line number="92" hits="2" branch="false"/>
+                <line number="93" hits="2" branch="false"/>
+                <line number="96" hits="2" branch="false"/>
+                <line number="98" hits="2" branch="false"/>
+                <line number="99" hits="2" branch="false"/>
+                <line number="100" hits="2" branch="false"/>
+                <line number="101" hits="2" branch="false"/>
+                <line number="102" hits="2" branch="false"/>
+                <line number="103" hits="2" branch="false"/>
+                <line number="104" hits="2" branch="false"/>
+                <line number="105" hits="2" branch="false"/>
+              </lines>
+            </method>
+          </methods>
+          <lines>
+            <line number="66" hits="6" branch="false"/>
+            <line number="67" hits="6" branch="false"/>
+            <line number="69" hits="0" branch="false"/>
+            <line number="71" hits="6" branch="false"/>
+            <line number="72" hits="2" branch="false"/>
+            <line number="73" hits="3" branch="false"/>
+            <line number="82" hits="0" branch="false"/>
+            <line number="83" hits="2" branch="false"/>
+            <line number="84" hits="2" branch="false"/>
+            <line number="85" hits="2" branch="false"/>
+            <line number="86" hits="2" branch="false"/>
+            <line number="87" hits="2" branch="false"/>
+            <line number="88" hits="2" branch="false"/>
+            <line number="90" hits="2" branch="false"/>
+            <line number="91" hits="0" branch="false"/>
+            <line number="92" hits="2" branch="false"/>
+            <line number="93" hits="2" branch="false"/>
+            <line number="96" hits="2" branch="false"/>
+            <line number="98" hits="2" branch="false"/>
+            <line number="99" hits="2" branch="false"/>
+            <line number="100" hits="2" branch="false"/>
+            <line number="101" hits="2" branch="false"/>
+            <line number="102" hits="2" branch="false"/>
+            <line number="103" hits="2" branch="false"/>
+            <line number="104" hits="2" branch="false"/>
+            <line number="105" hits="2" branch="false"/>
           </lines>
         </class>
         <class name="te_stats_glm_logit.R" filename="R/te_stats_glm_logit.R" line-rate="0.872340425531915" branch-rate="0" complexity="0">
