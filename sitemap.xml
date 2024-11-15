@@ -29,6 +29,7 @@
 <url><loc>https://causal-lda.github.io/TrialEmulation/reference/ipw_data.html</loc></url>
 <url><loc>https://causal-lda.github.io/TrialEmulation/reference/load_expanded_data.html</loc></url>
 <url><loc>https://causal-lda.github.io/TrialEmulation/reference/outcome_data.html</loc></url>
+<url><loc>https://causal-lda.github.io/TrialEmulation/reference/parsnip_model.html</loc></url>
 <url><loc>https://causal-lda.github.io/TrialEmulation/reference/predict_marginal.html</loc></url>
 <url><loc>https://causal-lda.github.io/TrialEmulation/reference/print_TE.html</loc></url>
 <url><loc>https://causal-lda.github.io/TrialEmulation/reference/read_expanded_data.html</loc></url>
@@ -57,6 +58,7 @@
 <url><loc>https://causal-lda.github.io/TrialEmulation/reference/te_outcome_data-class.html</loc></url>
 <url><loc>https://causal-lda.github.io/TrialEmulation/reference/te_outcome_fitted-class.html</loc></url>
 <url><loc>https://causal-lda.github.io/TrialEmulation/reference/te_outcome_model-class.html</loc></url>
+<url><loc>https://causal-lda.github.io/TrialEmulation/reference/te_parsnip_model-class.html</loc></url>
 <url><loc>https://causal-lda.github.io/TrialEmulation/reference/te_stats_glm_logit-class.html</loc></url>
 <url><loc>https://causal-lda.github.io/TrialEmulation/reference/trial_example.html</loc></url>
 <url><loc>https://causal-lda.github.io/TrialEmulation/reference/trial_msm.html</loc></url>
