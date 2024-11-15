@@ -130,6 +130,8 @@ setMethod(
 
 #' Data used in weight model fitting
 #'
+#' `r lifecycle::badge('experimental')`
+#'
 #' @param object A [trial_sequence] object
 #' @param type Select a censoring or switching model
 #' @param model The model name

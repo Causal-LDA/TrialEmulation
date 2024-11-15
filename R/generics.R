@@ -394,6 +394,8 @@ setGeneric("set_outcome_model", function(object, ...) standardGeneric("set_outco
 
 #' IPW Data Accessor and Setter
 #'
+#' `r lifecycle::badge('experimental')`
+#'
 #' Generic function to access and update the data used for inverse probability weighting.
 #'
 #' @param object `trial_sequence` object
@@ -424,6 +426,8 @@ setGeneric("ipw_data<-", function(object, value) standardGeneric("ipw_data<-"))
 
 
 #' Outcome Data Accessor and Setter
+#'
+#' `r lifecycle::badge('experimental')`
 #'
 #' Generic function to outcome data
 #'

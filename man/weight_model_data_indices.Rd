@@ -25,7 +25,7 @@ fitting this model.}
 If \code{set_col} is not specified a logical \code{data.table} column is returned. Otherwise
 }
 \description{
-Data used in weight model fitting
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
 }
 \examples{
 trial_pp <- trial_sequence("PP") |>
