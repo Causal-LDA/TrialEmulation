@@ -37,6 +37,8 @@ setValidity(
 
 #' Fit outcome models using `parsnip` models
 #'
+#' `r lifecycle::badge('experimental')`
+#'
 #' Specify that the pooled logistic regression outcome models should be fit using one of the classification
 #' type models in `parsnip`
 #'

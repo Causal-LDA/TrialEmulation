@@ -24,9 +24,11 @@ ipw_data(object) <- value
 The data from the \verb{@data} slot of \code{object} used for inverse probability weighting.
 }
 \description{
-Generic function to access and update the data used for inverse probability weighting.
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
 }
 \details{
+Generic function to access and update the data used for inverse probability weighting.
+
 The setter method \code{ipw_data(object) <- value} does not perform the same checks and manipulations
 as \code{\link[=set_data]{set_data()}}. To completely replace the data please use \code{\link[=set_data]{set_data()}}. This \verb{ipw_data<-} method allows
 small changes such as adding a new column.

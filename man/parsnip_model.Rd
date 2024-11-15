@@ -16,6 +16,9 @@ An object of class \code{te_parsnip_model} inheriting from \linkS4class{te_model
 dispatching methods for the fitting models.
 }
 \description{
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
+}
+\details{
 Specify that the pooled logistic regression outcome models should be fit using one of the classification
 type models in \code{parsnip}
 }

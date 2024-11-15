@@ -24,6 +24,9 @@ outcome_data(object) <- value
 The \code{object} with updated outcome data
 }
 \description{
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
+}
+\details{
 Generic function to outcome data
 }
 \examples{
