@@ -39,14 +39,19 @@ setValidity(
 #'
 #' `r lifecycle::badge('experimental')`
 #'
-#' Specify that the pooled logistic regression outcome models should be fit using one of the classification
-#' type models in `parsnip`
+#' Specify that the models should be fit using a classification model specified with the `parsnip` package.
 #'
 #' @param model_spec A `parsnip` model definition with `mode = "classification"`.
 #' @param save_path Directory to save models. Set to `NA` if models should not be saved.
 #' @return An object of class `te_parsnip_model` inheriting from [te_model_fitter-class] which is used for
 #'   dispatching methods for the fitting models.
 #' @export
+#' @details
+#' Warning: this functionality is for experimental and methods research use only!
+#' The theoretical properties of the of the methodology underlying the target trial
+#' emulation may not hold for all model types.
+#' We only recommend to use [stats_glm_logit()].
+#'
 #' @family model_fitter
 #' @examples
 #' \dontrun{

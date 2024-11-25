@@ -19,8 +19,12 @@ dispatching methods for the fitting models.
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
 }
 \details{
-Specify that the pooled logistic regression outcome models should be fit using one of the classification
-type models in \code{parsnip}
+Specify that the models should be fit using a classification model specified with the \code{parsnip} package.
+
+Warning: this functionality is for experimental and methods research use only!
+The theoretical properties of the of the methodology underlying the target trial
+emulation may not hold for all model types.
+We only recommend to use \code{\link[=stats_glm_logit]{stats_glm_logit()}}.
 }
 \examples{
 \dontrun{
