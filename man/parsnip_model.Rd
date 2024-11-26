@@ -21,10 +21,10 @@ dispatching methods for the fitting models.
 \details{
 Specify that the models should be fit using a classification model specified with the \code{parsnip} package.
 
-Warning: this functionality is for experimental and methods research use only!
-The theoretical properties of the of the methodology underlying the target trial
-emulation may not hold for all model types.
-We only recommend to use \code{\link[=stats_glm_logit]{stats_glm_logit()}}.
+Warning: \eqn{n^{1/2}}-consistency estimation and valid inference of the parameters in marginal structural models for
+emulated trials generally require that the weights for treatment switching and censoring be estimated at parametric
+rates, which is generally not possible when using data-adaptive estimation of high-dimensional regressions.
+Therefore, we only recommend using \code{\link[=stats_glm_logit]{stats_glm_logit()}}.
 }
 \examples{
 \dontrun{
