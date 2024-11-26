@@ -2,6 +2,7 @@ url: https://causal-lda.github.io/TrialEmulation
 
 template:
   bootstrap: 5
+  math-rendering: mathjax
 
 navbar:
   structure:
