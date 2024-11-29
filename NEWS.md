@@ -1,10 +1,11 @@
 # TrialEmulation 0.0.4
 
 * Add new extensible S4 class based interface.
-  - Step-by-step functions to construct sequence of target trial analysis. See the New Interface vignette.
-  - Use `duckdb` to store expanded data for efficient reading and sampling of large data.
-  - Possibility to add alternative data storage and model fitting functionality. See the Extending TrialEmulation 
+  - Step-by-step functions to construct sequence of target trial analysis. See the "New Interface"" vignette.
+  - Possibility to add alternative data storage and model fitting functionality. See the "Extending TrialEmulation"
    vignette.
+  - Use `duckdb` to store expanded data for efficient reading and sampling of large data.
+  - Use `parsnip` models for weight model fitting (experimental, not recommended).
   - This interface is still "experimental" and may change in future
   - Thanks @darkgoldenrod-cherry
 
