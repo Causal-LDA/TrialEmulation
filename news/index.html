@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">TrialEmulation</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.3.39</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.4.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -36,16 +36,19 @@
     </div>
 
     <div class="section level2">
-<h2 class="pkg-version" data-toc-text="0.0.3.39" id="trialemulation-00339">TrialEmulation 0.0.3.39<a class="anchor" aria-label="anchor" href="#trialemulation-00339"></a></h2>
-<ul><li>
-<p>Add new extensible S4 class based interface.</p>
-<ul><li>Step-by-step functions to construct sequence of target trial analysis. See the New Interface vignette.</li>
+<h2 class="pkg-version" data-toc-text="0.0.4.0" id="trialemulation-0040">TrialEmulation 0.0.4.0<a class="anchor" aria-label="anchor" href="#trialemulation-0040"></a></h2>
+<ul><li>Add new extensible S4 class based interface.
+<ul><li>Step-by-step functions to construct sequence of target trial analysis. See the “New Interface”” vignette.</li>
+<li>Possibility to add alternative data storage and model fitting functionality. See the “Extending TrialEmulation” vignette.</li>
 <li>Use <code>duckdb</code> to store expanded data for efficient reading and sampling of large data.</li>
-<li>Possibility to add alternative data storage and model fitting functionality. See the Extending TrialEmulation vignette.</li>
+<li>Use <code>parsnip</code> models for weight model fitting (experimental, not recommended).</li>
 <li>This interface is still “experimental” and may change in future</li>
 <li>Thanks <a href="https://github.com/darkgoldenrod-cherry" class="external-link">@darkgoldenrod-cherry</a></li>
 </ul></li>
-<li><p>Improved documentation</p></li>
+</ul></div>
+    <div class="section level2">
+<h2 class="pkg-version" data-toc-text="0.0.3.9" id="trialemulation-0039">TrialEmulation 0.0.3.9<a class="anchor" aria-label="anchor" href="#trialemulation-0039"></a></h2><p class="text-muted">CRAN release: 2024-09-09</p>
+<ul><li><p>Improved documentation</p></li>
 <li><p>Add <code>estimand_type</code> argument</p></li>
 <li><p>Fix partial matching in data.table calls. Thanks <a href="https://github.com/joshhwuu" class="external-link">@joshhwuu</a></p></li>
 <li><p>Additional internal refactoring</p></li>
