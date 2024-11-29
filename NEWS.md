@@ -1,4 +1,4 @@
-# TrialEmulation 0.0.3.40
+# TrialEmulation 0.0.4
 
 * Add new extensible S4 class based interface.
   - Step-by-step functions to construct sequence of target trial analysis. See the New Interface vignette.
@@ -8,11 +8,14 @@
   - This interface is still "experimental" and may change in future
   - Thanks @darkgoldenrod-cherry
 
+# TrialEmulation 0.0.3.9
+
 * Improved documentation
 
 * Add `estimand_type` argument
 
 * Fix partial matching in data.table calls. Thanks @joshhwuu
+
 * Additional internal refactoring
 
 # TrialEmulation 0.0.3.2
