@@ -24,6 +24,8 @@ setClass(
 
 #' Fit outcome models using `stats::glm`
 #'
+#' `r lifecycle::badge('experimental')`
+#'
 #' Specify that the pooled logistic regression outcome models should be fit using [stats::glm] with `family =
 #' binomial(link = "logit")`.
 #'

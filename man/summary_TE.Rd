@@ -27,5 +27,6 @@
 No value, displays summaries of object.
 }
 \description{
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
 Print summaries of data and model objects produced by \code{TrialEmulation}.
 }

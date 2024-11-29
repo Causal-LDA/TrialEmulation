@@ -37,14 +37,23 @@ setValidity(
 
 #' Fit outcome models using `parsnip` models
 #'
-#' Specify that the pooled logistic regression outcome models should be fit using one of the classification
-#' type models in `parsnip`
+#' `r lifecycle::badge('experimental')`
+#'
+#' Specify that the models should be fit using a classification model specified with the `parsnip` package.
 #'
 #' @param model_spec A `parsnip` model definition with `mode = "classification"`.
 #' @param save_path Directory to save models. Set to `NA` if models should not be saved.
 #' @return An object of class `te_parsnip_model` inheriting from [te_model_fitter-class] which is used for
 #'   dispatching methods for the fitting models.
 #' @export
+#' @details
+#' Warning: This functionality is experimental and not recommended for use in analyses.
+#' \eqn{sqrt{n}}-consistency estimation and valid inference of the parameters in marginal structural models for
+#' emulated trials generally require that the weights for treatment switching and censoring be estimated at parametric
+#' rates, which is generally not possible when using data-adaptive estimation of high-dimensional regressions.
+#' Therefore, we only recommend using [stats_glm_logit()].
+#'
+#'
 #' @family model_fitter
 #' @examples
 #' \dontrun{

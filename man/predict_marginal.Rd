@@ -66,6 +66,7 @@ A list of three data frames containing the cumulative incidences for each of the
 (treatment and non-treatment) and the difference between them.
 }
 \description{
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
 This function predicts the marginal cumulative incidences when a target trial population receives either the
 treatment or non-treatment at baseline (for an intention-to-treat analysis) or either sustained treatment or
 sustained non-treatment (for a per-protocol analysis). The difference between these cumulative incidences is the

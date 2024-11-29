@@ -17,5 +17,5 @@
 No return value, only for printing.
 }
 \description{
-Print a weight summary object
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
 }

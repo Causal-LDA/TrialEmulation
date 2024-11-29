@@ -1,5 +1,6 @@
 #' Summary methods
 #'
+#' `r lifecycle::badge('stable')`
 #' Print summaries of data and model objects produced by `TrialEmulation`.
 #' @rdname summary_TE
 #'
@@ -90,6 +91,7 @@ summary.TE_robust <- function(object, ...) {
 
 #' Print a weight summary object
 #'
+#' `r lifecycle::badge('stable')`
 #' @param x print TE_weight_summary object.
 #' @param full Print full or short summary.
 #' @param ... Arguments passed to [print.data.frame].
@@ -394,6 +396,8 @@ setGeneric("set_outcome_model", function(object, ...) standardGeneric("set_outco
 
 #' IPW Data Accessor and Setter
 #'
+#' `r lifecycle::badge('experimental')`
+#'
 #' Generic function to access and update the data used for inverse probability weighting.
 #'
 #' @param object `trial_sequence` object
@@ -424,6 +428,8 @@ setGeneric("ipw_data<-", function(object, value) standardGeneric("ipw_data<-"))
 
 
 #' Outcome Data Accessor and Setter
+#'
+#' `r lifecycle::badge('experimental')`
 #'
 #' Generic function to outcome data
 #'
@@ -508,6 +514,7 @@ setGeneric("fit_msm", function(object,
 
 #' Predict marginal cumulative incidences with confidence intervals for a target trial population
 #'
+#' `r lifecycle::badge('stable')`
 #' This function predicts the marginal cumulative incidences when a target trial population receives either the
 #' treatment or non-treatment at baseline (for an intention-to-treat analysis) or either sustained treatment or
 #' sustained non-treatment (for a per-protocol analysis). The difference between these cumulative incidences is the

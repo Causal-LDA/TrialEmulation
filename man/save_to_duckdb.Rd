@@ -13,7 +13,7 @@ save_to_duckdb(path)
 A \linkS4class{te_datastore_duckdb} object.
 }
 \description{
-Save expanded data to \code{DuckDB}
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
 }
 \examples{
 if (require(duckdb)) {

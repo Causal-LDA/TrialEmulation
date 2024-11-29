@@ -13,7 +13,7 @@ save_to_csv(path)
 A \linkS4class{te_datastore_csv} object.
 }
 \description{
-Save expanded data as CSV
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
 }
 \examples{
 csv_dir <- file.path(tempdir(), "expanded_trials_csv")

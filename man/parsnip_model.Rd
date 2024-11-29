@@ -16,8 +16,16 @@ An object of class \code{te_parsnip_model} inheriting from \linkS4class{te_model
 dispatching methods for the fitting models.
 }
 \description{
-Specify that the pooled logistic regression outcome models should be fit using one of the classification
-type models in \code{parsnip}
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
+}
+\details{
+Specify that the models should be fit using a classification model specified with the \code{parsnip} package.
+
+Warning: This functionality is experimental and not recommended for use in analyses.
+\eqn{sqrt{n}}-consistency estimation and valid inference of the parameters in marginal structural models for
+emulated trials generally require that the weights for treatment switching and censoring be estimated at parametric
+rates, which is generally not possible when using data-adaptive estimation of high-dimensional regressions.
+Therefore, we only recommend using \code{\link[=stats_glm_logit]{stats_glm_logit()}}.
 }
 \examples{
 \dontrun{
