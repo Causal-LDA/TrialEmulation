@@ -1,18 +1,22 @@
-# TrialEmulation 0.0.3.40
+# TrialEmulation 0.0.4.0
 
 * Add new extensible S4 class based interface.
-  - Step-by-step functions to construct sequence of target trial analysis. See the New Interface vignette.
-  - Use `duckdb` to store expanded data for efficient reading and sampling of large data.
-  - Possibility to add alternative data storage and model fitting functionality. See the Extending TrialEmulation 
+  - Step-by-step functions to construct sequence of target trial analysis. See the "New Interface"" vignette.
+  - Possibility to add alternative data storage and model fitting functionality. See the "Extending TrialEmulation"
    vignette.
+  - Use `duckdb` to store expanded data for efficient reading and sampling of large data.
+  - Use `parsnip` models for weight model fitting (experimental, not recommended).
   - This interface is still "experimental" and may change in future
   - Thanks @darkgoldenrod-cherry
+
+# TrialEmulation 0.0.3.9
 
 * Improved documentation
 
 * Add `estimand_type` argument
 
 * Fix partial matching in data.table calls. Thanks @joshhwuu
+
 * Additional internal refactoring
 
 # TrialEmulation 0.0.3.2
