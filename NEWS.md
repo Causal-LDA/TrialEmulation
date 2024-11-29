@@ -1,4 +1,4 @@
-# TrialEmulation 0.0.4.0
+# TrialEmulation 0.0.4.1
 
 * Add new extensible S4 class based interface.
   - Step-by-step functions to construct sequence of target trial analysis. See the "New Interface"" vignette.
