@@ -2,11 +2,11 @@ Package: TrialEmulation
 Title: Causal Analysis of Observational Time-to-Event Data
 Version: 0.0.3.39
 Authors@R: c(
-    person("Roonak", "Rezvani", , "roonak.r74@gmail.com", role = "aut",
-           comment = c(ORCID = "0000-0001-5580-5058", "Original package author")),
     person("Isaac", "Gravestock", , "isaac.gravestock@roche.com", role = c("aut", "cre"),
            comment = c(ORCID = "0000-0003-0283-2065")),
     person("Li", "Su", , "li.su@mrc-bsu.cam.ac.uk", role = "aut"),
+    person("Roonak", "Rezvani", , "roonak.r74@gmail.com", role = "aut",
+           comment = c(ORCID = "0000-0001-5580-5058", "Original package author")),
     person("Julia", "Moesch", , "julia.moesch@roche.com", role = "aut"),
     person("Medical Research Council (MRC)", role = "fnd"),
     person("F. Hoffmann-La Roche AG", role = c("cph", "fnd"))

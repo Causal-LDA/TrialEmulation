@@ -39,6 +39,8 @@ setMethod(
 
 
 #' Save expanded data as a `data.table`
+#'
+#' `r lifecycle::badge('experimental')`
 #' @family save_to
 #' @export
 #' @examples

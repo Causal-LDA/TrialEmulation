@@ -58,6 +58,8 @@ setMethod(
 
 
 #' Save expanded data as CSV
+#'
+#' `r lifecycle::badge('experimental')`
 #' @param path Directory to save CSV files in. Must be empty.
 #' @family save_to
 #' @return A [te_datastore_csv-class] object.

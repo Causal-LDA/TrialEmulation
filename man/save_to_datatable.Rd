@@ -7,7 +7,7 @@
 save_to_datatable()
 }
 \description{
-Save expanded data as a \code{data.table}
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
 }
 \examples{
 trial_to_expand <- trial_sequence("ITT") |>

@@ -14,9 +14,11 @@ An object of class \code{te_stats_glm_logit} inheriting from \linkS4class{te_mod
 dispatching methods for the fitting models.
 }
 \description{
-Specify that the pooled logistic regression outcome models should be fit using \link[stats:glm]{stats::glm} with \code{family = binomial(link = "logit")}.
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
 }
 \details{
+Specify that the pooled logistic regression outcome models should be fit using \link[stats:glm]{stats::glm} with \code{family = binomial(link = "logit")}.
+
 Outcome models additional calculate robust variance estimates using \code{sandwich::vcovCL}.
 }
 \examples{

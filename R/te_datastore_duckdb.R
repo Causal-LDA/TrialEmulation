@@ -35,6 +35,8 @@ setMethod(
 
 
 #' Save expanded data to `DuckDB`
+#'
+#' `r lifecycle::badge('experimental')`
 #' @param path Directory to save `DuckDB` database file in.
 #' @family save_to
 #' @return A [te_datastore_duckdb-class] object.
