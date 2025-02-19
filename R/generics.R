@@ -332,8 +332,6 @@ setGeneric(
 #' @return An object of class `te_outcome_fitted`
 #' @export
 #' @keywords internal
-#' @examples
-#' fit_outcome_model
 setGeneric("fit_outcome_model", function(object, data, formula, weights = NULL) standardGeneric("fit_outcome_model"))
 
 #' Method for fitting weight models

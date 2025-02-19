@@ -1,5 +1,9 @@
 # TrialEmulation 0.0.4.1
 
+* Update tests for duckdb 1.2.0 changes to sampling.
+
+# TrialEmulation 0.0.4.0
+
 * Add new extensible S4 class based interface.
   - Step-by-step functions to construct sequence of target trial analysis. See the "New Interface"" vignette.
   - Possibility to add alternative data storage and model fitting functionality. See the "Extending TrialEmulation"

@@ -54,6 +54,8 @@ test_that("read_expanded_data can read te_datastore_duckdb data", {
 
 
 test_that("sample_controls works with trial_sequence objects containing te_datastore_duckdb objects", {
+  skip_if_not_installed("duckdb", minimum_version = "1.2.0")
+
   trial_itt_dir <- withr::local_tempdir("trial_itt", tempdir(TRUE))
 
   trial_itt <- trial_sequence(estimand = "ITT") |>
@@ -73,14 +75,15 @@ test_that("sample_controls works with trial_sequence objects containing te_datas
   expect_equal(
     sort(sc_01@outcome_data@data$id),
     c(
-      1, 10, 13, 14, 15, 21, 27, 29, 32, 38, 38, 40, 44, 44, 44, 44,
-      49, 49, 58, 61, 68, 71, 71, 74, 84, 89, 95, 95, 95, 98, 99
+      7L, 9L, 14L, 15L, 21L, 21L, 29L, 32L, 38L, 38L, 39L, 49L, 49L,
+      54L, 54L, 54L, 54L, 54L, 59L, 61L, 65L, 65L, 68L, 68L, 71L, 71L,
+      74L, 76L, 83L, 83L, 89L, 98L, 99L
     )
   )
 
   # sample_controls works with p_control
   sc_02 <- sample_controls(trial_itt_duckdb, p_control = 0.5, seed = 5678)
-  expect_equal(sc_02@outcome_data@n_rows, 756)
+  expect_equal(sc_02@outcome_data@n_rows, 761)
 
   # sample_controls works with p_control = 0
   sc_03 <- sample_controls(trial_itt_duckdb, p_control = 0)
@@ -98,8 +101,8 @@ test_that("sample_controls works with trial_sequence objects containing te_datas
   )
 
   # sample_weight calculated correctly
-  expect_equal(sort(sc_01@outcome_data@data$sample_weight), c(rep(1, 14), rep(100, 17)))
-  expect_equal(sort(sc_02@outcome_data@data$sample_weight), c(rep(1, 14), rep(2, 742)))
+  expect_equal(sort(sc_01@outcome_data@data$sample_weight), c(rep(1, 14), rep(100, 19)))
+  expect_equal(sort(sc_02@outcome_data@data$sample_weight), c(rep(1, 14), rep(2, 747)))
 
   # sample_controls subsets data correctly
   sc_04 <- sample_controls(
@@ -112,7 +115,9 @@ test_that("sample_controls works with trial_sequence objects containing te_datas
   expect_equal(
     sort(sc_04@outcome_data@data$id),
     c(
-      2, 14, 16, 33, 34, 44, 44, 44, 44, 44, 44, 44, 53, 53, 54, 59, 59, 59, 60, 70, 70, 71, 71, 71, 74, 74, 95, 95
+      16L, 20L, 44L, 44L, 44L, 44L, 44L, 49L, 53L, 53L, 54L, 54L,
+      59L, 59L, 59L, 59L, 59L, 59L, 59L, 60L, 60L, 60L, 74L, 74L, 74L,
+      95L, 95L, 95L
     )
   )
   expect_true(all(sc_04@outcome_data@data$x2 <= 1))
@@ -130,6 +135,8 @@ test_that("sample_controls works with trial_sequence objects containing te_datas
 
 
 test_that("load_expanded_data works with trial_sequence objects containing te_datastore_duckdb objects", {
+  skip_if_not_installed("duckdb", minimum_version = "1.2.0")
+
   trial_itt_dir <- withr::local_tempdir("trial_itt", tempdir(TRUE))
 
   trial_itt <- trial_sequence(estimand = "ITT") |>
@@ -152,14 +159,15 @@ test_that("load_expanded_data works with trial_sequence objects containing te_da
   expect_equal(
     sort(sc_01@outcome_data@data$id),
     c(
-      1, 10, 13, 14, 15, 21, 27, 29, 32, 38, 38, 40, 44, 44, 44, 44,
-      49, 49, 58, 61, 68, 71, 71, 74, 84, 89, 95, 95, 95, 98, 99
+      7L, 9L, 14L, 15L, 21L, 21L, 29L, 32L, 38L, 38L, 39L, 49L, 49L,
+      54L, 54L, 54L, 54L, 54L, 59L, 61L, 65L, 65L, 68L, 68L, 71L, 71L,
+      74L, 76L, 83L, 83L, 89L, 98L, 99L
     )
   )
 
   # load_expanded_data works with p_control
   sc_02 <- load_expanded_data(trial_itt_duckdb, p_control = 0.5, seed = 5678)
-  expect_equal(sc_02@outcome_data@n_rows, 756)
+  expect_equal(sc_02@outcome_data@n_rows, 761)
 
   # load_expanded_data works with p_control = 0
   sc_03 <- load_expanded_data(trial_itt_duckdb, p_control = 0)
@@ -179,8 +187,8 @@ test_that("load_expanded_data works with trial_sequence objects containing te_da
 
   # sample_weight calculated correctly
   expect_equal(sort(sc_00@outcome_data@data$sample_weight), rep(1, 1558))
-  expect_equal(sort(sc_01@outcome_data@data$sample_weight), c(rep(1, 14), rep(100, 17)))
-  expect_equal(sort(sc_02@outcome_data@data$sample_weight), c(rep(1, 14), rep(2, 742)))
+  expect_equal(sort(sc_01@outcome_data@data$sample_weight), c(rep(1, 14), rep(100, 19)))
+  expect_equal(sort(sc_02@outcome_data@data$sample_weight), c(rep(1, 14), rep(2, 747)))
 
   # load_expanded_data subsets data correctly
   sc_04 <- load_expanded_data(
@@ -193,7 +201,9 @@ test_that("load_expanded_data works with trial_sequence objects containing te_da
   expect_equal(
     sort(sc_04@outcome_data@data$id),
     c(
-      2, 14, 16, 33, 34, 44, 44, 44, 44, 44, 44, 44, 53, 53, 54, 59, 59, 59, 60, 70, 70, 71, 71, 71, 74, 74, 95, 95
+      16L, 20L, 44L, 44L, 44L, 44L, 44L, 49L, 53L, 53L, 54L, 54L,
+      59L, 59L, 59L, 59L, 59L, 59L, 59L, 60L, 60L, 60L, 74L, 74L, 74L,
+      95L, 95L, 95L
     )
   )
   expect_true(all(sc_04@outcome_data@data$x2 <= 1))
