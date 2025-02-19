@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE coverage SYSTEM "https://raw.githubusercontent.com/cobertura/cobertura/master/cobertura/src/site/htdocs/xml/coverage-04.dtd">
-<coverage line-rate="0.894908921064923" branch-rate="0" lines-covered="1916" lines-valid="2141" branches-covered="0" branches-valid="0" complexity="0" version="3.6.4" timestamp="2025-02-19 14:27:51.072297">
+<coverage line-rate="0.894908921064923" branch-rate="0" lines-covered="1916" lines-valid="2141" branches-covered="0" branches-valid="0" complexity="0" version="3.6.4" timestamp="2025-02-19 15:02:50.342768">
   <sources>
     <source>/__w/TrialEmulation/TrialEmulation/TrialEmulation</source>
   </sources>
@@ -1651,42 +1651,42 @@
             </method>
             <method name="fit_outcome_model" signature="" line-rate="1" branch-rate="0" complexity="0">
               <lines>
-                <line number="337" hits="7" branch="false"/>
+                <line number="335" hits="7" branch="false"/>
               </lines>
             </method>
             <method name="fit_weights_model" signature="" line-rate="1" branch-rate="0" complexity="0">
               <lines>
-                <line number="362" hits="39" branch="false"/>
+                <line number="360" hits="39" branch="false"/>
               </lines>
             </method>
             <method name="set_outcome_model" signature="" line-rate="1" branch-rate="0" complexity="0">
               <lines>
-                <line number="394" hits="19" branch="false"/>
+                <line number="392" hits="19" branch="false"/>
               </lines>
             </method>
             <method name="ipw_data" signature="" line-rate="1" branch-rate="0" complexity="0">
               <lines>
-                <line number="417" hits="3" branch="false"/>
+                <line number="415" hits="3" branch="false"/>
               </lines>
             </method>
             <method name="ipw_data&lt;-" signature="" line-rate="1" branch-rate="0" complexity="0">
               <lines>
-                <line number="427" hits="1" branch="false"/>
+                <line number="425" hits="1" branch="false"/>
               </lines>
             </method>
             <method name="outcome_data" signature="" line-rate="1" branch-rate="0" complexity="0">
               <lines>
-                <line number="445" hits="6" branch="false"/>
+                <line number="443" hits="6" branch="false"/>
               </lines>
             </method>
             <method name="outcome_data&lt;-" signature="" line-rate="1" branch-rate="0" complexity="0">
               <lines>
-                <line number="450" hits="1" branch="false"/>
+                <line number="448" hits="1" branch="false"/>
               </lines>
             </method>
             <method name="fit_msm" signature="" line-rate="1" branch-rate="0" complexity="0">
               <lines>
-                <line number="512" hits="5" branch="false"/>
+                <line number="510" hits="5" branch="false"/>
               </lines>
             </method>
           </methods>
@@ -1747,14 +1747,14 @@
             <line number="233" hits="15" branch="false"/>
             <line number="296" hits="23" branch="false"/>
             <line number="321" hits="30" branch="false"/>
-            <line number="337" hits="7" branch="false"/>
-            <line number="362" hits="39" branch="false"/>
-            <line number="394" hits="19" branch="false"/>
-            <line number="417" hits="3" branch="false"/>
-            <line number="427" hits="1" branch="false"/>
-            <line number="445" hits="6" branch="false"/>
-            <line number="450" hits="1" branch="false"/>
-            <line number="512" hits="5" branch="false"/>
+            <line number="335" hits="7" branch="false"/>
+            <line number="360" hits="39" branch="false"/>
+            <line number="392" hits="19" branch="false"/>
+            <line number="415" hits="3" branch="false"/>
+            <line number="425" hits="1" branch="false"/>
+            <line number="443" hits="6" branch="false"/>
+            <line number="448" hits="1" branch="false"/>
+            <line number="510" hits="5" branch="false"/>
           </lines>
         </class>
         <class name="initiators.R" filename="R/initiators.R" line-rate="0.979166666666667" branch-rate="0" complexity="0">
