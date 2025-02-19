@@ -135,6 +135,8 @@ test_that("sample_controls works with trial_sequence objects containing te_datas
 
 
 test_that("load_expanded_data works with trial_sequence objects containing te_datastore_duckdb objects", {
+  skip_if_not_installed("duckdb", minimum_version = "1.2.0")
+
   trial_itt_dir <- withr::local_tempdir("trial_itt", tempdir(TRUE))
 
   trial_itt <- trial_sequence(estimand = "ITT") |>
