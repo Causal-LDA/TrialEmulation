@@ -734,6 +734,9 @@ setMethod(
 #' @export
 #'
 #' @examples
+#' \dontshow{
+#' data.table::setDTthreads(2)
+#' }
 #' save_dir <- file.path(tempdir(), "switch_models")
 #' ts <- trial_sequence("PP") |>
 #'   set_data(
