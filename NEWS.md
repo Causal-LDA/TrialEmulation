@@ -1,4 +1,4 @@
-# TrialEmulation 0.0.4.2
+# TrialEmulation 0.0.4.3
 
 * Update tests for duckdb 1.2.0 changes to sampling.
 
