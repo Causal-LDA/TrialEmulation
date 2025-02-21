@@ -29,6 +29,9 @@ A \link{trial_sequence} object with updated \code{censor_weights} and/or \code{s
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
 }
 \examples{
+\dontshow{
+data.table::setDTthreads(2)
+}
 save_dir <- file.path(tempdir(), "switch_models")
 ts <- trial_sequence("PP") |>
   set_data(

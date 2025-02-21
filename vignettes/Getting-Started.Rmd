@@ -56,7 +56,8 @@ head(trial_example)
 ## All-in-one analysis {#initiators}
 
 There is an all-in-one function `initators()` which does all of the steps with one function call.
-This is similar to the [INITIATORS SAS macro](https://causalab.sph.harvard.edu/software/).
+This is similar to the INITIATORS SAS macro previously published by the [Harvard CAUSALab](https://causalab.hsph.harvard.edu/).
+It can be accessed via `archive.org`: e.g. `https://web.archive.org/web/20220814131941/https://causalab.sph.harvard.edu/software/`.
 
 Call the `initiators()` function to run the complete analysis:
 
