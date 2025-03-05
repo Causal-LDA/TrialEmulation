@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+
+
+<title>Bootstrap CIs design</title>
+
+<script>// Pandoc 2.9 adds attributes on both header and div. We remove the former (to
+// be compatible with the behavior of Pandoc < 2.8).
+document.addEventListener('DOMContentLoaded', function(e) {
+  var hs = document.querySelectorAll("div.section[class*='level'] > :first-child");
+  var i, h, a;
+  for (i = 0; i < hs.length; i++) {
+    h = hs[i];
+    if (!/^h[1-6]$/i.test(h.tagName)) continue;  // it should be a header h1-h6
+    a = h.attributes;
+    while (a.length > 0) h.removeAttribute(a[0].name);
+  }
+});
+</script>
+
+<style type="text/css">
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+span.underline{text-decoration: underline;}
+div.column{display: inline-block; vertical-align: top; width: 50%;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+</style>
+
+
+
+<style type="text/css">
+code {
+white-space: pre;
+}
+.sourceCode {
+overflow: visible;
+}
+</style>
+<style type="text/css" data-origin="pandoc">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+{ counter-reset: source-line 0; }
+pre.numberSource code > span
+{ position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+{ content: counter(source-line);
+position: relative; left: -1em; text-align: right; vertical-align: baseline;
+border: none; display: inline-block;
+-webkit-touch-callout: none; -webkit-user-select: none;
+-khtml-user-select: none; -moz-user-select: none;
+-ms-user-select: none; user-select: none;
+padding: 0 4px; width: 4em;
+color: #aaaaaa;
+}
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa; padding-left: 4px; }
+div.sourceCode
+{ }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } 
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.at { color: #7d9029; } 
+code span.bn { color: #40a070; } 
+code span.bu { color: #008000; } 
+code span.cf { color: #007020; font-weight: bold; } 
+code span.ch { color: #4070a0; } 
+code span.cn { color: #880000; } 
+code span.co { color: #60a0b0; font-style: italic; } 
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.do { color: #ba2121; font-style: italic; } 
+code span.dt { color: #902000; } 
+code span.dv { color: #40a070; } 
+code span.er { color: #ff0000; font-weight: bold; } 
+code span.ex { } 
+code span.fl { color: #40a070; } 
+code span.fu { color: #06287e; } 
+code span.im { color: #008000; font-weight: bold; } 
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.kw { color: #007020; font-weight: bold; } 
+code span.op { color: #666666; } 
+code span.ot { color: #007020; } 
+code span.pp { color: #bc7a00; } 
+code span.sc { color: #4070a0; } 
+code span.ss { color: #bb6688; } 
+code span.st { color: #4070a0; } 
+code span.va { color: #19177c; } 
+code span.vs { color: #4070a0; } 
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } 
+</style>
+<script>
+// apply pandoc div.sourceCode style to pre.sourceCode instead
+(function() {
+  var sheets = document.styleSheets;
+  for (var i = 0; i < sheets.length; i++) {
+    if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
+    try { var rules = sheets[i].cssRules; } catch (e) { continue; }
+    var j = 0;
+    while (j < rules.length) {
+      var rule = rules[j];
+      // check if there is a div.sourceCode rule
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") {
+        j++;
+        continue;
+      }
+      var style = rule.style.cssText;
+      // check if color or background-color is set
+      if (rule.style.color === '' && rule.style.backgroundColor === '') {
+        j++;
+        continue;
+      }
+      // replace div.sourceCode by a pre.sourceCode rule
+      sheets[i].deleteRule(j);
+      sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
+    }
+  }
+})();
+</script>
+
+
+
+
+<style type="text/css">body {
+background-color: #fff;
+margin: 1em auto;
+max-width: 700px;
+overflow: visible;
+padding-left: 2em;
+padding-right: 2em;
+font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+font-size: 14px;
+line-height: 1.35;
+}
+#TOC {
+clear: both;
+margin: 0 0 10px 10px;
+padding: 4px;
+width: 400px;
+border: 1px solid #CCCCCC;
+border-radius: 5px;
+background-color: #f6f6f6;
+font-size: 13px;
+line-height: 1.3;
+}
+#TOC .toctitle {
+font-weight: bold;
+font-size: 15px;
+margin-left: 5px;
+}
+#TOC ul {
+padding-left: 40px;
+margin-left: -1.5em;
+margin-top: 5px;
+margin-bottom: 5px;
+}
+#TOC ul ul {
+margin-left: -2em;
+}
+#TOC li {
+line-height: 16px;
+}
+table {
+margin: 1em auto;
+border-width: 1px;
+border-color: #DDDDDD;
+border-style: outset;
+border-collapse: collapse;
+}
+table th {
+border-width: 2px;
+padding: 5px;
+border-style: inset;
+}
+table td {
+border-width: 1px;
+border-style: inset;
+line-height: 18px;
+padding: 5px 5px;
+}
+table, table th, table td {
+border-left-style: none;
+border-right-style: none;
+}
+table thead, table tr.even {
+background-color: #f7f7f7;
+}
+p {
+margin: 0.5em 0;
+}
+blockquote {
+background-color: #f6f6f6;
+padding: 0.25em 0.75em;
+}
+hr {
+border-style: solid;
+border: none;
+border-top: 1px solid #777;
+margin: 28px 0;
+}
+dl {
+margin-left: 0;
+}
+dl dd {
+margin-bottom: 13px;
+margin-left: 13px;
+}
+dl dt {
+font-weight: bold;
+}
+ul {
+margin-top: 0;
+}
+ul li {
+list-style: circle outside;
+}
+ul ul {
+margin-bottom: 0;
+}
+pre, code {
+background-color: #f7f7f7;
+border-radius: 3px;
+color: #333;
+white-space: pre-wrap; 
+}
+pre {
+border-radius: 3px;
+margin: 5px 0px 10px 0px;
+padding: 10px;
+}
+pre:not([class]) {
+background-color: #f7f7f7;
+}
+code {
+font-family: Consolas, Monaco, 'Courier New', monospace;
+font-size: 85%;
+}
+p > code, li > code {
+padding: 2px 0px;
+}
+div.figure {
+text-align: center;
+}
+img {
+background-color: #FFFFFF;
+padding: 2px;
+border: 1px solid #DDDDDD;
+border-radius: 3px;
+border: 1px solid #CCCCCC;
+margin: 0 5px;
+}
+h1 {
+margin-top: 0;
+font-size: 35px;
+line-height: 40px;
+}
+h2 {
+border-bottom: 4px solid #f7f7f7;
+padding-top: 10px;
+padding-bottom: 2px;
+font-size: 145%;
+}
+h3 {
+border-bottom: 2px solid #f7f7f7;
+padding-top: 10px;
+font-size: 120%;
+}
+h4 {
+border-bottom: 1px solid #f7f7f7;
+margin-left: 8px;
+font-size: 105%;
+}
+h5, h6 {
+border-bottom: 1px solid #ccc;
+font-size: 105%;
+}
+a {
+color: #0033dd;
+text-decoration: none;
+}
+a:hover {
+color: #6666ff; }
+a:visited {
+color: #800080; }
+a:visited:hover {
+color: #BB00BB; }
+a[href^="http:"] {
+text-decoration: underline; }
+a[href^="https:"] {
+text-decoration: underline; }
+
+code > span.kw { color: #555; font-weight: bold; } 
+code > span.dt { color: #902000; } 
+code > span.dv { color: #40a070; } 
+code > span.bn { color: #d14; } 
+code > span.fl { color: #d14; } 
+code > span.ch { color: #d14; } 
+code > span.st { color: #d14; } 
+code > span.co { color: #888888; font-style: italic; } 
+code > span.ot { color: #007020; } 
+code > span.al { color: #ff0000; font-weight: bold; } 
+code > span.fu { color: #900; font-weight: bold; } 
+code > span.er { color: #a61717; background-color: #e3d2d2; } 
+</style>
+
+
+
+
+</head>
+
+<body>
+
+
+
+
+<h1 class="title toc-ignore">Bootstrap CIs design</h1>
+
+
+<div id="TOC">
+<ul>
+<li><a href="#current-flowchart" id="toc-current-flowchart">Current
+Flowchart</a></li>
+<li><a href="#proposal" id="toc-proposal">Proposal</a></li>
+<li><a href="#modifications-to-predict.r" id="toc-modifications-to-predict.r">Modifications to
+<code>predict.R</code></a></li>
+<li><a href="#design-of-function_that_calculates_bootstrap_cis" id="toc-design-of-function_that_calculates_bootstrap_cis">Design of
+function_that_calculates_bootstrap_CIs</a></li>
+</ul>
+</div>
+
+<div id="current-flowchart" class="section level3">
+<h3>Current Flowchart</h3>
+<p>This flow chart helps visualise the complete workflow.</p>
+<div class="float">
+<img src="~/TrialEmulation/vignettes/img/trial_sequence_functions_overview_solid.png" style="width:80.0%" alt="Flowchart" />
+<div class="figcaption">Flowchart</div>
+</div>
+</div>
+<div id="proposal" class="section level3">
+<h3>Proposal</h3>
+<p>The bootstrap confidence intevals (CIs) construction would come at
+the end of the flowchart. There is no way of having it higher up as they
+require the prediction at the end to build the CIs.</p>
+<p>We currently use the <code>predict()</code> method to estimate
+survival probabilities or cumulative incidences for different values of
+<code>assigned_treatment</code>. I propose we add a function variable
+<code>ci_type</code> to specify the CIs we want to output.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a>preds <span class="ot">&lt;-</span> <span class="fu">predict</span>(</span>
+<span id="cb1-2"><a href="#cb1-2" tabindex="-1"></a>  trial_pp,</span>
+<span id="cb1-3"><a href="#cb1-3" tabindex="-1"></a>  <span class="at">newdata =</span> <span class="fu">outcome_data</span>(trial_itt)[trial_period <span class="sc">==</span> <span class="dv">1</span>, ],</span>
+<span id="cb1-4"><a href="#cb1-4" tabindex="-1"></a>  <span class="at">predict_times =</span> <span class="dv">0</span><span class="sc">:</span><span class="dv">10</span>,</span>
+<span id="cb1-5"><a href="#cb1-5" tabindex="-1"></a>  <span class="at">type =</span> <span class="st">&quot;mrd&quot;</span>, <span class="co"># we could specify &quot;mrd&quot; for marginal risk difference</span></span>
+<span id="cb1-6"><a href="#cb1-6" tabindex="-1"></a>  <span class="at">ci_type =</span> <span class="fu">c</span>(<span class="st">&quot;Nonparametric Bootstrap&quot;</span>, <span class="st">&quot;LEF bootstrap&quot;</span>, <span class="st">&quot;Robust Sandwich&quot;</span>) <span class="co"># NEW could add function variable to specify the type of CIs the user wants</span></span>
+<span id="cb1-7"><a href="#cb1-7" tabindex="-1"></a>)</span>
+<span id="cb1-8"><a href="#cb1-8" tabindex="-1"></a><span class="fu">plot</span>(preds<span class="sc">$</span>difference<span class="sc">$</span>followup_time, preds<span class="sc">$</span>difference<span class="sc">$</span>mrd_diff, </span>
+<span id="cb1-9"><a href="#cb1-9" tabindex="-1"></a>  <span class="at">type =</span> <span class="st">&quot;l&quot;</span>, <span class="at">xlab =</span> <span class="st">&quot;Follow up&quot;</span>, <span class="at">ylab =</span> <span class="st">&quot;Marginal risk difference&quot;</span></span>
+<span id="cb1-10"><a href="#cb1-10" tabindex="-1"></a>)</span>
+<span id="cb1-11"><a href="#cb1-11" tabindex="-1"></a><span class="fu">lines</span>(preds<span class="sc">$</span>difference<span class="sc">$</span>followup_time, preds<span class="sc">$</span>difference<span class="sc">$</span><span class="st">`</span><span class="at">2.5%</span><span class="st">`</span>, <span class="at">type =</span> <span class="st">&quot;l&quot;</span>, <span class="at">col =</span> <span class="st">&quot;red&quot;</span>, <span class="at">lty =</span> <span class="dv">2</span>)  <span class="co"># preds$difference$`2.5%`, could have another $ to differentiate CI methods</span></span>
+<span id="cb1-12"><a href="#cb1-12" tabindex="-1"></a><span class="fu">lines</span>(preds<span class="sc">$</span>difference<span class="sc">$</span>followup_time, preds<span class="sc">$</span>difference<span class="sc">$</span><span class="st">`</span><span class="at">97.5%</span><span class="st">`</span>, <span class="at">type =</span> <span class="st">&quot;l&quot;</span>, <span class="at">col =</span> <span class="st">&quot;red&quot;</span>, <span class="at">lty =</span> <span class="dv">2</span>)</span></code></pre></div>
+</div>
+<div id="modifications-to-predict.r" class="section level3">
+<h3>Modifications to <code>predict.R</code></h3>
+<p>Currently, predict.R is the script that specifies the function
+predict() above. If the command ‘type = “survival” is inputed, the
+resulting difference in <code>preds$difference</code> is an estimate for
+the estimand <span class="math inline">\(\Pr(Y_{m,k}^{\overline a_k=
+\overline 1} = 0) - \Pr(Y_{m,k}^{\overline a_k= \overline 0} =
+0)\)</span>. I propose we have a new ’type = ’mrd’’ so that we are
+estimating the marginal risk difference, <span class="math inline">\(\Pr(Y_{m,k}^{\overline a_k= \overline 0} = 0) -
+\Pr(Y_{m,k}^{\overline a_k= \overline 1} = 0)\)</span> (which is just
+the opposite).</p>
+<p>Modify line 63 of predict.R to:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a>pred_fun <span class="ot">&lt;-</span> <span class="cf">if</span> (type <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">&quot;survival&quot;</span>, <span class="st">&#39;mrd&#39;</span>)) {</span>
+<span id="cb2-2"><a href="#cb2-2" tabindex="-1"></a>    calculate_survival</span>
+<span id="cb2-3"><a href="#cb2-3" tabindex="-1"></a>  } <span class="cf">else</span> <span class="cf">if</span> (type <span class="sc">==</span> <span class="st">&quot;cum_inc&quot;</span>) {</span>
+<span id="cb2-4"><a href="#cb2-4" tabindex="-1"></a>    calculate_cum_inc</span>
+<span id="cb2-5"><a href="#cb2-5" tabindex="-1"></a>  } </span></code></pre></div>
+<p>and line 78 to</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a><span class="cf">if</span> (type <span class="sc">==</span> <span class="st">&#39;mrd&#39;</span>) {</span>
+<span id="cb3-2"><a href="#cb3-2" tabindex="-1"></a>  pred_list<span class="sc">$</span>difference <span class="ot">&lt;-</span> pred_list<span class="sc">$</span>assigned_treatment_0 <span class="sc">-</span> pred_list<span class="sc">$</span>assigned_treatment_1</span>
+<span id="cb3-3"><a href="#cb3-3" tabindex="-1"></a>} <span class="cf">else</span> pred_list<span class="sc">$</span>difference <span class="ot">&lt;-</span> pred_list<span class="sc">$</span>assigned_treatment_1 <span class="sc">-</span> pred_list<span class="sc">$</span>assigned_treatment_0</span></code></pre></div>
+<p>The sandwich CIs are calculated when obtaining the predictions in
+<code>calculate_predictions()</code>.</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a>pred_list <span class="ot">&lt;-</span> <span class="fu">calculate_predictions</span>(</span>
+<span id="cb4-2"><a href="#cb4-2" tabindex="-1"></a>    <span class="at">newdata =</span> newdata,</span>
+<span id="cb4-3"><a href="#cb4-3" tabindex="-1"></a>    <span class="at">model =</span> model,</span>
+<span id="cb4-4"><a href="#cb4-4" tabindex="-1"></a>    <span class="at">treatment_values =</span> <span class="fu">c</span>(<span class="at">assigned_treatment_0 =</span> <span class="dv">0</span>, <span class="at">assigned_treatment_1 =</span> <span class="dv">1</span>),</span>
+<span id="cb4-5"><a href="#cb4-5" tabindex="-1"></a>    <span class="at">pred_fun =</span> pred_fun,</span>
+<span id="cb4-6"><a href="#cb4-6" tabindex="-1"></a>    <span class="at">coefs_mat =</span> coefs_mat,</span>
+<span id="cb4-7"><a href="#cb4-7" tabindex="-1"></a>    <span class="at">matrix_n_col =</span> <span class="fu">length</span>(predict_times)</span>
+<span id="cb4-8"><a href="#cb4-8" tabindex="-1"></a>  )</span></code></pre></div>
+<p>Denote by <span class="math inline">\(S\)</span> the sample size for
+the multivariate normal sampling for the sandwich CI construction. The
+variable <code>coefs_mat</code> in <code>calculate_predictions()</code>
+has <span class="math inline">\(1 + S\)</span> columns. The first column
+is the point estimates of the MSM coefficients from trial_msm. The S
+remaining columns correspond to the <span class="math inline">\(S\)</span> coefficients generated from the
+multivarite normal sampling centered at the point estimate of the
+coefficients and with variance as the robust sandwich variance
+matrix.</p>
+<p>I don’t think we can repurpose or easily modify
+<code>calculate_predictions()</code> to construct the other CIs. I can
+certainly use the output, <code>pred_list$difference</code>, and the
+function itself to generate the MRD in each bootstrap sample for
+example. But the bootstrap CIs will likely have to be constructed in a
+separate function call.</p>
+<p>The end of the function script for <code>predict()</code> could look
+like this for example:</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" tabindex="-1"></a> pred_list <span class="ot">&lt;-</span> <span class="fu">calculate_predictions</span>(</span>
+<span id="cb5-2"><a href="#cb5-2" tabindex="-1"></a>    <span class="at">newdata =</span> newdata,</span>
+<span id="cb5-3"><a href="#cb5-3" tabindex="-1"></a>    <span class="at">model =</span> model,</span>
+<span id="cb5-4"><a href="#cb5-4" tabindex="-1"></a>    <span class="at">treatment_values =</span> <span class="fu">c</span>(<span class="at">assigned_treatment_0 =</span> <span class="dv">0</span>, <span class="at">assigned_treatment_1 =</span> <span class="dv">1</span>),</span>
+<span id="cb5-5"><a href="#cb5-5" tabindex="-1"></a>    <span class="at">pred_fun =</span> pred_fun,</span>
+<span id="cb5-6"><a href="#cb5-6" tabindex="-1"></a>    <span class="at">coefs_mat =</span> coefs_mat,</span>
+<span id="cb5-7"><a href="#cb5-7" tabindex="-1"></a>    <span class="at">matrix_n_col =</span> <span class="fu">length</span>(predict_times)</span>
+<span id="cb5-8"><a href="#cb5-8" tabindex="-1"></a>  )</span>
+<span id="cb5-9"><a href="#cb5-9" tabindex="-1"></a></span>
+<span id="cb5-10"><a href="#cb5-10" tabindex="-1"></a>  pred_list<span class="sc">$</span>difference <span class="ot">&lt;-</span> pred_list<span class="sc">$</span>assigned_treatment_1 <span class="sc">-</span> pred_list<span class="sc">$</span>assigned_treatment_0</span>
+<span id="cb5-11"><a href="#cb5-11" tabindex="-1"></a></span>
+<span id="cb5-12"><a href="#cb5-12" tabindex="-1"></a>  output <span class="ot">&lt;-</span> <span class="fu">mapply</span>(</span>
+<span id="cb5-13"><a href="#cb5-13" tabindex="-1"></a>    <span class="at">pred_matrix =</span> pred_list,</span>
+<span id="cb5-14"><a href="#cb5-14" tabindex="-1"></a>    <span class="at">col_names =</span> <span class="fu">paste0</span>(type, <span class="fu">c</span>(<span class="st">&quot;&quot;</span>, <span class="st">&quot;&quot;</span>, <span class="st">&quot;_diff&quot;</span>)),</span>
+<span id="cb5-15"><a href="#cb5-15" tabindex="-1"></a>    <span class="at">SIMPLIFY =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb5-16"><a href="#cb5-16" tabindex="-1"></a>    <span class="at">FUN =</span> <span class="cf">function</span>(pred_matrix, col_names) {</span>
+<span id="cb5-17"><a href="#cb5-17" tabindex="-1"></a>      <span class="cf">if</span> (conf_int) {</span>
+<span id="cb5-18"><a href="#cb5-18" tabindex="-1"></a>        quantiles <span class="ot">&lt;-</span> <span class="fu">apply</span>(pred_matrix, <span class="dv">1</span>, quantile, <span class="at">probs =</span> <span class="fu">c</span>(<span class="fl">0.025</span>, <span class="fl">0.975</span>))</span>
+<span id="cb5-19"><a href="#cb5-19" tabindex="-1"></a>        <span class="fu">setNames</span>(</span>
+<span id="cb5-20"><a href="#cb5-20" tabindex="-1"></a>          <span class="fu">data.frame</span>(predict_times, pred_matrix[, <span class="dv">1</span>], quantiles[<span class="dv">1</span>, ], quantiles[<span class="dv">2</span>, ]),</span>
+<span id="cb5-21"><a href="#cb5-21" tabindex="-1"></a>          <span class="fu">c</span>(<span class="st">&quot;followup_time&quot;</span>, col_names, <span class="st">&quot;2.5%&quot;</span>, <span class="st">&quot;97.5%&quot;</span>)</span>
+<span id="cb5-22"><a href="#cb5-22" tabindex="-1"></a>        )</span>
+<span id="cb5-23"><a href="#cb5-23" tabindex="-1"></a>      } <span class="cf">else</span> {</span>
+<span id="cb5-24"><a href="#cb5-24" tabindex="-1"></a>        <span class="fu">setNames</span>(<span class="fu">data.frame</span>(predict_times, pred_matrix[, <span class="dv">1</span>]), <span class="at">nm =</span> <span class="fu">c</span>(<span class="st">&quot;followup_time&quot;</span>, col_names))</span>
+<span id="cb5-25"><a href="#cb5-25" tabindex="-1"></a>      }</span>
+<span id="cb5-26"><a href="#cb5-26" tabindex="-1"></a>    }</span>
+<span id="cb5-27"><a href="#cb5-27" tabindex="-1"></a>  )</span>
+<span id="cb5-28"><a href="#cb5-28" tabindex="-1"></a>  </span>
+<span id="cb5-29"><a href="#cb5-29" tabindex="-1"></a>  <span class="cf">if</span> (type <span class="sc">==</span> <span class="st">&#39;mrd&#39;</span>){</span>
+<span id="cb5-30"><a href="#cb5-30" tabindex="-1"></a>    bootstrap_CIs <span class="ot">&lt;-</span> <span class="fu">function_that_calculates_bootstrap_CIs</span>(output, ci_type, MSM_model_object )</span>
+<span id="cb5-31"><a href="#cb5-31" tabindex="-1"></a>  }</span></code></pre></div>
+</div>
+<div id="design-of-function_that_calculates_bootstrap_cis" class="section level3">
+<h3>Design of function_that_calculates_bootstrap_CIs</h3>
+<p>In dummy codes, here are the steps of the function:</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" tabindex="-1"></a>function_that_calculates_bootstrap_CIs <span class="ot">&lt;-</span> <span class="cf">function</span>(trial_msm_output, ci_type, output_from_calculate_predictions, bootstrap_sample_size){</span>
+<span id="cb6-2"><a href="#cb6-2" tabindex="-1"></a>  <span class="co"># Step 0: obtain bootstrap samples.</span></span>
+<span id="cb6-3"><a href="#cb6-3" tabindex="-1"></a>  </span>
+<span id="cb6-4"><a href="#cb6-4" tabindex="-1"></a>  boot_data <span class="ot">&lt;-</span> <span class="fu">list</span>()</span>
+<span id="cb6-5"><a href="#cb6-5" tabindex="-1"></a>    <span class="cf">for</span> (k <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>bootstrap_iter) {</span>
+<span id="cb6-6"><a href="#cb6-6" tabindex="-1"></a>      boot_data[[k]] <span class="ot">&lt;-</span> <span class="fu">sort</span>(<span class="fu">sample</span>(<span class="fu">unique</span>(trial_pp<span class="sc">@</span>outcome_data<span class="sc">$</span>id), <span class="fu">length</span>(<span class="fu">unique</span>(trial_pp<span class="sc">@</span>outcome_data<span class="sc">$</span>id)), <span class="at">replace =</span> <span class="cn">TRUE</span>)) <span class="co"># Need to check how to extract from class type as data frame</span></span>
+<span id="cb6-7"><a href="#cb6-7" tabindex="-1"></a>    }</span>
+<span id="cb6-8"><a href="#cb6-8" tabindex="-1"></a></span>
+<span id="cb6-9"><a href="#cb6-9" tabindex="-1"></a>  <span class="co">#Step 1: for each bootstrap sample: </span></span>
+<span id="cb6-10"><a href="#cb6-10" tabindex="-1"></a>  bootstrapped_MRDs <span class="ot">&lt;-</span> <span class="fu">foreach</span>(<span class="at">k =</span> <span class="dv">1</span><span class="sc">:</span>bootstrap_sample_size, <span class="at">.combine=</span>cbind) <span class="sc">%dopar%</span> {</span>
+<span id="cb6-11"><a href="#cb6-11" tabindex="-1"></a>     <span class="co"># Step 2: refit/recalculate weights </span></span>
+<span id="cb6-12"><a href="#cb6-12" tabindex="-1"></a>     </span>
+<span id="cb6-13"><a href="#cb6-13" tabindex="-1"></a>    IP_model <span class="ot">&lt;-</span> <span class="fu">weight_func_bootstrap</span>(<span class="at">expanded_data =</span> triat_pp<span class="sc">@</span>outcome_data, </span>
+<span id="cb6-14"><a href="#cb6-14" tabindex="-1"></a>                                            <span class="at">switch_d_cov =</span> <span class="co">#extract weight models, somewhere in trial_pp@censor</span></span>
+<span id="cb6-15"><a href="#cb6-15" tabindex="-1"></a>                                            <span class="at">weight_model_d0 =</span> switch_d0,</span>
+<span id="cb6-16"><a href="#cb6-16" tabindex="-1"></a>                                            <span class="at">weight_model_n0 =</span> switch_n0,</span>
+<span id="cb6-17"><a href="#cb6-17" tabindex="-1"></a>                                            <span class="at">weight_model_d1 =</span> switch_d1,</span>
+<span id="cb6-18"><a href="#cb6-18" tabindex="-1"></a>                                            <span class="at">weight_model_n1 =</span> switch_n1,</span>
+<span id="cb6-19"><a href="#cb6-19" tabindex="-1"></a>                                            <span class="at">boot_idx =</span> boot_data[[k]], <span class="at">remodel =</span> <span class="cn">TRUE</span>, <span class="at">quiet =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb6-20"><a href="#cb6-20" tabindex="-1"></a>          </span>
+<span id="cb6-21"><a href="#cb6-21" tabindex="-1"></a>          <span class="co">#calculate IP weights from bootstrap sample: new weight = refitted weight * bootstrap sampling weight</span></span>
+<span id="cb6-22"><a href="#cb6-22" tabindex="-1"></a>          boot_design_data <span class="ot">&lt;-</span> IP_model<span class="sc">$</span>data <span class="sc">%&gt;%</span></span>
+<span id="cb6-23"><a href="#cb6-23" tabindex="-1"></a>            <span class="fu">merge</span>(weights_table_boot, <span class="at">by =</span> <span class="st">&#39;id&#39;</span>, <span class="at">all.y =</span> <span class="cn">TRUE</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb6-24"><a href="#cb6-24" tabindex="-1"></a>            dplyr<span class="sc">::</span><span class="fu">mutate</span>(<span class="at">weight =</span> <span class="fu">ifelse</span>(weight_boot <span class="sc">!=</span><span class="dv">0</span>,weight<span class="sc">*</span>weight_boot,<span class="dv">0</span>))</span>
+<span id="cb6-25"><a href="#cb6-25" tabindex="-1"></a>          </span>
+<span id="cb6-26"><a href="#cb6-26" tabindex="-1"></a>      <span class="co"># STep 3. A) : refit MSM (only for nonparametric bootstrap)</span></span>
+<span id="cb6-27"><a href="#cb6-27" tabindex="-1"></a>      <span class="co"># Step 3. B): recalculaye MSM coefficient</span></span>
+<span id="cb6-28"><a href="#cb6-28" tabindex="-1"></a>          LEFs <span class="ot">&lt;-</span> <span class="fu">t</span>(X)<span class="sc">%*%</span>(boot_design_data<span class="sc">$</span>weight<span class="sc">*</span>e)</span>
+<span id="cb6-29"><a href="#cb6-29" tabindex="-1"></a>          LEFs[<span class="fu">is.na</span>(LEFs)] <span class="ot">&lt;-</span> <span class="dv">0</span></span>
+<span id="cb6-30"><a href="#cb6-30" tabindex="-1"></a>          variance_mat <span class="ot">&lt;-</span> <span class="fu">vcov</span>(PP<span class="sc">$</span>model)</span>
+<span id="cb6-31"><a href="#cb6-31" tabindex="-1"></a>          variance_mat[<span class="fu">is.na</span>(variance_mat)] <span class="ot">&lt;-</span> <span class="dv">0</span></span>
+<span id="cb6-32"><a href="#cb6-32" tabindex="-1"></a>          <span class="co">#Calculate \hat \beta(b)</span></span>
+<span id="cb6-33"><a href="#cb6-33" tabindex="-1"></a>          beta <span class="ot">&lt;-</span> PP<span class="sc">$</span>model<span class="sc">$</span>coefficients <span class="sc">+</span> variance_mat<span class="sc">%*%</span>LEFs</span>
+<span id="cb6-34"><a href="#cb6-34" tabindex="-1"></a>          </span>
+<span id="cb6-35"><a href="#cb6-35" tabindex="-1"></a>          PP_boot <span class="ot">&lt;-</span> PP</span>
+<span id="cb6-36"><a href="#cb6-36" tabindex="-1"></a>          PP_boot<span class="sc">$</span>model<span class="sc">$</span>coefficients <span class="ot">&lt;-</span> beta</span>
+<span id="cb6-37"><a href="#cb6-37" tabindex="-1"></a>          </span>
+<span id="cb6-38"><a href="#cb6-38" tabindex="-1"></a>      <span class="co">#step 4: get predicted MRD</span></span>
+<span id="cb6-39"><a href="#cb6-39" tabindex="-1"></a>           Y_pred_PP_treatment_boot <span class="ot">&lt;-</span> <span class="fu">predict.glm</span>(PP_boot<span class="sc">$</span>model, </span>
+<span id="cb6-40"><a href="#cb6-40" tabindex="-1"></a>                                                  fitting_data_treatment, </span>
+<span id="cb6-41"><a href="#cb6-41" tabindex="-1"></a>                                                  <span class="at">type =</span> <span class="st">&quot;response&quot;</span>)</span>
+<span id="cb6-42"><a href="#cb6-42" tabindex="-1"></a>          Y_pred_PP_control_boot <span class="ot">&lt;-</span> <span class="fu">predict.glm</span>(PP_boot<span class="sc">$</span>model, </span>
+<span id="cb6-43"><a href="#cb6-43" tabindex="-1"></a>                                                fitting_data_control,</span>
+<span id="cb6-44"><a href="#cb6-44" tabindex="-1"></a>                                                <span class="at">type =</span> <span class="st">&quot;response&quot;</span>)</span>
+<span id="cb6-45"><a href="#cb6-45" tabindex="-1"></a>          predicted_probas_PP_boot <span class="ot">&lt;-</span> fitting_data_treatment <span class="sc">%&gt;%</span> </span>
+<span id="cb6-46"><a href="#cb6-46" tabindex="-1"></a>            dplyr<span class="sc">::</span><span class="fu">mutate</span>(<span class="at">predicted_proba_treatment =</span> Y_pred_PP_treatment_boot,</span>
+<span id="cb6-47"><a href="#cb6-47" tabindex="-1"></a>                          <span class="at">predicted_proba_control =</span> Y_pred_PP_control_boot) <span class="sc">%&gt;%</span> </span>
+<span id="cb6-48"><a href="#cb6-48" tabindex="-1"></a>            dplyr<span class="sc">::</span><span class="fu">group_by</span>(id, trial_period) <span class="sc">%&gt;%</span> </span>
+<span id="cb6-49"><a href="#cb6-49" tabindex="-1"></a>            dplyr<span class="sc">::</span><span class="fu">mutate</span>(<span class="at">cum_hazard_treatment =</span> <span class="fu">cumprod</span>(<span class="dv">1</span><span class="sc">-</span>predicted_proba_treatment),</span>
+<span id="cb6-50"><a href="#cb6-50" tabindex="-1"></a>                          <span class="at">cum_hazard_control =</span> <span class="fu">cumprod</span>(<span class="dv">1</span><span class="sc">-</span>predicted_proba_control)) <span class="sc">%&gt;%</span> </span>
+<span id="cb6-51"><a href="#cb6-51" tabindex="-1"></a>            dplyr<span class="sc">::</span><span class="fu">rowwise</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb6-52"><a href="#cb6-52" tabindex="-1"></a>            dplyr<span class="sc">::</span><span class="fu">mutate</span>(<span class="at">weight_boot =</span> <span class="fu">length</span>(boot_data[[k]][boot_data[[k]] <span class="sc">==</span> id])) <span class="sc">%&gt;%</span> </span>
+<span id="cb6-53"><a href="#cb6-53" tabindex="-1"></a>            dplyr<span class="sc">::</span><span class="fu">ungroup</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb6-54"><a href="#cb6-54" tabindex="-1"></a>            dplyr<span class="sc">::</span><span class="fu">group_by</span>(followup_time) <span class="sc">%&gt;%</span> </span>
+<span id="cb6-55"><a href="#cb6-55" tabindex="-1"></a>            dplyr<span class="sc">::</span><span class="fu">summarise</span>(<span class="at">survival_treatment =</span> <span class="fu">mean</span>(cum_hazard_treatment<span class="sc">*</span>weight_boot),</span>
+<span id="cb6-56"><a href="#cb6-56" tabindex="-1"></a>                             <span class="at">survival_control =</span> <span class="fu">mean</span>(cum_hazard_control<span class="sc">*</span>weight_boot),</span>
+<span id="cb6-57"><a href="#cb6-57" tabindex="-1"></a>                             <span class="at">risk_difference =</span> survival_control <span class="sc">-</span> survival_treatment)</span>
+<span id="cb6-58"><a href="#cb6-58" tabindex="-1"></a>          </span>
+<span id="cb6-59"><a href="#cb6-59" tabindex="-1"></a>          predicted_probas_PP_boot[,<span class="dv">3</span>] <span class="sc">-</span> predicted_probas_PP_boot[,<span class="dv">2</span>]</span>
+<span id="cb6-60"><a href="#cb6-60" tabindex="-1"></a>          </span>
+<span id="cb6-61"><a href="#cb6-61" tabindex="-1"></a>  }</span>
+<span id="cb6-62"><a href="#cb6-62" tabindex="-1"></a>    </span>
+<span id="cb6-63"><a href="#cb6-63" tabindex="-1"></a>  CI_lb <span class="ot">&lt;-</span> <span class="dv">2</span><span class="sc">*</span>pred_list<span class="sc">$</span>difference <span class="sc">-</span> <span class="fu">apply</span>(bootstrapped_MRDs,</span>
+<span id="cb6-64"><a href="#cb6-64" tabindex="-1"></a>                                                           <span class="dv">1</span>,</span>
+<span id="cb6-65"><a href="#cb6-65" tabindex="-1"></a>                                                           quantile,</span>
+<span id="cb6-66"><a href="#cb6-66" tabindex="-1"></a>                                                           <span class="at">probs =</span> <span class="fu">c</span>(<span class="fl">0.975</span>))</span>
+<span id="cb6-67"><a href="#cb6-67" tabindex="-1"></a>  CI_ub <span class="ot">&lt;-</span> <span class="dv">2</span><span class="sc">*</span>pred_list<span class="sc">$</span>difference <span class="sc">-</span> <span class="fu">apply</span>(bootstrapped_MRDs,</span>
+<span id="cb6-68"><a href="#cb6-68" tabindex="-1"></a>                                                           <span class="dv">1</span>,</span>
+<span id="cb6-69"><a href="#cb6-69" tabindex="-1"></a>                                                           quantile,</span>
+<span id="cb6-70"><a href="#cb6-70" tabindex="-1"></a>                                                           <span class="at">probs =</span> <span class="fu">c</span>(<span class="fl">0.025</span>))</span>
+<span id="cb6-71"><a href="#cb6-71" tabindex="-1"></a>}</span></code></pre></div>
+</div>
+
+
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

@@ -1,1 +1,209 @@
-Bootstrap weight design
+---
+title: "Bootstrap CIs design"
+output: 
+  rmarkdown::html_vignette:
+    toc: true 
+editor_options: 
+  chunk_output_type: console
+---
+
+
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  eval = FALSE,
+  fig.align = "center"
+)
+```
+
+### Current Flowchart
+
+This flow chart helps visualise the complete workflow.
+
+![Flowchart](~/TrialEmulation/vignettes/img/trial_sequence_functions_overview_solid.png){ width=80% }
+
+### Proposal
+The bootstrap confidence intevals (CIs) construction would come at the end of the flowchart. There is no way of having it higher up as they require the prediction at the end to build the CIs.
+
+We currently use the `predict()` method to estimate survival probabilities or cumulative incidences for different values of
+`assigned_treatment`. I propose we add a function variable `ci_type` to specify the CIs we want to output.
+
+
+```{r}
+preds <- predict(
+  trial_pp,
+  newdata = outcome_data(trial_itt)[trial_period == 1, ],
+  predict_times = 0:10,
+  type = "mrd", # we could specify "mrd" for marginal risk difference
+  ci_type = c("Nonparametric Bootstrap", "LEF bootstrap", "Robust Sandwich") # NEW could add function variable to specify the type of CIs the user wants
+)
+plot(preds$difference$followup_time, preds$difference$mrd_diff, 
+  type = "l", xlab = "Follow up", ylab = "Marginal risk difference"
+)
+lines(preds$difference$followup_time, preds$difference$`2.5%`, type = "l", col = "red", lty = 2)  # preds$difference$`2.5%`, could have another $ to differentiate CI methods
+lines(preds$difference$followup_time, preds$difference$`97.5%`, type = "l", col = "red", lty = 2)
+```
+
+
+### Modifications to `predict.R`
+
+Currently, predict.R is the script that specifies the function predict() above. If the command 'type = "survival" is inputed, the resulting difference in `preds$difference` is an estimate for the estimand  $\Pr(Y_{m,k}^{\overline a_k= \overline 1} = 0) - \Pr(Y_{m,k}^{\overline a_k= \overline 0} = 0)$. I propose we have a new 'type = 'mrd'' so that we are estimating the marginal risk difference, $\Pr(Y_{m,k}^{\overline a_k= \overline 0} = 0) - \Pr(Y_{m,k}^{\overline a_k= \overline 1} = 0)$ (which is just the opposite).
+
+Modify line 63 of predict.R to: 
+
+```{r}
+pred_fun <- if (type %in% c("survival", 'mrd')) {
+    calculate_survival
+  } else if (type == "cum_inc") {
+    calculate_cum_inc
+  } 
+
+```
+
+and line 78 to
+
+```{r}
+if (type == 'mrd') {
+  pred_list$difference <- pred_list$assigned_treatment_0 - pred_list$assigned_treatment_1
+} else pred_list$difference <- pred_list$assigned_treatment_1 - pred_list$assigned_treatment_0
+```
+
+The sandwich CIs are calculated when obtaining the predictions in `calculate_predictions()`. 
+```{r}
+pred_list <- calculate_predictions(
+    newdata = newdata,
+    model = model,
+    treatment_values = c(assigned_treatment_0 = 0, assigned_treatment_1 = 1),
+    pred_fun = pred_fun,
+    coefs_mat = coefs_mat,
+    matrix_n_col = length(predict_times)
+  )
+```
+
+Denote by $S$ the sample size for the multivariate normal sampling for the sandwich CI construction. The variable `coefs_mat` in `calculate_predictions()` has $1 + S$ columns. The first column is the point estimates of the MSM coefficients from trial_msm. The S remaining columns correspond to the $S$ coefficients generated from the multivarite normal sampling centered at the point estimate of the coefficients and with variance as the robust sandwich variance matrix.
+
+I don't think we can repurpose or easily modify `calculate_predictions()` to construct the other CIs. I can certainly use the output, `pred_list$difference`, and the function itself to generate the MRD in each bootstrap sample for example. But the bootstrap CIs will likely have to be constructed in a separate function call.
+
+The end of the function script for `predict()` could look like this for example: 
+
+```{r}
+ pred_list <- calculate_predictions(
+    newdata = newdata,
+    model = model,
+    treatment_values = c(assigned_treatment_0 = 0, assigned_treatment_1 = 1),
+    pred_fun = pred_fun,
+    coefs_mat = coefs_mat,
+    matrix_n_col = length(predict_times)
+  )
+
+  pred_list$difference <- pred_list$assigned_treatment_1 - pred_list$assigned_treatment_0
+
+  output <- mapply(
+    pred_matrix = pred_list,
+    col_names = paste0(type, c("", "", "_diff")),
+    SIMPLIFY = FALSE,
+    FUN = function(pred_matrix, col_names) {
+      if (conf_int) {
+        quantiles <- apply(pred_matrix, 1, quantile, probs = c(0.025, 0.975))
+        setNames(
+          data.frame(predict_times, pred_matrix[, 1], quantiles[1, ], quantiles[2, ]),
+          c("followup_time", col_names, "2.5%", "97.5%")
+        )
+      } else {
+        setNames(data.frame(predict_times, pred_matrix[, 1]), nm = c("followup_time", col_names))
+      }
+    }
+  )
+  
+  if (type == 'mrd'){
+    bootstrap_CIs <- function_that_calculates_bootstrap_CIs(output, ci_type, MSM_model_object )
+  }
+```
+
+### Design of function_that_calculates_bootstrap_CIs 
+
+In dummy codes, here are the steps of the function: 
+
+```{r}
+function_that_calculates_bootstrap_CIs <- function(trial_msm_output, ci_type, output_from_calculate_predictions, bootstrap_sample_size){
+  # Step 0: obtain bootstrap samples.
+  
+  boot_data <- list()
+    for (k in 1:bootstrap_iter) {
+      boot_data[[k]] <- sort(sample(unique(trial_pp@outcome_data$id), length(unique(trial_pp@outcome_data$id)), replace = TRUE)) # Need to check how to extract from class type as data frame
+    }
+
+  #Step 1: for each bootstrap sample: 
+  bootstrapped_MRDs <- foreach(k = 1:bootstrap_sample_size, .combine=cbind) %dopar% {
+     # Step 2: refit/recalculate weights 
+     
+    IP_model <- weight_func_bootstrap(expanded_data = triat_pp@outcome_data, 
+                                            switch_d_cov = #extract weight models, somewhere in trial_pp@censor
+                                            weight_model_d0 = switch_d0,
+                                            weight_model_n0 = switch_n0,
+                                            weight_model_d1 = switch_d1,
+                                            weight_model_n1 = switch_n1,
+                                            boot_idx = boot_data[[k]], remodel = TRUE, quiet = TRUE)
+          
+          #calculate IP weights from bootstrap sample: new weight = refitted weight * bootstrap sampling weight
+          boot_design_data <- IP_model$data %>%
+            merge(weights_table_boot, by = 'id', all.y = TRUE) %>% 
+            dplyr::mutate(weight = ifelse(weight_boot !=0,weight*weight_boot,0))
+          
+      # STep 3. A) : refit MSM (only for nonparametric bootstrap)
+      # Step 3. B): recalculaye MSM coefficient
+          LEFs <- t(X)%*%(boot_design_data$weight*e)
+          LEFs[is.na(LEFs)] <- 0
+          variance_mat <- vcov(PP$model)
+          variance_mat[is.na(variance_mat)] <- 0
+          #Calculate \hat \beta(b)
+          beta <- PP$model$coefficients + variance_mat%*%LEFs
+          
+          PP_boot <- PP
+          PP_boot$model$coefficients <- beta
+          
+      #step 4: get predicted MRD
+           Y_pred_PP_treatment_boot <- predict.glm(PP_boot$model, 
+                                                  fitting_data_treatment, 
+                                                  type = "response")
+          Y_pred_PP_control_boot <- predict.glm(PP_boot$model, 
+                                                fitting_data_control,
+                                                type = "response")
+          predicted_probas_PP_boot <- fitting_data_treatment %>% 
+            dplyr::mutate(predicted_proba_treatment = Y_pred_PP_treatment_boot,
+                          predicted_proba_control = Y_pred_PP_control_boot) %>% 
+            dplyr::group_by(id, trial_period) %>% 
+            dplyr::mutate(cum_hazard_treatment = cumprod(1-predicted_proba_treatment),
+                          cum_hazard_control = cumprod(1-predicted_proba_control)) %>% 
+            dplyr::rowwise() %>% 
+            dplyr::mutate(weight_boot = length(boot_data[[k]][boot_data[[k]] == id])) %>% 
+            dplyr::ungroup() %>% 
+            dplyr::group_by(followup_time) %>% 
+            dplyr::summarise(survival_treatment = mean(cum_hazard_treatment*weight_boot),
+                             survival_control = mean(cum_hazard_control*weight_boot),
+                             risk_difference = survival_control - survival_treatment)
+          
+          predicted_probas_PP_boot[,3] - predicted_probas_PP_boot[,2]
+          
+  }
+  # Step 5: generate pivot CIs
+  CI_lb <- 2*pred_list$difference - apply(bootstrapped_MRDs,
+                                                           1,
+                                                           quantile,
+                                                           probs = c(0.975))
+  CI_ub <- 2*pred_list$difference - apply(bootstrapped_MRDs,
+                                                           1,
+                                                           quantile,
+                                                           probs = c(0.025))
+  
+  #Step 6: Add CIs to the output data from the end of predict()
+  
+  new_output <- output %>% mutate('Bootstrap CI LW' = CI_lb,
+                                  'Bootstrap CI UB%' = CI_ub)
+}
+
+```
+
+
