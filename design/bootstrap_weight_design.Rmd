@@ -49,26 +49,8 @@ lines(preds$difference$followup_time, preds$difference$`97.5%`, type = "l", col 
 
 ### Modifications to `predict.R`
 
-Currently, predict.R is the script that specifies the function predict() above. If the command 'type = "survival" is inputed, the resulting difference in `preds$difference` is an estimate for the estimand  $\Pr(Y_{m,k}^{\overline a_k= \overline 1} = 0) - \Pr(Y_{m,k}^{\overline a_k= \overline 0} = 0)$. I propose we have a new 'type = 'mrd'' so that we are estimating the marginal risk difference, $\Pr(Y_{m,k}^{\overline a_k= \overline 0} = 0) - \Pr(Y_{m,k}^{\overline a_k= \overline 1} = 0)$ (which is just the opposite).
+Currently, predict.R is the script that specifies the function predict() above. If the command 'type = "survival"' is imputed, the resulting difference in `preds$difference` is an estimate for the estimand  $\Pr(Y_{m,k}^{\overline a_k= \overline 1} = 0) - \Pr(Y_{m,k}^{\overline a_k= \overline 0} = 0)$. If the command 'type = "cum_inc"' is imputed, the difference is the marginal risk difference estimate. In either case, we can build confidence intervals according to the methods described in the paper.
 
-Modify line 63 of predict.R to: 
-
-```{r}
-pred_fun <- if (type %in% c("survival", 'mrd')) {
-    calculate_survival
-  } else if (type == "cum_inc") {
-    calculate_cum_inc
-  } 
-
-```
-
-and line 78 to
-
-```{r}
-if (type == 'mrd') {
-  pred_list$difference <- pred_list$assigned_treatment_0 - pred_list$assigned_treatment_1
-} else pred_list$difference <- pred_list$assigned_treatment_1 - pred_list$assigned_treatment_0
-```
 
 The sandwich CIs are calculated when obtaining the predictions in `calculate_predictions()`. 
 ```{r}
@@ -82,7 +64,7 @@ pred_list <- calculate_predictions(
   )
 ```
 
-Denote by $S$ the sample size for the multivariate normal sampling for the sandwich CI construction. The variable `coefs_mat` in `calculate_predictions()` has $1 + S$ columns. The first column is the point estimates of the MSM coefficients from trial_msm. The S remaining columns correspond to the $S$ coefficients generated from the multivarite normal sampling centered at the point estimate of the coefficients and with variance as the robust sandwich variance matrix.
+Denote by $S$ the sample size for the multivariate normal sampling for the sandwich CI construction. The variable `coefs_mat` in `calculate_predictions()` has $1 + S$ columns. The first column is the point estimates of the MSM coefficients from trial_msm. The S remaining columns correspond to the $S$ coefficients generated from the multivariate normal sampling centered at the point estimate of the coefficients and with variance as the robust sandwich variance matrix.
 
 I don't think we can repurpose or easily modify `calculate_predictions()` to construct the other CIs. I can certainly use the output, `pred_list$difference`, and the function itself to generate the MRD in each bootstrap sample for example. But the bootstrap CIs will likely have to be constructed in a separate function call.
 
@@ -118,7 +100,7 @@ The end of the function script for `predict()` could look like this for example:
   )
   
   if (type == 'mrd'){
-    bootstrap_CIs <- function_that_calculates_bootstrap_CIs(output, ci_type, MSM_model_object )
+    bootstrap_CIs <- function_that_calculates_bootstrap_CIs(trial_msm_output, ci_type, output_from_calculate_predictions, bootstrap_sample_size)
   }
 ```
 
@@ -127,8 +109,19 @@ The end of the function script for `predict()` could look like this for example:
 In dummy codes, here are the steps of the function: 
 
 ```{r}
+#' @param trial_msm_output output for fit_msm(), should contain all relevant information including original data, expanded data, 
+#' weight models formulae, outcome model
+#' @param ci_type string or vector of strings of bootstrap CI types user wants ("Nonpara. bootstrap", "LEF outcome only", "LEF both") 
+#' (these names are subject to change)
+#' @param output_from_calculate_predictions output of calculate_predictions()$difference as the point estimate is need to build pivot CIs
+#' @param bootstrap_sample_size Number of bootstrap samples
+#'
 function_that_calculates_bootstrap_CIs <- function(trial_msm_output, ci_type, output_from_calculate_predictions, bootstrap_sample_size){
-  # Step 0: obtain bootstrap samples.
+ ##########################################################################################################################
+ #  All code below needs to be changed to match variable names with function input, some of which are class type #
+ ##########################################################################################################################
+  
+   # Step 0: obtain bootstrap samples.
   
   boot_data <- list()
     for (k in 1:bootstrap_iter) {
