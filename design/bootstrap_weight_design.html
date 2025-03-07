@@ -49,7 +49,7 @@ overflow: visible;
 </style>
 <style type="text/css" data-origin="pandoc">
 pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span { line-height: 1.25; }
 pre > code.sourceCode > span:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
 code.sourceCode > span { color: inherit; text-decoration: inherit; }
@@ -60,7 +60,7 @@ div.sourceCode { overflow: auto; }
 }
 @media print {
 pre > code.sourceCode { white-space: pre-wrap; }
-pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
 }
 pre.numberSource code
 { counter-reset: source-line 0; }
@@ -355,7 +355,7 @@ function_that_calculates_bootstrap_CIs</a></li>
 <h3>Current Flowchart</h3>
 <p>This flow chart helps visualise the complete workflow.</p>
 <div class="float">
-<img src="~/TrialEmulation/vignettes/img/trial_sequence_functions_overview_solid.png" style="width:80.0%" alt="Flowchart" />
+<img role="img" aria-label="Flowchart" src="~/TrialEmulation/vignettes/img/trial_sequence_functions_overview_solid.png" style="width:80.0%" alt="Flowchart" />
 <div class="figcaption">Flowchart</div>
 </div>
 </div>
@@ -384,41 +384,31 @@ survival probabilities or cumulative incidences for different values of
 <div id="modifications-to-predict.r" class="section level3">
 <h3>Modifications to <code>predict.R</code></h3>
 <p>Currently, predict.R is the script that specifies the function
-predict() above. If the command ‘type = “survival” is inputed, the
+predict() above. If the command ‘type = “survival”’ is imputed, the
 resulting difference in <code>preds$difference</code> is an estimate for
 the estimand <span class="math inline">\(\Pr(Y_{m,k}^{\overline a_k=
 \overline 1} = 0) - \Pr(Y_{m,k}^{\overline a_k= \overline 0} =
-0)\)</span>. I propose we have a new ’type = ’mrd’’ so that we are
-estimating the marginal risk difference, <span class="math inline">\(\Pr(Y_{m,k}^{\overline a_k= \overline 0} = 0) -
-\Pr(Y_{m,k}^{\overline a_k= \overline 1} = 0)\)</span> (which is just
-the opposite).</p>
-<p>Modify line 63 of predict.R to:</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a>pred_fun <span class="ot">&lt;-</span> <span class="cf">if</span> (type <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">&quot;survival&quot;</span>, <span class="st">&#39;mrd&#39;</span>)) {</span>
-<span id="cb2-2"><a href="#cb2-2" tabindex="-1"></a>    calculate_survival</span>
-<span id="cb2-3"><a href="#cb2-3" tabindex="-1"></a>  } <span class="cf">else</span> <span class="cf">if</span> (type <span class="sc">==</span> <span class="st">&quot;cum_inc&quot;</span>) {</span>
-<span id="cb2-4"><a href="#cb2-4" tabindex="-1"></a>    calculate_cum_inc</span>
-<span id="cb2-5"><a href="#cb2-5" tabindex="-1"></a>  } </span></code></pre></div>
-<p>and line 78 to</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a><span class="cf">if</span> (type <span class="sc">==</span> <span class="st">&#39;mrd&#39;</span>) {</span>
-<span id="cb3-2"><a href="#cb3-2" tabindex="-1"></a>  pred_list<span class="sc">$</span>difference <span class="ot">&lt;-</span> pred_list<span class="sc">$</span>assigned_treatment_0 <span class="sc">-</span> pred_list<span class="sc">$</span>assigned_treatment_1</span>
-<span id="cb3-3"><a href="#cb3-3" tabindex="-1"></a>} <span class="cf">else</span> pred_list<span class="sc">$</span>difference <span class="ot">&lt;-</span> pred_list<span class="sc">$</span>assigned_treatment_1 <span class="sc">-</span> pred_list<span class="sc">$</span>assigned_treatment_0</span></code></pre></div>
+0)\)</span>. If the command ‘type = “cum_inc”’ is imputed, the
+difference is the marginal risk difference estimate. In either case, we
+can build confidence intervals according to the methods described in the
+paper.</p>
 <p>The sandwich CIs are calculated when obtaining the predictions in
 <code>calculate_predictions()</code>.</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a>pred_list <span class="ot">&lt;-</span> <span class="fu">calculate_predictions</span>(</span>
-<span id="cb4-2"><a href="#cb4-2" tabindex="-1"></a>    <span class="at">newdata =</span> newdata,</span>
-<span id="cb4-3"><a href="#cb4-3" tabindex="-1"></a>    <span class="at">model =</span> model,</span>
-<span id="cb4-4"><a href="#cb4-4" tabindex="-1"></a>    <span class="at">treatment_values =</span> <span class="fu">c</span>(<span class="at">assigned_treatment_0 =</span> <span class="dv">0</span>, <span class="at">assigned_treatment_1 =</span> <span class="dv">1</span>),</span>
-<span id="cb4-5"><a href="#cb4-5" tabindex="-1"></a>    <span class="at">pred_fun =</span> pred_fun,</span>
-<span id="cb4-6"><a href="#cb4-6" tabindex="-1"></a>    <span class="at">coefs_mat =</span> coefs_mat,</span>
-<span id="cb4-7"><a href="#cb4-7" tabindex="-1"></a>    <span class="at">matrix_n_col =</span> <span class="fu">length</span>(predict_times)</span>
-<span id="cb4-8"><a href="#cb4-8" tabindex="-1"></a>  )</span></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a>pred_list <span class="ot">&lt;-</span> <span class="fu">calculate_predictions</span>(</span>
+<span id="cb2-2"><a href="#cb2-2" tabindex="-1"></a>    <span class="at">newdata =</span> newdata,</span>
+<span id="cb2-3"><a href="#cb2-3" tabindex="-1"></a>    <span class="at">model =</span> model,</span>
+<span id="cb2-4"><a href="#cb2-4" tabindex="-1"></a>    <span class="at">treatment_values =</span> <span class="fu">c</span>(<span class="at">assigned_treatment_0 =</span> <span class="dv">0</span>, <span class="at">assigned_treatment_1 =</span> <span class="dv">1</span>),</span>
+<span id="cb2-5"><a href="#cb2-5" tabindex="-1"></a>    <span class="at">pred_fun =</span> pred_fun,</span>
+<span id="cb2-6"><a href="#cb2-6" tabindex="-1"></a>    <span class="at">coefs_mat =</span> coefs_mat,</span>
+<span id="cb2-7"><a href="#cb2-7" tabindex="-1"></a>    <span class="at">matrix_n_col =</span> <span class="fu">length</span>(predict_times)</span>
+<span id="cb2-8"><a href="#cb2-8" tabindex="-1"></a>  )</span></code></pre></div>
 <p>Denote by <span class="math inline">\(S\)</span> the sample size for
 the multivariate normal sampling for the sandwich CI construction. The
 variable <code>coefs_mat</code> in <code>calculate_predictions()</code>
 has <span class="math inline">\(1 + S\)</span> columns. The first column
 is the point estimates of the MSM coefficients from trial_msm. The S
 remaining columns correspond to the <span class="math inline">\(S\)</span> coefficients generated from the
-multivarite normal sampling centered at the point estimate of the
+multivariate normal sampling centered at the point estimate of the
 coefficients and with variance as the robust sandwich variance
 matrix.</p>
 <p>I don’t think we can repurpose or easily modify
@@ -429,112 +419,128 @@ example. But the bootstrap CIs will likely have to be constructed in a
 separate function call.</p>
 <p>The end of the function script for <code>predict()</code> could look
 like this for example:</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" tabindex="-1"></a> pred_list <span class="ot">&lt;-</span> <span class="fu">calculate_predictions</span>(</span>
-<span id="cb5-2"><a href="#cb5-2" tabindex="-1"></a>    <span class="at">newdata =</span> newdata,</span>
-<span id="cb5-3"><a href="#cb5-3" tabindex="-1"></a>    <span class="at">model =</span> model,</span>
-<span id="cb5-4"><a href="#cb5-4" tabindex="-1"></a>    <span class="at">treatment_values =</span> <span class="fu">c</span>(<span class="at">assigned_treatment_0 =</span> <span class="dv">0</span>, <span class="at">assigned_treatment_1 =</span> <span class="dv">1</span>),</span>
-<span id="cb5-5"><a href="#cb5-5" tabindex="-1"></a>    <span class="at">pred_fun =</span> pred_fun,</span>
-<span id="cb5-6"><a href="#cb5-6" tabindex="-1"></a>    <span class="at">coefs_mat =</span> coefs_mat,</span>
-<span id="cb5-7"><a href="#cb5-7" tabindex="-1"></a>    <span class="at">matrix_n_col =</span> <span class="fu">length</span>(predict_times)</span>
-<span id="cb5-8"><a href="#cb5-8" tabindex="-1"></a>  )</span>
-<span id="cb5-9"><a href="#cb5-9" tabindex="-1"></a></span>
-<span id="cb5-10"><a href="#cb5-10" tabindex="-1"></a>  pred_list<span class="sc">$</span>difference <span class="ot">&lt;-</span> pred_list<span class="sc">$</span>assigned_treatment_1 <span class="sc">-</span> pred_list<span class="sc">$</span>assigned_treatment_0</span>
-<span id="cb5-11"><a href="#cb5-11" tabindex="-1"></a></span>
-<span id="cb5-12"><a href="#cb5-12" tabindex="-1"></a>  output <span class="ot">&lt;-</span> <span class="fu">mapply</span>(</span>
-<span id="cb5-13"><a href="#cb5-13" tabindex="-1"></a>    <span class="at">pred_matrix =</span> pred_list,</span>
-<span id="cb5-14"><a href="#cb5-14" tabindex="-1"></a>    <span class="at">col_names =</span> <span class="fu">paste0</span>(type, <span class="fu">c</span>(<span class="st">&quot;&quot;</span>, <span class="st">&quot;&quot;</span>, <span class="st">&quot;_diff&quot;</span>)),</span>
-<span id="cb5-15"><a href="#cb5-15" tabindex="-1"></a>    <span class="at">SIMPLIFY =</span> <span class="cn">FALSE</span>,</span>
-<span id="cb5-16"><a href="#cb5-16" tabindex="-1"></a>    <span class="at">FUN =</span> <span class="cf">function</span>(pred_matrix, col_names) {</span>
-<span id="cb5-17"><a href="#cb5-17" tabindex="-1"></a>      <span class="cf">if</span> (conf_int) {</span>
-<span id="cb5-18"><a href="#cb5-18" tabindex="-1"></a>        quantiles <span class="ot">&lt;-</span> <span class="fu">apply</span>(pred_matrix, <span class="dv">1</span>, quantile, <span class="at">probs =</span> <span class="fu">c</span>(<span class="fl">0.025</span>, <span class="fl">0.975</span>))</span>
-<span id="cb5-19"><a href="#cb5-19" tabindex="-1"></a>        <span class="fu">setNames</span>(</span>
-<span id="cb5-20"><a href="#cb5-20" tabindex="-1"></a>          <span class="fu">data.frame</span>(predict_times, pred_matrix[, <span class="dv">1</span>], quantiles[<span class="dv">1</span>, ], quantiles[<span class="dv">2</span>, ]),</span>
-<span id="cb5-21"><a href="#cb5-21" tabindex="-1"></a>          <span class="fu">c</span>(<span class="st">&quot;followup_time&quot;</span>, col_names, <span class="st">&quot;2.5%&quot;</span>, <span class="st">&quot;97.5%&quot;</span>)</span>
-<span id="cb5-22"><a href="#cb5-22" tabindex="-1"></a>        )</span>
-<span id="cb5-23"><a href="#cb5-23" tabindex="-1"></a>      } <span class="cf">else</span> {</span>
-<span id="cb5-24"><a href="#cb5-24" tabindex="-1"></a>        <span class="fu">setNames</span>(<span class="fu">data.frame</span>(predict_times, pred_matrix[, <span class="dv">1</span>]), <span class="at">nm =</span> <span class="fu">c</span>(<span class="st">&quot;followup_time&quot;</span>, col_names))</span>
-<span id="cb5-25"><a href="#cb5-25" tabindex="-1"></a>      }</span>
-<span id="cb5-26"><a href="#cb5-26" tabindex="-1"></a>    }</span>
-<span id="cb5-27"><a href="#cb5-27" tabindex="-1"></a>  )</span>
-<span id="cb5-28"><a href="#cb5-28" tabindex="-1"></a>  </span>
-<span id="cb5-29"><a href="#cb5-29" tabindex="-1"></a>  <span class="cf">if</span> (type <span class="sc">==</span> <span class="st">&#39;mrd&#39;</span>){</span>
-<span id="cb5-30"><a href="#cb5-30" tabindex="-1"></a>    bootstrap_CIs <span class="ot">&lt;-</span> <span class="fu">function_that_calculates_bootstrap_CIs</span>(output, ci_type, MSM_model_object )</span>
-<span id="cb5-31"><a href="#cb5-31" tabindex="-1"></a>  }</span></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a> pred_list <span class="ot">&lt;-</span> <span class="fu">calculate_predictions</span>(</span>
+<span id="cb3-2"><a href="#cb3-2" tabindex="-1"></a>    <span class="at">newdata =</span> newdata,</span>
+<span id="cb3-3"><a href="#cb3-3" tabindex="-1"></a>    <span class="at">model =</span> model,</span>
+<span id="cb3-4"><a href="#cb3-4" tabindex="-1"></a>    <span class="at">treatment_values =</span> <span class="fu">c</span>(<span class="at">assigned_treatment_0 =</span> <span class="dv">0</span>, <span class="at">assigned_treatment_1 =</span> <span class="dv">1</span>),</span>
+<span id="cb3-5"><a href="#cb3-5" tabindex="-1"></a>    <span class="at">pred_fun =</span> pred_fun,</span>
+<span id="cb3-6"><a href="#cb3-6" tabindex="-1"></a>    <span class="at">coefs_mat =</span> coefs_mat,</span>
+<span id="cb3-7"><a href="#cb3-7" tabindex="-1"></a>    <span class="at">matrix_n_col =</span> <span class="fu">length</span>(predict_times)</span>
+<span id="cb3-8"><a href="#cb3-8" tabindex="-1"></a>  )</span>
+<span id="cb3-9"><a href="#cb3-9" tabindex="-1"></a></span>
+<span id="cb3-10"><a href="#cb3-10" tabindex="-1"></a>  pred_list<span class="sc">$</span>difference <span class="ot">&lt;-</span> pred_list<span class="sc">$</span>assigned_treatment_1 <span class="sc">-</span> pred_list<span class="sc">$</span>assigned_treatment_0</span>
+<span id="cb3-11"><a href="#cb3-11" tabindex="-1"></a></span>
+<span id="cb3-12"><a href="#cb3-12" tabindex="-1"></a>  output <span class="ot">&lt;-</span> <span class="fu">mapply</span>(</span>
+<span id="cb3-13"><a href="#cb3-13" tabindex="-1"></a>    <span class="at">pred_matrix =</span> pred_list,</span>
+<span id="cb3-14"><a href="#cb3-14" tabindex="-1"></a>    <span class="at">col_names =</span> <span class="fu">paste0</span>(type, <span class="fu">c</span>(<span class="st">&quot;&quot;</span>, <span class="st">&quot;&quot;</span>, <span class="st">&quot;_diff&quot;</span>)),</span>
+<span id="cb3-15"><a href="#cb3-15" tabindex="-1"></a>    <span class="at">SIMPLIFY =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb3-16"><a href="#cb3-16" tabindex="-1"></a>    <span class="at">FUN =</span> <span class="cf">function</span>(pred_matrix, col_names) {</span>
+<span id="cb3-17"><a href="#cb3-17" tabindex="-1"></a>      <span class="cf">if</span> (conf_int) {</span>
+<span id="cb3-18"><a href="#cb3-18" tabindex="-1"></a>        quantiles <span class="ot">&lt;-</span> <span class="fu">apply</span>(pred_matrix, <span class="dv">1</span>, quantile, <span class="at">probs =</span> <span class="fu">c</span>(<span class="fl">0.025</span>, <span class="fl">0.975</span>))</span>
+<span id="cb3-19"><a href="#cb3-19" tabindex="-1"></a>        <span class="fu">setNames</span>(</span>
+<span id="cb3-20"><a href="#cb3-20" tabindex="-1"></a>          <span class="fu">data.frame</span>(predict_times, pred_matrix[, <span class="dv">1</span>], quantiles[<span class="dv">1</span>, ], quantiles[<span class="dv">2</span>, ]),</span>
+<span id="cb3-21"><a href="#cb3-21" tabindex="-1"></a>          <span class="fu">c</span>(<span class="st">&quot;followup_time&quot;</span>, col_names, <span class="st">&quot;2.5%&quot;</span>, <span class="st">&quot;97.5%&quot;</span>)</span>
+<span id="cb3-22"><a href="#cb3-22" tabindex="-1"></a>        )</span>
+<span id="cb3-23"><a href="#cb3-23" tabindex="-1"></a>      } <span class="cf">else</span> {</span>
+<span id="cb3-24"><a href="#cb3-24" tabindex="-1"></a>        <span class="fu">setNames</span>(<span class="fu">data.frame</span>(predict_times, pred_matrix[, <span class="dv">1</span>]), <span class="at">nm =</span> <span class="fu">c</span>(<span class="st">&quot;followup_time&quot;</span>, col_names))</span>
+<span id="cb3-25"><a href="#cb3-25" tabindex="-1"></a>      }</span>
+<span id="cb3-26"><a href="#cb3-26" tabindex="-1"></a>    }</span>
+<span id="cb3-27"><a href="#cb3-27" tabindex="-1"></a>  )</span>
+<span id="cb3-28"><a href="#cb3-28" tabindex="-1"></a>  </span>
+<span id="cb3-29"><a href="#cb3-29" tabindex="-1"></a>  <span class="cf">if</span> (type <span class="sc">==</span> <span class="st">&#39;mrd&#39;</span>){</span>
+<span id="cb3-30"><a href="#cb3-30" tabindex="-1"></a>    bootstrap_CIs <span class="ot">&lt;-</span> <span class="fu">function_that_calculates_bootstrap_CIs</span>(trial_msm_output, ci_type, output_from_calculate_predictions, bootstrap_sample_size)</span>
+<span id="cb3-31"><a href="#cb3-31" tabindex="-1"></a>  }</span></code></pre></div>
 </div>
 <div id="design-of-function_that_calculates_bootstrap_cis" class="section level3">
 <h3>Design of function_that_calculates_bootstrap_CIs</h3>
 <p>In dummy codes, here are the steps of the function:</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" tabindex="-1"></a>function_that_calculates_bootstrap_CIs <span class="ot">&lt;-</span> <span class="cf">function</span>(trial_msm_output, ci_type, output_from_calculate_predictions, bootstrap_sample_size){</span>
-<span id="cb6-2"><a href="#cb6-2" tabindex="-1"></a>  <span class="co"># Step 0: obtain bootstrap samples.</span></span>
-<span id="cb6-3"><a href="#cb6-3" tabindex="-1"></a>  </span>
-<span id="cb6-4"><a href="#cb6-4" tabindex="-1"></a>  boot_data <span class="ot">&lt;-</span> <span class="fu">list</span>()</span>
-<span id="cb6-5"><a href="#cb6-5" tabindex="-1"></a>    <span class="cf">for</span> (k <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>bootstrap_iter) {</span>
-<span id="cb6-6"><a href="#cb6-6" tabindex="-1"></a>      boot_data[[k]] <span class="ot">&lt;-</span> <span class="fu">sort</span>(<span class="fu">sample</span>(<span class="fu">unique</span>(trial_pp<span class="sc">@</span>outcome_data<span class="sc">$</span>id), <span class="fu">length</span>(<span class="fu">unique</span>(trial_pp<span class="sc">@</span>outcome_data<span class="sc">$</span>id)), <span class="at">replace =</span> <span class="cn">TRUE</span>)) <span class="co"># Need to check how to extract from class type as data frame</span></span>
-<span id="cb6-7"><a href="#cb6-7" tabindex="-1"></a>    }</span>
-<span id="cb6-8"><a href="#cb6-8" tabindex="-1"></a></span>
-<span id="cb6-9"><a href="#cb6-9" tabindex="-1"></a>  <span class="co">#Step 1: for each bootstrap sample: </span></span>
-<span id="cb6-10"><a href="#cb6-10" tabindex="-1"></a>  bootstrapped_MRDs <span class="ot">&lt;-</span> <span class="fu">foreach</span>(<span class="at">k =</span> <span class="dv">1</span><span class="sc">:</span>bootstrap_sample_size, <span class="at">.combine=</span>cbind) <span class="sc">%dopar%</span> {</span>
-<span id="cb6-11"><a href="#cb6-11" tabindex="-1"></a>     <span class="co"># Step 2: refit/recalculate weights </span></span>
-<span id="cb6-12"><a href="#cb6-12" tabindex="-1"></a>     </span>
-<span id="cb6-13"><a href="#cb6-13" tabindex="-1"></a>    IP_model <span class="ot">&lt;-</span> <span class="fu">weight_func_bootstrap</span>(<span class="at">expanded_data =</span> triat_pp<span class="sc">@</span>outcome_data, </span>
-<span id="cb6-14"><a href="#cb6-14" tabindex="-1"></a>                                            <span class="at">switch_d_cov =</span> <span class="co">#extract weight models, somewhere in trial_pp@censor</span></span>
-<span id="cb6-15"><a href="#cb6-15" tabindex="-1"></a>                                            <span class="at">weight_model_d0 =</span> switch_d0,</span>
-<span id="cb6-16"><a href="#cb6-16" tabindex="-1"></a>                                            <span class="at">weight_model_n0 =</span> switch_n0,</span>
-<span id="cb6-17"><a href="#cb6-17" tabindex="-1"></a>                                            <span class="at">weight_model_d1 =</span> switch_d1,</span>
-<span id="cb6-18"><a href="#cb6-18" tabindex="-1"></a>                                            <span class="at">weight_model_n1 =</span> switch_n1,</span>
-<span id="cb6-19"><a href="#cb6-19" tabindex="-1"></a>                                            <span class="at">boot_idx =</span> boot_data[[k]], <span class="at">remodel =</span> <span class="cn">TRUE</span>, <span class="at">quiet =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb6-20"><a href="#cb6-20" tabindex="-1"></a>          </span>
-<span id="cb6-21"><a href="#cb6-21" tabindex="-1"></a>          <span class="co">#calculate IP weights from bootstrap sample: new weight = refitted weight * bootstrap sampling weight</span></span>
-<span id="cb6-22"><a href="#cb6-22" tabindex="-1"></a>          boot_design_data <span class="ot">&lt;-</span> IP_model<span class="sc">$</span>data <span class="sc">%&gt;%</span></span>
-<span id="cb6-23"><a href="#cb6-23" tabindex="-1"></a>            <span class="fu">merge</span>(weights_table_boot, <span class="at">by =</span> <span class="st">&#39;id&#39;</span>, <span class="at">all.y =</span> <span class="cn">TRUE</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb6-24"><a href="#cb6-24" tabindex="-1"></a>            dplyr<span class="sc">::</span><span class="fu">mutate</span>(<span class="at">weight =</span> <span class="fu">ifelse</span>(weight_boot <span class="sc">!=</span><span class="dv">0</span>,weight<span class="sc">*</span>weight_boot,<span class="dv">0</span>))</span>
-<span id="cb6-25"><a href="#cb6-25" tabindex="-1"></a>          </span>
-<span id="cb6-26"><a href="#cb6-26" tabindex="-1"></a>      <span class="co"># STep 3. A) : refit MSM (only for nonparametric bootstrap)</span></span>
-<span id="cb6-27"><a href="#cb6-27" tabindex="-1"></a>      <span class="co"># Step 3. B): recalculaye MSM coefficient</span></span>
-<span id="cb6-28"><a href="#cb6-28" tabindex="-1"></a>          LEFs <span class="ot">&lt;-</span> <span class="fu">t</span>(X)<span class="sc">%*%</span>(boot_design_data<span class="sc">$</span>weight<span class="sc">*</span>e)</span>
-<span id="cb6-29"><a href="#cb6-29" tabindex="-1"></a>          LEFs[<span class="fu">is.na</span>(LEFs)] <span class="ot">&lt;-</span> <span class="dv">0</span></span>
-<span id="cb6-30"><a href="#cb6-30" tabindex="-1"></a>          variance_mat <span class="ot">&lt;-</span> <span class="fu">vcov</span>(PP<span class="sc">$</span>model)</span>
-<span id="cb6-31"><a href="#cb6-31" tabindex="-1"></a>          variance_mat[<span class="fu">is.na</span>(variance_mat)] <span class="ot">&lt;-</span> <span class="dv">0</span></span>
-<span id="cb6-32"><a href="#cb6-32" tabindex="-1"></a>          <span class="co">#Calculate \hat \beta(b)</span></span>
-<span id="cb6-33"><a href="#cb6-33" tabindex="-1"></a>          beta <span class="ot">&lt;-</span> PP<span class="sc">$</span>model<span class="sc">$</span>coefficients <span class="sc">+</span> variance_mat<span class="sc">%*%</span>LEFs</span>
-<span id="cb6-34"><a href="#cb6-34" tabindex="-1"></a>          </span>
-<span id="cb6-35"><a href="#cb6-35" tabindex="-1"></a>          PP_boot <span class="ot">&lt;-</span> PP</span>
-<span id="cb6-36"><a href="#cb6-36" tabindex="-1"></a>          PP_boot<span class="sc">$</span>model<span class="sc">$</span>coefficients <span class="ot">&lt;-</span> beta</span>
-<span id="cb6-37"><a href="#cb6-37" tabindex="-1"></a>          </span>
-<span id="cb6-38"><a href="#cb6-38" tabindex="-1"></a>      <span class="co">#step 4: get predicted MRD</span></span>
-<span id="cb6-39"><a href="#cb6-39" tabindex="-1"></a>           Y_pred_PP_treatment_boot <span class="ot">&lt;-</span> <span class="fu">predict.glm</span>(PP_boot<span class="sc">$</span>model, </span>
-<span id="cb6-40"><a href="#cb6-40" tabindex="-1"></a>                                                  fitting_data_treatment, </span>
-<span id="cb6-41"><a href="#cb6-41" tabindex="-1"></a>                                                  <span class="at">type =</span> <span class="st">&quot;response&quot;</span>)</span>
-<span id="cb6-42"><a href="#cb6-42" tabindex="-1"></a>          Y_pred_PP_control_boot <span class="ot">&lt;-</span> <span class="fu">predict.glm</span>(PP_boot<span class="sc">$</span>model, </span>
-<span id="cb6-43"><a href="#cb6-43" tabindex="-1"></a>                                                fitting_data_control,</span>
-<span id="cb6-44"><a href="#cb6-44" tabindex="-1"></a>                                                <span class="at">type =</span> <span class="st">&quot;response&quot;</span>)</span>
-<span id="cb6-45"><a href="#cb6-45" tabindex="-1"></a>          predicted_probas_PP_boot <span class="ot">&lt;-</span> fitting_data_treatment <span class="sc">%&gt;%</span> </span>
-<span id="cb6-46"><a href="#cb6-46" tabindex="-1"></a>            dplyr<span class="sc">::</span><span class="fu">mutate</span>(<span class="at">predicted_proba_treatment =</span> Y_pred_PP_treatment_boot,</span>
-<span id="cb6-47"><a href="#cb6-47" tabindex="-1"></a>                          <span class="at">predicted_proba_control =</span> Y_pred_PP_control_boot) <span class="sc">%&gt;%</span> </span>
-<span id="cb6-48"><a href="#cb6-48" tabindex="-1"></a>            dplyr<span class="sc">::</span><span class="fu">group_by</span>(id, trial_period) <span class="sc">%&gt;%</span> </span>
-<span id="cb6-49"><a href="#cb6-49" tabindex="-1"></a>            dplyr<span class="sc">::</span><span class="fu">mutate</span>(<span class="at">cum_hazard_treatment =</span> <span class="fu">cumprod</span>(<span class="dv">1</span><span class="sc">-</span>predicted_proba_treatment),</span>
-<span id="cb6-50"><a href="#cb6-50" tabindex="-1"></a>                          <span class="at">cum_hazard_control =</span> <span class="fu">cumprod</span>(<span class="dv">1</span><span class="sc">-</span>predicted_proba_control)) <span class="sc">%&gt;%</span> </span>
-<span id="cb6-51"><a href="#cb6-51" tabindex="-1"></a>            dplyr<span class="sc">::</span><span class="fu">rowwise</span>() <span class="sc">%&gt;%</span> </span>
-<span id="cb6-52"><a href="#cb6-52" tabindex="-1"></a>            dplyr<span class="sc">::</span><span class="fu">mutate</span>(<span class="at">weight_boot =</span> <span class="fu">length</span>(boot_data[[k]][boot_data[[k]] <span class="sc">==</span> id])) <span class="sc">%&gt;%</span> </span>
-<span id="cb6-53"><a href="#cb6-53" tabindex="-1"></a>            dplyr<span class="sc">::</span><span class="fu">ungroup</span>() <span class="sc">%&gt;%</span> </span>
-<span id="cb6-54"><a href="#cb6-54" tabindex="-1"></a>            dplyr<span class="sc">::</span><span class="fu">group_by</span>(followup_time) <span class="sc">%&gt;%</span> </span>
-<span id="cb6-55"><a href="#cb6-55" tabindex="-1"></a>            dplyr<span class="sc">::</span><span class="fu">summarise</span>(<span class="at">survival_treatment =</span> <span class="fu">mean</span>(cum_hazard_treatment<span class="sc">*</span>weight_boot),</span>
-<span id="cb6-56"><a href="#cb6-56" tabindex="-1"></a>                             <span class="at">survival_control =</span> <span class="fu">mean</span>(cum_hazard_control<span class="sc">*</span>weight_boot),</span>
-<span id="cb6-57"><a href="#cb6-57" tabindex="-1"></a>                             <span class="at">risk_difference =</span> survival_control <span class="sc">-</span> survival_treatment)</span>
-<span id="cb6-58"><a href="#cb6-58" tabindex="-1"></a>          </span>
-<span id="cb6-59"><a href="#cb6-59" tabindex="-1"></a>          predicted_probas_PP_boot[,<span class="dv">3</span>] <span class="sc">-</span> predicted_probas_PP_boot[,<span class="dv">2</span>]</span>
-<span id="cb6-60"><a href="#cb6-60" tabindex="-1"></a>          </span>
-<span id="cb6-61"><a href="#cb6-61" tabindex="-1"></a>  }</span>
-<span id="cb6-62"><a href="#cb6-62" tabindex="-1"></a>    </span>
-<span id="cb6-63"><a href="#cb6-63" tabindex="-1"></a>  CI_lb <span class="ot">&lt;-</span> <span class="dv">2</span><span class="sc">*</span>pred_list<span class="sc">$</span>difference <span class="sc">-</span> <span class="fu">apply</span>(bootstrapped_MRDs,</span>
-<span id="cb6-64"><a href="#cb6-64" tabindex="-1"></a>                                                           <span class="dv">1</span>,</span>
-<span id="cb6-65"><a href="#cb6-65" tabindex="-1"></a>                                                           quantile,</span>
-<span id="cb6-66"><a href="#cb6-66" tabindex="-1"></a>                                                           <span class="at">probs =</span> <span class="fu">c</span>(<span class="fl">0.975</span>))</span>
-<span id="cb6-67"><a href="#cb6-67" tabindex="-1"></a>  CI_ub <span class="ot">&lt;-</span> <span class="dv">2</span><span class="sc">*</span>pred_list<span class="sc">$</span>difference <span class="sc">-</span> <span class="fu">apply</span>(bootstrapped_MRDs,</span>
-<span id="cb6-68"><a href="#cb6-68" tabindex="-1"></a>                                                           <span class="dv">1</span>,</span>
-<span id="cb6-69"><a href="#cb6-69" tabindex="-1"></a>                                                           quantile,</span>
-<span id="cb6-70"><a href="#cb6-70" tabindex="-1"></a>                                                           <span class="at">probs =</span> <span class="fu">c</span>(<span class="fl">0.025</span>))</span>
-<span id="cb6-71"><a href="#cb6-71" tabindex="-1"></a>}</span></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a><span class="co">#&#39; @param trial_msm_output output for fit_msm(), should contain all relevant information including original data, expanded data, </span></span>
+<span id="cb4-2"><a href="#cb4-2" tabindex="-1"></a><span class="co">#&#39; weight models formulae, outcome model</span></span>
+<span id="cb4-3"><a href="#cb4-3" tabindex="-1"></a><span class="co">#&#39; @param ci_type string or vector of strings of bootstrap CI types user wants (&quot;Nonpara. bootstrap&quot;, &quot;LEF outcome only&quot;, &quot;LEF both&quot;) </span></span>
+<span id="cb4-4"><a href="#cb4-4" tabindex="-1"></a><span class="co">#&#39; (these names are subject to change)</span></span>
+<span id="cb4-5"><a href="#cb4-5" tabindex="-1"></a><span class="co">#&#39; @param output_from_calculate_predictions output of calculate_predictions()$difference as the point estimate is need to build pivot CIs</span></span>
+<span id="cb4-6"><a href="#cb4-6" tabindex="-1"></a><span class="co">#&#39; @param bootstrap_sample_size Number of bootstrap samples</span></span>
+<span id="cb4-7"><a href="#cb4-7" tabindex="-1"></a><span class="co">#&#39;</span></span>
+<span id="cb4-8"><a href="#cb4-8" tabindex="-1"></a>function_that_calculates_bootstrap_CIs <span class="ot">&lt;-</span> <span class="cf">function</span>(trial_msm_output, ci_type, output_from_calculate_predictions, bootstrap_sample_size){</span>
+<span id="cb4-9"><a href="#cb4-9" tabindex="-1"></a> <span class="do">##########################################################################################################################</span></span>
+<span id="cb4-10"><a href="#cb4-10" tabindex="-1"></a> <span class="co">#  All code below needs to be changed to match variable names with function input, some of which are class type #</span></span>
+<span id="cb4-11"><a href="#cb4-11" tabindex="-1"></a> <span class="do">##########################################################################################################################</span></span>
+<span id="cb4-12"><a href="#cb4-12" tabindex="-1"></a>  </span>
+<span id="cb4-13"><a href="#cb4-13" tabindex="-1"></a>   <span class="co"># Step 0: obtain bootstrap samples.</span></span>
+<span id="cb4-14"><a href="#cb4-14" tabindex="-1"></a>  </span>
+<span id="cb4-15"><a href="#cb4-15" tabindex="-1"></a>  boot_data <span class="ot">&lt;-</span> <span class="fu">list</span>()</span>
+<span id="cb4-16"><a href="#cb4-16" tabindex="-1"></a>    <span class="cf">for</span> (k <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>bootstrap_iter) {</span>
+<span id="cb4-17"><a href="#cb4-17" tabindex="-1"></a>      boot_data[[k]] <span class="ot">&lt;-</span> <span class="fu">sort</span>(<span class="fu">sample</span>(<span class="fu">unique</span>(trial_pp<span class="sc">@</span>outcome_data<span class="sc">$</span>id), <span class="fu">length</span>(<span class="fu">unique</span>(trial_pp<span class="sc">@</span>outcome_data<span class="sc">$</span>id)), <span class="at">replace =</span> <span class="cn">TRUE</span>)) <span class="co"># Need to check how to extract from class type as data frame</span></span>
+<span id="cb4-18"><a href="#cb4-18" tabindex="-1"></a>    }</span>
+<span id="cb4-19"><a href="#cb4-19" tabindex="-1"></a></span>
+<span id="cb4-20"><a href="#cb4-20" tabindex="-1"></a>  <span class="co">#Step 1: for each bootstrap sample: </span></span>
+<span id="cb4-21"><a href="#cb4-21" tabindex="-1"></a>  bootstrapped_MRDs <span class="ot">&lt;-</span> <span class="fu">foreach</span>(<span class="at">k =</span> <span class="dv">1</span><span class="sc">:</span>bootstrap_sample_size, <span class="at">.combine=</span>cbind) <span class="sc">%dopar%</span> {</span>
+<span id="cb4-22"><a href="#cb4-22" tabindex="-1"></a>     <span class="co"># Step 2: refit/recalculate weights </span></span>
+<span id="cb4-23"><a href="#cb4-23" tabindex="-1"></a>     </span>
+<span id="cb4-24"><a href="#cb4-24" tabindex="-1"></a>    IP_model <span class="ot">&lt;-</span> <span class="fu">weight_func_bootstrap</span>(<span class="at">expanded_data =</span> triat_pp<span class="sc">@</span>outcome_data, </span>
+<span id="cb4-25"><a href="#cb4-25" tabindex="-1"></a>                                            <span class="at">switch_d_cov =</span> <span class="co">#extract weight models, somewhere in trial_pp@censor</span></span>
+<span id="cb4-26"><a href="#cb4-26" tabindex="-1"></a>                                            <span class="at">weight_model_d0 =</span> switch_d0,</span>
+<span id="cb4-27"><a href="#cb4-27" tabindex="-1"></a>                                            <span class="at">weight_model_n0 =</span> switch_n0,</span>
+<span id="cb4-28"><a href="#cb4-28" tabindex="-1"></a>                                            <span class="at">weight_model_d1 =</span> switch_d1,</span>
+<span id="cb4-29"><a href="#cb4-29" tabindex="-1"></a>                                            <span class="at">weight_model_n1 =</span> switch_n1,</span>
+<span id="cb4-30"><a href="#cb4-30" tabindex="-1"></a>                                            <span class="at">boot_idx =</span> boot_data[[k]], <span class="at">remodel =</span> <span class="cn">TRUE</span>, <span class="at">quiet =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb4-31"><a href="#cb4-31" tabindex="-1"></a>          </span>
+<span id="cb4-32"><a href="#cb4-32" tabindex="-1"></a>          <span class="co">#calculate IP weights from bootstrap sample: new weight = refitted weight * bootstrap sampling weight</span></span>
+<span id="cb4-33"><a href="#cb4-33" tabindex="-1"></a>          boot_design_data <span class="ot">&lt;-</span> IP_model<span class="sc">$</span>data <span class="sc">%&gt;%</span></span>
+<span id="cb4-34"><a href="#cb4-34" tabindex="-1"></a>            <span class="fu">merge</span>(weights_table_boot, <span class="at">by =</span> <span class="st">&#39;id&#39;</span>, <span class="at">all.y =</span> <span class="cn">TRUE</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb4-35"><a href="#cb4-35" tabindex="-1"></a>            dplyr<span class="sc">::</span><span class="fu">mutate</span>(<span class="at">weight =</span> <span class="fu">ifelse</span>(weight_boot <span class="sc">!=</span><span class="dv">0</span>,weight<span class="sc">*</span>weight_boot,<span class="dv">0</span>))</span>
+<span id="cb4-36"><a href="#cb4-36" tabindex="-1"></a>          </span>
+<span id="cb4-37"><a href="#cb4-37" tabindex="-1"></a>      <span class="co"># STep 3. A) : refit MSM (only for nonparametric bootstrap)</span></span>
+<span id="cb4-38"><a href="#cb4-38" tabindex="-1"></a>      <span class="co"># Step 3. B): recalculaye MSM coefficient</span></span>
+<span id="cb4-39"><a href="#cb4-39" tabindex="-1"></a>          LEFs <span class="ot">&lt;-</span> <span class="fu">t</span>(X)<span class="sc">%*%</span>(boot_design_data<span class="sc">$</span>weight<span class="sc">*</span>e)</span>
+<span id="cb4-40"><a href="#cb4-40" tabindex="-1"></a>          LEFs[<span class="fu">is.na</span>(LEFs)] <span class="ot">&lt;-</span> <span class="dv">0</span></span>
+<span id="cb4-41"><a href="#cb4-41" tabindex="-1"></a>          variance_mat <span class="ot">&lt;-</span> <span class="fu">vcov</span>(PP<span class="sc">$</span>model)</span>
+<span id="cb4-42"><a href="#cb4-42" tabindex="-1"></a>          variance_mat[<span class="fu">is.na</span>(variance_mat)] <span class="ot">&lt;-</span> <span class="dv">0</span></span>
+<span id="cb4-43"><a href="#cb4-43" tabindex="-1"></a>          <span class="co">#Calculate \hat \beta(b)</span></span>
+<span id="cb4-44"><a href="#cb4-44" tabindex="-1"></a>          beta <span class="ot">&lt;-</span> PP<span class="sc">$</span>model<span class="sc">$</span>coefficients <span class="sc">+</span> variance_mat<span class="sc">%*%</span>LEFs</span>
+<span id="cb4-45"><a href="#cb4-45" tabindex="-1"></a>          </span>
+<span id="cb4-46"><a href="#cb4-46" tabindex="-1"></a>          PP_boot <span class="ot">&lt;-</span> PP</span>
+<span id="cb4-47"><a href="#cb4-47" tabindex="-1"></a>          PP_boot<span class="sc">$</span>model<span class="sc">$</span>coefficients <span class="ot">&lt;-</span> beta</span>
+<span id="cb4-48"><a href="#cb4-48" tabindex="-1"></a>          </span>
+<span id="cb4-49"><a href="#cb4-49" tabindex="-1"></a>      <span class="co">#step 4: get predicted MRD</span></span>
+<span id="cb4-50"><a href="#cb4-50" tabindex="-1"></a>           Y_pred_PP_treatment_boot <span class="ot">&lt;-</span> <span class="fu">predict.glm</span>(PP_boot<span class="sc">$</span>model, </span>
+<span id="cb4-51"><a href="#cb4-51" tabindex="-1"></a>                                                  fitting_data_treatment, </span>
+<span id="cb4-52"><a href="#cb4-52" tabindex="-1"></a>                                                  <span class="at">type =</span> <span class="st">&quot;response&quot;</span>)</span>
+<span id="cb4-53"><a href="#cb4-53" tabindex="-1"></a>          Y_pred_PP_control_boot <span class="ot">&lt;-</span> <span class="fu">predict.glm</span>(PP_boot<span class="sc">$</span>model, </span>
+<span id="cb4-54"><a href="#cb4-54" tabindex="-1"></a>                                                fitting_data_control,</span>
+<span id="cb4-55"><a href="#cb4-55" tabindex="-1"></a>                                                <span class="at">type =</span> <span class="st">&quot;response&quot;</span>)</span>
+<span id="cb4-56"><a href="#cb4-56" tabindex="-1"></a>          predicted_probas_PP_boot <span class="ot">&lt;-</span> fitting_data_treatment <span class="sc">%&gt;%</span> </span>
+<span id="cb4-57"><a href="#cb4-57" tabindex="-1"></a>            dplyr<span class="sc">::</span><span class="fu">mutate</span>(<span class="at">predicted_proba_treatment =</span> Y_pred_PP_treatment_boot,</span>
+<span id="cb4-58"><a href="#cb4-58" tabindex="-1"></a>                          <span class="at">predicted_proba_control =</span> Y_pred_PP_control_boot) <span class="sc">%&gt;%</span> </span>
+<span id="cb4-59"><a href="#cb4-59" tabindex="-1"></a>            dplyr<span class="sc">::</span><span class="fu">group_by</span>(id, trial_period) <span class="sc">%&gt;%</span> </span>
+<span id="cb4-60"><a href="#cb4-60" tabindex="-1"></a>            dplyr<span class="sc">::</span><span class="fu">mutate</span>(<span class="at">cum_hazard_treatment =</span> <span class="fu">cumprod</span>(<span class="dv">1</span><span class="sc">-</span>predicted_proba_treatment),</span>
+<span id="cb4-61"><a href="#cb4-61" tabindex="-1"></a>                          <span class="at">cum_hazard_control =</span> <span class="fu">cumprod</span>(<span class="dv">1</span><span class="sc">-</span>predicted_proba_control)) <span class="sc">%&gt;%</span> </span>
+<span id="cb4-62"><a href="#cb4-62" tabindex="-1"></a>            dplyr<span class="sc">::</span><span class="fu">rowwise</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb4-63"><a href="#cb4-63" tabindex="-1"></a>            dplyr<span class="sc">::</span><span class="fu">mutate</span>(<span class="at">weight_boot =</span> <span class="fu">length</span>(boot_data[[k]][boot_data[[k]] <span class="sc">==</span> id])) <span class="sc">%&gt;%</span> </span>
+<span id="cb4-64"><a href="#cb4-64" tabindex="-1"></a>            dplyr<span class="sc">::</span><span class="fu">ungroup</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb4-65"><a href="#cb4-65" tabindex="-1"></a>            dplyr<span class="sc">::</span><span class="fu">group_by</span>(followup_time) <span class="sc">%&gt;%</span> </span>
+<span id="cb4-66"><a href="#cb4-66" tabindex="-1"></a>            dplyr<span class="sc">::</span><span class="fu">summarise</span>(<span class="at">survival_treatment =</span> <span class="fu">mean</span>(cum_hazard_treatment<span class="sc">*</span>weight_boot),</span>
+<span id="cb4-67"><a href="#cb4-67" tabindex="-1"></a>                             <span class="at">survival_control =</span> <span class="fu">mean</span>(cum_hazard_control<span class="sc">*</span>weight_boot),</span>
+<span id="cb4-68"><a href="#cb4-68" tabindex="-1"></a>                             <span class="at">risk_difference =</span> survival_control <span class="sc">-</span> survival_treatment)</span>
+<span id="cb4-69"><a href="#cb4-69" tabindex="-1"></a>          </span>
+<span id="cb4-70"><a href="#cb4-70" tabindex="-1"></a>          predicted_probas_PP_boot[,<span class="dv">3</span>] <span class="sc">-</span> predicted_probas_PP_boot[,<span class="dv">2</span>]</span>
+<span id="cb4-71"><a href="#cb4-71" tabindex="-1"></a>          </span>
+<span id="cb4-72"><a href="#cb4-72" tabindex="-1"></a>  }</span>
+<span id="cb4-73"><a href="#cb4-73" tabindex="-1"></a>  <span class="co"># Step 5: generate pivot CIs</span></span>
+<span id="cb4-74"><a href="#cb4-74" tabindex="-1"></a>  CI_lb <span class="ot">&lt;-</span> <span class="dv">2</span><span class="sc">*</span>pred_list<span class="sc">$</span>difference <span class="sc">-</span> <span class="fu">apply</span>(bootstrapped_MRDs,</span>
+<span id="cb4-75"><a href="#cb4-75" tabindex="-1"></a>                                                           <span class="dv">1</span>,</span>
+<span id="cb4-76"><a href="#cb4-76" tabindex="-1"></a>                                                           quantile,</span>
+<span id="cb4-77"><a href="#cb4-77" tabindex="-1"></a>                                                           <span class="at">probs =</span> <span class="fu">c</span>(<span class="fl">0.975</span>))</span>
+<span id="cb4-78"><a href="#cb4-78" tabindex="-1"></a>  CI_ub <span class="ot">&lt;-</span> <span class="dv">2</span><span class="sc">*</span>pred_list<span class="sc">$</span>difference <span class="sc">-</span> <span class="fu">apply</span>(bootstrapped_MRDs,</span>
+<span id="cb4-79"><a href="#cb4-79" tabindex="-1"></a>                                                           <span class="dv">1</span>,</span>
+<span id="cb4-80"><a href="#cb4-80" tabindex="-1"></a>                                                           quantile,</span>
+<span id="cb4-81"><a href="#cb4-81" tabindex="-1"></a>                                                           <span class="at">probs =</span> <span class="fu">c</span>(<span class="fl">0.025</span>))</span>
+<span id="cb4-82"><a href="#cb4-82" tabindex="-1"></a>  </span>
+<span id="cb4-83"><a href="#cb4-83" tabindex="-1"></a>  <span class="co">#Step 6: Add CIs to the output data from the end of predict()</span></span>
+<span id="cb4-84"><a href="#cb4-84" tabindex="-1"></a>  </span>
+<span id="cb4-85"><a href="#cb4-85" tabindex="-1"></a>  new_output <span class="ot">&lt;-</span> output <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="st">&#39;Bootstrap CI LW&#39;</span> <span class="ot">=</span> CI_lb,</span>
+<span id="cb4-86"><a href="#cb4-86" tabindex="-1"></a>                                  <span class="st">&#39;Bootstrap CI UB%&#39;</span> <span class="ot">=</span> CI_ub)</span>
+<span id="cb4-87"><a href="#cb4-87" tabindex="-1"></a>}</span></code></pre></div>
 </div>
 
 
