@@ -250,7 +250,7 @@ function_that_calculates_bootstrap_CIs <- function(trial_msm_output, ci_type, ou
 
 ```
 
-For `weight_func_bootstrap()`:
+For `weight_func_bootstrap()`: this is mainly a modification based on `weight_func()` in `data_utils.R`. The main purpose of this function is to refit the weight models on a new data set (i.e. bootstrap sample) or recalculate weights based on a new set of coefficients (for LEF bootstrap CIs). It also takes some code from `data_expansion.R`. The input is the expanded data and a bootstrap sample vector of IDs and the returned output is the same expanded data with new weights.
 
 ```{r}
 weight_func_bootstrap <- function(expanded_data,
@@ -425,13 +425,18 @@ weight_func_bootstrap <- function(expanded_data,
   new_data[, weight := (weight0 / wtprod)]
   
   #### New data is merged with existing expanded data to add the new weights 
+  if (!is.na(boot_idx)){
   output_data <- new_data[expanded_data, on = list( id = id, trial_period = trial_period, 
                                                     followup_time = followup_time)] %>%
     dplyr::select(names(expanded_data)) %>% 
     rowwise() %>% 
     dplyr::mutate(weight_boot = length(boot_idx[boot_idx == id]),
                   weight = ifelse(weight_boot !=0,weight*weight_boot,0))
-  
+  } else {
+    output_data <- new_data[expanded_data, on = list( id = id, trial_period = trial_period, 
+                                                    followup_time = followup_time)] %>%
+    dplyr::select(names(expanded_data))
+  }
 # Output
   output_data 
 }

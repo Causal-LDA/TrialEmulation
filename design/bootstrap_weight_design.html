@@ -435,21 +435,27 @@ like this for example:</p>
 <span id="cb3-14"><a href="#cb3-14" tabindex="-1"></a>    <span class="at">col_names =</span> <span class="fu">paste0</span>(type, <span class="fu">c</span>(<span class="st">&quot;&quot;</span>, <span class="st">&quot;&quot;</span>, <span class="st">&quot;_diff&quot;</span>)),</span>
 <span id="cb3-15"><a href="#cb3-15" tabindex="-1"></a>    <span class="at">SIMPLIFY =</span> <span class="cn">FALSE</span>,</span>
 <span id="cb3-16"><a href="#cb3-16" tabindex="-1"></a>    <span class="at">FUN =</span> <span class="cf">function</span>(pred_matrix, col_names) {</span>
-<span id="cb3-17"><a href="#cb3-17" tabindex="-1"></a>      <span class="cf">if</span> (conf_int) {</span>
+<span id="cb3-17"><a href="#cb3-17" tabindex="-1"></a>      <span class="cf">if</span> (ci_type <span class="sc">==</span> <span class="st">&quot;sandwich&quot;</span>) {</span>
 <span id="cb3-18"><a href="#cb3-18" tabindex="-1"></a>        quantiles <span class="ot">&lt;-</span> <span class="fu">apply</span>(pred_matrix, <span class="dv">1</span>, quantile, <span class="at">probs =</span> <span class="fu">c</span>(<span class="fl">0.025</span>, <span class="fl">0.975</span>))</span>
 <span id="cb3-19"><a href="#cb3-19" tabindex="-1"></a>        <span class="fu">setNames</span>(</span>
 <span id="cb3-20"><a href="#cb3-20" tabindex="-1"></a>          <span class="fu">data.frame</span>(predict_times, pred_matrix[, <span class="dv">1</span>], quantiles[<span class="dv">1</span>, ], quantiles[<span class="dv">2</span>, ]),</span>
 <span id="cb3-21"><a href="#cb3-21" tabindex="-1"></a>          <span class="fu">c</span>(<span class="st">&quot;followup_time&quot;</span>, col_names, <span class="st">&quot;2.5%&quot;</span>, <span class="st">&quot;97.5%&quot;</span>)</span>
 <span id="cb3-22"><a href="#cb3-22" tabindex="-1"></a>        )</span>
-<span id="cb3-23"><a href="#cb3-23" tabindex="-1"></a>      } <span class="cf">else</span> {</span>
-<span id="cb3-24"><a href="#cb3-24" tabindex="-1"></a>        <span class="fu">setNames</span>(<span class="fu">data.frame</span>(predict_times, pred_matrix[, <span class="dv">1</span>]), <span class="at">nm =</span> <span class="fu">c</span>(<span class="st">&quot;followup_time&quot;</span>, col_names))</span>
-<span id="cb3-25"><a href="#cb3-25" tabindex="-1"></a>      }</span>
-<span id="cb3-26"><a href="#cb3-26" tabindex="-1"></a>    }</span>
-<span id="cb3-27"><a href="#cb3-27" tabindex="-1"></a>  )</span>
-<span id="cb3-28"><a href="#cb3-28" tabindex="-1"></a>  </span>
-<span id="cb3-29"><a href="#cb3-29" tabindex="-1"></a>  <span class="cf">if</span> (type <span class="sc">==</span> <span class="st">&#39;mrd&#39;</span>){</span>
-<span id="cb3-30"><a href="#cb3-30" tabindex="-1"></a>    bootstrap_CIs <span class="ot">&lt;-</span> <span class="fu">function_that_calculates_bootstrap_CIs</span>(trial_msm_output, ci_type, output_from_calculate_predictions, bootstrap_sample_size)</span>
-<span id="cb3-31"><a href="#cb3-31" tabindex="-1"></a>  }</span></code></pre></div>
+<span id="cb3-23"><a href="#cb3-23" tabindex="-1"></a>      } <span class="cf">else</span> <span class="cf">if</span> (ci_type <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">&quot;Nonpara. bootstrap&quot;</span>, <span class="st">&quot;LEF outcome&quot;</span>, <span class="st">&quot;LEF both&quot;</span>)){</span>
+<span id="cb3-24"><a href="#cb3-24" tabindex="-1"></a>        bootstrap_CIs <span class="ot">&lt;-</span> <span class="fu">function_that_calculates_bootstrap_CIs</span>(trial_msm_output, ci_type, output_from_calculate_predictions, bootstrap_sample_size)</span>
+<span id="cb3-25"><a href="#cb3-25" tabindex="-1"></a>        <span class="fu">setNames</span>(</span>
+<span id="cb3-26"><a href="#cb3-26" tabindex="-1"></a>          <span class="fu">data.frame</span>(predict_times, pred_matrix[, <span class="dv">1</span>], bootstrap_CIs[, <span class="dv">1</span>], bootstrap_CIs[, <span class="dv">2</span>]),</span>
+<span id="cb3-27"><a href="#cb3-27" tabindex="-1"></a>          <span class="fu">c</span>(<span class="st">&quot;followup_time&quot;</span>, col_names, <span class="st">&quot;lower_bound&quot;</span>, <span class="st">&quot;upper_bound&quot;</span>)</span>
+<span id="cb3-28"><a href="#cb3-28" tabindex="-1"></a>        )</span>
+<span id="cb3-29"><a href="#cb3-29" tabindex="-1"></a>      }</span>
+<span id="cb3-30"><a href="#cb3-30" tabindex="-1"></a>      </span>
+<span id="cb3-31"><a href="#cb3-31" tabindex="-1"></a>      <span class="cf">else</span> {</span>
+<span id="cb3-32"><a href="#cb3-32" tabindex="-1"></a>        <span class="fu">setNames</span>(<span class="fu">data.frame</span>(predict_times, pred_matrix[, <span class="dv">1</span>]), <span class="at">nm =</span> <span class="fu">c</span>(<span class="st">&quot;followup_time&quot;</span>, col_names))</span>
+<span id="cb3-33"><a href="#cb3-33" tabindex="-1"></a>      }</span>
+<span id="cb3-34"><a href="#cb3-34" tabindex="-1"></a>    }</span>
+<span id="cb3-35"><a href="#cb3-35" tabindex="-1"></a>  )</span>
+<span id="cb3-36"><a href="#cb3-36" tabindex="-1"></a>  </span>
+<span id="cb3-37"><a href="#cb3-37" tabindex="-1"></a>  </span></code></pre></div>
 </div>
 <div id="design-of-function_that_calculates_bootstrap_cis" class="section level3">
 <h3>Design of function_that_calculates_bootstrap_CIs</h3>
@@ -465,82 +471,323 @@ like this for example:</p>
 <span id="cb4-9"><a href="#cb4-9" tabindex="-1"></a> <span class="do">##########################################################################################################################</span></span>
 <span id="cb4-10"><a href="#cb4-10" tabindex="-1"></a> <span class="co">#  All code below needs to be changed to match variable names with function input, some of which are class type #</span></span>
 <span id="cb4-11"><a href="#cb4-11" tabindex="-1"></a> <span class="do">##########################################################################################################################</span></span>
-<span id="cb4-12"><a href="#cb4-12" tabindex="-1"></a>  </span>
-<span id="cb4-13"><a href="#cb4-13" tabindex="-1"></a>   <span class="co"># Step 0: obtain bootstrap samples.</span></span>
-<span id="cb4-14"><a href="#cb4-14" tabindex="-1"></a>  </span>
-<span id="cb4-15"><a href="#cb4-15" tabindex="-1"></a>  boot_data <span class="ot">&lt;-</span> <span class="fu">list</span>()</span>
-<span id="cb4-16"><a href="#cb4-16" tabindex="-1"></a>    <span class="cf">for</span> (k <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>bootstrap_iter) {</span>
-<span id="cb4-17"><a href="#cb4-17" tabindex="-1"></a>      boot_data[[k]] <span class="ot">&lt;-</span> <span class="fu">sort</span>(<span class="fu">sample</span>(<span class="fu">unique</span>(trial_pp<span class="sc">@</span>outcome_data<span class="sc">$</span>id), <span class="fu">length</span>(<span class="fu">unique</span>(trial_pp<span class="sc">@</span>outcome_data<span class="sc">$</span>id)), <span class="at">replace =</span> <span class="cn">TRUE</span>)) <span class="co"># Need to check how to extract from class type as data frame</span></span>
-<span id="cb4-18"><a href="#cb4-18" tabindex="-1"></a>    }</span>
-<span id="cb4-19"><a href="#cb4-19" tabindex="-1"></a></span>
-<span id="cb4-20"><a href="#cb4-20" tabindex="-1"></a>  <span class="co">#Step 1: for each bootstrap sample: </span></span>
-<span id="cb4-21"><a href="#cb4-21" tabindex="-1"></a>  bootstrapped_MRDs <span class="ot">&lt;-</span> <span class="fu">foreach</span>(<span class="at">k =</span> <span class="dv">1</span><span class="sc">:</span>bootstrap_sample_size, <span class="at">.combine=</span>cbind) <span class="sc">%dopar%</span> {</span>
-<span id="cb4-22"><a href="#cb4-22" tabindex="-1"></a>     <span class="co"># Step 2: refit/recalculate weights </span></span>
-<span id="cb4-23"><a href="#cb4-23" tabindex="-1"></a>     </span>
-<span id="cb4-24"><a href="#cb4-24" tabindex="-1"></a>    IP_model <span class="ot">&lt;-</span> <span class="fu">weight_func_bootstrap</span>(<span class="at">expanded_data =</span> triat_pp<span class="sc">@</span>outcome_data, </span>
-<span id="cb4-25"><a href="#cb4-25" tabindex="-1"></a>                                            <span class="at">switch_d_cov =</span> <span class="co">#extract weight models, somewhere in trial_pp@censor</span></span>
-<span id="cb4-26"><a href="#cb4-26" tabindex="-1"></a>                                            <span class="at">weight_model_d0 =</span> switch_d0,</span>
-<span id="cb4-27"><a href="#cb4-27" tabindex="-1"></a>                                            <span class="at">weight_model_n0 =</span> switch_n0,</span>
-<span id="cb4-28"><a href="#cb4-28" tabindex="-1"></a>                                            <span class="at">weight_model_d1 =</span> switch_d1,</span>
-<span id="cb4-29"><a href="#cb4-29" tabindex="-1"></a>                                            <span class="at">weight_model_n1 =</span> switch_n1,</span>
-<span id="cb4-30"><a href="#cb4-30" tabindex="-1"></a>                                            <span class="at">boot_idx =</span> boot_data[[k]], <span class="at">remodel =</span> <span class="cn">TRUE</span>, <span class="at">quiet =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb4-31"><a href="#cb4-31" tabindex="-1"></a>          </span>
-<span id="cb4-32"><a href="#cb4-32" tabindex="-1"></a>          <span class="co">#calculate IP weights from bootstrap sample: new weight = refitted weight * bootstrap sampling weight</span></span>
-<span id="cb4-33"><a href="#cb4-33" tabindex="-1"></a>          boot_design_data <span class="ot">&lt;-</span> IP_model<span class="sc">$</span>data <span class="sc">%&gt;%</span></span>
-<span id="cb4-34"><a href="#cb4-34" tabindex="-1"></a>            <span class="fu">merge</span>(weights_table_boot, <span class="at">by =</span> <span class="st">&#39;id&#39;</span>, <span class="at">all.y =</span> <span class="cn">TRUE</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb4-35"><a href="#cb4-35" tabindex="-1"></a>            dplyr<span class="sc">::</span><span class="fu">mutate</span>(<span class="at">weight =</span> <span class="fu">ifelse</span>(weight_boot <span class="sc">!=</span><span class="dv">0</span>,weight<span class="sc">*</span>weight_boot,<span class="dv">0</span>))</span>
-<span id="cb4-36"><a href="#cb4-36" tabindex="-1"></a>          </span>
-<span id="cb4-37"><a href="#cb4-37" tabindex="-1"></a>      <span class="co"># STep 3. A) : refit MSM (only for nonparametric bootstrap)</span></span>
-<span id="cb4-38"><a href="#cb4-38" tabindex="-1"></a>      <span class="co"># Step 3. B): recalculaye MSM coefficient</span></span>
-<span id="cb4-39"><a href="#cb4-39" tabindex="-1"></a>          LEFs <span class="ot">&lt;-</span> <span class="fu">t</span>(X)<span class="sc">%*%</span>(boot_design_data<span class="sc">$</span>weight<span class="sc">*</span>e)</span>
-<span id="cb4-40"><a href="#cb4-40" tabindex="-1"></a>          LEFs[<span class="fu">is.na</span>(LEFs)] <span class="ot">&lt;-</span> <span class="dv">0</span></span>
-<span id="cb4-41"><a href="#cb4-41" tabindex="-1"></a>          variance_mat <span class="ot">&lt;-</span> <span class="fu">vcov</span>(PP<span class="sc">$</span>model)</span>
-<span id="cb4-42"><a href="#cb4-42" tabindex="-1"></a>          variance_mat[<span class="fu">is.na</span>(variance_mat)] <span class="ot">&lt;-</span> <span class="dv">0</span></span>
-<span id="cb4-43"><a href="#cb4-43" tabindex="-1"></a>          <span class="co">#Calculate \hat \beta(b)</span></span>
-<span id="cb4-44"><a href="#cb4-44" tabindex="-1"></a>          beta <span class="ot">&lt;-</span> PP<span class="sc">$</span>model<span class="sc">$</span>coefficients <span class="sc">+</span> variance_mat<span class="sc">%*%</span>LEFs</span>
-<span id="cb4-45"><a href="#cb4-45" tabindex="-1"></a>          </span>
-<span id="cb4-46"><a href="#cb4-46" tabindex="-1"></a>          PP_boot <span class="ot">&lt;-</span> PP</span>
-<span id="cb4-47"><a href="#cb4-47" tabindex="-1"></a>          PP_boot<span class="sc">$</span>model<span class="sc">$</span>coefficients <span class="ot">&lt;-</span> beta</span>
-<span id="cb4-48"><a href="#cb4-48" tabindex="-1"></a>          </span>
-<span id="cb4-49"><a href="#cb4-49" tabindex="-1"></a>      <span class="co">#step 4: get predicted MRD</span></span>
-<span id="cb4-50"><a href="#cb4-50" tabindex="-1"></a>           Y_pred_PP_treatment_boot <span class="ot">&lt;-</span> <span class="fu">predict.glm</span>(PP_boot<span class="sc">$</span>model, </span>
-<span id="cb4-51"><a href="#cb4-51" tabindex="-1"></a>                                                  fitting_data_treatment, </span>
-<span id="cb4-52"><a href="#cb4-52" tabindex="-1"></a>                                                  <span class="at">type =</span> <span class="st">&quot;response&quot;</span>)</span>
-<span id="cb4-53"><a href="#cb4-53" tabindex="-1"></a>          Y_pred_PP_control_boot <span class="ot">&lt;-</span> <span class="fu">predict.glm</span>(PP_boot<span class="sc">$</span>model, </span>
-<span id="cb4-54"><a href="#cb4-54" tabindex="-1"></a>                                                fitting_data_control,</span>
-<span id="cb4-55"><a href="#cb4-55" tabindex="-1"></a>                                                <span class="at">type =</span> <span class="st">&quot;response&quot;</span>)</span>
-<span id="cb4-56"><a href="#cb4-56" tabindex="-1"></a>          predicted_probas_PP_boot <span class="ot">&lt;-</span> fitting_data_treatment <span class="sc">%&gt;%</span> </span>
-<span id="cb4-57"><a href="#cb4-57" tabindex="-1"></a>            dplyr<span class="sc">::</span><span class="fu">mutate</span>(<span class="at">predicted_proba_treatment =</span> Y_pred_PP_treatment_boot,</span>
-<span id="cb4-58"><a href="#cb4-58" tabindex="-1"></a>                          <span class="at">predicted_proba_control =</span> Y_pred_PP_control_boot) <span class="sc">%&gt;%</span> </span>
-<span id="cb4-59"><a href="#cb4-59" tabindex="-1"></a>            dplyr<span class="sc">::</span><span class="fu">group_by</span>(id, trial_period) <span class="sc">%&gt;%</span> </span>
-<span id="cb4-60"><a href="#cb4-60" tabindex="-1"></a>            dplyr<span class="sc">::</span><span class="fu">mutate</span>(<span class="at">cum_hazard_treatment =</span> <span class="fu">cumprod</span>(<span class="dv">1</span><span class="sc">-</span>predicted_proba_treatment),</span>
-<span id="cb4-61"><a href="#cb4-61" tabindex="-1"></a>                          <span class="at">cum_hazard_control =</span> <span class="fu">cumprod</span>(<span class="dv">1</span><span class="sc">-</span>predicted_proba_control)) <span class="sc">%&gt;%</span> </span>
-<span id="cb4-62"><a href="#cb4-62" tabindex="-1"></a>            dplyr<span class="sc">::</span><span class="fu">rowwise</span>() <span class="sc">%&gt;%</span> </span>
-<span id="cb4-63"><a href="#cb4-63" tabindex="-1"></a>            dplyr<span class="sc">::</span><span class="fu">mutate</span>(<span class="at">weight_boot =</span> <span class="fu">length</span>(boot_data[[k]][boot_data[[k]] <span class="sc">==</span> id])) <span class="sc">%&gt;%</span> </span>
-<span id="cb4-64"><a href="#cb4-64" tabindex="-1"></a>            dplyr<span class="sc">::</span><span class="fu">ungroup</span>() <span class="sc">%&gt;%</span> </span>
-<span id="cb4-65"><a href="#cb4-65" tabindex="-1"></a>            dplyr<span class="sc">::</span><span class="fu">group_by</span>(followup_time) <span class="sc">%&gt;%</span> </span>
-<span id="cb4-66"><a href="#cb4-66" tabindex="-1"></a>            dplyr<span class="sc">::</span><span class="fu">summarise</span>(<span class="at">survival_treatment =</span> <span class="fu">mean</span>(cum_hazard_treatment<span class="sc">*</span>weight_boot),</span>
-<span id="cb4-67"><a href="#cb4-67" tabindex="-1"></a>                             <span class="at">survival_control =</span> <span class="fu">mean</span>(cum_hazard_control<span class="sc">*</span>weight_boot),</span>
-<span id="cb4-68"><a href="#cb4-68" tabindex="-1"></a>                             <span class="at">risk_difference =</span> survival_control <span class="sc">-</span> survival_treatment)</span>
-<span id="cb4-69"><a href="#cb4-69" tabindex="-1"></a>          </span>
-<span id="cb4-70"><a href="#cb4-70" tabindex="-1"></a>          predicted_probas_PP_boot[,<span class="dv">3</span>] <span class="sc">-</span> predicted_probas_PP_boot[,<span class="dv">2</span>]</span>
-<span id="cb4-71"><a href="#cb4-71" tabindex="-1"></a>          </span>
-<span id="cb4-72"><a href="#cb4-72" tabindex="-1"></a>  }</span>
-<span id="cb4-73"><a href="#cb4-73" tabindex="-1"></a>  <span class="co"># Step 5: generate pivot CIs</span></span>
-<span id="cb4-74"><a href="#cb4-74" tabindex="-1"></a>  CI_lb <span class="ot">&lt;-</span> <span class="dv">2</span><span class="sc">*</span>pred_list<span class="sc">$</span>difference <span class="sc">-</span> <span class="fu">apply</span>(bootstrapped_MRDs,</span>
-<span id="cb4-75"><a href="#cb4-75" tabindex="-1"></a>                                                           <span class="dv">1</span>,</span>
-<span id="cb4-76"><a href="#cb4-76" tabindex="-1"></a>                                                           quantile,</span>
-<span id="cb4-77"><a href="#cb4-77" tabindex="-1"></a>                                                           <span class="at">probs =</span> <span class="fu">c</span>(<span class="fl">0.975</span>))</span>
-<span id="cb4-78"><a href="#cb4-78" tabindex="-1"></a>  CI_ub <span class="ot">&lt;-</span> <span class="dv">2</span><span class="sc">*</span>pred_list<span class="sc">$</span>difference <span class="sc">-</span> <span class="fu">apply</span>(bootstrapped_MRDs,</span>
-<span id="cb4-79"><a href="#cb4-79" tabindex="-1"></a>                                                           <span class="dv">1</span>,</span>
-<span id="cb4-80"><a href="#cb4-80" tabindex="-1"></a>                                                           quantile,</span>
-<span id="cb4-81"><a href="#cb4-81" tabindex="-1"></a>                                                           <span class="at">probs =</span> <span class="fu">c</span>(<span class="fl">0.025</span>))</span>
-<span id="cb4-82"><a href="#cb4-82" tabindex="-1"></a>  </span>
-<span id="cb4-83"><a href="#cb4-83" tabindex="-1"></a>  <span class="co">#Step 6: Add CIs to the output data from the end of predict()</span></span>
-<span id="cb4-84"><a href="#cb4-84" tabindex="-1"></a>  </span>
-<span id="cb4-85"><a href="#cb4-85" tabindex="-1"></a>  new_output <span class="ot">&lt;-</span> output <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="st">&#39;Bootstrap CI LW&#39;</span> <span class="ot">=</span> CI_lb,</span>
-<span id="cb4-86"><a href="#cb4-86" tabindex="-1"></a>                                  <span class="st">&#39;Bootstrap CI UB%&#39;</span> <span class="ot">=</span> CI_ub)</span>
-<span id="cb4-87"><a href="#cb4-87" tabindex="-1"></a>}</span></code></pre></div>
+<span id="cb4-12"><a href="#cb4-12" tabindex="-1"></a>  <span class="cf">if</span> (ci_type <span class="sc">!=</span> <span class="st">&#39;Nonpara. bootstrap&#39;</span>){</span>
+<span id="cb4-13"><a href="#cb4-13" tabindex="-1"></a>    X <span class="ot">&lt;-</span> <span class="fu">model.matrix</span>(PP<span class="sc">$</span>model)</span>
+<span id="cb4-14"><a href="#cb4-14" tabindex="-1"></a>    e <span class="ot">&lt;-</span> PP<span class="sc">$</span>model<span class="sc">$</span>y <span class="sc">-</span> PP<span class="sc">$</span>model<span class="sc">$</span>fitted.values</span>
+<span id="cb4-15"><a href="#cb4-15" tabindex="-1"></a>    <span class="cf">if</span> (ci_type <span class="sc">==</span> <span class="st">&#39;LEF both&#39;</span>){</span>
+<span id="cb4-16"><a href="#cb4-16" tabindex="-1"></a>      X_sw_d0 <span class="ot">&lt;-</span> <span class="fu">model.matrix</span>(switch_d0)</span>
+<span id="cb4-17"><a href="#cb4-17" tabindex="-1"></a>      e_sw_d0 <span class="ot">&lt;-</span> switch_d0<span class="sc">$</span>y <span class="sc">-</span> switch_d0<span class="sc">$</span>fitted.values</span>
+<span id="cb4-18"><a href="#cb4-18" tabindex="-1"></a>      </span>
+<span id="cb4-19"><a href="#cb4-19" tabindex="-1"></a>      X_sw_n0 <span class="ot">&lt;-</span> <span class="fu">model.matrix</span>(switch_n0)</span>
+<span id="cb4-20"><a href="#cb4-20" tabindex="-1"></a>      e_sw_n0 <span class="ot">&lt;-</span> switch_n0<span class="sc">$</span>y <span class="sc">-</span> switch_n0<span class="sc">$</span>fitted.values</span>
+<span id="cb4-21"><a href="#cb4-21" tabindex="-1"></a>      </span>
+<span id="cb4-22"><a href="#cb4-22" tabindex="-1"></a>      X_sw_d1 <span class="ot">&lt;-</span> <span class="fu">model.matrix</span>(switch_d1)</span>
+<span id="cb4-23"><a href="#cb4-23" tabindex="-1"></a>      e_sw_d1 <span class="ot">&lt;-</span> switch_d1<span class="sc">$</span>y <span class="sc">-</span> switch_d1<span class="sc">$</span>fitted.values</span>
+<span id="cb4-24"><a href="#cb4-24" tabindex="-1"></a>      </span>
+<span id="cb4-25"><a href="#cb4-25" tabindex="-1"></a>      X_sw_n1 <span class="ot">&lt;-</span> <span class="fu">model.matrix</span>(switch_n1)</span>
+<span id="cb4-26"><a href="#cb4-26" tabindex="-1"></a>      e_sw_n1 <span class="ot">&lt;-</span> switch_n1<span class="sc">$</span>y <span class="sc">-</span> switch_n1<span class="sc">$</span>fitted.values</span>
+<span id="cb4-27"><a href="#cb4-27" tabindex="-1"></a>    </span>
+<span id="cb4-28"><a href="#cb4-28" tabindex="-1"></a>    }</span>
+<span id="cb4-29"><a href="#cb4-29" tabindex="-1"></a>  }</span>
+<span id="cb4-30"><a href="#cb4-30" tabindex="-1"></a>  </span>
+<span id="cb4-31"><a href="#cb4-31" tabindex="-1"></a>  <span class="co">#Step 1: for each bootstrap sample: </span></span>
+<span id="cb4-32"><a href="#cb4-32" tabindex="-1"></a>  bootstrapped_MRDs <span class="ot">&lt;-</span> <span class="fu">foreach</span>(<span class="at">k =</span> <span class="dv">1</span><span class="sc">:</span>bootstrap_sample_size, <span class="at">.combine=</span>cbind) <span class="sc">%dopar%</span> {</span>
+<span id="cb4-33"><a href="#cb4-33" tabindex="-1"></a>     </span>
+<span id="cb4-34"><a href="#cb4-34" tabindex="-1"></a>    <span class="co">#Bootstrap sample with patient id as sampling unit</span></span>
+<span id="cb4-35"><a href="#cb4-35" tabindex="-1"></a>    boot_idx <span class="ot">&lt;-</span> <span class="fu">sort</span>(<span class="fu">sample</span>(<span class="fu">unique</span>(triat_pp<span class="sc">@</span>outcome_data<span class="sc">$</span>id), <span class="fu">length</span>(<span class="fu">unique</span>(triat_pp<span class="sc">@</span>outcome_data<span class="sc">$</span>id)),<span class="at">replace =</span> <span class="cn">TRUE</span>))</span>
+<span id="cb4-36"><a href="#cb4-36" tabindex="-1"></a>    </span>
+<span id="cb4-37"><a href="#cb4-37" tabindex="-1"></a>    weights_table_boot <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">id =</span> <span class="fu">unique</span>(triat_pp<span class="sc">@</span>outcome_data<span class="sc">$</span>id)) <span class="sc">%&gt;%</span> </span>
+<span id="cb4-38"><a href="#cb4-38" tabindex="-1"></a>        <span class="fu">rowwise</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb4-39"><a href="#cb4-39" tabindex="-1"></a>        dplyr<span class="sc">::</span><span class="fu">mutate</span>(<span class="at">weight_boot =</span> <span class="fu">length</span>(boot_idx[boot_idx <span class="sc">==</span> id])) <span class="co">#bootstrap sampling weight is number of times they were sampled</span></span>
+<span id="cb4-40"><a href="#cb4-40" tabindex="-1"></a>    </span>
+<span id="cb4-41"><a href="#cb4-41" tabindex="-1"></a>    <span class="co"># Step 2: refit/recalculate weights </span></span>
+<span id="cb4-42"><a href="#cb4-42" tabindex="-1"></a>    <span class="cf">if</span> (ci_type <span class="sc">==</span> <span class="st">&#39;LEF both&#39;</span>){</span>
+<span id="cb4-43"><a href="#cb4-43" tabindex="-1"></a>      <span class="co"># Calculate the weight models&#39; coefficient LEF approximates</span></span>
+<span id="cb4-44"><a href="#cb4-44" tabindex="-1"></a>      data_0 <span class="ot">&lt;-</span> <span class="fu">merge</span>(weights_table_boot, switch_d0<span class="sc">$</span>data, <span class="at">on =</span> id, <span class="at">all.y =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb4-45"><a href="#cb4-45" tabindex="-1"></a>      data_1 <span class="ot">&lt;-</span> <span class="fu">merge</span>(weights_table_boot, switch_d1<span class="sc">$</span>data, <span class="at">on =</span> id, <span class="at">all.y =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb4-46"><a href="#cb4-46" tabindex="-1"></a>      </span>
+<span id="cb4-47"><a href="#cb4-47" tabindex="-1"></a>      LEF_sw_d0_boot <span class="ot">&lt;-</span> <span class="fu">t</span>(X_sw_d0)<span class="sc">%*%</span>(data_0<span class="sc">$</span>weight_boot<span class="sc">*</span>e_sw_d0)</span>
+<span id="cb4-48"><a href="#cb4-48" tabindex="-1"></a>      LEF_sw_n0_boot <span class="ot">&lt;-</span> <span class="fu">t</span>(X_sw_n0)<span class="sc">%*%</span>(data_0<span class="sc">$</span>weight_boot<span class="sc">*</span>e_sw_n0)</span>
+<span id="cb4-49"><a href="#cb4-49" tabindex="-1"></a>      LEF_sw_d1_boot <span class="ot">&lt;-</span> <span class="fu">t</span>(X_sw_d1)<span class="sc">%*%</span>(data_1<span class="sc">$</span>weight_boot<span class="sc">*</span>e_sw_d1)</span>
+<span id="cb4-50"><a href="#cb4-50" tabindex="-1"></a>      LEF_sw_n1_boot <span class="ot">&lt;-</span> <span class="fu">t</span>(X_sw_n1)<span class="sc">%*%</span>(data_1<span class="sc">$</span>weight_boot<span class="sc">*</span>e_sw_n1)</span>
+<span id="cb4-51"><a href="#cb4-51" tabindex="-1"></a>      </span>
+<span id="cb4-52"><a href="#cb4-52" tabindex="-1"></a>      <span class="co">#Calculate \hat \beta(b)</span></span>
+<span id="cb4-53"><a href="#cb4-53" tabindex="-1"></a>      beta_sw_d0 <span class="ot">&lt;-</span> switch_d0<span class="sc">$</span>coefficients <span class="sc">+</span> <span class="fu">vcov</span>(switch_d0)<span class="sc">%*%</span>LEF_sw_d0_boot</span>
+<span id="cb4-54"><a href="#cb4-54" tabindex="-1"></a>      beta_sw_n0 <span class="ot">&lt;-</span> switch_n0<span class="sc">$</span>coefficients <span class="sc">+</span> <span class="fu">vcov</span>(switch_n0)<span class="sc">%*%</span>LEF_sw_n0_boot</span>
+<span id="cb4-55"><a href="#cb4-55" tabindex="-1"></a>      beta_sw_d1 <span class="ot">&lt;-</span> switch_d1<span class="sc">$</span>coefficients <span class="sc">+</span> <span class="fu">vcov</span>(switch_d1)<span class="sc">%*%</span>LEF_sw_d1_boot</span>
+<span id="cb4-56"><a href="#cb4-56" tabindex="-1"></a>      beta_sw_n1 <span class="ot">&lt;-</span> switch_n1<span class="sc">$</span>coefficients <span class="sc">+</span> <span class="fu">vcov</span>(switch_n1)<span class="sc">%*%</span>LEF_sw_n1_boot</span>
+<span id="cb4-57"><a href="#cb4-57" tabindex="-1"></a>      </span>
+<span id="cb4-58"><a href="#cb4-58" tabindex="-1"></a>      boot_design_data <span class="ot">&lt;-</span> <span class="fu">weight_func_bootstrap</span>(<span class="at">data =</span> simdata_censored, <span class="at">expanded_data =</span> switch_data, </span>
+<span id="cb4-59"><a href="#cb4-59" tabindex="-1"></a>                                        <span class="at">switch_d_cov =</span> <span class="co">#extract weight models, somewhere in trial_pp@censor</span></span>
+<span id="cb4-60"><a href="#cb4-60" tabindex="-1"></a>                                        <span class="at">weight_model_d0 =</span> switch_d0, <span class="co">#extra glm objects, either in trial_PP or saved rds files</span></span>
+<span id="cb4-61"><a href="#cb4-61" tabindex="-1"></a>                                        <span class="at">weight_model_n0 =</span> switch_n0,</span>
+<span id="cb4-62"><a href="#cb4-62" tabindex="-1"></a>                                        <span class="at">weight_model_d1 =</span> switch_d1,</span>
+<span id="cb4-63"><a href="#cb4-63" tabindex="-1"></a>                                        <span class="at">weight_model_n1 =</span> switch_n1,</span>
+<span id="cb4-64"><a href="#cb4-64" tabindex="-1"></a>                                        <span class="at">new_coef_sw_d0 =</span> beta_sw_d0,</span>
+<span id="cb4-65"><a href="#cb4-65" tabindex="-1"></a>                                        <span class="at">new_coef_sw_n0 =</span> beta_sw_n0,</span>
+<span id="cb4-66"><a href="#cb4-66" tabindex="-1"></a>                                        <span class="at">new_coef_sw_d1 =</span> beta_sw_d1,</span>
+<span id="cb4-67"><a href="#cb4-67" tabindex="-1"></a>                                        <span class="at">new_coef_sw_n1 =</span> beta_sw_n1,</span>
+<span id="cb4-68"><a href="#cb4-68" tabindex="-1"></a>                                        <span class="at">boot_idx =</span> boot_idx, <span class="at">remodel =</span> <span class="cn">FALSE</span>, <span class="at">quiet =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb4-69"><a href="#cb4-69" tabindex="-1"></a>    } <span class="cf">else</span> {</span>
+<span id="cb4-70"><a href="#cb4-70" tabindex="-1"></a>      boot_design_data <span class="ot">&lt;-</span> <span class="fu">weight_func_bootstrap</span>(<span class="at">expanded_data =</span> triat_pp<span class="sc">@</span>outcome_data, </span>
+<span id="cb4-71"><a href="#cb4-71" tabindex="-1"></a>                                            <span class="at">switch_d_cov =</span> <span class="co">#extract weight models, somewhere in trial_pp@censor</span></span>
+<span id="cb4-72"><a href="#cb4-72" tabindex="-1"></a>                                            <span class="at">weight_model_d0 =</span> switch_d0, <span class="co">#extra glm objects, either in trial_PP or saved rds files</span></span>
+<span id="cb4-73"><a href="#cb4-73" tabindex="-1"></a>                                            <span class="at">weight_model_n0 =</span> switch_n0,</span>
+<span id="cb4-74"><a href="#cb4-74" tabindex="-1"></a>                                            <span class="at">weight_model_d1 =</span> switch_d1,</span>
+<span id="cb4-75"><a href="#cb4-75" tabindex="-1"></a>                                            <span class="at">weight_model_n1 =</span> switch_n1,</span>
+<span id="cb4-76"><a href="#cb4-76" tabindex="-1"></a>                                            <span class="at">boot_idx =</span> boot_idx, <span class="at">remodel =</span> <span class="cn">TRUE</span>, <span class="at">quiet =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb4-77"><a href="#cb4-77" tabindex="-1"></a>          </span>
+<span id="cb4-78"><a href="#cb4-78" tabindex="-1"></a>    }</span>
+<span id="cb4-79"><a href="#cb4-79" tabindex="-1"></a>      <span class="co"># STep 3. A) : refit MSM (only for nonparametric bootstrap)</span></span>
+<span id="cb4-80"><a href="#cb4-80" tabindex="-1"></a>    <span class="cf">if</span>(ci_type <span class="sc">==</span> <span class="st">&#39;Nonpara. bootstrap&#39;</span>){</span>
+<span id="cb4-81"><a href="#cb4-81" tabindex="-1"></a>          PP_boot <span class="ot">&lt;-</span> <span class="fu">trial_msm</span>(<span class="at">data =</span> boot_design_data,</span>
+<span id="cb4-82"><a href="#cb4-82" tabindex="-1"></a>                                           <span class="at">outcome_cov =</span> model,</span>
+<span id="cb4-83"><a href="#cb4-83" tabindex="-1"></a>                                           <span class="at">model_var =</span> <span class="fu">c</span>(<span class="st">&#39;assigned_treatment&#39;</span>),</span>
+<span id="cb4-84"><a href="#cb4-84" tabindex="-1"></a>                                           <span class="at">glm_function =</span> <span class="st">&#39;glm&#39;</span>,</span>
+<span id="cb4-85"><a href="#cb4-85" tabindex="-1"></a>                                           <span class="at">include_trial_period =</span> <span class="sc">~</span><span class="dv">1</span>, <span class="at">include_followup_time =</span> <span class="sc">~</span><span class="dv">1</span>,</span>
+<span id="cb4-86"><a href="#cb4-86" tabindex="-1"></a>                                           <span class="at">use_weight=</span>T, <span class="at">use_censor=</span>T, <span class="at">quiet =</span> T, <span class="at">use_sample_weights =</span>  F)</span>
+<span id="cb4-87"><a href="#cb4-87" tabindex="-1"></a>    } <span class="cf">else</span> {</span>
+<span id="cb4-88"><a href="#cb4-88" tabindex="-1"></a>          <span class="co"># Can we call fit_msm ?</span></span>
+<span id="cb4-89"><a href="#cb4-89" tabindex="-1"></a>      <span class="co"># Step 3. B): recalculate MSM coefficient (for LEF)</span></span>
+<span id="cb4-90"><a href="#cb4-90" tabindex="-1"></a>          LEFs <span class="ot">&lt;-</span> <span class="fu">t</span>(X)<span class="sc">%*%</span>(boot_design_data<span class="sc">$</span>weight<span class="sc">*</span>e)</span>
+<span id="cb4-91"><a href="#cb4-91" tabindex="-1"></a>          LEFs[<span class="fu">is.na</span>(LEFs)] <span class="ot">&lt;-</span> <span class="dv">0</span></span>
+<span id="cb4-92"><a href="#cb4-92" tabindex="-1"></a>          variance_mat <span class="ot">&lt;-</span> <span class="fu">vcov</span>(PP<span class="sc">$</span>model)</span>
+<span id="cb4-93"><a href="#cb4-93" tabindex="-1"></a>          variance_mat[<span class="fu">is.na</span>(variance_mat)] <span class="ot">&lt;-</span> <span class="dv">0</span></span>
+<span id="cb4-94"><a href="#cb4-94" tabindex="-1"></a>          <span class="co">#Calculate \hat \beta(b)</span></span>
+<span id="cb4-95"><a href="#cb4-95" tabindex="-1"></a>          beta <span class="ot">&lt;-</span> PP<span class="sc">$</span>model<span class="sc">$</span>coefficients <span class="sc">+</span> variance_mat<span class="sc">%*%</span>LEFs</span>
+<span id="cb4-96"><a href="#cb4-96" tabindex="-1"></a>          </span>
+<span id="cb4-97"><a href="#cb4-97" tabindex="-1"></a>          PP_boot <span class="ot">&lt;-</span> PP</span>
+<span id="cb4-98"><a href="#cb4-98" tabindex="-1"></a>          PP_boot<span class="sc">$</span>model<span class="sc">$</span>coefficients <span class="ot">&lt;-</span> beta</span>
+<span id="cb4-99"><a href="#cb4-99" tabindex="-1"></a>  }</span>
+<span id="cb4-100"><a href="#cb4-100" tabindex="-1"></a>      <span class="co">#step 4: get prediction in bootstrap sample</span></span>
+<span id="cb4-101"><a href="#cb4-101" tabindex="-1"></a>          <span class="co"># Could reuse calculate_predictions(newdata = bootstrap_sample) ?</span></span>
+<span id="cb4-102"><a href="#cb4-102" tabindex="-1"></a>          bootstrap_sample <span class="ot">&lt;-</span> expanded_data[expanded_data<span class="sc">$</span>id <span class="sc">==</span> boot_idx[<span class="dv">1</span>],]</span>
+<span id="cb4-103"><a href="#cb4-103" tabindex="-1"></a>          <span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">2</span><span class="sc">:</span><span class="fu">length</span>(boot_idx)){</span>
+<span id="cb4-104"><a href="#cb4-104" tabindex="-1"></a>            bootstrap_sample <span class="ot">&lt;-</span> <span class="fu">rbind</span>(bootstrap_sample, expanded_data[expanded_data<span class="sc">$</span>id <span class="sc">==</span> boot_idx[i],])</span>
+<span id="cb4-105"><a href="#cb4-105" tabindex="-1"></a>          } <span class="co">#I feel like there could be a more efficient way of doing this.</span></span>
+<span id="cb4-106"><a href="#cb4-106" tabindex="-1"></a>    </span>
+<span id="cb4-107"><a href="#cb4-107" tabindex="-1"></a>          pred_list_boot <span class="ot">&lt;-</span> <span class="fu">calculate_predictions</span>(</span>
+<span id="cb4-108"><a href="#cb4-108" tabindex="-1"></a>                            <span class="at">newdata =</span> bootstrap_sample,</span>
+<span id="cb4-109"><a href="#cb4-109" tabindex="-1"></a>                            <span class="at">model =</span> PP_boot<span class="sc">$</span>model,</span>
+<span id="cb4-110"><a href="#cb4-110" tabindex="-1"></a>                            <span class="at">treatment_values =</span> <span class="fu">c</span>(<span class="at">assigned_treatment_0 =</span> <span class="dv">0</span>, <span class="at">assigned_treatment_1 =</span> <span class="dv">1</span>),</span>
+<span id="cb4-111"><a href="#cb4-111" tabindex="-1"></a>                            <span class="at">pred_fun =</span> pred_fun,</span>
+<span id="cb4-112"><a href="#cb4-112" tabindex="-1"></a>                            <span class="at">coefs_mat =</span> PP_boot<span class="sc">$</span>model<span class="sc">$</span>coefficients,</span>
+<span id="cb4-113"><a href="#cb4-113" tabindex="-1"></a>                            <span class="at">matrix_n_col =</span> <span class="fu">length</span>(predict_times)</span>
+<span id="cb4-114"><a href="#cb4-114" tabindex="-1"></a>                          )</span>
+<span id="cb4-115"><a href="#cb4-115" tabindex="-1"></a>          </span>
+<span id="cb4-116"><a href="#cb4-116" tabindex="-1"></a>          pred_list_boot<span class="sc">$</span>difference</span>
+<span id="cb4-117"><a href="#cb4-117" tabindex="-1"></a>          </span>
+<span id="cb4-118"><a href="#cb4-118" tabindex="-1"></a>  }</span>
+<span id="cb4-119"><a href="#cb4-119" tabindex="-1"></a>  <span class="co"># Step 5: generate pivot CIs</span></span>
+<span id="cb4-120"><a href="#cb4-120" tabindex="-1"></a>  CI_lb <span class="ot">&lt;-</span> <span class="dv">2</span><span class="sc">*</span>pred_list<span class="sc">$</span>difference <span class="sc">-</span> <span class="fu">apply</span>(bootstrapped_MRDs,</span>
+<span id="cb4-121"><a href="#cb4-121" tabindex="-1"></a>                                                           <span class="dv">1</span>,</span>
+<span id="cb4-122"><a href="#cb4-122" tabindex="-1"></a>                                                           quantile,</span>
+<span id="cb4-123"><a href="#cb4-123" tabindex="-1"></a>                                                           <span class="at">probs =</span> <span class="fu">c</span>(<span class="fl">0.975</span>))</span>
+<span id="cb4-124"><a href="#cb4-124" tabindex="-1"></a>  CI_ub <span class="ot">&lt;-</span> <span class="dv">2</span><span class="sc">*</span>pred_list<span class="sc">$</span>difference <span class="sc">-</span> <span class="fu">apply</span>(bootstrapped_MRDs,</span>
+<span id="cb4-125"><a href="#cb4-125" tabindex="-1"></a>                                                           <span class="dv">1</span>,</span>
+<span id="cb4-126"><a href="#cb4-126" tabindex="-1"></a>                                                           quantile,</span>
+<span id="cb4-127"><a href="#cb4-127" tabindex="-1"></a>                                                           <span class="at">probs =</span> <span class="fu">c</span>(<span class="fl">0.025</span>))</span>
+<span id="cb4-128"><a href="#cb4-128" tabindex="-1"></a>  </span>
+<span id="cb4-129"><a href="#cb4-129" tabindex="-1"></a>  <span class="co">#Step 6: Add CIs to the output data from the end of predict()</span></span>
+<span id="cb4-130"><a href="#cb4-130" tabindex="-1"></a>  </span>
+<span id="cb4-131"><a href="#cb4-131" tabindex="-1"></a>  <span class="fu">cbind</span>(CI_lb,CI_ub)</span>
+<span id="cb4-132"><a href="#cb4-132" tabindex="-1"></a>}</span></code></pre></div>
+<p>For <code>weight_func_bootstrap()</code>: this is mainly a
+modification based on <code>weight_func()</code> in
+<code>data_utils.R</code>. The main purpose of this function is to refit
+the weight models on a new data set (i.e. bootstrap sample) or
+recalculate weights based on a new set of coefficients (for LEF
+bootstrap CIs). It also takes some code from
+<code>data_expansion.R</code>. The input is the expanded data and a
+bootstrap sample vector of IDs and the returned output is the same
+expanded data with new weights.</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" tabindex="-1"></a>weight_func_bootstrap <span class="ot">&lt;-</span> <span class="cf">function</span>(expanded_data,</span>
+<span id="cb5-2"><a href="#cb5-2" tabindex="-1"></a>                                  <span class="at">use_switch_weights =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb5-3"><a href="#cb5-3" tabindex="-1"></a>                                  <span class="at">use_censor_weights =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb5-4"><a href="#cb5-4" tabindex="-1"></a>                                  <span class="at">switch_n_cov =</span> <span class="sc">~</span><span class="dv">1</span>,</span>
+<span id="cb5-5"><a href="#cb5-5" tabindex="-1"></a>                                  <span class="at">switch_d_cov =</span> <span class="sc">~</span><span class="dv">1</span>,</span>
+<span id="cb5-6"><a href="#cb5-6" tabindex="-1"></a>                                  <span class="at">eligible_wts_0 =</span> <span class="cn">NA</span>,</span>
+<span id="cb5-7"><a href="#cb5-7" tabindex="-1"></a>                                  <span class="at">eligible_wts_1 =</span> <span class="cn">NA</span>,</span>
+<span id="cb5-8"><a href="#cb5-8" tabindex="-1"></a>                                  <span class="at">cense =</span> <span class="cn">NA</span>,</span>
+<span id="cb5-9"><a href="#cb5-9" tabindex="-1"></a>                                  <span class="at">pool_cense_n =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb5-10"><a href="#cb5-10" tabindex="-1"></a>                                  <span class="at">pool_cense_d =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb5-11"><a href="#cb5-11" tabindex="-1"></a>                                  <span class="at">cense_d_cov =</span> <span class="sc">~</span><span class="dv">1</span>,</span>
+<span id="cb5-12"><a href="#cb5-12" tabindex="-1"></a>                                  <span class="at">cense_n_cov =</span> <span class="sc">~</span><span class="dv">1</span>,</span>
+<span id="cb5-13"><a href="#cb5-13" tabindex="-1"></a>                                  <span class="at">save_weight_models =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb5-14"><a href="#cb5-14" tabindex="-1"></a>                                  <span class="at">data_dir =</span> <span class="cn">NA</span>,</span>
+<span id="cb5-15"><a href="#cb5-15" tabindex="-1"></a>                                  <span class="at">quiet =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb5-16"><a href="#cb5-16" tabindex="-1"></a>                                  <span class="at">glm_function =</span> <span class="st">&quot;glm&quot;</span>,</span>
+<span id="cb5-17"><a href="#cb5-17" tabindex="-1"></a>                                  <span class="at">weight_model_d0 =</span> switch_d0,</span>
+<span id="cb5-18"><a href="#cb5-18" tabindex="-1"></a>                                  <span class="at">weight_model_n0 =</span> switch_n0,</span>
+<span id="cb5-19"><a href="#cb5-19" tabindex="-1"></a>                                  <span class="at">weight_model_d1 =</span> switch_d1,</span>
+<span id="cb5-20"><a href="#cb5-20" tabindex="-1"></a>                                  <span class="at">weight_model_n1 =</span> switch_n1,</span>
+<span id="cb5-21"><a href="#cb5-21" tabindex="-1"></a>                                  <span class="at">cense_model_d =</span> <span class="cn">NA</span>,</span>
+<span id="cb5-22"><a href="#cb5-22" tabindex="-1"></a>                                  <span class="at">cense_model_n =</span> <span class="cn">NA</span>,</span>
+<span id="cb5-23"><a href="#cb5-23" tabindex="-1"></a>                                  <span class="at">cense_model_d0 =</span> cense_d0,</span>
+<span id="cb5-24"><a href="#cb5-24" tabindex="-1"></a>                                  <span class="at">cense_model_n0 =</span> cense_n0,</span>
+<span id="cb5-25"><a href="#cb5-25" tabindex="-1"></a>                                  <span class="at">cense_model_d1 =</span> cense_d1,</span>
+<span id="cb5-26"><a href="#cb5-26" tabindex="-1"></a>                                  <span class="at">cense_model_n1 =</span> cense_n1,</span>
+<span id="cb5-27"><a href="#cb5-27" tabindex="-1"></a>                                  <span class="at">remodel =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb5-28"><a href="#cb5-28" tabindex="-1"></a>                                  <span class="at">new_coef_sw_d0 =</span> <span class="cn">NA</span>,</span>
+<span id="cb5-29"><a href="#cb5-29" tabindex="-1"></a>                                  <span class="at">new_coef_sw_n0 =</span> <span class="cn">NA</span>,</span>
+<span id="cb5-30"><a href="#cb5-30" tabindex="-1"></a>                                  <span class="at">new_coef_sw_d1 =</span> <span class="cn">NA</span>,</span>
+<span id="cb5-31"><a href="#cb5-31" tabindex="-1"></a>                                  <span class="at">new_coef_sw_n1 =</span> <span class="cn">NA</span>,</span>
+<span id="cb5-32"><a href="#cb5-32" tabindex="-1"></a>                                  <span class="at">new_coef_c_d0 =</span> <span class="cn">NA</span>,</span>
+<span id="cb5-33"><a href="#cb5-33" tabindex="-1"></a>                                  <span class="at">new_coef_c_n0 =</span> <span class="cn">NA</span>,</span>
+<span id="cb5-34"><a href="#cb5-34" tabindex="-1"></a>                                  <span class="at">new_coef_c_d1 =</span> <span class="cn">NA</span>,</span>
+<span id="cb5-35"><a href="#cb5-35" tabindex="-1"></a>                                  <span class="at">new_coef_c_n1 =</span> <span class="cn">NA</span>,</span>
+<span id="cb5-36"><a href="#cb5-36" tabindex="-1"></a>                                  <span class="at">new_coef_c_d =</span> <span class="cn">NA</span>,</span>
+<span id="cb5-37"><a href="#cb5-37" tabindex="-1"></a>                                  <span class="at">new_coef_c_n =</span> <span class="cn">NA</span>,</span>
+<span id="cb5-38"><a href="#cb5-38" tabindex="-1"></a>                                  <span class="at">boot_idx =</span> <span class="cn">NA</span>,</span>
+<span id="cb5-39"><a href="#cb5-39" tabindex="-1"></a>                                  ...) {</span>
+<span id="cb5-40"><a href="#cb5-40" tabindex="-1"></a><span class="co"># Step 1: extra data from weight model glm objects</span></span>
+<span id="cb5-41"><a href="#cb5-41" tabindex="-1"></a>....</span>
+<span id="cb5-42"><a href="#cb5-42" tabindex="-1"></a>  <span class="co"># Step 2: Filter by bootstrapped IDs. Create new &#39;weight_boot&#39; variable in weight model datas which is bootstrap resampling weight</span></span>
+<span id="cb5-43"><a href="#cb5-43" tabindex="-1"></a> </span>
+<span id="cb5-44"><a href="#cb5-44" tabindex="-1"></a>  ....</span>
+<span id="cb5-45"><a href="#cb5-45" tabindex="-1"></a>  </span>
+<span id="cb5-46"><a href="#cb5-46" tabindex="-1"></a>  sw_data <span class="co"># extracted from weight model glm objects  </span></span>
+<span id="cb5-47"><a href="#cb5-47" tabindex="-1"></a>  </span>
+<span id="cb5-48"><a href="#cb5-48" tabindex="-1"></a>  </span>
+<span id="cb5-49"><a href="#cb5-49" tabindex="-1"></a>  <span class="co"># Step 3: Weight recalculation</span></span>
+<span id="cb5-50"><a href="#cb5-50" tabindex="-1"></a>  </span>
+<span id="cb5-51"><a href="#cb5-51" tabindex="-1"></a>  <span class="do">## IF remodel == TRUE, we re-fit IP weight models (for nonparametric bootstrap, LEF outcome)</span></span>
+<span id="cb5-52"><a href="#cb5-52" tabindex="-1"></a>  <span class="do">## Re-use the same weight model formulae</span></span>
+<span id="cb5-53"><a href="#cb5-53" tabindex="-1"></a>  switch_n_cov</span>
+<span id="cb5-54"><a href="#cb5-54" tabindex="-1"></a>  switch_d_cov </span>
+<span id="cb5-55"><a href="#cb5-55" tabindex="-1"></a>  cense_d_cov</span>
+<span id="cb5-56"><a href="#cb5-56" tabindex="-1"></a>  cense_n_cov</span>
+<span id="cb5-57"><a href="#cb5-57" tabindex="-1"></a>  </span>
+<span id="cb5-58"><a href="#cb5-58" tabindex="-1"></a>  <span class="do">## ELSE: For LEF both, we recalculate the weights using the new weight model coefficients </span></span>
+<span id="cb5-59"><a href="#cb5-59" tabindex="-1"></a>  new_coef_sw_d0</span>
+<span id="cb5-60"><a href="#cb5-60" tabindex="-1"></a>  ...</span>
+<span id="cb5-61"><a href="#cb5-61" tabindex="-1"></a>  <span class="co">#Example: </span></span>
+<span id="cb5-62"><a href="#cb5-62" tabindex="-1"></a>  <span class="cf">if</span>(remodel <span class="sc">==</span> <span class="cn">TRUE</span>){</span>
+<span id="cb5-63"><a href="#cb5-63" tabindex="-1"></a>      switch_d_cov <span class="ot">&lt;-</span> <span class="fu">update.formula</span>(switch_d_cov, treatment <span class="sc">~</span> .)</span>
+<span id="cb5-64"><a href="#cb5-64" tabindex="-1"></a>      switch_n_cov <span class="ot">&lt;-</span> <span class="fu">update.formula</span>(switch_n_cov, treatment <span class="sc">~</span> .)</span>
+<span id="cb5-65"><a href="#cb5-65" tabindex="-1"></a>      </span>
+<span id="cb5-66"><a href="#cb5-66" tabindex="-1"></a>      switch_results <span class="ot">&lt;-</span> <span class="fu">fit_switch_weights</span>(</span>
+<span id="cb5-67"><a href="#cb5-67" tabindex="-1"></a>        <span class="at">switch_d_cov =</span> switch_d_cov,</span>
+<span id="cb5-68"><a href="#cb5-68" tabindex="-1"></a>        <span class="at">switch_n_cov =</span> switch_n_cov,</span>
+<span id="cb5-69"><a href="#cb5-69" tabindex="-1"></a>        <span class="at">weights =</span> weight_boot, <span class="do">## this is important addition to the weight fitting functions. By including bootstrap resampling weights we make sure the fit is  </span></span>
+<span id="cb5-70"><a href="#cb5-70" tabindex="-1"></a>        <span class="co"># on bootstrapped data. This weighting in the glm accounts for patients being sampled with replacement</span></span>
+<span id="cb5-71"><a href="#cb5-71" tabindex="-1"></a>        <span class="at">eligible_wts_0 =</span> eligible_wts_0,</span>
+<span id="cb5-72"><a href="#cb5-72" tabindex="-1"></a>        <span class="at">eligible_wts_1 =</span> eligible_wts_1,</span>
+<span id="cb5-73"><a href="#cb5-73" tabindex="-1"></a>        <span class="at">sw_data =</span> sw_data,</span>
+<span id="cb5-74"><a href="#cb5-74" tabindex="-1"></a>        <span class="at">quiet =</span> quiet,</span>
+<span id="cb5-75"><a href="#cb5-75" tabindex="-1"></a>        <span class="at">save_dir =</span> data_dir,</span>
+<span id="cb5-76"><a href="#cb5-76" tabindex="-1"></a>        <span class="at">save_weight_models =</span> save_weight_models,</span>
+<span id="cb5-77"><a href="#cb5-77" tabindex="-1"></a>        <span class="at">glm_function =</span> glm_function,</span>
+<span id="cb5-78"><a href="#cb5-78" tabindex="-1"></a>        ...</span>
+<span id="cb5-79"><a href="#cb5-79" tabindex="-1"></a>      )</span>
+<span id="cb5-80"><a href="#cb5-80" tabindex="-1"></a>      sw_data <span class="ot">&lt;-</span> switch_results<span class="sc">$</span>sw_data</span>
+<span id="cb5-81"><a href="#cb5-81" tabindex="-1"></a>      switch_models <span class="ot">&lt;-</span> switch_results<span class="sc">$</span>switch_models</span>
+<span id="cb5-82"><a href="#cb5-82" tabindex="-1"></a>      <span class="fu">rm</span>(switch_results)</span>
+<span id="cb5-83"><a href="#cb5-83" tabindex="-1"></a>  } <span class="cf">else</span>{ <span class="co"># For LEF both, recalculate weights with new coefficients</span></span>
+<span id="cb5-84"><a href="#cb5-84" tabindex="-1"></a>      weight_model_d0<span class="sc">$</span>coefficients <span class="ot">&lt;-</span> new_coef_sw_d0</span>
+<span id="cb5-85"><a href="#cb5-85" tabindex="-1"></a>      weight_model_n0<span class="sc">$</span>coefficients <span class="ot">&lt;-</span> new_coef_sw_n0</span>
+<span id="cb5-86"><a href="#cb5-86" tabindex="-1"></a>      weight_model_d1<span class="sc">$</span>coefficients <span class="ot">&lt;-</span> new_coef_sw_d1</span>
+<span id="cb5-87"><a href="#cb5-87" tabindex="-1"></a>      weight_model_n1<span class="sc">$</span>coefficients <span class="ot">&lt;-</span> new_coef_sw_n1</span>
+<span id="cb5-88"><a href="#cb5-88" tabindex="-1"></a>      </span>
+<span id="cb5-89"><a href="#cb5-89" tabindex="-1"></a>      switch_d0 <span class="ot">&lt;-</span> <span class="fu">cbind</span>(<span class="at">p0_d =</span> <span class="fu">predict.glm</span>(weight_model_d0, weight_model_d0_data, <span class="at">type =</span> <span class="st">&#39;response&#39;</span> ), </span>
+<span id="cb5-90"><a href="#cb5-90" tabindex="-1"></a>                         weight_model_d0_data[, <span class="fu">c</span>(<span class="st">&quot;eligible0&quot;</span>, <span class="st">&quot;id&quot;</span>, <span class="st">&quot;period&quot;</span>)])</span>
+<span id="cb5-91"><a href="#cb5-91" tabindex="-1"></a>      </span>
+<span id="cb5-92"><a href="#cb5-92" tabindex="-1"></a>      switch_n0 <span class="ot">&lt;-</span> <span class="fu">cbind</span>(<span class="at">p0_n =</span> <span class="fu">predict.glm</span>(weight_model_n0, weight_model_n0_data, <span class="at">type =</span> <span class="st">&#39;response&#39;</span> ),</span>
+<span id="cb5-93"><a href="#cb5-93" tabindex="-1"></a>                         weight_model_n0_data[, <span class="fu">c</span>(<span class="st">&quot;eligible0&quot;</span>, <span class="st">&quot;id&quot;</span>, <span class="st">&quot;period&quot;</span>)])</span>
+<span id="cb5-94"><a href="#cb5-94" tabindex="-1"></a>      </span>
+<span id="cb5-95"><a href="#cb5-95" tabindex="-1"></a>      switch_d1 <span class="ot">&lt;-</span> <span class="fu">cbind</span>(<span class="at">p1_d =</span> <span class="fu">predict.glm</span>(weight_model_d1, weight_model_d1_data, <span class="at">type =</span> <span class="st">&#39;response&#39;</span> ), </span>
+<span id="cb5-96"><a href="#cb5-96" tabindex="-1"></a>                         weight_model_d1_data[, <span class="fu">c</span>(<span class="st">&quot;eligible1&quot;</span>, <span class="st">&quot;id&quot;</span>, <span class="st">&quot;period&quot;</span>)])</span>
+<span id="cb5-97"><a href="#cb5-97" tabindex="-1"></a>      </span>
+<span id="cb5-98"><a href="#cb5-98" tabindex="-1"></a>      switch_n1 <span class="ot">&lt;-</span> <span class="fu">cbind</span>(<span class="at">p1_n =</span> <span class="fu">predict.glm</span>(weight_model_n1, weight_model_n1_data, <span class="at">type =</span> <span class="st">&#39;response&#39;</span> ),</span>
+<span id="cb5-99"><a href="#cb5-99" tabindex="-1"></a>                         weight_model_n1_data[, <span class="fu">c</span>(<span class="st">&quot;eligible1&quot;</span>, <span class="st">&quot;id&quot;</span>, <span class="st">&quot;period&quot;</span>)])</span>
+<span id="cb5-100"><a href="#cb5-100" tabindex="-1"></a>      </span>
+<span id="cb5-101"><a href="#cb5-101" tabindex="-1"></a>      switch_0 <span class="ot">&lt;-</span> switch_d0[switch_n0, on <span class="ot">=</span> <span class="fu">list</span>(</span>
+<span id="cb5-102"><a href="#cb5-102" tabindex="-1"></a>        <span class="at">id =</span> id, <span class="at">period =</span> period,</span>
+<span id="cb5-103"><a href="#cb5-103" tabindex="-1"></a>        <span class="at">eligible0 =</span> eligible0</span>
+<span id="cb5-104"><a href="#cb5-104" tabindex="-1"></a>      )]</span>
+<span id="cb5-105"><a href="#cb5-105" tabindex="-1"></a>      switch_1 <span class="ot">&lt;-</span> switch_d1[switch_n1, on <span class="ot">=</span> <span class="fu">list</span>(</span>
+<span id="cb5-106"><a href="#cb5-106" tabindex="-1"></a>        <span class="at">id =</span> id, <span class="at">period =</span> period,</span>
+<span id="cb5-107"><a href="#cb5-107" tabindex="-1"></a>        <span class="at">eligible1 =</span> eligible1</span>
+<span id="cb5-108"><a href="#cb5-108" tabindex="-1"></a>      )]</span>
+<span id="cb5-109"><a href="#cb5-109" tabindex="-1"></a>      </span>
+<span id="cb5-110"><a href="#cb5-110" tabindex="-1"></a>      <span class="fu">rm</span>(switch_d0, switch_d1, switch_n0, switch_n1)</span>
+<span id="cb5-111"><a href="#cb5-111" tabindex="-1"></a>      </span>
+<span id="cb5-112"><a href="#cb5-112" tabindex="-1"></a>      sw_data <span class="ot">&lt;-</span> <span class="fu">merge.data.table</span>(sw_data, switch_0[, <span class="sc">-</span><span class="fu">c</span>(<span class="st">&quot;eligible0&quot;</span>)], <span class="at">by =</span> <span class="fu">c</span>(<span class="st">&quot;id&quot;</span>, <span class="st">&quot;period&quot;</span>), <span class="at">all =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb5-113"><a href="#cb5-113" tabindex="-1"></a>      sw_data <span class="ot">&lt;-</span> <span class="fu">merge.data.table</span>(sw_data, switch_1[, <span class="sc">-</span><span class="fu">c</span>(<span class="st">&quot;eligible1&quot;</span>)], <span class="at">by =</span> <span class="fu">c</span>(<span class="st">&quot;id&quot;</span>, <span class="st">&quot;period&quot;</span>), <span class="at">all =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb5-114"><a href="#cb5-114" tabindex="-1"></a>      </span>
+<span id="cb5-115"><a href="#cb5-115" tabindex="-1"></a>      <span class="fu">rm</span>(switch_1, switch_0)</span>
+<span id="cb5-116"><a href="#cb5-116" tabindex="-1"></a>  }</span>
+<span id="cb5-117"><a href="#cb5-117" tabindex="-1"></a>  </span>
+<span id="cb5-118"><a href="#cb5-118" tabindex="-1"></a> <span class="co"># Step 4: Combine predicted values from weight models and calculate IP weights </span></span>
+<span id="cb5-119"><a href="#cb5-119" tabindex="-1"></a></span>
+<span id="cb5-120"><a href="#cb5-120" tabindex="-1"></a>  ...</span>
+<span id="cb5-121"><a href="#cb5-121" tabindex="-1"></a>  </span>
+<span id="cb5-122"><a href="#cb5-122" tabindex="-1"></a>  <span class="co">#Most of this code is taken from &#39;data_expansion&#39; and &#39;data_preparation&#39; </span></span>
+<span id="cb5-123"><a href="#cb5-123" tabindex="-1"></a>  </span>
+<span id="cb5-124"><a href="#cb5-124" tabindex="-1"></a>  sw_data[, wt <span class="sc">:=</span> wt <span class="sc">*</span> wtC]</span>
+<span id="cb5-125"><a href="#cb5-125" tabindex="-1"></a>  </span>
+<span id="cb5-126"><a href="#cb5-126" tabindex="-1"></a>  censor_models <span class="ot">&lt;-</span> censor_models[<span class="fu">intersect</span>(</span>
+<span id="cb5-127"><a href="#cb5-127" tabindex="-1"></a>    <span class="fu">c</span>(<span class="st">&quot;cens_pool_d&quot;</span>, <span class="st">&quot;cens_d0&quot;</span>, <span class="st">&quot;cens_n0&quot;</span>, <span class="st">&quot;cens_d1&quot;</span>, <span class="st">&quot;cens_n1&quot;</span>, <span class="st">&quot;cens_pool_n&quot;</span>),</span>
+<span id="cb5-128"><a href="#cb5-128" tabindex="-1"></a>    <span class="fu">names</span>(censor_models)</span>
+<span id="cb5-129"><a href="#cb5-129" tabindex="-1"></a>  )]</span>
+<span id="cb5-130"><a href="#cb5-130" tabindex="-1"></a>  </span>
+<span id="cb5-131"><a href="#cb5-131" tabindex="-1"></a>  sw_data[, first <span class="sc">:=</span> <span class="sc">!</span><span class="fu">duplicated</span>(sw_data[,id])]</span>
+<span id="cb5-132"><a href="#cb5-132" tabindex="-1"></a>  sw_data <span class="ot">&lt;-</span> sw_data[<span class="sc">!</span><span class="fu">is.na</span>(wt)]</span>
+<span id="cb5-133"><a href="#cb5-133" tabindex="-1"></a>  temp_data <span class="ot">&lt;-</span> <span class="fu">data.table</span>(</span>
+<span id="cb5-134"><a href="#cb5-134" tabindex="-1"></a>    <span class="at">id =</span> sw_data[, id],</span>
+<span id="cb5-135"><a href="#cb5-135" tabindex="-1"></a>    <span class="at">period =</span> sw_data[, period]</span>
+<span id="cb5-136"><a href="#cb5-136" tabindex="-1"></a>  )</span>
+<span id="cb5-137"><a href="#cb5-137" tabindex="-1"></a>  temp_data[, wtprod <span class="sc">:=</span> <span class="fl">1.0</span>, by <span class="ot">=</span> id]</span>
+<span id="cb5-138"><a href="#cb5-138" tabindex="-1"></a>  <span class="co">#[, elgcount := 0.0, by = id][, expand := 0.0, by = id]</span></span>
+<span id="cb5-139"><a href="#cb5-139" tabindex="-1"></a>  <span class="co">#temp_data[, treat := 0.0, by = id][, dosesum := 0.0, by = id]</span></span>
+<span id="cb5-140"><a href="#cb5-140" tabindex="-1"></a>  </span>
+<span id="cb5-141"><a href="#cb5-141" tabindex="-1"></a>  sw_data[first <span class="sc">==</span> <span class="cn">TRUE</span>, weight0 <span class="sc">:=</span> <span class="fl">1.0</span>]</span>
+<span id="cb5-142"><a href="#cb5-142" tabindex="-1"></a>  sw_data[, weight0 <span class="sc">:=</span> <span class="fu">cumprod</span>(wt), by <span class="ot">=</span> id]</span>
+<span id="cb5-143"><a href="#cb5-143" tabindex="-1"></a>  temp_data[, wtprod <span class="sc">:=</span> sw_data[, weight0]]</span>
+<span id="cb5-144"><a href="#cb5-144" tabindex="-1"></a>  <span class="co">#temp_data[, treat := data[, A]]</span></span>
+<span id="cb5-145"><a href="#cb5-145" tabindex="-1"></a>  <span class="co">#temp_data[, dosesum := data[, CAp]]</span></span>
+<span id="cb5-146"><a href="#cb5-146" tabindex="-1"></a>  <span class="co">#temp_data[, elgcount := data[, eligible]]</span></span>
+<span id="cb5-147"><a href="#cb5-147" tabindex="-1"></a>  <span class="co">#temp_data[data[, eligible] == 1, init := data[eligible == 1, A]]</span></span>
+<span id="cb5-148"><a href="#cb5-148" tabindex="-1"></a>  <span class="co">#temp_data[, init_shift := shift(data[, A])]</span></span>
+<span id="cb5-149"><a href="#cb5-149" tabindex="-1"></a>  <span class="co">#temp_data[data[, eligible] == 0, init := init_shift, by = id]</span></span>
+<span id="cb5-150"><a href="#cb5-150" tabindex="-1"></a>  <span class="co">#temp_data[, init_shift := NULL]</span></span>
+<span id="cb5-151"><a href="#cb5-151" tabindex="-1"></a>  </span>
+<span id="cb5-152"><a href="#cb5-152" tabindex="-1"></a>  expand_index <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="fu">seq_len</span>(<span class="fu">nrow</span>(sw_data)), sw_data[, period] <span class="sc">+</span> <span class="dv">1</span>)</span>
+<span id="cb5-153"><a href="#cb5-153" tabindex="-1"></a>  </span>
+<span id="cb5-154"><a href="#cb5-154" tabindex="-1"></a>  <span class="fu">quiet_msg</span>(quiet, <span class="st">&quot;Adding new weights to expanded data&quot;</span>)</span>
+<span id="cb5-155"><a href="#cb5-155" tabindex="-1"></a>  </span>
+<span id="cb5-156"><a href="#cb5-156" tabindex="-1"></a>  <span class="do">### new_data only contains ID, trial_period, followup_time adn the new IP weights</span></span>
+<span id="cb5-157"><a href="#cb5-157" tabindex="-1"></a>  new_data <span class="ot">&lt;-</span> <span class="fu">data.table</span>(<span class="at">id =</span> sw_data[expand_index, id])</span>
+<span id="cb5-158"><a href="#cb5-158" tabindex="-1"></a>  new_data[, period_new <span class="sc">:=</span> sw_data[expand_index, period]]</span>
+<span id="cb5-159"><a href="#cb5-159" tabindex="-1"></a>  <span class="co">#new_data[, cumA_new := data[expand_index, CAp]]</span></span>
+<span id="cb5-160"><a href="#cb5-160" tabindex="-1"></a>  <span class="co">#new_data[, treatment_new := data[expand_index, A]]</span></span>
+<span id="cb5-161"><a href="#cb5-161" tabindex="-1"></a>  </span>
+<span id="cb5-162"><a href="#cb5-162" tabindex="-1"></a>  <span class="co">#new_data[, outcome_new := data[expand_index, Y]]</span></span>
+<span id="cb5-163"><a href="#cb5-163" tabindex="-1"></a>  new_data[, weight0 <span class="sc">:=</span> sw_data[expand_index, weight0]]</span>
+<span id="cb5-164"><a href="#cb5-164" tabindex="-1"></a>  new_data[, trial_period <span class="sc">:=</span> <span class="fu">trial_period_func</span>(sw_data)]</span>
+<span id="cb5-165"><a href="#cb5-165" tabindex="-1"></a>  new_data[, index <span class="sc">:=</span> <span class="fu">seq_len</span>(.N)]</span>
+<span id="cb5-166"><a href="#cb5-166" tabindex="-1"></a>  </span>
+<span id="cb5-167"><a href="#cb5-167" tabindex="-1"></a>  new_data <span class="ot">&lt;-</span> new_data[temp_data, on <span class="ot">=</span> <span class="fu">list</span>(<span class="at">id =</span> id, <span class="at">trial_period =</span> period)]</span>
+<span id="cb5-168"><a href="#cb5-168" tabindex="-1"></a>  <span class="fu">setorder</span>(new_data, index)</span>
+<span id="cb5-169"><a href="#cb5-169" tabindex="-1"></a>  new_data[, followup_time <span class="sc">:=</span> period_new <span class="sc">-</span> trial_period]</span>
+<span id="cb5-170"><a href="#cb5-170" tabindex="-1"></a>  new_data[, weight <span class="sc">:=</span> (weight0 <span class="sc">/</span> wtprod)]</span>
+<span id="cb5-171"><a href="#cb5-171" tabindex="-1"></a>  </span>
+<span id="cb5-172"><a href="#cb5-172" tabindex="-1"></a>  <span class="do">#### New data is merged with existing expanded data to add the new weights </span></span>
+<span id="cb5-173"><a href="#cb5-173" tabindex="-1"></a>  <span class="cf">if</span> (<span class="sc">!</span><span class="fu">is.na</span>(boot_idx)){</span>
+<span id="cb5-174"><a href="#cb5-174" tabindex="-1"></a>  output_data <span class="ot">&lt;-</span> new_data[expanded_data, on <span class="ot">=</span> <span class="fu">list</span>( <span class="at">id =</span> id, <span class="at">trial_period =</span> trial_period, </span>
+<span id="cb5-175"><a href="#cb5-175" tabindex="-1"></a>                                                    <span class="at">followup_time =</span> followup_time)] <span class="sc">%&gt;%</span></span>
+<span id="cb5-176"><a href="#cb5-176" tabindex="-1"></a>    dplyr<span class="sc">::</span><span class="fu">select</span>(<span class="fu">names</span>(expanded_data)) <span class="sc">%&gt;%</span> </span>
+<span id="cb5-177"><a href="#cb5-177" tabindex="-1"></a>    <span class="fu">rowwise</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb5-178"><a href="#cb5-178" tabindex="-1"></a>    dplyr<span class="sc">::</span><span class="fu">mutate</span>(<span class="at">weight_boot =</span> <span class="fu">length</span>(boot_idx[boot_idx <span class="sc">==</span> id]),</span>
+<span id="cb5-179"><a href="#cb5-179" tabindex="-1"></a>                  <span class="at">weight =</span> <span class="fu">ifelse</span>(weight_boot <span class="sc">!=</span><span class="dv">0</span>,weight<span class="sc">*</span>weight_boot,<span class="dv">0</span>))</span>
+<span id="cb5-180"><a href="#cb5-180" tabindex="-1"></a>  } <span class="cf">else</span> {</span>
+<span id="cb5-181"><a href="#cb5-181" tabindex="-1"></a>    output_data <span class="ot">&lt;-</span> new_data[expanded_data, on <span class="ot">=</span> <span class="fu">list</span>( <span class="at">id =</span> id, <span class="at">trial_period =</span> trial_period, </span>
+<span id="cb5-182"><a href="#cb5-182" tabindex="-1"></a>                                                    <span class="at">followup_time =</span> followup_time)] <span class="sc">%&gt;%</span></span>
+<span id="cb5-183"><a href="#cb5-183" tabindex="-1"></a>    dplyr<span class="sc">::</span><span class="fu">select</span>(<span class="fu">names</span>(expanded_data))</span>
+<span id="cb5-184"><a href="#cb5-184" tabindex="-1"></a>  }</span>
+<span id="cb5-185"><a href="#cb5-185" tabindex="-1"></a><span class="co"># Output</span></span>
+<span id="cb5-186"><a href="#cb5-186" tabindex="-1"></a>  output_data </span>
+<span id="cb5-187"><a href="#cb5-187" tabindex="-1"></a>}</span></code></pre></div>
 </div>
 
 
