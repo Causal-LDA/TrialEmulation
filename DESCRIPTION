@@ -57,6 +57,7 @@ Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.3.2.9000
 Collate: 
     'RcppExports.R'
+    'bootstrap.R'
     'calculate_weights.R'
     'data.R'
     'data_extension.R'
