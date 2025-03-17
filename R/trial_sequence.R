@@ -514,7 +514,12 @@ setMethod(
       period = as_formula(trial_period_terms, add = collection),
       stabilised = as_formula(get_stabilised_weights_terms(object), add = collection)
     )
-    adjustment <- unique(c(all.vars(formula_list$adjustment), all.vars(formula_list$stabilised)))
+    treatment <- all.vars(formula_list$treatment)
+    adjustment <- setdiff(
+      unique(c(all.vars(formula_list$adjustment), all.vars(formula_list$stabilised))),
+      treatment
+    )
+
     assert_names(
       adjustment,
       subset.of = colnames(object@data@data),
@@ -619,6 +624,7 @@ get_stabilised_weights_terms <- function(object) {
   stabilised_terms
 }
 
+# Update outcome model (formulas generally and variables in stabilised models)
 update_outcome_formula <- function(object) {
   assert_class(object, "trial_sequence")
 
@@ -638,7 +644,7 @@ update_outcome_formula <- function(object) {
   object@outcome_model@formula <- outcome_formula
 
   object@outcome_model@adjustment_vars <- unique(
-    c(all.vars(formula_list$adjustment), all.vars(formula_list$stabilised))
+    c(object@outcome_model@adjustment_vars, all.vars(formula_list$stabilised))
   )
 
   object

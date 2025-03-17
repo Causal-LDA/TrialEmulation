@@ -500,7 +500,29 @@ test_that("stabilised weight terms are included in outcome model", {
   )
 })
 
-# Expand
+
+test_that("interaction terms work as expected", {
+  result <- trial_sequence("PP") |>
+    set_data(data_censored) |>
+    set_outcome_model(adjustment_terms = ~ assigned_treatment * x2)
+
+  expect_equal(
+    result@outcome_model@formula,
+    outcome ~ assigned_treatment + x2 + followup_time + I(followup_time^2) +
+      trial_period + I(trial_period^2) + assigned_treatment:x2,
+    ignore_formula_env = TRUE
+  )
+  expect_equal(result@outcome_model@treatment_var, "assigned_treatment")
+  expect_equal(result@outcome_model@adjustment_vars, "x2") # shouldn't include treatment
+  expect_equal(
+    result@outcome_model@adjustment_terms, # can include treatment
+    ~ assigned_treatment * x2,
+    ignore_formula_env = TRUE
+  )
+})
+
+# Expand ---
+
 test_that("weights are 1 when not calculated by calculate_weights", {
   trial_ex <- TrialEmulation::trial_example
 
