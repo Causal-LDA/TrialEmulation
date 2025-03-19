@@ -1,6 +1,3 @@
-#' @include utils.R lr_utils.R
-NULL
-
 #' Weighting for bootstrap samples
 #'
 #' @param object trial_sequence class object with weight and outcome models fitted
@@ -27,7 +24,10 @@ NULL
 #' }
 #' @export
 #'
+#' @importFrom utils quiet_msg
 #' @examples
+#'
+#' @noRd
 weight_func_bootstrap <- function(object = trial_pp,
                                   remodel = TRUE,
                                   new_coef_sw_d0 = NA,
