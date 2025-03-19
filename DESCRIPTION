@@ -1,6 +1,6 @@
 Package: TrialEmulation
 Title: Causal Analysis of Observational Time-to-Event Data
-Version: 0.0.4.3
+Version: 0.0.4.4
 Authors@R: c(
     person("Isaac", "Gravestock", , "isaac.gravestock@roche.com", role = c("aut", "cre"),
            comment = c(ORCID = "0000-0003-0283-2065")),
@@ -57,6 +57,11 @@ Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.3.2.9000
 Collate: 
     'RcppExports.R'
+<<<<<<< HEAD
+=======
+    'lr_utils.R'
+    'utils.R'
+>>>>>>> 3893af84c0c2b9fe7ae5f4b4c1bc91716d3b27e1
     'bootstrap.R'
     'calculate_weights.R'
     'data.R'
@@ -68,7 +73,6 @@ Collate:
     'expand_trials.R'
     'generics.R'
     'initiators.R'
-    'lr_utils.R'
     'te_model_fitter.R'
     'te_outcome_model.R'
     'te_datastore.R'
@@ -85,5 +89,4 @@ Collate:
     'te_datastore_duckdb.R'
     'te_parsnip.R'
     'te_stats_glm_logit.R'
-    'utils.R'
     'weighting.R'
