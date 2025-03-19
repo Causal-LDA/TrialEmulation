@@ -22,12 +22,9 @@
 #'  \item{switch_models}{a list containing a summary table of regression models for switching weights}
 #'  \item{cense_models}{a list containing a summary table of regression models for censoring weights}
 #' }
+#'
+#'
 #' @export
-#'
-#' @importFrom utils quiet_msg
-#' @examples
-#'
-#' @noRd
 weight_func_bootstrap <- function(object = trial_pp,
                                   remodel = TRUE,
                                   new_coef_sw_d0 = NA,
