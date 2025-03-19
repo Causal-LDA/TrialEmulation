@@ -5,7 +5,7 @@
 \title{Weighting for bootstrap samples}
 \usage{
 weight_func_bootstrap(
-  object = trial_pp,
+  object,
   remodel = TRUE,
   new_coef_sw_d0 = NA,
   new_coef_sw_n0 = NA,
@@ -17,8 +17,8 @@ weight_func_bootstrap(
   new_coef_c_n1 = NA,
   new_coef_c_d = NA,
   new_coef_c_n = NA,
-  boot_idx = unique(trial_pp@data@data$id),
-  quiet = T,
+  boot_idx,
+  quiet = TRUE,
   ...
 )
 }
