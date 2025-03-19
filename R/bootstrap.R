@@ -1,24 +1,3 @@
-#' Title
-#'
-#' @param trial_class
-#' @param remodel
-#' @param new_coef_sw_d0
-#' @param new_coef_sw_n0
-#' @param new_coef_sw_d1
-#' @param new_coef_sw_n1
-#' @param new_coef_c_d0
-#' @param new_coef_c_n0
-#' @param new_coef_c_d1
-#' @param new_coef_c_n1
-#' @param new_coef_c_d
-#' @param new_coef_c_n
-#' @param boot_idx
-#' @param ...
-#'
-#' @returns
-#' @export
-#'
-#' @examples
 weight_func_bootstrap <- function(object = trial_pp,
                                   remodel = TRUE,
                                   new_coef_sw_d0 = NA,
@@ -48,11 +27,11 @@ weight_func_bootstrap <- function(object = trial_pp,
   switch_models <- list()
     if(remodel == TRUE){
 
-      switch_results <- fit_switch_weights(
+      switch_results <- fit_switch_weights_bootstrap(
         switch_d_cov =  object@switch_weights@denominator,
         switch_n_cov =  object@switch_weights@numerator,
         sw_data = object@data@data,
-        weights = weights,
+        boot_idx = boot_idx,
         quiet = quiet,
         save_dir = data_dir,
         save_weight_models = save_weight_models,
@@ -112,13 +91,13 @@ weight_func_bootstrap <- function(object = trial_pp,
   censor_models <- list()
 
     if (remodel == TRUE){
-      censor_results <- fit_censor_weights(
-        cense = cense,
+      censor_results <- fit_censor_weights_bootstrap(
         cense_d_cov = object@censor_weights@denominator,
         cense_n_cov = object@censor_weights@numerator,
         pool_cense_d = object@censor_weights@pool_denominator,
         pool_cense_n = object@censor_weights@pool_numerator,
         sw_data = sw_data,
+        boot_idx = boot_idx,
         quiet = quiet,
         save_dir = data_dir,
         save_weight_models = save_weight_models,
@@ -338,7 +317,11 @@ weight_func_bootstrap <- function(object = trial_pp,
   #### New data is merged with existing expanded data to add the new weights
   output_data <- new_data[object@outcome_data@data, on = list( id = id, trial_period = trial_period,
                                                     followup_time = followup_time)] %>%
+    rowwise() %>%
+    dplyr::mutate(weight_boot = length(boot_idx[boot_idx == id])) %>%
+    dplyr::mutate(weight = ifelse(weight_boot !=0,weight*weight_boot,0)) %>%
     dplyr::select(names(object@outcome_data@data))
+
 
   list(
     data = output_data,
@@ -347,12 +330,12 @@ weight_func_bootstrap <- function(object = trial_pp,
   )
 }
 
-fit_switch_weights <- function(switch_d_cov,
+fit_switch_weights_bootstrap <- function(switch_d_cov,
                                switch_n_cov,
                                eligible_wts_0 = NA,
                                eligible_wts_1 = NA,
                                sw_data,
-                               weights,
+                               boot_idx,
                                quiet,
                                save_dir,
                                save_weight_models,
@@ -480,104 +463,8 @@ fit_switch_weights <- function(switch_d_cov,
   rm(switch_1, switch_0)
   list(sw_data = sw_data, switch_models = switch_models)
 }
-fit_glm <- function(formula, data, weights, ..., glm_function = "glm") {
-  this_call <- match.call(expand.dots = FALSE)
-  dots <- list(...)
-  this_call$`...` <- NULL
-  this_call$glm_function <- NULL
-  if (is.null(this_call$family)) this_call$family <- quote(binomial(link = "logit"))
-  this_call$formula <- formula
-  this_call$data <- quote(data)
 
 
-  if (glm_function == "parglm") {
-    if (!any(c("nthreads", "control", "method") %in% names(dots))) {
-      warning(
-        "Argument glm_function = \"parglm\" but no `nthreads`, `method` or `control` specified.\n",
-        "Using `control = parglm.control(nthreads = 4, method = \"FAST\")`"
-      )
-      this_call$control <- parglm::parglm.control(nthreads = 4, method = "FAST")
-    }
-  }
-  this_call[[1]] <- call(glm_function)[[1]]
-  for (i in names(dots)) {
-    this_call[[i]] <- dots[[i]]
-  }
-  eval(this_call)
-}
-
-process_weight_model <- function(model, save_weight_models, save_dir, filename, description, quiet) {
-  quiet_msg(quiet, description)
-  quiet_print(quiet, summary(model))
-  result <- list(
-    description = description,
-    summary = broom::tidy(model),
-    fit_summary = broom::glance(model)
-  )
-  if (save_weight_models) {
-    result$path <- file.path(save_dir, filename)
-    saveRDS(model, file = result$path)
-  }
-  class(result) <- c("TE_weight_summary", "list")
-  result
-}
-
-library(data.table)
-
-f <- function(y) {
-  last <- !duplicated(y$period, fromLast = TRUE)
-  last_ind <- which(last == TRUE)
-  return(seq(0, y$period[last_ind]))
-}
-
-trial_period_func <- function(x) {
-  # Dummy variables used in data.table calls declared to prevent package check NOTES:
-  period <- id <- trial_period <- NULL
-
-  x_new <- x[rep(seq_len(.N), period + 1), list(id, period)]
-  x_new[, trial_period := f(.BY), by = list(id, period)]
-  return(x_new[, trial_period])
-}
-
-quiet_print <- function(quiet, x, ...) {
-  if (isFALSE(quiet)) {
-    print(x, ...)
-  }
-}
-
-#' Conditional Messages
-#'
-#' @param quiet (`logical`) Messages printed if `FALSE`
-#' @param x Object to print.
-#' @param ... Passed to `message` function.
-#'
-#' @noRd
-quiet_msg <- function(quiet, x, ...) {
-  if (isFALSE(quiet)) {
-    message(x, ...)
-  }
-}
-
-#' Print a line
-#'
-#' @param quiet Print if `TRUE `
-#' @noRd
-quiet_line <- function(quiet) {
-  quiet_msg(quiet, paste0(strrep("-", 0.75 * getOption("width")), "\n"))
-}
-
-#' Print with timing statement
-#'
-#' @param quiet Print if `TRUE `,
-#' @param x Message to print
-#' @param proc_time Result of `system.time()`. Elapsed time will be extracted,
-#' formatted for printing and `paste0()`ed to `x`.
-#' @noRd
-quiet_msg_time <- function(quiet, msg, proc_time) {
-  time <- proc_time["elapsed"]
-  time <- if (time < 10) sprintf("%0.1f s", time) else sprintf("%.5g s", time)
-  quiet_msg(quiet, paste0(msg, time))
-}
 
 #' Fit Informative Censoring Models
 #'
@@ -595,12 +482,12 @@ quiet_msg_time <- function(quiet, msg, proc_time) {
 #'
 #' @return List of model summaries and modified `sw_data` including informative censoring weights
 #' @noRd
-fit_censor_weights <- function(cense,
-                               cense_d_cov,
+fit_censor_weights_bootstrap <- function(cense_d_cov,
                                cense_n_cov,
                                pool_cense_d,
                                pool_cense_n,
                                sw_data,
+                               boot_idx,
                                quiet,
                                save_dir,
                                save_weight_models,
@@ -610,10 +497,12 @@ fit_censor_weights <- function(cense,
 
   censor_models <- list()
 
-  if (isTRUE(pool_cense_d)) { # Fit pooled denominator models
+  if (pool_cense_d) { # Fit pooled denominator models
     model1.cense <- fit_glm(
-      data = sw_data,
+      data = sw_data %>% rowwise() %>%
+        dplyr::mutate(weight_boot = length(boot_idx[boot_idx == id])),
       formula = cense_d_cov,
+      weights = weight_boot,
       ...,
       glm_function = glm_function
     )
@@ -633,8 +522,10 @@ fit_censor_weights <- function(cense,
     # ---------------------- denominator -----------------------
     # ---------------------- eligible0 ---------------------------
     model1.cense <- fit_glm(
-      data = sw_data[eligible0 == 1],
+      data = sw_data[eligible0 == 1]%>% rowwise() %>%
+        dplyr::mutate(weight_boot = length(boot_idx[boot_idx == id])),
       formula = cense_d_cov,
+      weights = weight_boot,
       ...,
       glm_function = glm_function
     )
@@ -654,8 +545,10 @@ fit_censor_weights <- function(cense,
     # ------------------------- denominator ---------------------
     # ------------------------ eligible1 -------------------------
     model3.cense <- fit_glm(
-      data = sw_data[eligible1 == 1],
+      data = sw_data[eligible1 == 1]%>% rowwise() %>%
+        dplyr::mutate(weight_boot = length(boot_idx[boot_idx == id])),
       formula = cense_d_cov,
+      weights = weight_boot,
       ...,
       glm_function = glm_function
     )
@@ -673,10 +566,12 @@ fit_censor_weights <- function(cense,
     rm(model3.cense)
   }
 
-  if (isTRUE(pool_cense_n)) { # Fit pooled numerator models
+  if (pool_cense_n) { # Fit pooled numerator models
     model2.cense <- fit_glm(
-      data = sw_data,
+      data = sw_data %>% rowwise() %>%
+        dplyr::mutate(weight_boot = length(boot_idx[boot_idx == id])),
       formula = cense_n_cov,
+      weights = weight_boot,
       ...,
       glm_function = glm_function
     )
@@ -696,8 +591,10 @@ fit_censor_weights <- function(cense,
     # -------------------------- numerator ----------------------
     #--------------------------- eligible0 -----------------------
     model2.cense <- fit_glm(
-      data = sw_data[eligible0 == 1],
+      data = sw_data[eligible0 == 1]%>% rowwise() %>%
+        dplyr::mutate(weight_boot = length(boot_idx[boot_idx == id])),
       formula = cense_n_cov,
+      weights = weight_boot,
       ...,
       glm_function = glm_function
     )
@@ -717,8 +614,10 @@ fit_censor_weights <- function(cense,
     # ------------------------ numerator -------------------------
     # ------------------------- eligible1 -----------------------
     model4.cense <- fit_glm(
-      data = sw_data[eligible1 == 1],
+      data = sw_data[eligible1 == 1]%>% rowwise() %>%
+        dplyr::mutate(weight_boot = length(boot_idx[boot_idx == id])),
       formula = cense_n_cov,
+      weights = weight_boot,
       ...,
       glm_function = glm_function
     )
@@ -743,8 +642,10 @@ fit_censor_weights <- function(cense,
     rm(cense_d, cense_n)
   } else if (!pool_cense_d && !pool_cense_n) {
     # no pooled
-    cense_0 <- cense_d0[cense_n0, on = list(id = id, period = period)]
-    cense_1 <- cense_d1[cense_n1, on = list(id = id, period = period)]
+    cense_0 <- merge.data.table(cense_d0,cense_n0,
+                                by= c("id", "period"))
+    cense_1 <- merge.data.table(cense_d1,cense_n1,
+                                by= c("id", "period"))
     rm(cense_n1, cense_d1, cense_n0, cense_d0)
 
     sw_data <- merge.data.table(sw_data, cense_0, by = c("id", "period"), all = TRUE)
