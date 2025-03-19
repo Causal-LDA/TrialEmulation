@@ -57,6 +57,9 @@ Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.3.2.9000
 Collate: 
     'RcppExports.R'
+    'lr_utils.R'
+    'utils.R'
+    'bootstrap.R'
     'calculate_weights.R'
     'data.R'
     'data_extension.R'
@@ -67,7 +70,6 @@ Collate:
     'expand_trials.R'
     'generics.R'
     'initiators.R'
-    'lr_utils.R'
     'te_model_fitter.R'
     'te_outcome_model.R'
     'te_datastore.R'
@@ -84,5 +86,4 @@ Collate:
     'te_datastore_duckdb.R'
     'te_parsnip.R'
     'te_stats_glm_logit.R'
-    'utils.R'
     'weighting.R'
