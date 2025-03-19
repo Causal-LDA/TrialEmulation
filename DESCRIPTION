@@ -86,4 +86,3 @@ Collate:
     'te_stats_glm_logit.R'
     'utils.R'
     'weighting.R'
-    'bootstrap.R'
