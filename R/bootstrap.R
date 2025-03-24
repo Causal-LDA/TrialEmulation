@@ -14,6 +14,7 @@
 #' @param new_coef_c_n new model coefficients for switching weight denominator model in previous treatment = 0
 #' @param boot_idx vector containing bootstrap sample of patient ids
 #' @param quiet indicates whether function messages are printed or not, default = TRUE
+#' @param glm_function glm function to be used for weight model fitting, default is "glm"
 #' @param ...
 #'
 #' @returns List containing
@@ -24,6 +25,7 @@
 #' }
 #'
 #' @importFrom stats predict.glm
+#' @importFrom dplyr %>% rowwise
 #' @export
 weight_func_bootstrap <- function(object,
                                   remodel = TRUE,
@@ -39,6 +41,7 @@ weight_func_bootstrap <- function(object,
                                   new_coef_c_n = NA,
                                   boot_idx,
                                   quiet = TRUE,
+                                  glm_function = "glm",
                                   ...) {
   # Dummy variables used in data.table calls declared to prevent package check NOTES:
   eligible0 <- eligible1 <- id <- period <- eligible0.y <- eligible1.y <- am_1 <- eligible_wts_0 <- eligible_wts_1 <-
@@ -53,15 +56,18 @@ weight_func_bootstrap <- function(object,
   quiet_msg(quiet, "Starting switching weights")
   switch_models <- list()
   if (remodel == TRUE) {
+    switch_d_cov <- object@switch_weights@denominator
+    switch_n_cov <- object@switch_weights@numerator
+    sw_data <- object@data@data
 
     switch_results <- fit_switch_weights_bootstrap(
-      switch_d_cov =  object@switch_weights@denominator,
-      switch_n_cov =  object@switch_weights@numerator,
-      sw_data = object@data@data,
+      switch_d_cov = switch_d_cov,
+      switch_n_cov = switch_n_cov,
+      sw_data = sw_data,
       boot_idx = boot_idx,
       quiet = quiet,
-      save_dir = data_dir,
-      save_weight_models = save_weight_models,
+      save_dir = NA,
+      save_weight_models = FALSE,
       glm_function = glm_function,
       ...
     )
@@ -111,16 +117,21 @@ weight_func_bootstrap <- function(object,
   censor_models <- list()
 
   if (remodel == TRUE) {
+    cense_d_cov <- object@censor_weights@denominator
+    cense_n_cov <- object@censor_weights@numerator
+    pool_cense_d <- object@censor_weights@pool_denominator
+    pool_cense_n <- object@censor_weights@pool_numerator
+
     censor_results <- fit_censor_weights_bootstrap(
-      cense_d_cov = object@censor_weights@denominator,
-      cense_n_cov = object@censor_weights@numerator,
-      pool_cense_d = object@censor_weights@pool_denominator,
-      pool_cense_n = object@censor_weights@pool_numerator,
+      cense_d_cov = cense_d_cov,
+      cense_n_cov = cense_n_cov,
+      pool_cense_d = pool_cense_d,
+      pool_cense_n = pool_cense_n,
       sw_data = sw_data,
       boot_idx = boot_idx,
       quiet = quiet,
-      save_dir = data_dir,
-      save_weight_models = save_weight_models,
+      save_dir = NA,
+      save_weight_models = FALSE,
       glm_function = glm_function,
       ...
     )
@@ -146,14 +157,6 @@ weight_func_bootstrap <- function(object,
 
       cense_d0 <- cbind(pC_d0 = predict.glm(cense_model_d0, cense_model_d0$data, type = "response"),
                         cense_model_d0$data[, c("id", "period")])
-      censor_models$cense_d0 <- process_weight_model(
-        cense_model_d0,
-        save_weight_models,
-        save_dir,
-        "cense_model_pool_n.rds",
-        "Model for P(cense = 0 | X, previous treatment = 0) for denominator",
-        quiet
-      )
       rm(cense_model_d0)
 
       cense_d1 <- cbind(pC_d1 = predict.glm(cense_model_d1, cense_model_d1$data, type = "response"),
@@ -411,12 +414,12 @@ fit_switch_weights_bootstrap <- function(switch_d_cov,
   rm(model2)
 
   # ------------------- eligible1 == 1 --------------------
-  data_1_expr <- if ("eligible_wts_1" %in% colnames(object@data@data)) {
+  data_1_expr <- if ("eligible_wts_1" %in% colnames(sw_data)) {
     expression(am_1 == 1 & eligible_wts_1 == 1)
   } else {
     expression(am_1 == 1)
   }
-  model_1_index <- object@data@data[eval(data_1_expr), which = TRUE]
+  model_1_index <- sw_data[eval(data_1_expr), which = TRUE]
   # --------------- denominator ------------------
   model3 <- fit_glm(
     data = sw_data[model_1_index, ] %>% rowwise() %>%
@@ -685,3 +688,17 @@ fit_censor_weights_bootstrap <- function(cense_d_cov,
   list(sw_data = sw_data, censor_models = censor_models)
 }
 
+trial_period_func <- function(x) {
+  # Dummy variables used in data.table calls declared to prevent package check NOTES:
+  period <- id <- trial_period <- NULL
+
+  x_new <- x[rep(seq_len(.N), period + 1), list(id, period)]
+  x_new[, trial_period := f(.BY), by = list(id, period)]
+  return(x_new[, trial_period])
+}
+
+f <- function(y) {
+  last <- !duplicated(y$period, fromLast = TRUE)
+  last_ind <- which(last == TRUE)
+  return(seq(0, y$period[last_ind]))
+}

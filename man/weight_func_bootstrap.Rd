@@ -19,6 +19,7 @@ weight_func_bootstrap(
   new_coef_c_n = NA,
   boot_idx,
   quiet = TRUE,
+  glm_function = "glm",
   ...
 )
 }
@@ -50,6 +51,8 @@ weight_func_bootstrap(
 \item{boot_idx}{vector containing bootstrap sample of patient ids}
 
 \item{quiet}{indicates whether function messages are printed or not, default = TRUE}
+
+\item{glm_function}{glm function to be used for weight model fitting, default is "glm"}
 
 \item{...}{}
 }
