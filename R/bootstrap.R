@@ -350,7 +350,6 @@ weight_func_bootstrap <- function(object,
 #'
 #' @param object object of clas `trial_sequence`
 #' @param ci_type which CI to generate, options: c('Nonpara. bootstrap', 'LEF outcome', 'LEF both')
-#' @param output_from_calculate_predictions output of `calculate_predictions()`
 #' @param bootstrap_sample_size Sample size of bootstrap resampling, default = 200
 #'
 #' @returns 2 by x matrix of CI lower and upper bound, x is number of time points
@@ -360,8 +359,10 @@ weight_func_bootstrap <- function(object,
 #' @export
 function_that_calculates_bootstrap_CIs <- function(object,
                                                    ci_type,
-                                                   output_from_calculate_predictions,
-                                                   bootstrap_sample_size = 200){
+                                                   bootstrap_sample_size = 200,
+                                                   predict_times,
+                                                   point_estimate,
+                                                   pred_fun){
   ##########################################################################################################################
   #  All code below needs to be changed to match variable names with function input, some of which are class type #
   ##########################################################################################################################
@@ -434,7 +435,7 @@ function_that_calculates_bootstrap_CIs <- function(object,
   }
 
   #Step 1: for each bootstrap sample:
-  bootstrapped_MRDs <- foreach(k = 1:bootstrap_sample_size, .combine=cbind) %dopar% {
+  bootstrapped_MRDs <- foreach(k = 1:bootstrap_sample_size, .combine=cbind) %do% {
 
     #Bootstrap sample with patient id as sampling unit
     boot_idx <- sort(sample(unique(object@data@data$id), replace = TRUE))
@@ -550,27 +551,27 @@ function_that_calculates_bootstrap_CIs <- function(object,
     for (i in 2:length(boot_idx)){
       bootstrap_sample <- rbind(bootstrap_sample, object@outcome_data@data[object@outcome_data@data$id == boot_idx[i],])
     } #I feel like there could be a more efficient way of doing this.
-    newdata <- check_newdata(bootstrap_sample[trial_period == 1, ],
+    newdata <- check_newdata(bootstrap_sample[trial_period == 0, ],
                              model = PP_boot@outcome_model@fitted@model$model,
                              predict_times)
+
     pred_list_boot <- calculate_predictions(
       newdata = newdata,
       model = PP_boot@outcome_model@fitted@model$model,
       treatment_values = c(assigned_treatment_0 = 0, assigned_treatment_1 = 1),
-      pred_fun = calculate_survival,
+      pred_fun = pred_fun,
       coefs_mat = matrix(coef(PP_boot@outcome_model@fitted@model$model), nrow = 1),
       matrix_n_col = length(predict_times)
     )
-
-    pred_list_boot$assigned_treatment_1 - pred_list_boot$assigned_treatment_0
+    pred_list_boot$assigned_treatment_1[,1] - pred_list_boot$assigned_treatment_0[,1]
 
   }
   # Step 5: generate pivot CIs
-  CI_lb <- 2*pred_list$difference - apply(bootstrapped_MRDs,
+  CI_lb <- 2*point_estimate - apply(bootstrapped_MRDs,
                                           1,
                                           quantile,
                                           probs = c(0.975))
-  CI_ub <- 2*pred_list$difference - apply(bootstrapped_MRDs,
+  CI_ub <- 2*point_estimate - apply(bootstrapped_MRDs,
                                           1,
                                           quantile,
                                           probs = c(0.025))

@@ -7,16 +7,16 @@
 function_that_calculates_bootstrap_CIs(
   object,
   ci_type,
-  output_from_calculate_predictions,
-  bootstrap_sample_size = 200
+  bootstrap_sample_size = 200,
+  predict_times,
+  point_estimate,
+  pred_fun
 )
 }
 \arguments{
 \item{object}{object of clas \code{trial_sequence}}
 
 \item{ci_type}{which CI to generate, options: c('Nonpara. bootstrap', 'LEF outcome', 'LEF both')}
-
-\item{output_from_calculate_predictions}{output of \code{calculate_predictions()}}
 
 \item{bootstrap_sample_size}{Sample size of bootstrap resampling, default = 200}
 }

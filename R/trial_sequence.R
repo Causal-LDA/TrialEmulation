@@ -942,13 +942,15 @@ setMethod(
            predict_times,
            conf_int = TRUE,
            samples = 100,
+           ci_type = "sandwich",
            type = c("cum_inc", "survival")) {
     predict(
-      object = object@outcome_model@fitted,
+      object = object,
       newdata = newdata,
       predict_times = predict_times,
       conf_int = conf_int,
       samples = samples,
+      ci_type = ci_type,
       type = type
     )
   }
