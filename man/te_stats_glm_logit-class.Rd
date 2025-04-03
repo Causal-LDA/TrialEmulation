@@ -19,7 +19,6 @@
   predict_times,
   conf_int = TRUE,
   samples = 100,
-  ci_type = "sandwich",
   type = c("cum_inc", "survival")
 )
 }
