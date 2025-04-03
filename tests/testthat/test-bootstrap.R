@@ -21,22 +21,33 @@ test_that("Same weights recalculated if we use the same weight model coefficient
       numerator = ~x2,
       denominator = ~ x2 + x1,
       pool_models = "none",
-      model_fitter = stats_glm_logit(save_path = file.path(trial_pp_dir, "switch_models"))
+      model_fitter = stats_glm_logit(save_path = file.path(trial_pp_dir, "censor_models"))
     ) |>
     calculate_weights() |>
-    set_outcome_model() |>
+    set_outcome_model(
+      model_fitter = stats_glm_logit(save_path = file.path(trial_pp_dir, "outcome_model")),
+      adjustment_terms = ~x2
+    ) |>
     set_expansion_options(
       output = save_to_datatable(),
       chunk_size = 500) |>
     expand_trials() |>
     load_expanded_data() |>
     fit_msm(
-      weight_cols = c("weight"),
-      modify_weights = function(w) {
-        q99 <- quantile(w, probs = 0.99)
-        pmin(w, q99)
-      }
+      weight_cols = c("weight")
     )
+
+  preds <- predict(
+    trial_pp,
+    newdata = outcome_data(trial_pp)[trial_period == 1, ],
+    predict_times = 0:10,
+    type = "survival",
+  )
+  plot(preds$difference$followup_time, preds$difference$survival_diff,
+       type = "l", xlab = "Follow up", ylab = "Survival difference"
+  )
+  lines(preds$difference$followup_time, preds$difference$`2.5%`, type = "l", col = "red", lty = 2)
+  lines(preds$difference$followup_time, preds$difference$`97.5%`, type = "l", col = "red", lty = 2)
   result <- weight_func_bootstrap(object= trial_pp, remodel = F, quiet = T, boot_idx = unique(trial_pp@data@data$id),
                                         new_coef_sw_d0 = trial_pp@switch_weights@fitted$d0@summary$tidy$estimate,
                                         new_coef_sw_d1 = trial_pp@switch_weights@fitted$d1@summary$tidy$estimate,
@@ -73,21 +84,17 @@ test_that("Same weights refitted if we use original dataset", {
       numerator = ~x2,
       denominator = ~ x2 + x1,
       pool_models = "none",
-      model_fitter = stats_glm_logit(save_path = file.path(trial_pp_dir, "switch_models"))
+      model_fitter = stats_glm_logit(save_path = file.path(trial_pp_dir, "censor_models"))
     ) |>
     calculate_weights() |>
-    set_outcome_model() |>
+    set_outcome_model(model_fitter = stats_glm_logit(save_path = file.path(trial_pp_dir, "outcome_model"))) |>
     set_expansion_options(
       output = save_to_datatable(),
       chunk_size = 500) |>
     expand_trials() |>
     load_expanded_data() |>
     fit_msm(
-      weight_cols = c("weight"),
-      modify_weights = function(w) {
-        q99 <- quantile(w, probs = 0.99)
-        pmin(w, q99)
-      }
+      weight_cols = c("weight")
     )
   result <- weight_func_bootstrap(object= trial_pp, remodel = T, quiet = T, boot_idx = unique(trial_pp@data@data$id))
 
@@ -117,21 +124,17 @@ test_that("Same weights refitted if we use example bootstrap sample", {
       numerator = ~x2,
       denominator = ~ x2 + x1,
       pool_models = "none",
-      model_fitter = stats_glm_logit(save_path = file.path(trial_pp_dir, "switch_models"))
+      model_fitter = stats_glm_logit(save_path = file.path(trial_pp_dir, "censor_models"))
     ) |>
     calculate_weights() |>
-    set_outcome_model() |>
+    set_outcome_model(model_fitter = stats_glm_logit(save_path = file.path(trial_pp_dir, "outcome_model"))) |>
     set_expansion_options(
       output = save_to_datatable(),
       chunk_size = 500) |>
     expand_trials() |>
     load_expanded_data() |>
     fit_msm(
-      weight_cols = c("weight"),
-      modify_weights = function(w) {
-        q99 <- quantile(w, probs = 0.99)
-        pmin(w, q99)
-      }
+      weight_cols = c("weight")
     )
 
   boot_idx <- sort(sample(unique(trial_pp@data@data$id), replace = TRUE))
@@ -163,21 +166,17 @@ test_that("Same weights refitted if we use example bootstrap sample", {
       numerator = ~x2,
       denominator = ~ x2 + x1,
       pool_models = "none",
-      model_fitter = stats_glm_logit(save_path = file.path(trial_pp_dir, "switch_models"))
+      model_fitter = stats_glm_logit(save_path = file.path(trial_pp_dir, "censor_models"))
     ) |>
     calculate_weights() |>
-    set_outcome_model() |>
+    set_outcome_model(model_fitter = stats_glm_logit(save_path = file.path(trial_pp_dir, "outcome_model"))) |>
     set_expansion_options(
       output = save_to_datatable(),
       chunk_size = 500) |>
     expand_trials() |>
     load_expanded_data() |>
     fit_msm(
-      weight_cols = c("weight"),
-      modify_weights = function(w) {
-        q99 <- quantile(w, probs = 0.99)
-        pmin(w, q99)
-      }
+      weight_cols = c("weight")
     )
 
   test_data <- trial_pp_boot@outcome_data@data %>%
@@ -235,21 +234,17 @@ test_that("Correct weights recalculated if we use new weight model coefficients 
       numerator = ~x2,
       denominator = ~ x2 + x1,
       pool_models = "none",
-      model_fitter = stats_glm_logit(save_path = file.path(trial_pp_dir, "switch_models"))
+      model_fitter = stats_glm_logit(save_path = file.path(trial_pp_dir, "censor_models"))
     ) |>
     calculate_weights() |>
-    set_outcome_model() |>
+    set_outcome_model(model_fitter = stats_glm_logit(save_path = file.path(trial_pp_dir, "outcome_model"))) |>
     set_expansion_options(
       output = save_to_datatable(),
       chunk_size = 500) |>
     expand_trials() |>
     load_expanded_data() |>
     fit_msm(
-      weight_cols = c("weight"),
-      modify_weights = function(w) {
-        q99 <- quantile(w, probs = 0.99)
-        pmin(w, q99)
-      }
+      weight_cols = c("weight")
     )
   boot_idx <- sort(sample(unique(trial_pp@data@data$id), replace = TRUE))
 
@@ -280,21 +275,17 @@ test_that("Correct weights recalculated if we use new weight model coefficients 
       numerator = ~x2,
       denominator = ~ x2 + x1,
       pool_models = "none",
-      model_fitter = stats_glm_logit(save_path = file.path(trial_pp_dir, "switch_models"))
+      model_fitter = stats_glm_logit(save_path = file.path(trial_pp_dir, "censor_models"))
     ) |>
     calculate_weights() |>
-    set_outcome_model() |>
+    set_outcome_model(model_fitter = stats_glm_logit(save_path = file.path(trial_pp_dir, "outcome_model"))) |>
     set_expansion_options(
       output = save_to_datatable(),
       chunk_size = 500) |>
     expand_trials() |>
     load_expanded_data() |>
     fit_msm(
-      weight_cols = c("weight"),
-      modify_weights = function(w) {
-        q99 <- quantile(w, probs = 0.99)
-        pmin(w, q99)
-      }
+      weight_cols = c("weight")
     )
 
   test_data <- trial_pp_boot@outcome_data@data %>%
