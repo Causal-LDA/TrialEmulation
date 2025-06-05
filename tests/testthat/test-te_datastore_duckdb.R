@@ -112,14 +112,17 @@ test_that("sample_controls works with trial_sequence objects containing te_datas
     p_control = 0.2,
     seed = 2332
   )
-  expect_equal(
-    sort(sc_04@outcome_data@data$id),
-    c(
-      2L, 16L, 20L, 21L, 44L, 44L, 44L, 44L, 44L, 47L, 50L, 53L, 53L, 54L, 54L,
-      59L, 59L, 59L, 59L, 59L, 65L, 70L, 70L, 74L, 74L,
-      95L, 95L, 95L
-    )
+
+  sc_04_repeat <- sample_controls(
+    trial_itt_duckdb,
+    period = 1:10,
+    subset_condition = "x2 <= 1 & treatment == 1 & (id %in% 40:90 | followup_time %in% c(2, 3, 4, 5, 6))",
+    p_control = 0.2,
+    seed = 2332
   )
+
+  expect_equal(sort(sc_04@outcome_data@data$id), sort(sc_04_repeat@outcome_data@data$id))
+
   expect_true(all(sc_04@outcome_data@data$x2 <= 1))
   expect_true(all(sc_04@outcome_data@data$treatment == 1))
   expect_true(all(sc_04@outcome_data@data$id %in% 40:90 | sc_04@outcome_data@data$followup_time %in% 2:6))
@@ -198,14 +201,17 @@ test_that("load_expanded_data works with trial_sequence objects containing te_da
     p_control = 0.2,
     seed = 2332
   )
-  expect_equal(
-    sort(sc_04@outcome_data@data$id),
-    c(
-      2L, 16L, 20L, 21L, 44L, 44L, 44L, 44L, 44L, 47L, 50L, 53L, 53L, 54L, 54L,
-      59L, 59L, 59L, 59L, 59L, 65L, 70L, 70L, 74L, 74L,
-      95L, 95L, 95L
-    )
+
+  sc_04_repeat <- load_expanded_data(
+    trial_itt_duckdb,
+    period = 1:10,
+    subset_condition = "x2 <= 1 & treatment == 1 & (id %in% 40:90 | followup_time %in% c(2, 3, 4, 5, 6))",
+    p_control = 0.2,
+    seed = 2332
   )
+
+  expect_equal(sort(sc_04@outcome_data@data$id), sort(sc_04_repeat@outcome_data@data$id))
+
   expect_true(all(sc_04@outcome_data@data$x2 <= 1))
   expect_true(all(sc_04@outcome_data@data$treatment == 1))
   expect_true(all(sc_04@outcome_data@data$id %in% 40:90 | sc_04@outcome_data@data$followup_time %in% 2:6))
