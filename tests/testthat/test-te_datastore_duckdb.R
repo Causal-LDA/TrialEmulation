@@ -115,8 +115,8 @@ test_that("sample_controls works with trial_sequence objects containing te_datas
   expect_equal(
     sort(sc_04@outcome_data@data$id),
     c(
-      16L, 20L, 44L, 44L, 44L, 44L, 44L, 49L, 53L, 53L, 54L, 54L,
-      59L, 59L, 59L, 59L, 59L, 59L, 59L, 60L, 60L, 60L, 74L, 74L, 74L,
+      2L, 16L, 20L, 21L, 44L, 44L, 44L, 44L, 44L, 47L, 50L, 53L, 53L, 54L, 54L,
+      59L, 59L, 59L, 59L, 59L, 65L, 70L, 70L, 74L, 74L,
       95L, 95L, 95L
     )
   )
@@ -201,8 +201,8 @@ test_that("load_expanded_data works with trial_sequence objects containing te_da
   expect_equal(
     sort(sc_04@outcome_data@data$id),
     c(
-      16L, 20L, 44L, 44L, 44L, 44L, 44L, 49L, 53L, 53L, 54L, 54L,
-      59L, 59L, 59L, 59L, 59L, 59L, 59L, 60L, 60L, 60L, 74L, 74L, 74L,
+      2L, 16L, 20L, 21L, 44L, 44L, 44L, 44L, 44L, 47L, 50L, 53L, 53L, 54L, 54L,
+      59L, 59L, 59L, 59L, 59L, 65L, 70L, 70L, 74L, 74L,
       95L, 95L, 95L
     )
   )
