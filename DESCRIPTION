@@ -22,7 +22,7 @@ URL: https://causal-lda.github.io/TrialEmulation/,
     https://github.com/Causal-LDA/TrialEmulation
 BugReports: https://github.com/Causal-LDA/TrialEmulation/issues
 Depends: 
-    R (>= 4.0.0)
+    R (>= 4.1.0)
 Imports: 
     broom (>= 0.7.10),
     checkmate,
