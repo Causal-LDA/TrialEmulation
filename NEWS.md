@@ -1,4 +1,10 @@
-# TrialEmulation 0.0.4.4
+# TrialEmulation 0.0.4.6
+
+* Update tests for duckdb 1.3.0 changes to sampling.
+* Require R >= 4.1 for native pipe support.
+
+
+# TrialEmulation 0.0.4.2
 
 * Update tests for duckdb 1.2.0 changes to sampling.
 
