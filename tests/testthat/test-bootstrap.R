@@ -324,3 +324,54 @@ test_that("Correct weights recalculated if we use new weight model coefficients 
 
   expect_equal(result$data$weight, test_data$weight, tolerance = 1e-7)
 })
+
+test_that("predict works with bootstrap", {
+  set.seed(194)
+  trial_pp_dir <- withr::local_tempdir("trial_pp", tempdir(TRUE))
+
+  trial_pp <- trial_sequence(estimand = "PP") |>
+    set_data(
+      data = data_censored,
+      id = "id",
+      period = "period",
+      treatment = "treatment",
+      outcome = "outcome",
+      eligible = "eligible"
+    ) |>
+    set_switch_weight_model(
+      numerator = ~age,
+      denominator = ~ age + x1 + x3,
+      model_fitter = stats_glm_logit(save_path = file.path(trial_pp_dir, "switch_models"))
+    ) |>
+    set_censor_weight_model(
+      censor_event = "censored",
+      numerator = ~x2,
+      denominator = ~ x2 + x1,
+      pool_models = "none",
+      model_fitter = stats_glm_logit(save_path = file.path(trial_pp_dir, "censor_models"))
+    ) |>
+    calculate_weights() |>
+    set_outcome_model(model_fitter = stats_glm_logit(save_path = file.path(trial_pp_dir, "outcome_model"))) |>
+    set_expansion_options(
+      output = save_to_datatable(),
+      chunk_size = 500
+    ) |>
+    expand_trials() |>
+    load_expanded_data() |>
+    fit_msm(
+      weight_cols = c("weight")
+    ) |>
+    suppressMatchingWarnings("fitted probabilities")
+
+  suppressWarnings(ci_np_bs <- predict(trial_pp, predict_times = 1:20, ci_type = "Nonpara. bootstrap"))
+  expect_snapshot(ci_np_bs)
+  suppressWarnings(ci_sandwich <- predict(trial_pp, predict_times = 1:20, ci_type = "sandwich")[[3]])
+  expect_snapshot(ci_sandwich)
+  suppressWarnings(ci_lef_outcome <- predict(trial_pp, predict_times = 1:20, ci_type = "LEF outcome"))
+  expect_snapshot(ci_lef_outcome)
+  suppressWarnings(ci_lef_both <- predict(trial_pp, predict_times = 1:20, ci_type = "LEF both"))
+  expect_snapshot(ci_lef_both)
+
+  # TODO check if there is there is some overwriting going on due to data.table, so the results would not be
+  # reproducible if we calculate different methods.
+})

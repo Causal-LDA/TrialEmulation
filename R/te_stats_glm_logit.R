@@ -247,16 +247,18 @@ setMethod(
             )
           }
         )
-      } else if (ci_type %in% c("Nonpara. bootstrap", "LEF outcome", "LEF both")){
-        bootstrap_CIs <- function_that_calculates_bootstrap_CIs(object = object,
-                                                                ci_type = ci_type,
-                                                                bootstrap_sample_size = samples,
-                                                                predict_times = predict_times,
-                                                                point_estimate = pred_list$difference[,1],
-                                                                pred_fun = pred_fun)
+      } else if (ci_type %in% c("Nonpara. bootstrap", "LEF outcome", "LEF both")) {
+        bootstrap_CIs <- calculate_bootstrap_CIs(
+          object = object,
+          ci_type = ci_type,
+          bootstrap_sample_size = samples,
+          predict_times = predict_times,
+          point_estimate = pred_list$difference[, 1],
+          pred_fun = pred_fun
+        )
         setNames(
           data.frame(predict_times, pred_list$difference[, 1], bootstrap_CIs[, 1], bootstrap_CIs[, 2]),
-          c("followup_time",  paste0(type, "_diff"), "lower_bound", "upper_bound")
+          c("followup_time", paste0(type, "_diff"), "lower_bound", "upper_bound")
         )
       }
     } else {
@@ -265,8 +267,8 @@ setMethod(
         col_names = paste0(type, c("", "", "_diff")),
         SIMPLIFY = FALSE,
         FUN = function(pred_matrix, col_names) {
-            setNames(data.frame(predict_times, pred_matrix[, 1]), nm = c("followup_time", col_names))
-          }
+          setNames(data.frame(predict_times, pred_matrix[, 1]), nm = c("followup_time", col_names))
+        }
       )
     }
   }

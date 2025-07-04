@@ -36,7 +36,8 @@ Imports:
     mvtnorm,
     parglm,
     Rcpp,
-    sandwich
+    sandwich,
+    future.apply
 Suggests: 
     knitr,
     parsnip,
