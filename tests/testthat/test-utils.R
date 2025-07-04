@@ -95,3 +95,25 @@ test_that("rhs_vars works as expected", {
   result <- rhs_vars(a ~ b + c - 1 + e:f)
   expect_equal(result, c("b", "c", "e", "f"))
 })
+
+
+test_that("suppressMatchingWarnings works", {
+  expect_warning(suppressMatchingWarnings(warning("bad"), "good"))
+  expect_no_condition(suppressMatchingWarnings(warning("bad"), "bad"))
+
+  expect_warning(suppressMatchingWarnings(
+    expr = {
+      warning("bad")
+      warning("socks")
+    },
+    "bad"
+  ), regexp = "socks")
+
+  expect_no_condition(suppressMatchingWarnings(
+    expr = {
+      warning("bad")
+      warning("socks")
+    },
+    c("bad", "sock")
+  ))
+})
