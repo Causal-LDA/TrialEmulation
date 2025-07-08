@@ -1,3 +1,107 @@
+#' Calculate various types of confidence intervals based on bootstrapping methods
+#'
+#' @param object object of clas `trial_sequence`
+#' @param ci_type which CI to generate, options: `'Nonpara. bootstrap', 'LEF outcome', 'LEF both'`
+#' @param bootstrap_sample_size Sample size of bootstrap resampling, default = 200
+#'
+#' @returns 2 by x matrix of CI lower and upper bound, x is number of time points
+#' @noRd
+#' @importFrom stats predict.glm vcov
+#' @importFrom future.apply future_replicate
+calculate_bootstrap_CIs <- function(object,
+                                    ci_type,
+                                    bootstrap_sample_size = 200,
+                                    predict_times,
+                                    point_estimate,
+                                    pred_fun) {
+  weight_boot <- trial_period <- NULL
+
+  if (ci_type != "Nonpara. bootstrap") {
+    X <- model.matrix(object@outcome_model@fitted@model$model)
+    e <- object@outcome_model@fitted@model$model$model$outcome - object@outcome_model@fitted@model$model$fitted.values
+    if (ci_type == "LEF both") {
+      lef_weight_info <- lef_load_models(object)
+    }
+  }
+
+  # Step 1: for each bootstrap sample:
+  bootstrapped_MRDs <- future.apply::future_replicate(
+    n = bootstrap_sample_size,
+    expr = {
+      # Bootstrap sample with patient id as sampling unit
+      boot_idx <- sort(sample(unique(object@data@data$id), replace = TRUE))
+
+      weights_table_boot <- data.table(id = unique(object@data@data$id))
+      weights_table_boot[, weight_boot := sapply(weights_table_boot$id, function(i) sum(i == boot_idx))]
+
+
+      # Step 2: refit/recalculate weights
+      weight_func_bs_args <- list(
+        object = object,
+        boot_idx = boot_idx,
+        quiet = TRUE
+      )
+
+      if (ci_type == "LEF both") {
+        lef_bs_args <- do.call(lef_calc_coefs, c(list(weights_table_boot = weights_table_boot), lef_weight_info))
+        weight_func_bs_args <- c(
+          weight_func_bs_args,
+          lef_bs_args,
+          remodel = FALSE
+        )
+      } else {
+        weight_func_bs_args$remodel <- TRUE
+      }
+      boot_design_data <- do.call(weight_func_bootstrap, weight_func_bs_args)
+
+      # Step 3. Refit/calculate MSM
+      PP_boot <- object
+      if (ci_type == "Nonpara. bootstrap") {
+        # refit MSM
+        PP_boot@outcome_data@data <- boot_design_data$data
+        PP_boot <- fit_msm(PP_boot, weight_cols = c("weight"))
+      } else if (ci_type %in% c("LEF outcome", "LEF both")) {
+        # recalculate MSM coefficients
+        LEFs <- t(X) %*% (boot_design_data$data$weight * e)
+        LEFs[is.na(LEFs)] <- 0
+        variance_mat <- vcov(PP_boot@outcome_model@fitted@model$model)
+        variance_mat[is.na(variance_mat)] <- 0
+        # Calculate \hat \beta(b)
+        PP_boot@outcome_model@fitted@model$model$coefficients <-
+          PP_boot@outcome_model@fitted@model$model$coefficients + variance_mat %*% LEFs
+      }
+
+      # Step 4: get prediction in bootstrap sample
+      bootstrap_sample <- object@outcome_data@data[
+        unlist(lapply(boot_idx, function(i) which(object@outcome_data@data$id == i))),
+      ]
+
+      newdata <- check_newdata(
+        bootstrap_sample[trial_period == 0, ],
+        model = PP_boot@outcome_model@fitted@model$model,
+        predict_times
+      )
+
+      pred_list_boot <- calculate_predictions(
+        newdata = newdata,
+        model = PP_boot@outcome_model@fitted@model$model,
+        treatment_values = c(assigned_treatment_0 = 0, assigned_treatment_1 = 1),
+        pred_fun = pred_fun,
+        coefs_mat = matrix(coef(PP_boot@outcome_model@fitted@model$model), nrow = 1),
+        matrix_n_col = length(predict_times)
+      )
+
+      # return difference estimate:
+      pred_list_boot$assigned_treatment_1[, 1] - pred_list_boot$assigned_treatment_0[, 1]
+      ## end replicate
+    }
+  )
+
+  # Step 5: generate pivot CIs and return
+  (2 * point_estimate) - t(apply(bootstrapped_MRDs, 1, quantile, probs = c(0.025, 0.975)))[, 2:1]
+}
+
+
 #' Weighting for bootstrap samples
 #'
 #' @param object trial_sequence class object with weight and outcome models fitted
@@ -351,229 +455,7 @@ weight_func_bootstrap <- function(object,
 }
 
 
-#' Calculate various types of confidence intervals based on bootstrapping methods
-#'
-#' @param object object of clas `trial_sequence`
-#' @param ci_type which CI to generate, options: `'Nonpara. bootstrap', 'LEF outcome', 'LEF both'`
-#' @param bootstrap_sample_size Sample size of bootstrap resampling, default = 200
-#'
-#' @returns 2 by x matrix of CI lower and upper bound, x is number of time points
-#' @noRd
-#' @importFrom stats predict.glm vcov
-#' @importFrom future.apply future_replicate
-calculate_bootstrap_CIs <- function(object,
-                                    ci_type,
-                                    bootstrap_sample_size = 200,
-                                    predict_times,
-                                    point_estimate,
-                                    pred_fun) {
-  weight_boot <- trial_period <- NULL
-  ######################################################################################################################
-  #  All code below needs to be changed to match variable names with function input, some of which are class type #
-  ######################################################################################################################
-  if (ci_type != "Nonpara. bootstrap") {
-    X <- model.matrix(object@outcome_model@fitted@model$model)
-    e <- object@outcome_model@fitted@model$model$model$outcome - object@outcome_model@fitted@model$model$fitted.values
-    if (ci_type == "LEF both") {
-      switch_d0 <- readRDS(object@switch_weights@fitted$d0@summary$save_path$path)
-
-      X_sw_d0 <- model.matrix(switch_d0)
-      e_sw_d0 <- switch_d0$y - switch_d0$fitted.values
-
-
-      switch_n0 <- readRDS(object@switch_weights@fitted$n0@summary$save_path$path)
-      X_sw_n0 <- model.matrix(switch_n0)
-      e_sw_n0 <- switch_n0$y - switch_n0$fitted.values
-
-
-      switch_d1 <- readRDS(object@switch_weights@fitted$d1@summary$save_path$path)
-      X_sw_d1 <- model.matrix(switch_d1)
-      e_sw_d1 <- switch_d1$y - switch_d1$fitted.values
-
-
-      switch_n1 <- readRDS(object@switch_weights@fitted$n1@summary$save_path$path)
-      X_sw_n1 <- model.matrix(switch_n1)
-      e_sw_n1 <- switch_n1$y - switch_n1$fitted.values
-
-
-      if (object@censor_weights@pool_denominator) {
-        cense_d <- readRDS(object@censor_weights@fitted$d@summary$save_path$path)
-
-        X_c_d <- model.matrix(cense_d)
-        e_c_d <- cense_d$y - cense_d$fitted.values
-      } else {
-        cense_d0 <- readRDS(object@censor_weights@fitted$d0@summary$save_path$path)
-
-        X_c_d0 <- model.matrix(cense_d0)
-        e_c_d0 <- cense_d0$y - cense_d0$fitted.values
-
-
-        cense_d1 <- readRDS(object@censor_weights@fitted$d1@summary$save_path$path)
-
-        X_c_d1 <- model.matrix(cense_d1)
-        e_c_d1 <- cense_d1$y - cense_d1$fitted.values
-      }
-
-      if (object@censor_weights@pool_numerator) {
-        cense_n <- readRDS(object@censor_weights@fitted$n@summary$save_path$path)
-
-        X_c_n <- model.matrix(cense_n)
-        e_c_n <- cense_n$y - cense_n$fitted.values
-      } else {
-        cense_n0 <- readRDS(object@censor_weights@fitted$n0@summary$save_path$path)
-
-        X_c_n0 <- model.matrix(cense_n0)
-        e_c_n0 <- cense_n0$y - cense_n0$fitted.values
-
-
-        cense_n1 <- readRDS(object@censor_weights@fitted$n1@summary$save_path$path)
-
-        X_c_n1 <- model.matrix(cense_n1)
-        e_c_n1 <- cense_n1$y - cense_n1$fitted.values
-      }
-    }
-  }
-
-  # Step 1: for each bootstrap sample:
-  bootstrapped_MRDs <- future.apply::future_replicate(
-    n = bootstrap_sample_size,
-    expr = {
-      # Bootstrap sample with patient id as sampling unit
-      boot_idx <- sort(sample(unique(object@data@data$id), replace = TRUE))
-
-      weights_table_boot <- data.table(id = unique(object@data@data$id))
-      weights_table_boot[, weight_boot := sapply(weights_table_boot$id, function(i) sum(i == boot_idx))]
-
-
-      # Step 2: refit/recalculate weights
-      if (ci_type == "LEF both") {
-        # Calculate the weight models' coefficient LEF approximates
-        data_0 <- merge(weights_table_boot, switch_d0$data, by = "id", all.y = TRUE)
-        data_1 <- merge(weights_table_boot, switch_d1$data, by = "id", all.y = TRUE)
-
-        LEF_sw_d0_boot <- t(X_sw_d0) %*% (data_0$weight_boot * e_sw_d0)
-        LEF_sw_n0_boot <- t(X_sw_n0) %*% (data_0$weight_boot * e_sw_n0)
-        LEF_sw_d1_boot <- t(X_sw_d1) %*% (data_1$weight_boot * e_sw_d1)
-        LEF_sw_n1_boot <- t(X_sw_n1) %*% (data_1$weight_boot * e_sw_n1)
-
-        # Calculate \hat \beta(b)
-        beta_sw_d0 <- switch_d0$coefficients + vcov(switch_d0) %*% LEF_sw_d0_boot
-        beta_sw_n0 <- switch_n0$coefficients + vcov(switch_n0) %*% LEF_sw_n0_boot
-        beta_sw_d1 <- switch_d1$coefficients + vcov(switch_d1) %*% LEF_sw_d1_boot
-        beta_sw_n1 <- switch_n1$coefficients + vcov(switch_n1) %*% LEF_sw_n1_boot
-
-        if (object@censor_weights@pool_denominator) {
-          # Calculate the weight models' coefficient LEF approximates
-          data <- merge(weights_table_boot, cense_d$data, by = "id", all.y = TRUE)
-          LEF_c_d_boot <- t(X_c_d) %*% (data$weight_boot * e_c_d)
-
-          # Calculate \hat \beta(b)
-          beta_c_d <- cense_d$coefficients + vcov(cense_d) %*% LEF_c_d_boot
-        } else {
-          data_0 <- merge(weights_table_boot, cense_d0$data, by = "id", all.y = TRUE)
-          data_1 <- merge(weights_table_boot, cense_d1$data, by = "id", all.y = TRUE)
-
-          LEF_c_d0_boot <- t(X_c_d0) %*% (data_0$weight_boot * e_c_d0)
-          LEF_c_d1_boot <- t(X_c_d1) %*% (data_1$weight_boot * e_c_d1)
-
-
-          # Calculate \hat \beta(b)
-          beta_c_d0 <- cense_d0$coefficients + vcov(cense_d0) %*% LEF_c_d0_boot
-          beta_c_d1 <- cense_d1$coefficients + vcov(cense_d1) %*% LEF_c_d1_boot
-        }
-
-        if (object@censor_weights@pool_numerator) {
-          # Calculate the weight models' coefficient LEF approximates
-          data <- merge(weights_table_boot, cense_n$data, by = "id", all.y = TRUE)
-          LEF_c_n_boot <- t(X_c_n) %*% (data$weight_boot * e_c_n)
-
-          # Calculate \hat \beta(b)
-          beta_c_n <- cense_n$coefficients + vcov(cense_n) %*% LEF_c_n_boot
-        } else {
-          data_0 <- merge(weights_table_boot, cense_n0$data, by = "id", all.y = TRUE)
-          data_1 <- merge(weights_table_boot, cense_n1$data, by = "id", all.y = TRUE)
-
-          LEF_c_n0_boot <- t(X_c_n0) %*% (data_0$weight_boot * e_c_n0)
-          LEF_c_n1_boot <- t(X_c_n1) %*% (data_1$weight_boot * e_c_n1)
-
-
-          # Calculate \hat \beta(b)
-          beta_c_n0 <- cense_n0$coefficients + vcov(cense_n0) %*% LEF_c_n0_boot
-          beta_c_n1 <- cense_n1$coefficients + vcov(cense_n1) %*% LEF_c_n1_boot
-        }
-
-        boot_design_data <- weight_func_bootstrap(
-          object = object,
-          new_coef_sw_d0 = beta_sw_d0,
-          new_coef_sw_n0 = beta_sw_n0,
-          new_coef_sw_d1 = beta_sw_d1,
-          new_coef_sw_n1 = beta_sw_n1,
-          new_coef_c_d0 = beta_c_d0,
-          new_coef_c_n0 = beta_c_n0,
-          new_coef_c_d1 = beta_c_d1,
-          new_coef_c_n1 = beta_c_n1,
-          new_coef_c_d = beta_c_d,
-          new_coef_c_n = beta_c_n,
-          boot_idx = boot_idx,
-          remodel = FALSE,
-          quiet = TRUE
-        )
-      } else {
-        boot_design_data <- weight_func_bootstrap(
-          object = object,
-          boot_idx = boot_idx,
-          remodel = TRUE,
-          quiet = TRUE
-        )
-      }
-      # Step 3. A) : refit MSM (only for nonparametric bootstrap)
-      PP_boot <- object
-
-      if (ci_type == "Nonpara. bootstrap") {
-        PP_boot@outcome_data@data <- boot_design_data$data
-        PP_boot <- fit_msm(PP_boot, weight_cols = c("weight"))
-      } else { # ci_type %in% c("LEF outcome", "LEF both")
-        # Step 3. B): recalculate MSM coefficient (for LEF)
-        LEFs <- t(X) %*% (boot_design_data$data$weight * e)
-        LEFs[is.na(LEFs)] <- 0
-        variance_mat <- vcov(PP_boot@outcome_model@fitted@model$model)
-        variance_mat[is.na(variance_mat)] <- 0
-        # Calculate \hat \beta(b)
-        PP_boot@outcome_model@fitted@model$model$coefficients <-
-          PP_boot@outcome_model@fitted@model$model$coefficients + variance_mat %*% LEFs
-      }
-
-      # Step 4: get prediction in bootstrap sample
-
-      bootstrap_sample <- object@outcome_data@data[
-        unlist(lapply(boot_idx, function(i) which(object@outcome_data@data$id == i))),
-      ]
-
-      newdata <- check_newdata(
-        bootstrap_sample[trial_period == 0, ],
-        model = PP_boot@outcome_model@fitted@model$model,
-        predict_times
-      )
-
-      pred_list_boot <- calculate_predictions(
-        newdata = newdata,
-        model = PP_boot@outcome_model@fitted@model$model,
-        treatment_values = c(assigned_treatment_0 = 0, assigned_treatment_1 = 1),
-        pred_fun = pred_fun,
-        coefs_mat = matrix(coef(PP_boot@outcome_model@fitted@model$model), nrow = 1),
-        matrix_n_col = length(predict_times)
-      )
-
-      # return difference estimate:
-      pred_list_boot$assigned_treatment_1[, 1] - pred_list_boot$assigned_treatment_0[, 1]
-      ## end replicate
-    }
-  )
-
-  # Step 5: generate pivot CIs and return
-  (2 * point_estimate) - t(apply(bootstrapped_MRDs, 1, quantile, probs = c(0.025, 0.975)))[, 2:1]
-}
-
+# fit switch weights for bootstrap ----------
 fit_switch_weights_bootstrap <- function(switch_d_cov,
                                          switch_n_cov,
                                          eligible_wts_0 = NA,
