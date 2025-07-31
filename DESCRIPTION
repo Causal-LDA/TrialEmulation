@@ -36,7 +36,8 @@ Imports:
     mvtnorm,
     parglm,
     Rcpp,
-    sandwich
+    sandwich,
+    future.apply
 Suggests: 
     knitr,
     parsnip,
@@ -58,6 +59,7 @@ RoxygenNote: 7.3.2.9000
 Collate: 
     'RcppExports.R'
     'bootstrap.R'
+    'bootstrap_helpers.R'
     'calculate_weights.R'
     'data.R'
     'data_extension.R'
