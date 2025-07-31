@@ -52,7 +52,7 @@ test_that("Same weights recalculated if we use the same weight model coefficient
   lines(preds$difference$followup_time, preds$difference$`2.5%`, type = "l", col = "red", lty = 2)
   lines(preds$difference$followup_time, preds$difference$`97.5%`, type = "l", col = "red", lty = 2)
   result <- weight_func_bootstrap(
-    object = trial_pp, remodel = F, quiet = T, boot_idx = unique(trial_pp@data@data$id),
+    object = trial_pp, remodel = FALSE, quiet = TRUE, boot_idx = unique(trial_pp@data@data$id),
     new_coef_sw_d0 = trial_pp@switch_weights@fitted$d0@summary$tidy$estimate,
     new_coef_sw_d1 = trial_pp@switch_weights@fitted$d1@summary$tidy$estimate,
     new_coef_sw_n0 = trial_pp@switch_weights@fitted$n0@summary$tidy$estimate,
@@ -104,7 +104,12 @@ test_that("Same weights refitted if we use original dataset", {
     ) |>
     suppressMatchingWarnings("fitted probabilities")
 
-  result <- weight_func_bootstrap(object = trial_pp, remodel = T, quiet = T, boot_idx = unique(trial_pp@data@data$id))
+  result <- weight_func_bootstrap(
+    object = trial_pp,
+    remodel = TRUE,
+    quiet = TRUE,
+    boot_idx = unique(trial_pp@data@data$id)
+  )
 
   expect_equal(result$data$weight, trial_pp@outcome_data@data$weight)
 })
@@ -191,15 +196,39 @@ test_that("Same weights refitted if we use example bootstrap sample", {
   result <- weight_func_bootstrap(object = trial_pp, remodel = TRUE, quiet = TRUE, boot_idx = boot_idx)
   result$data <- result$data[order(id, trial_period, followup_time)]
 
-  expect_equal(trial_pp_boot@switch_weights@fitted$d0@summary$tidy$estimate, result$switch_models$switch_d0$summary$estimate, tolerance = 1e-7)
-  expect_equal(trial_pp_boot@switch_weights@fitted$d1@summary$tidy$estimate, result$switch_models$switch_d1$summary$estimate, tolerance = 1e-7)
-  expect_equal(trial_pp_boot@switch_weights@fitted$n0@summary$tidy$estimate, result$switch_models$switch_n0$summary$estimate, tolerance = 1e-7)
-  expect_equal(trial_pp_boot@switch_weights@fitted$n1@summary$tidy$estimate, result$switch_models$switch_n1$summary$estimate, tolerance = 1e-7)
+  expect_equal(trial_pp_boot@switch_weights@fitted$d0@summary$tidy$estimate,
+    result$switch_models$switch_d0$summary$estimate,
+    tolerance = 1e-7
+  )
+  expect_equal(trial_pp_boot@switch_weights@fitted$d1@summary$tidy$estimate,
+    result$switch_models$switch_d1$summary$estimate,
+    tolerance = 1e-7
+  )
+  expect_equal(trial_pp_boot@switch_weights@fitted$n0@summary$tidy$estimate,
+    result$switch_models$switch_n0$summary$estimate,
+    tolerance = 1e-7
+  )
+  expect_equal(trial_pp_boot@switch_weights@fitted$n1@summary$tidy$estimate,
+    result$switch_models$switch_n1$summary$estimate,
+    tolerance = 1e-7
+  )
 
-  expect_equal(trial_pp_boot@censor_weights@fitted$d0@summary$tidy$estimate, result$censor_models$cens_d0$summary$estimate, tolerance = 1e-7)
-  expect_equal(trial_pp_boot@censor_weights@fitted$d1@summary$tidy$estimate, result$censor_models$cens_d1$summary$estimate, tolerance = 1e-7)
-  expect_equal(trial_pp_boot@censor_weights@fitted$n0@summary$tidy$estimate, result$censor_models$cens_n0$summary$estimate, tolerance = 1e-7)
-  expect_equal(trial_pp_boot@censor_weights@fitted$n1@summary$tidy$estimate, result$censor_models$cens_n1$summary$estimate, tolerance = 1e-7)
+  expect_equal(trial_pp_boot@censor_weights@fitted$d0@summary$tidy$estimate,
+    result$censor_models$cens_d0$summary$estimate,
+    tolerance = 1e-7
+  )
+  expect_equal(trial_pp_boot@censor_weights@fitted$d1@summary$tidy$estimate,
+    result$censor_models$cens_d1$summary$estimate,
+    tolerance = 1e-7
+  )
+  expect_equal(trial_pp_boot@censor_weights@fitted$n0@summary$tidy$estimate,
+    result$censor_models$cens_n0$summary$estimate,
+    tolerance = 1e-7
+  )
+  expect_equal(trial_pp_boot@censor_weights@fitted$n1@summary$tidy$estimate,
+    result$censor_models$cens_n1$summary$estimate,
+    tolerance = 1e-7
+  )
 
   test_data <- trial_pp_boot@outcome_data@data
   test_data$id <- boot_idx[test_data$id]
@@ -295,7 +324,7 @@ test_that("Correct weights recalculated if we use new weight model coefficients 
     suppressMatchingWarnings("fitted probabilities")
 
   result <- weight_func_bootstrap(
-    object = trial_pp, remodel = F, quiet = T, boot_idx = boot_idx,
+    object = trial_pp, remodel = FALSE, quiet = TRUE, boot_idx = boot_idx,
     new_coef_sw_d0 = trial_pp_boot@switch_weights@fitted$d0@summary$tidy$estimate,
     new_coef_sw_d1 = trial_pp_boot@switch_weights@fitted$d1@summary$tidy$estimate,
     new_coef_sw_n0 = trial_pp_boot@switch_weights@fitted$n0@summary$tidy$estimate,

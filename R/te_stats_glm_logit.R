@@ -210,7 +210,12 @@ setMethod(
       assert_matrix(object@outcome_model@fitted@model$vcov, nrows = ncol(coefs_mat), ncols = ncol(coefs_mat))
       coefs_mat <- rbind(
         coefs_mat,
-        mvtnorm::rmvnorm(n = samples, mean = coef(model), sigma = object@outcome_model@fitted@model$vcov, checkSymmetry = FALSE)
+        mvtnorm::rmvnorm(
+          n = samples,
+          mean = coef(model),
+          sigma = object@outcome_model@fitted@model$vcov,
+          checkSymmetry = FALSE
+        )
       )
     }
 
