@@ -1,8 +1,11 @@
 # TrialEmulation 0.0.4.7
 
+* Fix bugs in testing discovered due to updated testthat. Thanks @hadley
+
+# TrialEmulation 0.0.4.5
+
 * Update tests for duckdb 1.3.0 changes to sampling.
 * Require R >= 4.1 for native pipe support.
-
 
 # TrialEmulation 0.0.4.2
 
