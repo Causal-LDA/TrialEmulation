@@ -1,0 +1,180 @@
+# TrialEmulation
+
+This package implements algorithms to conduct a **sequence of target
+trials** analysis.
+
+## Installation
+
+The package is available on CRAN:
+
+``` r
+install.packages('TrialEmulation')
+```
+
+To install the latest development version from github:
+
+``` r
+remotes::install_github("Causal-LDA/TrialEmulation")
+```
+
+## Getting Started
+
+Please see our [Getting Started
+vignette](https://Causal-LDA.github.io/TrialEmulation/articles/Getting-Started.html)
+for information on how to work with this package.
+
+A manuscript is in preparation to fully describe the methodology.
+
+# Package index
+
+## User Functions
+
+- [`initiators()`](https://causal-lda.github.io/TrialEmulation/reference/initiators.md)
+  **\[stable\]** : A wrapper function to perform data preparation and
+  model fitting in a sequence of emulated target trials
+- [`data_preparation()`](https://causal-lda.github.io/TrialEmulation/reference/data_preparation.md)
+  **\[stable\]** : Prepare data for the sequence of emulated target
+  trials
+- [`trial_msm()`](https://causal-lda.github.io/TrialEmulation/reference/trial_msm.md)
+  **\[stable\]** : Fit the marginal structural model for the sequence of
+  emulated trials
+- [`case_control_sampling_trials()`](https://causal-lda.github.io/TrialEmulation/reference/case_control_sampling_trials.md)
+  **\[stable\]** : Case-control sampling of expanded data for the
+  sequence of emulated trials
+- [`predict()`](https://causal-lda.github.io/TrialEmulation/reference/predict_marginal.md)
+  **\[stable\]** : Predict marginal cumulative incidences with
+  confidence intervals for a target trial population
+- [`print(`*`<TE_weight_summary>`*`)`](https://causal-lda.github.io/TrialEmulation/reference/print_TE.md)
+  **\[stable\]** : Print a weight summary object
+- [`summary(`*`<TE_data_prep>`*`)`](https://causal-lda.github.io/TrialEmulation/reference/summary_TE.md)
+  [`summary(`*`<TE_data_prep_sep>`*`)`](https://causal-lda.github.io/TrialEmulation/reference/summary_TE.md)
+  [`summary(`*`<TE_data_prep_dt>`*`)`](https://causal-lda.github.io/TrialEmulation/reference/summary_TE.md)
+  [`summary(`*`<TE_msm>`*`)`](https://causal-lda.github.io/TrialEmulation/reference/summary_TE.md)
+  [`summary(`*`<TE_robust>`*`)`](https://causal-lda.github.io/TrialEmulation/reference/summary_TE.md)
+  **\[stable\]** : Summary methods
+
+## Data Sets
+
+- [`trial_example`](https://causal-lda.github.io/TrialEmulation/reference/trial_example.md)
+  : Example of longitudinal data for sequential trial emulation
+- [`vignette_switch_data`](https://causal-lda.github.io/TrialEmulation/reference/vignette_switch_data.md)
+  : Example of expanded longitudinal data for sequential trial emulation
+- [`te_data_ex`](https://causal-lda.github.io/TrialEmulation/reference/te_data_ex.md)
+  : Example of a prepared data object
+- [`te_model_ex`](https://causal-lda.github.io/TrialEmulation/reference/te_model_ex.md)
+  : Example of a fitted marginal structural model object
+- [`data_censored`](https://causal-lda.github.io/TrialEmulation/reference/data_censored.md)
+  : Example of longitudinal data for sequential trial emulation
+  containing censoring
+
+## New Interface Functions
+
+Experimental functions for the new interface
+
+- [`trial_sequence()`](https://causal-lda.github.io/TrialEmulation/reference/trial_sequence.md)
+  **\[experimental\]** : Create a sequence of emulated target trials
+  object
+- [`set_data()`](https://causal-lda.github.io/TrialEmulation/reference/set_data.md)
+  **\[experimental\]** : Set the trial data
+- [`set_censor_weight_model()`](https://causal-lda.github.io/TrialEmulation/reference/set_censor_weight_model.md)
+  **\[experimental\]** : Set censoring weight model
+- [`set_switch_weight_model()`](https://causal-lda.github.io/TrialEmulation/reference/set_switch_weight_model.md)
+  **\[experimental\]** : Set switching weight model
+- [`calculate_weights()`](https://causal-lda.github.io/TrialEmulation/reference/calculate_weights.md)
+  **\[experimental\]** : Calculate Inverse Probability of Censoring
+  Weights
+- [`show_weight_models()`](https://causal-lda.github.io/TrialEmulation/reference/show_weight_models.md)
+  **\[experimental\]** : Show Weight Model Summaries
+- [`ipw_data()`](https://causal-lda.github.io/TrialEmulation/reference/ipw_data.md)
+  [`` `ipw_data<-`() ``](https://causal-lda.github.io/TrialEmulation/reference/ipw_data.md)
+  **\[experimental\]** : IPW Data Accessor and Setter
+- [`weight_model_data_indices()`](https://causal-lda.github.io/TrialEmulation/reference/weight_model_data_indices.md)
+  **\[experimental\]** : Data used in weight model fitting
+- [`set_expansion_options()`](https://causal-lda.github.io/TrialEmulation/reference/set_expansion_options.md)
+  **\[experimental\]** : Set expansion options
+- [`set_outcome_model()`](https://causal-lda.github.io/TrialEmulation/reference/set_outcome_model.md)
+  **\[experimental\]** : Specify the outcome model
+- [`expand_trials()`](https://causal-lda.github.io/TrialEmulation/reference/expand_trials.md)
+  **\[experimental\]** : Expand trials
+- [`load_expanded_data()`](https://causal-lda.github.io/TrialEmulation/reference/load_expanded_data.md)
+  **\[experimental\]** : Method to read, subset and sample expanded data
+- [`outcome_data()`](https://causal-lda.github.io/TrialEmulation/reference/outcome_data.md)
+  [`` `outcome_data<-`() ``](https://causal-lda.github.io/TrialEmulation/reference/outcome_data.md)
+  **\[experimental\]** : Outcome Data Accessor and Setter
+- [`fit_msm()`](https://causal-lda.github.io/TrialEmulation/reference/fit_msm.md)
+  **\[experimental\]** : Fit the marginal structural model for the
+  sequence of emulated trials
+
+### Data Storage
+
+Control how expanded data is stored
+
+- [`save_to_csv()`](https://causal-lda.github.io/TrialEmulation/reference/save_to_csv.md)
+  **\[experimental\]** : Save expanded data as CSV
+
+- [`save_to_duckdb()`](https://causal-lda.github.io/TrialEmulation/reference/save_to_duckdb.md)
+  **\[experimental\]** :
+
+  Save expanded data to `DuckDB`
+
+- [`save_to_datatable()`](https://causal-lda.github.io/TrialEmulation/reference/save_to_datatable.md)
+  **\[experimental\]** :
+
+  Save expanded data as a `data.table`
+
+### Model fitters
+
+- [`stats_glm_logit()`](https://causal-lda.github.io/TrialEmulation/reference/stats_glm_logit.md)
+  **\[experimental\]** :
+
+  Fit outcome models using
+  [`stats::glm`](https://rdrr.io/r/stats/glm.html)
+
+- [`parsnip_model()`](https://causal-lda.github.io/TrialEmulation/reference/parsnip_model.md)
+  **\[experimental\]** :
+
+  Fit outcome models using `parsnip` models
+
+## Classes
+
+- [`trial_sequence-class`](https://causal-lda.github.io/TrialEmulation/reference/trial_sequence-class.md)
+  [`trial_sequence_PP-class`](https://causal-lda.github.io/TrialEmulation/reference/trial_sequence-class.md)
+  [`trial_sequence_ITT-class`](https://causal-lda.github.io/TrialEmulation/reference/trial_sequence-class.md)
+  [`trial_sequence_AT-class`](https://causal-lda.github.io/TrialEmulation/reference/trial_sequence-class.md)
+  : Trial Sequence class
+- [`te_data-class`](https://causal-lda.github.io/TrialEmulation/reference/te_data-class.md)
+  : TrialEmulation Data Class
+- [`te_datastore-class`](https://causal-lda.github.io/TrialEmulation/reference/te_datastore-class.md)
+  : te_datastore
+- [`save_expanded_data(`*`<te_datastore_duckdb>`*`)`](https://causal-lda.github.io/TrialEmulation/reference/te_datastore_duckdb-class.md)
+  [`read_expanded_data(`*`<te_datastore_duckdb>`*`)`](https://causal-lda.github.io/TrialEmulation/reference/te_datastore_duckdb-class.md)
+  [`sample_expanded_data(`*`<te_datastore_duckdb>`*`)`](https://causal-lda.github.io/TrialEmulation/reference/te_datastore_duckdb-class.md)
+  : te_datastore_duckdb, functions and methods
+- [`te_model_fitter-class`](https://causal-lda.github.io/TrialEmulation/reference/te_model_fitter-class.md)
+  : Outcome Model Fitter Class
+- [`te_outcome_data-class`](https://causal-lda.github.io/TrialEmulation/reference/te_outcome_data-class.md)
+  : TrialEmulation Outcome Data Class
+- [`te_outcome_fitted-class`](https://causal-lda.github.io/TrialEmulation/reference/te_outcome_fitted-class.md)
+  : Fitted Outcome Model Object
+- [`te_outcome_model-class`](https://causal-lda.github.io/TrialEmulation/reference/te_outcome_model-class.md)
+  : Fitted Outcome Model Object
+
+## Internal Methods
+
+- [`save_expanded_data()`](https://causal-lda.github.io/TrialEmulation/reference/save_expanded_data.md)
+  : Method to save expanded data
+- [`read_expanded_data()`](https://causal-lda.github.io/TrialEmulation/reference/read_expanded_data.md)
+  : Method to read expanded data
+- [`sample_expanded_data()`](https://causal-lda.github.io/TrialEmulation/reference/sample_expanded_data.md)
+  : Internal method to sample expanded data
+- [`fit_weights_model()`](https://causal-lda.github.io/TrialEmulation/reference/fit_weights_model.md)
+  : Method for fitting weight models
+
+# Articles
+
+### All vignettes
+
+- [Extending-TrialEmulation](https://causal-lda.github.io/TrialEmulation/articles/Extending-TrialEmulation.md):
+- [Getting-Started](https://causal-lda.github.io/TrialEmulation/articles/Getting-Started.md):
+- [New
+  Interface](https://causal-lda.github.io/TrialEmulation/articles/new-interface.md):

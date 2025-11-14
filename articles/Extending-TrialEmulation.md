@@ -1,0 +1,273 @@
+# Extending-TrialEmulation
+
+## Introduction
+
+Due to the extensive use of classes, TrialEmulation can be expanded by
+the user to fit their own specific needs.
+
+This document gives a quick overview of the extensible classes, the
+current implementations and the requirements for adding your own child
+classes.
+
+This vignette describes two areas where new functionality could be
+implemented: [regression model fitting](#model-fitters) and [data
+storage](#data-stores).
+
+## Model fitters
+
+### Classes and Slots
+
+Three classes are required implementing a model fitter:
+
+- **te_model_fitter**: Parent class. This class is virtual so no object
+  can be created with this class. It exists to allow the definition of
+  child classes.
+  - @save_path A path to a directory for saving models
+- **te_outcome_fitted**: Parent class. This class contains the results
+  of the fitting an outcome model. A class inheriting from
+  `te_outcome_fitted` must be defined for a new model fitter
+  implementation.
+  - @model: A list containing the fitted model objects
+  - @summary: A list of data frames containing a summary of the fitted
+    model (`tidy`, `glance`) and the saved file (`save_path`)
+- **te_weights_fitted**: Parent class. This class contains the results
+  of the fitting a weight model.
+  - @label: A label which is supplied to the fitting function to
+    describe the model
+  - @summary: A list of data frames containing a summary of the fitted
+    model (`tidy`, `glance`) and the saved file (`save_path`)
+  - @fitted: The fitted values (predicted probabilities)
+
+Currently only one model fitter class is implemented:
+
+- **te_stats_glm_logit**: Models are fit using
+  `stats::glm(..., family = binomial("logit"))`
+  - @save_path A path to a directory for saving models
+- **te_stats_glm_logit_outcome_fitted**: The results of fitting the
+  pooled logistic regression model.
+  - @model: list containing `model`, the result of
+    [`glm()`](https://rdrr.io/r/stats/glm.html), and `vcov`, the robust
+    covariance matrix
+  - @summary: list of data frames `tidy`, `glance` and `save_path`
+
+### User Constructor
+
+A user constructor is required to specify the model fitter type in
+[`set_censor_weight_model()`](https://causal-lda.github.io/TrialEmulation/reference/set_censor_weight_model.md),
+[`set_switch_weight_model()`](https://causal-lda.github.io/TrialEmulation/reference/set_switch_weight_model.md)
+and
+[`set_outcome_model()`](https://causal-lda.github.io/TrialEmulation/reference/set_outcome_model.md).
+Each is specified independently. The user constructor should have
+arguments for any required model fitting (hyper-)parameters as well as a
+path for saving the model objects.
+
+See
+[`stats_glm_logit()`](https://causal-lda.github.io/TrialEmulation/reference/stats_glm_logit.md)
+for a simple implementation.
+
+### Methods
+
+There are 3 generic methods that are required when implementing a new
+model,
+[`fit_weights_model()`](https://causal-lda.github.io/TrialEmulation/reference/fit_weights_model.md),
+[`fit_outcome_model()`](https://causal-lda.github.io/TrialEmulation/reference/fit_outcome_model.md),
+and
+[`predict()`](https://causal-lda.github.io/TrialEmulation/reference/predict_marginal.md).
+
+#### fit_weights_model
+
+This method uses the model object to fit a model for probability of
+censoring and returns the fitted probabilities which are later combined
+and used to construct the inverse probability of censoring weights. The
+method should also save the fitted model object to disk if a save path
+is specified.
+
+- **Arguments**
+  - object: the `te_model_fitter` object
+  - data: `data.frame` containing the outcome (here the censoring
+    indicator) and covariate data
+  - formula: the model formula
+  - label: a `character` label describing the model to be attached to
+    the result
+- **Returns**: a `te_weights_fitted` object containing a summary of the
+  fitted model and the fitted probabilities.
+
+#### fit_outcome_model
+
+This method fits the outcome model. object, data, formula, weights =
+NULL - **Arguments** - object: the `te_model_fitter` object - data:
+`data.frame` containing the outcome and covariate data - formula: the
+model formula - weights: a numeric vector containing weights for all
+observations in `data` - **Returns**: The fitted model as an object
+inheriting from a `te_outcome_fitted` child class corresponding to the
+fitter model class used. This object contains a summary of the results
+as well as the raw result from the model.
+
+#### predict
+
+This method calculates the marginal survival or cumulative incidences
+based on the outcome model object. The method should take the baseline
+covariates and construct data for `assigned_treatment = 0` and `1` as
+well as the follow up times given in `predict_times`.
+
+- **Arguments**
+  - object: the fitted model object inheriting from `te_outcome_fitted`,
+    eg `te_stats_glm_logit_outcome_fitted`
+  - newdata: a `data.frame` containing baseline covariates to predict
+    probabilities for
+  - predict_times: a contiguous numeric vector of times to calculate
+    predictions for
+  - type: a string indicating the type of prediction to calculate:
+    `"cum_inc"` or `"survival"`
+  - conf_int: logical indicating whether or not to calculate the 95%
+    confidence interval
+  - samples: an integer giving the number of iterations used to
+    calculate the confidence interval using a sampling approach
+- **Returns**: a list containing the predicted values for assigned
+  treatment 0, 1 and the difference between them.
+
+## Data Stores
+
+The sequence of target trials dataset is much larger than the input
+longitudinal data. If the original input data is already large compared
+to the available system memory, an alternative data storage mechanism
+might be desirable. Currently the package offers `data.table`, `csv`,
+and `duckdb`. Here we describe the implementation of “data stores”.
+
+In order to add a new data store, a child class must be defined that
+inherits from class `te_datastore`. You must also add at least a new
+constructor `save_to_xxx()` as well as new methods for
+[`save_expanded_data()`](https://causal-lda.github.io/TrialEmulation/reference/save_expanded_data.md)
+and
+[`read_expanded_data()`](https://causal-lda.github.io/TrialEmulation/reference/read_expanded_data.md).
+
+A new method for
+[`sample_expanded_data()`](https://causal-lda.github.io/TrialEmulation/reference/sample_expanded_data.md)
+is optional (e.g. in case sampling is not required or the implemented
+method for `te_datastore` is sufficient, see below under
+*sample_expanded_data*), but it will be necessary for large datasets.
+
+### Classes and Slots
+
+- **te_datastore**: Parent class, placed as a place holder in
+  `trial_sequence` objects before setting expansion options, will be
+  replaced with the corresponding child class when expansion options are
+  set.
+  - @N: Number of observations
+
+Currently the following Data Store child classes are available for
+saving expanded data:
+
+- **te_datastore_csv**: Expanded data is saved as csv files, one file
+  per trial period. When reading the data, only the files corresponding
+  to the selected trial periods are read.
+  - @path: Path to temp folder containing the csv files
+  - @files: Paths to all available files
+  - @template: empty `data.frame`, used as a template when reading the
+    data to preserve types and attributes
+  - @N: inherited from `te_datastore`
+- **te_datastore_datatable**: Expanded data is saved as a `data.table`
+  in memory, only viable for smaller datasets.
+  - @data: `data.table` containing expanded data
+  - @N: inherited from `te_datastore`
+- **te_datastore_duckdb**: Expanded data is saved as a DuckDB file
+  containing all trial periods. Reading, subsetting and sampling can be
+  done efficiently with an SQL query (currently constructed with a
+  translator helper function).
+  - @path: Path of the DuckDB file
+  - @table: The table name
+  - @con: A duckdb connection object, used to query and write to the
+    database
+  - @N: inherited from `te_datastore`
+
+### User Constructor
+
+The user constructor function is used in
+[`set_expansion_options()`](https://causal-lda.github.io/TrialEmulation/reference/set_expansion_options.md)
+to replace the `te_datastore` object in
+`trial_sequence@expansion@datastore` with an object of the desired child
+class. The user constructor allows the user to specify any parameters
+required for the data store, such as file path, or username/password.
+Saving of the data happens later when calling
+[`expand_trials()`](https://causal-lda.github.io/TrialEmulation/reference/expand_trials.md)
+which internally calls the corresponding
+[`save_expanded_data()`](https://causal-lda.github.io/TrialEmulation/reference/save_expanded_data.md)
+method.
+
+See the following currently available constructor functions for further
+insights:
+[`save_to_csv()`](https://causal-lda.github.io/TrialEmulation/reference/save_to_csv.md),
+[`save_to_datatable()`](https://causal-lda.github.io/TrialEmulation/reference/save_to_datatable.md),
+[`save_to_duckdb()`](https://causal-lda.github.io/TrialEmulation/reference/save_to_duckdb.md)
+
+### Methods
+
+There are four generic methods that are defined for the `te_datastore`
+class.
+
+#### show
+
+This method prints a simple summary or extract from the data. *Note:*
+Since the child classes differ quite significantly from each other,
+every child class has its own show method. There is no show method for
+the `te_datastore` parent class.
+
+#### save_expanded_data
+
+This method defines how the expanded data gets saved. Method is chosen
+based on the `te_datastore` child class. It gets called internally by
+[`expand_trials()`](https://causal-lda.github.io/TrialEmulation/reference/expand_trials.md).
+For large datasets
+[`save_expanded_data()`](https://causal-lda.github.io/TrialEmulation/reference/save_expanded_data.md)
+may be called multiple times, so the method must be able to “append”
+data in some way.
+
+- **Arguments**
+  - object: a `te_datastore` child class object
+  - data: `data.table` to be saved to the data store
+- **Returns**: a modified `te_datastore` child class object
+
+#### read_expanded_data
+
+This method is used for reading the expanded data into memory. The data
+can be subset by period or any other subset condition. It gets called
+internally by
+[`load_expanded_data()`](https://causal-lda.github.io/TrialEmulation/reference/load_expanded_data.md)
+if `p_control` isn’t specified, and by
+[`sample_expanded_data()`](https://causal-lda.github.io/TrialEmulation/reference/sample_expanded_data.md)
+if no specific sampling method exists for a `te_datastore` child class.
+
+- **Arguments**
+  - object: a `te_datastore` child class object
+  - period: “integerish” vector to select trial periods, if missing
+    defaults to `NULL` and selects all available trial periods
+  - subset_condition: subset condition as a string, if missing defaults
+    to `NULL` and skips subsetting
+- **Returns**: a `data.table` object
+
+#### sample_expanded_data
+
+This method is used for reading and sampling the expanded data. The data
+can be subset by period or any other subset condition plus it can be
+sampled using the `p_control` argument. It gets called internally by
+[`load_expanded_data()`](https://causal-lda.github.io/TrialEmulation/reference/load_expanded_data.md)
+if `p_control` is specified.
+
+If no method for the child class exists, the method of the parent class
+will be used instead which will read and subset the data using
+[`read_expanded_data()`](https://causal-lda.github.io/TrialEmulation/reference/read_expanded_data.md).
+Then the sampling happens in bulk, which might cause problems for large
+datasets. For speed or memory reasons it might be necessary to implement
+a more efficient method for a new child class.
+
+- **Arguments**
+  - object: a `te_datastore` child class object
+  - p_control: numeric value between 0 and 1, probability to sample a
+    control value
+  - period: integerish vector to select trial periods, if missing
+    defaults to `NULL` and selects all available trial periods
+  - subset_condition: subset condition as a string, if missing defaults
+    to `NULL` and skips subsetting
+  - seed: a seed to be used for sampling, if missing sampling is
+    randomised
+- **Returns**: a `data.table` object
