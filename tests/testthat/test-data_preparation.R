@@ -15,7 +15,7 @@ test_that("data_preparation works as expected", {
   expect_identical(result$N, 1939053L)
   expect_identical(result$min_period, 1L)
   expect_identical(result$max_period, 396L)
-  expect(nrow(result$data), result$N)
+  expect_equal(nrow(result$data), result$N)
 
   result_pat_1 <- as.data.frame(result$data[result$data$id == 1, ])
   expected_pat_1 <- vignette_switch_data[vignette_switch_data$id == 1, ]
@@ -123,7 +123,7 @@ test_that("data_preparation works with PP estimand type", {
   expect_identical(result$N, 963883L)
   expect_identical(result$min_period, 1L)
   expect_identical(result$max_period, 396L)
-  expect(nrow(result$data), result$N)
+  expect_equal(nrow(result$data), result$N)
 })
 
 
@@ -146,7 +146,7 @@ test_that("data_preparation works with As-Treated estimand type", {
   expect_identical(result$N, 1939053L)
   expect_identical(result$min_period, 1L)
   expect_identical(result$max_period, 396L)
-  expect(nrow(result$data), result$N)
+  expect_equal(nrow(result$data), result$N)
 })
 
 
@@ -172,7 +172,7 @@ test_that("data_preparation works with ITT and censor weights", {
   expect_identical(result$N, 8795L)
   expect_identical(result$min_period, 0L)
   expect_identical(result$max_period, 9L)
-  expect(nrow(result$data), result$N)
+  expect_equal(nrow(result$data), result$N)
   expect_equal(
     result$censor_models$cens_pool_d$summary$estimate,
     c(1.37911964407242, 0.331586878535157, -0.582701095754271, 0.29591740519054, -0.0725139253274435, 0.94770056528085)
