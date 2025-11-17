@@ -25,6 +25,7 @@ predict(object, ...)
   predict_times,
   conf_int = TRUE,
   samples = 100,
+  ci_type = c("sandwich", "Nonpara. bootstrap", "LEF outcome", "LEF both"),
   type = c("cum_inc", "survival")
 )
 
@@ -60,6 +61,9 @@ model parameter estimates and the variance equal to the estimated robust covaria
 
 \item{type}{Specify cumulative incidences or survival probabilities to be predicted. Either cumulative incidence
 (\code{"cum_inc"}) or survival probability (\code{"survival"}).}
+
+\item{ci_type}{Method used to construct the confidence interval:
+\code{sandwich}, \code{'Nonpara. bootstrap'}, \code{'LEF outcome'}, \code{'LEF both'}}
 }
 \value{
 A list of three data frames containing the cumulative incidences for each of the assigned treatment options
@@ -67,6 +71,8 @@ A list of three data frames containing the cumulative incidences for each of the
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
+}
+\details{
 This function predicts the marginal cumulative incidences when a target trial population receives either the
 treatment or non-treatment at baseline (for an intention-to-treat analysis) or either sustained treatment or
 sustained non-treatment (for a per-protocol analysis). The difference between these cumulative incidences is the

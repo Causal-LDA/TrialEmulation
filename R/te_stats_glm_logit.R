@@ -182,3 +182,99 @@ setMethod(
     )
   }
 )
+
+#' @describeIn trial_sequence_PP-class Predict from the fitted model object via [predict] on `trial_sequence`
+#' @inheritParams predict_marginal
+#' @param object Object to dispatch method on
+setMethod(
+  f = "predict",
+  signature = "trial_sequence_PP",
+  function(object,
+           newdata,
+           predict_times,
+           conf_int = TRUE,
+           samples = 100,
+           ci_type = c("sandwich", "Nonpara. bootstrap", "LEF outcome", "LEF both"),
+           type = c("cum_inc", "survival")) {
+    # Derived from predict.TE_msm
+    assert_class(object@outcome_model@fitted@model$model, "glm")
+    model <- object@outcome_model@fitted@model$model
+    ci_type <- match.arg(ci_type)
+    type <- match.arg(type)
+    assert_integerish(predict_times, lower = 0, min.len = 1)
+    assert_flag(conf_int)
+    assert_int(samples, lower = 1)
+
+    coefs_mat <- matrix(coef(model), nrow = 1)
+    if (conf_int) {
+      assert_matrix(object@outcome_model@fitted@model$vcov, nrows = ncol(coefs_mat), ncols = ncol(coefs_mat))
+      coefs_mat <- rbind(
+        coefs_mat,
+        mvtnorm::rmvnorm(
+          n = samples,
+          mean = coef(model),
+          sigma = object@outcome_model@fitted@model$vcov,
+          checkSymmetry = FALSE
+        )
+      )
+    }
+
+    newdata <- check_newdata(newdata, model, predict_times)
+
+    pred_fun <- if (type == "survival") {
+      calculate_survival
+    } else if (type == "cum_inc") {
+      calculate_cum_inc
+    }
+
+    pred_list <- calculate_predictions(
+      newdata = newdata,
+      model = model,
+      treatment_values = c(assigned_treatment_0 = 0, assigned_treatment_1 = 1),
+      pred_fun = pred_fun,
+      coefs_mat = coefs_mat,
+      matrix_n_col = length(predict_times)
+    )
+
+    pred_list$difference <- pred_list$assigned_treatment_1 - pred_list$assigned_treatment_0
+
+    if (conf_int) {
+      if (ci_type == "sandwich") {
+        mapply(
+          pred_matrix = pred_list,
+          col_names = paste0(type, c("", "", "_diff")),
+          SIMPLIFY = FALSE,
+          FUN = function(pred_matrix, col_names) {
+            quantiles <- apply(pred_matrix, 1, quantile, probs = c(0.025, 0.975))
+            setNames(
+              data.frame(predict_times, pred_matrix[, 1], quantiles[1, ], quantiles[2, ]),
+              c("followup_time", col_names, "2.5%", "97.5%")
+            )
+          }
+        )
+      } else if (ci_type %in% c("Nonpara. bootstrap", "LEF outcome", "LEF both")) {
+        bootstrap_CIs <- calculate_bootstrap_CIs(
+          object = object,
+          ci_type = ci_type,
+          bootstrap_sample_size = samples,
+          predict_times = predict_times,
+          point_estimate = pred_list$difference[, 1],
+          pred_fun = pred_fun
+        )
+        setNames(
+          data.frame(predict_times, pred_list$difference[, 1], bootstrap_CIs[, 1], bootstrap_CIs[, 2]),
+          c("followup_time", paste0(type, "_diff"), "lower_bound", "upper_bound")
+        )
+      }
+    } else {
+      mapply(
+        pred_matrix = pred_list,
+        col_names = paste0(type, c("", "", "_diff")),
+        SIMPLIFY = FALSE,
+        FUN = function(pred_matrix, col_names) {
+          setNames(data.frame(predict_times, pred_matrix[, 1]), nm = c("followup_time", col_names))
+        }
+      )
+    }
+  }
+)

@@ -513,6 +513,7 @@ setGeneric("fit_msm", function(object,
 #' Predict marginal cumulative incidences with confidence intervals for a target trial population
 #'
 #' `r lifecycle::badge('stable')`
+#'
 #' This function predicts the marginal cumulative incidences when a target trial population receives either the
 #' treatment or non-treatment at baseline (for an intention-to-treat analysis) or either sustained treatment or
 #' sustained non-treatment (for a per-protocol analysis). The difference between these cumulative incidences is the
@@ -532,7 +533,10 @@ setGeneric("fit_msm", function(object,
 #'   trial population under treatment and non-treatment and their differences by simulating the parameters in the
 #'   marginal structural model from a multivariate normal distribution with the mean equal to the marginal structural
 #'   model parameter estimates and the variance equal to the estimated robust covariance matrix.
+#' @param ci_type Method used to construct the confidence interval:
+#' `sandwich`, `'Nonpara. bootstrap'`, `'LEF outcome'`, `'LEF both'`
 #' @param samples Number of samples used to construct the simulation-based confidence intervals.
+
 #' @param ... Further arguments passed to or from other methods.
 #'
 #' @return A list of three data frames containing the cumulative incidences for each of the assigned treatment options
