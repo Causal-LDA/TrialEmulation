@@ -1,0 +1,11 @@
+pandoc: 3.7.0.2
+pkgdown: 2.1.3
+pkgdown_sha: ~
+articles:
+  Extending-TrialEmulation: Extending-TrialEmulation.html
+  Getting-Started: Getting-Started.html
+  new-interface: new-interface.html
+last_built: 2025-11-17T12:55Z
+urls:
+  reference: https://causal-lda.github.io/TrialEmulation/reference
+  article: https://causal-lda.github.io/TrialEmulation/articles
