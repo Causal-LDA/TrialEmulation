@@ -1,0 +1,444 @@
+---
+title: "Bootstrap CIs design"
+output: 
+  rmarkdown::html_vignette:
+    toc: true 
+editor_options: 
+  chunk_output_type: console
+---
+
+
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  eval = FALSE,
+  fig.align = "center"
+)
+```
+
+### Current Flowchart
+
+This flow chart helps visualise the complete workflow.
+
+![Flowchart](~/TrialEmulation/vignettes/img/trial_sequence_functions_overview_solid.png){ width=80% }
+
+### Proposal
+The bootstrap confidence intevals (CIs) construction would come at the end of the flowchart. There is no way of having it higher up as they require the prediction at the end to build the CIs.
+
+We currently use the `predict()` method to estimate survival probabilities or cumulative incidences for different values of
+`assigned_treatment`. I propose we add a function variable `ci_type` to specify the CIs we want to output.
+
+
+```{r}
+preds <- predict(
+  trial_pp,
+  newdata = outcome_data(trial_itt)[trial_period == 1, ],
+  predict_times = 0:10,
+  type = "mrd", # we could specify "mrd" for marginal risk difference
+  ci_type = c("Nonparametric Bootstrap", "LEF bootstrap", "Robust Sandwich") # NEW could add function variable to specify the type of CIs the user wants
+)
+plot(preds$difference$followup_time, preds$difference$mrd_diff, 
+  type = "l", xlab = "Follow up", ylab = "Marginal risk difference"
+)
+lines(preds$difference$followup_time, preds$difference$`2.5%`, type = "l", col = "red", lty = 2)  # preds$difference$`2.5%`, could have another $ to differentiate CI methods
+lines(preds$difference$followup_time, preds$difference$`97.5%`, type = "l", col = "red", lty = 2)
+```
+
+
+### Modifications to `predict.R`
+
+Currently, predict.R is the script that specifies the function predict() above. If the command 'type = "survival"' is imputed, the resulting difference in `preds$difference` is an estimate for the estimand  $\Pr(Y_{m,k}^{\overline a_k= \overline 1} = 0) - \Pr(Y_{m,k}^{\overline a_k= \overline 0} = 0)$. If the command 'type = "cum_inc"' is imputed, the difference is the marginal risk difference estimate. In either case, we can build confidence intervals according to the methods described in the paper.
+
+
+The sandwich CIs are calculated when obtaining the predictions in `calculate_predictions()`. 
+```{r}
+pred_list <- calculate_predictions(
+    newdata = newdata,
+    model = model,
+    treatment_values = c(assigned_treatment_0 = 0, assigned_treatment_1 = 1),
+    pred_fun = pred_fun,
+    coefs_mat = coefs_mat,
+    matrix_n_col = length(predict_times)
+  )
+```
+
+Denote by $S$ the sample size for the multivariate normal sampling for the sandwich CI construction. The variable `coefs_mat` in `calculate_predictions()` has $1 + S$ columns. The first column is the point estimates of the MSM coefficients from trial_msm. The S remaining columns correspond to the $S$ coefficients generated from the multivariate normal sampling centered at the point estimate of the coefficients and with variance as the robust sandwich variance matrix.
+
+I don't think we can repurpose or easily modify `calculate_predictions()` to construct the other CIs. I can certainly use the output, `pred_list$difference`, and the function itself to generate the MRD in each bootstrap sample for example. But the bootstrap CIs will likely have to be constructed in a separate function call.
+
+The end of the function script for `predict()` could look like this for example: 
+
+```{r}
+ pred_list <- calculate_predictions(
+    newdata = newdata,
+    model = model,
+    treatment_values = c(assigned_treatment_0 = 0, assigned_treatment_1 = 1),
+    pred_fun = pred_fun,
+    coefs_mat = coefs_mat,
+    matrix_n_col = length(predict_times)
+  )
+
+  pred_list$difference <- pred_list$assigned_treatment_1 - pred_list$assigned_treatment_0
+
+  output <- mapply(
+    pred_matrix = pred_list,
+    col_names = paste0(type, c("", "", "_diff")),
+    SIMPLIFY = FALSE,
+    FUN = function(pred_matrix, col_names) {
+      if (ci_type == "sandwich") {
+        quantiles <- apply(pred_matrix, 1, quantile, probs = c(0.025, 0.975))
+        setNames(
+          data.frame(predict_times, pred_matrix[, 1], quantiles[1, ], quantiles[2, ]),
+          c("followup_time", col_names, "2.5%", "97.5%")
+        )
+      } else if (ci_type %in% c("Nonpara. bootstrap", "LEF outcome", "LEF both")){
+        bootstrap_CIs <- function_that_calculates_bootstrap_CIs(trial_msm_output, ci_type, output_from_calculate_predictions, bootstrap_sample_size)
+        setNames(
+          data.frame(predict_times, pred_matrix[, 1], bootstrap_CIs[, 1], bootstrap_CIs[, 2]),
+          c("followup_time", col_names, "lower_bound", "upper_bound")
+        )
+      }
+      
+      else {
+        setNames(data.frame(predict_times, pred_matrix[, 1]), nm = c("followup_time", col_names))
+      }
+    }
+  )
+  
+  
+```
+
+### Design of function_that_calculates_bootstrap_CIs 
+
+In dummy codes, here are the steps of the function: 
+
+```{r}
+#' @param trial_msm_output output for fit_msm(), should contain all relevant information including original data, expanded data, 
+#' weight models formulae, outcome model
+#' @param ci_type string or vector of strings of bootstrap CI types user wants ("Nonpara. bootstrap", "LEF outcome only", "LEF both") 
+#' (these names are subject to change)
+#' @param output_from_calculate_predictions output of calculate_predictions()$difference as the point estimate is need to build pivot CIs
+#' @param bootstrap_sample_size Number of bootstrap samples
+#'
+function_that_calculates_bootstrap_CIs <- function(trial_msm_output, ci_type, output_from_calculate_predictions, bootstrap_sample_size){
+ ##########################################################################################################################
+ #  All code below needs to be changed to match variable names with function input, some of which are class type #
+ ##########################################################################################################################
+  if (ci_type != 'Nonpara. bootstrap'){
+    X <- model.matrix(PP$model)
+    e <- PP$model$y - PP$model$fitted.values
+    if (ci_type == 'LEF both'){
+      X_sw_d0 <- model.matrix(switch_d0)
+      e_sw_d0 <- switch_d0$y - switch_d0$fitted.values
+      
+      X_sw_n0 <- model.matrix(switch_n0)
+      e_sw_n0 <- switch_n0$y - switch_n0$fitted.values
+      
+      X_sw_d1 <- model.matrix(switch_d1)
+      e_sw_d1 <- switch_d1$y - switch_d1$fitted.values
+      
+      X_sw_n1 <- model.matrix(switch_n1)
+      e_sw_n1 <- switch_n1$y - switch_n1$fitted.values
+    
+    }
+  }
+  
+  #Step 1: for each bootstrap sample: 
+  bootstrapped_MRDs <- foreach(k = 1:bootstrap_sample_size, .combine=cbind) %dopar% {
+     
+    #Bootstrap sample with patient id as sampling unit
+    boot_idx <- sort(sample(unique(triat_pp@outcome_data$id), length(unique(triat_pp@outcome_data$id)),replace = TRUE))
+    
+    weights_table_boot <- data.frame(id = unique(triat_pp@outcome_data$id)) %>% 
+        rowwise() %>% 
+        dplyr::mutate(weight_boot = length(boot_idx[boot_idx == id])) #bootstrap sampling weight is number of times they were sampled
+    
+    # Step 2: refit/recalculate weights 
+    if (ci_type == 'LEF both'){
+      # Calculate the weight models' coefficient LEF approximates
+      data_0 <- merge(weights_table_boot, switch_d0$data, on = id, all.y = TRUE)
+      data_1 <- merge(weights_table_boot, switch_d1$data, on = id, all.y = TRUE)
+      
+      LEF_sw_d0_boot <- t(X_sw_d0)%*%(data_0$weight_boot*e_sw_d0)
+      LEF_sw_n0_boot <- t(X_sw_n0)%*%(data_0$weight_boot*e_sw_n0)
+      LEF_sw_d1_boot <- t(X_sw_d1)%*%(data_1$weight_boot*e_sw_d1)
+      LEF_sw_n1_boot <- t(X_sw_n1)%*%(data_1$weight_boot*e_sw_n1)
+      
+      #Calculate \hat \beta(b)
+      beta_sw_d0 <- switch_d0$coefficients + vcov(switch_d0)%*%LEF_sw_d0_boot
+      beta_sw_n0 <- switch_n0$coefficients + vcov(switch_n0)%*%LEF_sw_n0_boot
+      beta_sw_d1 <- switch_d1$coefficients + vcov(switch_d1)%*%LEF_sw_d1_boot
+      beta_sw_n1 <- switch_n1$coefficients + vcov(switch_n1)%*%LEF_sw_n1_boot
+      
+      boot_design_data <- weight_func_bootstrap(data = simdata_censored, expanded_data = switch_data, 
+                                        switch_d_cov = #extract weight models, somewhere in trial_pp@censor
+                                        weight_model_d0 = switch_d0, #extra glm objects, either in trial_PP or saved rds files
+                                        weight_model_n0 = switch_n0,
+                                        weight_model_d1 = switch_d1,
+                                        weight_model_n1 = switch_n1,
+                                        new_coef_sw_d0 = beta_sw_d0,
+                                        new_coef_sw_n0 = beta_sw_n0,
+                                        new_coef_sw_d1 = beta_sw_d1,
+                                        new_coef_sw_n1 = beta_sw_n1,
+                                        boot_idx = boot_idx, remodel = FALSE, quiet = TRUE)
+    } else {
+      boot_design_data <- weight_func_bootstrap(expanded_data = triat_pp@outcome_data, 
+                                            switch_d_cov = #extract weight models, somewhere in trial_pp@censor
+                                            weight_model_d0 = switch_d0, #extra glm objects, either in trial_PP or saved rds files
+                                            weight_model_n0 = switch_n0,
+                                            weight_model_d1 = switch_d1,
+                                            weight_model_n1 = switch_n1,
+                                            boot_idx = boot_idx, remodel = TRUE, quiet = TRUE)
+          
+    }
+      # STep 3. A) : refit MSM (only for nonparametric bootstrap)
+    if(ci_type == 'Nonpara. bootstrap'){
+          PP_boot <- trial_msm(data = boot_design_data,
+                                           outcome_cov = model,
+                                           model_var = c('assigned_treatment'),
+                                           glm_function = 'glm',
+                                           include_trial_period = ~1, include_followup_time = ~1,
+                                           use_weight=T, use_censor=T, quiet = T, use_sample_weights =  F)
+    } else {
+          # Can we call fit_msm ?
+      # Step 3. B): recalculate MSM coefficient (for LEF)
+          LEFs <- t(X)%*%(boot_design_data$weight*e)
+          LEFs[is.na(LEFs)] <- 0
+          variance_mat <- vcov(PP$model)
+          variance_mat[is.na(variance_mat)] <- 0
+          #Calculate \hat \beta(b)
+          beta <- PP$model$coefficients + variance_mat%*%LEFs
+          
+          PP_boot <- PP
+          PP_boot$model$coefficients <- beta
+  }
+      #step 4: get prediction in bootstrap sample
+          # Could reuse calculate_predictions(newdata = bootstrap_sample) ?
+          bootstrap_sample <- expanded_data[expanded_data$id == boot_idx[1],]
+          for (i in 2:length(boot_idx)){
+            bootstrap_sample <- rbind(bootstrap_sample, expanded_data[expanded_data$id == boot_idx[i],])
+          } #I feel like there could be a more efficient way of doing this.
+    
+          pred_list_boot <- calculate_predictions(
+                            newdata = bootstrap_sample,
+                            model = PP_boot$model,
+                            treatment_values = c(assigned_treatment_0 = 0, assigned_treatment_1 = 1),
+                            pred_fun = pred_fun,
+                            coefs_mat = PP_boot$model$coefficients,
+                            matrix_n_col = length(predict_times)
+                          )
+          
+          pred_list_boot$difference
+          
+  }
+  # Step 5: generate pivot CIs
+  CI_lb <- 2*pred_list$difference - apply(bootstrapped_MRDs,
+                                                           1,
+                                                           quantile,
+                                                           probs = c(0.975))
+  CI_ub <- 2*pred_list$difference - apply(bootstrapped_MRDs,
+                                                           1,
+                                                           quantile,
+                                                           probs = c(0.025))
+  
+  #Step 6: Add CIs to the output data from the end of predict()
+  
+  cbind(CI_lb,CI_ub)
+}
+
+```
+
+For `weight_func_bootstrap()`: this is mainly a modification based on `weight_func()` in `data_utils.R`. The main purpose of this function is to refit the weight models on a new data set (i.e. bootstrap sample) or recalculate weights based on a new set of coefficients (for LEF bootstrap CIs). It also takes some code from `data_expansion.R`. The input is the expanded data and a bootstrap sample vector of IDs and the returned output is the same expanded data with new weights.
+
+```{r}
+weight_func_bootstrap <- function(expanded_data,
+                                  use_switch_weights = TRUE,
+                                  use_censor_weights = TRUE,
+                                  switch_n_cov = ~1,
+                                  switch_d_cov = ~1,
+                                  eligible_wts_0 = NA,
+                                  eligible_wts_1 = NA,
+                                  cense = NA,
+                                  pool_cense_n = FALSE,
+                                  pool_cense_d = FALSE,
+                                  cense_d_cov = ~1,
+                                  cense_n_cov = ~1,
+                                  save_weight_models = FALSE,
+                                  data_dir = NA,
+                                  quiet = FALSE,
+                                  glm_function = "glm",
+                                  weight_model_d0 = switch_d0,
+                                  weight_model_n0 = switch_n0,
+                                  weight_model_d1 = switch_d1,
+                                  weight_model_n1 = switch_n1,
+                                  cense_model_d = NA,
+                                  cense_model_n = NA,
+                                  cense_model_d0 = cense_d0,
+                                  cense_model_n0 = cense_n0,
+                                  cense_model_d1 = cense_d1,
+                                  cense_model_n1 = cense_n1,
+                                  remodel = TRUE,
+                                  new_coef_sw_d0 = NA,
+                                  new_coef_sw_n0 = NA,
+                                  new_coef_sw_d1 = NA,
+                                  new_coef_sw_n1 = NA,
+                                  new_coef_c_d0 = NA,
+                                  new_coef_c_n0 = NA,
+                                  new_coef_c_d1 = NA,
+                                  new_coef_c_n1 = NA,
+                                  new_coef_c_d = NA,
+                                  new_coef_c_n = NA,
+                                  boot_idx = NA,
+                                  ...) {
+# Step 1: extra data from weight model glm objects
+....
+  # Step 2: Filter by bootstrapped IDs. Create new 'weight_boot' variable in weight model datas which is bootstrap resampling weight
+ 
+  ....
+  
+  sw_data # extracted from weight model glm objects  
+  
+  
+  # Step 3: Weight recalculation
+  
+  ## IF remodel == TRUE, we re-fit IP weight models (for nonparametric bootstrap, LEF outcome)
+  ## Re-use the same weight model formulae
+  switch_n_cov
+  switch_d_cov 
+  cense_d_cov
+  cense_n_cov
+  
+  ## ELSE: For LEF both, we recalculate the weights using the new weight model coefficients 
+  new_coef_sw_d0
+  ...
+  #Example: 
+  if(remodel == TRUE){
+      switch_d_cov <- update.formula(switch_d_cov, treatment ~ .)
+      switch_n_cov <- update.formula(switch_n_cov, treatment ~ .)
+      
+      switch_results <- fit_switch_weights(
+        switch_d_cov = switch_d_cov,
+        switch_n_cov = switch_n_cov,
+        weights = weight_boot, ## this is important addition to the weight fitting functions. By including bootstrap resampling weights we make sure the fit is  
+        # on bootstrapped data. This weighting in the glm accounts for patients being sampled with replacement
+        eligible_wts_0 = eligible_wts_0,
+        eligible_wts_1 = eligible_wts_1,
+        sw_data = sw_data,
+        quiet = quiet,
+        save_dir = data_dir,
+        save_weight_models = save_weight_models,
+        glm_function = glm_function,
+        ...
+      )
+      sw_data <- switch_results$sw_data
+      switch_models <- switch_results$switch_models
+      rm(switch_results)
+  } else{ # For LEF both, recalculate weights with new coefficients
+      weight_model_d0$coefficients <- new_coef_sw_d0
+      weight_model_n0$coefficients <- new_coef_sw_n0
+      weight_model_d1$coefficients <- new_coef_sw_d1
+      weight_model_n1$coefficients <- new_coef_sw_n1
+      
+      switch_d0 <- cbind(p0_d = predict.glm(weight_model_d0, weight_model_d0_data, type = 'response' ), 
+                         weight_model_d0_data[, c("eligible0", "id", "period")])
+      
+      switch_n0 <- cbind(p0_n = predict.glm(weight_model_n0, weight_model_n0_data, type = 'response' ),
+                         weight_model_n0_data[, c("eligible0", "id", "period")])
+      
+      switch_d1 <- cbind(p1_d = predict.glm(weight_model_d1, weight_model_d1_data, type = 'response' ), 
+                         weight_model_d1_data[, c("eligible1", "id", "period")])
+      
+      switch_n1 <- cbind(p1_n = predict.glm(weight_model_n1, weight_model_n1_data, type = 'response' ),
+                         weight_model_n1_data[, c("eligible1", "id", "period")])
+      
+      switch_0 <- switch_d0[switch_n0, on = list(
+        id = id, period = period,
+        eligible0 = eligible0
+      )]
+      switch_1 <- switch_d1[switch_n1, on = list(
+        id = id, period = period,
+        eligible1 = eligible1
+      )]
+      
+      rm(switch_d0, switch_d1, switch_n0, switch_n1)
+      
+      sw_data <- merge.data.table(sw_data, switch_0[, -c("eligible0")], by = c("id", "period"), all = TRUE)
+      sw_data <- merge.data.table(sw_data, switch_1[, -c("eligible1")], by = c("id", "period"), all = TRUE)
+      
+      rm(switch_1, switch_0)
+  }
+  
+ # Step 4: Combine predicted values from weight models and calculate IP weights 
+
+  ...
+  
+  #Most of this code is taken from 'data_expansion' and 'data_preparation' 
+  
+  sw_data[, wt := wt * wtC]
+  
+  censor_models <- censor_models[intersect(
+    c("cens_pool_d", "cens_d0", "cens_n0", "cens_d1", "cens_n1", "cens_pool_n"),
+    names(censor_models)
+  )]
+  
+  sw_data[, first := !duplicated(sw_data[,id])]
+  sw_data <- sw_data[!is.na(wt)]
+  temp_data <- data.table(
+    id = sw_data[, id],
+    period = sw_data[, period]
+  )
+  temp_data[, wtprod := 1.0, by = id]
+  #[, elgcount := 0.0, by = id][, expand := 0.0, by = id]
+  #temp_data[, treat := 0.0, by = id][, dosesum := 0.0, by = id]
+  
+  sw_data[first == TRUE, weight0 := 1.0]
+  sw_data[, weight0 := cumprod(wt), by = id]
+  temp_data[, wtprod := sw_data[, weight0]]
+  #temp_data[, treat := data[, A]]
+  #temp_data[, dosesum := data[, CAp]]
+  #temp_data[, elgcount := data[, eligible]]
+  #temp_data[data[, eligible] == 1, init := data[eligible == 1, A]]
+  #temp_data[, init_shift := shift(data[, A])]
+  #temp_data[data[, eligible] == 0, init := init_shift, by = id]
+  #temp_data[, init_shift := NULL]
+  
+  expand_index <- rep(seq_len(nrow(sw_data)), sw_data[, period] + 1)
+  
+  quiet_msg(quiet, "Adding new weights to expanded data")
+  
+  ### new_data only contains ID, trial_period, followup_time adn the new IP weights
+  new_data <- data.table(id = sw_data[expand_index, id])
+  new_data[, period_new := sw_data[expand_index, period]]
+  #new_data[, cumA_new := data[expand_index, CAp]]
+  #new_data[, treatment_new := data[expand_index, A]]
+  
+  #new_data[, outcome_new := data[expand_index, Y]]
+  new_data[, weight0 := sw_data[expand_index, weight0]]
+  new_data[, trial_period := trial_period_func(sw_data)]
+  new_data[, index := seq_len(.N)]
+  
+  new_data <- new_data[temp_data, on = list(id = id, trial_period = period)]
+  setorder(new_data, index)
+  new_data[, followup_time := period_new - trial_period]
+  new_data[, weight := (weight0 / wtprod)]
+  
+  #### New data is merged with existing expanded data to add the new weights 
+  if (!is.na(boot_idx)){
+  output_data <- new_data[expanded_data, on = list( id = id, trial_period = trial_period, 
+                                                    followup_time = followup_time)] %>%
+    dplyr::select(names(expanded_data)) %>% 
+    rowwise() %>% 
+    dplyr::mutate(weight_boot = length(boot_idx[boot_idx == id]),
+                  weight = ifelse(weight_boot !=0,weight*weight_boot,0))
+  } else {
+    output_data <- new_data[expanded_data, on = list( id = id, trial_period = trial_period, 
+                                                    followup_time = followup_time)] %>%
+    dplyr::select(names(expanded_data))
+  }
+# Output
+  output_data 
+}
+
+```
