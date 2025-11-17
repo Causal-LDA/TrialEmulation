@@ -24,12 +24,12 @@ Source:
 
 Gravestock I, Su L, Rezvani R, Moesch J (2025). *TrialEmulation: Causal
 Analysis of Observational Time-to-Event Data*. R package version
-0.0.4.7, <https://causal-lda.github.io/TrialEmulation/>.
+0.0.4.8, <https://causal-lda.github.io/TrialEmulation/>.
 
     @Manual{,
       title = {TrialEmulation: Causal Analysis of Observational Time-to-Event Data},
       author = {Isaac Gravestock and Li Su and Roonak Rezvani and Julia Moesch},
       year = {2025},
-      note = {R package version 0.0.4.7},
+      note = {R package version 0.0.4.8},
       url = {https://causal-lda.github.io/TrialEmulation/},
     }

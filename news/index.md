@@ -1,6 +1,6 @@
 # Changelog
 
-## TrialEmulation 0.0.4.7
+## TrialEmulation 0.0.4.8
 
 - Fix bugs in testing discovered due to updated `testthat`. Thanks
   [@hadley](https://github.com/hadley)

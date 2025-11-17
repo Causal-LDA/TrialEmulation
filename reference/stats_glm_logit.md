@@ -41,6 +41,6 @@ Other model_fitter:
 stats_glm_logit(save_path = tempdir())
 #> An object of class "te_stats_glm_logit"
 #> Slot "save_path":
-#> [1] "/tmp/RtmpdaYz1N"
+#> [1] "/tmp/RtmpaPSVeE"
 #> 
 ```
