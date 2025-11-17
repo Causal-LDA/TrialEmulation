@@ -1,15 +1,22 @@
 # Changelog
 
-## TrialEmulation 0.0.4.6
+## TrialEmulation 0.0.4.7
 
-- Update tests for duckdb 1.3.0 changes to sampling.
+- Fix bugs in testing discovered due to updated `testthat`. Thanks
+  [@hadley](https://github.com/hadley)
+
+## TrialEmulation 0.0.4.5
+
+CRAN release: 2025-06-13
+
+- Update tests for `duckdb` 1.3.0 changes to sampling.
 - Require R \>= 4.1 for native pipe support.
 
 ## TrialEmulation 0.0.4.2
 
 CRAN release: 2025-02-21
 
-- Update tests for duckdb 1.2.0 changes to sampling.
+- Update tests for `duckdb` 1.2.0 changes to sampling.
 
 ## TrialEmulation 0.0.4.0
 

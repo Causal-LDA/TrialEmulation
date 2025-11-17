@@ -275,8 +275,8 @@ show_weight_models(trial_itt)
 #>  null.deviance df.null logLik    AIC      BIC      deviance df.residual nobs
 #>  404.2156      724     -196.7002 397.4004 406.5727 393.4004 723         725 
 #>  
-#>  path                                                          
-#>  /tmp/RtmpJkXhPE/trial_itt/switch_models/model_226c7dd6fcb6.rds
+#>  path                                                         
+#>  /tmp/Rtmp7KzQOd/trial_itt/switch_models/model_1d21b6da15a.rds
 #>  
 #> [[d0]]
 #> Model: P(censor_event = 0 | X, previous treatment = 0) for denominator 
@@ -290,7 +290,7 @@ show_weight_models(trial_itt)
 #>  283.0723      425     -132.1655 270.3309 282.4943 264.3309 423         426 
 #>  
 #>  path                                                          
-#>  /tmp/RtmpJkXhPE/trial_itt/switch_models/model_226c6b4ebac0.rds
+#>  /tmp/Rtmp7KzQOd/trial_itt/switch_models/model_1d21135d410f.rds
 #>  
 #> [[d1]]
 #> Model: P(censor_event = 0 | X, previous treatment = 1) for denominator 
@@ -304,7 +304,7 @@ show_weight_models(trial_itt)
 #>  113.0528      298     -55.72938 117.4588 128.5601 111.4588 296         299 
 #>  
 #>  path                                                          
-#>  /tmp/RtmpJkXhPE/trial_itt/switch_models/model_226c2fc6bf72.rds
+#>  /tmp/Rtmp7KzQOd/trial_itt/switch_models/model_1d214e8c8c9e.rds
 #> 
 ```
 

@@ -336,13 +336,13 @@ summary(prep_data)
 #> Expanded Trial Emulation data
 #> 
 #> Expanded data saved in 396 csv files:
-#>   1:   /tmp/Rtmp0wWm42/trial_emu/trial_1.csv
-#>   2:   /tmp/Rtmp0wWm42/trial_emu/trial_2.csv
-#>   3:   /tmp/Rtmp0wWm42/trial_emu/trial_3.csv
+#>   1:   /tmp/Rtmphw9Q3Q/trial_emu/trial_1.csv
+#>   2:   /tmp/Rtmphw9Q3Q/trial_emu/trial_2.csv
+#>   3:   /tmp/Rtmphw9Q3Q/trial_emu/trial_3.csv
 #>  ---                                        
-#> 394: /tmp/Rtmp0wWm42/trial_emu/trial_394.csv
-#> 395: /tmp/Rtmp0wWm42/trial_emu/trial_395.csv
-#> 396: /tmp/Rtmp0wWm42/trial_emu/trial_396.csv
+#> 394: /tmp/Rtmphw9Q3Q/trial_emu/trial_394.csv
+#> 395: /tmp/Rtmphw9Q3Q/trial_emu/trial_395.csv
+#> 396: /tmp/Rtmphw9Q3Q/trial_emu/trial_396.csv
 #> 
 #> 
 #> Number of observations in expanded data: 963883 
@@ -405,7 +405,7 @@ prep_data$switch_models$switch_n0
 #>  null.deviance df.null logLik  AIC  BIC deviance df.residual  nobs
 #>           4330   21263  -2165 4335 4359     4329       21261 21264
 #> 
-#> Object saved at "/tmp/Rtmp0wWm42/trial_emu/weight_model_switch_n0.rds"
+#> Object saved at "/tmp/Rtmphw9Q3Q/trial_emu/weight_model_switch_n0.rds"
 ```
 
 If `save_weight_models = TRUE,` the full model objects are saved in
@@ -449,12 +449,12 @@ We also see the expanded trial files:
 
 ``` r
 head(prep_data$data)
-#> [1] "/tmp/Rtmp0wWm42/trial_emu/trial_1.csv"
-#> [2] "/tmp/Rtmp0wWm42/trial_emu/trial_2.csv"
-#> [3] "/tmp/Rtmp0wWm42/trial_emu/trial_3.csv"
-#> [4] "/tmp/Rtmp0wWm42/trial_emu/trial_4.csv"
-#> [5] "/tmp/Rtmp0wWm42/trial_emu/trial_5.csv"
-#> [6] "/tmp/Rtmp0wWm42/trial_emu/trial_6.csv"
+#> [1] "/tmp/Rtmphw9Q3Q/trial_emu/trial_1.csv"
+#> [2] "/tmp/Rtmphw9Q3Q/trial_emu/trial_2.csv"
+#> [3] "/tmp/Rtmphw9Q3Q/trial_emu/trial_3.csv"
+#> [4] "/tmp/Rtmphw9Q3Q/trial_emu/trial_4.csv"
+#> [5] "/tmp/Rtmphw9Q3Q/trial_emu/trial_5.csv"
+#> [6] "/tmp/Rtmphw9Q3Q/trial_emu/trial_6.csv"
 ```
 
 Each of these csv files contains the data for the trial starting at
