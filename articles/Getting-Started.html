@@ -130,9 +130,8 @@ censoring to be used in the models for weights or the outcome</li>
 </h2>
 <p>There is an all-in-one function <code>initators()</code> which does
 all of the steps with one function call. This is similar to the
-INITIATORS SAS macro previously published by the <a href="https://causalab.hsph.harvard.edu/" class="external-link">Harvard CAUSALab</a>. It can
-be accessed via <a href="https://web.archive.org" class="external-link">web.archive.org</a>:
-e.g.
+INITIATORS SAS macro previously published by the <a href="https://hsph.harvard.edu/research/causalab/" class="external-link">Harvard CAUSALab</a>.
+It can be accessed via <a href="https://web.archive.org" class="external-link">web.archive.org</a>: e.g.
 <code>https://web.archive.org/web/20220814131941/https://causalab.sph.harvard.edu/software/</code>.</p>
 <p>Call the <code><a href="../reference/initiators.html">initiators()</a></code> function to run the complete
 analysis:</p>
@@ -387,13 +386,13 @@ data.</p>
 <span><span class="co">#&gt; Expanded Trial Emulation data</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Expanded data saved in 396 csv files:</span></span>
-<span><span class="co">#&gt;   1:   /tmp/RtmpnO6oT6/trial_emu/trial_1.csv</span></span>
-<span><span class="co">#&gt;   2:   /tmp/RtmpnO6oT6/trial_emu/trial_2.csv</span></span>
-<span><span class="co">#&gt;   3:   /tmp/RtmpnO6oT6/trial_emu/trial_3.csv</span></span>
+<span><span class="co">#&gt;   1:   /tmp/Rtmp0zaA4w/trial_emu/trial_1.csv</span></span>
+<span><span class="co">#&gt;   2:   /tmp/Rtmp0zaA4w/trial_emu/trial_2.csv</span></span>
+<span><span class="co">#&gt;   3:   /tmp/Rtmp0zaA4w/trial_emu/trial_3.csv</span></span>
 <span><span class="co">#&gt;  ---                                        </span></span>
-<span><span class="co">#&gt; 394: /tmp/RtmpnO6oT6/trial_emu/trial_394.csv</span></span>
-<span><span class="co">#&gt; 395: /tmp/RtmpnO6oT6/trial_emu/trial_395.csv</span></span>
-<span><span class="co">#&gt; 396: /tmp/RtmpnO6oT6/trial_emu/trial_396.csv</span></span>
+<span><span class="co">#&gt; 394: /tmp/Rtmp0zaA4w/trial_emu/trial_394.csv</span></span>
+<span><span class="co">#&gt; 395: /tmp/Rtmp0zaA4w/trial_emu/trial_395.csv</span></span>
+<span><span class="co">#&gt; 396: /tmp/Rtmp0zaA4w/trial_emu/trial_396.csv</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Number of observations in expanded data: 963883 </span></span>
@@ -453,7 +452,7 @@ individually</p>
 <span><span class="co">#&gt;  null.deviance df.null logLik  AIC  BIC deviance df.residual  nobs</span></span>
 <span><span class="co">#&gt;           4330   21263  -2165 4335 4359     4329       21261 21264</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Object saved at "/tmp/RtmpnO6oT6/trial_emu/weight_model_switch_n0.rds"</span></span></code></pre></div>
+<span><span class="co">#&gt; Object saved at "/tmp/Rtmp0zaA4w/trial_emu/weight_model_switch_n0.rds"</span></span></code></pre></div>
 <p>If <code>save_weight_models = TRUE,</code> the full model objects are
 saved in <code>working_dir</code>, so you can inspect the data used in
 those models and further investigate how well those models fit.</p>
@@ -490,12 +489,12 @@ those models and further investigate how well those models fit.</p>
 <p>We also see the expanded trial files:</p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">prep_data</span><span class="op">$</span><span class="va">data</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] "/tmp/RtmpnO6oT6/trial_emu/trial_1.csv"</span></span>
-<span><span class="co">#&gt; [2] "/tmp/RtmpnO6oT6/trial_emu/trial_2.csv"</span></span>
-<span><span class="co">#&gt; [3] "/tmp/RtmpnO6oT6/trial_emu/trial_3.csv"</span></span>
-<span><span class="co">#&gt; [4] "/tmp/RtmpnO6oT6/trial_emu/trial_4.csv"</span></span>
-<span><span class="co">#&gt; [5] "/tmp/RtmpnO6oT6/trial_emu/trial_5.csv"</span></span>
-<span><span class="co">#&gt; [6] "/tmp/RtmpnO6oT6/trial_emu/trial_6.csv"</span></span></code></pre></div>
+<span><span class="co">#&gt; [1] "/tmp/Rtmp0zaA4w/trial_emu/trial_1.csv"</span></span>
+<span><span class="co">#&gt; [2] "/tmp/Rtmp0zaA4w/trial_emu/trial_2.csv"</span></span>
+<span><span class="co">#&gt; [3] "/tmp/Rtmp0zaA4w/trial_emu/trial_3.csv"</span></span>
+<span><span class="co">#&gt; [4] "/tmp/Rtmp0zaA4w/trial_emu/trial_4.csv"</span></span>
+<span><span class="co">#&gt; [5] "/tmp/Rtmp0zaA4w/trial_emu/trial_5.csv"</span></span>
+<span><span class="co">#&gt; [6] "/tmp/Rtmp0zaA4w/trial_emu/trial_6.csv"</span></span></code></pre></div>
 <p>Each of these csv files contains the data for the trial starting at
 period <code>_i</code>. To create a manageable dataset for the final
 analysis we can sample from these trials.</p>

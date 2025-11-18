@@ -85,7 +85,7 @@ save_expanded_data(datastore, vignette_switch_data[1:200, ])
 #> A TE Datastore CSV object 
 #> N: 200 observations 
 #> Periods: 261 262 263 264 265 266 267 268 269 270 271 272 273 274 275 276 277 278 279 
-#> Path: /tmp/RtmpaPSVeE/csv_dir_19245b1ea214 
+#> Path: /tmp/RtmpcAcDkQ/csv_dir_18f31f79ddad 
 #> Columns: id, trial_period, followup_time, outcome, weight, treatment, catvarA, catvarB, catvarC, nvarA, nvarB, nvarC, assigned_treatment 
 
 # delete after use

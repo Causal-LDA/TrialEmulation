@@ -57,7 +57,7 @@ fitted
 #>  404.2156      724     -167.8072 343.6143 361.959 335.6143 721         725 
 #>  
 #>  path                                  
-#>  /tmp/RtmpaPSVeE/model_1924555b488d.rds
+#>  /tmp/RtmpcAcDkQ/model_18f361785379.rds
 #>  
 unlink(fitted@summary$save_path$path)
 ```
