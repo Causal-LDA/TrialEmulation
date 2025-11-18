@@ -1,4 +1,4 @@
-# TrialEmulation 0.0.4.8
+# TrialEmulation 0.0.4.9
 
 * Fix bugs in testing discovered due to updated `testthat`. Thanks @hadley
 * Update links
