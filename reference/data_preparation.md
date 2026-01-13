@@ -193,18 +193,8 @@ data_preparation(
 
 - glm_function:
 
-  Specify which glm function to use for the marginal structural model
-  from the `stats` or `parglm` packages. The default function is the
-  `glm` function in the `stats` package. Users can also specify
-  `glm_function = "parglm"` such that the `parglm` function in the
-  `parglm` package can be used for fitting generalized linear models in
-  parallel. The default control setting for `parglm` is `nthreads = 4`
-  and `method = "FAST"`, where four cores and Fisher information are
-  used for faster computation. Users can change the default control
-  setting by passing the arguments `nthreads` and `method` in the
-  `parglm.control` function of the `parglm` package, or alternatively,
-  by passing a `control` argument with a list produced by
-  `parglm.control(nthreads = , method = )`.
+  Deprecated as `parglm` is no longer available on CRAN. This option
+  will be ignored and `"glm"` will be used for model fitting.
 
 - chunk_size:
 
@@ -224,10 +214,8 @@ data_preparation(
 
   Additional arguments passed to `glm_function`. This may be used to
   specify initial values of parameters or arguments to `control`. See
-  [stats::glm](https://rdrr.io/r/stats/glm.html),
-  [parglm::parglm](https://rdrr.io/pkg/parglm/man/parglm.html) and
-  [`parglm::parglm.control()`](https://rdrr.io/pkg/parglm/man/parglm.control.html)
-  for more information.
+  [stats::glm](https://rdrr.io/r/stats/glm.html), parglm::parglm and
+  `parglm::parglm.control()` for more information.
 
 ## Value
 

@@ -386,13 +386,13 @@ data.</p>
 <span><span class="co">#&gt; Expanded Trial Emulation data</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Expanded data saved in 396 csv files:</span></span>
-<span><span class="co">#&gt;   1:   /tmp/Rtmpq3slga/trial_emu/trial_1.csv</span></span>
-<span><span class="co">#&gt;   2:   /tmp/Rtmpq3slga/trial_emu/trial_2.csv</span></span>
-<span><span class="co">#&gt;   3:   /tmp/Rtmpq3slga/trial_emu/trial_3.csv</span></span>
+<span><span class="co">#&gt;   1:   /tmp/Rtmpolj6Wm/trial_emu/trial_1.csv</span></span>
+<span><span class="co">#&gt;   2:   /tmp/Rtmpolj6Wm/trial_emu/trial_2.csv</span></span>
+<span><span class="co">#&gt;   3:   /tmp/Rtmpolj6Wm/trial_emu/trial_3.csv</span></span>
 <span><span class="co">#&gt;  ---                                        </span></span>
-<span><span class="co">#&gt; 394: /tmp/Rtmpq3slga/trial_emu/trial_394.csv</span></span>
-<span><span class="co">#&gt; 395: /tmp/Rtmpq3slga/trial_emu/trial_395.csv</span></span>
-<span><span class="co">#&gt; 396: /tmp/Rtmpq3slga/trial_emu/trial_396.csv</span></span>
+<span><span class="co">#&gt; 394: /tmp/Rtmpolj6Wm/trial_emu/trial_394.csv</span></span>
+<span><span class="co">#&gt; 395: /tmp/Rtmpolj6Wm/trial_emu/trial_395.csv</span></span>
+<span><span class="co">#&gt; 396: /tmp/Rtmpolj6Wm/trial_emu/trial_396.csv</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Number of observations in expanded data: 963883 </span></span>
@@ -452,7 +452,7 @@ individually</p>
 <span><span class="co">#&gt;  null.deviance df.null logLik  AIC  BIC deviance df.residual  nobs</span></span>
 <span><span class="co">#&gt;           4330   21263  -2165 4335 4359     4329       21261 21264</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Object saved at "/tmp/Rtmpq3slga/trial_emu/weight_model_switch_n0.rds"</span></span></code></pre></div>
+<span><span class="co">#&gt; Object saved at "/tmp/Rtmpolj6Wm/trial_emu/weight_model_switch_n0.rds"</span></span></code></pre></div>
 <p>If <code>save_weight_models = TRUE,</code> the full model objects are
 saved in <code>working_dir</code>, so you can inspect the data used in
 those models and further investigate how well those models fit.</p>
@@ -485,16 +485,16 @@ those models and further investigate how well those models fit.</p>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Number of Fisher Scoring iterations: 6</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/hist.html" class="external-link">hist</a></span><span class="op">(</span><span class="va">switch_n0</span><span class="op">$</span><span class="va">fitted.values</span>, main <span class="op">=</span> <span class="st">"Histogram of weights from model switch_n0"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="Getting-Started_files/figure-html/weight_files-1.png" class="r-plt" width="700"></p>
+<p><img src="Getting-Started_files/figure-html/weight_files-1.png" class="r-plt" alt="" width="700"></p>
 <p>We also see the expanded trial files:</p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">prep_data</span><span class="op">$</span><span class="va">data</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] "/tmp/Rtmpq3slga/trial_emu/trial_1.csv"</span></span>
-<span><span class="co">#&gt; [2] "/tmp/Rtmpq3slga/trial_emu/trial_2.csv"</span></span>
-<span><span class="co">#&gt; [3] "/tmp/Rtmpq3slga/trial_emu/trial_3.csv"</span></span>
-<span><span class="co">#&gt; [4] "/tmp/Rtmpq3slga/trial_emu/trial_4.csv"</span></span>
-<span><span class="co">#&gt; [5] "/tmp/Rtmpq3slga/trial_emu/trial_5.csv"</span></span>
-<span><span class="co">#&gt; [6] "/tmp/Rtmpq3slga/trial_emu/trial_6.csv"</span></span></code></pre></div>
+<span><span class="co">#&gt; [1] "/tmp/Rtmpolj6Wm/trial_emu/trial_1.csv"</span></span>
+<span><span class="co">#&gt; [2] "/tmp/Rtmpolj6Wm/trial_emu/trial_2.csv"</span></span>
+<span><span class="co">#&gt; [3] "/tmp/Rtmpolj6Wm/trial_emu/trial_3.csv"</span></span>
+<span><span class="co">#&gt; [4] "/tmp/Rtmpolj6Wm/trial_emu/trial_4.csv"</span></span>
+<span><span class="co">#&gt; [5] "/tmp/Rtmpolj6Wm/trial_emu/trial_5.csv"</span></span>
+<span><span class="co">#&gt; [6] "/tmp/Rtmpolj6Wm/trial_emu/trial_6.csv"</span></span></code></pre></div>
 <p>Each of these csv files contains the data for the trial starting at
 period <code>_i</code>. To create a manageable dataset for the final
 analysis we can sample from these trials.</p>
@@ -696,7 +696,7 @@ either cumulative incidence or survival.</p>
 <span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/lines.html" class="external-link">lines</a></span><span class="op">(</span><span class="va">model_preds</span><span class="op">$</span><span class="va">difference</span><span class="op">$</span><span class="va">followup_time</span>, <span class="va">model_preds</span><span class="op">$</span><span class="va">difference</span><span class="op">$</span><span class="va">`2.5%`</span>, lty <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/lines.html" class="external-link">lines</a></span><span class="op">(</span><span class="va">model_preds</span><span class="op">$</span><span class="va">difference</span><span class="op">$</span><span class="va">followup_time</span>, <span class="va">model_preds</span><span class="op">$</span><span class="va">difference</span><span class="op">$</span><span class="va">`97.5%`</span>, lty <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span></code></pre></div>
-<p><img src="Getting-Started_files/figure-html/unnamed-chunk-3-1.png" class="r-plt" width="700"></p>
+<p><img src="Getting-Started_files/figure-html/unnamed-chunk-3-1.png" class="r-plt" alt="" width="700"></p>
 </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside>

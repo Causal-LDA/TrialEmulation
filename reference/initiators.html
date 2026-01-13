@@ -252,12 +252,8 @@ marginal structural model to the subgroup of individuals. who are 30 years old o
 
 
 <dt id="arg-glm-function">glm_function<a class="anchor" aria-label="anchor" href="#arg-glm-function"></a></dt>
-<dd><p>Specify which glm function to use for the marginal structural model from the <code>stats</code> or <code>parglm</code>
-packages. The default function is the <code>glm</code> function in the <code>stats</code> package. Users can also specify <code>glm_function = "parglm"</code> such that the <code>parglm</code> function in the <code>parglm</code> package can be used for fitting generalized linear models
-in parallel. The default control setting for  <code>parglm</code> is <code>nthreads = 4</code> and <code>method = "FAST"</code>, where four cores
-and Fisher information are used for faster computation. Users can change the default control setting by passing the
-arguments <code>nthreads</code> and <code>method</code> in the <code>parglm.control</code> function of the <code>parglm</code> package, or alternatively, by
-passing a <code>control</code> argument with a list produced by <code>parglm.control(nthreads = , method = )</code>.</p></dd>
+<dd><p>Deprecated as <code>parglm</code> is no longer available on CRAN. This option will be ignored and <code>"glm"</code>
+will be used for model fitting.</p></dd>
 
 
 <dt id="arg-quiet">quiet<a class="anchor" aria-label="anchor" href="#arg-quiet"></a></dt>
@@ -266,7 +262,7 @@ passing a <code>control</code> argument with a list produced by <code>parglm.con
 
 <dt id="arg--">...<a class="anchor" aria-label="anchor" href="#arg--"></a></dt>
 <dd><p>Additional arguments passed to <code>glm_function</code>. This may be used to specify initial values of parameters or
-arguments to <code>control</code>. See <a href="https://rdrr.io/r/stats/glm.html" class="external-link">stats::glm</a>, <a href="https://rdrr.io/pkg/parglm/man/parglm.html" class="external-link">parglm::parglm</a> and <code><a href="https://rdrr.io/pkg/parglm/man/parglm.control.html" class="external-link">parglm::parglm.control()</a></code> for more information.</p></dd>
+arguments to <code>control</code>. See <a href="https://rdrr.io/r/stats/glm.html" class="external-link">stats::glm</a>, parglm::parglm and <code>parglm::parglm.control()</code> for more information.</p></dd>
 
 </dl></div>
     <div class="section level2">

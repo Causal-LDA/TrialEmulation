@@ -81,10 +81,9 @@ allows a more structured specification of the target trial emulation
 process.</p>
 <p>It also gives flexibility to add new methods and tools for parts of
 the analysis. For example, we now allow different ways of storing the
-expanded data: as CSV files and in a DuckDB database. We also allow
-different weight fitting model procedures: using <code><a href="https://rdrr.io/r/stats/glm.html" class="external-link">stats::glm</a></code>
-or <code><a href="https://rdrr.io/pkg/parglm/man/parglm.html" class="external-link">parglm::parglm</a></code>. New components can quickly and easily be
-specified for use with this package.</p>
+expanded data: as CSV files and in a DuckDB database. New components can
+quickly and easily be specified for use with this package, such as
+alternative model fitting procedures.</p>
 <div class="section level2">
 <h2 id="user-interface">User Interface<a class="anchor" aria-label="anchor" href="#user-interface"></a>
 </h2>
@@ -326,7 +325,7 @@ can be printed:</p>
 <span><span class="co">#&gt;  404.2156      724     -196.7002 397.4004 406.5727 393.4004 723         725 </span></span>
 <span><span class="co">#&gt;  </span></span>
 <span><span class="co">#&gt;  path                                                          </span></span>
-<span><span class="co">#&gt;  /tmp/Rtmp5OAwDx/trial_itt/switch_models/model_1d1c3372a9a0.rds</span></span>
+<span><span class="co">#&gt;  /tmp/Rtmp5ClmL3/trial_itt/switch_models/model_20b125f0d54a.rds</span></span>
 <span><span class="co">#&gt;  </span></span>
 <span><span class="co">#&gt; [[d0]]</span></span>
 <span><span class="co">#&gt; Model: P(censor_event = 0 | X, previous treatment = 0) for denominator </span></span>
@@ -340,7 +339,7 @@ can be printed:</p>
 <span><span class="co">#&gt;  283.0723      425     -132.1655 270.3309 282.4943 264.3309 423         426 </span></span>
 <span><span class="co">#&gt;  </span></span>
 <span><span class="co">#&gt;  path                                                          </span></span>
-<span><span class="co">#&gt;  /tmp/Rtmp5OAwDx/trial_itt/switch_models/model_1d1c299cecd9.rds</span></span>
+<span><span class="co">#&gt;  /tmp/Rtmp5ClmL3/trial_itt/switch_models/model_20b125764c04.rds</span></span>
 <span><span class="co">#&gt;  </span></span>
 <span><span class="co">#&gt; [[d1]]</span></span>
 <span><span class="co">#&gt; Model: P(censor_event = 0 | X, previous treatment = 1) for denominator </span></span>
@@ -354,7 +353,7 @@ can be printed:</p>
 <span><span class="co">#&gt;  113.0528      298     -55.72938 117.4588 128.5601 111.4588 296         299 </span></span>
 <span><span class="co">#&gt;  </span></span>
 <span><span class="co">#&gt;  path                                                          </span></span>
-<span><span class="co">#&gt;  /tmp/Rtmp5OAwDx/trial_itt/switch_models/model_1d1c41569e5c.rds</span></span>
+<span><span class="co">#&gt;  /tmp/Rtmp5ClmL3/trial_itt/switch_models/model_20b16821f7a0.rds</span></span>
 <span><span class="co">#&gt; </span></span></code></pre></div>
 </div>
 </div>
@@ -695,7 +694,7 @@ interpretation of the differences in survival.</p>
 <span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/lines.html" class="external-link">lines</a></span><span class="op">(</span><span class="va">preds</span><span class="op">$</span><span class="va">difference</span><span class="op">$</span><span class="va">followup_time</span>, <span class="va">preds</span><span class="op">$</span><span class="va">difference</span><span class="op">$</span><span class="va">`2.5%`</span>, type <span class="op">=</span> <span class="st">"l"</span>, col <span class="op">=</span> <span class="st">"red"</span>, lty <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/lines.html" class="external-link">lines</a></span><span class="op">(</span><span class="va">preds</span><span class="op">$</span><span class="va">difference</span><span class="op">$</span><span class="va">followup_time</span>, <span class="va">preds</span><span class="op">$</span><span class="va">difference</span><span class="op">$</span><span class="va">`97.5%`</span>, type <span class="op">=</span> <span class="st">"l"</span>, col <span class="op">=</span> <span class="st">"red"</span>, lty <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span></code></pre></div>
-<p><img src="new-interface_files/figure-html/unnamed-chunk-23-1.png" class="r-plt" width="700"></p>
+<p><img src="new-interface_files/figure-html/unnamed-chunk-23-1.png" class="r-plt" alt="" width="700"></p>
 </div>
 <div class="section level3">
 <h3 id="flowchart">Flowchart<a class="anchor" aria-label="anchor" href="#flowchart"></a>
