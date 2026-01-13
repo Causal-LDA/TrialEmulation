@@ -1,5 +1,9 @@
 # TrialEmulation 0.0.4.9
 
+* Remove dependency on `parglm` which has been archived on CRAN.
+
+# TrialEmulation 0.0.4.8
+
 * Fix bugs in testing discovered due to updated `testthat`. Thanks @hadley
 * Update links
 
