@@ -165,7 +165,8 @@ test_that("data_preparation works with ITT and censor weights", {
     cense_n_cov = ~ X3 + X4,
     pool_cense = "both",
     save_weight_models = FALSE,
-    glm_function = "parglm", nthreads = 2, method = "FAST",
+    # glm_function = "parglm", nthreads = 2, method = "FAST",
+    glm_function = "glm",
     quiet = TRUE
   )
 

@@ -15,7 +15,6 @@ repos:
           - data.table
           - formula.tools
           - mvtnorm
-          - parglm
           - sandwich
           - duckdb
           - lmtest
