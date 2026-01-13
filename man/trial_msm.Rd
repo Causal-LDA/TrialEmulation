@@ -70,8 +70,8 @@ specified as a RHS formula.}
 for a subgroup of the individuals. For example, if \code{where_var= "age"}, \code{where_case = "age >= 30"} will only fit the
 marginal structural model to the subgroup of individuals. who are 30 years old or above.}
 
-\item{glm_function}{Deprecated as \code{parglm} is no longer available on CRAN. This option will be ignored and \code{"glm"} will be
-used for model fitting.}
+\item{glm_function}{Deprecated as \code{parglm} is no longer available on CRAN. This option will be ignored and \code{"glm"}
+will be used for model fitting.}
 
 \item{use_sample_weights}{Use case-control sampling weights in addition to inverse probability weights for treatment
 and censoring. \code{data} must contain a column \code{sample_weight}. The final weights used in the pooled logistic

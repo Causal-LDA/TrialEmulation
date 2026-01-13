@@ -70,8 +70,8 @@
 #'   for a subgroup of the individuals. For example, if `where_var= "age"`, `where_case = "age >= 30"` will only fit the
 #'   marginal structural model to the subgroup of individuals. who are 30 years old or above.
 #' @param data_dir Directory to save model objects in.
-#' @param glm_function Deprecated as `parglm` is no longer available on CRAN. This option will be ignored and `"glm"` will be
-#'   used for model fitting.
+#' @param glm_function Deprecated as `parglm` is no longer available on CRAN. This option will be ignored and `"glm"`
+#' will be used for model fitting.
 #' @param quiet Suppress the printing of progress messages and summaries of the fitted models.
 #' @param switch_n_cov A RHS formula to specify the logistic models for estimating the numerator terms of the inverse
 #'   probability of treatment weights. A derived variable named `time_on_regime` containing the duration of time that

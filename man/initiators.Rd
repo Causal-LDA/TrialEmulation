@@ -145,8 +145,8 @@ marginal structural model to the subgroup of individuals. who are 30 years old o
 
 \item{data_dir}{Directory to save model objects in.}
 
-\item{glm_function}{Deprecated as \code{parglm} is no longer available on CRAN. This option will be ignored and \code{"glm"} will be
-used for model fitting.}
+\item{glm_function}{Deprecated as \code{parglm} is no longer available on CRAN. This option will be ignored and \code{"glm"}
+will be used for model fitting.}
 
 \item{quiet}{Suppress the printing of progress messages and summaries of the fitted models.}
 

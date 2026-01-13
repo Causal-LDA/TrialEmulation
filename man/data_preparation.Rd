@@ -114,8 +114,8 @@ created. If the directory already contains trial files, an error will occur, oth
 
 \item{save_weight_models}{Save model objects for estimating the weights in \code{data_dir}.}
 
-\item{glm_function}{Deprecated as \code{parglm} is no longer available on CRAN. This option will be ignored and \code{"glm"} will be
-used for model fitting.}
+\item{glm_function}{Deprecated as \code{parglm} is no longer available on CRAN. This option will be ignored and \code{"glm"}
+will be used for model fitting.}
 
 \item{chunk_size}{Number of individuals whose data to  be processed in one chunk when \code{separate_files = TRUE}}
 

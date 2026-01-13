@@ -49,13 +49,6 @@ fit_glm <- function(formula, data, weights, ..., glm_function = "glm") {
   if (glm_function == "parglm") {
     warning("glm_function argument is deprecated and ignored as the `parglm` package is no longer available on CRAN.")
     glm_function <- "glm"
-    # if (!any(c("nthreads", "control", "method") %in% names(dots))) {
-    #   warning(
-    #     "Argument glm_function = \"parglm\" but no `nthreads`, `method` or `control` specified.\n",
-    #     "Using `control = parglm.control(nthreads = 4, method = \"FAST\")`"
-    #   )
-    #   this_call$control <- parglm::parglm.control(nthreads = 4, method = "FAST")
-    # }
   }
   this_call[[1]] <- call(glm_function)[[1]]
   for (i in names(dots)) {

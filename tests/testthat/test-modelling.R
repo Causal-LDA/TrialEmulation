@@ -25,9 +25,7 @@ test_that("trial_msm gives expected results in example data", {
     include_trial_period = ~trial_period,
     use_sample_weights = FALSE,
     quiet = TRUE,
-    glm_function = "glm",
-    # glm_function = "parglm",
-    # control = parglm.control(nthreads = 2)
+    glm_function = "glm"
   )
   expect_class(result$model, "glm")
   expected_coefs <- c(
@@ -64,20 +62,6 @@ test_that("trial_msm gives expected results in example data", {
 
 test_that("trial_msm works with data.tables and weights", {
   data <- as.data.table(TrialEmulation::vignette_switch_data)
-  # expect_silent(
-  #   result_parglm <- trial_msm(
-  #     data,
-  #     outcome_cov = c("catvarA", "nvarA"),
-  #     model_var = "assigned_treatment",
-  #     include_followup_time = ~followup_time,
-  #     include_trial_period = ~trial_period,
-  #     use_sample_weights = FALSE,
-  #     analysis_weights = "asis",
-  #     glm_function = "parglm",
-  #     control = parglm.control(nthreads = 2, method = "FAST"),
-  #     quiet = TRUE
-  #   )
-  # )
 
   expect_silent(
     result_glm <- trial_msm(
@@ -101,7 +85,6 @@ test_that("trial_msm works with data.tables and weights", {
     nvarA = -0.068646869727886
   )
   expect_equal(result_glm$model$coefficients, expected = expected)
-  # expect_equal(result_glm$model$coefficients, result_parglm$model$coefficients)
 })
 
 
