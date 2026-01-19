@@ -27,9 +27,9 @@ limit_weight <- function(weight, lower_limit, upper_limit) {
 #' @param formula the model formula.
 #' @param data a data frame or similar.
 #' @param ... Other arguments for glm
-#' @param glm_function The glm function to call given as a string, such as `"glm"` or `"parglm"`.
+#' @param glm_function The glm function to call given as a string, such as `"glm"` or `"parglm"`. Only `"glm"` currently
+#' works.
 #' @noRd
-#' @import parglm
 #'
 #' @details
 #' If no family is specified `binomial("logit")` will be used. If `glm_function = "parglm"` is specified
@@ -47,13 +47,8 @@ fit_glm <- function(formula, data, weights, ..., glm_function = "glm") {
 
 
   if (glm_function == "parglm") {
-    if (!any(c("nthreads", "control", "method") %in% names(dots))) {
-      warning(
-        "Argument glm_function = \"parglm\" but no `nthreads`, `method` or `control` specified.\n",
-        "Using `control = parglm.control(nthreads = 4, method = \"FAST\")`"
-      )
-      this_call$control <- parglm::parglm.control(nthreads = 4, method = "FAST")
-    }
+    warning("glm_function argument is deprecated and ignored as the `parglm` package is no longer available on CRAN.")
+    glm_function <- "glm"
   }
   this_call[[1]] <- call(glm_function)[[1]]
   for (i in names(dots)) {

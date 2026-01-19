@@ -70,13 +70,8 @@
 #'   for a subgroup of the individuals. For example, if `where_var= "age"`, `where_case = "age >= 30"` will only fit the
 #'   marginal structural model to the subgroup of individuals. who are 30 years old or above.
 #' @param data_dir Directory to save model objects in.
-#' @param glm_function Specify which glm function to use for the marginal structural model from the `stats` or `parglm`
-#'   packages. The default function is the `glm` function in the `stats` package. Users can also specify `glm_function =
-#'   "parglm"` such that the `parglm` function in the `parglm` package can be used for fitting generalized linear models
-#'   in parallel. The default control setting for  `parglm` is `nthreads = 4` and `method = "FAST"`, where four cores
-#'   and Fisher information are used for faster computation. Users can change the default control setting by passing the
-#'   arguments `nthreads` and `method` in the `parglm.control` function of the `parglm` package, or alternatively, by
-#'   passing a `control` argument with a list produced by `parglm.control(nthreads = , method = )`.
+#' @param glm_function Deprecated as `parglm` is no longer available on CRAN. This option will be ignored and `"glm"`
+#' will be used for model fitting.
 #' @param quiet Suppress the printing of progress messages and summaries of the fitted models.
 #' @param switch_n_cov A RHS formula to specify the logistic models for estimating the numerator terms of the inverse
 #'   probability of treatment weights. A derived variable named `time_on_regime` containing the duration of time that

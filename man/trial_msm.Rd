@@ -70,12 +70,8 @@ specified as a RHS formula.}
 for a subgroup of the individuals. For example, if \code{where_var= "age"}, \code{where_case = "age >= 30"} will only fit the
 marginal structural model to the subgroup of individuals. who are 30 years old or above.}
 
-\item{glm_function}{Specify which glm function to use for the marginal structural model from the \code{stats} or \code{parglm}
-packages. The default function is the \code{glm} function in the \code{stats} package. Users can also specify \code{glm_function = "parglm"} such that the \code{parglm} function in the \code{parglm} package can be used for fitting generalized linear models
-in parallel. The default control setting for  \code{parglm} is \code{nthreads = 4} and \code{method = "FAST"}, where four cores
-and Fisher information are used for faster computation. Users can change the default control setting by passing the
-arguments \code{nthreads} and \code{method} in the \code{parglm.control} function of the \code{parglm} package, or alternatively, by
-passing a \code{control} argument with a list produced by \code{parglm.control(nthreads = , method = )}.}
+\item{glm_function}{Deprecated as \code{parglm} is no longer available on CRAN. This option will be ignored and \code{"glm"}
+will be used for model fitting.}
 
 \item{use_sample_weights}{Use case-control sampling weights in addition to inverse probability weights for treatment
 and censoring. \code{data} must contain a column \code{sample_weight}. The final weights used in the pooled logistic

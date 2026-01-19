@@ -17,8 +17,7 @@ test_that("weight_func works as expected", {
       cense_n_cov = ~ X3 + X4,
       save_weight_models = FALSE,
       data_dir = save_dir,
-      glm_function = "parglm",
-      control = parglm.control(nthreads = 2, method = "FAST")
+      glm_function = "glm"
     )
   )
 

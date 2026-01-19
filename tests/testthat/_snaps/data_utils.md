@@ -5,16 +5,14 @@
         X2, use_switch_weights = TRUE, use_censor_weights = TRUE, cense = "C",
       pool_cense_d = FALSE, pool_cense_n = FALSE, cense_d_cov = ~ X1 + X2 + X3 + X4 +
         age_s, cense_n_cov = ~ X3 + X4, save_weight_models = FALSE, data_dir = save_dir,
-      glm_function = "parglm", control = parglm.control(nthreads = 2, method = "FAST"))
+      glm_function = "glm")
     Message
       P(treatment = 1 | previous treatment = 0) for denominator
     Output
       
       Call:
       glm(formula = treatment ~ X1 + X2, family = binomial(link = "logit"), 
-          data = data, control = list(epsilon = 1e-08, maxit = 25, 
-              trace = FALSE, nthreads = 2, block_size = NULL, method = "FAST"), 
-          method = parglm::parglm.fit, singular.ok = FALSE)
+          data = data)
       
       Coefficients:
                   Estimate Std. Error z value Pr(>|z|)    
@@ -38,9 +36,7 @@
       
       Call:
       glm(formula = treatment ~ 1, family = binomial(link = "logit"), 
-          data = data, control = list(epsilon = 1e-08, maxit = 25, 
-              trace = FALSE, nthreads = 2, block_size = NULL, method = "FAST"), 
-          method = parglm::parglm.fit, singular.ok = FALSE)
+          data = data)
       
       Coefficients:
                   Estimate Std. Error z value Pr(>|z|)    
@@ -62,9 +58,7 @@
       
       Call:
       glm(formula = treatment ~ X1 + X2, family = binomial(link = "logit"), 
-          data = data, control = list(epsilon = 1e-08, maxit = 25, 
-              trace = FALSE, nthreads = 2, block_size = NULL, method = "FAST"), 
-          method = parglm::parglm.fit, singular.ok = FALSE)
+          data = data)
       
       Coefficients:
                   Estimate Std. Error z value Pr(>|z|)    
@@ -88,9 +82,7 @@
       
       Call:
       glm(formula = treatment ~ 1, family = binomial(link = "logit"), 
-          data = data, control = list(epsilon = 1e-08, maxit = 25, 
-              trace = FALSE, nthreads = 2, block_size = NULL, method = "FAST"), 
-          method = parglm::parglm.fit, singular.ok = FALSE)
+          data = data)
       
       Coefficients:
                   Estimate Std. Error z value Pr(>|z|)    
@@ -112,9 +104,7 @@
       
       Call:
       glm(formula = 1 - C ~ X1 + X2 + X3 + X4 + age_s, family = binomial(link = "logit"), 
-          data = data, control = list(epsilon = 1e-08, maxit = 25, 
-              trace = FALSE, nthreads = 2, block_size = NULL, method = "FAST"), 
-          method = parglm::parglm.fit, singular.ok = FALSE)
+          data = data)
       
       Coefficients:
                   Estimate Std. Error z value Pr(>|z|)    
@@ -141,9 +131,7 @@
       
       Call:
       glm(formula = 1 - C ~ X1 + X2 + X3 + X4 + age_s, family = binomial(link = "logit"), 
-          data = data, control = list(epsilon = 1e-08, maxit = 25, 
-              trace = FALSE, nthreads = 2, block_size = NULL, method = "FAST"), 
-          method = parglm::parglm.fit, singular.ok = FALSE)
+          data = data)
       
       Coefficients:
                   Estimate Std. Error z value Pr(>|z|)    
@@ -170,9 +158,7 @@
       
       Call:
       glm(formula = 1 - C ~ X3 + X4, family = binomial(link = "logit"), 
-          data = data, control = list(epsilon = 1e-08, maxit = 25, 
-              trace = FALSE, nthreads = 2, block_size = NULL, method = "FAST"), 
-          method = parglm::parglm.fit, singular.ok = FALSE)
+          data = data)
       
       Coefficients:
                   Estimate Std. Error z value Pr(>|z|)    
@@ -196,9 +182,7 @@
       
       Call:
       glm(formula = 1 - C ~ X3 + X4, family = binomial(link = "logit"), 
-          data = data, control = list(epsilon = 1e-08, maxit = 25, 
-              trace = FALSE, nthreads = 2, block_size = NULL, method = "FAST"), 
-          method = parglm::parglm.fit, singular.ok = FALSE)
+          data = data)
       
       Coefficients:
                   Estimate Std. Error z value Pr(>|z|)    

@@ -27,9 +27,7 @@ To improve usability, we have implemented a new user interface. This allows a mo
 target trial emulation process.
 
 It also gives flexibility to add new methods and tools for parts of the analysis. For example, we now allow different
-ways of storing the expanded data: as CSV files and in a DuckDB database. We also allow different weight fitting model
-procedures: using `stats::glm` or `parglm::parglm`. New components can quickly and easily be specified for use with
-this package.
+ways of storing the expanded data: as CSV files and in a DuckDB database. New components can quickly and easily be specified for use with this package, such as alternative model fitting procedures.
 
 
 ## User Interface

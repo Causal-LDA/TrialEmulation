@@ -1,12 +1,20 @@
-# TrialEmulation 0.0.4.6
+# TrialEmulation 0.0.4.10
 
-* Update tests for duckdb 1.3.0 changes to sampling.
+* Remove dependency on `parglm` which has been archived on CRAN.
+
+# TrialEmulation 0.0.4.8
+
+* Fix bugs in testing discovered due to updated `testthat`. Thanks @hadley
+* Update links
+
+# TrialEmulation 0.0.4.5
+
+* Update tests for `duckdb` 1.3.0 changes to sampling.
 * Require R >= 4.1 for native pipe support.
-
 
 # TrialEmulation 0.0.4.2
 
-* Update tests for duckdb 1.2.0 changes to sampling.
+* Update tests for `duckdb` 1.2.0 changes to sampling.
 
 # TrialEmulation 0.0.4.0
 
