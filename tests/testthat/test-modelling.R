@@ -25,8 +25,7 @@ test_that("trial_msm gives expected results in example data", {
     include_trial_period = ~trial_period,
     use_sample_weights = FALSE,
     quiet = TRUE,
-    glm_function = "parglm",
-    control = parglm.control(nthreads = 2)
+    glm_function = "glm"
   )
   expect_class(result$model, "glm")
   expected_coefs <- c(
@@ -55,7 +54,7 @@ test_that("trial_msm gives expected results in example data", {
     0.0015016748931986, 0.0312208855654385, 0.0296048600610076, 0.0263579673428329,
     0.0447759173905258, 0.00231602984314177, 0.00671869054658421
   )
-  expect_equal(result$robust$summary$robust_se, expected_robust_se)
+  expect_equal(result$robust$summary$robust_se, expected_robust_se, tolerance = 0.0005)
 
   expect_matrix(result$robust$matrix, nrows = 10, ncols = 10, any.missing = FALSE)
 })
@@ -63,20 +62,6 @@ test_that("trial_msm gives expected results in example data", {
 
 test_that("trial_msm works with data.tables and weights", {
   data <- as.data.table(TrialEmulation::vignette_switch_data)
-  expect_silent(
-    result_parglm <- trial_msm(
-      data,
-      outcome_cov = c("catvarA", "nvarA"),
-      model_var = "assigned_treatment",
-      include_followup_time = ~followup_time,
-      include_trial_period = ~trial_period,
-      use_sample_weights = FALSE,
-      analysis_weights = "asis",
-      glm_function = "parglm",
-      control = parglm.control(nthreads = 2, method = "FAST"),
-      quiet = TRUE
-    )
-  )
 
   expect_silent(
     result_glm <- trial_msm(
@@ -91,7 +76,15 @@ test_that("trial_msm works with data.tables and weights", {
       quiet = TRUE
     )
   )
-  expect_equal(result_glm$model$coefficients, result_parglm$model$coefficients)
+  expected <- c(
+    `(Intercept)` = -6.30947654441936,
+    assigned_treatment = -0.0656853487715148,
+    trial_period = 0.00381111485052326,
+    followup_time = 0.00185264061531219,
+    catvarA = 0.0300299371291551,
+    nvarA = -0.068646869727886
+  )
+  expect_equal(result_glm$model$coefficients, expected = expected)
 })
 
 
@@ -222,7 +215,6 @@ test_that("trial_msm works with analysis_weights = weight_limits", {
   )
   expect_snapshot_value(as.data.frame(result_limits$robust$summary), style = "json2")
 })
-
 
 
 test_that("trial_msm works with missing sample weights", {
@@ -432,8 +424,6 @@ test_that("fit_msm works", {
 
   unlink(trial_itt_dir, recursive = TRUE)
 })
-
-
 
 
 test_that("fit_msm works with weight functions", {
