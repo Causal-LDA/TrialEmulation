@@ -96,7 +96,6 @@ predict.TE_msm <- function(object,
 }
 
 
-
 #' Check Data used for Prediction
 #'
 #' @param newdata new data to predict, or missing.

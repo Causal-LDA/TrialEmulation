@@ -405,7 +405,6 @@ setMethod(
 )
 
 
-
 # set_switch_weight_model --------
 
 #' Set switching weight model
@@ -908,8 +907,6 @@ setMethod(
     object
   }
 )
-
-
 
 
 #' @rdname predict_marginal

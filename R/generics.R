@@ -88,7 +88,6 @@ summary.TE_robust <- function(object, ...) {
 }
 
 
-
 #' Print a weight summary object
 #'
 #' `r lifecycle::badge('stable')`
@@ -110,7 +109,6 @@ print.TE_weight_summary <- function(x, full = TRUE, ...) {
     }
   }
 }
-
 
 
 #' Internal Methods

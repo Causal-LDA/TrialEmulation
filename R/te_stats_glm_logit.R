@@ -194,7 +194,7 @@ setMethod(
            predict_times,
            conf_int = TRUE,
            samples = 100,
-           ci_type = c("sandwich", "Nonpara. bootstrap", "LEF outcome", "LEF both"),
+           ci_type = c("sandwich", "Nonpara. bootstrap", "LEF outcome", "LEF both", "Jackknife Wald", "Jackknife MVN"),
            type = c("cum_inc", "survival")) {
     # Derived from predict.TE_msm
     assert_class(object@outcome_model@fitted@model$model, "glm")
@@ -207,16 +207,35 @@ setMethod(
 
     coefs_mat <- matrix(coef(model), nrow = 1)
     if (conf_int) {
-      assert_matrix(object@outcome_model@fitted@model$vcov, nrows = ncol(coefs_mat), ncols = ncol(coefs_mat))
-      coefs_mat <- rbind(
-        coefs_mat,
-        mvtnorm::rmvnorm(
-          n = samples,
-          mean = coef(model),
-          sigma = object@outcome_model@fitted@model$vcov,
-          checkSymmetry = FALSE
+      if (ci_type == "sandwich") {
+        assert_matrix(object@outcome_model@fitted@model$vcov, nrows = ncol(coefs_mat), ncols = ncol(coefs_mat))
+        coefs_mat <- rbind(
+          coefs_mat,
+          mvtnorm::rmvnorm(
+            n = samples,
+            mean = coef(model),
+            sigma = object@outcome_model@fitted@model$vcov,
+            checkSymmetry = FALSE
+          )
         )
-      )
+      } else if (ci_type == "Jackknife MVN") {
+        jackknife_var <- calculate_jackknife_variance(
+          object = object,
+          predict_times = predict_times,
+          point_estimate = pred_list$difference[, 1],
+          pred_fun = pred_fun
+        )
+        assert_matrix(jackknife_var, nrows = ncol(coefs_mat), ncols = ncol(coefs_mat))
+        coefs_mat <- rbind(
+          coefs_mat,
+          mvtnorm::rmvnorm(
+            n = samples,
+            mean = coef(model),
+            sigma = jackknife_var,
+            checkSymmetry = FALSE
+          )
+        )
+      }
     }
 
     newdata <- check_newdata(newdata, model, predict_times)
@@ -239,7 +258,7 @@ setMethod(
     pred_list$difference <- pred_list$assigned_treatment_1 - pred_list$assigned_treatment_0
 
     if (conf_int) {
-      if (ci_type == "sandwich") {
+      if (ci_type %in% c("sandwich", "Jackknife MVN")) {
         mapply(
           pred_matrix = pred_list,
           col_names = paste0(type, c("", "", "_diff")),
@@ -251,6 +270,17 @@ setMethod(
               c("followup_time", col_names, "2.5%", "97.5%")
             )
           }
+        )
+      } else if (ci_type == "Jackknife Wald") {
+        jackknife_wald_CIs <- calculate_jackknife_wald_CIs(
+          object = object,
+          predict_times = predict_times,
+          point_estimate = pred_list$difference[, 1],
+          pred_fun = pred_fun
+        )
+        setNames(
+          data.frame(predict_times, pred_list$difference[, 1], jackknife_wald_CIs[, 1], jackknife_wald_CIs[, 2]),
+          c("followup_time", paste0(type, "_diff"), "lower_bound", "upper_bound")
         )
       } else if (ci_type %in% c("Nonpara. bootstrap", "LEF outcome", "LEF both")) {
         bootstrap_CIs <- calculate_bootstrap_CIs(
