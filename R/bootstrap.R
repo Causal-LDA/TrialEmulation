@@ -24,13 +24,19 @@ calculate_bootstrap_CIs <- function(object,
     }
   }
 
-  # Step 1: for each bootstrap sample:
-  bootstrapped_MRDs <- future.apply::future_replicate(
-    n = bootstrap_sample_size,
-    expr = {
-      # Bootstrap sample with patient id as sampling unit
-      boot_idx <- sort(sample(unique(object@data@data$id), replace = TRUE))
+  boot_data_conf <- lapply(
+    1:bootstrap_sample_size,
+    function(i) {
+      sort(sample(unique(object@data@data$id), length(unique(object@data@data$id)), replace = TRUE))
+    }
+  )
 
+  # Step 1: for each bootstrap sample:
+  bootstrapped_MRDs <- future.apply::future_sapply(
+    1:bootstrap_sample_size,
+    function(i) {
+      # Bootstrap sample with patient id as sampling unit
+      boot_idx <- boot_data_conf[[i]]
       weights_table_boot <- data.table(id = unique(object@data@data$id))
       weights_table_boot[, weight_boot := sapply(weights_table_boot$id, function(i) sum(i == boot_idx))]
 
@@ -369,127 +375,129 @@ weight_func_bootstrap <- function(object,
   ## ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   # Censoring weights --------------------
   ## ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  quiet_msg(quiet, "Starting censor weights")
   censor_models <- list()
+  if (length(object@censor_weights@fitted) != 0) {
+    quiet_msg(quiet, "Starting censor weights")
 
-  if (remodel == TRUE) {
-    cense_d_cov <- object@censor_weights@denominator
-    cense_n_cov <- object@censor_weights@numerator
-    pool_cense_d <- object@censor_weights@pool_denominator
-    pool_cense_n <- object@censor_weights@pool_numerator
+    if (remodel == TRUE) {
+      cense_d_cov <- object@censor_weights@denominator
+      cense_n_cov <- object@censor_weights@numerator
+      pool_cense_d <- object@censor_weights@pool_denominator
+      pool_cense_n <- object@censor_weights@pool_numerator
 
-    censor_results <- fit_censor_weights_bootstrap(
-      cense_d_cov = cense_d_cov,
-      cense_n_cov = cense_n_cov,
-      pool_cense_d = pool_cense_d,
-      pool_cense_n = pool_cense_n,
-      sw_data = sw_data,
-      boot_idx = boot_idx,
-      quiet = quiet,
-      save_dir = NA,
-      save_weight_models = FALSE,
-      glm_function = glm_function,
-      ...
-    )
-    sw_data <- censor_results$sw_data
-    censor_models <- censor_results$censor_models
-    rm(censor_results)
-  } else {
-    if (object@censor_weights@pool_denominator) { # Fit pooled denominator models
-      cense_model_d <- readRDS(object@censor_weights@fitted$d@summary$save_path$path)
-      cense_model_d$coeefficients <- new_coef_c_d
-
-      cense_d <- cbind(
-        pC_d = predict.glm(cense_model_d, cense_model_d$data, type = "response"),
-        cense_model_d$data[, c("id", "period")]
+      censor_results <- fit_censor_weights_bootstrap(
+        cense_d_cov = cense_d_cov,
+        cense_n_cov = cense_n_cov,
+        pool_cense_d = pool_cense_d,
+        pool_cense_n = pool_cense_n,
+        sw_data = sw_data,
+        boot_idx = boot_idx,
+        quiet = quiet,
+        save_dir = NA,
+        save_weight_models = FALSE,
+        glm_function = glm_function,
+        ...
       )
-
-      rm(cense_model_d)
+      sw_data <- censor_results$sw_data
+      censor_models <- censor_results$censor_models
+      rm(censor_results)
     } else {
-      cense_model_d0 <- readRDS(object@censor_weights@fitted$d0@summary$save_path$path)
-      cense_model_d1 <- readRDS(object@censor_weights@fitted$d1@summary$save_path$path)
+      if (object@censor_weights@pool_denominator) { # Fit pooled denominator models
+        cense_model_d <- readRDS(object@censor_weights@fitted$d@summary$save_path$path)
+        cense_model_d$coeefficients <- new_coef_c_d
 
-      cense_model_d0$coefficients <- new_coef_c_d0
-      cense_model_d1$coefficients <- new_coef_c_d1
+        cense_d <- cbind(
+          pC_d = predict.glm(cense_model_d, cense_model_d$data, type = "response"),
+          cense_model_d$data[, c("id", "period")]
+        )
+
+        rm(cense_model_d)
+      } else {
+        cense_model_d0 <- readRDS(object@censor_weights@fitted$d0@summary$save_path$path)
+        cense_model_d1 <- readRDS(object@censor_weights@fitted$d1@summary$save_path$path)
+
+        cense_model_d0$coefficients <- new_coef_c_d0
+        cense_model_d1$coefficients <- new_coef_c_d1
 
 
-      cense_d0 <- cbind(
-        pC_d0 = predict.glm(cense_model_d0, cense_model_d0$data, type = "response"),
-        cense_model_d0$data[, c("id", "period")]
-      )
-      rm(cense_model_d0)
+        cense_d0 <- cbind(
+          pC_d0 = predict.glm(cense_model_d0, cense_model_d0$data, type = "response"),
+          cense_model_d0$data[, c("id", "period")]
+        )
+        rm(cense_model_d0)
 
-      cense_d1 <- cbind(
-        pC_d1 = predict.glm(cense_model_d1, cense_model_d1$data, type = "response"),
-        cense_model_d1$data[, c("id", "period")]
-      )
+        cense_d1 <- cbind(
+          pC_d1 = predict.glm(cense_model_d1, cense_model_d1$data, type = "response"),
+          cense_model_d1$data[, c("id", "period")]
+        )
 
-      rm(cense_model_d1)
-    }
+        rm(cense_model_d1)
+      }
 
-    if (object@censor_weights@pool_numerator) {
-      cense_n <- readRDS(object@censor_weights@fitted$n@summary$save_path$path)
+      if (object@censor_weights@pool_numerator) {
+        cense_n <- readRDS(object@censor_weights@fitted$n@summary$save_path$path)
 
-      cense_model_n$coefficients <- new_coef_c_n
+        cense_model_n$coefficients <- new_coef_c_n
 
-      cense_n <- cbind(
-        pC_n = predict.glm(cense_model_n, cense_model_n$data, type = "response"),
-        cense_model_n$data[, c("id", "period")]
-      )
+        cense_n <- cbind(
+          pC_n = predict.glm(cense_model_n, cense_model_n$data, type = "response"),
+          cense_model_n$data[, c("id", "period")]
+        )
 
-      rm(cense_model_n)
-    } else {
-      cense_model_n0 <- readRDS(object@censor_weights@fitted$n0@summary$save_path$path)
-      cense_model_n1 <- readRDS(object@censor_weights@fitted$n1@summary$save_path$path)
+        rm(cense_model_n)
+      } else {
+        cense_model_n0 <- readRDS(object@censor_weights@fitted$n0@summary$save_path$path)
+        cense_model_n1 <- readRDS(object@censor_weights@fitted$n1@summary$save_path$path)
 
-      cense_model_n0$coefficients <- new_coef_c_n0
-      cense_model_n1$coefficients <- new_coef_c_n1
+        cense_model_n0$coefficients <- new_coef_c_n0
+        cense_model_n1$coefficients <- new_coef_c_n1
 
-      cense_n0 <- cbind(
-        pC_n0 = predict.glm(cense_model_n0, cense_model_n0$data, type = "response"),
-        cense_model_n0$data[, c("id", "period")]
-      )
+        cense_n0 <- cbind(
+          pC_n0 = predict.glm(cense_model_n0, cense_model_n0$data, type = "response"),
+          cense_model_n0$data[, c("id", "period")]
+        )
 
-      rm(cense_model_n0)
+        rm(cense_model_n0)
 
-      cense_n1 <- cbind(
-        pC_n1 = predict.glm(cense_model_n1, cense_model_n1$data, type = "response"),
-        cense_model_n1$data[, c("id", "period")]
-      )
+        cense_n1 <- cbind(
+          pC_n1 = predict.glm(cense_model_n1, cense_model_n1$data, type = "response"),
+          cense_model_n1$data[, c("id", "period")]
+        )
 
-      rm(cense_model_n1)
-    }
+        rm(cense_model_n1)
+      }
 
-    # combine ------------------------------
-    if (object@censor_weights@pool_denominator && object@censor_weights@pool_numerator) {
-      # all pooled
-      sw_data <- merge.data.table(sw_data, cense_d, by = c("id", "period"), all = TRUE)
-      sw_data <- merge.data.table(sw_data, cense_n, by = c("id", "period"), all = TRUE)
-      rm(cense_d, cense_n)
-    } else if (!object@censor_weights@pool_denominator && !object@censor_weights@pool_numerator) {
-      # no pooled
-      cense_0 <- cense_d0[cense_n0, on = list(id = id, period = period)]
-      cense_1 <- cense_d1[cense_n1, on = list(id = id, period = period)]
-      rm(cense_n1, cense_d1, cense_n0, cense_d0)
+      # combine ------------------------------
+      if (object@censor_weights@pool_denominator && object@censor_weights@pool_numerator) {
+        # all pooled
+        sw_data <- merge.data.table(sw_data, cense_d, by = c("id", "period"), all = TRUE)
+        sw_data <- merge.data.table(sw_data, cense_n, by = c("id", "period"), all = TRUE)
+        rm(cense_d, cense_n)
+      } else if (!object@censor_weights@pool_denominator && !object@censor_weights@pool_numerator) {
+        # no pooled
+        cense_0 <- cense_d0[cense_n0, on = list(id = id, period = period)]
+        cense_1 <- cense_d1[cense_n1, on = list(id = id, period = period)]
+        rm(cense_n1, cense_d1, cense_n0, cense_d0)
 
-      sw_data <- merge.data.table(sw_data, cense_0, by = c("id", "period"), all = TRUE)
-      sw_data <- merge.data.table(sw_data, cense_1, by = c("id", "period"), all = TRUE)
+        sw_data <- merge.data.table(sw_data, cense_0, by = c("id", "period"), all = TRUE)
+        sw_data <- merge.data.table(sw_data, cense_1, by = c("id", "period"), all = TRUE)
 
-      rm(cense_0, cense_1)
-      sw_data[am_1 == 0, `:=`(pC_n = pC_n0, pC_d = pC_d0)]
-      sw_data[am_1 == 1, `:=`(pC_n = pC_n1, pC_d = pC_d1)]
-    } else if (!object@censor_weights@pool_denominator && object@censor_weights@pool_numerator) {
-      # only numerator pooled
-      sw_data <- sw_data[cense_n, on = list(id = id, period = period)]
-      sw_data <- merge.data.table(sw_data, cense_d0, by = c("id", "period"), all = TRUE)
-      sw_data <- merge.data.table(sw_data, cense_d1, by = c("id", "period"), all = TRUE)
-      rm(cense_d1, cense_n, cense_d0)
+        rm(cense_0, cense_1)
+        sw_data[am_1 == 0, `:=`(pC_n = pC_n0, pC_d = pC_d0)]
+        sw_data[am_1 == 1, `:=`(pC_n = pC_n1, pC_d = pC_d1)]
+      } else if (!object@censor_weights@pool_denominator && object@censor_weights@pool_numerator) {
+        # only numerator pooled
+        sw_data <- sw_data[cense_n, on = list(id = id, period = period)]
+        sw_data <- merge.data.table(sw_data, cense_d0, by = c("id", "period"), all = TRUE)
+        sw_data <- merge.data.table(sw_data, cense_d1, by = c("id", "period"), all = TRUE)
+        rm(cense_d1, cense_n, cense_d0)
 
-      sw_data[am_1 == 0, `:=`(pC_d = pC_d0)]
-      sw_data[am_1 == 1, `:=`(pC_d = pC_d1)]
-    } else if (object@censor_weights@pool_denominator && !object@censor_weights@pool_numerator) {
-      # only denominator pooled
-      stop("Check the arguments for pooling censoring models!")
+        sw_data[am_1 == 0, `:=`(pC_d = pC_d0)]
+        sw_data[am_1 == 1, `:=`(pC_d = pC_d1)]
+      } else if (object@censor_weights@pool_denominator && !object@censor_weights@pool_numerator) {
+        # only denominator pooled
+        stop("Check the arguments for pooling censoring models!")
+      }
     }
   }
 
@@ -537,17 +545,18 @@ weight_func_bootstrap <- function(object,
     ]
   }
 
+  if (length(object@censor_weights@fitted) != 0) {
+    sw_data[is.na(pC_d), pC_d := 1]
+    sw_data[is.na(pC_n), pC_n := 1]
+    sw_data[, wtC := pC_n / pC_d]
 
-  sw_data[is.na(pC_d), pC_d := 1]
-  sw_data[is.na(pC_n), pC_n := 1]
-  sw_data[, wtC := pC_n / pC_d]
+    sw_data[, wt := wt * wtC]
+    censor_models <- censor_models[intersect(
+      c("cens_pool_d", "cens_d0", "cens_n0", "cens_d1", "cens_n1", "cens_pool_n"),
+      names(censor_models)
+    )]
+  }
 
-  sw_data[, wt := wt * wtC]
-
-  censor_models <- censor_models[intersect(
-    c("cens_pool_d", "cens_d0", "cens_n0", "cens_d1", "cens_n1", "cens_pool_n"),
-    names(censor_models)
-  )]
 
   sw_data[, first := !duplicated(sw_data[, id])]
   sw_data <- sw_data[!is.na(wt)]
