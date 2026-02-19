@@ -15,7 +15,6 @@ calculate_bootstrap_CIs <- function(object,
                                     point_estimate,
                                     pred_fun) {
   weight_boot <- trial_period <- NULL
-
   if (ci_type != "Nonpara. bootstrap") {
     X <- model.matrix(object@outcome_model@fitted@model$model)
     e <- object@outcome_model@fitted@model$model$model$outcome - object@outcome_model@fitted@model$model$fitted.values
@@ -40,7 +39,6 @@ calculate_bootstrap_CIs <- function(object,
       weights_table_boot <- data.table(id = unique(object@data@data$id))
       weights_table_boot[, weight_boot := sapply(weights_table_boot$id, function(i) sum(i == boot_idx))]
 
-
       # Step 2: refit/recalculate weights
       weight_func_bs_args <- list(
         object = object,
@@ -58,6 +56,7 @@ calculate_bootstrap_CIs <- function(object,
       } else {
         weight_func_bs_args$remodel <- TRUE
       }
+
       boot_design_data <- do.call(weight_func_bootstrap, weight_func_bs_args)
 
       # Step 3. Refit/calculate MSM

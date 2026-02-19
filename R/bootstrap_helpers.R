@@ -76,10 +76,10 @@ lef_calc_coefs <- function(weights_table_boot, ...) {
       LEF_sw_n1_boot <- t(X_sw_n1) %*% (data_1$weight_boot * e_sw_n1)
 
       # Calculate \hat \beta(b)
-      r$beta_sw_d0 <- switch_d0$coefficients + vcov(switch_d0) %*% LEF_sw_d0_boot
-      r$beta_sw_n0 <- switch_n0$coefficients + vcov(switch_n0) %*% LEF_sw_n0_boot
-      r$beta_sw_d1 <- switch_d1$coefficients + vcov(switch_d1) %*% LEF_sw_d1_boot
-      r$beta_sw_n1 <- switch_n1$coefficients + vcov(switch_n1) %*% LEF_sw_n1_boot
+      r$new_coef_sw_d0 <- switch_d0$coefficients + vcov(switch_d0) %*% LEF_sw_d0_boot
+      r$new_coef_sw_n0 <- switch_n0$coefficients + vcov(switch_n0) %*% LEF_sw_n0_boot
+      r$new_coef_sw_d1 <- switch_d1$coefficients + vcov(switch_d1) %*% LEF_sw_d1_boot
+      r$new_coef_sw_n1 <- switch_n1$coefficients + vcov(switch_n1) %*% LEF_sw_n1_boot
 
       if (object@censor_weights@pool_denominator) {
         # Calculate the weight models' coefficient LEF approximates
@@ -87,7 +87,7 @@ lef_calc_coefs <- function(weights_table_boot, ...) {
         LEF_c_d_boot <- t(X_c_d) %*% (data$weight_boot * e_c_d)
 
         # Calculate \hat \beta(b)
-        r$beta_c_d <- cense_d$coefficients + vcov(cense_d) %*% LEF_c_d_boot
+        r$new_coef_c_d <- cense_d$coefficients + vcov(cense_d) %*% LEF_c_d_boot
       } else {
         data_0 <- merge(weights_table_boot, cense_d0$data, by = "id", all.y = TRUE)
         data_1 <- merge(weights_table_boot, cense_d1$data, by = "id", all.y = TRUE)
@@ -97,8 +97,8 @@ lef_calc_coefs <- function(weights_table_boot, ...) {
 
 
         # Calculate \hat \beta(b)
-        r$beta_c_d0 <- cense_d0$coefficients + vcov(cense_d0) %*% LEF_c_d0_boot
-        r$beta_c_d1 <- cense_d1$coefficients + vcov(cense_d1) %*% LEF_c_d1_boot
+        r$new_coef_c_d0 <- cense_d0$coefficients + vcov(cense_d0) %*% LEF_c_d0_boot
+        r$new_coef_c_d1 <- cense_d1$coefficients + vcov(cense_d1) %*% LEF_c_d1_boot
       }
 
       if (object@censor_weights@pool_numerator) {
@@ -117,8 +117,8 @@ lef_calc_coefs <- function(weights_table_boot, ...) {
 
 
         # Calculate \hat \beta(b)
-        r$beta_c_n0 <- cense_n0$coefficients + vcov(cense_n0) %*% LEF_c_n0_boot
-        r$beta_c_n1 <- cense_n1$coefficients + vcov(cense_n1) %*% LEF_c_n1_boot
+        r$new_coef_c_n0 <- cense_n0$coefficients + vcov(cense_n0) %*% LEF_c_n0_boot
+        r$new_coef_c_n1 <- cense_n1$coefficients + vcov(cense_n1) %*% LEF_c_n1_boot
       }
       r
     }

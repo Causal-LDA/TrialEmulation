@@ -40,17 +40,7 @@ test_that("Same weights recalculated if we use the same weight model coefficient
     ) |>
     suppressMatchingWarnings("fitted probabilities")
 
-  preds <- predict(
-    trial_pp,
-    newdata = outcome_data(trial_pp)[trial_period == 1, ],
-    predict_times = 0:10,
-    type = "survival",
-  )
-  plot(preds$difference$followup_time, preds$difference$survival_diff,
-    type = "l", xlab = "Follow up", ylab = "Survival difference"
-  )
-  lines(preds$difference$followup_time, preds$difference$`2.5%`, type = "l", col = "red", lty = 2)
-  lines(preds$difference$followup_time, preds$difference$`97.5%`, type = "l", col = "red", lty = 2)
+
   result <- weight_func_bootstrap(
     object = trial_pp, remodel = FALSE, quiet = TRUE, boot_idx = unique(trial_pp@data@data$id),
     new_coef_sw_d0 = trial_pp@switch_weights@fitted$d0@summary$tidy$estimate,
@@ -392,14 +382,188 @@ test_that("predict works with bootstrap", {
     ) |>
     suppressMatchingWarnings("fitted probabilities")
 
-  suppressWarnings(ci_np_bs <- predict(trial_pp, predict_times = 1:20, ci_type = "Nonpara. bootstrap"))
-  expect_snapshot(ci_np_bs)
-  suppressWarnings(ci_sandwich <- predict(trial_pp, predict_times = 1:20, ci_type = "sandwich")[[3]])
-  expect_snapshot(ci_sandwich)
-  suppressWarnings(ci_lef_outcome <- predict(trial_pp, predict_times = 1:20, ci_type = "LEF outcome"))
-  expect_snapshot(ci_lef_outcome)
-  suppressWarnings(ci_lef_both <- predict(trial_pp, predict_times = 1:20, ci_type = "LEF both"))
-  expect_snapshot(ci_lef_both)
+  suppressWarnings(result2 <- predict(trial_pp, predict_times = 1:20, ci_type = "Nonpara. bootstrap"))
+  expect_equal(readRDS('/home/juliette/TrialEmulation/tests/testthat/bootstrap_result.rds'), result2)
+
+  # TODO check if there is there is some overwriting going on due to data.table, so the results would not be
+  # reproducible if we calculate different methods.
+})
+
+test_that("predict works with LEF outcome", {
+  set.seed(194)
+  trial_pp_dir <- withr::local_tempdir("trial_pp", tempdir(TRUE))
+
+  trial_pp <- trial_sequence(estimand = "PP") |>
+    set_data(
+      data = data_censored,
+      id = "id",
+      period = "period",
+      treatment = "treatment",
+      outcome = "outcome",
+      eligible = "eligible"
+    ) |>
+    set_switch_weight_model(
+      numerator = ~age,
+      denominator = ~ age + x1 + x3,
+      model_fitter = stats_glm_logit(save_path = file.path(trial_pp_dir, "switch_models"))
+    ) |>
+    set_censor_weight_model(
+      censor_event = "censored",
+      numerator = ~x2,
+      denominator = ~ x2 + x1,
+      pool_models = "none",
+      model_fitter = stats_glm_logit(save_path = file.path(trial_pp_dir, "censor_models"))
+    ) |>
+    calculate_weights() |>
+    set_outcome_model(model_fitter = stats_glm_logit(save_path = file.path(trial_pp_dir, "outcome_model"))) |>
+    set_expansion_options(
+      output = save_to_datatable(),
+      chunk_size = 500
+    ) |>
+    expand_trials() |>
+    load_expanded_data() |>
+    fit_msm(
+      weight_cols = c("weight")
+    ) |>
+    suppressMatchingWarnings("fitted probabilities")
+
+  suppressWarnings(result2 <- predict(trial_pp, predict_times = 1:20, ci_type = "LEF outcome"))
+  expect_equal(readRDS('/home/juliette/TrialEmulation/tests/testthat/lef_outcome_result.rds'), result2)
+
+  # TODO check if there is there is some overwriting going on due to data.table, so the results would not be
+  # reproducible if we calculate different methods.
+})
+
+test_that("predict works with LEF both", {
+  set.seed(194)
+  trial_pp_dir <- withr::local_tempdir("trial_pp", tempdir(TRUE))
+
+  trial_pp <- trial_sequence(estimand = "PP") |>
+    set_data(
+      data = data_censored,
+      id = "id",
+      period = "period",
+      treatment = "treatment",
+      outcome = "outcome",
+      eligible = "eligible"
+    ) |>
+    set_switch_weight_model(
+      numerator = ~age,
+      denominator = ~ age + x1 + x3,
+      model_fitter = stats_glm_logit(save_path = file.path(trial_pp_dir, "switch_models"))
+    ) |>
+    set_censor_weight_model(
+      censor_event = "censored",
+      numerator = ~x2,
+      denominator = ~ x2 + x1,
+      pool_models = "none",
+      model_fitter = stats_glm_logit(save_path = file.path(trial_pp_dir, "censor_models"))
+    ) |>
+    calculate_weights() |>
+    set_outcome_model(model_fitter = stats_glm_logit(save_path = file.path(trial_pp_dir, "outcome_model"))) |>
+    set_expansion_options(
+      output = save_to_datatable(),
+      chunk_size = 500
+    ) |>
+    expand_trials() |>
+    load_expanded_data() |>
+    fit_msm(
+      weight_cols = c("weight")
+    ) |>
+    suppressMatchingWarnings("fitted probabilities")
+
+  suppressWarnings(result2 <- predict(trial_pp, predict_times = 1:20, ci_type = "LEF both"))
+  expect_equal(readRDS('/home/juliette/TrialEmulation/tests/testthat/lef_both_result.rds'), result2)
+
+  # TODO check if there is there is some overwriting going on due to data.table, so the results would not be
+  # reproducible if we calculate different methods.
+})
+
+test_that("predict works with Jackknife Wald", {
+  set.seed(194)
+  trial_pp_dir <- withr::local_tempdir("trial_pp", tempdir(TRUE))
+
+  trial_pp <- trial_sequence(estimand = "PP") |>
+    set_data(
+      data = data_censored,
+      id = "id",
+      period = "period",
+      treatment = "treatment",
+      outcome = "outcome",
+      eligible = "eligible"
+    ) |>
+    set_switch_weight_model(
+      numerator = ~age,
+      denominator = ~ age + x1 + x3,
+      model_fitter = stats_glm_logit(save_path = file.path(trial_pp_dir, "switch_models"))
+    ) |>
+    set_censor_weight_model(
+      censor_event = "censored",
+      numerator = ~x2,
+      denominator = ~ x2 + x1,
+      pool_models = "none",
+      model_fitter = stats_glm_logit(save_path = file.path(trial_pp_dir, "censor_models"))
+    ) |>
+    calculate_weights() |>
+    set_outcome_model(model_fitter = stats_glm_logit(save_path = file.path(trial_pp_dir, "outcome_model"))) |>
+    set_expansion_options(
+      output = save_to_datatable(),
+      chunk_size = 500
+    ) |>
+    expand_trials() |>
+    load_expanded_data() |>
+    fit_msm(
+      weight_cols = c("weight")
+    ) |>
+    suppressMatchingWarnings("fitted probabilities")
+
+  suppressWarnings(result2 <- predict(trial_pp, predict_times = 1:20, ci_type = "Jackknife Wald"))
+  expect_equal(readRDS('/home/juliette/TrialEmulation/tests/testthat/jackknife_wald_result.rds'), result2)
+
+  # TODO check if there is there is some overwriting going on due to data.table, so the results would not be
+  # reproducible if we calculate different methods.
+})
+
+test_that("predict works with Jackknife MVN", {
+  set.seed(194)
+  trial_pp_dir <- withr::local_tempdir("trial_pp", tempdir(TRUE))
+
+  trial_pp <- trial_sequence(estimand = "PP") |>
+    set_data(
+      data = data_censored,
+      id = "id",
+      period = "period",
+      treatment = "treatment",
+      outcome = "outcome",
+      eligible = "eligible"
+    ) |>
+    set_switch_weight_model(
+      numerator = ~age,
+      denominator = ~ age + x1 + x3,
+      model_fitter = stats_glm_logit(save_path = file.path(trial_pp_dir, "switch_models"))
+    ) |>
+    set_censor_weight_model(
+      censor_event = "censored",
+      numerator = ~x2,
+      denominator = ~ x2 + x1,
+      pool_models = "none",
+      model_fitter = stats_glm_logit(save_path = file.path(trial_pp_dir, "censor_models"))
+    ) |>
+    calculate_weights() |>
+    set_outcome_model(model_fitter = stats_glm_logit(save_path = file.path(trial_pp_dir, "outcome_model"))) |>
+    set_expansion_options(
+      output = save_to_datatable(),
+      chunk_size = 500
+    ) |>
+    expand_trials() |>
+    load_expanded_data() |>
+    fit_msm(
+      weight_cols = c("weight")
+    ) |>
+    suppressMatchingWarnings("fitted probabilities")
+
+  suppressWarnings(result2 <- predict(trial_pp, predict_times = 1:20, ci_type = "Jackknife MVN"))
+  expect_equal(readRDS('/home/juliette/TrialEmulation/tests/testthat/jackknife_mvn_result.rds')[[3]], result2[[3]])
 
   # TODO check if there is there is some overwriting going on due to data.table, so the results would not be
   # reproducible if we calculate different methods.
