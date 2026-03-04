@@ -532,7 +532,7 @@ setGeneric("fit_msm", function(object,
 #'   marginal structural model from a multivariate normal distribution with the mean equal to the marginal structural
 #'   model parameter estimates and the variance equal to the estimated robust covariance matrix.
 #' @param ci_type Method used to construct the confidence interval:
-#' `sandwich`, `'Nonpara. bootstrap'`, `'LEF outcome'`, `'LEF both'`
+#' `sandwich`, `'Nonpara. bootstrap'`, `'LEF outcome'`, `'LEF both'`, `'Jackknife Wald'`, `'Jackknife MVN'`
 #' @param samples Number of samples used to construct the simulation-based confidence intervals.
 
 #' @param ... Further arguments passed to or from other methods.

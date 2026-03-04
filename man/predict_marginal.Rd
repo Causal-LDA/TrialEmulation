@@ -25,7 +25,8 @@ predict(object, ...)
   predict_times,
   conf_int = TRUE,
   samples = 100,
-  ci_type = c("sandwich", "Nonpara. bootstrap", "LEF outcome", "LEF both"),
+  ci_type = c("sandwich", "Nonpara. bootstrap", "LEF outcome", "LEF both",
+    "Jackknife Wald", "Jackknife MVN"),
   type = c("cum_inc", "survival")
 )
 
