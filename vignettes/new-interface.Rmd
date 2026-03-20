@@ -331,6 +331,8 @@ We use the `predict()` method to estimate survival probabilities or cumulative i
 `assigned_treatment`. The `predict` method takes the baseline of the provided `newdata`, i.e. observations with 
 `followup_time == 0` and constructs data with `followup_time` for the given `predict_times`.
 It is important to specify `newdata` correctly for a meaningful interpretation of the differences in survival.
+Users can specify which type of confidence interval construction method they wish to use with the `conf_type` argument. 
+The default method is using the robust sandwich variance estimator.
 
 ```{r}
 preds <- predict(

@@ -528,11 +528,13 @@ setGeneric("fit_msm", function(object,
 #' @param predict_times Specify the follow-up visits/times where the marginal cumulative incidences or survival
 #'   probabilities are predicted.
 #' @param conf_int Construct the point-wise 95-percent confidence intervals of cumulative incidences for the target
-#'   trial population under treatment and non-treatment and their differences by simulating the parameters in the
-#'   marginal structural model from a multivariate normal distribution with the mean equal to the marginal structural
-#'   model parameter estimates and the variance equal to the estimated robust covariance matrix.
-#' @param ci_type Method used to construct the confidence interval:
-#' `sandwich`, `'Nonpara. bootstrap'`, `'LEF outcome'`, `'LEF both'`, `'Jackknife Wald'`, `'Jackknife MVN'`
+#'   trial population under treatment and non-treatment and their differences. The default confidence interval construction
+#'   methods simulates the parameters in the marginal structural model from a multivariate normal distribution with the mean
+#'   equal to the marginal structural model parameter estimates and the variance equal to the estimated robust covariance matrix.
+#' @param ci_type Specify the method used to construct the confidence interval for a per-protocol
+#'   estimand (`estimand_type = "PP"`) (only available for [trial_sequence] object).
+#'   `'sandwich'`: using the estimated robust sandwich covariance matrix;
+#'   `'Nonpara. bootstrap'`, `'LEF outcome'`, `'LEF both'`, `'Jackknife Wald'`, `'Jackknife MVN'`
 #' @param samples Number of samples used to construct the simulation-based confidence intervals.
 
 #' @param ... Further arguments passed to or from other methods.
