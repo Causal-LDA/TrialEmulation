@@ -15,6 +15,7 @@ predict(object, ...)
   newdata,
   predict_times,
   conf_int = TRUE,
+  ci_type = "sandwich",
   samples = 100,
   type = c("cum_inc", "survival")
 )
@@ -58,15 +59,15 @@ trial population under treatment and non-treatment and their differences. The de
 methods simulates the parameters in the marginal structural model from a multivariate normal distribution with the mean
 equal to the marginal structural model parameter estimates and the variance equal to the estimated robust covariance matrix.}
 
-\item{samples}{Number of samples used to construct the simulation-based confidence intervals.}
-
-\item{type}{Specify cumulative incidences or survival probabilities to be predicted. Either cumulative incidence
-(\code{"cum_inc"}) or survival probability (\code{"survival"}).}
-
 \item{ci_type}{Specify the method used to construct the confidence interval for a per-protocol
 estimand (\code{estimand_type = "PP"}) (only available for \link{trial_sequence} object).
 \code{'sandwich'}: using the estimated robust sandwich covariance matrix;
 \code{'Nonpara. bootstrap'}, \code{'LEF outcome'}, \code{'LEF both'}, \code{'Jackknife Wald'}, \code{'Jackknife MVN'}}
+
+\item{samples}{Number of samples used to construct the simulation-based confidence intervals.}
+
+\item{type}{Specify cumulative incidences or survival probabilities to be predicted. Either cumulative incidence
+(\code{"cum_inc"}) or survival probability (\code{"survival"}).}
 }
 \value{
 A list of three data frames containing the cumulative incidences for each of the assigned treatment options

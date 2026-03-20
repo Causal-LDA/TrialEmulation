@@ -917,16 +917,21 @@ setMethod(
            newdata,
            predict_times,
            conf_int = TRUE,
+           ci_type = "sandwich",
            samples = 100,
            type = c("cum_inc", "survival")) {
-    predict(
-      object = object@outcome_model@fitted,
-      newdata = newdata,
-      predict_times = predict_times,
-      conf_int = conf_int,
-      samples = samples,
-      type = type
-    )
+    if (ci_type != "sandwich"){
+      stop('Bootstrap and Jackknife confidence intervals are only implemented for trial_sequence_PP class.')
+    } else {
+      predict(
+        object = object@outcome_model@fitted,
+        newdata = newdata,
+        predict_times = predict_times,
+        conf_int = conf_int,
+        samples = samples,
+        type = type
+      )
+    }
   }
 )
 

@@ -344,6 +344,45 @@ test_that("Correct weights recalculated if we use new weight model coefficients 
   expect_equal(result$data$weight, test_data$weight, tolerance = 1e-7)
 })
 
+test_that("no bootstrap with ITT", {
+  set.seed(194)
+  trial_itt_dir <- withr::local_tempdir("trial_itt", tempdir(TRUE))
+
+  trial_itt <- trial_sequence(estimand = "ITT") |>
+    set_data(
+      data = data_censored,
+      id = "id",
+      period = "period",
+      treatment = "treatment",
+      outcome = "outcome",
+      eligible = "eligible"
+    ) |>
+    set_censor_weight_model(
+      censor_event = "censored",
+      numerator = ~ age_s + x4,
+      denominator = ~ age_s + x4 + x2 + x1,
+      pool_models = "both",
+      model_fitter = stats_glm_logit(save_path = file.path(trial_itt_dir, "switch_models"))
+    ) |>
+    calculate_weights() |>
+    set_outcome_model(model_fitter = stats_glm_logit(save_path = file.path(trial_itt_dir, "outcome_model"))) |>
+    set_expansion_options(
+      output = save_to_datatable(),
+      chunk_size = 500
+    ) |>
+    expand_trials() |>
+    load_expanded_data()
+
+  suppressWarnings(trial_itt <- fit_msm(trial_itt,
+      weight_cols = c("weight")
+    ))
+
+  expect_error(predict(trial_itt, predict_times = 1:5, ci_type = "Nonpara. bootstrap"),
+               fixed = TRUE,
+               regexp = "Bootstrap and Jackknife confidence intervals are only implemented for trial_sequence_PP class.")
+
+})
+
 test_that("predict works with bootstrap", {
   set.seed(194)
   trial_pp_dir <- withr::local_tempdir("trial_pp", tempdir(TRUE))

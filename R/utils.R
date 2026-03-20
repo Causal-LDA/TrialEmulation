@@ -174,7 +174,7 @@ drop_path <- function(x) {
 #' @param classes a character, indicating which classes of warnings should be suppressed
 #' @param ... other arguments to [grepl()]
 #' @seealso [suppressWarnings()]
-#' @export
+#' @noRd
 suppressMatchingWarnings <- function(expr, matching = c("probabilities"), classes = "warning", ...) {
   withCallingHandlers(expr, warning = function(w) {
     if (inherits(w, classes)) {

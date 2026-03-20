@@ -83,7 +83,7 @@
 #' @param cense_n_cov A RHS formula to specify the logistic models for estimating the numerator terms of the inverse
 #'   probability of censoring weights.
 #' @param ... Additional arguments passed to `glm_function`. This may be used to specify initial values of parameters or
-#'   arguments to `control`. See [stats::glm], [parglm::parglm] and [parglm::parglm.control()] for more information.
+#'   arguments to `control`. See [stats::glm] for more information.
 #'
 #'
 #' @returns Returns the result of [trial_msm()] from the expanded data. An object of class `TE_msm` containing

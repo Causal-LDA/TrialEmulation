@@ -80,7 +80,7 @@ regression are calculated as \code{weight = weight * sample_weight}.}
 \item{quiet}{Suppress the printing of progress messages and summaries of the fitted models.}
 
 \item{...}{Additional arguments passed to \code{glm_function}. This may be used to specify initial values of parameters or
-arguments to \code{control}. See \link[stats:glm]{stats::glm}, \link[parglm:parglm]{parglm::parglm} and \code{\link[parglm:parglm.control]{parglm::parglm.control()}} for more information.}
+arguments to \code{control}. See \link[stats:glm]{stats::glm} for more information.}
 }
 \value{
 Object of class \code{TE_msm} containing
