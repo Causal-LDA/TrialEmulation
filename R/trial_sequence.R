@@ -920,8 +920,8 @@ setMethod(
            ci_type = "sandwich",
            samples = 100,
            type = c("cum_inc", "survival")) {
-    if (ci_type != "sandwich"){
-      stop('Bootstrap and Jackknife confidence intervals are only implemented for trial_sequence_PP class.')
+    if (ci_type != "sandwich") {
+      stop("Bootstrap and Jackknife confidence intervals are only implemented for trial_sequence_PP class.")
     } else {
       predict(
         object = object@outcome_model@fitted,
