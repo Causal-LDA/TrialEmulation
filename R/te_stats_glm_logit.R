@@ -170,7 +170,7 @@ setMethod(
       SIMPLIFY = FALSE,
       FUN = function(pred_matrix, col_names) {
         if (conf_int) {
-          quantiles <- apply(pred_matrix, 1, quantile, probs = c(0.025, 0.975))
+          quantiles <- apply(pred_matrix[, -1, drop = FALSE], 1, quantile, probs = c(0.025, 0.975))
           setNames(
             data.frame(predict_times, pred_matrix[, 1], quantiles[1, ], quantiles[2, ]),
             c("followup_time", col_names, "2.5%", "97.5%")
@@ -237,7 +237,9 @@ setMethod(
         )
       }
     }
-
+    if (!is.na(newdata) & (conf_int == TRUE) & (ci_type %in% c("Nonpara. bootstrap", "LEF outcome", "LEF both","Jackknife Wald"))){
+      newdata_copy <- newdata
+    }
     newdata <- check_newdata(newdata, model, predict_times)
 
     pred_fun <- if (type == "survival") {
@@ -264,7 +266,7 @@ setMethod(
           col_names = paste0(type, c("", "", "_diff")),
           SIMPLIFY = FALSE,
           FUN = function(pred_matrix, col_names) {
-            quantiles <- apply(pred_matrix, 1, quantile, probs = c(0.025, 0.975))
+            quantiles <- apply(pred_matrix[, -1, drop = FALSE], 1, quantile, probs = c(0.025, 0.975))
             setNames(
               data.frame(predict_times, pred_matrix[, 1], quantiles[1, ], quantiles[2, ]),
               c("followup_time", col_names, "2.5%", "97.5%")
@@ -274,6 +276,7 @@ setMethod(
       } else if (ci_type == "Jackknife Wald") {
         jackknife_wald_CIs <- calculate_jackknife_wald_CIs(
           object = object,
+          newdata = newdata_copy,
           predict_times = predict_times,
           point_estimate = pred_list$difference[, 1],
           pred_fun = pred_fun
@@ -285,6 +288,7 @@ setMethod(
       } else if (ci_type %in% c("Nonpara. bootstrap", "LEF outcome", "LEF both")) {
         bootstrap_CIs <- calculate_bootstrap_CIs(
           object = object,
+          newdata = newdata_copy,
           ci_type = ci_type,
           bootstrap_sample_size = samples,
           predict_times = predict_times,

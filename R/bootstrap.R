@@ -9,6 +9,7 @@
 #' @importFrom stats predict.glm vcov
 #' @importFrom future.apply future_replicate
 calculate_bootstrap_CIs <- function(object,
+                                    newdata,
                                     ci_type,
                                     bootstrap_sample_size = 200,
                                     predict_times,
@@ -75,20 +76,19 @@ calculate_bootstrap_CIs <- function(object,
         PP_boot@outcome_model@fitted@model$model$coefficients <-
           PP_boot@outcome_model@fitted@model$model$coefficients + variance_mat %*% LEFs
       }
-
       # Step 4: get prediction in bootstrap sample
-      bootstrap_sample <- object@outcome_data@data[
-        unlist(lapply(boot_idx, function(i) which(object@outcome_data@data$id == i))),
+      bootstrap_sample <- newdata[
+        unlist(lapply(boot_idx, function(i) which(newdata$id == i))),
       ]
 
-      newdata <- check_newdata(
-        bootstrap_sample[trial_period == 0, ],
+      bootstrap_sample <- check_newdata(
+        bootstrap_sample,
         model = PP_boot@outcome_model@fitted@model$model,
         predict_times
       )
 
       pred_list_boot <- calculate_predictions(
-        newdata = newdata,
+        newdata = bootstrap_sample,
         model = PP_boot@outcome_model@fitted@model$model,
         treatment_values = c(assigned_treatment_0 = 0, assigned_treatment_1 = 1),
         pred_fun = pred_fun,
@@ -115,6 +115,7 @@ calculate_bootstrap_CIs <- function(object,
 #' @importFrom stats predict.glm vcov
 #' @importFrom future.apply future_replicate
 calculate_jackknife_wald_CIs <- function(object,
+                                         newdata,
                                          predict_times,
                                          point_estimate,
                                          pred_fun) {
@@ -151,18 +152,18 @@ calculate_jackknife_wald_CIs <- function(object,
       PP_boot <- fit_msm(PP_boot, weight_cols = c("weight"))
 
       # Step 4: get prediction in Jackknife sample
-      bootstrap_sample <- object@outcome_data@data[
-        unlist(lapply(boot_idx, function(i) which(object@outcome_data@data$id == i))),
+      bootstrap_sample <- newdata[
+        unlist(lapply(boot_idx, function(i) which(newdata$id == i))),
       ]
 
-      newdata <- check_newdata(
-        bootstrap_sample[trial_period == 0, ],
+      bootstrap_sample <- check_newdata(
+        bootstrap_sample,
         model = PP_boot@outcome_model@fitted@model$model,
         predict_times
       )
 
       pred_list_boot <- calculate_predictions(
-        newdata = newdata,
+        newdata = bootstrap_sample,
         model = PP_boot@outcome_model@fitted@model$model,
         treatment_values = c(assigned_treatment_0 = 0, assigned_treatment_1 = 1),
         pred_fun = pred_fun,

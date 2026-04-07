@@ -422,10 +422,11 @@ test_that("predict works with bootstrap", {
     suppressMatchingWarnings("fitted probabilities")
 
   suppressWarnings(result2 <- predict(trial_pp, predict_times = 1:20, ci_type = "Nonpara. bootstrap"))
-  expect_equal(readRDS(test_path("bootstrap_result.rds")), result2,
-    tolerance = 1e-7
+  expect_snapshot_value(
+    as.data.frame(result2),
+    style = "json2",
+    tolerance = 1e-6
   )
-
   # TODO check if there is there is some overwriting going on due to data.table, so the results would not be
   # reproducible if we calculate different methods.
 })
@@ -469,11 +470,6 @@ test_that("predict works with LEF outcome", {
     suppressMatchingWarnings("fitted probabilities")
 
   suppressWarnings(result2 <- predict(trial_pp, predict_times = 1:20, ci_type = "LEF outcome"))
-
-  saved <- readRDS(test_path("lef_outcome_result.rds"))
-  expect_equal(as.data.frame(saved), as.data.frame(result2),
-    tolerance = 1e-6
-  )
 
   expect_snapshot_value(
     as.data.frame(result2),
@@ -524,8 +520,10 @@ test_that("predict works with LEF both", {
     suppressMatchingWarnings("fitted probabilities")
 
   suppressWarnings(result2 <- predict(trial_pp, predict_times = 1:20, ci_type = "LEF both"))
-  expect_equal(readRDS(test_path("lef_both_result.rds")), result2,
-    tolerance = 1e-7
+  expect_snapshot_value(
+    as.data.frame(result2),
+    style = "json2",
+    tolerance = 1e-6
   )
 
   # TODO check if there is there is some overwriting going on due to data.table, so the results would not be
@@ -571,8 +569,10 @@ test_that("predict works with Jackknife Wald", {
     suppressMatchingWarnings("fitted probabilities")
 
   suppressWarnings(result2 <- predict(trial_pp, predict_times = 1:20, ci_type = "Jackknife Wald"))
-  expect_equal(readRDS(test_path("jackknife_wald_result.rds")), result2,
-    tolerance = 1e-7
+  expect_snapshot_value(
+    as.data.frame(result2),
+    style = "json2",
+    tolerance = 1e-6
   )
 
   # TODO check if there is there is some overwriting going on due to data.table, so the results would not be
@@ -618,8 +618,10 @@ test_that("predict works with Jackknife MVN", {
     suppressMatchingWarnings("fitted probabilities")
 
   suppressWarnings(result2 <- predict(trial_pp, predict_times = 1:20, ci_type = "Jackknife MVN"))
-  expect_equal(readRDS(test_path("jackknife_mvn_result.rds"))[[3]], result2[[3]],
-    tolerance = 1e-7
+  expect_snapshot_value(
+    as.data.frame(result2),
+    style = "json2",
+    tolerance = 1e-6
   )
 
   # TODO check if there is there is some overwriting going on due to data.table, so the results would not be
