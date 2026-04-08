@@ -255,8 +255,7 @@ initiators(
 
   Additional arguments passed to `glm_function`. This may be used to
   specify initial values of parameters or arguments to `control`. See
-  [stats::glm](https://rdrr.io/r/stats/glm.html), parglm::parglm and
-  `parglm::parglm.control()` for more information.
+  [stats::glm](https://rdrr.io/r/stats/glm.html) for more information.
 
 ## Value
 
