@@ -273,7 +273,7 @@ show_weight_models(trial_itt)
 #>  404.2156      724     -196.7002 397.4004 406.5727 393.4004 723         725 
 #>  
 #>  path                                                          
-#>  /tmp/RtmpvwzX3e/trial_itt/switch_models/model_215734d01876.rds
+#>  /tmp/Rtmp4ddJUA/trial_itt/switch_models/model_1f1e2bc48a51.rds
 #>  
 #> [[d0]]
 #> Model: P(censor_event = 0 | X, previous treatment = 0) for denominator 
@@ -287,7 +287,7 @@ show_weight_models(trial_itt)
 #>  283.0723      425     -132.1655 270.3309 282.4943 264.3309 423         426 
 #>  
 #>  path                                                          
-#>  /tmp/RtmpvwzX3e/trial_itt/switch_models/model_21575b7bfa01.rds
+#>  /tmp/Rtmp4ddJUA/trial_itt/switch_models/model_1f1e4480a916.rds
 #>  
 #> [[d1]]
 #> Model: P(censor_event = 0 | X, previous treatment = 1) for denominator 
@@ -301,7 +301,7 @@ show_weight_models(trial_itt)
 #>  113.0528      298     -55.72938 117.4588 128.5601 111.4588 296         299 
 #>  
 #>  path                                                          
-#>  /tmp/RtmpvwzX3e/trial_itt/switch_models/model_21572dcde47b.rds
+#>  /tmp/Rtmp4ddJUA/trial_itt/switch_models/model_1f1e7cadd8e9.rds
 #> 
 ```
 
