@@ -15,6 +15,7 @@ calculate_bootstrap_CIs <- function(object,
                                     predict_times,
                                     point_estimate,
                                     pred_fun) {
+  assert_integerish(bootstrap_sample_size, lower = 2)
   weight_boot <- trial_period <- NULL
   newdata <- as.data.frame(newdata)
   if (ci_type != "Nonpara. bootstrap") {

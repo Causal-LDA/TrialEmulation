@@ -197,13 +197,19 @@ setMethod(
            ci_type = c("sandwich", "Nonpara. bootstrap", "LEF outcome", "LEF both", "Jackknife Wald", "Jackknife MVN"),
            type = c("cum_inc", "survival")) {
     # Derived from predict.TE_msm
+    if (ci_type %in% c("Jackknife Wald", "Jackknife MVN") & length(unique(object@data@data$id)) > 1000) {
+      warning(paste0(
+        "You have selected Jackknife resampling with a large dataset ($N > 1000$). ",
+        "This process is computationally intensive and may take several minutes to hours depending on your hardware."
+      ))
+    }
     assert_class(object@outcome_model@fitted@model$model, "glm")
     model <- object@outcome_model@fitted@model$model
     ci_type <- match.arg(ci_type)
     type <- match.arg(type)
     assert_integerish(predict_times, lower = 0, min.len = 1)
     assert_flag(conf_int)
-    assert_int(samples, lower = 1)
+    assert_int(samples, lower = 2)
 
     coefs_mat <- matrix(coef(model), nrow = 1)
     if (conf_int) {

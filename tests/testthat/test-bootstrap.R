@@ -518,7 +518,7 @@ test_that("predict works with bootstrap with newdata NOT containing ID", {
     suppressMatchingWarnings("fitted probabilities")
 
   newdata <- as.data.frame(trial_pp@outcome_model@fitted@model$model$data)
-  newdata <- newdata[newdatatrial_period == 0, names(newdata) != "id"]
+  newdata <- newdata[newdata$trial_period == 0, names(newdata) != "id"]
   suppressWarnings(result2 <- predict(trial_pp, newdata = newdata, predict_times = 1:5, ci_type = "Nonpara. bootstrap"))
   expect_snapshot_value(
     as.data.frame(result2),
