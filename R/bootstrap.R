@@ -16,6 +16,7 @@ calculate_bootstrap_CIs <- function(object,
                                     point_estimate,
                                     pred_fun) {
   weight_boot <- trial_period <- NULL
+  newdata <- as.data.frame(newdata)
   if (ci_type != "Nonpara. bootstrap") {
     X <- model.matrix(object@outcome_model@fitted@model$model)
     e <- object@outcome_model@fitted@model$model$model$outcome - object@outcome_model@fitted@model$model$fitted.values
@@ -77,15 +78,16 @@ calculate_bootstrap_CIs <- function(object,
           PP_boot@outcome_model@fitted@model$model$coefficients + variance_mat %*% LEFs
       }
       # Step 4: get prediction in bootstrap sample
-      bootstrap_sample <- newdata[
-        unlist(lapply(boot_idx, function(i) which(newdata$id == i))),
-      ]
-
-      bootstrap_sample <- check_newdata(
-        bootstrap_sample,
-        model = PP_boot@outcome_model@fitted@model$model,
-        predict_times
-      )
+      if ("id" %in% names(newdata)){
+        bootstrap_sample <- newdata[
+          unlist(lapply(boot_idx, function(i) which(newdata$id == i))),
+        ]
+        bootstrap_sample <- check_newdata(bootstrap_sample,
+                                          PP_boot@outcome_model@fitted@model$model,
+                                          predict_times)
+      } else{
+        bootstrap_sample <- newdata
+      }
 
       pred_list_boot <- calculate_predictions(
         newdata = bootstrap_sample,
@@ -120,7 +122,7 @@ calculate_jackknife_wald_CIs <- function(object,
                                          point_estimate,
                                          pred_fun) {
   weight_boot <- trial_period <- NULL
-
+  newdata <- as.data.frame(newdata)
   i <- 0
   sample_size <- length(unique(object@data@data$id))
   # Step 1: for each Jackknife sample:
@@ -152,15 +154,16 @@ calculate_jackknife_wald_CIs <- function(object,
       PP_boot <- fit_msm(PP_boot, weight_cols = c("weight"))
 
       # Step 4: get prediction in Jackknife sample
-      bootstrap_sample <- newdata[
-        unlist(lapply(boot_idx, function(i) which(newdata$id == i))),
-      ]
-
-      bootstrap_sample <- check_newdata(
-        bootstrap_sample,
-        model = PP_boot@outcome_model@fitted@model$model,
-        predict_times
-      )
+      if ("id" %in% names(newdata)){
+        bootstrap_sample <- newdata[
+          unlist(lapply(boot_idx, function(i) which(newdata$id == i))),
+        ]
+        bootstrap_sample <- check_newdata(bootstrap_sample,
+                                          PP_boot@outcome_model@fitted@model$model,
+                                          predict_times)
+      } else{
+        bootstrap_sample <- newdata
+      }
 
       pred_list_boot <- calculate_predictions(
         newdata = bootstrap_sample,
@@ -243,7 +246,7 @@ calculate_jackknife_variance <- function(object,
   outer_list <- lapply(1:sample_size, function(k) outer(diff_mat[, k], diff_mat[, k]))
 
   outer_mat_3D <- array(unlist(outer_list),
-    dim = c(length(coef_point_estimate), length(coef_point_estimate), sample_size)
+                        dim = c(length(coef_point_estimate), length(coef_point_estimate), sample_size)
   )
 
   jackknife_var <- apply(outer_mat_3D, c(1, 2), sum) / (sample_size * (sample_size - 1))
@@ -359,10 +362,10 @@ weight_func_bootstrap <- function(object,
     )
 
     switch_0 <- merge.data.table(switch_d0, switch_n0,
-      by = c("id", "period", "eligible0")
+                                 by = c("id", "period", "eligible0")
     )
     switch_1 <- merge.data.table(switch_d1, switch_n1,
-      by = c("id", "period", "eligible1")
+                                 by = c("id", "period", "eligible1")
     )
 
     rm(switch_d0, switch_d1, switch_n0, switch_n1)
@@ -592,7 +595,7 @@ weight_func_bootstrap <- function(object,
   #### New data is merged with existing expanded data to add the new weights
 
   output_data <- new_data[object@outcome_data@data,
-    on = list(id = id, trial_period = trial_period, followup_time = followup_time)
+                          on = list(id = id, trial_period = trial_period, followup_time = followup_time)
   ]
   output_data[, weight_boot := sapply(id, function(i) sum(i == boot_idx))]
   output_data[, weight := ifelse(weight_boot != 0, weight * weight_boot, 0)]
@@ -724,10 +727,10 @@ fit_switch_weights_bootstrap <- function(switch_d_cov,
   # -------------- Combine results --------------------
 
   switch_0 <- merge.data.table(switch_d0, switch_n0,
-    by = c("id", "period", "eligible0")
+                               by = c("id", "period", "eligible0")
   )
   switch_1 <- merge.data.table(switch_d1, switch_n1,
-    by = c("id", "period", "eligible1")
+                               by = c("id", "period", "eligible1")
   )
 
   rm(switch_d0, switch_d1, switch_n0, switch_n1)
@@ -911,10 +914,10 @@ fit_censor_weights_bootstrap <- function(cense_d_cov,
   } else if (!pool_cense_d && !pool_cense_n) {
     # no pooled
     cense_0 <- merge.data.table(cense_d0, cense_n0,
-      by = c("id", "period")
+                                by = c("id", "period")
     )
     cense_1 <- merge.data.table(cense_d1, cense_n1,
-      by = c("id", "period")
+                                by = c("id", "period")
     )
     rm(cense_n1, cense_d1, cense_n0, cense_d0)
 

@@ -83,6 +83,15 @@ treatment or non-treatment at baseline (for an intention-to-treat analysis) or e
 sustained non-treatment (for a per-protocol analysis). The difference between these cumulative incidences is the
 estimated causal effect of treatment. Currently, the \code{predict} function only provides marginal intention-to-treat and
 per-protocol effects, therefore it is only valid when \code{estimand_type = "ITT"} or \code{estimand_type = "PP"}.
+
+The width of the confidence intervals for resampling-based methods (\code{'Nonpara. bootstrap'},
+\code{'LEF outcome'}, \code{'LEF both'}, \code{'Jackknife Wald'}) is determined
+by the presence of an \code{id} column in \code{newdata}.
+If included, the function accounts for sampling variation
+in the target population, which typically yields
+wider intervals. If omitted, the target population is treated as a fixed group,
+and the intervals reflect only the uncertainty from the
+original source model.
 }
 \examples{
 # Prediction for initiators() or trial_msm() objects -----

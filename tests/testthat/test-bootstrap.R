@@ -187,37 +187,37 @@ test_that("Same weights refitted if we use example bootstrap sample", {
   result$data <- result$data[order(id, trial_period, followup_time)]
 
   expect_equal(trial_pp_boot@switch_weights@fitted$d0@summary$tidy$estimate,
-    result$switch_models$switch_d0$summary$estimate,
-    tolerance = 1e-7
+               result$switch_models$switch_d0$summary$estimate,
+               tolerance = 1e-7
   )
   expect_equal(trial_pp_boot@switch_weights@fitted$d1@summary$tidy$estimate,
-    result$switch_models$switch_d1$summary$estimate,
-    tolerance = 1e-7
+               result$switch_models$switch_d1$summary$estimate,
+               tolerance = 1e-7
   )
   expect_equal(trial_pp_boot@switch_weights@fitted$n0@summary$tidy$estimate,
-    result$switch_models$switch_n0$summary$estimate,
-    tolerance = 1e-7
+               result$switch_models$switch_n0$summary$estimate,
+               tolerance = 1e-7
   )
   expect_equal(trial_pp_boot@switch_weights@fitted$n1@summary$tidy$estimate,
-    result$switch_models$switch_n1$summary$estimate,
-    tolerance = 1e-7
+               result$switch_models$switch_n1$summary$estimate,
+               tolerance = 1e-7
   )
 
   expect_equal(trial_pp_boot@censor_weights@fitted$d0@summary$tidy$estimate,
-    result$censor_models$cens_d0$summary$estimate,
-    tolerance = 1e-7
+               result$censor_models$cens_d0$summary$estimate,
+               tolerance = 1e-7
   )
   expect_equal(trial_pp_boot@censor_weights@fitted$d1@summary$tidy$estimate,
-    result$censor_models$cens_d1$summary$estimate,
-    tolerance = 1e-7
+               result$censor_models$cens_d1$summary$estimate,
+               tolerance = 1e-7
   )
   expect_equal(trial_pp_boot@censor_weights@fitted$n0@summary$tidy$estimate,
-    result$censor_models$cens_n0$summary$estimate,
-    tolerance = 1e-7
+               result$censor_models$cens_n0$summary$estimate,
+               tolerance = 1e-7
   )
   expect_equal(trial_pp_boot@censor_weights@fitted$n1@summary$tidy$estimate,
-    result$censor_models$cens_n1$summary$estimate,
-    tolerance = 1e-7
+               result$censor_models$cens_n1$summary$estimate,
+               tolerance = 1e-7
   )
 
   test_data <- trial_pp_boot@outcome_data@data
@@ -374,12 +374,12 @@ test_that("no bootstrap with ITT", {
     load_expanded_data()
 
   suppressWarnings(trial_itt <- fit_msm(trial_itt,
-    weight_cols = c("weight")
+                                        weight_cols = c("weight")
   ))
 
   expect_error(predict(trial_itt, predict_times = 1:5, ci_type = "Nonpara. bootstrap"),
-    fixed = TRUE,
-    regexp = "Bootstrap and Jackknife confidence intervals are only implemented for trial_sequence_PP class."
+               fixed = TRUE,
+               regexp = "Bootstrap and Jackknife confidence intervals are only implemented for trial_sequence_PP class."
   )
 })
 
@@ -422,6 +422,106 @@ test_that("predict works with bootstrap", {
     suppressMatchingWarnings("fitted probabilities")
 
   suppressWarnings(result2 <- predict(trial_pp, predict_times = 1:20, ci_type = "Nonpara. bootstrap"))
+  expect_snapshot_value(
+    as.data.frame(result2),
+    style = "json2",
+    tolerance = 1e-6
+  )
+  # TODO check if there is there is some overwriting going on due to data.table, so the results would not be
+  # reproducible if we calculate different methods.
+})
+
+test_that("predict works with bootstrap with newdata containing ID", {
+  set.seed(194)
+  trial_pp_dir <- withr::local_tempdir("trial_pp", tempdir(TRUE))
+
+  trial_pp <- trial_sequence(estimand = "PP") |>
+    set_data(
+      data = data_censored,
+      id = "id",
+      period = "period",
+      treatment = "treatment",
+      outcome = "outcome",
+      eligible = "eligible"
+    ) |>
+    set_switch_weight_model(
+      numerator = ~age,
+      denominator = ~ age + x1 + x3,
+      model_fitter = stats_glm_logit(save_path = file.path(trial_pp_dir, "switch_models"))
+    ) |>
+    set_censor_weight_model(
+      censor_event = "censored",
+      numerator = ~x2,
+      denominator = ~ x2 + x1,
+      pool_models = "none",
+      model_fitter = stats_glm_logit(save_path = file.path(trial_pp_dir, "censor_models"))
+    ) |>
+    calculate_weights() |>
+    set_outcome_model(model_fitter = stats_glm_logit(save_path = file.path(trial_pp_dir, "outcome_model"))) |>
+    set_expansion_options(
+      output = save_to_datatable(),
+      chunk_size = 500
+    ) |>
+    expand_trials() |>
+    load_expanded_data() |>
+    fit_msm(
+      weight_cols = c("weight")
+    ) |>
+    suppressMatchingWarnings("fitted probabilities")
+
+  newdata <- trial_pp@outcome_model@fitted@model$model$data[trial_pp@outcome_model@fitted@model$model$data$trial_period == 0,]
+  suppressWarnings(result2 <- predict(trial_pp, newdata = newdata, predict_times = 1:5, ci_type = "Nonpara. bootstrap"))
+  expect_snapshot_value(
+    as.data.frame(result2),
+    style = "json2",
+    tolerance = 1e-6
+  )
+  # TODO check if there is there is some overwriting going on due to data.table, so the results would not be
+  # reproducible if we calculate different methods.
+})
+
+test_that("predict works with bootstrap with newdata NOT containing ID", {
+  set.seed(194)
+  trial_pp_dir <- withr::local_tempdir("trial_pp", tempdir(TRUE))
+
+  trial_pp <- trial_sequence(estimand = "PP") |>
+    set_data(
+      data = data_censored,
+      id = "id",
+      period = "period",
+      treatment = "treatment",
+      outcome = "outcome",
+      eligible = "eligible"
+    ) |>
+    set_switch_weight_model(
+      numerator = ~age,
+      denominator = ~ age + x1 + x3,
+      model_fitter = stats_glm_logit(save_path = file.path(trial_pp_dir, "switch_models"))
+    ) |>
+    set_censor_weight_model(
+      censor_event = "censored",
+      numerator = ~x2,
+      denominator = ~ x2 + x1,
+      pool_models = "none",
+      model_fitter = stats_glm_logit(save_path = file.path(trial_pp_dir, "censor_models"))
+    ) |>
+    calculate_weights() |>
+    set_outcome_model(model_fitter = stats_glm_logit(save_path = file.path(trial_pp_dir, "outcome_model"))) |>
+    set_expansion_options(
+      output = save_to_datatable(),
+      chunk_size = 500
+    ) |>
+    expand_trials() |>
+    load_expanded_data() |>
+    fit_msm(
+      weight_cols = c("weight")
+    ) |>
+    suppressMatchingWarnings("fitted probabilities")
+
+  newdata <- as.data.frame(trial_pp@outcome_model@fitted@model$model$data[trial_pp@outcome_model@fitted@model$model$data$trial_period == 0,]
+  )
+  newdata <- newdata[, names(newdata) != "id"]
+  suppressWarnings(result2 <- predict(trial_pp, newdata = newdata, predict_times = 1:5, ci_type = "Nonpara. bootstrap"))
   expect_snapshot_value(
     as.data.frame(result2),
     style = "json2",

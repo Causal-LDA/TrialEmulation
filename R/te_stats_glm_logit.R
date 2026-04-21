@@ -237,8 +237,10 @@ setMethod(
         )
       }
     }
-    if (!is.na(newdata) & (conf_int == TRUE) & (ci_type %in% c("Nonpara. bootstrap", "LEF outcome", "LEF both","Jackknife Wald"))){
-      newdata_copy <- newdata
+    if (!missing(newdata)){
+      if ("id" %in% names(newdata)){
+        newdata_copy <- newdata
+      }
     }
     newdata <- check_newdata(newdata, model, predict_times)
 
@@ -274,27 +276,49 @@ setMethod(
           }
         )
       } else if (ci_type == "Jackknife Wald") {
-        jackknife_wald_CIs <- calculate_jackknife_wald_CIs(
-          object = object,
-          newdata = newdata_copy,
-          predict_times = predict_times,
-          point_estimate = pred_list$difference[, 1],
-          pred_fun = pred_fun
-        )
+        if (exists("newdata_copy", inherits = FALSE)) {
+          jackknife_wald_CIs <- calculate_jackknife_wald_CIs(
+            object = object,
+            newdata = newdata_copy,
+            predict_times = predict_times,
+            point_estimate = pred_list$difference[, 1],
+            pred_fun = pred_fun
+          )
+        } else {
+          jackknife_wald_CIs <- calculate_jackknife_wald_CIs(
+            object = object,
+            newdata = newdata,
+            predict_times = predict_times,
+            point_estimate = pred_list$difference[, 1],
+            pred_fun = pred_fun
+          )
+        }
         setNames(
           data.frame(predict_times, pred_list$difference[, 1], jackknife_wald_CIs[, 1], jackknife_wald_CIs[, 2]),
           c("followup_time", paste0(type, "_diff"), "lower_bound", "upper_bound")
         )
       } else if (ci_type %in% c("Nonpara. bootstrap", "LEF outcome", "LEF both")) {
-        bootstrap_CIs <- calculate_bootstrap_CIs(
-          object = object,
-          newdata = newdata_copy,
-          ci_type = ci_type,
-          bootstrap_sample_size = samples,
-          predict_times = predict_times,
-          point_estimate = pred_list$difference[, 1],
-          pred_fun = pred_fun
-        )
+        if (exists("newdata_copy", inherits = FALSE)){
+          bootstrap_CIs <- calculate_bootstrap_CIs(
+            object = object,
+            newdata = newdata_copy,
+            ci_type = ci_type,
+            bootstrap_sample_size = samples,
+            predict_times = predict_times,
+            point_estimate = pred_list$difference[, 1],
+            pred_fun = pred_fun
+          )
+        } else {
+          bootstrap_CIs <- calculate_bootstrap_CIs(
+            object = object,
+            newdata = newdata,
+            ci_type = ci_type,
+            bootstrap_sample_size = samples,
+            predict_times = predict_times,
+            point_estimate = pred_list$difference[, 1],
+            pred_fun = pred_fun
+          )
+        }
         setNames(
           data.frame(predict_times, pred_list$difference[, 1], bootstrap_CIs[, 1], bootstrap_CIs[, 2]),
           c("followup_time", paste0(type, "_diff"), "lower_bound", "upper_bound")

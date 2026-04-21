@@ -539,6 +539,15 @@ setGeneric("fit_msm", function(object,
 #' @param samples Number of samples used to construct the simulation-based confidence intervals.
 
 #' @param ... Further arguments passed to or from other methods.
+#' @details
+#' The width of the confidence intervals for resampling-based methods (`'Nonpara. bootstrap'`,
+#' `'LEF outcome'`, `'LEF both'`, `'Jackknife Wald'`) is determined
+#' by the presence of an \code{id} column in \code{newdata}.
+#' If included, the function accounts for sampling variation
+#' in the target population, which typically yields
+#' wider intervals. If omitted, the target population is treated as a fixed group,
+#' and the intervals reflect only the uncertainty from the
+#' original source model.
 #'
 #' @return A list of three data frames containing the cumulative incidences for each of the assigned treatment options
 #'   (treatment and non-treatment) and the difference between them.
