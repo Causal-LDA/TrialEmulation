@@ -14,7 +14,6 @@ setClass("te_weights_fitted",
 )
 
 
-
 # te_weights_spec -------
 setClass("te_weights_spec",
   slots = c(
@@ -49,7 +48,6 @@ setClass("te_weights_censoring", contains = "te_weights_spec")
 
 # te_weights_unset -------
 setClass("te_weights_unset", contains = "te_weights_spec")
-
 
 
 setMethod(

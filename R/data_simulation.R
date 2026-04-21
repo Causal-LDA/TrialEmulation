@@ -39,7 +39,6 @@ data_gen_censored <- function(ns,
   CAp <- rep(0, nvisit * ns) ## place holders for sum of previous treatment A
 
 
-
   Y <- rep(0, nvisit * ns) ## place holders for outcome vector
   Yp <- rep(0, nvisit * ns) ## place holders for previous outcome vector
 

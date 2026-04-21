@@ -34,7 +34,6 @@ setValidity(
 )
 
 
-
 #' Fit outcome models using `parsnip` models
 #'
 #' `r lifecycle::badge('experimental')`

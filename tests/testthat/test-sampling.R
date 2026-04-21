@@ -141,7 +141,6 @@ test_that("case_control_sampling_trials works with subsetting", {
 })
 
 
-
 test_that("case_control_sampling_trials gives errors for arguments", {
   expect_error(
     case_control_sampling_trials(

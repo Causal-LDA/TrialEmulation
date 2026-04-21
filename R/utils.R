@@ -138,7 +138,7 @@ extract_baseline <- function(trial_file, baseline_file, quiet = TRUE) {
   if (file.exists(trial_file)) {
     quiet_msg("Extracting baseline observations from ", trial_file)
     fwrite(fread(trial_file)[followup_time == 0, ], file = baseline_file)
-    return(baseline_file)
+    baseline_file
   } else {
     assert_file_exists(trial_file)
   }

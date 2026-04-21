@@ -20,7 +20,6 @@ calculate_weights_trial_seq <- function(object, quiet, switch_weights, censor_we
 }
 
 
-
 calculate_switch_weights <- function(object) {
   am_1 <- eligible_wts_0 <- eligible_wts_1 <- p_d <- p_n <- treatment <- wtS <- NULL
 

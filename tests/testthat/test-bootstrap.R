@@ -373,9 +373,7 @@ test_that("no bootstrap with ITT", {
     expand_trials() |>
     load_expanded_data()
 
-  suppressWarnings(trial_itt <- fit_msm(trial_itt,
-    weight_cols = c("weight")
-  ))
+  suppressWarnings(trial_itt <- fit_msm(trial_itt, weight_cols = c("weight")))
 
   expect_error(predict(trial_itt, predict_times = 1:5, ci_type = "Nonpara. bootstrap"),
     fixed = TRUE,
@@ -469,7 +467,8 @@ test_that("predict works with bootstrap with newdata containing ID", {
     ) |>
     suppressMatchingWarnings("fitted probabilities")
 
-  newdata <- trial_pp@outcome_model@fitted@model$model$data[trial_pp@outcome_model@fitted@model$model$data$trial_period == 0, ]
+  newdata <- trial_pp@outcome_model@fitted@model$model$data
+  newdata <- newdata[newdata$trial_period == 0, ]
   suppressWarnings(result2 <- predict(trial_pp, newdata = newdata, predict_times = 1:5, ci_type = "Nonpara. bootstrap"))
   expect_snapshot_value(
     as.data.frame(result2),
@@ -518,8 +517,8 @@ test_that("predict works with bootstrap with newdata NOT containing ID", {
     ) |>
     suppressMatchingWarnings("fitted probabilities")
 
-  newdata <- as.data.frame(trial_pp@outcome_model@fitted@model$model$data[trial_pp@outcome_model@fitted@model$model$data$trial_period == 0, ])
-  newdata <- newdata[, names(newdata) != "id"]
+  newdata <- as.data.frame(trial_pp@outcome_model@fitted@model$model$data)
+  newdata <- newdata[newdatatrial_period == 0, names(newdata) != "id"]
   suppressWarnings(result2 <- predict(trial_pp, newdata = newdata, predict_times = 1:5, ci_type = "Nonpara. bootstrap"))
   expect_snapshot_value(
     as.data.frame(result2),

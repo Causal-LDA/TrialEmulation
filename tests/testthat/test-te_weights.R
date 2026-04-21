@@ -16,7 +16,6 @@ test_that("show works for te_weights_spec objects", {
     )
 
 
-
   expect_snapshot(show_weight_models(object))
   expect_snapshot(show(object@censor_weights))
 
