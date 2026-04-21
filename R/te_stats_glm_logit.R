@@ -237,8 +237,8 @@ setMethod(
         )
       }
     }
-    if (!missing(newdata)){
-      if ("id" %in% names(newdata)){
+    if (!missing(newdata)) {
+      if ("id" %in% names(newdata)) {
         newdata_copy <- newdata
       }
     }
@@ -298,7 +298,7 @@ setMethod(
           c("followup_time", paste0(type, "_diff"), "lower_bound", "upper_bound")
         )
       } else if (ci_type %in% c("Nonpara. bootstrap", "LEF outcome", "LEF both")) {
-        if (exists("newdata_copy", inherits = FALSE)){
+        if (exists("newdata_copy", inherits = FALSE)) {
           bootstrap_CIs <- calculate_bootstrap_CIs(
             object = object,
             newdata = newdata_copy,
