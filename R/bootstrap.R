@@ -15,7 +15,7 @@ calculate_bootstrap_CIs <- function(object,
                                     predict_times,
                                     point_estimate,
                                     pred_fun) {
-  assert_integerish(bootstrap_sample_size, lower = 2)
+  assert_integerish(bootstrap_sample_size, lower = 2, len = 1)
   weight_boot <- trial_period <- NULL
   newdata <- as.data.frame(newdata)
   if (ci_type != "Nonpara. bootstrap") {
@@ -27,7 +27,7 @@ calculate_bootstrap_CIs <- function(object,
   }
 
   boot_data_conf <- lapply(
-    1:bootstrap_sample_size,
+    seq_len(bootstrap_sample_size),
     function(i) {
       sort(sample(unique(object@data@data$id), length(unique(object@data@data$id)), replace = TRUE))
     }
@@ -35,7 +35,7 @@ calculate_bootstrap_CIs <- function(object,
 
   # Step 1: for each bootstrap sample:
   bootstrapped_MRDs <- future.apply::future_sapply(
-    1:bootstrap_sample_size,
+    seq_len(bootstrap_sample_size),
     function(i) {
       # Bootstrap sample with patient id as sampling unit
       boot_idx <- boot_data_conf[[i]]
@@ -129,10 +129,9 @@ calculate_jackknife_wald_CIs <- function(object,
   i <- 0
   sample_size <- length(unique(object@data@data$id))
   # Step 1: for each Jackknife sample:
-  bootstrapped_MRDs <- future.apply::future_replicate(
-    n = sample_size,
-    expr = {
-      i <<- i + 1
+  bootstrapped_MRDs <- future.apply::future_lapply(
+    X = seq_len(sample_size),
+    FUN = function(i) {
       # Jackknife sample with patient id as sampling unit
       boot_idx <- unique(object@data@data$id[object@data@data$id != unique(object@data@data$id)[i]])
 
@@ -183,7 +182,7 @@ calculate_jackknife_wald_CIs <- function(object,
       pred_list_boot$assigned_treatment_1[, 1] - pred_list_boot$assigned_treatment_0[, 1]
       ## end replicate
     }
-  )
+  ) |> simplify2array()
 
   # Step 5: generate CIs and return
 
