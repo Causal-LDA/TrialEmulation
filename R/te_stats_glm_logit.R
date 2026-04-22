@@ -183,7 +183,7 @@ setMethod(
   }
 )
 
-#' @describeIn trial_sequence_PP-class Predict from the fitted model object via [predict] on `trial_sequence`
+#' @describeIn trial_sequence-class Predict from the fitted model object via [predict] on `trial_sequence`
 #' @inheritParams predict_marginal
 #' @param object Object to dispatch method on
 setMethod(

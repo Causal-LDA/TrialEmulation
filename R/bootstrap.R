@@ -131,6 +131,7 @@ calculate_jackknife_wald_CIs <- function(object,
   # Step 1: for each Jackknife sample:
   bootstrapped_MRDs <- future.apply::future_lapply(
     X = seq_len(sample_size),
+    future.seed = TRUE,
     FUN = function(i) {
       # Jackknife sample with patient id as sampling unit
       boot_idx <- unique(object@data@data$id[object@data@data$id != unique(object@data@data$id)[i]])
@@ -201,22 +202,23 @@ calculate_jackknife_wald_CIs <- function(object,
 #' @returns p x p Jackknife variance matrix of MSM coefficients, p is the number of MSM coefficients
 #' @noRd
 #' @importFrom stats predict.glm vcov
-#' @importFrom future.apply future_replicate
+#' @importFrom future.apply future_lapply
 calculate_jackknife_variance <- function(object,
                                          predict_times,
                                          point_estimate,
                                          pred_fun) {
   weight_boot <- trial_period <- NULL
-
-  i <- 0
-  sample_size <- length(unique(object@data@data$id))
+  
+  unique_id <- unique(object@data@data$id)
+  sample_size <- length(unique_id)
   # Step 1: for each bootstrap sample:
-  bootstrapped_MRDs <- future.apply::future_replicate(
-    n = sample_size,
-    expr = {
-      i <<- i + 1
+
+  bootstrapped_MRDs <- future.apply::future_lapply(
+    unique_id,
+    future.seed = TRUE,
+    FUN = function(id) {
       # Jackknife sample with patient id as sampling unit
-      boot_idx <- unique(object@data@data$id[object@data@data$id != unique(object@data@data$id)[i]])
+      boot_idx <- unique(object@data@data$id[object@data@data$id != id])
 
       weights_table_boot <- data.table(id = unique(object@data@data$id))
       weights_table_boot[, weight_boot := sapply(weights_table_boot$id, function(i) sum(i == boot_idx))]
@@ -240,20 +242,17 @@ calculate_jackknife_variance <- function(object,
 
       coef(PP_boot@outcome_model@fitted@model$model)
     }
-  )
+  ) |> simplify2array()
   # Step 5: generate Jackknife variance matrix and return
 
   coef_point_estimate <- coef(object@outcome_model@fitted@model$model)
   beta_tilde <- sample_size * coef_point_estimate - (sample_size - 1) * bootstrapped_MRDs
-  beta_bar <- apply(beta_tilde, 1, function(x) sum(x) / sample_size)
+  beta_bar <- rowMeans(beta_tilde)
   diff_mat <- beta_tilde - beta_bar
-  outer_list <- lapply(1:sample_size, function(k) outer(diff_mat[, k], diff_mat[, k]))
+  outer_mat_3D <- lapply(1:sample_size, function(k) outer(diff_mat[, k], diff_mat[, k])) |> 
+    simplify2array()
 
-  outer_mat_3D <- array(unlist(outer_list),
-    dim = c(length(coef_point_estimate), length(coef_point_estimate), sample_size)
-  )
-
-  jackknife_var <- apply(outer_mat_3D, c(1, 2), sum) / (sample_size * (sample_size - 1))
+  jackknife_var <- rowSums(outer_mat_3D, dims = 2) / (sample_size * (sample_size - 1))
 
   jackknife_var
 }
