@@ -208,7 +208,7 @@ calculate_jackknife_variance <- function(object,
                                          point_estimate,
                                          pred_fun) {
   weight_boot <- trial_period <- NULL
-  
+
   unique_id <- unique(object@data@data$id)
   sample_size <- length(unique_id)
   # Step 1: for each bootstrap sample:
@@ -249,7 +249,7 @@ calculate_jackknife_variance <- function(object,
   beta_tilde <- sample_size * coef_point_estimate - (sample_size - 1) * bootstrapped_MRDs
   beta_bar <- rowMeans(beta_tilde)
   diff_mat <- beta_tilde - beta_bar
-  outer_mat_3D <- lapply(1:sample_size, function(k) outer(diff_mat[, k], diff_mat[, k])) |> 
+  outer_mat_3D <- lapply(1:sample_size, function(k) outer(diff_mat[, k], diff_mat[, k])) |>
     simplify2array()
 
   jackknife_var <- rowSums(outer_mat_3D, dims = 2) / (sample_size * (sample_size - 1))

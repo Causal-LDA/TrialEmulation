@@ -156,7 +156,7 @@ translate_to_sql <- function(string) {
         vec <- translate_num_vec(vec)
       }
 
-      for (i in seq_len(length(replacement))) {
+      for (i in seq_along(replacement)) {
         vec <- gsub(pattern = names(replacement)[i], replacement = replacement[i], vec)
       }
       string <- paste0(vec, collapse = " ")

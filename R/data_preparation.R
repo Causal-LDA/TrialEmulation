@@ -123,7 +123,7 @@ data_preparation <- function(data,
   result$parameters <- args
 
   class(result) <- c(ifelse(args$separate_files, "TE_data_prep_sep", "TE_data_prep_dt"), "TE_data_prep")
-  return(result)
+  result
 }
 
 
