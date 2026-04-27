@@ -2,34 +2,37 @@
 #'
 #' @param object object of class `trial_sequence`
 #' @param ci_type which CI to generate, options: `'Nonpara. bootstrap', 'LEF outcome', 'LEF both'`
-#' @param bootstrap_sample_size Sample size of bootstrap resampling, default = 200
+#' @param bootstrap_sample_size Sample size of bootstrap resampling
 #'
 #' @returns 2 by x matrix of CI lower and upper bound, x is number of time points
 #' @noRd
 #' @importFrom stats predict.glm vcov
 #' @importFrom future.apply future_replicate
-calculate_bootstrap_CIs <- function(object,
-                                    newdata,
-                                    ci_type,
-                                    bootstrap_sample_size = 200,
-                                    predict_times,
-                                    point_estimate,
-                                    pred_fun) {
+calculate_bootstrap_CIs <- function(
+  object,
+  newdata,
+  ci_type,
+  bootstrap_sample_size,
+  predict_times,
+  point_estimate,
+  pred_fun
+) {
   assert_integerish(bootstrap_sample_size, lower = 2, len = 1)
   weight_boot <- trial_period <- NULL
   newdata <- as.data.frame(newdata)
   if (ci_type != "Nonpara. bootstrap") {
     X <- model.matrix(object@outcome_model@fitted@model$model)
-    e <- object@outcome_model@fitted@model$model$model$outcome - object@outcome_model@fitted@model$model$fitted.values
+    e <- object@outcome_model@fitted@model$model$model$outcome -
+      object@outcome_model@fitted@model$model$fitted.values
     if (ci_type == "LEF both") {
       lef_weight_info <- lef_load_models(object)
     }
   }
-
+  unique_ids <- unique(object@data@data$id)
   boot_data_conf <- lapply(
     seq_len(bootstrap_sample_size),
     function(i) {
-      sort(sample(unique(object@data@data$id), length(unique(object@data@data$id)), replace = TRUE))
+      sort(sample(unique_ids, length(unique_ids), replace = TRUE))
     }
   )
 
@@ -39,8 +42,12 @@ calculate_bootstrap_CIs <- function(object,
     function(i) {
       # Bootstrap sample with patient id as sampling unit
       boot_idx <- boot_data_conf[[i]]
-      weights_table_boot <- data.table(id = unique(object@data@data$id))
-      weights_table_boot[, weight_boot := sapply(weights_table_boot$id, function(i) sum(i == boot_idx))]
+      weights_table_boot <- data.table(id = unique_ids)
+      weights_table_boot[,
+        weight_boot := sapply(weights_table_boot$id, function(i) {
+          sum(i == boot_idx)
+        })
+      ]
 
       # Step 2: refit/recalculate weights
       weight_func_bs_args <- list(
@@ -50,7 +57,10 @@ calculate_bootstrap_CIs <- function(object,
       )
 
       if (ci_type == "LEF both") {
-        lef_bs_args <- do.call(lef_calc_coefs, c(list(weights_table_boot = weights_table_boot), lef_weight_info))
+        lef_bs_args <- do.call(
+          lef_calc_coefs,
+          c(list(weights_table_boot = weights_table_boot), lef_weight_info)
+        )
         weight_func_bs_args <- c(
           weight_func_bs_args,
           lef_bs_args,
@@ -76,7 +86,8 @@ calculate_bootstrap_CIs <- function(object,
         variance_mat[is.na(variance_mat)] <- 0
         # Calculate \hat \beta(b)
         PP_boot@outcome_model@fitted@model$model$coefficients <-
-          PP_boot@outcome_model@fitted@model$model$coefficients + variance_mat %*% LEFs
+          PP_boot@outcome_model@fitted@model$model$coefficients +
+          variance_mat %*% LEFs
       }
       # Step 4: get prediction in bootstrap sample
       if ("id" %in% names(newdata)) {
@@ -95,20 +106,28 @@ calculate_bootstrap_CIs <- function(object,
       pred_list_boot <- calculate_predictions(
         newdata = bootstrap_sample,
         model = PP_boot@outcome_model@fitted@model$model,
-        treatment_values = c(assigned_treatment_0 = 0, assigned_treatment_1 = 1),
+        treatment_values = c(
+          assigned_treatment_0 = 0,
+          assigned_treatment_1 = 1
+        ),
         pred_fun = pred_fun,
-        coefs_mat = matrix(coef(PP_boot@outcome_model@fitted@model$model), nrow = 1),
+        coefs_mat = matrix(
+          coef(PP_boot@outcome_model@fitted@model$model),
+          nrow = 1
+        ),
         matrix_n_col = length(predict_times)
       )
 
       # return difference estimate:
-      pred_list_boot$assigned_treatment_1[, 1] - pred_list_boot$assigned_treatment_0[, 1]
+      pred_list_boot$assigned_treatment_1[, 1] -
+        pred_list_boot$assigned_treatment_0[, 1]
       ## end replicate
     }
   )
 
   # Step 5: generate pivot CIs and return
-  (2 * point_estimate) - t(apply(bootstrapped_MRDs, 1, quantile, probs = c(0.025, 0.975)))[, 2:1]
+  (2 * point_estimate) -
+    t(apply(bootstrapped_MRDs, 1, quantile, probs = c(0.025, 0.975)))[, 2:1]
 }
 
 #' Calculate Jackknife Wald confidence interval
@@ -119,26 +138,33 @@ calculate_bootstrap_CIs <- function(object,
 #' @noRd
 #' @importFrom stats predict.glm vcov
 #' @importFrom future.apply future_replicate
-calculate_jackknife_wald_CIs <- function(object,
-                                         newdata,
-                                         predict_times,
-                                         point_estimate,
-                                         pred_fun) {
+calculate_jackknife_wald_CIs <- function(
+  object,
+  newdata,
+  predict_times,
+  point_estimate,
+  pred_fun
+) {
   weight_boot <- trial_period <- NULL
   newdata <- as.data.frame(newdata)
-  i <- 0
-  sample_size <- length(unique(object@data@data$id))
+
+  unique_ids <- unique(object@data@data$id)
+  n_ids <- length(unique_ids)
   # Step 1: for each Jackknife sample:
   bootstrapped_MRDs <- future.apply::future_lapply(
-    X = seq_len(sample_size),
+    X = seq_len(n_ids),
     future.seed = TRUE,
-    FUN = function(i) {
+    unique_ids = unique_ids,
+    FUN = function(i, unique_ids) {
       # Jackknife sample with patient id as sampling unit
-      boot_idx <- unique(object@data@data$id[object@data@data$id != unique(object@data@data$id)[i]])
+      boot_idx <- unique_ids[unique_ids != unique_ids[i]]
 
-      weights_table_boot <- data.table(id = unique(object@data@data$id))
-      weights_table_boot[, weight_boot := sapply(weights_table_boot$id, function(i) sum(i == boot_idx))]
-
+      weights_table_boot <- data.table(id = unique_ids)
+      weights_table_boot[,
+        weight_boot := sapply(weights_table_boot$id, function(i) {
+          sum(i == boot_idx)
+        })
+      ]
 
       # Step 2: refit/recalculate weights
       weight_func_bs_args <- list(
@@ -173,22 +199,32 @@ calculate_jackknife_wald_CIs <- function(object,
       pred_list_boot <- calculate_predictions(
         newdata = bootstrap_sample,
         model = PP_boot@outcome_model@fitted@model$model,
-        treatment_values = c(assigned_treatment_0 = 0, assigned_treatment_1 = 1),
+        treatment_values = c(
+          assigned_treatment_0 = 0,
+          assigned_treatment_1 = 1
+        ),
         pred_fun = pred_fun,
-        coefs_mat = matrix(coef(PP_boot@outcome_model@fitted@model$model), nrow = 1),
+        coefs_mat = matrix(
+          coef(PP_boot@outcome_model@fitted@model$model),
+          nrow = 1
+        ),
         matrix_n_col = length(predict_times)
       )
 
       # return difference estimate:
-      pred_list_boot$assigned_treatment_1[, 1] - pred_list_boot$assigned_treatment_0[, 1]
+      pred_list_boot$assigned_treatment_1[, 1] -
+        pred_list_boot$assigned_treatment_0[, 1]
       ## end replicate
     }
-  ) |> simplify2array()
+  ) |>
+    simplify2array()
 
   # Step 5: generate CIs and return
 
   MRDs_mat <- bootstrapped_MRDs - point_estimate
-  jacknife_mrd_se <- t(apply(MRDs_mat, 1, function(x) sqrt(((sample_size - 1) / sample_size) * sum(x^2))))
+  jacknife_mrd_se <- t(apply(MRDs_mat, 1, function(x) {
+    sqrt(((n_ids - 1) / n_ids) * sum(x^2))
+  }))
   rbind(
     point_estimate - 1.96 * jacknife_mrd_se,
     point_estimate + 1.96 * jacknife_mrd_se
@@ -203,14 +239,16 @@ calculate_jackknife_wald_CIs <- function(object,
 #' @noRd
 #' @importFrom stats predict.glm vcov
 #' @importFrom future.apply future_lapply
-calculate_jackknife_variance <- function(object,
-                                         predict_times,
-                                         point_estimate,
-                                         pred_fun) {
+calculate_jackknife_variance <- function(
+  object,
+  predict_times,
+  point_estimate,
+  pred_fun
+) {
   weight_boot <- trial_period <- NULL
 
   unique_id <- unique(object@data@data$id)
-  sample_size <- length(unique_id)
+  n_ids <- length(unique_id)
   # Step 1: for each bootstrap sample:
 
   bootstrapped_MRDs <- future.apply::future_lapply(
@@ -221,8 +259,11 @@ calculate_jackknife_variance <- function(object,
       boot_idx <- unique(object@data@data$id[object@data@data$id != id])
 
       weights_table_boot <- data.table(id = unique(object@data@data$id))
-      weights_table_boot[, weight_boot := sapply(weights_table_boot$id, function(i) sum(i == boot_idx))]
-
+      weights_table_boot[,
+        weight_boot := sapply(weights_table_boot$id, function(i) {
+          sum(i == boot_idx)
+        })
+      ]
 
       # Step 2: refit/recalculate weights
       weight_func_bs_args <- list(
@@ -242,17 +283,20 @@ calculate_jackknife_variance <- function(object,
 
       coef(PP_boot@outcome_model@fitted@model$model)
     }
-  ) |> simplify2array()
+  ) |>
+    simplify2array()
   # Step 5: generate Jackknife variance matrix and return
 
   coef_point_estimate <- coef(object@outcome_model@fitted@model$model)
-  beta_tilde <- sample_size * coef_point_estimate - (sample_size - 1) * bootstrapped_MRDs
+  beta_tilde <- n_ids * coef_point_estimate - (n_ids - 1) * bootstrapped_MRDs
   beta_bar <- rowMeans(beta_tilde)
   diff_mat <- beta_tilde - beta_bar
-  outer_mat_3D <- lapply(1:sample_size, function(k) outer(diff_mat[, k], diff_mat[, k])) |>
+  outer_mat_3D <- lapply(seq_len(n_ids), function(k) {
+    outer(diff_mat[, k], diff_mat[, k])
+  }) |>
     simplify2array()
 
-  jackknife_var <- rowSums(outer_mat_3D, dims = 2) / (sample_size * (sample_size - 1))
+  jackknife_var <- rowSums(outer_mat_3D, dims = 2) / (n_ids * (n_ids - 1))
 
   jackknife_var
 }
@@ -285,28 +329,29 @@ calculate_jackknife_variance <- function(object,
 #'
 #' @importFrom stats predict.glm
 #' @noRd
-weight_func_bootstrap <- function(object,
-                                  remodel = TRUE,
-                                  new_coef_sw_d0 = NA,
-                                  new_coef_sw_n0 = NA,
-                                  new_coef_sw_d1 = NA,
-                                  new_coef_sw_n1 = NA,
-                                  new_coef_c_d0 = NA,
-                                  new_coef_c_n0 = NA,
-                                  new_coef_c_d1 = NA,
-                                  new_coef_c_n1 = NA,
-                                  new_coef_c_d = NA,
-                                  new_coef_c_n = NA,
-                                  boot_idx,
-                                  quiet = TRUE,
-                                  glm_function = "glm",
-                                  ...) {
+weight_func_bootstrap <- function(
+  object,
+  remodel = TRUE,
+  new_coef_sw_d0 = NA,
+  new_coef_sw_n0 = NA,
+  new_coef_sw_d1 = NA,
+  new_coef_sw_n1 = NA,
+  new_coef_c_d0 = NA,
+  new_coef_c_n0 = NA,
+  new_coef_c_d1 = NA,
+  new_coef_c_n1 = NA,
+  new_coef_c_d = NA,
+  new_coef_c_n = NA,
+  boot_idx,
+  quiet = TRUE,
+  glm_function = "glm",
+  ...
+) {
   # Dummy variables used in data.table calls declared to prevent package check NOTES:
   eligible0 <- eligible1 <- id <- period <- eligible0.y <- eligible1.y <- am_1 <- eligible_wts_0 <-
     eligible_wts_1 <- treatment <- wt <- wtC <- p0_n <- p0_d <- p1_n <- p1_d <- pC_n0 <- pC_d0 <-
-    pC_n1 <- pC_d1 <- pC_n <- pC_d <- wtprod <- weight0 <- period_new <- trial_period <-
-    index <- followup_time <- weight <- weight_boot <- NULL
-
+      pC_n1 <- pC_d1 <- pC_n <- pC_d <- wtprod <- weight0 <- period_new <- trial_period <-
+        index <- followup_time <- weight <- weight_boot <- NULL
 
   ## ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   # Switching weights --------------------
@@ -333,48 +378,90 @@ weight_func_bootstrap <- function(object,
     sw_data <- switch_results$sw_data
     switch_models <- switch_results$switch_models
     rm(switch_results)
-  } else { # only need to fetch the glm objects if we are recalculating weights from new coefficients
-    weight_model_d0 <- readRDS(object@switch_weights@fitted$d0@summary$save_path$path)
-    weight_model_n0 <- readRDS(object@switch_weights@fitted$n0@summary$save_path$path)
-    weight_model_d1 <- readRDS(object@switch_weights@fitted$d1@summary$save_path$path)
-    weight_model_n1 <- readRDS(object@switch_weights@fitted$n1@summary$save_path$path)
-
+  } else {
+    # only need to fetch the glm objects if we are recalculating weights from new coefficients
+    weight_model_d0 <- readRDS(
+      object@switch_weights@fitted$d0@summary$save_path$path
+    )
     weight_model_d0$coefficients <- new_coef_sw_d0
-    weight_model_n0$coefficients <- new_coef_sw_n0
-    weight_model_d1$coefficients <- new_coef_sw_d1
-    weight_model_n1$coefficients <- new_coef_sw_n1
-
     switch_d0 <- cbind(
-      p0_d = predict.glm(weight_model_d0, weight_model_d0$data, type = "response"),
+      p0_d = predict.glm(
+        weight_model_d0,
+        weight_model_d0$data,
+        type = "response"
+      ),
       weight_model_d0$data[, c("eligible0", "id", "period")]
     )
+    rm(weight_model_d0)
 
+    weight_model_n0 <- readRDS(
+      object@switch_weights@fitted$n0@summary$save_path$path
+    )
+    weight_model_n0$coefficients <- new_coef_sw_n0
     switch_n0 <- cbind(
-      p0_n = predict.glm(weight_model_n0, weight_model_n0$data, type = "response"),
+      p0_n = predict.glm(
+        weight_model_n0,
+        weight_model_n0$data,
+        type = "response"
+      ),
       weight_model_n0$data[, c("eligible0", "id", "period")]
     )
+    rm(weight_model_n0)
 
-    switch_d1 <- cbind(
-      p1_d = predict.glm(weight_model_d1, weight_model_d1$data, type = "response"),
-      weight_model_d1$data[, c("eligible1", "id", "period")]
-    )
-
-    switch_n1 <- cbind(
-      p1_n = predict.glm(weight_model_n1, weight_model_n1$data, type = "response"),
-      weight_model_n1$data[, c("eligible1", "id", "period")]
-    )
-
-    switch_0 <- merge.data.table(switch_d0, switch_n0,
+    switch_0 <- merge.data.table(
+      switch_d0,
+      switch_n0,
       by = c("id", "period", "eligible0")
     )
-    switch_1 <- merge.data.table(switch_d1, switch_n1,
+
+    weight_model_d1 <- readRDS(
+      object@switch_weights@fitted$d1@summary$save_path$path
+    )
+    weight_model_d1$coefficients <- new_coef_sw_d1
+    switch_d1 <- cbind(
+      p1_d = predict.glm(
+        weight_model_d1,
+        weight_model_d1$data,
+        type = "response"
+      ),
+      weight_model_d1$data[, c("eligible1", "id", "period")]
+    )
+    rm(weight_model_d1)
+
+    weight_model_n1 <- readRDS(
+      object@switch_weights@fitted$n1@summary$save_path$path
+    )
+    weight_model_n1$coefficients <- new_coef_sw_n1
+    switch_n1 <- cbind(
+      p1_n = predict.glm(
+        weight_model_n1,
+        weight_model_n1$data,
+        type = "response"
+      ),
+      weight_model_n1$data[, c("eligible1", "id", "period")]
+    )
+    rm(weight_model_n1)
+
+    switch_1 <- merge.data.table(
+      switch_d1,
+      switch_n1,
       by = c("id", "period", "eligible1")
     )
 
     rm(switch_d0, switch_d1, switch_n0, switch_n1)
 
-    sw_data <- merge.data.table(object@data@data, switch_0[, !"eligible0"], by = c("id", "period"), all = TRUE)
-    sw_data <- merge.data.table(sw_data, switch_1[, !"eligible1"], by = c("id", "period"), all = TRUE)
+    sw_data <- merge.data.table(
+      object@data@data,
+      switch_0[, !"eligible0"],
+      by = c("id", "period"),
+      all = TRUE
+    )
+    sw_data <- merge.data.table(
+      sw_data,
+      switch_1[, !"eligible1"],
+      by = c("id", "period"),
+      all = TRUE
+    )
 
     rm(switch_1, switch_0)
   }
@@ -408,32 +495,50 @@ weight_func_bootstrap <- function(object,
       censor_models <- censor_results$censor_models
       rm(censor_results)
     } else {
-      if (object@censor_weights@pool_denominator) { # Fit pooled denominator models
-        cense_model_d <- readRDS(object@censor_weights@fitted$d@summary$save_path$path)
+      if (object@censor_weights@pool_denominator) {
+        # Fit pooled denominator models
+        cense_model_d <- readRDS(
+          object@censor_weights@fitted$d@summary$save_path$path
+        )
         cense_model_d$coeefficients <- new_coef_c_d
 
         cense_d <- cbind(
-          pC_d = predict.glm(cense_model_d, cense_model_d$data, type = "response"),
+          pC_d = predict.glm(
+            cense_model_d,
+            cense_model_d$data,
+            type = "response"
+          ),
           cense_model_d$data[, c("id", "period")]
         )
 
         rm(cense_model_d)
       } else {
-        cense_model_d0 <- readRDS(object@censor_weights@fitted$d0@summary$save_path$path)
-        cense_model_d1 <- readRDS(object@censor_weights@fitted$d1@summary$save_path$path)
+        cense_model_d0 <- readRDS(
+          object@censor_weights@fitted$d0@summary$save_path$path
+        )
+        cense_model_d1 <- readRDS(
+          object@censor_weights@fitted$d1@summary$save_path$path
+        )
 
         cense_model_d0$coefficients <- new_coef_c_d0
         cense_model_d1$coefficients <- new_coef_c_d1
 
-
         cense_d0 <- cbind(
-          pC_d0 = predict.glm(cense_model_d0, cense_model_d0$data, type = "response"),
+          pC_d0 = predict.glm(
+            cense_model_d0,
+            cense_model_d0$data,
+            type = "response"
+          ),
           cense_model_d0$data[, c("id", "period")]
         )
         rm(cense_model_d0)
 
         cense_d1 <- cbind(
-          pC_d1 = predict.glm(cense_model_d1, cense_model_d1$data, type = "response"),
+          pC_d1 = predict.glm(
+            cense_model_d1,
+            cense_model_d1$data,
+            type = "response"
+          ),
           cense_model_d1$data[, c("id", "period")]
         )
 
@@ -441,82 +546,145 @@ weight_func_bootstrap <- function(object,
       }
 
       if (object@censor_weights@pool_numerator) {
-        cense_n <- readRDS(object@censor_weights@fitted$n@summary$save_path$path)
+        cense_n <- readRDS(
+          object@censor_weights@fitted$n@summary$save_path$path
+        )
 
         cense_model_n$coefficients <- new_coef_c_n
 
         cense_n <- cbind(
-          pC_n = predict.glm(cense_model_n, cense_model_n$data, type = "response"),
+          pC_n = predict.glm(
+            cense_model_n,
+            cense_model_n$data,
+            type = "response"
+          ),
           cense_model_n$data[, c("id", "period")]
         )
 
         rm(cense_model_n)
       } else {
-        cense_model_n0 <- readRDS(object@censor_weights@fitted$n0@summary$save_path$path)
-        cense_model_n1 <- readRDS(object@censor_weights@fitted$n1@summary$save_path$path)
-
+        cense_model_n0 <- readRDS(
+          object@censor_weights@fitted$n0@summary$save_path$path
+        )
         cense_model_n0$coefficients <- new_coef_c_n0
-        cense_model_n1$coefficients <- new_coef_c_n1
-
         cense_n0 <- cbind(
-          pC_n0 = predict.glm(cense_model_n0, cense_model_n0$data, type = "response"),
+          pC_n0 = predict.glm(
+            cense_model_n0,
+            cense_model_n0$data,
+            type = "response"
+          ),
           cense_model_n0$data[, c("id", "period")]
         )
-
         rm(cense_model_n0)
 
+        cense_model_n1 <- readRDS(
+          object@censor_weights@fitted$n1@summary$save_path$path
+        )
+        cense_model_n1$coefficients <- new_coef_c_n1
         cense_n1 <- cbind(
-          pC_n1 = predict.glm(cense_model_n1, cense_model_n1$data, type = "response"),
+          pC_n1 = predict.glm(
+            cense_model_n1,
+            cense_model_n1$data,
+            type = "response"
+          ),
           cense_model_n1$data[, c("id", "period")]
         )
-
         rm(cense_model_n1)
       }
 
       # combine ------------------------------
-      if (object@censor_weights@pool_denominator && object@censor_weights@pool_numerator) {
+      if (
+        object@censor_weights@pool_denominator &&
+          object@censor_weights@pool_numerator
+      ) {
         # all pooled
-        sw_data <- merge.data.table(sw_data, cense_d, by = c("id", "period"), all = TRUE)
-        sw_data <- merge.data.table(sw_data, cense_n, by = c("id", "period"), all = TRUE)
+        sw_data <- merge.data.table(
+          sw_data,
+          cense_d,
+          by = c("id", "period"),
+          all = TRUE
+        )
+        sw_data <- merge.data.table(
+          sw_data,
+          cense_n,
+          by = c("id", "period"),
+          all = TRUE
+        )
         rm(cense_d, cense_n)
-      } else if (!object@censor_weights@pool_denominator && !object@censor_weights@pool_numerator) {
+      } else if (
+        !object@censor_weights@pool_denominator &&
+          !object@censor_weights@pool_numerator
+      ) {
         # no pooled
         cense_0 <- cense_d0[cense_n0, on = list(id = id, period = period)]
         cense_1 <- cense_d1[cense_n1, on = list(id = id, period = period)]
         rm(cense_n1, cense_d1, cense_n0, cense_d0)
 
-        sw_data <- merge.data.table(sw_data, cense_0, by = c("id", "period"), all = TRUE)
-        sw_data <- merge.data.table(sw_data, cense_1, by = c("id", "period"), all = TRUE)
+        sw_data <- merge.data.table(
+          sw_data,
+          cense_0,
+          by = c("id", "period"),
+          all = TRUE
+        )
+        sw_data <- merge.data.table(
+          sw_data,
+          cense_1,
+          by = c("id", "period"),
+          all = TRUE
+        )
 
         rm(cense_0, cense_1)
         sw_data[am_1 == 0, `:=`(pC_n = pC_n0, pC_d = pC_d0)]
         sw_data[am_1 == 1, `:=`(pC_n = pC_n1, pC_d = pC_d1)]
-      } else if (!object@censor_weights@pool_denominator && object@censor_weights@pool_numerator) {
+      } else if (
+        !object@censor_weights@pool_denominator &&
+          object@censor_weights@pool_numerator
+      ) {
         # only numerator pooled
         sw_data <- sw_data[cense_n, on = list(id = id, period = period)]
-        sw_data <- merge.data.table(sw_data, cense_d0, by = c("id", "period"), all = TRUE)
-        sw_data <- merge.data.table(sw_data, cense_d1, by = c("id", "period"), all = TRUE)
+        sw_data <- merge.data.table(
+          sw_data,
+          cense_d0,
+          by = c("id", "period"),
+          all = TRUE
+        )
+        sw_data <- merge.data.table(
+          sw_data,
+          cense_d1,
+          by = c("id", "period"),
+          all = TRUE
+        )
         rm(cense_d1, cense_n, cense_d0)
 
         sw_data[am_1 == 0, `:=`(pC_d = pC_d0)]
         sw_data[am_1 == 1, `:=`(pC_d = pC_d1)]
-      } else if (object@censor_weights@pool_denominator && !object@censor_weights@pool_numerator) {
+      } else if (
+        object@censor_weights@pool_denominator &&
+          !object@censor_weights@pool_numerator
+      ) {
         # only denominator pooled
         stop("Check the arguments for pooling censoring models!")
       }
     }
   }
 
-
   # Calculate switching weights
   # use calculated weights
   if (any(!is.na(eligible_wts_0))) {
     sw_data[
-      (am_1 == 0 & eligible_wts_0 == 1 & treatment == 0 & !is.na(p0_n) & !is.na(p0_d)),
+      (am_1 == 0 &
+        eligible_wts_0 == 1 &
+        treatment == 0 &
+        !is.na(p0_n) &
+        !is.na(p0_d)),
       wt := (1.0 - p0_n) / (1.0 - p0_d)
     ]
     sw_data[
-      (am_1 == 0 & eligible_wts_0 == 1 & treatment == 1 & !is.na(p0_n) & !is.na(p0_d)),
+      (am_1 == 0 &
+        eligible_wts_0 == 1 &
+        treatment == 1 &
+        !is.na(p0_n) &
+        !is.na(p0_d)),
       wt := p0_n / p0_d
     ]
     sw_data[(am_1 == 0 & eligible_wts_0 == 0), wt := 1.0]
@@ -532,11 +700,19 @@ weight_func_bootstrap <- function(object,
   }
   if (any(!is.na(eligible_wts_1))) {
     sw_data[
-      (am_1 == 1 & eligible_wts_1 == 1 & treatment == 0 & !is.na(p1_n) & !is.na(p1_d)),
+      (am_1 == 1 &
+        eligible_wts_1 == 1 &
+        treatment == 0 &
+        !is.na(p1_n) &
+        !is.na(p1_d)),
       wt := (1.0 - p1_n) / (1.0 - p1_d)
     ]
     sw_data[
-      (am_1 == 1 & eligible_wts_1 == 1 & treatment == 1 & !is.na(p1_n) & !is.na(p1_d)),
+      (am_1 == 1 &
+        eligible_wts_1 == 1 &
+        treatment == 1 &
+        !is.na(p1_n) &
+        !is.na(p1_d)),
       wt := p1_n / p1_d
     ]
     sw_data[(am_1 == 1 & eligible_wts_1 == 0), wt := 1.0]
@@ -558,11 +734,17 @@ weight_func_bootstrap <- function(object,
 
     sw_data[, wt := wt * wtC]
     censor_models <- censor_models[intersect(
-      c("cens_pool_d", "cens_d0", "cens_n0", "cens_d1", "cens_n1", "cens_pool_n"),
+      c(
+        "cens_pool_d",
+        "cens_d0",
+        "cens_n0",
+        "cens_d1",
+        "cens_n1",
+        "cens_pool_n"
+      ),
       names(censor_models)
     )]
   }
-
 
   sw_data[, first := !duplicated(sw_data[, id])]
   sw_data <- sw_data[!is.na(wt)]
@@ -597,8 +779,13 @@ weight_func_bootstrap <- function(object,
 
   #### New data is merged with existing expanded data to add the new weights
 
-  output_data <- new_data[object@outcome_data@data,
-    on = list(id = id, trial_period = trial_period, followup_time = followup_time)
+  output_data <- new_data[
+    object@outcome_data@data,
+    on = list(
+      id = id,
+      trial_period = trial_period,
+      followup_time = followup_time
+    )
   ]
   output_data[, weight_boot := sapply(id, function(i) sum(i == boot_idx))]
   output_data[, weight := ifelse(weight_boot != 0, weight * weight_boot, 0)]
@@ -612,17 +799,19 @@ weight_func_bootstrap <- function(object,
 
 
 # fit switch weights for bootstrap ----------
-fit_switch_weights_bootstrap <- function(switch_d_cov,
-                                         switch_n_cov,
-                                         eligible_wts_0 = NA,
-                                         eligible_wts_1 = NA,
-                                         sw_data,
-                                         boot_idx,
-                                         quiet,
-                                         save_dir,
-                                         save_weight_models,
-                                         glm_function,
-                                         ...) {
+fit_switch_weights_bootstrap <- function(
+  switch_d_cov,
+  switch_n_cov,
+  eligible_wts_0 = NA,
+  eligible_wts_1 = NA,
+  sw_data,
+  boot_idx,
+  quiet,
+  save_dir,
+  save_weight_models,
+  glm_function,
+  ...
+) {
   eligible0 <- eligible1 <- id <- period <- weight_boot <- NULL
   # Fit the models for the weights in the four scenarios
   switch_models <- list()
@@ -637,14 +826,19 @@ fit_switch_weights_bootstrap <- function(switch_d_cov,
 
   # --------------- denominator ------------------
   model1 <- fit_glm(
-    data = sw_data[model_0_index, ][, weight_boot := sapply(id, function(i) sum(i == boot_idx))],
+    data = sw_data[model_0_index, ][,
+      weight_boot := sapply(id, function(i) sum(i == boot_idx))
+    ],
     formula = switch_d_cov,
     weights = weight_boot,
     ...,
     glm_function = glm_function
   )
 
-  switch_d0 <- cbind(p0_d = model1$fitted.values, model1$data[, c("eligible0", "id", "period")])
+  switch_d0 <- cbind(
+    p0_d = model1$fitted.values,
+    model1$data[, c("eligible0", "id", "period")]
+  )
 
   switch_models$switch_d0 <- process_weight_model(
     model1,
@@ -658,14 +852,19 @@ fit_switch_weights_bootstrap <- function(switch_d_cov,
 
   # -------------- numerator --------------------
   model2 <- fit_glm(
-    data = sw_data[model_0_index, ][, weight_boot := sapply(id, function(i) sum(i == boot_idx))],
+    data = sw_data[model_0_index, ][,
+      weight_boot := sapply(id, function(i) sum(i == boot_idx))
+    ],
     formula = switch_n_cov,
     weights = weight_boot,
     ...,
     glm_function = glm_function
   )
 
-  switch_n0 <- cbind(p0_n = model2$fitted.values, model2$data[, c("eligible0", "id", "period")])
+  switch_n0 <- cbind(
+    p0_n = model2$fitted.values,
+    model2$data[, c("eligible0", "id", "period")]
+  )
 
   switch_models$switch_n0 <- process_weight_model(
     model2,
@@ -686,14 +885,19 @@ fit_switch_weights_bootstrap <- function(switch_d_cov,
   model_1_index <- sw_data[eval(data_1_expr), which = TRUE]
   # --------------- denominator ------------------
   model3 <- fit_glm(
-    data = sw_data[model_1_index, ][, weight_boot := sapply(id, function(i) sum(i == boot_idx))],
+    data = sw_data[model_1_index, ][,
+      weight_boot := sapply(id, function(i) sum(i == boot_idx))
+    ],
     formula = switch_d_cov,
     weights = weight_boot,
     ...,
     glm_function = glm_function
   )
 
-  switch_d1 <- cbind(p1_d = model3$fitted.values, model3$data[, c("eligible1", "id", "period")])
+  switch_d1 <- cbind(
+    p1_d = model3$fitted.values,
+    model3$data[, c("eligible1", "id", "period")]
+  )
 
   switch_models$switch_d1 <- process_weight_model(
     model3,
@@ -708,14 +912,19 @@ fit_switch_weights_bootstrap <- function(switch_d_cov,
 
   # -------------------- numerator ---------------------------
   model4 <- fit_glm(
-    data = sw_data[model_1_index, ][, weight_boot := sapply(id, function(i) sum(i == boot_idx))],
+    data = sw_data[model_1_index, ][,
+      weight_boot := sapply(id, function(i) sum(i == boot_idx))
+    ],
     formula = switch_n_cov,
     weights = weight_boot,
     ...,
     glm_function = glm_function
   )
 
-  switch_n1 <- cbind(p1_n = model4$fitted.values, model4$data[, c("eligible1", "id", "period")])
+  switch_n1 <- cbind(
+    p1_n = model4$fitted.values,
+    model4$data[, c("eligible1", "id", "period")]
+  )
 
   switch_models$switch_n1 <- process_weight_model(
     model4,
@@ -729,17 +938,31 @@ fit_switch_weights_bootstrap <- function(switch_d_cov,
 
   # -------------- Combine results --------------------
 
-  switch_0 <- merge.data.table(switch_d0, switch_n0,
+  switch_0 <- merge.data.table(
+    switch_d0,
+    switch_n0,
     by = c("id", "period", "eligible0")
   )
-  switch_1 <- merge.data.table(switch_d1, switch_n1,
+  switch_1 <- merge.data.table(
+    switch_d1,
+    switch_n1,
     by = c("id", "period", "eligible1")
   )
 
   rm(switch_d0, switch_d1, switch_n0, switch_n1)
 
-  sw_data <- merge.data.table(sw_data, switch_0[, !"eligible0"], by = c("id", "period"), all = TRUE)
-  sw_data <- merge.data.table(sw_data, switch_1[, !"eligible1"], by = c("id", "period"), all = TRUE)
+  sw_data <- merge.data.table(
+    sw_data,
+    switch_0[, !"eligible0"],
+    by = c("id", "period"),
+    all = TRUE
+  )
+  sw_data <- merge.data.table(
+    sw_data,
+    switch_1[, !"eligible1"],
+    by = c("id", "period"),
+    all = TRUE
+  )
 
   rm(switch_1, switch_0)
   list(sw_data = sw_data, switch_models = switch_models)
@@ -762,31 +985,39 @@ fit_switch_weights_bootstrap <- function(switch_d_cov,
 #'
 #' @return List of model summaries and modified `sw_data` including informative censoring weights
 #' @noRd
-fit_censor_weights_bootstrap <- function(cense_d_cov,
-                                         cense_n_cov,
-                                         pool_cense_d,
-                                         pool_cense_n,
-                                         sw_data,
-                                         boot_idx,
-                                         quiet,
-                                         save_dir,
-                                         save_weight_models,
-                                         glm_function,
-                                         ...) {
+fit_censor_weights_bootstrap <- function(
+  cense_d_cov,
+  cense_n_cov,
+  pool_cense_d,
+  pool_cense_n,
+  sw_data,
+  boot_idx,
+  quiet,
+  save_dir,
+  save_weight_models,
+  glm_function,
+  ...
+) {
   am_1 <- eligible0 <- eligible1 <- id <- pC_d0 <- pC_d1 <- pC_n0 <- pC_n1 <- period <- weight_boot <- NULL
 
   censor_models <- list()
 
-  if (pool_cense_d) { # Fit pooled denominator models
+  if (pool_cense_d) {
+    # Fit pooled denominator models
     model1.cense <- fit_glm(
-      data = sw_data[, weight_boot := sapply(id, function(i) sum(i == boot_idx))],
+      data = sw_data[,
+        weight_boot := sapply(id, function(i) sum(i == boot_idx))
+      ],
       formula = cense_d_cov,
       weights = weight_boot,
       ...,
       glm_function = glm_function
     )
 
-    cense_d <- cbind(pC_d = model1.cense$fitted.values, model1.cense$data[, c("id", "period")])
+    cense_d <- cbind(
+      pC_d = model1.cense$fitted.values,
+      model1.cense$data[, c("id", "period")]
+    )
 
     censor_models$cens_pool_d <- process_weight_model(
       model1.cense,
@@ -797,18 +1028,24 @@ fit_censor_weights_bootstrap <- function(cense_d_cov,
       quiet
     )
     rm(model1.cense)
-  } else { # Fit separate denominator models for each arm
+  } else {
+    # Fit separate denominator models for each arm
     # ---------------------- denominator -----------------------
     # ---------------------- eligible0 ---------------------------
     model1.cense <- fit_glm(
-      data = sw_data[eligible0 == 1][, weight_boot := sapply(id, function(i) sum(i == boot_idx))],
+      data = sw_data[eligible0 == 1][,
+        weight_boot := sapply(id, function(i) sum(i == boot_idx))
+      ],
       formula = cense_d_cov,
       weights = weight_boot,
       ...,
       glm_function = glm_function
     )
 
-    cense_d0 <- cbind(pC_d0 = model1.cense$fitted.values, model1.cense$data[, c("id", "period")])
+    cense_d0 <- cbind(
+      pC_d0 = model1.cense$fitted.values,
+      model1.cense$data[, c("id", "period")]
+    )
 
     censor_models$cens_d0 <- process_weight_model(
       model1.cense,
@@ -823,14 +1060,19 @@ fit_censor_weights_bootstrap <- function(cense_d_cov,
     # ------------------------- denominator ---------------------
     # ------------------------ eligible1 -------------------------
     model3.cense <- fit_glm(
-      data = sw_data[eligible1 == 1][, weight_boot := sapply(id, function(i) sum(i == boot_idx))],
+      data = sw_data[eligible1 == 1][,
+        weight_boot := sapply(id, function(i) sum(i == boot_idx))
+      ],
       formula = cense_d_cov,
       weights = weight_boot,
       ...,
       glm_function = glm_function
     )
 
-    cense_d1 <- cbind(pC_d1 = model3.cense$fitted.values, model3.cense$data[, c("id", "period")])
+    cense_d1 <- cbind(
+      pC_d1 = model3.cense$fitted.values,
+      model3.cense$data[, c("id", "period")]
+    )
 
     censor_models$cens_d1 <- process_weight_model(
       model3.cense,
@@ -843,16 +1085,22 @@ fit_censor_weights_bootstrap <- function(cense_d_cov,
     rm(model3.cense)
   }
 
-  if (pool_cense_n) { # Fit pooled numerator models
+  if (pool_cense_n) {
+    # Fit pooled numerator models
     model2.cense <- fit_glm(
-      data = sw_data[, weight_boot := sapply(id, function(i) sum(i == boot_idx))],
+      data = sw_data[,
+        weight_boot := sapply(id, function(i) sum(i == boot_idx))
+      ],
       formula = cense_n_cov,
       weights = weight_boot,
       ...,
       glm_function = glm_function
     )
 
-    cense_n <- cbind(pC_n = model2.cense$fitted.values, model2.cense$data[, c("id", "period")])
+    cense_n <- cbind(
+      pC_n = model2.cense$fitted.values,
+      model2.cense$data[, c("id", "period")]
+    )
 
     censor_models$cens_pool_n <- process_weight_model(
       model2.cense,
@@ -863,17 +1111,23 @@ fit_censor_weights_bootstrap <- function(cense_d_cov,
       quiet
     )
     rm(model2.cense)
-  } else { # Fit separate numerator models for each arm
+  } else {
+    # Fit separate numerator models for each arm
     # -------------------------- numerator ----------------------
     #--------------------------- eligible0 -----------------------
     model2.cense <- fit_glm(
-      data = sw_data[eligible0 == 1][, weight_boot := sapply(id, function(i) sum(i == boot_idx))],
+      data = sw_data[eligible0 == 1][,
+        weight_boot := sapply(id, function(i) sum(i == boot_idx))
+      ],
       formula = cense_n_cov,
       weights = weight_boot,
       ...,
       glm_function = glm_function
     )
-    cense_n0 <- cbind(pC_n0 = model2.cense$fitted.values, model2.cense$data[, c("id", "period")])
+    cense_n0 <- cbind(
+      pC_n0 = model2.cense$fitted.values,
+      model2.cense$data[, c("id", "period")]
+    )
 
     censor_models$cens_n0 <- process_weight_model(
       model2.cense,
@@ -889,13 +1143,18 @@ fit_censor_weights_bootstrap <- function(cense_d_cov,
     # ------------------------ numerator -------------------------
     # ------------------------- eligible1 -----------------------
     model4.cense <- fit_glm(
-      data = sw_data[eligible1 == 1][, weight_boot := sapply(id, function(i) sum(i == boot_idx))],
+      data = sw_data[eligible1 == 1][,
+        weight_boot := sapply(id, function(i) sum(i == boot_idx))
+      ],
       formula = cense_n_cov,
       weights = weight_boot,
       ...,
       glm_function = glm_function
     )
-    cense_n1 <- cbind(pC_n1 = model4.cense$fitted.values, model4.cense$data[, c("id", "period")])
+    cense_n1 <- cbind(
+      pC_n1 = model4.cense$fitted.values,
+      model4.cense$data[, c("id", "period")]
+    )
 
     censor_models$cens_n1 <- process_weight_model(
       model4.cense,
@@ -911,21 +1170,37 @@ fit_censor_weights_bootstrap <- function(cense_d_cov,
   # combine ------------------------------
   if (pool_cense_d && pool_cense_n) {
     # all pooled
-    sw_data <- merge.data.table(sw_data, cense_d, by = c("id", "period"), all = TRUE)
-    sw_data <- merge.data.table(sw_data, cense_n, by = c("id", "period"), all = TRUE)
+    sw_data <- merge.data.table(
+      sw_data,
+      cense_d,
+      by = c("id", "period"),
+      all = TRUE
+    )
+    sw_data <- merge.data.table(
+      sw_data,
+      cense_n,
+      by = c("id", "period"),
+      all = TRUE
+    )
     rm(cense_d, cense_n)
   } else if (!pool_cense_d && !pool_cense_n) {
     # no pooled
-    cense_0 <- merge.data.table(cense_d0, cense_n0,
-      by = c("id", "period")
-    )
-    cense_1 <- merge.data.table(cense_d1, cense_n1,
-      by = c("id", "period")
-    )
+    cense_0 <- merge.data.table(cense_d0, cense_n0, by = c("id", "period"))
+    cense_1 <- merge.data.table(cense_d1, cense_n1, by = c("id", "period"))
     rm(cense_n1, cense_d1, cense_n0, cense_d0)
 
-    sw_data <- merge.data.table(sw_data, cense_0, by = c("id", "period"), all = TRUE)
-    sw_data <- merge.data.table(sw_data, cense_1, by = c("id", "period"), all = TRUE)
+    sw_data <- merge.data.table(
+      sw_data,
+      cense_0,
+      by = c("id", "period"),
+      all = TRUE
+    )
+    sw_data <- merge.data.table(
+      sw_data,
+      cense_1,
+      by = c("id", "period"),
+      all = TRUE
+    )
 
     rm(cense_0, cense_1)
     sw_data[am_1 == 0, `:=`(pC_n = pC_n0, pC_d = pC_d0)]
@@ -933,8 +1208,18 @@ fit_censor_weights_bootstrap <- function(cense_d_cov,
   } else if (!pool_cense_d && pool_cense_n) {
     # only numerator pooled
     sw_data <- sw_data[cense_n, on = list(id = id, period = period)]
-    sw_data <- merge.data.table(sw_data, cense_d0, by = c("id", "period"), all = TRUE)
-    sw_data <- merge.data.table(sw_data, cense_d1, by = c("id", "period"), all = TRUE)
+    sw_data <- merge.data.table(
+      sw_data,
+      cense_d0,
+      by = c("id", "period"),
+      all = TRUE
+    )
+    sw_data <- merge.data.table(
+      sw_data,
+      cense_d1,
+      by = c("id", "period"),
+      all = TRUE
+    )
     rm(cense_d1, cense_n, cense_d0)
 
     sw_data[am_1 == 0, `:=`(pC_d = pC_d0)]
