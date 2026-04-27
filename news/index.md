@@ -2,6 +2,8 @@
 
 ## TrialEmulation 0.0.4.11
 
+CRAN release: 2026-04-10
+
 - Remove dependency on `parglm` which has been archived on CRAN.
 
 ## TrialEmulation 0.0.4.8

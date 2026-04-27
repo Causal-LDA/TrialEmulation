@@ -56,8 +56,8 @@ fitted
 #>  null.deviance df.null logLik    AIC      BIC     deviance df.residual nobs
 #>  404.2156      724     -167.8072 343.6143 361.959 335.6143 721         725 
 #>  
-#>  path                                 
-#>  /tmp/RtmpMMtiGc/model_1af56784187.rds
+#>  path                                  
+#>  /tmp/RtmpFH6qUb/model_1a974851cd8c.rds
 #>  
 unlink(fitted@summary$save_path$path)
 ```

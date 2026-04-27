@@ -27,7 +27,7 @@ using [stats::glm](https://rdrr.io/r/stats/glm.html) with
 `family = binomial(link = "logit")`.
 
 Outcome models additional calculate robust variance estimates using
-[`sandwich::vcovCL`](https://sandwich.R-Forge.R-project.org/reference/vcovCL.html).
+[`sandwich::vcovCL`](https://rdrr.io/pkg/sandwich/man/vcovCL.html).
 
 ## See also
 
@@ -41,6 +41,6 @@ Other model_fitter:
 stats_glm_logit(save_path = tempdir())
 #> An object of class "te_stats_glm_logit"
 #> Slot "save_path":
-#> [1] "/tmp/RtmpMMtiGc"
+#> [1] "/tmp/RtmpFH6qUb"
 #> 
 ```

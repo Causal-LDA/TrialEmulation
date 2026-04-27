@@ -128,7 +128,7 @@ load_expanded_data(trial_itt_csv)
 #> A TE Datastore CSV object 
 #> N: 1558 observations 
 #> Periods: 0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 
-#> Path: /tmp/RtmpMMtiGc/trial_itt/trial_csvs 
+#> Path: /tmp/RtmpFH6qUb/trial_itt/trial_csvs 
 #> Columns: id, trial_period, followup_time, outcome, weight, treatment, x1, x2, assigned_treatment 
 #>  
 #> Outcome model: 
@@ -196,7 +196,7 @@ load_expanded_data(
 #> A TE Datastore CSV object 
 #> N: 1558 observations 
 #> Periods: 0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 
-#> Path: /tmp/RtmpMMtiGc/trial_itt/trial_csvs 
+#> Path: /tmp/RtmpFH6qUb/trial_itt/trial_csvs 
 #> Columns: id, trial_period, followup_time, outcome, weight, treatment, x1, x2, assigned_treatment 
 #>  
 #> Outcome model: 
@@ -208,24 +208,24 @@ load_expanded_data(
 #> Use fit_msm() to fit the outcome model 
 #>  
 #> Outcome data 
-#> N: 131 observations from 25 patients in 13 trial periods 
-#> Periods: 1 2 3 4 5 6 7 8 9 10 11 13 16 
+#> N: 131 observations from 20 patients in 14 trial periods 
+#> Periods: 1 2 3 4 5 6 7 8 9 10 11 12 14 15 
 #> Subset condition: followup_time %in% 1:20 & x2 < 1 
 #> Sampling control observations with probability: 0.2 
-#>         id trial_period followup_time outcome weight treatment    x1         x2
-#>      <int>        <int>         <int>   <int>  <int>     <int> <int>      <num>
-#>   1:    34            1             1       0      1         1     1  0.2416765
-#>   2:    60            1             1       0      1         1     0  0.5436834
-#>  ---                                                                           
-#> 130:    54           13             5       0      1         0     0 -2.4249659
-#> 131:    54           16             3       0      1         0     1  0.8179964
-#>      assigned_treatment sample_weight
-#>                   <int>         <num>
-#>   1:                  1             5
-#>   2:                  0             5
-#>  ---                                 
-#> 130:                  0             5
-#> 131:                  0             5
+#>         id trial_period followup_time outcome weight treatment    x1
+#>      <int>        <int>         <int>   <int>  <int>     <int> <int>
+#>   1:    47            1             1       0      1         1     1
+#>   2:    34            1             1       0      1         1     1
+#>  ---                                                                
+#> 130:    54           14             3       0      1         1     1
+#> 131:    54           15             1       0      1         0     0
+#>                x2 assigned_treatment sample_weight
+#>             <num>              <int>         <num>
+#>   1: -0.003948516                  1             5
+#>   2:  0.241676477                  1             5
+#>  ---                                              
+#> 130:  0.546061513                  0             5
+#> 131:  0.685072164                  0             5
 
 # delete after use
 unlink(trial_itt_dir, recursive = TRUE)

@@ -127,8 +127,8 @@ fit_msm(trial_seq_object)
 #>  age_s                                     0.48    0.34       1.42    1.5e-01
 #>  stats::poly(followup_time, degree = 2)1  -2.23   14.99      -0.15    8.8e-01
 #>  stats::poly(followup_time, degree = 2)2 -20.02   14.45      -1.39    1.7e-01
-#>  trial_period                              7.05    0.97       7.23    4.8e-13
-#>  I(trial_period^2)                        -7.51    0.54     -13.96    2.8e-44
+#>  trial_period                              7.05    0.98       7.23    4.9e-13
+#>  I(trial_period^2)                        -7.51    0.54     -13.95    3.0e-44
 #>  conf.low conf.high
 #>   -6.47   -4.4     
 #>    0.29    2.4     
@@ -242,8 +242,8 @@ fit_msm(trial_seq_object, modify_weights = limit_weight(0.01, 4))
 #>  age_s                                     0.48    0.34       1.42    1.5e-01
 #>  stats::poly(followup_time, degree = 2)1  -2.23   14.99      -0.15    8.8e-01
 #>  stats::poly(followup_time, degree = 2)2 -20.02   14.45      -1.39    1.7e-01
-#>  trial_period                              7.05    0.97       7.23    4.8e-13
-#>  I(trial_period^2)                        -7.51    0.54     -13.96    2.8e-44
+#>  trial_period                              7.05    0.98       7.23    4.9e-13
+#>  I(trial_period^2)                        -7.51    0.54     -13.95    3.0e-44
 #>  conf.low conf.high
 #>   -6.47   -4.4     
 #>    0.29    2.4     
@@ -334,8 +334,8 @@ fit_msm(trial_seq_object, modify_weights = p99_weight)
 #>  age_s                                     0.48    0.34       1.42    1.5e-01
 #>  stats::poly(followup_time, degree = 2)1  -2.23   14.99      -0.15    8.8e-01
 #>  stats::poly(followup_time, degree = 2)2 -20.02   14.45      -1.39    1.7e-01
-#>  trial_period                              7.05    0.97       7.23    4.8e-13
-#>  I(trial_period^2)                        -7.51    0.54     -13.96    2.8e-44
+#>  trial_period                              7.05    0.98       7.23    4.9e-13
+#>  I(trial_period^2)                        -7.51    0.54     -13.95    3.0e-44
 #>  conf.low conf.high
 #>   -6.47   -4.4     
 #>    0.29    2.4     

@@ -1,14 +1,6 @@
 # Predict marginal cumulative incidences with confidence intervals for a target trial population
 
-**\[stable\]** This function predicts the marginal cumulative incidences
-when a target trial population receives either the treatment or
-non-treatment at baseline (for an intention-to-treat analysis) or either
-sustained treatment or sustained non-treatment (for a per-protocol
-analysis). The difference between these cumulative incidences is the
-estimated causal effect of treatment. Currently, the `predict` function
-only provides marginal intention-to-treat and per-protocol effects,
-therefore it is only valid when `estimand_type = "ITT"` or
-`estimand_type = "PP"`.
+**\[stable\]**
 
 ## Usage
 
@@ -21,6 +13,7 @@ predict(
   newdata,
   predict_times,
   conf_int = TRUE,
+  ci_type = "sandwich",
   samples = 100,
   type = c("cum_inc", "survival")
 )
@@ -32,6 +25,8 @@ predict(
   predict_times,
   conf_int = TRUE,
   samples = 100,
+  ci_type = c("sandwich", "Nonpara. bootstrap", "LEF outcome", "LEF both",
+    "Jackknife Wald", "Jackknife MVN"),
   type = c("cum_inc", "survival")
 )
 
@@ -83,11 +78,20 @@ predict(
 
   Construct the point-wise 95-percent confidence intervals of cumulative
   incidences for the target trial population under treatment and
-  non-treatment and their differences by simulating the parameters in
-  the marginal structural model from a multivariate normal distribution
-  with the mean equal to the marginal structural model parameter
-  estimates and the variance equal to the estimated robust covariance
-  matrix.
+  non-treatment and their differences. The default confidence interval
+  construction methods simulates the parameters in the marginal
+  structural model from a multivariate normal distribution with the mean
+  equal to the marginal structural model parameter estimates and the
+  variance equal to the estimated robust covariance matrix.
+
+- ci_type:
+
+  Specify the method used to construct the confidence interval for a
+  per-protocol estimand (`estimand_type = "PP"`) (only available for
+  [trial_sequence](https://causal-lda.github.io/TrialEmulation/reference/trial_sequence.md)
+  object). `'sandwich'`: using the estimated robust sandwich covariance
+  matrix; `'Nonpara. bootstrap'`, `'LEF outcome'`, `'LEF both'`,
+  `'Jackknife Wald'`, `'Jackknife MVN'`
 
 - samples:
 
@@ -105,6 +109,25 @@ predict(
 A list of three data frames containing the cumulative incidences for
 each of the assigned treatment options (treatment and non-treatment) and
 the difference between them.
+
+## Details
+
+This function predicts the marginal cumulative incidences when a target
+trial population receives either the treatment or non-treatment at
+baseline (for an intention-to-treat analysis) or either sustained
+treatment or sustained non-treatment (for a per-protocol analysis). The
+difference between these cumulative incidences is the estimated causal
+effect of treatment. Currently, the `predict` function only provides
+marginal intention-to-treat and per-protocol effects, therefore it is
+only valid when `estimand_type = "ITT"` or `estimand_type = "PP"`.
+
+The width of the confidence intervals for resampling-based methods
+(`'Nonpara. bootstrap'`, `'LEF outcome'`, `'LEF both'`,
+`'Jackknife Wald'`) is determined by the presence of an `id` column in
+`newdata`. If included, the function accounts for sampling variation in
+the target population, which typically yields wider intervals. If
+omitted, the target population is treated as a fixed group, and the
+intervals reflect only the uncertainty from the original source model.
 
 ## Examples
 

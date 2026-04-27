@@ -68,11 +68,11 @@ predict(
 
   Construct the point-wise 95-percent confidence intervals of cumulative
   incidences for the target trial population under treatment and
-  non-treatment and their differences by simulating the parameters in
-  the marginal structural model from a multivariate normal distribution
-  with the mean equal to the marginal structural model parameter
-  estimates and the variance equal to the estimated robust covariance
-  matrix.
+  non-treatment and their differences. The default confidence interval
+  construction methods simulates the parameters in the marginal
+  structural model from a multivariate normal distribution with the mean
+  equal to the marginal structural model parameter estimates and the
+  variance equal to the estimated robust covariance matrix.
 
 - samples:
 

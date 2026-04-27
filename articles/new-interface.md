@@ -273,7 +273,7 @@ show_weight_models(trial_itt)
 #>  404.2156      724     -196.7002 397.4004 406.5727 393.4004 723         725 
 #>  
 #>  path                                                          
-#>  /tmp/Rtmp4ddJUA/trial_itt/switch_models/model_1f1e2bc48a51.rds
+#>  /tmp/RtmpE58y3E/trial_itt/switch_models/model_1ec97d34e4a0.rds
 #>  
 #> [[d0]]
 #> Model: P(censor_event = 0 | X, previous treatment = 0) for denominator 
@@ -287,7 +287,7 @@ show_weight_models(trial_itt)
 #>  283.0723      425     -132.1655 270.3309 282.4943 264.3309 423         426 
 #>  
 #>  path                                                          
-#>  /tmp/Rtmp4ddJUA/trial_itt/switch_models/model_1f1e4480a916.rds
+#>  /tmp/RtmpE58y3E/trial_itt/switch_models/model_1ec968843ba3.rds
 #>  
 #> [[d1]]
 #> Model: P(censor_event = 0 | X, previous treatment = 1) for denominator 
@@ -301,7 +301,7 @@ show_weight_models(trial_itt)
 #>  113.0528      298     -55.72938 117.4588 128.5601 111.4588 296         299 
 #>  
 #>  path                                                          
-#>  /tmp/Rtmp4ddJUA/trial_itt/switch_models/model_1f1e7cadd8e9.rds
+#>  /tmp/RtmpE58y3E/trial_itt/switch_models/model_1ec939276479.rds
 #> 
 ```
 
@@ -502,8 +502,8 @@ trial_itt@outcome_model
 #>  x2                  0.31    0.418       0.74    4.6e-01 -0.511    1.1282  
 #>  followup_time       0.34    0.244       1.38    1.7e-01 -0.141    0.8148  
 #>  I(followup_time^2) -0.02    0.014      -1.42    1.5e-01 -0.049    0.0077  
-#>  trial_period        7.29    0.978       7.45    9.2e-14  5.371    9.2042  
-#>  I(trial_period^2)  -7.68    0.537     -14.31    2.0e-46 -8.738   -6.6320  
+#>  trial_period        7.29    0.978       7.45    9.1e-14  5.371    9.2039  
+#>  I(trial_period^2)  -7.68    0.537     -14.32    1.8e-46 -8.737   -6.6326  
 #>  
 #>  null.deviance df.null logLik AIC BIC deviance df.residual nobs
 #>  158           800     -69.1  152 185 135      794         801
@@ -536,16 +536,16 @@ trial_itt@outcome_model@fitted@model$vcov
 #> x2                  0.042942422        0.087953406  0.174977954  -0.045052691
 #> followup_time      -0.143451214       -0.052364376 -0.045052691   0.059487800
 #> I(followup_time^2)  0.007130666        0.002815736  0.002843807  -0.003362158
-#> trial_period       -0.105885453       -0.341609248 -0.097440741   0.104454026
-#> I(trial_period^2)   0.049055894        0.165009684  0.046219048  -0.054969078
+#> trial_period       -0.105885450       -0.341609249 -0.097440741   0.104454026
+#> I(trial_period^2)   0.049055891        0.165009685  0.046219048  -0.054969078
 #>                    I(followup_time^2) trial_period I(trial_period^2)
-#> (Intercept)              0.0071306658 -0.105885452        0.04905589
-#> assigned_treatment       0.0028157357 -0.341609248        0.16500968
-#> x2                       0.0028438066 -0.097440741        0.04621905
-#> followup_time           -0.0033621580  0.104454026       -0.05496908
-#> I(followup_time^2)       0.0002067028 -0.005143791        0.00265172
-#> trial_period            -0.0051437905  0.956232062       -0.51353487
-#> I(trial_period^2)        0.0026517200 -0.513573594        0.28851494
+#> (Intercept)              0.0071306658  -0.10588545        0.04905589
+#> assigned_treatment       0.0028157357  -0.34160925        0.16500968
+#> x2                       0.0028438066  -0.09744074        0.04621905
+#> followup_time           -0.0033621580   0.10445403       -0.05496908
+#> I(followup_time^2)       0.0002067028  -0.00514379        0.00265172
+#> trial_period            -0.0051437905   0.95590151       -0.51320431
+#> I(trial_period^2)        0.0026517200  -0.51324304        0.28818438
 ```
 
 The complete object shows all the specifications:
@@ -615,8 +615,8 @@ trial_itt
 #>  x2                  0.31    0.418       0.74    4.6e-01 -0.511    1.1282  
 #>  followup_time       0.34    0.244       1.38    1.7e-01 -0.141    0.8148  
 #>  I(followup_time^2) -0.02    0.014      -1.42    1.5e-01 -0.049    0.0077  
-#>  trial_period        7.29    0.978       7.45    9.2e-14  5.371    9.2042  
-#>  I(trial_period^2)  -7.68    0.537     -14.31    2.0e-46 -8.738   -6.6320  
+#>  trial_period        7.29    0.978       7.45    9.1e-14  5.371    9.2039  
+#>  I(trial_period^2)  -7.68    0.537     -14.32    1.8e-46 -8.737   -6.6326  
 #>  
 #>  null.deviance df.null logLik AIC BIC deviance df.residual nobs
 #>  158           800     -69.1  152 185 135      794         801 
@@ -649,7 +649,10 @@ different values of `assigned_treatment`. The `predict` method takes the
 baseline of the provided `newdata`, i.e. observations with
 `followup_time == 0` and constructs data with `followup_time` for the
 given `predict_times`. It is important to specify `newdata` correctly
-for a meaningful interpretation of the differences in survival.
+for a meaningful interpretation of the differences in survival. Users
+can specify which type of confidence interval construction method they
+wish to use with the `conf_type` argument. The default method is using
+the robust sandwich variance estimator.
 
 ``` r
 preds <- predict(
