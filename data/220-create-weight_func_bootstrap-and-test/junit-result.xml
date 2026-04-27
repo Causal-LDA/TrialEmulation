@@ -1,636 +1,636 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <testsuites>
-  <testsuite name="bootstrap" timestamp="2026-04-22T14:41:09Z" hostname="204ccf1d3272" tests="20" skipped="7" failures="0" errors="0" time="87.757">
-    <testcase time="0.672" classname="bootstrap" name="Same_weights_recalculated_if_we_use_the_same_weight_model_coefficients_and_original_dataset"/>
-    <testcase time="0.362" classname="bootstrap" name="Same_weights_refitted_if_we_use_original_dataset"/>
-    <testcase time="0.783" classname="bootstrap" name="Same_weights_refitted_if_we_use_example_bootstrap_sample"/>
+  <testsuite name="bootstrap" timestamp="2026-04-27T15:07:59Z" hostname="72ad21f1d688" tests="20" skipped="7" failures="0" errors="0" time="100.776">
+    <testcase time="0.801" classname="bootstrap" name="Same_weights_recalculated_if_we_use_the_same_weight_model_coefficients_and_original_dataset"/>
+    <testcase time="0.441" classname="bootstrap" name="Same_weights_refitted_if_we_use_original_dataset"/>
+    <testcase time="0.952" classname="bootstrap" name="Same_weights_refitted_if_we_use_example_bootstrap_sample"/>
+    <testcase time="0.00299999999999967" classname="bootstrap" name="Same_weights_refitted_if_we_use_example_bootstrap_sample"/>
+    <testcase time="0.004" classname="bootstrap" name="Same_weights_refitted_if_we_use_example_bootstrap_sample"/>
     <testcase time="0.004" classname="bootstrap" name="Same_weights_refitted_if_we_use_example_bootstrap_sample"/>
     <testcase time="0.00300000000000011" classname="bootstrap" name="Same_weights_refitted_if_we_use_example_bootstrap_sample"/>
     <testcase time="0.004" classname="bootstrap" name="Same_weights_refitted_if_we_use_example_bootstrap_sample"/>
     <testcase time="0.00300000000000011" classname="bootstrap" name="Same_weights_refitted_if_we_use_example_bootstrap_sample"/>
-    <testcase time="0.00199999999999978" classname="bootstrap" name="Same_weights_refitted_if_we_use_example_bootstrap_sample"/>
-    <testcase time="0.00300000000000011" classname="bootstrap" name="Same_weights_refitted_if_we_use_example_bootstrap_sample"/>
-    <testcase time="0.00300000000000011" classname="bootstrap" name="Same_weights_refitted_if_we_use_example_bootstrap_sample"/>
-    <testcase time="0.00499999999999989" classname="bootstrap" name="Same_weights_refitted_if_we_use_example_bootstrap_sample"/>
-    <testcase time="0.757" classname="bootstrap" name="Correct_weights_recalculated_if_we_use_new_weight_model_coefficients_and_bootstrap_sample"/>
-    <testcase time="0.27" classname="bootstrap" name="no_bootstrap_with_ITT"/>
-    <testcase time="13.788" classname="bootstrap" name="predict_works_with_bootstrap">
+    <testcase time="0.004" classname="bootstrap" name="Same_weights_refitted_if_we_use_example_bootstrap_sample"/>
+    <testcase time="0.00599999999999978" classname="bootstrap" name="Same_weights_refitted_if_we_use_example_bootstrap_sample"/>
+    <testcase time="0.939" classname="bootstrap" name="Correct_weights_recalculated_if_we_use_new_weight_model_coefficients_and_bootstrap_sample"/>
+    <testcase time="0.32" classname="bootstrap" name="no_bootstrap_with_ITT"/>
+    <testcase time="17.155" classname="bootstrap" name="predict_works_with_bootstrap">
       <skipped message="Reason: On CRAN ('test-bootstrap.R:384:1')"/>
     </testcase>
-    <testcase time="13.988" classname="bootstrap" name="predict_works_with_bootstrap_with_newdata_containing_ID">
+    <testcase time="14.244" classname="bootstrap" name="predict_works_with_bootstrap_with_newdata_containing_ID">
       <skipped message="Reason: On CRAN ('test-bootstrap.R:432:1')"/>
     </testcase>
-    <testcase time="13.667" classname="bootstrap" name="predict_works_with_bootstrap_with_newdata_NOT_containing_ID">
+    <testcase time="13.919" classname="bootstrap" name="predict_works_with_bootstrap_with_newdata_NOT_containing_ID">
       <skipped message="Reason: On CRAN ('test-bootstrap.R:482:1')"/>
     </testcase>
-    <testcase time="10.084" classname="bootstrap" name="predict_works_with_LEF_outcome">
+    <testcase time="12.872" classname="bootstrap" name="predict_works_with_LEF_outcome">
       <skipped message="Reason: On CRAN ('test-bootstrap.R:532:1')"/>
     </testcase>
-    <testcase time="8.427" classname="bootstrap" name="predict_works_with_LEF_both">
+    <testcase time="11.168" classname="bootstrap" name="predict_works_with_LEF_both">
       <skipped message="Reason: On CRAN ('test-bootstrap.R:582:1')"/>
     </testcase>
-    <testcase time="12.71" classname="bootstrap" name="predict_works_with_Jackknife_Wald">
+    <testcase time="15.54" classname="bootstrap" name="predict_works_with_Jackknife_Wald">
       <skipped message="Reason: On CRAN ('test-bootstrap.R:631:1')"/>
     </testcase>
-    <testcase time="12.222" classname="bootstrap" name="predict_works_with_Jackknife_MVN">
+    <testcase time="12.394" classname="bootstrap" name="predict_works_with_Jackknife_MVN">
       <skipped message="Reason: On CRAN ('test-bootstrap.R:680:1')"/>
     </testcase>
   </testsuite>
-  <testsuite name="data_extension" timestamp="2026-04-22T14:42:37Z" hostname="204ccf1d3272" tests="21" skipped="0" failures="0" errors="0" time="0.575">
-    <testcase time="0.0349999999999966" classname="data_extension" name="check_expand_switch_works_as_expected"/>
+  <testsuite name="data_extension" timestamp="2026-04-27T15:09:40Z" hostname="72ad21f1d688" tests="21" skipped="0" failures="0" errors="0" time="0.754">
+    <testcase time="0.0489999999999924" classname="data_extension" name="check_expand_switch_works_as_expected"/>
+    <testcase time="0.00400000000000489" classname="data_extension" name="check_expand_switch_works_as_expected"/>
+    <testcase time="0.00399999999999068" classname="data_extension" name="check_expand_switch_works_as_expected"/>
     <testcase time="0.00300000000000011" classname="data_extension" name="check_expand_switch_works_as_expected"/>
-    <testcase time="0.00300000000000011" classname="data_extension" name="check_expand_switch_works_as_expected"/>
-    <testcase time="0.00300000000000011" classname="data_extension" name="check_expand_switch_works_as_expected"/>
-    <testcase time="0.0360000000000014" classname="data_extension" name="expand_works_as_expected"/>
+    <testcase time="0.0460000000000065" classname="data_extension" name="expand_works_as_expected"/>
     <testcase time="0.00900000000000034" classname="data_extension" name="expand_works_as_expected"/>
-    <testcase time="0.0689999999999884" classname="data_extension" name="data_extensions_works_as_expected_with_first_and_last_periods"/>
-    <testcase time="0.00200000000000955" classname="data_extension" name="data_extensions_works_as_expected_with_first_and_last_periods"/>
-    <testcase time="0.00199999999999534" classname="data_extension" name="data_extensions_works_as_expected_with_first_and_last_periods"/>
+    <testcase time="0.0919999999999987" classname="data_extension" name="data_extensions_works_as_expected_with_first_and_last_periods"/>
+    <testcase time="0.00300000000000011" classname="data_extension" name="data_extensions_works_as_expected_with_first_and_last_periods"/>
+    <testcase time="0.00300000000000011" classname="data_extension" name="data_extensions_works_as_expected_with_first_and_last_periods"/>
     <testcase time="0.00100000000000477" classname="data_extension" name="data_extensions_works_as_expected_with_first_and_last_periods"/>
-    <testcase time="0.00300000000000011" classname="data_extension" name="data_extensions_works_as_expected_with_first_and_last_periods"/>
-    <testcase time="0.00300000000000011" classname="data_extension" name="data_extensions_works_as_expected_with_first_and_last_periods"/>
+    <testcase time="0.00399999999999068" classname="data_extension" name="data_extensions_works_as_expected_with_first_and_last_periods"/>
+    <testcase time="0.00800000000000978" classname="data_extension" name="data_extensions_works_as_expected_with_first_and_last_periods"/>
     <testcase time="0.000999999999990564" classname="data_extension" name="data_extensions_works_as_expected_with_first_and_last_periods"/>
-    <testcase time="0.355000000000004" classname="data_extension" name="data_extensions_works_as_expected_with_separate_files_TRUE"/>
-    <testcase time="0.00100000000000477" classname="data_extension" name="data_extensions_works_as_expected_with_separate_files_TRUE"/>
+    <testcase time="0.456000000000003" classname="data_extension" name="data_extensions_works_as_expected_with_separate_files_TRUE"/>
+    <testcase time="0.00199999999999534" classname="data_extension" name="data_extensions_works_as_expected_with_separate_files_TRUE"/>
     <testcase time="0.00100000000000477" classname="data_extension" name="data_extensions_works_as_expected_with_separate_files_TRUE"/>
     <testcase time="0.000999999999990564" classname="data_extension" name="data_extensions_works_as_expected_with_separate_files_TRUE"/>
-    <testcase time="0.00499999999999545" classname="data_extension" name="data_extensions_works_as_expected_with_separate_files_TRUE"/>
+    <testcase time="0.007000000000005" classname="data_extension" name="data_extensions_works_as_expected_with_separate_files_TRUE"/>
     <testcase time="0.00300000000000011" classname="data_extension" name="data_extensions_works_as_expected_with_separate_files_TRUE"/>
-    <testcase time="0.00200000000000955" classname="data_extension" name="data_extensions_works_as_expected_with_separate_files_TRUE"/>
-    <testcase time="0.0369999999999919" classname="data_extension" name="data_extensions_works_as_expected_with_separate_files_TRUE"/>
+    <testcase time="0.00300000000000011" classname="data_extension" name="data_extensions_works_as_expected_with_separate_files_TRUE"/>
+    <testcase time="0.054000000000002" classname="data_extension" name="data_extensions_works_as_expected_with_separate_files_TRUE"/>
   </testsuite>
-  <testsuite name="data_manipulation" timestamp="2026-04-22T14:42:38Z" hostname="204ccf1d3272" tests="12" skipped="0" failures="0" errors="0" time="1.263">
-    <testcase time="0.587000000000003" classname="data_manipulation" name="data_manipulation_works_as_expected_with_no_censoring"/>
-    <testcase time="0.00199999999999534" classname="data_manipulation" name="data_manipulation_works_as_expected_with_no_censoring"/>
-    <testcase time="0.00300000000000011" classname="data_manipulation" name="data_manipulation_works_as_expected_with_no_censoring"/>
-    <testcase time="0.579000000000008" classname="data_manipulation" name="data_manipulation_works_as_expected_with_censoring"/>
-    <testcase time="0.00199999999999534" classname="data_manipulation" name="data_manipulation_works_as_expected_with_censoring"/>
-    <testcase time="0.00300000000000011" classname="data_manipulation" name="data_manipulation_works_as_expected_with_censoring"/>
-    <testcase time="0.0430000000000064" classname="data_manipulation" name="data_manipulation_works_as_expected_with_observations_before_eligibilitiy"/>
-    <testcase time="0.000999999999990564" classname="data_manipulation" name="data_manipulation_works_as_expected_with_observations_before_eligibilitiy"/>
-    <testcase time="0.00500000000000966" classname="data_manipulation" name="data_manipulation_works_as_expected_with_observations_before_eligibilitiy"/>
-    <testcase time="0.0330000000000013" classname="data_manipulation" name="data_manipulation_works_as_expected_with_observations_after_outcome"/>
-    <testcase time="0.000999999999990564" classname="data_manipulation" name="data_manipulation_works_as_expected_with_observations_after_outcome"/>
-    <testcase time="0.00400000000000489" classname="data_manipulation" name="data_manipulation_works_as_expected_with_observations_after_outcome"/>
+  <testsuite name="data_manipulation" timestamp="2026-04-27T15:09:41Z" hostname="72ad21f1d688" tests="12" skipped="0" failures="0" errors="0" time="1.711">
+    <testcase time="0.873000000000005" classname="data_manipulation" name="data_manipulation_works_as_expected_with_no_censoring"/>
+    <testcase time="0.000999999999990564" classname="data_manipulation" name="data_manipulation_works_as_expected_with_no_censoring"/>
+    <testcase time="0.00400000000000489" classname="data_manipulation" name="data_manipulation_works_as_expected_with_no_censoring"/>
+    <testcase time="0.722999999999999" classname="data_manipulation" name="data_manipulation_works_as_expected_with_censoring"/>
+    <testcase time="0.00100000000000477" classname="data_manipulation" name="data_manipulation_works_as_expected_with_censoring"/>
+    <testcase time="0.00399999999999068" classname="data_manipulation" name="data_manipulation_works_as_expected_with_censoring"/>
+    <testcase time="0.0499999999999972" classname="data_manipulation" name="data_manipulation_works_as_expected_with_observations_before_eligibilitiy"/>
+    <testcase time="0.00200000000000955" classname="data_manipulation" name="data_manipulation_works_as_expected_with_observations_before_eligibilitiy"/>
+    <testcase time="0.00399999999999068" classname="data_manipulation" name="data_manipulation_works_as_expected_with_observations_before_eligibilitiy"/>
+    <testcase time="0.0430000000000064" classname="data_manipulation" name="data_manipulation_works_as_expected_with_observations_after_outcome"/>
+    <testcase time="0.00100000000000477" classname="data_manipulation" name="data_manipulation_works_as_expected_with_observations_after_outcome"/>
+    <testcase time="0.00499999999999545" classname="data_manipulation" name="data_manipulation_works_as_expected_with_observations_after_outcome"/>
   </testsuite>
-  <testsuite name="data_preparation" timestamp="2026-04-22T14:42:39Z" hostname="204ccf1d3272" tests="24" skipped="0" failures="0" errors="0" time="10.91">
-    <testcase time="3.175" classname="data_preparation" name="data_preparation_works_as_expected"/>
-    <testcase time="0.00200000000000955" classname="data_preparation" name="data_preparation_works_as_expected"/>
-    <testcase time="0.00199999999999534" classname="data_preparation" name="data_preparation_works_as_expected"/>
-    <testcase time="0.00199999999999534" classname="data_preparation" name="data_preparation_works_as_expected"/>
-    <testcase time="0.192000000000007" classname="data_preparation" name="data_preparation_works_as_expected"/>
-    <testcase time="1.53" classname="data_preparation" name="data_preparation_can_be_quiet"/>
-    <testcase time="0.00900000000000034" classname="data_preparation" name="data_preparation_gives_an_error_for_existing_trial_files"/>
-    <testcase time="0.00600000000000023" classname="data_preparation" name="check_data_dir_gives_a_warning_for_existing_model_files"/>
-    <testcase time="0.930999999999997" classname="data_preparation" name="data_preparation_has_correct_values_for_treatment_"/>
+  <testsuite name="data_preparation" timestamp="2026-04-27T15:09:42Z" hostname="72ad21f1d688" tests="24" skipped="0" failures="0" errors="0" time="13.418">
+    <testcase time="3.48099999999999" classname="data_preparation" name="data_preparation_works_as_expected"/>
+    <testcase time="0.00300000000000011" classname="data_preparation" name="data_preparation_works_as_expected"/>
+    <testcase time="0.00300000000000011" classname="data_preparation" name="data_preparation_works_as_expected"/>
+    <testcase time="0.00300000000000011" classname="data_preparation" name="data_preparation_works_as_expected"/>
+    <testcase time="0.256" classname="data_preparation" name="data_preparation_works_as_expected"/>
+    <testcase time="1.998" classname="data_preparation" name="data_preparation_can_be_quiet"/>
+    <testcase time="0.0100000000000051" classname="data_preparation" name="data_preparation_gives_an_error_for_existing_trial_files"/>
+    <testcase time="0.00800000000000978" classname="data_preparation" name="check_data_dir_gives_a_warning_for_existing_model_files"/>
+    <testcase time="1.33999999999999" classname="data_preparation" name="data_preparation_has_correct_values_for_treatment_"/>
     <testcase time="0.00300000000000011" classname="data_preparation" name="data_preparation_has_correct_values_for_treatment_"/>
-    <testcase time="1.738" classname="data_preparation" name="data_preparation_works_with_PP_estimand_type"/>
+    <testcase time="2.26300000000001" classname="data_preparation" name="data_preparation_works_with_PP_estimand_type"/>
     <testcase time="0.00300000000000011" classname="data_preparation" name="data_preparation_works_with_PP_estimand_type"/>
-    <testcase time="0.00199999999999534" classname="data_preparation" name="data_preparation_works_with_PP_estimand_type"/>
-    <testcase time="0.00199999999999534" classname="data_preparation" name="data_preparation_works_with_PP_estimand_type"/>
-    <testcase time="2.20100000000001" classname="data_preparation" name="data_preparation_works_with_As_Treated_estimand_type"/>
-    <testcase time="0.00199999999999534" classname="data_preparation" name="data_preparation_works_with_As_Treated_estimand_type"/>
-    <testcase time="0.00200000000000955" classname="data_preparation" name="data_preparation_works_with_As_Treated_estimand_type"/>
-    <testcase time="0.00199999999999534" classname="data_preparation" name="data_preparation_works_with_As_Treated_estimand_type"/>
-    <testcase time="1.09" classname="data_preparation" name="data_preparation_works_with_ITT_and_censor_weights"/>
-    <testcase time="0.00300000000000011" classname="data_preparation" name="data_preparation_works_with_ITT_and_censor_weights"/>
-    <testcase time="0.00300000000000011" classname="data_preparation" name="data_preparation_works_with_ITT_and_censor_weights"/>
-    <testcase time="0.00300000000000011" classname="data_preparation" name="data_preparation_works_with_ITT_and_censor_weights"/>
+    <testcase time="0.00300000000000011" classname="data_preparation" name="data_preparation_works_with_PP_estimand_type"/>
+    <testcase time="0.00300000000000011" classname="data_preparation" name="data_preparation_works_with_PP_estimand_type"/>
+    <testcase time="2.598" classname="data_preparation" name="data_preparation_works_with_As_Treated_estimand_type"/>
+    <testcase time="0.0100000000000051" classname="data_preparation" name="data_preparation_works_with_As_Treated_estimand_type"/>
+    <testcase time="0.00300000000000011" classname="data_preparation" name="data_preparation_works_with_As_Treated_estimand_type"/>
+    <testcase time="0.00300000000000011" classname="data_preparation" name="data_preparation_works_with_As_Treated_estimand_type"/>
+    <testcase time="1.405" classname="data_preparation" name="data_preparation_works_with_ITT_and_censor_weights"/>
     <testcase time="0.00399999999999068" classname="data_preparation" name="data_preparation_works_with_ITT_and_censor_weights"/>
-    <testcase time="0.00300000000000011" classname="data_preparation" name="data_preparation_works_with_ITT_and_censor_weights"/>
+    <testcase time="0.00400000000000489" classname="data_preparation" name="data_preparation_works_with_ITT_and_censor_weights"/>
+    <testcase time="0.00400000000000489" classname="data_preparation" name="data_preparation_works_with_ITT_and_censor_weights"/>
+    <testcase time="0.00600000000000023" classname="data_preparation" name="data_preparation_works_with_ITT_and_censor_weights"/>
+    <testcase time="0.00399999999999068" classname="data_preparation" name="data_preparation_works_with_ITT_and_censor_weights"/>
   </testsuite>
-  <testsuite name="data_utils" timestamp="2026-04-22T14:42:50Z" hostname="204ccf1d3272" tests="24" skipped="3" failures="0" errors="0" time="0.835">
-    <testcase time="0.01400000000001" classname="data_utils" name="weight_func_works_as_expected"/>
-    <testcase time="0.159999999999997" classname="data_utils" name="weight_func_works_as_expected"/>
-    <testcase time="0.00399999999999068" classname="data_utils" name="weight_func_works_as_expected"/>
-    <testcase time="0.00300000000000011" classname="data_utils" name="weight_func_works_as_expected"/>
-    <testcase time="0.00200000000000955" classname="data_utils" name="weight_func_works_as_expected"/>
-    <testcase time="0.00300000000000011" classname="data_utils" name="weight_func_works_as_expected"/>
-    <testcase time="0.00100000000000477" classname="data_utils" name="weight_func_works_as_expected"/>
-    <testcase time="0.00300000000000011" classname="data_utils" name="weight_func_works_as_expected"/>
-    <testcase time="0.00199999999999534" classname="data_utils" name="weight_func_works_as_expected">
+  <testsuite name="data_utils" timestamp="2026-04-27T15:09:56Z" hostname="72ad21f1d688" tests="24" skipped="3" failures="0" errors="0" time="1.145">
+    <testcase time="0.0130000000000052" classname="data_utils" name="weight_func_works_as_expected"/>
+    <testcase time="0.197000000000003" classname="data_utils" name="weight_func_works_as_expected"/>
+    <testcase time="0.00600000000000023" classname="data_utils" name="weight_func_works_as_expected"/>
+    <testcase time="0.00499999999999545" classname="data_utils" name="weight_func_works_as_expected"/>
+    <testcase time="0.00199999999999534" classname="data_utils" name="weight_func_works_as_expected"/>
+    <testcase time="0.00500000000000966" classname="data_utils" name="weight_func_works_as_expected"/>
+    <testcase time="0.00199999999999534" classname="data_utils" name="weight_func_works_as_expected"/>
+    <testcase time="0.00499999999999545" classname="data_utils" name="weight_func_works_as_expected"/>
+    <testcase time="0.00100000000000477" classname="data_utils" name="weight_func_works_as_expected">
       <skipped message="Reason: On CRAN ('test-data_utils.R:1:1')"/>
     </testcase>
-    <testcase time="0.0180000000000007" classname="data_utils" name="weight_func_works_saves_model_objects"/>
-    <testcase time="0.381" classname="data_utils" name="weight_func_works_saves_model_objects"/>
+    <testcase time="0.0240000000000009" classname="data_utils" name="weight_func_works_saves_model_objects"/>
+    <testcase time="0.457000000000008" classname="data_utils" name="weight_func_works_saves_model_objects"/>
+    <testcase time="0.00999999999999091" classname="data_utils" name="weight_func_works_saves_model_objects"/>
+    <testcase time="0.00500000000000966" classname="data_utils" name="weight_func_works_saves_model_objects"/>
+    <testcase time="0.000999999999990564" classname="data_utils" name="weight_func_works_saves_model_objects"/>
     <testcase time="0.00800000000000978" classname="data_utils" name="weight_func_works_saves_model_objects"/>
     <testcase time="0.00399999999999068" classname="data_utils" name="weight_func_works_saves_model_objects"/>
-    <testcase time="0" classname="data_utils" name="weight_func_works_saves_model_objects"/>
-    <testcase time="0.007000000000005" classname="data_utils" name="weight_func_works_saves_model_objects"/>
-    <testcase time="0.00300000000000011" classname="data_utils" name="weight_func_works_saves_model_objects"/>
     <testcase time="0.00100000000000477" classname="data_utils" name="weight_func_works_saves_model_objects"/>
-    <testcase time="0.0689999999999884" classname="data_utils" name="weight_func_works_with_user_specified_time_on_regime">
+    <testcase time="0.102999999999994" classname="data_utils" name="weight_func_works_with_user_specified_time_on_regime">
       <skipped message="Reason: On CRAN ('test-data_utils.R:99:1')"/>
     </testcase>
-    <testcase time="0.108000000000004" classname="data_utils" name="weight_func_works_with_pool_cense_TRUE">
+    <testcase time="0.134" classname="data_utils" name="weight_func_works_with_pool_cense_TRUE">
       <skipped message="Reason: On CRAN ('test-data_utils.R:114:1')"/>
     </testcase>
-    <testcase time="0.0180000000000007" classname="data_utils" name="select_data_cols_works_as_expected"/>
-    <testcase time="0.007000000000005" classname="data_utils" name="select_data_cols_works_as_expected_with_non_default_names"/>
-    <testcase time="0.000999999999990564" classname="data_utils" name="select_data_cols_works_as_expected_with_non_default_names"/>
-    <testcase time="0.007000000000005" classname="data_utils" name="user_can_select_period_in_select_data_cols"/>
-    <testcase time="0.0109999999999957" classname="data_utils" name="select_data_cols_allows_derived_variables_in_formula_vars"/>
+    <testcase time="0.0250000000000057" classname="data_utils" name="select_data_cols_works_as_expected"/>
+    <testcase time="0.00999999999999091" classname="data_utils" name="select_data_cols_works_as_expected_with_non_default_names"/>
+    <testcase time="0.00200000000000955" classname="data_utils" name="select_data_cols_works_as_expected_with_non_default_names"/>
+    <testcase time="0.117000000000004" classname="data_utils" name="user_can_select_period_in_select_data_cols"/>
+    <testcase time="0.00799999999999557" classname="data_utils" name="select_data_cols_allows_derived_variables_in_formula_vars"/>
   </testsuite>
-  <testsuite name="generics" timestamp="2026-04-22T14:42:51Z" hostname="204ccf1d3272" tests="4" skipped="3" failures="0" errors="0" time="2.817">
-    <testcase time="0.689000000000007" classname="generics" name="summary_for_data_preparation_separate_TRUE">
+  <testsuite name="generics" timestamp="2026-04-27T15:09:57Z" hostname="72ad21f1d688" tests="4" skipped="3" failures="0" errors="0" time="3.928">
+    <testcase time="0.942999999999998" classname="generics" name="summary_for_data_preparation_separate_TRUE">
       <skipped message="Reason: On CRAN ('test-generics.R:1:1')"/>
     </testcase>
-    <testcase time="1.041" classname="generics" name="summary_for_data_preparation_separate_FALSE">
+    <testcase time="1.45399999999999" classname="generics" name="summary_for_data_preparation_separate_FALSE">
       <skipped message="Reason: On CRAN ('test-generics.R:41:1')"/>
     </testcase>
-    <testcase time="1.06" classname="generics" name="summary_for_initiators"/>
-    <testcase time="0.027000000000001" classname="generics" name="summary_for_initiators">
+    <testcase time="1.50500000000001" classname="generics" name="summary_for_initiators"/>
+    <testcase time="0.0259999999999962" classname="generics" name="summary_for_initiators">
       <skipped message="Reason: On CRAN ('test-generics.R:72:1')"/>
     </testcase>
   </testsuite>
-  <testsuite name="lr_utils" timestamp="2026-04-22T14:42:53Z" hostname="204ccf1d3272" tests="4" skipped="0" failures="0" errors="0" time="0.041">
-    <testcase time="0.0279999999999916" classname="lr_utils" name="fit_glm_works"/>
-    <testcase time="0.00100000000000477" classname="lr_utils" name="fit_glm_works"/>
-    <testcase time="0.00600000000000023" classname="lr_utils" name="p99_weight_works_as_expected"/>
-    <testcase time="0.00600000000000023" classname="lr_utils" name="limit_weight_works_as_expected"/>
+  <testsuite name="lr_utils" timestamp="2026-04-27T15:10:01Z" hostname="72ad21f1d688" tests="4" skipped="0" failures="0" errors="0" time="0.065">
+    <testcase time="0.0400000000000063" classname="lr_utils" name="fit_glm_works"/>
+    <testcase time="0.000999999999990564" classname="lr_utils" name="fit_glm_works"/>
+    <testcase time="0.0150000000000006" classname="lr_utils" name="p99_weight_works_as_expected"/>
+    <testcase time="0.00900000000000034" classname="lr_utils" name="limit_weight_works_as_expected"/>
   </testsuite>
-  <testsuite name="modelling" timestamp="2026-04-22T14:42:53Z" hostname="204ccf1d3272" tests="25" skipped="10" failures="0" errors="0" time="11.347">
-    <testcase time="0.186999999999998" classname="modelling" name="trial_msm_can_be_quiet"/>
-    <testcase time="6.116" classname="modelling" name="trial_msm_gives_expected_results_in_example_data"/>
-    <testcase time="0.00400000000000489" classname="modelling" name="trial_msm_gives_expected_results_in_example_data"/>
-    <testcase time="0.00199999999999534" classname="modelling" name="trial_msm_gives_expected_results_in_example_data"/>
-    <testcase time="0.00300000000000011" classname="modelling" name="trial_msm_gives_expected_results_in_example_data"/>
+  <testsuite name="modelling" timestamp="2026-04-27T15:10:01Z" hostname="72ad21f1d688" tests="25" skipped="10" failures="0" errors="0" time="12.766">
+    <testcase time="0.239000000000004" classname="modelling" name="trial_msm_can_be_quiet"/>
+    <testcase time="6.74299999999999" classname="modelling" name="trial_msm_gives_expected_results_in_example_data"/>
+    <testcase time="0.00399999999999068" classname="modelling" name="trial_msm_gives_expected_results_in_example_data"/>
+    <testcase time="0.00300000000001432" classname="modelling" name="trial_msm_gives_expected_results_in_example_data"/>
+    <testcase time="0.0029999999999859" classname="modelling" name="trial_msm_gives_expected_results_in_example_data"/>
     <testcase time="0.00100000000000477" classname="modelling" name="trial_msm_gives_expected_results_in_example_data"/>
-    <testcase time="4.456" classname="modelling" name="trial_msm_works_with_data.tables_and_weights"/>
-    <testcase time="0.00300000000000011" classname="modelling" name="trial_msm_works_with_data.tables_and_weights"/>
-    <testcase time="0.00399999999999068" classname="modelling" name="Modelling_works_with_where_case">
+    <testcase time="4.858" classname="modelling" name="trial_msm_works_with_data.tables_and_weights"/>
+    <testcase time="0.00399999999999068" classname="modelling" name="trial_msm_works_with_data.tables_and_weights"/>
+    <testcase time="0.00499999999999545" classname="modelling" name="Modelling_works_with_where_case">
       <skipped message="Reason: On CRAN ('test-modelling.R:92:3')"/>
     </testcase>
-    <testcase time="0.0100000000000051" classname="modelling" name="trial_msm_works_with_analysis_weights_unweighted">
+    <testcase time="0.01400000000001" classname="modelling" name="trial_msm_works_with_analysis_weights_unweighted">
       <skipped message="Reason: On CRAN ('test-modelling.R:147:3')"/>
     </testcase>
-    <testcase time="0.00900000000000034" classname="modelling" name="trial_msm_works_with_analysis_weights_p99">
+    <testcase time="0.0130000000000052" classname="modelling" name="trial_msm_works_with_analysis_weights_p99">
       <skipped message="Reason: On CRAN ('test-modelling.R:168:3')"/>
     </testcase>
-    <testcase time="0.0100000000000051" classname="modelling" name="trial_msm_works_with_analysis_weights_weight_limits">
+    <testcase time="0.0130000000000052" classname="modelling" name="trial_msm_works_with_analysis_weights_weight_limits">
       <skipped message="Reason: On CRAN ('test-modelling.R:198:3')"/>
     </testcase>
-    <testcase time="0.00999999999999091" classname="modelling" name="trial_msm_works_with_missing_sample_weights">
+    <testcase time="0.0139999999999816" classname="modelling" name="trial_msm_works_with_missing_sample_weights">
       <skipped message="Reason: On CRAN ('test-modelling.R:221:3')"/>
     </testcase>
-    <testcase time="0.0100000000000051" classname="modelling" name="trial_msm_works_with_sample_weights">
+    <testcase time="0.0130000000000052" classname="modelling" name="trial_msm_works_with_sample_weights">
       <skipped message="Reason: On CRAN ('test-modelling.R:258:3')"/>
     </testcase>
-    <testcase time="0.0100000000000051" classname="modelling" name="trial_msm_makes_model_formula_as_expected_with_weight_and_censor">
+    <testcase time="0.0130000000000052" classname="modelling" name="trial_msm_makes_model_formula_as_expected_with_weight_and_censor">
       <skipped message="Reason: On CRAN ('test-modelling.R:282:3')"/>
     </testcase>
-    <testcase time="0.00900000000000034" classname="modelling" name="trial_msm_makes_model_formula_as_expected_with_estimand_As_Treated">
+    <testcase time="0.0130000000000052" classname="modelling" name="trial_msm_makes_model_formula_as_expected_with_estimand_As_Treated">
       <skipped message="Reason: On CRAN ('test-modelling.R:306:3')"/>
     </testcase>
-    <testcase time="0.00999999999999091" classname="modelling" name="trial_msm_makes_model_formula_as_expected_with_estimand_type_ITT_and_unweighted">
+    <testcase time="0.0139999999999816" classname="modelling" name="trial_msm_makes_model_formula_as_expected_with_estimand_type_ITT_and_unweighted">
       <skipped message="Reason: On CRAN ('test-modelling.R:349:3')"/>
     </testcase>
-    <testcase time="0.210999999999999" classname="modelling" name="fit_msm_works"/>
+    <testcase time="0.438000000000017" classname="modelling" name="fit_msm_works"/>
     <testcase time="0.00200000000000955" classname="modelling" name="fit_msm_works"/>
-    <testcase time="0.00300000000000011" classname="modelling" name="fit_msm_works"/>
-    <testcase time="0.000999999999990564" classname="modelling" name="fit_msm_works"/>
-    <testcase time="0.0160000000000053" classname="modelling" name="fit_msm_works">
+    <testcase time="0.00499999999999545" classname="modelling" name="fit_msm_works"/>
+    <testcase time="0.00100000000000477" classname="modelling" name="fit_msm_works"/>
+    <testcase time="0.0209999999999866" classname="modelling" name="fit_msm_works">
       <skipped message="Reason: On CRAN ('test-modelling.R:370:1')"/>
     </testcase>
-    <testcase time="0.230999999999995" classname="modelling" name="fit_msm_works_with_weight_functions"/>
-    <testcase time="0.00400000000000489" classname="modelling" name="fit_msm_works_with_weight_functions"/>
-    <testcase time="0.0250000000000057" classname="modelling" name="fit_msm_works_with_weight_functions"/>
+    <testcase time="0.293000000000006" classname="modelling" name="fit_msm_works_with_weight_functions"/>
+    <testcase time="0.00499999999999545" classname="modelling" name="fit_msm_works_with_weight_functions"/>
+    <testcase time="0.0339999999999918" classname="modelling" name="fit_msm_works_with_weight_functions"/>
   </testsuite>
-  <testsuite name="predict" timestamp="2026-04-22T14:43:05Z" hostname="204ccf1d3272" tests="19" skipped="4" failures="0" errors="0" time="37.918">
-    <testcase time="15.109" classname="predict" name="predict.TE_msm_works_as_expected"/>
-    <testcase time="0.197000000000003" classname="predict" name="predict.TE_msm_works_as_expected"/>
-    <testcase time="0.0180000000000007" classname="predict" name="predict.TE_msm_works_as_expected">
+  <testsuite name="predict" timestamp="2026-04-27T15:10:14Z" hostname="72ad21f1d688" tests="19" skipped="4" failures="0" errors="0" time="44.612">
+    <testcase time="17.393" classname="predict" name="predict.TE_msm_works_as_expected"/>
+    <testcase time="0.257000000000005" classname="predict" name="predict.TE_msm_works_as_expected"/>
+    <testcase time="0.0250000000000057" classname="predict" name="predict.TE_msm_works_as_expected">
       <skipped message="Reason: On CRAN ('test-predict.R:1:1')"/>
     </testcase>
-    <testcase time="7.541" classname="predict" name="predict.TE_msm_works_with_newdata"/>
+    <testcase time="8.78399999999999" classname="predict" name="predict.TE_msm_works_with_newdata"/>
     <testcase time="0.00100000000000477" classname="predict" name="predict.TE_msm_works_with_newdata"/>
-    <testcase time="0.0169999999999959" classname="predict" name="predict.TE_msm_works_with_newdata">
+    <testcase time="0.0229999999999961" classname="predict" name="predict.TE_msm_works_with_newdata">
       <skipped message="Reason: On CRAN ('test-predict.R:34:1')"/>
     </testcase>
-    <testcase time="0.0120000000000005" classname="predict" name="calculate_cum_inc_works_as_expected"/>
-    <testcase time="0.00499999999999545" classname="predict" name="calculate_survival_works_as_expected"/>
-    <testcase time="0.0269999999999868" classname="predict" name="predict.TE_msm_works_with_interactions"/>
+    <testcase time="0.0169999999999959" classname="predict" name="calculate_cum_inc_works_as_expected"/>
+    <testcase time="0.00600000000000023" classname="predict" name="calculate_survival_works_as_expected"/>
+    <testcase time="0.0300000000000011" classname="predict" name="predict.TE_msm_works_with_interactions"/>
     <testcase time="0.00100000000000477" classname="predict" name="predict.TE_msm_works_with_interactions"/>
-    <testcase time="0.0390000000000157" classname="predict" name="predict.TE_msm_works_with_interactions">
+    <testcase time="0.0480000000000018" classname="predict" name="predict.TE_msm_works_with_interactions">
       <skipped message="Reason: On CRAN ('test-predict.R:86:1')"/>
     </testcase>
-    <testcase time="0.0420000000000016" classname="predict" name="predict.TE_msm_warns_for_As_Treated"/>
+    <testcase time="0.0589999999999975" classname="predict" name="predict.TE_msm_warns_for_As_Treated"/>
     <testcase time="0.00100000000000477" classname="predict" name="predict.TE_msm_warns_for_As_Treated"/>
-    <testcase time="0.021000000000015" classname="predict" name="predict.TE_msm_warns_for_As_Treated"/>
-    <testcase time="14.622" classname="predict" name="predict.TE_msm_gives_the_same_results_as_new_predict"/>
-    <testcase time="0.0480000000000018" classname="predict" name="predict.TE_msm_gives_the_same_results_as_new_predict"/>
-    <testcase time="0.0300000000000011" classname="predict" name="predict.TE_msm_gives_the_same_results_as_new_predict"/>
-    <testcase time="0.163000000000011" classname="predict" name="predict.TE_msm_gives_the_same_results_as_new_predict"/>
-    <testcase time="0.0240000000000009" classname="predict" name="predict.TE_msm_gives_the_same_results_as_new_predict">
+    <testcase time="0.025999999999982" classname="predict" name="predict.TE_msm_warns_for_As_Treated"/>
+    <testcase time="17.594" classname="predict" name="predict.TE_msm_gives_the_same_results_as_new_predict"/>
+    <testcase time="0.061000000000007" classname="predict" name="predict.TE_msm_gives_the_same_results_as_new_predict"/>
+    <testcase time="0.0440000000000111" classname="predict" name="predict.TE_msm_gives_the_same_results_as_new_predict"/>
+    <testcase time="0.205999999999989" classname="predict" name="predict.TE_msm_gives_the_same_results_as_new_predict"/>
+    <testcase time="0.0360000000000014" classname="predict" name="predict.TE_msm_gives_the_same_results_as_new_predict">
       <skipped message="Reason: On CRAN ('test-predict.R:140:1')"/>
     </testcase>
   </testsuite>
-  <testsuite name="robust" timestamp="2026-04-22T14:43:43Z" hostname="204ccf1d3272" tests="3" skipped="0" failures="0" errors="0" time="1.273">
-    <testcase time="1.261" classname="robust" name="robust_calculation_works_as_expected"/>
-    <testcase time="0.00800000000000978" classname="robust" name="robust_calculation_works_as_expected"/>
-    <testcase time="0.00399999999999068" classname="robust" name="robust_calculation_works_as_expected"/>
+  <testsuite name="robust" timestamp="2026-04-27T15:10:58Z" hostname="72ad21f1d688" tests="3" skipped="0" failures="0" errors="0" time="1.437">
+    <testcase time="1.422" classname="robust" name="robust_calculation_works_as_expected"/>
+    <testcase time="0.0109999999999957" classname="robust" name="robust_calculation_works_as_expected"/>
+    <testcase time="0.0040000000000191" classname="robust" name="robust_calculation_works_as_expected"/>
   </testsuite>
-  <testsuite name="sampling" timestamp="2026-04-22T14:43:44Z" hostname="204ccf1d3272" tests="38" skipped="7" failures="0" errors="0" time="6.435">
-    <testcase time="0.0529999999999973" classname="sampling" name="do_sampling_works_as_expected_when_case_exist">
+  <testsuite name="sampling" timestamp="2026-04-27T15:11:00Z" hostname="72ad21f1d688" tests="38" skipped="7" failures="0" errors="0" time="8.664">
+    <testcase time="0.0889999999999986" classname="sampling" name="do_sampling_works_as_expected_when_case_exist">
       <skipped message="Reason: On CRAN ('test-sampling.R:1:1')"/>
     </testcase>
-    <testcase time="0.0519999999999925" classname="sampling" name="do_sampling_works_as_expected_when_no_cases_exist">
+    <testcase time="0.103999999999985" classname="sampling" name="do_sampling_works_as_expected_when_no_cases_exist">
       <skipped message="Reason: On CRAN ('test-sampling.R:11:1')"/>
     </testcase>
-    <testcase time="0.0510000000000161" classname="sampling" name="sample_from_period_works_as_expected"/>
-    <testcase time="0.0029999999999859" classname="sampling" name="sample_from_period_works_as_expected"/>
-    <testcase time="0.00399999999999068" classname="sampling" name="sample_from_period_works_as_expected"/>
-    <testcase time="0.00200000000000955" classname="sampling" name="sample_from_period_works_as_expected"/>
-    <testcase time="0.00399999999999068" classname="sampling" name="sample_from_period_works_as_expected">
+    <testcase time="0.0720000000000027" classname="sampling" name="sample_from_period_works_as_expected"/>
+    <testcase time="0.00300000000001432" classname="sampling" name="sample_from_period_works_as_expected"/>
+    <testcase time="0.00600000000000023" classname="sampling" name="sample_from_period_works_as_expected"/>
+    <testcase time="0.00199999999998113" classname="sampling" name="sample_from_period_works_as_expected"/>
+    <testcase time="0.00600000000000023" classname="sampling" name="sample_from_period_works_as_expected">
       <skipped message="Reason: On CRAN ('test-sampling.R:18:1')"/>
     </testcase>
-    <testcase time="0.0670000000000073" classname="sampling" name="sample_from_period_works_as_expected_with_multiple_proportions"/>
-    <testcase time="0.00300000000001432" classname="sampling" name="sample_from_period_works_as_expected_with_multiple_proportions"/>
-    <testcase time="0.0310000000000059" classname="sampling" name="sample_from_period_works_as_expected_with_multiple_proportions"/>
+    <testcase time="0.0940000000000225" classname="sampling" name="sample_from_period_works_as_expected_with_multiple_proportions"/>
+    <testcase time="0.0029999999999859" classname="sampling" name="sample_from_period_works_as_expected_with_multiple_proportions"/>
+    <testcase time="0.00200000000000955" classname="sampling" name="sample_from_period_works_as_expected_with_multiple_proportions"/>
     <testcase time="0.00199999999998113" classname="sampling" name="sample_from_period_works_as_expected_with_multiple_proportions"/>
-    <testcase time="0.00999999999999091" classname="sampling" name="sample_from_period_works_as_expected_with_multiple_proportions"/>
-    <testcase time="0.0040000000000191" classname="sampling" name="sample_from_period_works_as_expected_with_multiple_proportions"/>
+    <testcase time="0.0130000000000052" classname="sampling" name="sample_from_period_works_as_expected_with_multiple_proportions"/>
+    <testcase time="0.00499999999999545" classname="sampling" name="sample_from_period_works_as_expected_with_multiple_proportions"/>
     <testcase time="0.00100000000000477" classname="sampling" name="sample_from_period_works_as_expected_with_multiple_proportions">
       <skipped message="Reason: On CRAN ('test-sampling.R:40:1')"/>
     </testcase>
-    <testcase time="1.13999999999999" classname="sampling" name="case_control_sampling_trials_works_with_separate_files_TRUE"/>
-    <testcase time="0.007000000000005" classname="sampling" name="case_control_sampling_trials_works_with_separate_files_TRUE">
+    <testcase time="1.58199999999999" classname="sampling" name="case_control_sampling_trials_works_with_separate_files_TRUE"/>
+    <testcase time="0.00800000000000978" classname="sampling" name="case_control_sampling_trials_works_with_separate_files_TRUE">
       <skipped message="Reason: On CRAN ('test-sampling.R:70:1')"/>
     </testcase>
-    <testcase time="1.15799999999999" classname="sampling" name="case_control_sampling_trials_works_with_separate_files_FALSE"/>
-    <testcase time="0.00600000000000023" classname="sampling" name="case_control_sampling_trials_works_with_separate_files_FALSE">
+    <testcase time="1.52100000000002" classname="sampling" name="case_control_sampling_trials_works_with_separate_files_FALSE"/>
+    <testcase time="0.00799999999998136" classname="sampling" name="case_control_sampling_trials_works_with_separate_files_FALSE">
       <skipped message="Reason: On CRAN ('test-sampling.R:89:1')"/>
     </testcase>
-    <testcase time="1.74600000000001" classname="sampling" name="case_control_sampling_trials_works_with_separate_files_TRUE_is_reproducible"/>
-    <testcase time="0.525000000000006" classname="sampling" name="case_control_sampling_trials_works_with_subsetting"/>
-    <testcase time="0.007000000000005" classname="sampling" name="case_control_sampling_trials_gives_errors_for_arguments"/>
-    <testcase time="0.00399999999999068" classname="sampling" name="case_control_sampling_trials_gives_errors_for_arguments"/>
-    <testcase time="0.99799999999999" classname="sampling" name="case_control_sampling_trials_works_with_multiple_p_control"/>
+    <testcase time="2.31999999999999" classname="sampling" name="case_control_sampling_trials_works_with_separate_files_TRUE_is_reproducible"/>
+    <testcase time="0.695000000000022" classname="sampling" name="case_control_sampling_trials_works_with_subsetting"/>
+    <testcase time="0.00799999999998136" classname="sampling" name="case_control_sampling_trials_gives_errors_for_arguments"/>
+    <testcase time="0.00499999999999545" classname="sampling" name="case_control_sampling_trials_gives_errors_for_arguments"/>
+    <testcase time="1.36200000000002" classname="sampling" name="case_control_sampling_trials_works_with_multiple_p_control"/>
+    <testcase time="0.000999999999976353" classname="sampling" name="case_control_sampling_trials_works_with_multiple_p_control"/>
     <testcase time="0.00100000000000477" classname="sampling" name="case_control_sampling_trials_works_with_multiple_p_control"/>
-    <testcase time="0.00100000000000477" classname="sampling" name="case_control_sampling_trials_works_with_multiple_p_control"/>
-    <testcase time="0.00399999999999068" classname="sampling" name="case_control_sampling_trials_works_with_sort_TRUE">
+    <testcase time="0.00499999999999545" classname="sampling" name="case_control_sampling_trials_works_with_sort_TRUE">
       <skipped message="Reason: On CRAN ('test-sampling.R:179:3')"/>
     </testcase>
-    <testcase time="0.235000000000014" classname="sampling" name="sample_controls_works_with_trial_sequence_objects_containing_te_datastore_datatable_objects"/>
-    <testcase time="0.162000000000006" classname="sampling" name="sample_controls_works_with_trial_sequence_objects_containing_te_datastore_datatable_objects"/>
-    <testcase time="0.0720000000000027" classname="sampling" name="sample_controls_works_with_trial_sequence_objects_containing_te_datastore_datatable_objects"/>
-    <testcase time="0.0489999999999782" classname="sampling" name="sample_controls_works_with_trial_sequence_objects_containing_te_datastore_datatable_objects"/>
+    <testcase time="0.315000000000026" classname="sampling" name="sample_controls_works_with_trial_sequence_objects_containing_te_datastore_datatable_objects"/>
+    <testcase time="0.222999999999985" classname="sampling" name="sample_controls_works_with_trial_sequence_objects_containing_te_datastore_datatable_objects"/>
+    <testcase time="0.0699999999999932" classname="sampling" name="sample_controls_works_with_trial_sequence_objects_containing_te_datastore_datatable_objects"/>
+    <testcase time="0.0910000000000082" classname="sampling" name="sample_controls_works_with_trial_sequence_objects_containing_te_datastore_datatable_objects"/>
     <testcase time="0.00300000000001432" classname="sampling" name="sample_controls_works_with_trial_sequence_objects_containing_te_datastore_datatable_objects"/>
+    <testcase time="0.0029999999999859" classname="sampling" name="sample_controls_works_with_trial_sequence_objects_containing_te_datastore_datatable_objects"/>
+    <testcase time="0.00300000000001432" classname="sampling" name="sample_controls_works_with_trial_sequence_objects_containing_te_datastore_datatable_objects"/>
+    <testcase time="0.0029999999999859" classname="sampling" name="sample_controls_works_with_trial_sequence_objects_containing_te_datastore_datatable_objects"/>
+    <testcase time="0.0310000000000059" classname="sampling" name="sample_controls_works_with_trial_sequence_objects_containing_te_datastore_datatable_objects"/>
     <testcase time="0.00199999999998113" classname="sampling" name="sample_controls_works_with_trial_sequence_objects_containing_te_datastore_datatable_objects"/>
-    <testcase time="0.00200000000000955" classname="sampling" name="sample_controls_works_with_trial_sequence_objects_containing_te_datastore_datatable_objects"/>
-    <testcase time="0.00300000000001432" classname="sampling" name="sample_controls_works_with_trial_sequence_objects_containing_te_datastore_datatable_objects"/>
-    <testcase time="0.0209999999999866" classname="sampling" name="sample_controls_works_with_trial_sequence_objects_containing_te_datastore_datatable_objects"/>
-    <testcase time="0.00200000000000955" classname="sampling" name="sample_controls_works_with_trial_sequence_objects_containing_te_datastore_datatable_objects"/>
-    <testcase time="0" classname="sampling" name="sample_controls_works_with_trial_sequence_objects_containing_te_datastore_datatable_objects"/>
-    <testcase time="0" classname="sampling" name="sample_controls_works_with_trial_sequence_objects_containing_te_datastore_datatable_objects"/>
+    <testcase time="0.00100000000000477" classname="sampling" name="sample_controls_works_with_trial_sequence_objects_containing_te_datastore_datatable_objects"/>
+    <testcase time="0.00100000000000477" classname="sampling" name="sample_controls_works_with_trial_sequence_objects_containing_te_datastore_datatable_objects"/>
   </testsuite>
-  <testsuite name="te_data" timestamp="2026-04-22T14:43:50Z" hostname="204ccf1d3272" tests="10" skipped="0" failures="0" errors="0" time="0.057">
-    <testcase time="0.00899999999998613" classname="te_data" name="te_outcome_data_constructor_works"/>
-    <testcase time="0.00200000000000955" classname="te_data" name="te_outcome_data_constructor_works"/>
-    <testcase time="0.00199999999998113" classname="te_data" name="te_outcome_data_constructor_works"/>
+  <testsuite name="te_data" timestamp="2026-04-27T15:11:08Z" hostname="72ad21f1d688" tests="10" skipped="0" failures="0" errors="0" time="0.047">
+    <testcase time="0.0109999999999957" classname="te_data" name="te_outcome_data_constructor_works"/>
+    <testcase time="0.00300000000001432" classname="te_data" name="te_outcome_data_constructor_works"/>
+    <testcase time="0.0029999999999859" classname="te_data" name="te_outcome_data_constructor_works"/>
     <testcase time="0.00300000000001432" classname="te_data" name="te_outcome_data_constructor_works"/>
     <testcase time="0.00100000000000477" classname="te_data" name="te_outcome_data_constructor_works"/>
-    <testcase time="0.00199999999998113" classname="te_data" name="te_outcome_data_constructor_works"/>
-    <testcase time="0.00200000000000955" classname="te_data" name="te_outcome_data_constructor_works"/>
-    <testcase time="0.007000000000005" classname="te_data" name="te_outcome_data_constructor_fails_on_bad_input"/>
-    <testcase time="0.00399999999999068" classname="te_data" name="te_outcome_data_constructor_fails_on_bad_input"/>
-    <testcase time="0.0250000000000057" classname="te_data" name="te_outcome_data_constructor_fails_on_bad_input"/>
+    <testcase time="0.0029999999999859" classname="te_data" name="te_outcome_data_constructor_works"/>
+    <testcase time="0.00300000000001432" classname="te_data" name="te_outcome_data_constructor_works"/>
+    <testcase time="0.00899999999998613" classname="te_data" name="te_outcome_data_constructor_fails_on_bad_input"/>
+    <testcase time="0.00499999999999545" classname="te_data" name="te_outcome_data_constructor_fails_on_bad_input"/>
+    <testcase time="0.00600000000000023" classname="te_data" name="te_outcome_data_constructor_fails_on_bad_input"/>
   </testsuite>
-  <testsuite name="te_datastore" timestamp="2026-04-22T14:43:50Z" hostname="204ccf1d3272" tests="7" skipped="0" failures="0" errors="0" time="0.179">
-    <testcase time="0.138000000000005" classname="te_datastore" name="read_expanded_data_can_read_te_datastore_datatable_data"/>
-    <testcase time="0.0029999999999859" classname="te_datastore" name="read_expanded_data_can_read_te_datastore_datatable_data"/>
-    <testcase time="0.00300000000001432" classname="te_datastore" name="read_expanded_data_can_read_te_datastore_datatable_data"/>
-    <testcase time="0.0250000000000057" classname="te_datastore" name="read_expanded_data_can_read_te_datastore_datatable_data"/>
+  <testsuite name="te_datastore" timestamp="2026-04-27T15:11:08Z" hostname="72ad21f1d688" tests="7" skipped="0" failures="0" errors="0" time="0.238">
+    <testcase time="0.213999999999999" classname="te_datastore" name="read_expanded_data_can_read_te_datastore_datatable_data"/>
+    <testcase time="0.0040000000000191" classname="te_datastore" name="read_expanded_data_can_read_te_datastore_datatable_data"/>
     <testcase time="0.00399999999999068" classname="te_datastore" name="read_expanded_data_can_read_te_datastore_datatable_data"/>
-    <testcase time="0.0029999999999859" classname="te_datastore" name="read_expanded_data_can_read_te_datastore_datatable_data"/>
+    <testcase time="0.00499999999999545" classname="te_datastore" name="read_expanded_data_can_read_te_datastore_datatable_data"/>
+    <testcase time="0.00499999999999545" classname="te_datastore" name="read_expanded_data_can_read_te_datastore_datatable_data"/>
     <testcase time="0.00300000000001432" classname="te_datastore" name="read_expanded_data_can_read_te_datastore_datatable_data"/>
+    <testcase time="0.0029999999999859" classname="te_datastore" name="read_expanded_data_can_read_te_datastore_datatable_data"/>
   </testsuite>
-  <testsuite name="te_datastore_csv" timestamp="2026-04-22T14:43:51Z" hostname="204ccf1d3272" tests="48" skipped="0" failures="0" errors="0" time="1.494">
-    <testcase time="0.046999999999997" classname="te_datastore_csv" name="te_datastore_csv_validator_works"/>
-    <testcase time="0.00399999999999068" classname="te_datastore_csv" name="te_datastore_csv_validator_works"/>
-    <testcase time="0.0510000000000161" classname="te_datastore_csv" name="read_expanded_data_can_read_te_datastore_csv_data"/>
-    <testcase time="0.00999999999999091" classname="te_datastore_csv" name="read_expanded_data_can_read_te_datastore_csv_data"/>
+  <testsuite name="te_datastore_csv" timestamp="2026-04-27T15:11:09Z" hostname="72ad21f1d688" tests="48" skipped="0" failures="0" errors="0" time="1.902">
+    <testcase time="0.0560000000000116" classname="te_datastore_csv" name="te_datastore_csv_validator_works"/>
+    <testcase time="0.00600000000000023" classname="te_datastore_csv" name="te_datastore_csv_validator_works"/>
+    <testcase time="0.0600000000000023" classname="te_datastore_csv" name="read_expanded_data_can_read_te_datastore_csv_data"/>
+    <testcase time="0.0130000000000052" classname="te_datastore_csv" name="read_expanded_data_can_read_te_datastore_csv_data"/>
     <testcase time="0.00399999999999068" classname="te_datastore_csv" name="read_expanded_data_can_read_te_datastore_csv_data"/>
-    <testcase time="0.00500000000002387" classname="te_datastore_csv" name="read_expanded_data_can_read_te_datastore_csv_data"/>
-    <testcase time="0.0029999999999859" classname="te_datastore_csv" name="read_expanded_data_can_read_te_datastore_csv_data"/>
-    <testcase time="0.0380000000000109" classname="te_datastore_csv" name="read_expanded_data_can_read_te_datastore_csv_data"/>
-    <testcase time="0.0120000000000005" classname="te_datastore_csv" name="read_expanded_data_can_read_te_datastore_csv_data"/>
-    <testcase time="0.23599999999999" classname="te_datastore_csv" name="sample_controls_works_with_trial_sequence_objects_containing_te_datastore_csv_objects"/>
-    <testcase time="0.187000000000012" classname="te_datastore_csv" name="sample_controls_works_with_trial_sequence_objects_containing_te_datastore_csv_objects"/>
-    <testcase time="0.0529999999999973" classname="te_datastore_csv" name="sample_controls_works_with_trial_sequence_objects_containing_te_datastore_csv_objects"/>
-    <testcase time="0.0790000000000077" classname="te_datastore_csv" name="sample_controls_works_with_trial_sequence_objects_containing_te_datastore_csv_objects"/>
+    <testcase time="0.00600000000000023" classname="te_datastore_csv" name="read_expanded_data_can_read_te_datastore_csv_data"/>
+    <testcase time="0.00499999999999545" classname="te_datastore_csv" name="read_expanded_data_can_read_te_datastore_csv_data"/>
+    <testcase time="0.0450000000000159" classname="te_datastore_csv" name="read_expanded_data_can_read_te_datastore_csv_data"/>
+    <testcase time="0.0349999999999966" classname="te_datastore_csv" name="read_expanded_data_can_read_te_datastore_csv_data"/>
+    <testcase time="0.317999999999984" classname="te_datastore_csv" name="sample_controls_works_with_trial_sequence_objects_containing_te_datastore_csv_objects"/>
+    <testcase time="0.230000000000018" classname="te_datastore_csv" name="sample_controls_works_with_trial_sequence_objects_containing_te_datastore_csv_objects"/>
+    <testcase time="0.0739999999999839" classname="te_datastore_csv" name="sample_controls_works_with_trial_sequence_objects_containing_te_datastore_csv_objects"/>
+    <testcase time="0.0720000000000027" classname="te_datastore_csv" name="sample_controls_works_with_trial_sequence_objects_containing_te_datastore_csv_objects"/>
     <testcase time="0.00300000000001432" classname="te_datastore_csv" name="sample_controls_works_with_trial_sequence_objects_containing_te_datastore_csv_objects"/>
+    <testcase time="0.00399999999999068" classname="te_datastore_csv" name="sample_controls_works_with_trial_sequence_objects_containing_te_datastore_csv_objects"/>
     <testcase time="0.0029999999999859" classname="te_datastore_csv" name="sample_controls_works_with_trial_sequence_objects_containing_te_datastore_csv_objects"/>
     <testcase time="0.00300000000001432" classname="te_datastore_csv" name="sample_controls_works_with_trial_sequence_objects_containing_te_datastore_csv_objects"/>
-    <testcase time="0.00199999999998113" classname="te_datastore_csv" name="sample_controls_works_with_trial_sequence_objects_containing_te_datastore_csv_objects"/>
-    <testcase time="0.02800000000002" classname="te_datastore_csv" name="sample_controls_works_with_trial_sequence_objects_containing_te_datastore_csv_objects"/>
-    <testcase time="0.00199999999998113" classname="te_datastore_csv" name="sample_controls_works_with_trial_sequence_objects_containing_te_datastore_csv_objects"/>
+    <testcase time="0.0600000000000023" classname="te_datastore_csv" name="sample_controls_works_with_trial_sequence_objects_containing_te_datastore_csv_objects"/>
+    <testcase time="0.0029999999999859" classname="te_datastore_csv" name="sample_controls_works_with_trial_sequence_objects_containing_te_datastore_csv_objects"/>
+    <testcase time="0.00300000000001432" classname="te_datastore_csv" name="sample_controls_works_with_trial_sequence_objects_containing_te_datastore_csv_objects"/>
+    <testcase time="0.0029999999999859" classname="te_datastore_csv" name="sample_controls_works_with_trial_sequence_objects_containing_te_datastore_csv_objects"/>
+    <testcase time="0.0390000000000157" classname="te_datastore_csv" name="sample_controls_works_with_trial_sequence_objects_containing_te_datastore_csv_objects"/>
+    <testcase time="0.0029999999999859" classname="te_datastore_csv" name="sample_controls_works_with_trial_sequence_objects_containing_te_datastore_csv_objects"/>
     <testcase time="0.00200000000000955" classname="te_datastore_csv" name="sample_controls_works_with_trial_sequence_objects_containing_te_datastore_csv_objects"/>
-    <testcase time="0.00199999999998113" classname="te_datastore_csv" name="sample_controls_works_with_trial_sequence_objects_containing_te_datastore_csv_objects"/>
-    <testcase time="0.0290000000000248" classname="te_datastore_csv" name="sample_controls_works_with_trial_sequence_objects_containing_te_datastore_csv_objects"/>
-    <testcase time="0.00199999999998113" classname="te_datastore_csv" name="sample_controls_works_with_trial_sequence_objects_containing_te_datastore_csv_objects"/>
     <testcase time="0.00100000000000477" classname="te_datastore_csv" name="sample_controls_works_with_trial_sequence_objects_containing_te_datastore_csv_objects"/>
     <testcase time="0.00100000000000477" classname="te_datastore_csv" name="sample_controls_works_with_trial_sequence_objects_containing_te_datastore_csv_objects"/>
-    <testcase time="0.00100000000000477" classname="te_datastore_csv" name="sample_controls_works_with_trial_sequence_objects_containing_te_datastore_csv_objects"/>
-    <testcase time="0.197000000000003" classname="te_datastore_csv" name="load_expanded_data_works_with_trial_sequence_objects_containing_te_datastore_csv_objects"/>
-    <testcase time="0.0789999999999793" classname="te_datastore_csv" name="load_expanded_data_works_with_trial_sequence_objects_containing_te_datastore_csv_objects"/>
-    <testcase time="0.152000000000015" classname="te_datastore_csv" name="load_expanded_data_works_with_trial_sequence_objects_containing_te_datastore_csv_objects"/>
-    <testcase time="0.0809999999999889" classname="te_datastore_csv" name="load_expanded_data_works_with_trial_sequence_objects_containing_te_datastore_csv_objects"/>
-    <testcase time="0.0529999999999973" classname="te_datastore_csv" name="load_expanded_data_works_with_trial_sequence_objects_containing_te_datastore_csv_objects"/>
-    <testcase time="0.00300000000001432" classname="te_datastore_csv" name="load_expanded_data_works_with_trial_sequence_objects_containing_te_datastore_csv_objects"/>
+    <testcase time="0.253999999999991" classname="te_datastore_csv" name="load_expanded_data_works_with_trial_sequence_objects_containing_te_datastore_csv_objects"/>
+    <testcase time="0.0720000000000027" classname="te_datastore_csv" name="load_expanded_data_works_with_trial_sequence_objects_containing_te_datastore_csv_objects"/>
+    <testcase time="0.230999999999995" classname="te_datastore_csv" name="load_expanded_data_works_with_trial_sequence_objects_containing_te_datastore_csv_objects"/>
+    <testcase time="0.0720000000000027" classname="te_datastore_csv" name="load_expanded_data_works_with_trial_sequence_objects_containing_te_datastore_csv_objects"/>
+    <testcase time="0.0939999999999941" classname="te_datastore_csv" name="load_expanded_data_works_with_trial_sequence_objects_containing_te_datastore_csv_objects"/>
     <testcase time="0.00399999999999068" classname="te_datastore_csv" name="load_expanded_data_works_with_trial_sequence_objects_containing_te_datastore_csv_objects"/>
+    <testcase time="0.0040000000000191" classname="te_datastore_csv" name="load_expanded_data_works_with_trial_sequence_objects_containing_te_datastore_csv_objects"/>
+    <testcase time="0.0029999999999859" classname="te_datastore_csv" name="load_expanded_data_works_with_trial_sequence_objects_containing_te_datastore_csv_objects"/>
+    <testcase time="0.0040000000000191" classname="te_datastore_csv" name="load_expanded_data_works_with_trial_sequence_objects_containing_te_datastore_csv_objects"/>
+    <testcase time="0.0029999999999859" classname="te_datastore_csv" name="load_expanded_data_works_with_trial_sequence_objects_containing_te_datastore_csv_objects"/>
     <testcase time="0.00300000000001432" classname="te_datastore_csv" name="load_expanded_data_works_with_trial_sequence_objects_containing_te_datastore_csv_objects"/>
     <testcase time="0.0029999999999859" classname="te_datastore_csv" name="load_expanded_data_works_with_trial_sequence_objects_containing_te_datastore_csv_objects"/>
-    <testcase time="0.00200000000000955" classname="te_datastore_csv" name="load_expanded_data_works_with_trial_sequence_objects_containing_te_datastore_csv_objects"/>
+    <testcase time="0.0380000000000109" classname="te_datastore_csv" name="load_expanded_data_works_with_trial_sequence_objects_containing_te_datastore_csv_objects"/>
     <testcase time="0.0029999999999859" classname="te_datastore_csv" name="load_expanded_data_works_with_trial_sequence_objects_containing_te_datastore_csv_objects"/>
-    <testcase time="0.00200000000000955" classname="te_datastore_csv" name="load_expanded_data_works_with_trial_sequence_objects_containing_te_datastore_csv_objects"/>
-    <testcase time="0.0279999999999916" classname="te_datastore_csv" name="load_expanded_data_works_with_trial_sequence_objects_containing_te_datastore_csv_objects"/>
-    <testcase time="0.00200000000000955" classname="te_datastore_csv" name="load_expanded_data_works_with_trial_sequence_objects_containing_te_datastore_csv_objects"/>
-    <testcase time="0.0029999999999859" classname="te_datastore_csv" name="load_expanded_data_works_with_trial_sequence_objects_containing_te_datastore_csv_objects"/>
-    <testcase time="0.00200000000000955" classname="te_datastore_csv" name="load_expanded_data_works_with_trial_sequence_objects_containing_te_datastore_csv_objects"/>
-    <testcase time="0.00800000000000978" classname="te_datastore_csv" name="load_expanded_data_works_with_trial_sequence_objects_containing_te_datastore_csv_objects"/>
-    <testcase time="0.0549999999999784" classname="te_datastore_csv" name="load_expanded_data_works_with_trial_sequence_objects_containing_te_datastore_csv_objects"/>
     <testcase time="0.00300000000001432" classname="te_datastore_csv" name="load_expanded_data_works_with_trial_sequence_objects_containing_te_datastore_csv_objects"/>
+    <testcase time="0.0029999999999859" classname="te_datastore_csv" name="load_expanded_data_works_with_trial_sequence_objects_containing_te_datastore_csv_objects"/>
+    <testcase time="0.00900000000001455" classname="te_datastore_csv" name="load_expanded_data_works_with_trial_sequence_objects_containing_te_datastore_csv_objects"/>
+    <testcase time="0.0389999999999873" classname="te_datastore_csv" name="load_expanded_data_works_with_trial_sequence_objects_containing_te_datastore_csv_objects"/>
+    <testcase time="0.00399999999999068" classname="te_datastore_csv" name="load_expanded_data_works_with_trial_sequence_objects_containing_te_datastore_csv_objects"/>
     <testcase time="0.00100000000000477" classname="te_datastore_csv" name="load_expanded_data_works_with_trial_sequence_objects_containing_te_datastore_csv_objects"/>
     <testcase time="0.00100000000000477" classname="te_datastore_csv" name="load_expanded_data_works_with_trial_sequence_objects_containing_te_datastore_csv_objects"/>
-    <testcase time="0.000999999999976353" classname="te_datastore_csv" name="load_expanded_data_works_with_trial_sequence_objects_containing_te_datastore_csv_objects"/>
+    <testcase time="0.00200000000000955" classname="te_datastore_csv" name="load_expanded_data_works_with_trial_sequence_objects_containing_te_datastore_csv_objects"/>
   </testsuite>
-  <testsuite name="te_datastore_duckdb" timestamp="2026-04-22T14:43:52Z" hostname="204ccf1d3272" tests="53" skipped="0" failures="0" errors="0" time="1.461">
-    <testcase time="0.0680000000000121" classname="te_datastore_duckdb" name="save_to_duckdb_works_as_expected"/>
-    <testcase time="0.00100000000000477" classname="te_datastore_duckdb" name="save_to_duckdb_works_as_expected"/>
-    <testcase time="0.00200000000000955" classname="te_datastore_duckdb" name="save_to_duckdb_works_as_expected"/>
+  <testsuite name="te_datastore_duckdb" timestamp="2026-04-27T15:11:11Z" hostname="72ad21f1d688" tests="53" skipped="0" failures="0" errors="0" time="1.338">
+    <testcase time="0.0829999999999984" classname="te_datastore_duckdb" name="save_to_duckdb_works_as_expected"/>
     <testcase time="0.00199999999998113" classname="te_datastore_duckdb" name="save_to_duckdb_works_as_expected"/>
-    <testcase time="0.555000000000007" classname="te_datastore_duckdb" name="read_expanded_data_can_read_te_datastore_duckdb_data"/>
-    <testcase time="0.00399999999999068" classname="te_datastore_duckdb" name="read_expanded_data_can_read_te_datastore_duckdb_data"/>
-    <testcase time="0.0040000000000191" classname="te_datastore_duckdb" name="read_expanded_data_can_read_te_datastore_duckdb_data"/>
-    <testcase time="0.00399999999999068" classname="te_datastore_duckdb" name="read_expanded_data_can_read_te_datastore_duckdb_data"/>
-    <testcase time="0.00399999999999068" classname="te_datastore_duckdb" name="read_expanded_data_can_read_te_datastore_duckdb_data"/>
-    <testcase time="0.00300000000001432" classname="te_datastore_duckdb" name="read_expanded_data_can_read_te_datastore_duckdb_data"/>
-    <testcase time="0.0029999999999859" classname="te_datastore_duckdb" name="read_expanded_data_can_read_te_datastore_duckdb_data"/>
-    <testcase time="0.0040000000000191" classname="te_datastore_duckdb" name="read_expanded_data_can_read_te_datastore_duckdb_data"/>
-    <testcase time="0.294999999999987" classname="te_datastore_duckdb" name="sample_controls_works_with_trial_sequence_objects_containing_te_datastore_duckdb_objects"/>
-    <testcase time="0.00900000000001455" classname="te_datastore_duckdb" name="sample_controls_works_with_trial_sequence_objects_containing_te_datastore_duckdb_objects"/>
-    <testcase time="0.00699999999997658" classname="te_datastore_duckdb" name="sample_controls_works_with_trial_sequence_objects_containing_te_datastore_duckdb_objects"/>
-    <testcase time="0.00300000000001432" classname="te_datastore_duckdb" name="sample_controls_works_with_trial_sequence_objects_containing_te_datastore_duckdb_objects"/>
-    <testcase time="0.00200000000000955" classname="te_datastore_duckdb" name="sample_controls_works_with_trial_sequence_objects_containing_te_datastore_duckdb_objects"/>
+    <testcase time="0.00200000000000955" classname="te_datastore_duckdb" name="save_to_duckdb_works_as_expected"/>
+    <testcase time="0.00300000000001432" classname="te_datastore_duckdb" name="save_to_duckdb_works_as_expected"/>
+    <testcase time="0.34899999999999" classname="te_datastore_duckdb" name="read_expanded_data_can_read_te_datastore_duckdb_data"/>
+    <testcase time="0.00499999999999545" classname="te_datastore_duckdb" name="read_expanded_data_can_read_te_datastore_duckdb_data"/>
+    <testcase time="0.00499999999999545" classname="te_datastore_duckdb" name="read_expanded_data_can_read_te_datastore_duckdb_data"/>
+    <testcase time="0.00499999999999545" classname="te_datastore_duckdb" name="read_expanded_data_can_read_te_datastore_duckdb_data"/>
+    <testcase time="0.00500000000002387" classname="te_datastore_duckdb" name="read_expanded_data_can_read_te_datastore_duckdb_data"/>
+    <testcase time="0.00499999999999545" classname="te_datastore_duckdb" name="read_expanded_data_can_read_te_datastore_duckdb_data"/>
+    <testcase time="0.00199999999998113" classname="te_datastore_duckdb" name="read_expanded_data_can_read_te_datastore_duckdb_data"/>
+    <testcase time="0.00600000000000023" classname="te_datastore_duckdb" name="read_expanded_data_can_read_te_datastore_duckdb_data"/>
+    <testcase time="0.344999999999999" classname="te_datastore_duckdb" name="sample_controls_works_with_trial_sequence_objects_containing_te_datastore_duckdb_objects"/>
+    <testcase time="0.00800000000000978" classname="te_datastore_duckdb" name="sample_controls_works_with_trial_sequence_objects_containing_te_datastore_duckdb_objects"/>
+    <testcase time="0.007000000000005" classname="te_datastore_duckdb" name="sample_controls_works_with_trial_sequence_objects_containing_te_datastore_duckdb_objects"/>
     <testcase time="0.0029999999999859" classname="te_datastore_duckdb" name="sample_controls_works_with_trial_sequence_objects_containing_te_datastore_duckdb_objects"/>
     <testcase time="0.00300000000001432" classname="te_datastore_duckdb" name="sample_controls_works_with_trial_sequence_objects_containing_te_datastore_duckdb_objects"/>
+    <testcase time="0.00200000000000955" classname="te_datastore_duckdb" name="sample_controls_works_with_trial_sequence_objects_containing_te_datastore_duckdb_objects"/>
+    <testcase time="0.0040000000000191" classname="te_datastore_duckdb" name="sample_controls_works_with_trial_sequence_objects_containing_te_datastore_duckdb_objects"/>
     <testcase time="0.0029999999999859" classname="te_datastore_duckdb" name="sample_controls_works_with_trial_sequence_objects_containing_te_datastore_duckdb_objects"/>
+    <testcase time="0.00300000000001432" classname="te_datastore_duckdb" name="sample_controls_works_with_trial_sequence_objects_containing_te_datastore_duckdb_objects"/>
+    <testcase time="0.0139999999999816" classname="te_datastore_duckdb" name="sample_controls_works_with_trial_sequence_objects_containing_te_datastore_duckdb_objects"/>
+    <testcase time="0.00300000000001432" classname="te_datastore_duckdb" name="sample_controls_works_with_trial_sequence_objects_containing_te_datastore_duckdb_objects"/>
+    <testcase time="0.0029999999999859" classname="te_datastore_duckdb" name="sample_controls_works_with_trial_sequence_objects_containing_te_datastore_duckdb_objects"/>
+    <testcase time="0.00300000000001432" classname="te_datastore_duckdb" name="sample_controls_works_with_trial_sequence_objects_containing_te_datastore_duckdb_objects"/>
     <testcase time="0.00200000000000955" classname="te_datastore_duckdb" name="sample_controls_works_with_trial_sequence_objects_containing_te_datastore_duckdb_objects"/>
-    <testcase time="0.0120000000000005" classname="te_datastore_duckdb" name="sample_controls_works_with_trial_sequence_objects_containing_te_datastore_duckdb_objects"/>
     <testcase time="0.00199999999998113" classname="te_datastore_duckdb" name="sample_controls_works_with_trial_sequence_objects_containing_te_datastore_duckdb_objects"/>
-    <testcase time="0.00200000000000955" classname="te_datastore_duckdb" name="sample_controls_works_with_trial_sequence_objects_containing_te_datastore_duckdb_objects"/>
-    <testcase time="0.00200000000000955" classname="te_datastore_duckdb" name="sample_controls_works_with_trial_sequence_objects_containing_te_datastore_duckdb_objects"/>
-    <testcase time="0.00199999999998113" classname="te_datastore_duckdb" name="sample_controls_works_with_trial_sequence_objects_containing_te_datastore_duckdb_objects"/>
     <testcase time="0.00100000000000477" classname="te_datastore_duckdb" name="sample_controls_works_with_trial_sequence_objects_containing_te_datastore_duckdb_objects"/>
     <testcase time="0.00100000000000477" classname="te_datastore_duckdb" name="sample_controls_works_with_trial_sequence_objects_containing_te_datastore_duckdb_objects"/>
-    <testcase time="0.00100000000000477" classname="te_datastore_duckdb" name="sample_controls_works_with_trial_sequence_objects_containing_te_datastore_duckdb_objects"/>
-    <testcase time="0.257999999999981" classname="te_datastore_duckdb" name="load_expanded_data_works_with_trial_sequence_objects_containing_te_datastore_duckdb_objects"/>
+    <testcase time="0.341999999999985" classname="te_datastore_duckdb" name="load_expanded_data_works_with_trial_sequence_objects_containing_te_datastore_duckdb_objects"/>
+    <testcase time="0.00800000000000978" classname="te_datastore_duckdb" name="load_expanded_data_works_with_trial_sequence_objects_containing_te_datastore_duckdb_objects"/>
+    <testcase time="0.00800000000000978" classname="te_datastore_duckdb" name="load_expanded_data_works_with_trial_sequence_objects_containing_te_datastore_duckdb_objects"/>
     <testcase time="0.007000000000005" classname="te_datastore_duckdb" name="load_expanded_data_works_with_trial_sequence_objects_containing_te_datastore_duckdb_objects"/>
-    <testcase time="0.00600000000000023" classname="te_datastore_duckdb" name="load_expanded_data_works_with_trial_sequence_objects_containing_te_datastore_duckdb_objects"/>
-    <testcase time="0.00499999999999545" classname="te_datastore_duckdb" name="load_expanded_data_works_with_trial_sequence_objects_containing_te_datastore_duckdb_objects"/>
+    <testcase time="0.0029999999999859" classname="te_datastore_duckdb" name="load_expanded_data_works_with_trial_sequence_objects_containing_te_datastore_duckdb_objects"/>
     <testcase time="0.00300000000001432" classname="te_datastore_duckdb" name="load_expanded_data_works_with_trial_sequence_objects_containing_te_datastore_duckdb_objects"/>
-    <testcase time="0.00200000000000955" classname="te_datastore_duckdb" name="load_expanded_data_works_with_trial_sequence_objects_containing_te_datastore_duckdb_objects"/>
-    <testcase time="0.00199999999998113" classname="te_datastore_duckdb" name="load_expanded_data_works_with_trial_sequence_objects_containing_te_datastore_duckdb_objects"/>
-    <testcase time="0.00200000000000955" classname="te_datastore_duckdb" name="load_expanded_data_works_with_trial_sequence_objects_containing_te_datastore_duckdb_objects"/>
+    <testcase time="0.0029999999999859" classname="te_datastore_duckdb" name="load_expanded_data_works_with_trial_sequence_objects_containing_te_datastore_duckdb_objects"/>
+    <testcase time="0.00300000000001432" classname="te_datastore_duckdb" name="load_expanded_data_works_with_trial_sequence_objects_containing_te_datastore_duckdb_objects"/>
     <testcase time="0.00399999999999068" classname="te_datastore_duckdb" name="load_expanded_data_works_with_trial_sequence_objects_containing_te_datastore_duckdb_objects"/>
-    <testcase time="0.00200000000000955" classname="te_datastore_duckdb" name="load_expanded_data_works_with_trial_sequence_objects_containing_te_datastore_duckdb_objects"/>
-    <testcase time="0.00200000000000955" classname="te_datastore_duckdb" name="load_expanded_data_works_with_trial_sequence_objects_containing_te_datastore_duckdb_objects"/>
+    <testcase time="0.00399999999999068" classname="te_datastore_duckdb" name="load_expanded_data_works_with_trial_sequence_objects_containing_te_datastore_duckdb_objects"/>
+    <testcase time="0.00300000000001432" classname="te_datastore_duckdb" name="load_expanded_data_works_with_trial_sequence_objects_containing_te_datastore_duckdb_objects"/>
     <testcase time="0.0029999999999859" classname="te_datastore_duckdb" name="load_expanded_data_works_with_trial_sequence_objects_containing_te_datastore_duckdb_objects"/>
-    <testcase time="0.0109999999999957" classname="te_datastore_duckdb" name="load_expanded_data_works_with_trial_sequence_objects_containing_te_datastore_duckdb_objects"/>
-    <testcase time="0.00200000000000955" classname="te_datastore_duckdb" name="load_expanded_data_works_with_trial_sequence_objects_containing_te_datastore_duckdb_objects"/>
+    <testcase time="0.01400000000001" classname="te_datastore_duckdb" name="load_expanded_data_works_with_trial_sequence_objects_containing_te_datastore_duckdb_objects"/>
     <testcase time="0.0029999999999859" classname="te_datastore_duckdb" name="load_expanded_data_works_with_trial_sequence_objects_containing_te_datastore_duckdb_objects"/>
-    <testcase time="0.00200000000000955" classname="te_datastore_duckdb" name="load_expanded_data_works_with_trial_sequence_objects_containing_te_datastore_duckdb_objects"/>
-    <testcase time="0.00200000000000955" classname="te_datastore_duckdb" name="load_expanded_data_works_with_trial_sequence_objects_containing_te_datastore_duckdb_objects"/>
-    <testcase time="0.00499999999999545" classname="te_datastore_duckdb" name="load_expanded_data_works_with_trial_sequence_objects_containing_te_datastore_duckdb_objects"/>
+    <testcase time="0.00300000000001432" classname="te_datastore_duckdb" name="load_expanded_data_works_with_trial_sequence_objects_containing_te_datastore_duckdb_objects"/>
+    <testcase time="0.0029999999999859" classname="te_datastore_duckdb" name="load_expanded_data_works_with_trial_sequence_objects_containing_te_datastore_duckdb_objects"/>
+    <testcase time="0.00300000000001432" classname="te_datastore_duckdb" name="load_expanded_data_works_with_trial_sequence_objects_containing_te_datastore_duckdb_objects"/>
+    <testcase time="0.00600000000000023" classname="te_datastore_duckdb" name="load_expanded_data_works_with_trial_sequence_objects_containing_te_datastore_duckdb_objects"/>
     <testcase time="0.00100000000000477" classname="te_datastore_duckdb" name="load_expanded_data_works_with_trial_sequence_objects_containing_te_datastore_duckdb_objects"/>
+    <testcase time="0.00199999999998113" classname="te_datastore_duckdb" name="load_expanded_data_works_with_trial_sequence_objects_containing_te_datastore_duckdb_objects"/>
     <testcase time="0.00100000000000477" classname="te_datastore_duckdb" name="load_expanded_data_works_with_trial_sequence_objects_containing_te_datastore_duckdb_objects"/>
-    <testcase time="0.000999999999976353" classname="te_datastore_duckdb" name="load_expanded_data_works_with_trial_sequence_objects_containing_te_datastore_duckdb_objects"/>
-    <testcase time="0.122000000000014" classname="te_datastore_duckdb" name="translate_to_sql_works_as_intended"/>
-    <testcase time="0.00999999999999091" classname="te_datastore_duckdb" name="translate_to_sql_catches_the_error_and_provides_a_message"/>
+    <testcase time="0.0169999999999959" classname="te_datastore_duckdb" name="translate_to_sql_works_as_intended"/>
+    <testcase time="0.01400000000001" classname="te_datastore_duckdb" name="translate_to_sql_catches_the_error_and_provides_a_message"/>
     <testcase time="0.00100000000000477" classname="te_datastore_duckdb" name="translate_to_sql_catches_the_error_and_provides_a_message"/>
   </testsuite>
-  <testsuite name="te_model_fitter" timestamp="2026-04-22T14:43:54Z" hostname="204ccf1d3272" tests="22" skipped="0" failures="0" errors="0" time="3.648">
-    <testcase time="0.00800000000000978" classname="te_model_fitter" name="stats_glm_logit_creates_the_fitter_object"/>
-    <testcase time="0.0029999999999859" classname="te_model_fitter" name="stats_glm_logit_creates_the_fitter_object_with_path"/>
-    <testcase time="0.00200000000000955" classname="te_model_fitter" name="stats_glm_logit_creates_the_fitter_object_with_path"/>
-    <testcase time="0.0349999999999966" classname="te_model_fitter" name="fit_weights_model_works_for_stats_glm_logit"/>
-    <testcase time="0.00399999999999068" classname="te_model_fitter" name="fit_weights_model_works_for_stats_glm_logit"/>
-    <testcase time="0.0040000000000191" classname="te_model_fitter" name="fit_weights_model_works_for_stats_glm_logit"/>
+  <testsuite name="te_model_fitter" timestamp="2026-04-27T15:11:12Z" hostname="72ad21f1d688" tests="22" skipped="0" failures="0" errors="0" time="4.194">
+    <testcase time="0.00899999999998613" classname="te_model_fitter" name="stats_glm_logit_creates_the_fitter_object"/>
+    <testcase time="0.00499999999999545" classname="te_model_fitter" name="stats_glm_logit_creates_the_fitter_object_with_path"/>
+    <testcase time="0.00300000000001432" classname="te_model_fitter" name="stats_glm_logit_creates_the_fitter_object_with_path"/>
+    <testcase time="0.01400000000001" classname="te_model_fitter" name="fit_weights_model_works_for_stats_glm_logit"/>
     <testcase time="0.0029999999999859" classname="te_model_fitter" name="fit_weights_model_works_for_stats_glm_logit"/>
-    <testcase time="0.00100000000000477" classname="te_model_fitter" name="fit_weights_model_works_for_stats_glm_logit"/>
+    <testcase time="0.00399999999999068" classname="te_model_fitter" name="fit_weights_model_works_for_stats_glm_logit"/>
+    <testcase time="0.00300000000001432" classname="te_model_fitter" name="fit_weights_model_works_for_stats_glm_logit"/>
+    <testcase time="0.00200000000000955" classname="te_model_fitter" name="fit_weights_model_works_for_stats_glm_logit"/>
     <testcase time="0.00399999999999068" classname="te_model_fitter" name="fit_weights_model_works_for_stats_glm_logit"/>
     <testcase time="0.00100000000000477" classname="te_model_fitter" name="fit_weights_model_works_for_stats_glm_logit"/>
-    <testcase time="0.00200000000000955" classname="te_model_fitter" name="fit_weights_model_works_for_stats_glm_logit"/>
-    <testcase time="3.53299999999999" classname="te_model_fitter" name="fit_outcome_model_works_for_stats_glm_logit"/>
+    <testcase time="0.0029999999999859" classname="te_model_fitter" name="fit_weights_model_works_for_stats_glm_logit"/>
+    <testcase time="4.077" classname="te_model_fitter" name="fit_outcome_model_works_for_stats_glm_logit"/>
     <testcase time="0.00100000000000477" classname="te_model_fitter" name="fit_outcome_model_works_for_stats_glm_logit"/>
-    <testcase time="0.00300000000001432" classname="te_model_fitter" name="fit_outcome_model_works_for_stats_glm_logit"/>
+    <testcase time="0.00399999999999068" classname="te_model_fitter" name="fit_outcome_model_works_for_stats_glm_logit"/>
+    <testcase time="0.00800000000000978" classname="te_model_fitter" name="fit_outcome_model_works_for_stats_glm_logit"/>
+    <testcase time="0.00399999999999068" classname="te_model_fitter" name="fit_outcome_model_works_for_stats_glm_logit"/>
+    <testcase time="0.00100000000000477" classname="te_model_fitter" name="fit_outcome_model_works_for_stats_glm_logit"/>
     <testcase time="0.00499999999999545" classname="te_model_fitter" name="fit_outcome_model_works_for_stats_glm_logit"/>
-    <testcase time="0.00199999999998113" classname="te_model_fitter" name="fit_outcome_model_works_for_stats_glm_logit"/>
-    <testcase time="0.00100000000000477" classname="te_model_fitter" name="fit_outcome_model_works_for_stats_glm_logit"/>
-    <testcase time="0.00300000000001432" classname="te_model_fitter" name="fit_outcome_model_works_for_stats_glm_logit"/>
-    <testcase time="0.0120000000000005" classname="te_model_fitter" name="fit_outcome_model_works_for_stats_glm_logit_with_save_dir"/>
-    <testcase time="0.000999999999976353" classname="te_model_fitter" name="fit_outcome_model_works_for_stats_glm_logit_with_save_dir"/>
-    <testcase time="0.00300000000001432" classname="te_model_fitter" name="fit_outcome_model_works_for_stats_glm_logit_with_save_dir"/>
-    <testcase time="0.0169999999999959" classname="te_model_fitter" name="fit_outcome_model_works_for_stats_glm_logit_with_save_dir"/>
+    <testcase time="0.01400000000001" classname="te_model_fitter" name="fit_outcome_model_works_for_stats_glm_logit_with_save_dir"/>
+    <testcase time="0.00100000000000477" classname="te_model_fitter" name="fit_outcome_model_works_for_stats_glm_logit_with_save_dir"/>
+    <testcase time="0.00399999999999068" classname="te_model_fitter" name="fit_outcome_model_works_for_stats_glm_logit_with_save_dir"/>
+    <testcase time="0.0240000000000009" classname="te_model_fitter" name="fit_outcome_model_works_for_stats_glm_logit_with_save_dir"/>
   </testsuite>
-  <testsuite name="te_parsnip" timestamp="2026-04-22T14:43:58Z" hostname="204ccf1d3272" tests="18" skipped="0" failures="0" errors="0" time="0.765">
-    <testcase time="0.585000000000008" classname="te_parsnip" name="parsnip_model_works"/>
-    <testcase time="0.00199999999998113" classname="te_parsnip" name="parsnip_model_works"/>
-    <testcase time="0.007000000000005" classname="te_parsnip" name="parsnip_model_fails_for_invalid_model_specifications"/>
-    <testcase time="0.00399999999999068" classname="te_parsnip" name="parsnip_model_fails_for_invalid_model_specifications"/>
-    <testcase time="0.00300000000001432" classname="te_parsnip" name="parsnip_model_fails_for_invalid_model_specifications"/>
-    <testcase time="0.121999999999986" classname="te_parsnip" name="fit_weights_model_works_for_parsnip_models"/>
+  <testsuite name="te_parsnip" timestamp="2026-04-27T15:11:16Z" hostname="72ad21f1d688" tests="18" skipped="0" failures="0" errors="0" time="0.539">
+    <testcase time="0.316000000000003" classname="te_parsnip" name="parsnip_model_works"/>
+    <testcase time="0.00300000000001432" classname="te_parsnip" name="parsnip_model_works"/>
+    <testcase time="0.00999999999999091" classname="te_parsnip" name="parsnip_model_fails_for_invalid_model_specifications"/>
+    <testcase time="0.00499999999999545" classname="te_parsnip" name="parsnip_model_fails_for_invalid_model_specifications"/>
+    <testcase time="0.00499999999999545" classname="te_parsnip" name="parsnip_model_fails_for_invalid_model_specifications"/>
+    <testcase time="0.147999999999996" classname="te_parsnip" name="fit_weights_model_works_for_parsnip_models"/>
     <testcase time="0.00300000000001432" classname="te_parsnip" name="fit_weights_model_works_for_parsnip_models"/>
     <testcase time="0.00100000000000477" classname="te_parsnip" name="fit_weights_model_works_for_parsnip_models"/>
-    <testcase time="0.0029999999999859" classname="te_parsnip" name="fit_weights_model_works_for_parsnip_models"/>
+    <testcase time="0.00499999999999545" classname="te_parsnip" name="fit_weights_model_works_for_parsnip_models"/>
     <testcase time="0.00100000000000477" classname="te_parsnip" name="fit_weights_model_works_for_parsnip_models"/>
-    <testcase time="0.00200000000000955" classname="te_parsnip" name="fit_weights_model_works_for_parsnip_models"/>
-    <testcase time="0.0180000000000007" classname="te_parsnip" name="fit_weights_model_works_parsnip_logistic_regression"/>
-    <testcase time="0.00199999999998113" classname="te_parsnip" name="fit_weights_model_works_parsnip_logistic_regression"/>
-    <testcase time="0.00300000000001432" classname="te_parsnip" name="fit_weights_model_works_parsnip_logistic_regression"/>
+    <testcase time="0.00199999999998113" classname="te_parsnip" name="fit_weights_model_works_for_parsnip_models"/>
+    <testcase time="0.0230000000000246" classname="te_parsnip" name="fit_weights_model_works_parsnip_logistic_regression"/>
     <testcase time="0.0029999999999859" classname="te_parsnip" name="fit_weights_model_works_parsnip_logistic_regression"/>
-    <testcase time="0.00100000000000477" classname="te_parsnip" name="fit_weights_model_works_parsnip_logistic_regression"/>
     <testcase time="0.00300000000001432" classname="te_parsnip" name="fit_weights_model_works_parsnip_logistic_regression"/>
+    <testcase time="0.00399999999999068" classname="te_parsnip" name="fit_weights_model_works_parsnip_logistic_regression"/>
+    <testcase time="0.00100000000000477" classname="te_parsnip" name="fit_weights_model_works_parsnip_logistic_regression"/>
+    <testcase time="0.00399999999999068" classname="te_parsnip" name="fit_weights_model_works_parsnip_logistic_regression"/>
     <testcase time="0.00199999999998113" classname="te_parsnip" name="fit_weights_model_works_parsnip_logistic_regression"/>
   </testsuite>
-  <testsuite name="te_weights" timestamp="2026-04-22T14:43:58Z" hostname="204ccf1d3272" tests="16" skipped="2" failures="0" errors="0" time="0.661">
-    <testcase time="0.29000000000002" classname="te_weights" name="show_works_for_te_weights_spec_objects">
+  <testsuite name="te_weights" timestamp="2026-04-27T15:11:17Z" hostname="72ad21f1d688" tests="16" skipped="2" failures="0" errors="0" time="0.877">
+    <testcase time="0.375" classname="te_weights" name="show_works_for_te_weights_spec_objects">
       <skipped message="Reason: On CRAN ('test-te_weights.R:1:1')"/>
     </testcase>
-    <testcase time="0.164999999999992" classname="te_weights" name="weight_model_data_indices_works"/>
+    <testcase time="0.226000000000028" classname="te_weights" name="weight_model_data_indices_works"/>
+    <testcase time="0.0029999999999859" classname="te_weights" name="weight_model_data_indices_works"/>
+    <testcase time="0.00399999999999068" classname="te_weights" name="weight_model_data_indices_works"/>
+    <testcase time="0.0150000000000148" classname="te_weights" name="weight_model_data_indices_works"/>
+    <testcase time="0.00100000000000477" classname="te_weights" name="weight_model_data_indices_works"/>
+    <testcase time="0.0029999999999859" classname="te_weights" name="weight_model_data_indices_works"/>
+    <testcase time="0.00399999999999068" classname="te_weights" name="weight_model_data_indices_works"/>
+    <testcase time="0.00200000000000955" classname="te_weights" name="weight_model_data_indices_works"/>
+    <testcase time="0.00100000000000477" classname="te_weights" name="weight_model_data_indices_works"/>
     <testcase time="0.0029999999999859" classname="te_weights" name="weight_model_data_indices_works"/>
     <testcase time="0.00300000000001432" classname="te_weights" name="weight_model_data_indices_works"/>
-    <testcase time="0.0109999999999957" classname="te_weights" name="weight_model_data_indices_works"/>
-    <testcase time="0.00100000000000477" classname="te_weights" name="weight_model_data_indices_works"/>
-    <testcase time="0.00200000000000955" classname="te_weights" name="weight_model_data_indices_works"/>
-    <testcase time="0.0029999999999859" classname="te_weights" name="weight_model_data_indices_works"/>
-    <testcase time="0.00200000000000955" classname="te_weights" name="weight_model_data_indices_works"/>
-    <testcase time="0.00100000000000477" classname="te_weights" name="weight_model_data_indices_works"/>
-    <testcase time="0.00199999999998113" classname="te_weights" name="weight_model_data_indices_works"/>
-    <testcase time="0.00200000000000955" classname="te_weights" name="weight_model_data_indices_works"/>
-    <testcase time="0.00100000000000477" classname="te_weights" name="weight_model_data_indices_works">
+    <testcase time="0.00200000000000955" classname="te_weights" name="weight_model_data_indices_works">
       <skipped message="Reason: On CRAN ('test-te_weights.R:43:1')"/>
     </testcase>
-    <testcase time="0.167000000000002" classname="te_weights" name="weight_model_data_indices_catches_bad_input"/>
-    <testcase time="0.00399999999999068" classname="te_weights" name="weight_model_data_indices_catches_bad_input"/>
-    <testcase time="0.00399999999999068" classname="te_weights" name="weight_model_data_indices_catches_bad_input"/>
+    <testcase time="0.224999999999994" classname="te_weights" name="weight_model_data_indices_catches_bad_input"/>
+    <testcase time="0.00499999999999545" classname="te_weights" name="weight_model_data_indices_catches_bad_input"/>
+    <testcase time="0.00499999999999545" classname="te_weights" name="weight_model_data_indices_catches_bad_input"/>
   </testsuite>
-  <testsuite name="trial_sequence" timestamp="2026-04-22T14:43:59Z" hostname="204ccf1d3272" tests="122" skipped="4" failures="0" errors="0" time="6.299">
-    <testcase time="0.0100000000000193" classname="trial_sequence" name="trial_sequence_creates_an_object_for_per_protocol"/>
-    <testcase time="0.00199999999998113" classname="trial_sequence" name="trial_sequence_creates_an_object_for_per_protocol"/>
-    <testcase time="0.00300000000001432" classname="trial_sequence" name="trial_sequence_creates_an_object_for_itt"/>
-    <testcase time="0.00199999999998113" classname="trial_sequence" name="trial_sequence_creates_an_object_for_itt"/>
-    <testcase time="0.0040000000000191" classname="trial_sequence" name="trial_sequence_creates_an_object_for_as_treated"/>
-    <testcase time="0.00199999999998113" classname="trial_sequence" name="trial_sequence_creates_an_object_for_as_treated"/>
-    <testcase time="0.27000000000001" classname="trial_sequence" name="trial_sequence_errors_for_unknown_class"/>
-    <testcase time="0.00499999999999545" classname="trial_sequence" name="trial_sequence_errors_for_unknown_class"/>
-    <testcase time="0.00800000000000978" classname="trial_sequence" name="trial_sequence_works_for_a_new_class"/>
-    <testcase time="0.0029999999999859" classname="trial_sequence" name="trial_sequence_works_for_a_new_class"/>
-    <testcase time="0.00800000000000978" classname="trial_sequence" name="show_works_for_trial_sequence_PP_with_nothing_set">
+  <testsuite name="trial_sequence" timestamp="2026-04-27T15:11:18Z" hostname="72ad21f1d688" tests="122" skipped="4" failures="0" errors="0" time="8.898">
+    <testcase time="0.0130000000000052" classname="trial_sequence" name="trial_sequence_creates_an_object_for_per_protocol"/>
+    <testcase time="0.0029999999999859" classname="trial_sequence" name="trial_sequence_creates_an_object_for_per_protocol"/>
+    <testcase time="0.02800000000002" classname="trial_sequence" name="trial_sequence_creates_an_object_for_itt"/>
+    <testcase time="0.00399999999999068" classname="trial_sequence" name="trial_sequence_creates_an_object_for_itt"/>
+    <testcase time="0.00499999999999545" classname="trial_sequence" name="trial_sequence_creates_an_object_for_as_treated"/>
+    <testcase time="0.00300000000001432" classname="trial_sequence" name="trial_sequence_creates_an_object_for_as_treated"/>
+    <testcase time="0.00899999999998613" classname="trial_sequence" name="trial_sequence_errors_for_unknown_class"/>
+    <testcase time="0.007000000000005" classname="trial_sequence" name="trial_sequence_errors_for_unknown_class"/>
+    <testcase time="0.0109999999999957" classname="trial_sequence" name="trial_sequence_works_for_a_new_class"/>
+    <testcase time="0.00300000000001432" classname="trial_sequence" name="trial_sequence_works_for_a_new_class"/>
+    <testcase time="0.0120000000000005" classname="trial_sequence" name="show_works_for_trial_sequence_PP_with_nothing_set">
       <skipped message="Reason: On CRAN ('test-trial_sequence.R:40:1')"/>
     </testcase>
-    <testcase time="0.0149999999999864" classname="trial_sequence" name="show_works_for_trial_sequence_ITT_with_nothing_set">
+    <testcase time="0.0209999999999866" classname="trial_sequence" name="show_works_for_trial_sequence_ITT_with_nothing_set">
       <skipped message="Reason: On CRAN ('test-trial_sequence.R:44:1')"/>
     </testcase>
-    <testcase time="0.0150000000000148" classname="trial_sequence" name="show_works_for_trial_sequence_AT_with_nothing_set">
+    <testcase time="0.021000000000015" classname="trial_sequence" name="show_works_for_trial_sequence_AT_with_nothing_set">
       <skipped message="Reason: On CRAN ('test-trial_sequence.R:48:1')"/>
     </testcase>
-    <testcase time="0.12700000000001" classname="trial_sequence" name="show_works_for_trial_sequence_PP_with_data_and_outcome_model_set">
+    <testcase time="0.200999999999993" classname="trial_sequence" name="show_works_for_trial_sequence_PP_with_data_and_outcome_model_set">
       <skipped message="Reason: On CRAN ('test-trial_sequence.R:52:1')"/>
     </testcase>
-    <testcase time="0.526999999999987" classname="trial_sequence" name="set_data_works_for_trial_sequence_ITT"/>
+    <testcase time="0.870000000000005" classname="trial_sequence" name="set_data_works_for_trial_sequence_ITT"/>
     <testcase time="0.00100000000000477" classname="trial_sequence" name="set_data_works_for_trial_sequence_ITT"/>
-    <testcase time="0.00100000000000477" classname="trial_sequence" name="set_data_works_for_trial_sequence_ITT"/>
-    <testcase time="0.513999999999982" classname="trial_sequence" name="set_data_works_for_trial_sequence_PP"/>
+    <testcase time="0.000999999999976353" classname="trial_sequence" name="set_data_works_for_trial_sequence_ITT"/>
+    <testcase time="0.871000000000009" classname="trial_sequence" name="set_data_works_for_trial_sequence_PP"/>
+    <testcase time="0.00200000000000955" classname="trial_sequence" name="set_data_works_for_trial_sequence_PP"/>
     <testcase time="0.00100000000000477" classname="trial_sequence" name="set_data_works_for_trial_sequence_PP"/>
-    <testcase time="0.00100000000000477" classname="trial_sequence" name="set_data_works_for_trial_sequence_PP"/>
-    <testcase time="0.498999999999995" classname="trial_sequence" name="set_data_works_for_trial_sequence_AT"/>
-    <testcase time="0.00200000000000955" classname="trial_sequence" name="set_data_works_for_trial_sequence_AT"/>
+    <testcase time="1.00699999999998" classname="trial_sequence" name="set_data_works_for_trial_sequence_AT"/>
     <testcase time="0.00100000000000477" classname="trial_sequence" name="set_data_works_for_trial_sequence_AT"/>
-    <testcase time="0.007000000000005" classname="trial_sequence" name="set_data_errors_if_reserved_colnames_are_used"/>
-    <testcase time="0.00699999999997658" classname="trial_sequence" name="set_data_errors_if_column_not_found"/>
-    <testcase time="0.007000000000005" classname="trial_sequence" name="set_data_errors_if_columns_used_twice"/>
-    <testcase time="0.0390000000000157" classname="trial_sequence" name="ipw_data_works_as_expected"/>
-    <testcase time="0.0029999999999859" classname="trial_sequence" name="ipw_data_works_as_expected"/>
-    <testcase time="0.00600000000000023" classname="trial_sequence" name="set_switch_weight_model_fails_for_ITT"/>
-    <testcase time="0.106999999999999" classname="trial_sequence" name="set_switch_weight_model_works_for_PP"/>
-    <testcase time="0.00100000000000477" classname="trial_sequence" name="set_switch_weight_model_works_for_PP"/>
-    <testcase time="0.00300000000001432" classname="trial_sequence" name="set_switch_weight_model_works_for_PP"/>
-    <testcase time="0.00199999999998113" classname="trial_sequence" name="set_switch_weight_model_works_for_PP"/>
+    <testcase time="0.00100000000000477" classname="trial_sequence" name="set_data_works_for_trial_sequence_AT"/>
+    <testcase time="0.00999999999999091" classname="trial_sequence" name="set_data_errors_if_reserved_colnames_are_used"/>
+    <testcase time="0.0100000000000193" classname="trial_sequence" name="set_data_errors_if_column_not_found"/>
+    <testcase time="0.00899999999998613" classname="trial_sequence" name="set_data_errors_if_columns_used_twice"/>
+    <testcase time="0.0380000000000109" classname="trial_sequence" name="ipw_data_works_as_expected"/>
+    <testcase time="0.00399999999999068" classname="trial_sequence" name="ipw_data_works_as_expected"/>
+    <testcase time="0.00900000000001455" classname="trial_sequence" name="set_switch_weight_model_fails_for_ITT"/>
+    <testcase time="0.151999999999987" classname="trial_sequence" name="set_switch_weight_model_works_for_PP"/>
     <testcase time="0.00200000000000955" classname="trial_sequence" name="set_switch_weight_model_works_for_PP"/>
+    <testcase time="0.0029999999999859" classname="trial_sequence" name="set_switch_weight_model_works_for_PP"/>
+    <testcase time="0.00300000000001432" classname="trial_sequence" name="set_switch_weight_model_works_for_PP"/>
+    <testcase time="0.0029999999999859" classname="trial_sequence" name="set_switch_weight_model_works_for_PP"/>
     <testcase time="0.00100000000000477" classname="trial_sequence" name="set_switch_weight_model_works_for_PP"/>
-    <testcase time="0.109999999999985" classname="trial_sequence" name="time_on_sequence_doesn_t_get_included_in_numerator"/>
-    <testcase time="0.115000000000009" classname="trial_sequence" name="set_censor_weight_model_works_for_ITT"/>
+    <testcase time="0.174000000000007" classname="trial_sequence" name="time_on_sequence_doesn_t_get_included_in_numerator"/>
+    <testcase time="0.151999999999987" classname="trial_sequence" name="set_censor_weight_model_works_for_ITT"/>
     <testcase time="0.00100000000000477" classname="trial_sequence" name="set_censor_weight_model_works_for_ITT"/>
+    <testcase time="0.00300000000001432" classname="trial_sequence" name="set_censor_weight_model_works_for_ITT"/>
     <testcase time="0.0029999999999859" classname="trial_sequence" name="set_censor_weight_model_works_for_ITT"/>
-    <testcase time="0.00200000000000955" classname="trial_sequence" name="set_censor_weight_model_works_for_ITT"/>
-    <testcase time="0.00200000000000955" classname="trial_sequence" name="set_censor_weight_model_works_for_ITT"/>
-    <testcase time="0.000999999999976353" classname="trial_sequence" name="set_censor_weight_model_works_for_ITT"/>
-    <testcase time="0.109000000000009" classname="trial_sequence" name="set_censor_weight_model_works_for_PP"/>
-    <testcase time="0.00100000000000477" classname="trial_sequence" name="set_censor_weight_model_works_for_PP"/>
+    <testcase time="0.00300000000001432" classname="trial_sequence" name="set_censor_weight_model_works_for_ITT"/>
+    <testcase time="0.00199999999998113" classname="trial_sequence" name="set_censor_weight_model_works_for_ITT"/>
+    <testcase time="0.15300000000002" classname="trial_sequence" name="set_censor_weight_model_works_for_PP"/>
+    <testcase time="0.000999999999976353" classname="trial_sequence" name="set_censor_weight_model_works_for_PP"/>
+    <testcase time="0.00300000000001432" classname="trial_sequence" name="set_censor_weight_model_works_for_PP"/>
+    <testcase time="0.00399999999999068" classname="trial_sequence" name="set_censor_weight_model_works_for_PP"/>
     <testcase time="0.00200000000000955" classname="trial_sequence" name="set_censor_weight_model_works_for_PP"/>
-    <testcase time="0.0029999999999859" classname="trial_sequence" name="set_censor_weight_model_works_for_PP"/>
-    <testcase time="0.00200000000000955" classname="trial_sequence" name="set_censor_weight_model_works_for_PP"/>
     <testcase time="0.00100000000000477" classname="trial_sequence" name="set_censor_weight_model_works_for_PP"/>
-    <testcase time="0.119999999999976" classname="trial_sequence" name="time_on_sequence_doesn_t_get_included_in_numerator"/>
-    <testcase time="0.125" classname="trial_sequence" name="calculate_weights_works_for_ITT_with_censor_weights"/>
-    <testcase time="0.00200000000000955" classname="trial_sequence" name="calculate_weights_works_for_ITT_with_censor_weights"/>
-    <testcase time="0.00399999999999068" classname="trial_sequence" name="calculate_weights_works_for_ITT_with_censor_weights"/>
-    <testcase time="0.00200000000000955" classname="trial_sequence" name="calculate_weights_works_for_ITT_with_censor_weights"/>
-    <testcase time="0.00399999999999068" classname="trial_sequence" name="calculate_weights_works_for_ITT_with_censor_weights"/>
+    <testcase time="0.167999999999978" classname="trial_sequence" name="time_on_sequence_doesn_t_get_included_in_numerator"/>
+    <testcase time="0.174000000000007" classname="trial_sequence" name="calculate_weights_works_for_ITT_with_censor_weights"/>
     <testcase time="0.00100000000000477" classname="trial_sequence" name="calculate_weights_works_for_ITT_with_censor_weights"/>
     <testcase time="0.00399999999999068" classname="trial_sequence" name="calculate_weights_works_for_ITT_with_censor_weights"/>
+    <testcase time="0.00200000000000955" classname="trial_sequence" name="calculate_weights_works_for_ITT_with_censor_weights"/>
+    <testcase time="0.0029999999999859" classname="trial_sequence" name="calculate_weights_works_for_ITT_with_censor_weights"/>
+    <testcase time="0.00200000000000955" classname="trial_sequence" name="calculate_weights_works_for_ITT_with_censor_weights"/>
+    <testcase time="0.00399999999999068" classname="trial_sequence" name="calculate_weights_works_for_ITT_with_censor_weights"/>
     <testcase time="0.0040000000000191" classname="trial_sequence" name="calculate_weights_works_for_ITT_with_censor_weights"/>
-    <testcase time="0.157999999999987" classname="trial_sequence" name="calculate_weights_works_for_PP_with_switch_weights"/>
+    <testcase time="0.191999999999979" classname="trial_sequence" name="calculate_weights_works_for_PP_with_switch_weights"/>
     <testcase time="0.00200000000000955" classname="trial_sequence" name="calculate_weights_works_for_PP_with_switch_weights"/>
+    <testcase time="0.00300000000001432" classname="trial_sequence" name="calculate_weights_works_for_PP_with_switch_weights"/>
     <testcase time="0.0029999999999859" classname="trial_sequence" name="calculate_weights_works_for_PP_with_switch_weights"/>
-    <testcase time="0.00300000000001432" classname="trial_sequence" name="calculate_weights_works_for_PP_with_switch_weights"/>
-    <testcase time="0.00199999999998113" classname="trial_sequence" name="calculate_weights_works_for_PP_with_switch_weights"/>
+    <testcase time="0.00200000000000955" classname="trial_sequence" name="calculate_weights_works_for_PP_with_switch_weights"/>
     <testcase time="0.00100000000000477" classname="trial_sequence" name="calculate_weights_works_for_PP_with_switch_weights"/>
-    <testcase time="0.0040000000000191" classname="trial_sequence" name="calculate_weights_works_for_PP_with_switch_weights"/>
-    <testcase time="0.00199999999998113" classname="trial_sequence" name="calculate_weights_works_for_PP_with_switch_weights"/>
-    <testcase time="0.00300000000001432" classname="trial_sequence" name="calculate_weights_works_for_PP_with_switch_weights"/>
-    <testcase time="0.00199999999998113" classname="trial_sequence" name="calculate_weights_works_for_PP_with_switch_weights"/>
-    <testcase time="0.0040000000000191" classname="trial_sequence" name="calculate_weights_works_for_PP_with_switch_weights"/>
+    <testcase time="0.00399999999999068" classname="trial_sequence" name="calculate_weights_works_for_PP_with_switch_weights"/>
     <testcase time="0.00100000000000477" classname="trial_sequence" name="calculate_weights_works_for_PP_with_switch_weights"/>
     <testcase time="0.00399999999999068" classname="trial_sequence" name="calculate_weights_works_for_PP_with_switch_weights"/>
     <testcase time="0.00200000000000955" classname="trial_sequence" name="calculate_weights_works_for_PP_with_switch_weights"/>
-    <testcase time="0.381999999999977" classname="trial_sequence" name="calculate_weights_works_for_PP_with_switch_weights"/>
-    <testcase time="0.132000000000005" classname="trial_sequence" name="set_outcome_model_works_for_PP_with_defaults"/>
+    <testcase time="0.00399999999999068" classname="trial_sequence" name="calculate_weights_works_for_PP_with_switch_weights"/>
+    <testcase time="0.00100000000000477" classname="trial_sequence" name="calculate_weights_works_for_PP_with_switch_weights"/>
+    <testcase time="0.00399999999999068" classname="trial_sequence" name="calculate_weights_works_for_PP_with_switch_weights"/>
+    <testcase time="0.00200000000000955" classname="trial_sequence" name="calculate_weights_works_for_PP_with_switch_weights"/>
+    <testcase time="0.442000000000007" classname="trial_sequence" name="calculate_weights_works_for_PP_with_switch_weights"/>
+    <testcase time="0.152999999999992" classname="trial_sequence" name="set_outcome_model_works_for_PP_with_defaults"/>
     <testcase time="0.00100000000000477" classname="trial_sequence" name="set_outcome_model_works_for_PP_with_defaults"/>
-    <testcase time="0.00200000000000955" classname="trial_sequence" name="set_outcome_model_works_for_PP_with_defaults"/>
     <testcase time="0.00199999999998113" classname="trial_sequence" name="set_outcome_model_works_for_PP_with_defaults"/>
+    <testcase time="0.00300000000001432" classname="trial_sequence" name="set_outcome_model_works_for_PP_with_defaults"/>
     <testcase time="0.00200000000000955" classname="trial_sequence" name="set_outcome_model_works_for_PP_with_defaults"/>
-    <testcase time="0.10499999999999" classname="trial_sequence" name="set_outcome_model_works_for_ITT"/>
-    <testcase time="0.00100000000000477" classname="trial_sequence" name="set_outcome_model_works_for_ITT"/>
-    <testcase time="0.00100000000000477" classname="trial_sequence" name="set_outcome_model_works_for_ITT"/>
-    <testcase time="0.00300000000001432" classname="trial_sequence" name="set_outcome_model_works_for_ITT"/>
+    <testcase time="0.149000000000001" classname="trial_sequence" name="set_outcome_model_works_for_ITT"/>
     <testcase time="0.000999999999976353" classname="trial_sequence" name="set_outcome_model_works_for_ITT"/>
-    <testcase time="0.115000000000009" classname="trial_sequence" name="set_outcome_model_works_for_ATT"/>
+    <testcase time="0.00200000000000955" classname="trial_sequence" name="set_outcome_model_works_for_ITT"/>
+    <testcase time="0.00300000000001432" classname="trial_sequence" name="set_outcome_model_works_for_ITT"/>
+    <testcase time="0.00199999999998113" classname="trial_sequence" name="set_outcome_model_works_for_ITT"/>
+    <testcase time="0.162000000000006" classname="trial_sequence" name="set_outcome_model_works_for_ATT"/>
     <testcase time="0.00100000000000477" classname="trial_sequence" name="set_outcome_model_works_for_ATT"/>
-    <testcase time="0.00100000000000477" classname="trial_sequence" name="set_outcome_model_works_for_ATT"/>
+    <testcase time="0.00200000000000955" classname="trial_sequence" name="set_outcome_model_works_for_ATT"/>
     <testcase time="0.0029999999999859" classname="trial_sequence" name="set_outcome_model_works_for_ATT"/>
-    <testcase time="0.00100000000000477" classname="trial_sequence" name="set_outcome_model_works_for_ATT"/>
-    <testcase time="0.007000000000005" classname="trial_sequence" name="set_outcome_model_doesn_t_work_if_data_isn_t_set"/>
-    <testcase time="0.11099999999999" classname="trial_sequence" name="set_outcome_model_doesn_t_work_if_with_unknown_variables"/>
-    <testcase time="0.106999999999999" classname="trial_sequence" name="set_outcome_model_works_with_strings"/>
-    <testcase time="0.00300000000001432" classname="trial_sequence" name="set_outcome_model_works_with_strings"/>
-    <testcase time="0.120999999999981" classname="trial_sequence" name="stabilised_weight_terms_are_included_in_outcome_model"/>
-    <testcase time="0.0040000000000191" classname="trial_sequence" name="stabilised_weight_terms_are_included_in_outcome_model"/>
-    <testcase time="0.00399999999999068" classname="trial_sequence" name="stabilised_weight_terms_are_included_in_outcome_model"/>
-    <testcase time="0.110000000000014" classname="trial_sequence" name="interaction_terms_work_as_expected"/>
-    <testcase time="0.00199999999998113" classname="trial_sequence" name="interaction_terms_work_as_expected"/>
+    <testcase time="0.00200000000000955" classname="trial_sequence" name="set_outcome_model_works_for_ATT"/>
+    <testcase time="0.00899999999998613" classname="trial_sequence" name="set_outcome_model_doesn_t_work_if_data_isn_t_set"/>
+    <testcase time="0.157000000000011" classname="trial_sequence" name="set_outcome_model_doesn_t_work_if_with_unknown_variables"/>
+    <testcase time="0.167000000000002" classname="trial_sequence" name="set_outcome_model_works_with_strings"/>
+    <testcase time="0.00399999999999068" classname="trial_sequence" name="set_outcome_model_works_with_strings"/>
+    <testcase time="0.157000000000011" classname="trial_sequence" name="stabilised_weight_terms_are_included_in_outcome_model"/>
+    <testcase time="0.00499999999999545" classname="trial_sequence" name="stabilised_weight_terms_are_included_in_outcome_model"/>
+    <testcase time="0.00600000000000023" classname="trial_sequence" name="stabilised_weight_terms_are_included_in_outcome_model"/>
+    <testcase time="0.156000000000006" classname="trial_sequence" name="interaction_terms_work_as_expected"/>
+    <testcase time="0.00399999999999068" classname="trial_sequence" name="interaction_terms_work_as_expected"/>
+    <testcase time="0.0029999999999859" classname="trial_sequence" name="interaction_terms_work_as_expected"/>
     <testcase time="0.00300000000001432" classname="trial_sequence" name="interaction_terms_work_as_expected"/>
-    <testcase time="0.00199999999998113" classname="trial_sequence" name="interaction_terms_work_as_expected"/>
-    <testcase time="1.51700000000002" classname="trial_sequence" name="weights_are_1_when_not_calculated_by_calculate_weights"/>
-    <testcase time="0.00399999999999068" classname="trial_sequence" name="weights_are_1_when_not_calculated_by_calculate_weights"/>
-    <testcase time="0.007000000000005" classname="trial_sequence" name="outcome_data_accessor_setter_works"/>
-    <testcase time="0.00199999999998113" classname="trial_sequence" name="outcome_data_accessor_setter_works"/>
+    <testcase time="2.10599999999999" classname="trial_sequence" name="weights_are_1_when_not_calculated_by_calculate_weights"/>
+    <testcase time="0.00499999999999545" classname="trial_sequence" name="weights_are_1_when_not_calculated_by_calculate_weights"/>
+    <testcase time="0.00900000000001455" classname="trial_sequence" name="outcome_data_accessor_setter_works"/>
+    <testcase time="0.0029999999999859" classname="trial_sequence" name="outcome_data_accessor_setter_works"/>
     <testcase time="0.0040000000000191" classname="trial_sequence" name="outcome_data_accessor_setter_works"/>
-    <testcase time="0.00100000000000477" classname="trial_sequence" name="outcome_data_accessor_setter_works"/>
     <testcase time="0.00199999999998113" classname="trial_sequence" name="outcome_data_accessor_setter_works"/>
-    <testcase time="0.158000000000015" classname="trial_sequence" name="load_expanded_data_works_with_trial_sequence_objects_containing_te_datastore_datatable_objects"/>
-    <testcase time="0.0649999999999977" classname="trial_sequence" name="load_expanded_data_works_with_trial_sequence_objects_containing_te_datastore_datatable_objects"/>
-    <testcase time="0.138999999999982" classname="trial_sequence" name="load_expanded_data_works_with_trial_sequence_objects_containing_te_datastore_datatable_objects"/>
-    <testcase time="0.0500000000000114" classname="trial_sequence" name="load_expanded_data_works_with_trial_sequence_objects_containing_te_datastore_datatable_objects"/>
-    <testcase time="0.0480000000000018" classname="trial_sequence" name="load_expanded_data_works_with_trial_sequence_objects_containing_te_datastore_datatable_objects"/>
-    <testcase time="0.0029999999999859" classname="trial_sequence" name="load_expanded_data_works_with_trial_sequence_objects_containing_te_datastore_datatable_objects"/>
-    <testcase time="0.00200000000000955" classname="trial_sequence" name="load_expanded_data_works_with_trial_sequence_objects_containing_te_datastore_datatable_objects"/>
+    <testcase time="0.00300000000001432" classname="trial_sequence" name="outcome_data_accessor_setter_works"/>
+    <testcase time="0.222999999999985" classname="trial_sequence" name="load_expanded_data_works_with_trial_sequence_objects_containing_te_datastore_datatable_objects"/>
+    <testcase time="0.0720000000000027" classname="trial_sequence" name="load_expanded_data_works_with_trial_sequence_objects_containing_te_datastore_datatable_objects"/>
+    <testcase time="0.218000000000018" classname="trial_sequence" name="load_expanded_data_works_with_trial_sequence_objects_containing_te_datastore_datatable_objects"/>
+    <testcase time="0.0729999999999791" classname="trial_sequence" name="load_expanded_data_works_with_trial_sequence_objects_containing_te_datastore_datatable_objects"/>
+    <testcase time="0.070999999999998" classname="trial_sequence" name="load_expanded_data_works_with_trial_sequence_objects_containing_te_datastore_datatable_objects"/>
     <testcase time="0.00300000000001432" classname="trial_sequence" name="load_expanded_data_works_with_trial_sequence_objects_containing_te_datastore_datatable_objects"/>
-    <testcase time="0.0129999999999768" classname="trial_sequence" name="load_expanded_data_works_with_trial_sequence_objects_containing_te_datastore_datatable_objects"/>
+    <testcase time="0.00399999999999068" classname="trial_sequence" name="load_expanded_data_works_with_trial_sequence_objects_containing_te_datastore_datatable_objects"/>
     <testcase time="0.00300000000001432" classname="trial_sequence" name="load_expanded_data_works_with_trial_sequence_objects_containing_te_datastore_datatable_objects"/>
-    <testcase time="0.00200000000000955" classname="trial_sequence" name="load_expanded_data_works_with_trial_sequence_objects_containing_te_datastore_datatable_objects"/>
+    <testcase time="0.00399999999999068" classname="trial_sequence" name="load_expanded_data_works_with_trial_sequence_objects_containing_te_datastore_datatable_objects"/>
+    <testcase time="0.00300000000001432" classname="trial_sequence" name="load_expanded_data_works_with_trial_sequence_objects_containing_te_datastore_datatable_objects"/>
     <testcase time="0.0029999999999859" classname="trial_sequence" name="load_expanded_data_works_with_trial_sequence_objects_containing_te_datastore_datatable_objects"/>
-    <testcase time="0.0219999999999914" classname="trial_sequence" name="load_expanded_data_works_with_trial_sequence_objects_containing_te_datastore_datatable_objects"/>
-    <testcase time="0.00500000000002387" classname="trial_sequence" name="load_expanded_data_works_with_trial_sequence_objects_containing_te_datastore_datatable_objects"/>
-    <testcase time="0.000999999999976353" classname="trial_sequence" name="load_expanded_data_works_with_trial_sequence_objects_containing_te_datastore_datatable_objects"/>
+    <testcase time="0.00399999999999068" classname="trial_sequence" name="load_expanded_data_works_with_trial_sequence_objects_containing_te_datastore_datatable_objects"/>
+    <testcase time="0.0409999999999968" classname="trial_sequence" name="load_expanded_data_works_with_trial_sequence_objects_containing_te_datastore_datatable_objects"/>
+    <testcase time="0.00800000000000978" classname="trial_sequence" name="load_expanded_data_works_with_trial_sequence_objects_containing_te_datastore_datatable_objects"/>
     <testcase time="0.00200000000000955" classname="trial_sequence" name="load_expanded_data_works_with_trial_sequence_objects_containing_te_datastore_datatable_objects"/>
-    <testcase time="0.00100000000000477" classname="trial_sequence" name="load_expanded_data_works_with_trial_sequence_objects_containing_te_datastore_datatable_objects"/>
+    <testcase time="0.00199999999998113" classname="trial_sequence" name="load_expanded_data_works_with_trial_sequence_objects_containing_te_datastore_datatable_objects"/>
+    <testcase time="0.00200000000000955" classname="trial_sequence" name="load_expanded_data_works_with_trial_sequence_objects_containing_te_datastore_datatable_objects"/>
   </testsuite>
-  <testsuite name="utils" timestamp="2026-04-22T14:44:05Z" hostname="204ccf1d3272" tests="23" skipped="0" failures="0" errors="0" time="0.392">
-    <testcase time="0.00800000000000978" classname="utils" name="quiet_print_works_as_expected"/>
-    <testcase time="0.000999999999976353" classname="utils" name="quiet_print_works_as_expected"/>
-    <testcase time="0.0040000000000191" classname="utils" name="quiet_msg_works_as_expected"/>
-    <testcase time="0.0029999999999859" classname="utils" name="quiet_msg_works_as_expected"/>
-    <testcase time="0.0040000000000191" classname="utils" name="quiet_line_works_as_expected"/>
-    <testcase time="0.0029999999999859" classname="utils" name="quiet_line_works_as_expected"/>
-    <testcase time="0.304000000000002" classname="utils" name="quiet_msg_time_works_as_expected"/>
-    <testcase time="0.00399999999999068" classname="utils" name="quiet_msg_time_works_as_expected"/>
-    <testcase time="0.0100000000000193" classname="utils" name="extract_baseline_works_works_as_expected"/>
-    <testcase time="0.00499999999999545" classname="utils" name="as_formula_works_with_a_formula_as_string"/>
-    <testcase time="0.00399999999999068" classname="utils" name="as_formula_works_with_strings"/>
-    <testcase time="0.00499999999999545" classname="utils" name="as_formula_works_with_formulas"/>
-    <testcase time="0.00600000000000023" classname="utils" name="assert_monotonic_works_as_expected"/>
-    <testcase time="0.00300000000001432" classname="utils" name="assert_monotonic_works_as_expected"/>
+  <testsuite name="utils" timestamp="2026-04-27T15:11:26Z" hostname="72ad21f1d688" tests="23" skipped="0" failures="0" errors="0" time="0.432">
+    <testcase time="0.0150000000000148" classname="utils" name="quiet_print_works_as_expected"/>
+    <testcase time="0.0029999999999859" classname="utils" name="quiet_print_works_as_expected"/>
+    <testcase time="0.00499999999999545" classname="utils" name="quiet_msg_works_as_expected"/>
+    <testcase time="0.00499999999999545" classname="utils" name="quiet_msg_works_as_expected"/>
+    <testcase time="0.0170000000000243" classname="utils" name="quiet_line_works_as_expected"/>
+    <testcase time="0.00499999999999545" classname="utils" name="quiet_line_works_as_expected"/>
+    <testcase time="0.293000000000006" classname="utils" name="quiet_msg_time_works_as_expected"/>
+    <testcase time="0.00599999999997181" classname="utils" name="quiet_msg_time_works_as_expected"/>
+    <testcase time="0.01400000000001" classname="utils" name="extract_baseline_works_works_as_expected"/>
+    <testcase time="0.00600000000000023" classname="utils" name="as_formula_works_with_a_formula_as_string"/>
+    <testcase time="0.007000000000005" classname="utils" name="as_formula_works_with_strings"/>
+    <testcase time="0.00600000000000023" classname="utils" name="as_formula_works_with_formulas"/>
+    <testcase time="0.00800000000000978" classname="utils" name="assert_monotonic_works_as_expected"/>
+    <testcase time="0.00399999999999068" classname="utils" name="assert_monotonic_works_as_expected"/>
+    <testcase time="0.00499999999999545" classname="utils" name="assert_monotonic_works_as_expected"/>
     <testcase time="0.00399999999999068" classname="utils" name="assert_monotonic_works_as_expected"/>
     <testcase time="0.00300000000001432" classname="utils" name="assert_monotonic_works_as_expected"/>
-    <testcase time="0.00199999999998113" classname="utils" name="assert_monotonic_works_as_expected"/>
-    <testcase time="0.00200000000000955" classname="utils" name="assert_monotonic_works_as_expected"/>
-    <testcase time="0.00499999999999545" classname="utils" name="rhs_vars_works_as_expected"/>
-    <testcase time="0.00600000000000023" classname="utils" name="suppressMatchingWarnings_works"/>
+    <testcase time="0.0029999999999859" classname="utils" name="assert_monotonic_works_as_expected"/>
+    <testcase time="0.007000000000005" classname="utils" name="rhs_vars_works_as_expected"/>
+    <testcase time="0.00800000000000978" classname="utils" name="suppressMatchingWarnings_works"/>
     <testcase time="0.00100000000000477" classname="utils" name="suppressMatchingWarnings_works"/>
-    <testcase time="0.00399999999999068" classname="utils" name="suppressMatchingWarnings_works"/>
-    <testcase time="0.00100000000000477" classname="utils" name="suppressMatchingWarnings_works"/>
+    <testcase time="0.00499999999999545" classname="utils" name="suppressMatchingWarnings_works"/>
+    <testcase time="0.00200000000000955" classname="utils" name="suppressMatchingWarnings_works"/>
   </testsuite>
 </testsuites>
