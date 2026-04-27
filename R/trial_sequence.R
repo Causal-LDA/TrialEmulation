@@ -10,7 +10,8 @@ NULL
 #' @slot outcome_data te_outcome_data.
 #'
 #' @export
-setClass("trial_sequence",
+setClass(
+  "trial_sequence",
   slots = c(
     data = "te_data",
     estimand = "character",
@@ -181,14 +182,25 @@ setGeneric("set_data", function(object, data, ...) standardGeneric("set_data"))
 setMethod(
   "set_data",
   c(object = "trial_sequence_ITT", data = "data.frame"),
-  function(object,
-           data,
-           id = "id",
-           period = "period",
-           treatment = "treatment",
-           outcome = "outcome",
-           eligible = "eligible") {
-    callNextMethod(object, data, censor_at_switch = FALSE, id, period, treatment, outcome, eligible)
+  function(
+    object,
+    data,
+    id = "id",
+    period = "period",
+    treatment = "treatment",
+    outcome = "outcome",
+    eligible = "eligible"
+  ) {
+    callNextMethod(
+      object,
+      data,
+      censor_at_switch = FALSE,
+      id,
+      period,
+      treatment,
+      outcome,
+      eligible
+    )
   }
 )
 
@@ -196,14 +208,25 @@ setMethod(
 setMethod(
   "set_data",
   c(object = "trial_sequence_AT", data = "data.frame"),
-  function(object,
-           data,
-           id = "id",
-           period = "period",
-           treatment = "treatment",
-           outcome = "outcome",
-           eligible = "eligible") {
-    callNextMethod(object, data, censor_at_switch = FALSE, id, period, treatment, outcome, eligible)
+  function(
+    object,
+    data,
+    id = "id",
+    period = "period",
+    treatment = "treatment",
+    outcome = "outcome",
+    eligible = "eligible"
+  ) {
+    callNextMethod(
+      object,
+      data,
+      censor_at_switch = FALSE,
+      id,
+      period,
+      treatment,
+      outcome,
+      eligible
+    )
   }
 )
 
@@ -211,14 +234,25 @@ setMethod(
 setMethod(
   "set_data",
   c(object = "trial_sequence_PP", data = "data.frame"),
-  function(object,
-           data,
-           id = "id",
-           period = "period",
-           treatment = "treatment",
-           outcome = "outcome",
-           eligible = "eligible") {
-    callNextMethod(object, data, censor_at_switch = TRUE, id, period, treatment, outcome, eligible)
+  function(
+    object,
+    data,
+    id = "id",
+    period = "period",
+    treatment = "treatment",
+    outcome = "outcome",
+    eligible = "eligible"
+  ) {
+    callNextMethod(
+      object,
+      data,
+      censor_at_switch = TRUE,
+      id,
+      period,
+      treatment,
+      outcome,
+      eligible
+    )
   }
 )
 
@@ -227,14 +261,16 @@ setMethod(
 setMethod(
   "set_data",
   c(object = "trial_sequence", data = "data.frame"),
-  function(object,
-           data,
-           censor_at_switch,
-           id = "id",
-           period = "period",
-           treatment = "treatment",
-           outcome = "outcome",
-           eligible = "eligible") {
+  function(
+    object,
+    data,
+    censor_at_switch,
+    id = "id",
+    period = "period",
+    treatment = "treatment",
+    outcome = "outcome",
+    eligible = "eligible"
+  ) {
     assert_class(object, "trial_sequence")
     assert_class(data, "data.frame")
 
@@ -252,7 +288,11 @@ setMethod(
     if (any(dups <- duplicated(data_cols))) {
       stop(
         "Duplicate column names specified: ",
-        toString(paste0(new_col_names[dups], " = ", dQuote(data_cols[dups], FALSE)))
+        toString(paste0(
+          new_col_names[dups],
+          " = ",
+          dQuote(data_cols[dups], FALSE)
+        ))
       )
     }
 
@@ -303,12 +343,14 @@ setMethod(
 #'   )
 setGeneric(
   "set_censor_weight_model",
-  function(object,
-           censor_event,
-           numerator,
-           denominator,
-           pool_models = NULL,
-           model_fitter) {
+  function(
+    object,
+    censor_event,
+    numerator,
+    denominator,
+    pool_models = NULL,
+    model_fitter
+  ) {
     standardGeneric("set_censor_weight_model")
   }
 )
@@ -317,21 +359,32 @@ setGeneric(
 setMethod(
   "set_censor_weight_model",
   c(object = "trial_sequence"),
-  function(object,
-           censor_event,
-           numerator,
-           denominator,
-           pool_models = c("none", "both", "numerator"),
-           model_fitter = stats_glm_logit()) {
-    if (missing(numerator)) numerator <- ~1
-    if (missing(denominator)) denominator <- ~1
+  function(
+    object,
+    censor_event,
+    numerator,
+    denominator,
+    pool_models = c("none", "both", "numerator"),
+    model_fitter = stats_glm_logit()
+  ) {
+    if (missing(numerator)) {
+      numerator <- ~1
+    }
+    if (missing(denominator)) {
+      denominator <- ~1
+    }
     assert_formula(numerator)
-    if ("time_on_regime" %in% rhs_vars(numerator)) stop("time_on_regime should not be used in numerator", call. = FALSE)
+    if ("time_on_regime" %in% rhs_vars(numerator)) {
+      stop("time_on_regime should not be used in numerator", call. = FALSE)
+    }
     assert_formula(denominator)
     assert_string(censor_event)
     assert_names(colnames(object@data@data), must.include = censor_event)
     numerator <- update.formula(numerator, paste("1 -", censor_event, "~ ."))
-    denominator <- update.formula(denominator, paste("1 -", censor_event, "~ ."))
+    denominator <- update.formula(
+      denominator,
+      paste("1 -", censor_event, "~ .")
+    )
 
     assert_class(model_fitter, "te_model_fitter")
     object@censor_weights <- new(
@@ -351,12 +404,14 @@ setMethod(
 setMethod(
   "set_censor_weight_model",
   c(object = "trial_sequence_PP"),
-  function(object,
-           censor_event,
-           numerator,
-           denominator,
-           pool_models = "none",
-           model_fitter = stats_glm_logit()) {
+  function(
+    object,
+    censor_event,
+    numerator,
+    denominator,
+    pool_models = "none",
+    model_fitter = stats_glm_logit()
+  ) {
     pool_models <- if (is.null(pool_models)) {
       "none"
     } else {
@@ -370,12 +425,14 @@ setMethod(
 setMethod(
   "set_censor_weight_model",
   c(object = "trial_sequence_ITT"),
-  function(object,
-           censor_event,
-           numerator,
-           denominator,
-           pool_models = "numerator",
-           model_fitter = stats_glm_logit()) {
+  function(
+    object,
+    censor_event,
+    numerator,
+    denominator,
+    pool_models = "numerator",
+    model_fitter = stats_glm_logit()
+  ) {
     pool_models <- if (is.null(pool_models)) {
       "numerator"
     } else {
@@ -389,12 +446,14 @@ setMethod(
 setMethod(
   "set_censor_weight_model",
   c(object = "trial_sequence_AT"),
-  function(object,
-           censor_event,
-           numerator,
-           denominator,
-           pool_models = "none",
-           model_fitter = stats_glm_logit()) {
+  function(
+    object,
+    censor_event,
+    numerator,
+    denominator,
+    pool_models = "none",
+    model_fitter = stats_glm_logit()
+  ) {
     pool_models <- if (is.null(pool_models)) {
       "none"
     } else {
@@ -440,33 +499,55 @@ setMethod(
 #'   )
 setGeneric(
   "set_switch_weight_model",
-  function(object, numerator, denominator, model_fitter, ...) standardGeneric("set_switch_weight_model")
+  function(object, numerator, denominator, model_fitter, ...) {
+    standardGeneric("set_switch_weight_model")
+  }
 )
 
 #' @rdname set_switch_weight_model
 setMethod(
   "set_switch_weight_model",
   c(object = "trial_sequence"),
-  function(object, numerator, denominator, model_fitter, eligible_wts_0 = NULL, eligible_wts_1 = NULL) {
+  function(
+    object,
+    numerator,
+    denominator,
+    model_fitter,
+    eligible_wts_0 = NULL,
+    eligible_wts_1 = NULL
+  ) {
     if (is(object@data, "te_data_unset")) {
-      stop("Please use set_data() to set up the data before setting switch weight models", call. = TRUE)
+      stop(
+        "Please use set_data() to set up the data before setting switch weight models",
+        call. = TRUE
+      )
     }
 
     cols <- colnames(object@data@data)
     if (!is.null(eligible_wts_0)) {
       assert_names(cols, must.include = c(eligible_wts_0))
-      colnames(object@data@data)[which(cols == eligible_wts_0)] <- "eligible_wts_0"
+      colnames(object@data@data)[which(
+        cols == eligible_wts_0
+      )] <- "eligible_wts_0"
     }
     if (!is.null(eligible_wts_1)) {
       assert_names(cols, must.include = c(eligible_wts_1))
-      colnames(object@data@data)[which(cols == eligible_wts_1)] <- "eligible_wts_1"
+      colnames(object@data@data)[which(
+        cols == eligible_wts_1
+      )] <- "eligible_wts_1"
     }
 
-    if (missing(numerator)) numerator <- ~1
-    if (missing(denominator)) denominator <- ~1
+    if (missing(numerator)) {
+      numerator <- ~1
+    }
+    if (missing(denominator)) {
+      denominator <- ~1
+    }
     # check which of these can be a null model
     assert_formula(numerator)
-    if ("time_on_regime" %in% rhs_vars(numerator)) stop("time_on_regime should not be used in numerator", call. = FALSE)
+    if ("time_on_regime" %in% rhs_vars(numerator)) {
+      stop("time_on_regime should not be used in numerator", call. = FALSE)
+    }
     assert_formula(denominator)
     numerator <- update.formula(numerator, treatment ~ .)
     denominator <- update.formula(denominator, treatment ~ .)
@@ -487,7 +568,10 @@ setMethod(
   "set_switch_weight_model",
   c(object = "trial_sequence_ITT"),
   function(object, numerator, denominator, model_fitter) {
-    stop("Switching weights are not supported for intention-to-treat analyses", call. = FALSE)
+    stop(
+      "Switching weights are not supported for intention-to-treat analyses",
+      call. = FALSE
+    )
   }
 )
 
@@ -498,24 +582,34 @@ setMethod(
 setMethod(
   "set_outcome_model",
   c(object = "trial_sequence"),
-  function(object,
-           treatment_var = ~0,
-           adjustment_terms = ~1,
-           followup_time_terms = ~ followup_time + I(followup_time^2),
-           trial_period_terms = ~ trial_period + I(trial_period^2),
-           model_fitter = stats_glm_logit(save_path = NA)) {
-    if (test_class(object@data, "te_data_unset")) stop("Use set_data() before set_outcome_model()")
+  function(
+    object,
+    treatment_var = ~0,
+    adjustment_terms = ~1,
+    followup_time_terms = ~ followup_time + I(followup_time^2),
+    trial_period_terms = ~ trial_period + I(trial_period^2),
+    model_fitter = stats_glm_logit(save_path = NA)
+  ) {
+    if (test_class(object@data, "te_data_unset")) {
+      stop("Use set_data() before set_outcome_model()")
+    }
     collection <- makeAssertCollection()
     formula_list <- list(
       treatment = as_formula(treatment_var, add = collection),
       adjustment = as_formula(adjustment_terms, add = collection),
       followup = as_formula(followup_time_terms, add = collection),
       period = as_formula(trial_period_terms, add = collection),
-      stabilised = as_formula(get_stabilised_weights_terms(object), add = collection)
+      stabilised = as_formula(
+        get_stabilised_weights_terms(object),
+        add = collection
+      )
     )
     treatment <- all.vars(formula_list$treatment)
     adjustment <- setdiff(
-      unique(c(all.vars(formula_list$adjustment), all.vars(formula_list$stabilised))),
+      unique(c(
+        all.vars(formula_list$adjustment),
+        all.vars(formula_list$stabilised)
+      )),
       treatment
     )
 
@@ -549,11 +643,13 @@ setMethod(
 setMethod(
   "set_outcome_model",
   c(object = "trial_sequence_ITT"),
-  function(object,
-           adjustment_terms = ~1,
-           followup_time_terms = ~ followup_time + I(followup_time^2),
-           trial_period_terms = ~ trial_period + I(trial_period^2),
-           model_fitter = stats_glm_logit(save_path = NA)) {
+  function(
+    object,
+    adjustment_terms = ~1,
+    followup_time_terms = ~ followup_time + I(followup_time^2),
+    trial_period_terms = ~ trial_period + I(trial_period^2),
+    model_fitter = stats_glm_logit(save_path = NA)
+  ) {
     callNextMethod(
       object,
       treatment_var = "assigned_treatment",
@@ -569,11 +665,13 @@ setMethod(
 setMethod(
   "set_outcome_model",
   c(object = "trial_sequence_PP"),
-  function(object,
-           adjustment_terms = ~1,
-           followup_time_terms = ~ followup_time + I(followup_time^2),
-           trial_period_terms = ~ trial_period + I(trial_period^2),
-           model_fitter = stats_glm_logit(save_path = NA)) {
+  function(
+    object,
+    adjustment_terms = ~1,
+    followup_time_terms = ~ followup_time + I(followup_time^2),
+    trial_period_terms = ~ trial_period + I(trial_period^2),
+    model_fitter = stats_glm_logit(save_path = NA)
+  ) {
     callNextMethod(
       object,
       treatment_var = "assigned_treatment",
@@ -589,12 +687,14 @@ setMethod(
 setMethod(
   "set_outcome_model",
   c(object = "trial_sequence_AT"),
-  function(object,
-           treatment_var = "dose",
-           adjustment_terms = ~1,
-           followup_time_terms = ~ followup_time + I(followup_time^2),
-           trial_period_terms = ~ trial_period + I(trial_period^2),
-           model_fitter = stats_glm_logit(save_path = NA)) {
+  function(
+    object,
+    treatment_var = "dose",
+    adjustment_terms = ~1,
+    followup_time_terms = ~ followup_time + I(followup_time^2),
+    trial_period_terms = ~ trial_period + I(trial_period^2),
+    model_fitter = stats_glm_logit(save_path = NA)
+  ) {
     callNextMethod(
       object,
       treatment_var = treatment_var,
@@ -612,12 +712,18 @@ get_stabilised_weights_terms <- function(object) {
 
   if (.hasSlot(object, "censor_weights")) {
     if (!is(object@censor_weights, "te_weights_unset")) {
-      stabilised_terms <- add_rhs(stabilised_terms, object@censor_weights@numerator)
+      stabilised_terms <- add_rhs(
+        stabilised_terms,
+        object@censor_weights@numerator
+      )
     }
   }
   if (.hasSlot(object, "switch_weights")) {
     if (!is(object@switch_weights, "te_weights_unset")) {
-      stabilised_terms <- add_rhs(stabilised_terms, object@switch_weights@numerator)
+      stabilised_terms <- add_rhs(
+        stabilised_terms,
+        object@switch_weights@numerator
+      )
     }
   }
   stabilised_terms
@@ -627,7 +733,9 @@ get_stabilised_weights_terms <- function(object) {
 update_outcome_formula <- function(object) {
   assert_class(object, "trial_sequence")
 
-  object@outcome_model@stabilised_weights_terms <- get_stabilised_weights_terms(object)
+  object@outcome_model@stabilised_weights_terms <- get_stabilised_weights_terms(
+    object
+  )
 
   formula_list <- list(
     ~1,
@@ -672,17 +780,30 @@ update_outcome_formula <- function(object) {
 #'
 #' # Delete directory
 #' unlink(output_dir, recursive = TRUE)
-setGeneric("set_expansion_options", function(object, ...) standardGeneric("set_expansion_options"))
+setGeneric("set_expansion_options", function(object, ...) {
+  standardGeneric("set_expansion_options")
+})
 
 #' @rdname internal-methods
 setMethod(
   "set_expansion_options",
   c(object = "trial_sequence"),
-  function(object, output, chunk_size = 0, first_period = 0, last_period = Inf, censor_at_switch) {
+  function(
+    object,
+    output,
+    chunk_size = 0,
+    first_period = 0,
+    last_period = Inf,
+    censor_at_switch
+  ) {
     assert_class(output, "te_datastore")
     assert_integerish(chunk_size, lower = 0, len = 1, any.missing = FALSE)
-    if (first_period != 0) assert_integerish(first_period)
-    if (last_period != Inf) assert_integerish(last_period)
+    if (first_period != 0) {
+      assert_integerish(first_period)
+    }
+    if (last_period != Inf) {
+      assert_integerish(last_period)
+    }
 
     object@expansion <- new(
       "te_expansion",
@@ -700,8 +821,21 @@ setMethod(
 setMethod(
   "set_expansion_options",
   c(object = "trial_sequence_ITT"),
-  function(object, output, chunk_size = 0, first_period = 0, last_period = Inf) {
-    callNextMethod(object, output, chunk_size, first_period, last_period, censor_at_switch = FALSE)
+  function(
+    object,
+    output,
+    chunk_size = 0,
+    first_period = 0,
+    last_period = Inf
+  ) {
+    callNextMethod(
+      object,
+      output,
+      chunk_size,
+      first_period,
+      last_period,
+      censor_at_switch = FALSE
+    )
   }
 )
 
@@ -710,7 +844,14 @@ setMethod(
   "set_expansion_options",
   c(object = "trial_sequence_PP"),
   function(object, output, chunk_size, first_period = 0, last_period = Inf) {
-    callNextMethod(object, output, chunk_size, first_period, last_period, censor_at_switch = TRUE)
+    callNextMethod(
+      object,
+      output,
+      chunk_size,
+      first_period,
+      last_period,
+      censor_at_switch = TRUE
+    )
   }
 )
 
@@ -719,13 +860,19 @@ setMethod(
   "set_expansion_options",
   c(object = "trial_sequence_ITT"),
   function(object, output, chunk_size, first_period = 0, last_period = Inf) {
-    callNextMethod(object, output, chunk_size, first_period, last_period, censor_at_switch = FALSE)
+    callNextMethod(
+      object,
+      output,
+      chunk_size,
+      first_period,
+      last_period,
+      censor_at_switch = FALSE
+    )
   }
 )
 
 
 # Calculate Weights -------
-
 
 #' Calculate Inverse Probability of Censoring Weights
 #'
@@ -759,7 +906,9 @@ setMethod(
 #'   ) |>
 #'   calculate_weights()
 #'
-setGeneric("calculate_weights", function(object, ...) standardGeneric("calculate_weights"))
+setGeneric("calculate_weights", function(object, ...) {
+  standardGeneric("calculate_weights")
+})
 
 #' @rdname calculate_weights
 setMethod(
@@ -767,7 +916,12 @@ setMethod(
   c(object = "trial_sequence_ITT"),
   function(object, quiet = FALSE) {
     use_censor_weights <- !is(object@censor_weights, "te_weights_unset")
-    calculate_weights_trial_seq(object, quiet, switch_weights = FALSE, censor_weights = use_censor_weights)
+    calculate_weights_trial_seq(
+      object,
+      quiet,
+      switch_weights = FALSE,
+      censor_weights = use_censor_weights
+    )
   }
 )
 
@@ -778,9 +932,16 @@ setMethod(
   function(object, quiet = FALSE) {
     use_censor_weights <- !is(object@censor_weights, "te_weights_unset")
     if (is(object@censor_weights, "te_weights_unset")) {
-      stop("Switch weight models are not specified. Use set_switch_weight_model()")
+      stop(
+        "Switch weight models are not specified. Use set_switch_weight_model()"
+      )
     }
-    calculate_weights_trial_seq(object, quiet, switch_weights = TRUE, censor_weights = use_censor_weights)
+    calculate_weights_trial_seq(
+      object,
+      quiet,
+      switch_weights = TRUE,
+      censor_weights = use_censor_weights
+    )
   }
 )
 
@@ -791,9 +952,16 @@ setMethod(
   function(object, quiet = FALSE) {
     use_censor_weights <- !is(object@censor_weights, "te_weights_unset")
     if (is(object@switch_weights, "te_weights_unset")) {
-      stop("Switch weight models are not specified. Use set_switch_weight_model()")
+      stop(
+        "Switch weight models are not specified. Use set_switch_weight_model()"
+      )
     }
-    calculate_weights_trial_seq(object, quiet, switch_weights = TRUE, censor_weights = use_censor_weights)
+    calculate_weights_trial_seq(
+      object,
+      quiet,
+      switch_weights = TRUE,
+      censor_weights = use_censor_weights
+    )
   }
 )
 
@@ -817,8 +985,12 @@ setMethod(
   "expand_trials",
   c(object = "trial_sequence"),
   function(object) {
-    if (test_class(object@expansion, "te_expansion_unset")) stop("Use set_expansion_options() before expand_trials()")
-    if (test_class(object@data, "te_data_unset")) stop("Use set_data() before expand_trials()")
+    if (test_class(object@expansion, "te_expansion_unset")) {
+      stop("Use set_expansion_options() before expand_trials()")
+    }
+    if (test_class(object@data, "te_data_unset")) {
+      stop("Use set_data() before expand_trials()")
+    }
     expand_trials_trial_seq(object)
   }
 )
@@ -865,7 +1037,9 @@ setMethod(
   c(object = "trial_sequence"),
   function(object, value) {
     if (is(object, "trial_sequence_PP") || is(object, "trial_sequence_ITT")) {
-      if (!"assigned_treatment" %in% colnames(value)) stop("assigned_treatment column is not found.")
+      if (!"assigned_treatment" %in% colnames(value)) {
+        stop("assigned_treatment column is not found.")
+      }
     }
     new_outcome_data <- te_outcome_data(value)
     object@outcome_data <- new_outcome_data
@@ -882,15 +1056,29 @@ setMethod(
   definition = function(object, p_control, period, subset_condition, seed) {
     checkmate::assert_count(object@expansion@datastore@N, positive = TRUE)
     checkmate::assert_number(p_control, lower = 0, upper = 1, null.ok = TRUE)
-    checkmate::assert_integerish(period, null.ok = TRUE, any.missing = FALSE, lower = 0)
+    checkmate::assert_integerish(
+      period,
+      null.ok = TRUE,
+      any.missing = FALSE,
+      lower = 0
+    )
     if (!is.null(subset_condition)) {
       checkmate::assert_string(subset_condition, null.ok = TRUE)
     }
 
-    checkmate::assert_integerish(seed, null.ok = TRUE, len = 1, any.missing = FALSE)
+    checkmate::assert_integerish(
+      seed,
+      null.ok = TRUE,
+      len = 1,
+      any.missing = FALSE
+    )
 
     if (is.null(p_control)) {
-      data_table <- read_expanded_data(object@expansion@datastore, period = period, subset_condition = subset_condition)
+      data_table <- read_expanded_data(
+        object@expansion@datastore,
+        period = period,
+        subset_condition = subset_condition
+      )
       data_table$sample_weight <- 1
     } else {
       data_table <- sample_expanded_data(
@@ -902,7 +1090,11 @@ setMethod(
       )
     }
 
-    object@outcome_data <- te_outcome_data(data_table, p_control, subset_condition)
+    object@outcome_data <- te_outcome_data(
+      data_table,
+      p_control,
+      subset_condition
+    )
 
     object
   }
@@ -913,15 +1105,19 @@ setMethod(
 setMethod(
   f = "predict",
   signature = "trial_sequence_ITT",
-  function(object,
-           newdata,
-           predict_times,
-           conf_int = TRUE,
-           ci_type = "sandwich",
-           samples = 100,
-           type = c("cum_inc", "survival")) {
+  function(
+    object,
+    newdata,
+    predict_times,
+    conf_int = TRUE,
+    ci_type = "sandwich",
+    samples = 100,
+    type = c("cum_inc", "survival")
+  ) {
     if (ci_type != "sandwich") {
-      stop("Bootstrap and Jackknife confidence intervals are only implemented for trial_sequence_PP class.")
+      stop(
+        "Bootstrap and Jackknife confidence intervals are only implemented for trial_sequence_PP class."
+      )
     } else {
       predict(
         object = object@outcome_model@fitted,
@@ -939,15 +1135,28 @@ setMethod(
 setMethod(
   f = "predict",
   signature = "trial_sequence_PP",
-  function(object,
-           newdata,
-           predict_times,
-           conf_int = TRUE,
-           samples = 100,
-           ci_type = c("sandwich", "Nonpara. bootstrap", "LEF outcome", "LEF both", "Jackknife Wald", "Jackknife MVN"),
-           type = c("cum_inc", "survival")) {
+  function(
+    object,
+    newdata,
+    predict_times,
+    conf_int = TRUE,
+    samples = 100,
+    ci_type = c(
+      "sandwich",
+      "Nonpara. bootstrap",
+      "LEF outcome",
+      "LEF both",
+      "Jackknife Wald",
+      "Jackknife MVN"
+    ),
+    type = c("cum_inc", "survival")
+  ) {
     # Derived from predict.TE_msm
-    if (ci_type %in% c("Jackknife Wald", "Jackknife MVN") & length(unique(object@data@data$id)) > 1000) {
+    if (
+      ci_type %in%
+        c("Jackknife Wald", "Jackknife MVN") &
+        length(unique(object@data@data$id)) > 1000
+    ) {
       warning(paste0(
         "You have selected Jackknife resampling with a large dataset ($N > 1000$). ",
         "This process is computationally intensive and may take several minutes to hours depending on your hardware."
@@ -964,7 +1173,11 @@ setMethod(
     coefs_mat <- matrix(coef(model), nrow = 1)
     if (conf_int) {
       if (ci_type == "sandwich") {
-        assert_matrix(object@outcome_model@fitted@model$vcov, nrows = ncol(coefs_mat), ncols = ncol(coefs_mat))
+        assert_matrix(
+          object@outcome_model@fitted@model$vcov,
+          nrows = ncol(coefs_mat),
+          ncols = ncol(coefs_mat)
+        )
         coefs_mat <- rbind(
           coefs_mat,
           mvtnorm::rmvnorm(
@@ -981,7 +1194,11 @@ setMethod(
           point_estimate = pred_list$difference[, 1],
           pred_fun = pred_fun
         )
-        assert_matrix(jackknife_var, nrows = ncol(coefs_mat), ncols = ncol(coefs_mat))
+        assert_matrix(
+          jackknife_var,
+          nrows = ncol(coefs_mat),
+          ncols = ncol(coefs_mat)
+        )
         coefs_mat <- rbind(
           coefs_mat,
           mvtnorm::rmvnorm(
@@ -994,12 +1211,14 @@ setMethod(
       }
     }
 
-    use_checked <-  if (!missing(newdata)) {
+    use_checked <- if (!missing(newdata)) {
       !"id" %in% names(newdata)
-    } else {TRUE}
-    
+    } else {
+      TRUE
+    }
+
     newdata_chk <- check_newdata(newdata, model, predict_times)
-    
+
     pred_fun <- if (type == "survival") {
       calculate_survival
     } else if (type == "cum_inc") {
@@ -1015,7 +1234,8 @@ setMethod(
       matrix_n_col = length(predict_times)
     )
 
-    pred_list$difference <- pred_list$assigned_treatment_1 - pred_list$assigned_treatment_0
+    pred_list$difference <- pred_list$assigned_treatment_1 -
+      pred_list$assigned_treatment_0
 
     if (conf_int) {
       if (ci_type %in% c("sandwich", "Jackknife MVN")) {
@@ -1024,26 +1244,48 @@ setMethod(
           col_names = paste0(type, c("", "", "_diff")),
           SIMPLIFY = FALSE,
           FUN = function(pred_matrix, col_names) {
-            quantiles <- apply(pred_matrix[, -1, drop = FALSE], 1, quantile, probs = c(0.025, 0.975))
+            quantiles <- apply(
+              pred_matrix[, -1, drop = FALSE],
+              1,
+              quantile,
+              probs = c(0.025, 0.975)
+            )
             setNames(
-              data.frame(predict_times, pred_matrix[, 1], quantiles[1, ], quantiles[2, ]),
+              data.frame(
+                predict_times,
+                pred_matrix[, 1],
+                quantiles[1, ],
+                quantiles[2, ]
+              ),
               c("followup_time", col_names, "2.5%", "97.5%")
             )
           }
         )
       } else if (ci_type == "Jackknife Wald") {
         jackknife_wald_CIs <- calculate_jackknife_wald_CIs(
-            object = object,
-            newdata = if (use_checked) newdata_chk else newdata,
-            predict_times = predict_times,
-            point_estimate = pred_list$difference[, 1],
-            pred_fun = pred_fun
-          )
-        setNames(
-          data.frame(predict_times, pred_list$difference[, 1], jackknife_wald_CIs[, 1], jackknife_wald_CIs[, 2]),
-          c("followup_time", paste0(type, "_diff"), "lower_bound", "upper_bound")
+          object = object,
+          newdata = if (use_checked) newdata_chk else newdata,
+          predict_times = predict_times,
+          point_estimate = pred_list$difference[, 1],
+          pred_fun = pred_fun
         )
-      } else if (ci_type %in% c("Nonpara. bootstrap", "LEF outcome", "LEF both")) {
+        setNames(
+          data.frame(
+            predict_times,
+            pred_list$difference[, 1],
+            jackknife_wald_CIs[, 1],
+            jackknife_wald_CIs[, 2]
+          ),
+          c(
+            "followup_time",
+            paste0(type, "_diff"),
+            "lower_bound",
+            "upper_bound"
+          )
+        )
+      } else if (
+        ci_type %in% c("Nonpara. bootstrap", "LEF outcome", "LEF both")
+      ) {
         bootstrap_CIs <- calculate_bootstrap_CIs(
           object = object,
           newdata = if (use_checked) newdata_chk else newdata,
@@ -1055,8 +1297,18 @@ setMethod(
         )
 
         setNames(
-          data.frame(predict_times, pred_list$difference[, 1], bootstrap_CIs[, 1], bootstrap_CIs[, 2]),
-          c("followup_time", paste0(type, "_diff"), "lower_bound", "upper_bound")
+          data.frame(
+            predict_times,
+            pred_list$difference[, 1],
+            bootstrap_CIs[, 1],
+            bootstrap_CIs[, 2]
+          ),
+          c(
+            "followup_time",
+            paste0(type, "_diff"),
+            "lower_bound",
+            "upper_bound"
+          )
         )
       }
     } else {
@@ -1065,7 +1317,10 @@ setMethod(
         col_names = paste0(type, c("", "", "_diff")),
         SIMPLIFY = FALSE,
         FUN = function(pred_matrix, col_names) {
-          setNames(data.frame(predict_times, pred_matrix[, 1]), nm = c("followup_time", col_names))
+          setNames(
+            data.frame(predict_times, pred_matrix[, 1]),
+            nm = c("followup_time", col_names)
+          )
         }
       )
     }
