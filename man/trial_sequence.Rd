@@ -9,7 +9,7 @@ trial_sequence(estimand, ...)
 \arguments{
 \item{estimand}{The name of the estimand for this analysis, either one of \code{"ITT"}, \code{"PP"}, \code{"AT"} for
 intention-to-treat, per-protocol, as-treated estimands respectively, or the name of a class extending
-\linkS4class{trial_sequence}}
+\link[=trial_sequence-class]{trial_sequence}}
 
 \item{...}{Other parameters used when creating object}
 }

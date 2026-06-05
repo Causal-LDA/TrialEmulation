@@ -22,7 +22,7 @@ load_expanded_data(
 )
 }
 \arguments{
-\item{object}{An object of class \linkS4class{trial_sequence}.}
+\item{object}{An object of class \link[=trial_sequence-class]{trial_sequence}.}
 
 \item{p_control}{Probability of selecting a control, \code{NULL} for no sampling (default).}
 
@@ -41,18 +41,18 @@ otherwise the code will fail.}
 
 \item{seed}{An integer seed or \code{NULL} (default).
 
-\emph{Note}: The same seed will return a different result depending on the class of the \linkS4class{te_datastore}
-object contained in the \linkS4class{trial_sequence} object.}
+\emph{Note}: The same seed will return a different result depending on the class of the \link[=te_datastore-class]{te_datastore}
+object contained in the \link[=trial_sequence-class]{trial_sequence} object.}
 }
 \value{
-An updated \linkS4class{trial_sequence} object, the data is stored in slot \verb{@outcome_data}
-as a \linkS4class{te_outcome_data} object.
+An updated \link[=trial_sequence-class]{trial_sequence} object, the data is stored in slot \verb{@outcome_data}
+as a \link[=te_outcome_data-class]{te_outcome_data} object.
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
 }
 \details{
-This method is used on \linkS4class{trial_sequence} objects to read, subset and sample expanded data.
+This method is used on \link[=trial_sequence-class]{trial_sequence} objects to read, subset and sample expanded data.
 }
 \examples{
 # create a trial_sequence-class object

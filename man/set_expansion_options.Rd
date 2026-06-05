@@ -61,9 +61,9 @@ ITT_trial <- trial_sequence("ITT") |>
 unlink(output_dir, recursive = TRUE)
 }
 \seealso{
-Other save_to: 
-\code{\link{save_to_csv}()},
-\code{\link{save_to_datatable}()},
-\code{\link{save_to_duckdb}()}
+Other save_to:
+\code{\link[=save_to_csv]{save_to_csv()}},
+\code{\link[=save_to_datatable]{save_to_datatable()}},
+\code{\link[=save_to_duckdb]{save_to_duckdb()}}
 }
 \concept{save_to}

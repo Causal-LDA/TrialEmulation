@@ -10,7 +10,7 @@ read_expanded_data(object, period = NULL, subset_condition = NULL)
 \S4method{read_expanded_data}{te_datastore_datatable}(object, period = NULL, subset_condition = NULL)
 }
 \arguments{
-\item{object}{An object of class \linkS4class{te_datastore}.}
+\item{object}{An object of class \link[=te_datastore-class]{te_datastore}.}
 
 \item{period}{An integerish vector of non-zero length to select trial period(s) or \code{NULL} (default) to
 select all files.}
@@ -21,7 +21,7 @@ select all files.}
 A \code{data.frame} of class \code{data.table}.
 }
 \description{
-This method is used on \linkS4class{te_datastore} objects to read selected data and return one \code{data.table}.
+This method is used on \link[=te_datastore-class]{te_datastore} objects to read selected data and return one \code{data.table}.
 }
 \examples{
 # create a te_datastore_csv object and save some data

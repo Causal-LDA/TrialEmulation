@@ -65,7 +65,7 @@ The classes and (internal) methods defined for using \link[stats:glm]{stats::glm
 
 }}
 \seealso{
-Other model_fitter_classes: 
+Other model_fitter_classes:
 \code{\link{te_parsnip_model-class}}
 }
 \concept{model_fitter_classes}

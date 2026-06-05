@@ -22,7 +22,7 @@ sample_expanded_data(
 )
 }
 \arguments{
-\item{object}{An object of class \linkS4class{te_datastore}.}
+\item{object}{An object of class \link[=te_datastore-class]{te_datastore}.}
 
 \item{p_control}{Probability of selecting a control.}
 

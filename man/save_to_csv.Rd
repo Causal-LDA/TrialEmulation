@@ -10,7 +10,7 @@ save_to_csv(path)
 \item{path}{Directory to save CSV files in. Must be empty.}
 }
 \value{
-A \linkS4class{te_datastore_csv} object.
+A \link[=te_datastore_csv-class]{te_datastore_csv} object.
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
@@ -29,9 +29,9 @@ unlink(csv_dir)
 
 }
 \seealso{
-Other save_to: 
-\code{\link{save_to_datatable}()},
-\code{\link{save_to_duckdb}()},
-\code{\link{set_expansion_options}()}
+Other save_to:
+\code{\link[=save_to_datatable]{save_to_datatable()}},
+\code{\link[=save_to_duckdb]{save_to_duckdb()}},
+\code{\link[=set_expansion_options]{set_expansion_options()}}
 }
 \concept{save_to}
