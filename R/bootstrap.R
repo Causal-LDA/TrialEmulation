@@ -225,10 +225,10 @@ calculate_jackknife_wald_CIs <- function(
   jacknife_mrd_se <- t(apply(MRDs_mat, 1, function(x) {
     sqrt(((n_ids - 1) / n_ids) * sum(x^2))
   }))
-  rbind(
+  t(rbind(
     point_estimate - 1.96 * jacknife_mrd_se,
     point_estimate + 1.96 * jacknife_mrd_se
-  )
+  ))
 }
 
 #' Calculate Jackknife variance matrix for 'Jackknife MVN' CI
