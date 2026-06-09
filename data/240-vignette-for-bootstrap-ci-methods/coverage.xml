@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE coverage SYSTEM "https://raw.githubusercontent.com/cobertura/cobertura/master/cobertura/src/site/htdocs/xml/coverage-04.dtd">
-<coverage line-rate="0.884809002072846" branch-rate="0" lines-covered="2988" lines-valid="3377" branches-covered="0" branches-valid="0" complexity="0" version="3.6.5" timestamp="2026-06-05 15:00:58.598789">
+<coverage line-rate="0.884809002072846" branch-rate="0" lines-covered="2988" lines-valid="3377" branches-covered="0" branches-valid="0" complexity="0" version="3.6.5" timestamp="2026-06-09 15:35:29.711269">
   <sources>
     <source>/__w/TrialEmulation/TrialEmulation/TrialEmulation</source>
   </sources>
