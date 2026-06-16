@@ -109,6 +109,25 @@ head(pred_sandwich$difference)
 
 This is the fastest confidence interval method and is often suitable for larger datasets.
 
+```{r}
+library(ggplot2)
+
+ggplot(as.data.frame(pred_sandwich$difference), aes(x=as.data.frame(pred_sandwich$difference)$followup_time, y=as.data.frame(pred_sandwich$difference)$survival_diff)) +
+  geom_line() +
+  geom_line(aes(y = as.data.frame(pred_sandwich$difference)[,3], color = "Sandwich"), linetype = "dashed") +
+  geom_line(aes(y = as.data.frame(pred_sandwich$difference)[,4],color = "Sandwich"), linetype = "dashed") +
+  labs(y = "Survival difference",
+       x = 'Visit') +
+  scale_color_manual(name = "CI method", values = c("Nonpara. bootstrap"= "red", "Sandwich" = "blue",
+                                                    "LEF outcome" = "green", "LEF both" = "purple",
+                                                    "Jackknife MVN" = 'orange',"Jackknife Wald" = 'deepskyblue' )) +
+  theme(
+    plot.background = element_rect(fill='transparent', color=NA),
+    legend.position="bottom",
+    legend.background = element_rect(fill='transparent'))
+```
+
+
 # Nonparametric Bootstrap
 
 The nonparametric bootstrap repeatedly resamples patients and refits the complete analysis in each bootstrap sample.
@@ -128,6 +147,22 @@ head(pred_boot)
 ```
 
 The `samples` argument specifies the number of bootstrap resamples.
+
+```{r}
+ggplot(as.data.frame(pred_boot), aes(x=as.data.frame(pred_boot)$followup_time, y=as.data.frame(pred_boot)$survival_diff)) +
+  geom_line() +
+  geom_line(aes(y = as.data.frame(pred_boot)[,3], color = "Nonpara. bootstrap"), linetype = "dashed") +
+  geom_line(aes(y = as.data.frame(pred_boot)[,4],color = "Nonpara. bootstrap"), linetype = "dashed") +
+  labs(y = "Survival difference",
+       x = 'Visit') +
+  scale_color_manual(name = "CI method", values = c("Nonpara. bootstrap"= "red", "Sandwich" = "blue",
+                                                    "LEF outcome" = "green", "LEF both" = "purple",
+                                                    "Jackknife MVN" = 'orange',"Jackknife Wald" = 'deepskyblue' )) +
+  theme(
+    plot.background = element_rect(fill='transparent', color=NA),
+    legend.position="bottom",
+    legend.background = element_rect(fill='transparent'))
+```
 
 # LEF Bootstrap Methods
 
@@ -171,6 +206,24 @@ head(pred_lef_both)
 
 Because repeated model fitting is avoided, this method is often substantially faster than the ordinary nonparametric bootstrap.
 
+```{r}
+ggplot(as.data.frame(pred_lef_outcome), aes(x=as.data.frame(pred_lef_outcome)$followup_time, y=as.data.frame(pred_lef_outcome)$survival_diff)) +
+  geom_line() +
+  geom_line(aes(y = as.data.frame(pred_lef_outcome)[,3], color = "LEF outcome"), linetype = "dashed") +
+  geom_line(aes(y = as.data.frame(pred_lef_outcome)[,4],color = "LEF outcome"), linetype = "dashed") +
+  geom_line(aes(y = as.data.frame(pred_lef_both)[,3], color = "LEF both"), linetype = "dashed") +
+  geom_line(aes(y = as.data.frame(pred_lef_both)[,4],color = "LEF both"), linetype = "dashed") +
+  labs(y = "Survival difference",
+       x = 'Visit') +
+  scale_color_manual(name = "CI method", values = c("Nonpara. bootstrap"= "red", "Sandwich" = "blue",
+                                                    "LEF outcome" = "green", "LEF both" = "purple",
+                                                    "Jackknife MVN" = 'orange',"Jackknife Wald" = 'deepskyblue' )) +
+  theme(
+    plot.background = element_rect(fill='transparent', color=NA),
+    legend.position="bottom",
+    legend.background = element_rect(fill='transparent'))
+```
+
 # Jackknife Methods
 
 The package also provides two jackknife-based confidence interval methods.
@@ -209,6 +262,25 @@ head(pred_jack_mvn$difference)
 ```
 
 
+```{r}
+ggplot(as.data.frame(pred_jack_wald), aes(x=as.data.frame(pred_jack_wald)$followup_time, y=as.data.frame(pred_jack_wald)$survival_diff)) +
+  geom_line() +
+  geom_line(aes(y = as.data.frame(pred_jack_wald)[,3], color = "Jackknife Wald"), linetype = "dashed") +
+  geom_line(aes(y = as.data.frame(pred_jack_wald)[,4],color = "Jackknife Wald"), linetype = "dashed") +
+  geom_line(aes(y = as.data.frame(pred_jack_mvn$difference)[,3], color = "Jackknife MVN"), linetype = "dashed") +
+  geom_line(aes(y = as.data.frame(pred_jack_mvn$difference)[,4],color = "Jackknife MVN"), linetype = "dashed") +
+  labs(y = "Survival difference",
+       x = 'Visit') +
+  scale_color_manual(name = "CI method", values = c("Nonpara. bootstrap"= "red", "Sandwich" = "blue",
+                                                    "LEF outcome" = "green", "LEF both" = "purple",
+                                                    "Jackknife MVN" = 'orange',"Jackknife Wald" = 'deepskyblue' )) +
+  theme(
+    plot.background = element_rect(fill='transparent', color=NA),
+    legend.position="bottom",
+    legend.background = element_rect(fill='transparent'))
+```
+
+
 The choice of confidence interval method depends on the size and characteristics of the dataset [1].
 
 | Scenario | Recommended CI Method | Reason |
@@ -227,6 +299,7 @@ The LEF methods were developed to improve confidence interval performance in set
 - For bootstrap-based methods, the `samples` argument specifies the number of resamples. For `"sandwich"` and `"Jackknife MVN"` methods, the `samples` argument determines the sample size of the mutivariate Normal sampling.
 - Larger values of `samples` improve Monte Carlo precision but increase computation time.
 - Confidence intervals are calculated pointwise at each prediction time.
+- If a user requests a jackknife-based CI with more than 1000 patients, a warning is issued because the number of leave-one-out jackknife replicates equals the number of patients, which can substantially increase computation time when the sample size is large.
 
 # Reference
 
