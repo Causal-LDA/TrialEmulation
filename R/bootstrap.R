@@ -43,7 +43,8 @@ calculate_bootstrap_CIs <- function(
       # Bootstrap sample with patient id as sampling unit
       boot_idx <- boot_data_conf[[i]]
       weights_table_boot <- data.table(id = unique_ids)
-      weights_table_boot[,
+      weights_table_boot[
+        ,
         weight_boot := sapply(weights_table_boot$id, function(i) {
           sum(i == boot_idx)
         })
@@ -160,7 +161,8 @@ calculate_jackknife_wald_CIs <- function(
       boot_idx <- unique_ids[unique_ids != unique_ids[i]]
 
       weights_table_boot <- data.table(id = unique_ids)
-      weights_table_boot[,
+      weights_table_boot[
+        ,
         weight_boot := sapply(weights_table_boot$id, function(i) {
           sum(i == boot_idx)
         })
@@ -259,7 +261,8 @@ calculate_jackknife_variance <- function(
       boot_idx <- unique(object@data@data$id[object@data@data$id != id])
 
       weights_table_boot <- data.table(id = unique(object@data@data$id))
-      weights_table_boot[,
+      weights_table_boot[
+        ,
         weight_boot := sapply(weights_table_boot$id, function(i) {
           sum(i == boot_idx)
         })
@@ -350,8 +353,8 @@ weight_func_bootstrap <- function(
   # Dummy variables used in data.table calls declared to prevent package check NOTES:
   eligible0 <- eligible1 <- id <- period <- eligible0.y <- eligible1.y <- am_1 <- eligible_wts_0 <-
     eligible_wts_1 <- treatment <- wt <- wtC <- p0_n <- p0_d <- p1_n <- p1_d <- pC_n0 <- pC_d0 <-
-      pC_n1 <- pC_d1 <- pC_n <- pC_d <- wtprod <- weight0 <- period_new <- trial_period <-
-        index <- followup_time <- weight <- weight_boot <- NULL
+    pC_n1 <- pC_d1 <- pC_n <- pC_d <- wtprod <- weight0 <- period_new <- trial_period <-
+    index <- followup_time <- weight <- weight_boot <- NULL
 
   ## ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   # Switching weights --------------------
@@ -826,7 +829,8 @@ fit_switch_weights_bootstrap <- function(
 
   # --------------- denominator ------------------
   model1 <- fit_glm(
-    data = sw_data[model_0_index, ][,
+    data = sw_data[model_0_index, ][
+      ,
       weight_boot := sapply(id, function(i) sum(i == boot_idx))
     ],
     formula = switch_d_cov,
@@ -852,7 +856,8 @@ fit_switch_weights_bootstrap <- function(
 
   # -------------- numerator --------------------
   model2 <- fit_glm(
-    data = sw_data[model_0_index, ][,
+    data = sw_data[model_0_index, ][
+      ,
       weight_boot := sapply(id, function(i) sum(i == boot_idx))
     ],
     formula = switch_n_cov,
@@ -885,7 +890,8 @@ fit_switch_weights_bootstrap <- function(
   model_1_index <- sw_data[eval(data_1_expr), which = TRUE]
   # --------------- denominator ------------------
   model3 <- fit_glm(
-    data = sw_data[model_1_index, ][,
+    data = sw_data[model_1_index, ][
+      ,
       weight_boot := sapply(id, function(i) sum(i == boot_idx))
     ],
     formula = switch_d_cov,
@@ -912,7 +918,8 @@ fit_switch_weights_bootstrap <- function(
 
   # -------------------- numerator ---------------------------
   model4 <- fit_glm(
-    data = sw_data[model_1_index, ][,
+    data = sw_data[model_1_index, ][
+      ,
       weight_boot := sapply(id, function(i) sum(i == boot_idx))
     ],
     formula = switch_n_cov,
@@ -1005,7 +1012,8 @@ fit_censor_weights_bootstrap <- function(
   if (pool_cense_d) {
     # Fit pooled denominator models
     model1.cense <- fit_glm(
-      data = sw_data[,
+      data = sw_data[
+        ,
         weight_boot := sapply(id, function(i) sum(i == boot_idx))
       ],
       formula = cense_d_cov,
@@ -1033,7 +1041,8 @@ fit_censor_weights_bootstrap <- function(
     # ---------------------- denominator -----------------------
     # ---------------------- eligible0 ---------------------------
     model1.cense <- fit_glm(
-      data = sw_data[eligible0 == 1][,
+      data = sw_data[eligible0 == 1][
+        ,
         weight_boot := sapply(id, function(i) sum(i == boot_idx))
       ],
       formula = cense_d_cov,
@@ -1060,7 +1069,8 @@ fit_censor_weights_bootstrap <- function(
     # ------------------------- denominator ---------------------
     # ------------------------ eligible1 -------------------------
     model3.cense <- fit_glm(
-      data = sw_data[eligible1 == 1][,
+      data = sw_data[eligible1 == 1][
+        ,
         weight_boot := sapply(id, function(i) sum(i == boot_idx))
       ],
       formula = cense_d_cov,
@@ -1088,7 +1098,8 @@ fit_censor_weights_bootstrap <- function(
   if (pool_cense_n) {
     # Fit pooled numerator models
     model2.cense <- fit_glm(
-      data = sw_data[,
+      data = sw_data[
+        ,
         weight_boot := sapply(id, function(i) sum(i == boot_idx))
       ],
       formula = cense_n_cov,
@@ -1116,7 +1127,8 @@ fit_censor_weights_bootstrap <- function(
     # -------------------------- numerator ----------------------
     #--------------------------- eligible0 -----------------------
     model2.cense <- fit_glm(
-      data = sw_data[eligible0 == 1][,
+      data = sw_data[eligible0 == 1][
+        ,
         weight_boot := sapply(id, function(i) sum(i == boot_idx))
       ],
       formula = cense_n_cov,
@@ -1143,7 +1155,8 @@ fit_censor_weights_bootstrap <- function(
     # ------------------------ numerator -------------------------
     # ------------------------- eligible1 -----------------------
     model4.cense <- fit_glm(
-      data = sw_data[eligible1 == 1][,
+      data = sw_data[eligible1 == 1][
+        ,
         weight_boot := sapply(id, function(i) sum(i == boot_idx))
       ],
       formula = cense_n_cov,

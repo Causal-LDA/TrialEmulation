@@ -65,7 +65,7 @@ trial_pp <- trial_pp |>
   ) |>
   set_switch_weight_model(
     numerator = ~age,
-    denominator = ~age + x1 + x3,
+    denominator = ~ age + x1 + x3,
     model_fitter = stats_glm_logit(
       save_path = file.path(trial_pp_dir, "switch_models")
     )
@@ -73,15 +73,15 @@ trial_pp <- trial_pp |>
   set_censor_weight_model(
     censor_event = "censored",
     numerator = ~x2,
-    denominator = ~x2 + x1,
+    denominator = ~ x2 + x1,
     pool_models = "none",
     model_fitter = stats_glm_logit(
       save_path = file.path(trial_pp_dir, "censor_models")
     )
-  )|>
+  ) |>
   calculate_weights() |>
   set_outcome_model() |>
-    set_expansion_options(
+  set_expansion_options(
     output = save_to_datatable(),
     chunk_size = 500
   ) |>
@@ -112,19 +112,24 @@ This is the fastest confidence interval method and is often suitable for larger 
 ```{r}
 library(ggplot2)
 
-ggplot(as.data.frame(pred_sandwich$difference), aes(x=as.data.frame(pred_sandwich$difference)$followup_time, y=as.data.frame(pred_sandwich$difference)$survival_diff)) +
+ggplot(as.data.frame(pred_sandwich$difference), aes(x = as.data.frame(pred_sandwich$difference)$followup_time, y = as.data.frame(pred_sandwich$difference)$survival_diff)) +
   geom_line() +
-  geom_line(aes(y = as.data.frame(pred_sandwich$difference)[,3], color = "Sandwich"), linetype = "dashed") +
-  geom_line(aes(y = as.data.frame(pred_sandwich$difference)[,4],color = "Sandwich"), linetype = "dashed") +
-  labs(y = "Survival difference",
-       x = 'Visit') +
-  scale_color_manual(name = "CI method", values = c("Nonpara. bootstrap"= "red", "Sandwich" = "blue",
-                                                    "LEF outcome" = "green", "LEF both" = "purple",
-                                                    "Jackknife MVN" = 'orange',"Jackknife Wald" = 'deepskyblue' )) +
+  geom_line(aes(y = as.data.frame(pred_sandwich$difference)[, 3], color = "Sandwich"), linetype = "dashed") +
+  geom_line(aes(y = as.data.frame(pred_sandwich$difference)[, 4], color = "Sandwich"), linetype = "dashed") +
+  labs(
+    y = "Survival difference",
+    x = "Visit"
+  ) +
+  scale_color_manual(name = "CI method", values = c(
+    "Nonpara. bootstrap" = "red", "Sandwich" = "blue",
+    "LEF outcome" = "green", "LEF both" = "purple",
+    "Jackknife MVN" = "orange", "Jackknife Wald" = "deepskyblue"
+  )) +
   theme(
-    plot.background = element_rect(fill='transparent', color=NA),
-    legend.position="bottom",
-    legend.background = element_rect(fill='transparent'))
+    plot.background = element_rect(fill = "transparent", color = NA),
+    legend.position = "bottom",
+    legend.background = element_rect(fill = "transparent")
+  )
 ```
 
 
@@ -149,19 +154,24 @@ head(pred_boot)
 The `samples` argument specifies the number of bootstrap resamples.
 
 ```{r}
-ggplot(as.data.frame(pred_boot), aes(x=as.data.frame(pred_boot)$followup_time, y=as.data.frame(pred_boot)$survival_diff)) +
+ggplot(as.data.frame(pred_boot), aes(x = as.data.frame(pred_boot)$followup_time, y = as.data.frame(pred_boot)$survival_diff)) +
   geom_line() +
-  geom_line(aes(y = as.data.frame(pred_boot)[,3], color = "Nonpara. bootstrap"), linetype = "dashed") +
-  geom_line(aes(y = as.data.frame(pred_boot)[,4],color = "Nonpara. bootstrap"), linetype = "dashed") +
-  labs(y = "Survival difference",
-       x = 'Visit') +
-  scale_color_manual(name = "CI method", values = c("Nonpara. bootstrap"= "red", "Sandwich" = "blue",
-                                                    "LEF outcome" = "green", "LEF both" = "purple",
-                                                    "Jackknife MVN" = 'orange',"Jackknife Wald" = 'deepskyblue' )) +
+  geom_line(aes(y = as.data.frame(pred_boot)[, 3], color = "Nonpara. bootstrap"), linetype = "dashed") +
+  geom_line(aes(y = as.data.frame(pred_boot)[, 4], color = "Nonpara. bootstrap"), linetype = "dashed") +
+  labs(
+    y = "Survival difference",
+    x = "Visit"
+  ) +
+  scale_color_manual(name = "CI method", values = c(
+    "Nonpara. bootstrap" = "red", "Sandwich" = "blue",
+    "LEF outcome" = "green", "LEF both" = "purple",
+    "Jackknife MVN" = "orange", "Jackknife Wald" = "deepskyblue"
+  )) +
   theme(
-    plot.background = element_rect(fill='transparent', color=NA),
-    legend.position="bottom",
-    legend.background = element_rect(fill='transparent'))
+    plot.background = element_rect(fill = "transparent", color = NA),
+    legend.position = "bottom",
+    legend.background = element_rect(fill = "transparent")
+  )
 ```
 
 # LEF Bootstrap Methods
@@ -207,21 +217,26 @@ head(pred_lef_both)
 Because repeated model fitting is avoided, this method is often substantially faster than the ordinary nonparametric bootstrap.
 
 ```{r}
-ggplot(as.data.frame(pred_lef_outcome), aes(x=as.data.frame(pred_lef_outcome)$followup_time, y=as.data.frame(pred_lef_outcome)$survival_diff)) +
+ggplot(as.data.frame(pred_lef_outcome), aes(x = as.data.frame(pred_lef_outcome)$followup_time, y = as.data.frame(pred_lef_outcome)$survival_diff)) +
   geom_line() +
-  geom_line(aes(y = as.data.frame(pred_lef_outcome)[,3], color = "LEF outcome"), linetype = "dashed") +
-  geom_line(aes(y = as.data.frame(pred_lef_outcome)[,4],color = "LEF outcome"), linetype = "dashed") +
-  geom_line(aes(y = as.data.frame(pred_lef_both)[,3], color = "LEF both"), linetype = "dashed") +
-  geom_line(aes(y = as.data.frame(pred_lef_both)[,4],color = "LEF both"), linetype = "dashed") +
-  labs(y = "Survival difference",
-       x = 'Visit') +
-  scale_color_manual(name = "CI method", values = c("Nonpara. bootstrap"= "red", "Sandwich" = "blue",
-                                                    "LEF outcome" = "green", "LEF both" = "purple",
-                                                    "Jackknife MVN" = 'orange',"Jackknife Wald" = 'deepskyblue' )) +
+  geom_line(aes(y = as.data.frame(pred_lef_outcome)[, 3], color = "LEF outcome"), linetype = "dashed") +
+  geom_line(aes(y = as.data.frame(pred_lef_outcome)[, 4], color = "LEF outcome"), linetype = "dashed") +
+  geom_line(aes(y = as.data.frame(pred_lef_both)[, 3], color = "LEF both"), linetype = "dashed") +
+  geom_line(aes(y = as.data.frame(pred_lef_both)[, 4], color = "LEF both"), linetype = "dashed") +
+  labs(
+    y = "Survival difference",
+    x = "Visit"
+  ) +
+  scale_color_manual(name = "CI method", values = c(
+    "Nonpara. bootstrap" = "red", "Sandwich" = "blue",
+    "LEF outcome" = "green", "LEF both" = "purple",
+    "Jackknife MVN" = "orange", "Jackknife Wald" = "deepskyblue"
+  )) +
   theme(
-    plot.background = element_rect(fill='transparent', color=NA),
-    legend.position="bottom",
-    legend.background = element_rect(fill='transparent'))
+    plot.background = element_rect(fill = "transparent", color = NA),
+    legend.position = "bottom",
+    legend.background = element_rect(fill = "transparent")
+  )
 ```
 
 # Jackknife Methods
@@ -263,21 +278,26 @@ head(pred_jack_mvn$difference)
 
 
 ```{r}
-ggplot(as.data.frame(pred_jack_wald), aes(x=as.data.frame(pred_jack_wald)$followup_time, y=as.data.frame(pred_jack_wald)$survival_diff)) +
+ggplot(as.data.frame(pred_jack_wald), aes(x = as.data.frame(pred_jack_wald)$followup_time, y = as.data.frame(pred_jack_wald)$survival_diff)) +
   geom_line() +
-  geom_line(aes(y = as.data.frame(pred_jack_wald)[,3], color = "Jackknife Wald"), linetype = "dashed") +
-  geom_line(aes(y = as.data.frame(pred_jack_wald)[,4],color = "Jackknife Wald"), linetype = "dashed") +
-  geom_line(aes(y = as.data.frame(pred_jack_mvn$difference)[,3], color = "Jackknife MVN"), linetype = "dashed") +
-  geom_line(aes(y = as.data.frame(pred_jack_mvn$difference)[,4],color = "Jackknife MVN"), linetype = "dashed") +
-  labs(y = "Survival difference",
-       x = 'Visit') +
-  scale_color_manual(name = "CI method", values = c("Nonpara. bootstrap"= "red", "Sandwich" = "blue",
-                                                    "LEF outcome" = "green", "LEF both" = "purple",
-                                                    "Jackknife MVN" = 'orange',"Jackknife Wald" = 'deepskyblue' )) +
+  geom_line(aes(y = as.data.frame(pred_jack_wald)[, 3], color = "Jackknife Wald"), linetype = "dashed") +
+  geom_line(aes(y = as.data.frame(pred_jack_wald)[, 4], color = "Jackknife Wald"), linetype = "dashed") +
+  geom_line(aes(y = as.data.frame(pred_jack_mvn$difference)[, 3], color = "Jackknife MVN"), linetype = "dashed") +
+  geom_line(aes(y = as.data.frame(pred_jack_mvn$difference)[, 4], color = "Jackknife MVN"), linetype = "dashed") +
+  labs(
+    y = "Survival difference",
+    x = "Visit"
+  ) +
+  scale_color_manual(name = "CI method", values = c(
+    "Nonpara. bootstrap" = "red", "Sandwich" = "blue",
+    "LEF outcome" = "green", "LEF both" = "purple",
+    "Jackknife MVN" = "orange", "Jackknife Wald" = "deepskyblue"
+  )) +
   theme(
-    plot.background = element_rect(fill='transparent', color=NA),
-    legend.position="bottom",
-    legend.background = element_rect(fill='transparent'))
+    plot.background = element_rect(fill = "transparent", color = NA),
+    legend.position = "bottom",
+    legend.background = element_rect(fill = "transparent")
+  )
 ```
 
 
