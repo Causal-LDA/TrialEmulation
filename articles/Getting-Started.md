@@ -30,6 +30,7 @@ To get started a longitudinal dataset must be created containing:
 An example data set is included to demonstrate the format:
 
 ``` r
+
 library(TrialEmulation)
 # Prepare the example data
 data("trial_example")
@@ -68,6 +69,7 @@ Call the
 function to run the complete analysis:
 
 ``` r
+
 result <- initiators(
   data = trial_example,
   id = "id",
@@ -149,6 +151,7 @@ result <- initiators(
 ```
 
 ``` r
+
 summary(result)
 #> Trial Emulation Outcome Model
 #> 
@@ -185,6 +188,7 @@ By default, this returns the final `glm` model object and the results
 using the sandwich estimator.
 
 ``` r
+
 summary(result$model)
 #> 
 #> Call:
@@ -227,6 +231,7 @@ summary(result$model)
 Tidy summaries of the robust models are available.
 
 ``` r
+
 print(result$robust$summary)
 #>                 names  estimate robust_se      2.5%     97.5%       z  p_value
 #> 1         (Intercept) -3.21e+00  7.03e-01 -4.59e+00 -1.84e+00  -4.575 4.76e-06
@@ -251,6 +256,7 @@ print(result$robust$summary)
 Also the sandwich robust variance-covariance matrix.
 
 ``` r
+
 # only print the first columns
 head(result$robust$matrix, c(17, 4))
 #>                    (Intercept) assigned_treatment trial_period
@@ -302,6 +308,7 @@ data preparation in chunks and then sampling from the expanded trial
 data.
 
 ``` r
+
 # for the purposes of the vignette, we use a temporary directory, however it may be useful to use a permanent
 # location in order to inspect the outputs later
 working_dir <- file.path(tempdir(TRUE), "trial_emu")
@@ -309,6 +316,7 @@ if (!dir.exists(working_dir)) dir.create(working_dir)
 ```
 
 ``` r
+
 prep_data <- data_preparation(
   data = trial_example,
   id = "id",
@@ -332,17 +340,18 @@ prep_data <- data_preparation(
 Use `summary` to get an overview of the result.
 
 ``` r
+
 summary(prep_data)
 #> Expanded Trial Emulation data
 #> 
 #> Expanded data saved in 396 csv files:
-#>   1:   /tmp/Rtmpwhn9qW/trial_emu/trial_1.csv
-#>   2:   /tmp/Rtmpwhn9qW/trial_emu/trial_2.csv
-#>   3:   /tmp/Rtmpwhn9qW/trial_emu/trial_3.csv
+#>   1:   /tmp/RtmpjDjkdp/trial_emu/trial_1.csv
+#>   2:   /tmp/RtmpjDjkdp/trial_emu/trial_2.csv
+#>   3:   /tmp/RtmpjDjkdp/trial_emu/trial_3.csv
 #>  ---                                        
-#> 394: /tmp/Rtmpwhn9qW/trial_emu/trial_394.csv
-#> 395: /tmp/Rtmpwhn9qW/trial_emu/trial_395.csv
-#> 396: /tmp/Rtmpwhn9qW/trial_emu/trial_396.csv
+#> 394: /tmp/RtmpjDjkdp/trial_emu/trial_394.csv
+#> 395: /tmp/RtmpjDjkdp/trial_emu/trial_395.csv
+#> 396: /tmp/RtmpjDjkdp/trial_emu/trial_396.csv
 #> 
 #> 
 #> Number of observations in expanded data: 963883 
@@ -394,6 +403,7 @@ For more information about the weighting models, we can inspect them
 individually
 
 ``` r
+
 prep_data$switch_models$switch_n0
 #> P(treatment = 1 | previous treatment = 0) for numerator 
 #> 
@@ -405,7 +415,7 @@ prep_data$switch_models$switch_n0
 #>  null.deviance df.null logLik  AIC  BIC deviance df.residual  nobs
 #>           4330   21263  -2165 4335 4359     4329       21261 21264
 #> 
-#> Object saved at "/tmp/Rtmpwhn9qW/trial_emu/weight_model_switch_n0.rds"
+#> Object saved at "/tmp/RtmpjDjkdp/trial_emu/weight_model_switch_n0.rds"
 ```
 
 If `save_weight_models = TRUE,` the full model objects are saved in
@@ -413,6 +423,7 @@ If `save_weight_models = TRUE,` the full model objects are saved in
 further investigate how well those models fit.
 
 ``` r
+
 list.files(working_dir, "*.rds")
 #> [1] "weight_model_switch_d0.rds" "weight_model_switch_d1.rds"
 #> [3] "weight_model_switch_n0.rds" "weight_model_switch_n1.rds"
@@ -448,13 +459,14 @@ hist(switch_n0$fitted.values, main = "Histogram of weights from model switch_n0"
 We also see the expanded trial files:
 
 ``` r
+
 head(prep_data$data)
-#> [1] "/tmp/Rtmpwhn9qW/trial_emu/trial_1.csv"
-#> [2] "/tmp/Rtmpwhn9qW/trial_emu/trial_2.csv"
-#> [3] "/tmp/Rtmpwhn9qW/trial_emu/trial_3.csv"
-#> [4] "/tmp/Rtmpwhn9qW/trial_emu/trial_4.csv"
-#> [5] "/tmp/Rtmpwhn9qW/trial_emu/trial_5.csv"
-#> [6] "/tmp/Rtmpwhn9qW/trial_emu/trial_6.csv"
+#> [1] "/tmp/RtmpjDjkdp/trial_emu/trial_1.csv"
+#> [2] "/tmp/RtmpjDjkdp/trial_emu/trial_2.csv"
+#> [3] "/tmp/RtmpjDjkdp/trial_emu/trial_3.csv"
+#> [4] "/tmp/RtmpjDjkdp/trial_emu/trial_4.csv"
+#> [5] "/tmp/RtmpjDjkdp/trial_emu/trial_5.csv"
+#> [6] "/tmp/RtmpjDjkdp/trial_emu/trial_6.csv"
 ```
 
 Each of these csv files contains the data for the trial starting at
@@ -465,6 +477,7 @@ Here we sample 10% of the patients without an event at each follow-up
 time in each trial. All observations with events are included.
 
 ``` r
+
 sampled_data <- case_control_sampling_trials(prep_data, p_control = 0.1)
 str(sampled_data)
 #> Classes 'data.table' and 'data.frame':   99926 obs. of  13 variables:
@@ -481,7 +494,7 @@ str(sampled_data)
 #>  $ nvarC             : int  45 47 70 49 45 69 49 56 45 49 ...
 #>  $ assigned_treatment: int  0 0 0 0 0 0 0 0 0 0 ...
 #>  $ sample_weight     : num  10 10 10 10 10 10 10 10 10 10 ...
-#>  - attr(*, ".internal.selfref")=<pointer: 0x564db7179ee0>
+#>  - attr(*, ".internal.selfref")=<pointer: 0x55da52dfcf00>
 ```
 
 Before proceeding with the modelling, it is possible to manipulate and
@@ -500,6 +513,7 @@ function. Since we have sampled from the data, we should make use of the
 `use_sample_weights` option to get correct survival estimates.
 
 ``` r
+
 model_result <- trial_msm(
   data = sampled_data,
   outcome_cov = c("catvarA", "catvarB", "nvarA", "nvarB", "nvarC"),
@@ -576,6 +590,7 @@ The result is the same type as the previous result from the simple
 results.
 
 ``` r
+
 summary(model_result)
 #> Trial Emulation Outcome Model
 #> 
@@ -609,6 +624,7 @@ summary(model_result)
 ```
 
 ``` r
+
 summary(model_result$model)
 #> 
 #> Call:
@@ -655,6 +671,7 @@ right format, we can use the `data_template` returned by
 [`data_preparation()`](https://causal-lda.github.io/TrialEmulation/reference/data_preparation.md).
 
 ``` r
+
 new_data <- data.table::fread(file.path(working_dir, "trial_1.csv"))
 new_data <- rbind(data.table::as.data.table(prep_data$data_template), new_data)
 model_preds <- predict(model_result, predict_times = c(0:40), newdata = new_data, type = "cum_inc")
@@ -666,6 +683,7 @@ It possible to change the type of predicted values, either cumulative
 incidence or survival.
 
 ``` r
+
 plot(
   model_preds$difference$followup_time,
   model_preds$difference$cum_inc_diff,

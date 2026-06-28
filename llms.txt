@@ -8,12 +8,14 @@ trials** analysis.
 The package is available on CRAN:
 
 ``` r
+
 install.packages('TrialEmulation')
 ```
 
 To install the latest development version from github:
 
 ``` r
+
 remotes::install_github("Causal-LDA/TrialEmulation")
 ```
 
@@ -174,6 +176,8 @@ Control how expanded data is stored
 
 ### All vignettes
 
+- [Confidence Interval
+  Methods](https://causal-lda.github.io/TrialEmulation/articles/confidence_intervals.md):
 - [Extending-TrialEmulation](https://causal-lda.github.io/TrialEmulation/articles/Extending-TrialEmulation.md):
 - [Getting-Started](https://causal-lda.github.io/TrialEmulation/articles/Getting-Started.md):
 - [New

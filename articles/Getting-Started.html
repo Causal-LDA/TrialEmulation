@@ -18,8 +18,8 @@
     }
   };
 </script><script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<link href="../deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet">
-<script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
+<link href="../deps/bootstrap-5.3.8/bootstrap.min.css" rel="stylesheet">
+<script src="../deps/bootstrap-5.3.8/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
 <link href="../deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet">
 <script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Getting-Started">
 </head>
@@ -386,13 +386,13 @@ data.</p>
 <span><span class="co">#&gt; Expanded Trial Emulation data</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Expanded data saved in 396 csv files:</span></span>
-<span><span class="co">#&gt;   1:   /tmp/Rtmpwhn9qW/trial_emu/trial_1.csv</span></span>
-<span><span class="co">#&gt;   2:   /tmp/Rtmpwhn9qW/trial_emu/trial_2.csv</span></span>
-<span><span class="co">#&gt;   3:   /tmp/Rtmpwhn9qW/trial_emu/trial_3.csv</span></span>
+<span><span class="co">#&gt;   1:   /tmp/RtmpjDjkdp/trial_emu/trial_1.csv</span></span>
+<span><span class="co">#&gt;   2:   /tmp/RtmpjDjkdp/trial_emu/trial_2.csv</span></span>
+<span><span class="co">#&gt;   3:   /tmp/RtmpjDjkdp/trial_emu/trial_3.csv</span></span>
 <span><span class="co">#&gt;  ---                                        </span></span>
-<span><span class="co">#&gt; 394: /tmp/Rtmpwhn9qW/trial_emu/trial_394.csv</span></span>
-<span><span class="co">#&gt; 395: /tmp/Rtmpwhn9qW/trial_emu/trial_395.csv</span></span>
-<span><span class="co">#&gt; 396: /tmp/Rtmpwhn9qW/trial_emu/trial_396.csv</span></span>
+<span><span class="co">#&gt; 394: /tmp/RtmpjDjkdp/trial_emu/trial_394.csv</span></span>
+<span><span class="co">#&gt; 395: /tmp/RtmpjDjkdp/trial_emu/trial_395.csv</span></span>
+<span><span class="co">#&gt; 396: /tmp/RtmpjDjkdp/trial_emu/trial_396.csv</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Number of observations in expanded data: 963883 </span></span>
@@ -452,7 +452,7 @@ individually</p>
 <span><span class="co">#&gt;  null.deviance df.null logLik  AIC  BIC deviance df.residual  nobs</span></span>
 <span><span class="co">#&gt;           4330   21263  -2165 4335 4359     4329       21261 21264</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Object saved at "/tmp/Rtmpwhn9qW/trial_emu/weight_model_switch_n0.rds"</span></span></code></pre></div>
+<span><span class="co">#&gt; Object saved at "/tmp/RtmpjDjkdp/trial_emu/weight_model_switch_n0.rds"</span></span></code></pre></div>
 <p>If <code>save_weight_models = TRUE,</code> the full model objects are
 saved in <code>working_dir</code>, so you can inspect the data used in
 those models and further investigate how well those models fit.</p>
@@ -489,12 +489,12 @@ those models and further investigate how well those models fit.</p>
 <p>We also see the expanded trial files:</p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">prep_data</span><span class="op">$</span><span class="va">data</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] "/tmp/Rtmpwhn9qW/trial_emu/trial_1.csv"</span></span>
-<span><span class="co">#&gt; [2] "/tmp/Rtmpwhn9qW/trial_emu/trial_2.csv"</span></span>
-<span><span class="co">#&gt; [3] "/tmp/Rtmpwhn9qW/trial_emu/trial_3.csv"</span></span>
-<span><span class="co">#&gt; [4] "/tmp/Rtmpwhn9qW/trial_emu/trial_4.csv"</span></span>
-<span><span class="co">#&gt; [5] "/tmp/Rtmpwhn9qW/trial_emu/trial_5.csv"</span></span>
-<span><span class="co">#&gt; [6] "/tmp/Rtmpwhn9qW/trial_emu/trial_6.csv"</span></span></code></pre></div>
+<span><span class="co">#&gt; [1] "/tmp/RtmpjDjkdp/trial_emu/trial_1.csv"</span></span>
+<span><span class="co">#&gt; [2] "/tmp/RtmpjDjkdp/trial_emu/trial_2.csv"</span></span>
+<span><span class="co">#&gt; [3] "/tmp/RtmpjDjkdp/trial_emu/trial_3.csv"</span></span>
+<span><span class="co">#&gt; [4] "/tmp/RtmpjDjkdp/trial_emu/trial_4.csv"</span></span>
+<span><span class="co">#&gt; [5] "/tmp/RtmpjDjkdp/trial_emu/trial_5.csv"</span></span>
+<span><span class="co">#&gt; [6] "/tmp/RtmpjDjkdp/trial_emu/trial_6.csv"</span></span></code></pre></div>
 <p>Each of these csv files contains the data for the trial starting at
 period <code>_i</code>. To create a manageable dataset for the final
 analysis we can sample from these trials.</p>
@@ -517,7 +517,7 @@ time in each trial. All observations with events are included.</p>
 <span><span class="co">#&gt;  $ nvarC             : int  45 47 70 49 45 69 49 56 45 49 ...</span></span>
 <span><span class="co">#&gt;  $ assigned_treatment: int  0 0 0 0 0 0 0 0 0 0 ...</span></span>
 <span><span class="co">#&gt;  $ sample_weight     : num  10 10 10 10 10 10 10 10 10 10 ...</span></span>
-<span><span class="co">#&gt;  - attr(*, ".internal.selfref")=&lt;pointer: 0x564db7179ee0&gt;</span></span></code></pre></div>
+<span><span class="co">#&gt;  - attr(*, ".internal.selfref")=&lt;pointer: 0x55da52dfcf00&gt;</span></span></code></pre></div>
 <p>Before proceeding with the modelling, it is possible to manipulate
 and derive new variables and adjust factor levels in the
 <code>data.frame</code>. You can also specify transformations in a

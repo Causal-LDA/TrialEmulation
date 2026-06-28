@@ -1,6 +1,7 @@
 # New Interface
 
 ``` r
+
 library(TrialEmulation)
 ```
 
@@ -20,6 +21,7 @@ A sequence of target trials analysis starts by specifying which estimand
 will be used:
 
 ``` r
+
 trial_pp <- trial_sequence(estimand = "PP") # Per-protocol
 trial_itt <- trial_sequence(estimand = "ITT") # Intention-to-treat
 ```
@@ -28,6 +30,7 @@ Additionally it is useful to create a directory to save files for later
 inspection.
 
 ``` r
+
 trial_pp_dir <- file.path(tempdir(), "trial_pp")
 dir.create(trial_pp_dir)
 trial_itt_dir <- file.path(tempdir(), "trial_itt")
@@ -41,6 +44,7 @@ used for the target trial emulation. Here we need to specify which
 columns contain which values and how they should be used.
 
 ``` r
+
 data("data_censored")
 trial_pp <- trial_pp |>
   set_data(
@@ -67,6 +71,7 @@ trial_itt <- set_data(
 We can inspect our object by printing:
 
 ``` r
+
 trial_itt
 #> Trial Sequence Object 
 #> Estimand: Intention-to-treat 
@@ -116,6 +121,7 @@ The data which will be used for fitting those weight models is
 accessible with the `ipw_data` method.
 
 ``` r
+
 ipw_data(trial_itt)
 #> Key: <id>
 #> Indices: <first>, <am_1>
@@ -174,6 +180,7 @@ in case it is not possible for a patient to deviate from a certain
 treatment assignment in that period.
 
 ``` r
+
 trial_pp <- trial_pp |>
   set_switch_weight_model(
     numerator = ~age,
@@ -210,6 +217,7 @@ additional required arguments:
   only. The default and allowed choices depends on the estimand.
 
 ``` r
+
 trial_pp <- trial_pp |>
   set_censor_weight_model(
     censor_event = "censored",
@@ -226,6 +234,7 @@ trial_pp@censor_weights
 ```
 
 ``` r
+
 trial_itt <- set_censor_weight_model(
   trial_itt,
   censor_event = "censored",
@@ -249,6 +258,7 @@ This is done with
 [`calculate_weights()`](https://causal-lda.github.io/TrialEmulation/reference/calculate_weights.md).
 
 ``` r
+
 trial_pp <- trial_pp |> calculate_weights()
 trial_itt <- calculate_weights(trial_itt)
 ```
@@ -258,6 +268,7 @@ above. The summaries are stored in the trial sequence object and can be
 printed:
 
 ``` r
+
 show_weight_models(trial_itt)
 #> Weight Models for Informative Censoring
 #> ---------------------------------------
@@ -273,7 +284,7 @@ show_weight_models(trial_itt)
 #>  404.2156      724     -196.7002 397.4004 406.5727 393.4004 723         725 
 #>  
 #>  path                                                          
-#>  /tmp/RtmpE58y3E/trial_itt/switch_models/model_1ec97d34e4a0.rds
+#>  /tmp/RtmpozLM6G/trial_itt/switch_models/model_1f22790ba9e2.rds
 #>  
 #> [[d0]]
 #> Model: P(censor_event = 0 | X, previous treatment = 0) for denominator 
@@ -287,7 +298,7 @@ show_weight_models(trial_itt)
 #>  283.0723      425     -132.1655 270.3309 282.4943 264.3309 423         426 
 #>  
 #>  path                                                          
-#>  /tmp/RtmpE58y3E/trial_itt/switch_models/model_1ec968843ba3.rds
+#>  /tmp/RtmpozLM6G/trial_itt/switch_models/model_1f227754edf9.rds
 #>  
 #> [[d1]]
 #> Model: P(censor_event = 0 | X, previous treatment = 1) for denominator 
@@ -300,8 +311,8 @@ show_weight_models(trial_itt)
 #>  null.deviance df.null logLik    AIC      BIC      deviance df.residual nobs
 #>  113.0528      298     -55.72938 117.4588 128.5601 111.4588 296         299 
 #>  
-#>  path                                                          
-#>  /tmp/RtmpE58y3E/trial_itt/switch_models/model_1ec939276479.rds
+#>  path                                                         
+#>  /tmp/RtmpozLM6G/trial_itt/switch_models/model_1f223a342d8.rds
 #> 
 ```
 
@@ -315,6 +326,7 @@ numerator terms from the stabilised weight models are automatically
 included in the outcome model formula.
 
 ``` r
+
 trial_pp <- set_outcome_model(trial_pp)
 trial_itt <- set_outcome_model(trial_itt, adjustment_terms = ~x2)
 ```
@@ -345,6 +357,7 @@ There are two options to set
   processed at one time.
 
 ``` r
+
 trial_pp <- set_expansion_options(
   trial_pp,
   output = save_to_datatable(),
@@ -360,6 +373,7 @@ trial_itt <- set_expansion_options(
 Other options for big data are to save to csv or DuckDB:
 
 ``` r
+
 trial_pp <- trial_pp |>
   set_expansion_options(
     output = save_to_csv(file.path(trial_pp_dir, "trial_csvs")),
@@ -389,6 +403,7 @@ Now we are ready to construct the sequence of trials dataset using the
 method. This can take some time for large input data.
 
 ``` r
+
 trial_pp <- expand_trials(trial_pp)
 trial_itt <- expand_trials(trial_itt)
 ```
@@ -397,6 +412,7 @@ The resulting object shows the settings used for the expansion and where
 the expanded data has been saved.
 
 ``` r
+
 trial_pp@expansion
 #> Sequence of Trials Data: 
 #> - Chunk size: 500 
@@ -434,6 +450,7 @@ can be specified, eg `period = 1:60`, and/or a subsetting condition,
 `subset_condition = "age > 65"`.
 
 ``` r
+
 trial_itt <- load_expanded_data(trial_itt, seed = 1234, p_control = 0.5)
 ```
 
@@ -441,6 +458,7 @@ The loaded data can be accessed and/or modified with
 [`outcome_data()`](https://causal-lda.github.io/TrialEmulation/reference/outcome_data.md).
 
 ``` r
+
 x2_sq <- outcome_data(trial_itt)$x2^2
 outcome_data(trial_itt)$x2_sq <- x2_sq
 head(outcome_data(trial_itt))
@@ -473,6 +491,7 @@ apply a modifier function, for example, to trim large weights to some
 fixed value or a percentile.
 
 ``` r
+
 trial_itt <- fit_msm(
   trial_itt,
   weight_cols = c("weight", "sample_weight"),
@@ -488,6 +507,7 @@ trial_itt <- fit_msm(
 The summary of the model fit is shown:
 
 ``` r
+
 trial_itt@outcome_model
 #> - Formula: outcome ~ assigned_treatment + x2 + followup_time + I(followup_time^2) + trial_period + I(trial_period^2) 
 #> - Treatment variable: assigned_treatment 
@@ -515,6 +535,7 @@ logistic model, we have the `glm` object as well as the `sandwich`
 variance-covariance matrix.
 
 ``` r
+
 trial_itt@outcome_model@fitted@model$model
 #> 
 #> Call:  glm(formula = formula, family = binomial("logit"), data = data, 
@@ -551,6 +572,7 @@ trial_itt@outcome_model@fitted@model$vcov
 The complete object shows all the specifications:
 
 ``` r
+
 trial_itt
 #> Trial Sequence Object 
 #> Estimand: Intention-to-treat 
@@ -655,6 +677,7 @@ wish to use with the `conf_type` argument. The default method is using
 the robust sandwich variance estimator.
 
 ``` r
+
 preds <- predict(
   trial_itt,
   newdata = outcome_data(trial_itt)[trial_period == 1, ],

@@ -20,6 +20,9 @@ Useful links:
 
 Authors:
 
+- Isaac Gravestock <isaac.gravestock@roche.com>
+  ([ORCID](https://orcid.org/0000-0003-0283-2065))
+
 - Li Su <li.su@mrc-bsu.cam.ac.uk>
 
 - Roonak Rezvani <roonak.r74@gmail.com>

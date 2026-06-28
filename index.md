@@ -8,12 +8,14 @@ trials** analysis.
 The package is available on CRAN:
 
 ``` r
+
 install.packages('TrialEmulation')
 ```
 
 To install the latest development version from github:
 
 ``` r
+
 remotes::install_github("Causal-LDA/TrialEmulation")
 ```
 
