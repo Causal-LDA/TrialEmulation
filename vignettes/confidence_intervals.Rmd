@@ -109,7 +109,7 @@ head(pred_sandwich$difference)
 
 This is the fastest confidence interval method and is often suitable for larger datasets.
 
-```{r}
+```{r, eval = requireNamespace("ggplot2", quietly=TRUE)}
 library(ggplot2)
 
 ggplot(as.data.frame(pred_sandwich$difference), aes(x = as.data.frame(pred_sandwich$difference)$followup_time, y = as.data.frame(pred_sandwich$difference)$survival_diff)) +

@@ -165,7 +165,7 @@ calculate_cum_inc <- function(p_mat) {
 
 #' @rdname calculate_cum_inc
 #' @noRd
-#' @keywords internal
+#' @examples
 #' TrialEmulation:::calculate_survival(surv_prob)
 calculate_survival <- function(p_mat) {
   assert_matrix(p_mat, mode = "numeric")

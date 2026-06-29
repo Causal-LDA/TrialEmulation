@@ -19,14 +19,15 @@ Useful links:
 
 }
 \author{
-\strong{Maintainer}: Isaac Gravestock \email{isaac.gravestock@roche.com} (\href{https://orcid.org/0000-0003-0283-2065}{ORCID})
+\strong{Maintainer}: Isaac Gravestock \email{isaac.gravestock@gmail.com} (\href{https://orcid.org/0000-0003-0283-2065}{ORCID})
 
 Authors:
 \itemize{
-  \item Isaac Gravestock \email{isaac.gravestock@roche.com} (\href{https://orcid.org/0000-0003-0283-2065}{ORCID})
+  \item Isaac Gravestock \email{isaac.gravestock@gmail.com} (\href{https://orcid.org/0000-0003-0283-2065}{ORCID})
   \item Li Su \email{li.su@mrc-bsu.cam.ac.uk}
   \item Roonak Rezvani \email{roonak.r74@gmail.com} (\href{https://orcid.org/0000-0001-5580-5058}{ORCID}) (Original package author)
   \item Julia Moesch \email{julia.moesch@roche.com}
+  \item Limozin Juliette (\href{https://orcid.org/0000-0002-1140-2350}{ORCID})
 }
 
 Other contributors:
