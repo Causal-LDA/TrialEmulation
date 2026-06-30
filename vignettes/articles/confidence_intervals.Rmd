@@ -104,7 +104,13 @@ This is the fastest confidence interval method and is often suitable for larger 
 ```{r, eval = requireNamespace("ggplot2", quietly=TRUE)}
 library(ggplot2)
 
-ggplot(as.data.frame(pred_sandwich$difference), aes(x = as.data.frame(pred_sandwich$difference)$followup_time, y = as.data.frame(pred_sandwich$difference)$survival_diff)) +
+ggplot(
+  as.data.frame(pred_sandwich$difference),
+  aes(
+    x = as.data.frame(pred_sandwich$difference)$followup_time,
+    y = as.data.frame(pred_sandwich$difference)$survival_diff
+  )
+) +
   geom_line() +
   geom_line(aes(y = as.data.frame(pred_sandwich$difference)[, 3], color = "Sandwich"), linetype = "dashed") +
   geom_line(aes(y = as.data.frame(pred_sandwich$difference)[, 4], color = "Sandwich"), linetype = "dashed") +
@@ -146,7 +152,10 @@ head(pred_boot)
 The `samples` argument specifies the number of bootstrap resamples.
 
 ```{r}
-ggplot(as.data.frame(pred_boot), aes(x = as.data.frame(pred_boot)$followup_time, y = as.data.frame(pred_boot)$survival_diff)) +
+ggplot(
+  as.data.frame(pred_boot),
+  aes(x = as.data.frame(pred_boot)$followup_time, y = as.data.frame(pred_boot)$survival_diff)
+) +
   geom_line() +
   geom_line(aes(y = as.data.frame(pred_boot)[, 3], color = "Nonpara. bootstrap"), linetype = "dashed") +
   geom_line(aes(y = as.data.frame(pred_boot)[, 4], color = "Nonpara. bootstrap"), linetype = "dashed") +
@@ -209,7 +218,10 @@ head(pred_lef_both)
 Because repeated model fitting is avoided, this method is often substantially faster than the ordinary nonparametric bootstrap.
 
 ```{r}
-ggplot(as.data.frame(pred_lef_outcome), aes(x = as.data.frame(pred_lef_outcome)$followup_time, y = as.data.frame(pred_lef_outcome)$survival_diff)) +
+ggplot(
+  as.data.frame(pred_lef_outcome),
+  aes(x = as.data.frame(pred_lef_outcome)$followup_time, y = as.data.frame(pred_lef_outcome)$survival_diff)
+) +
   geom_line() +
   geom_line(aes(y = as.data.frame(pred_lef_outcome)[, 3], color = "LEF outcome"), linetype = "dashed") +
   geom_line(aes(y = as.data.frame(pred_lef_outcome)[, 4], color = "LEF outcome"), linetype = "dashed") +
@@ -270,7 +282,10 @@ head(pred_jack_mvn$difference)
 
 
 ```{r}
-ggplot(as.data.frame(pred_jack_wald), aes(x = as.data.frame(pred_jack_wald)$followup_time, y = as.data.frame(pred_jack_wald)$survival_diff)) +
+ggplot(
+  as.data.frame(pred_jack_wald),
+  aes(x = as.data.frame(pred_jack_wald)$followup_time, y = as.data.frame(pred_jack_wald)$survival_diff)
+) +
   geom_line() +
   geom_line(aes(y = as.data.frame(pred_jack_wald)[, 3], color = "Jackknife Wald"), linetype = "dashed") +
   geom_line(aes(y = as.data.frame(pred_jack_wald)[, 4], color = "Jackknife Wald"), linetype = "dashed") +
@@ -316,4 +331,3 @@ The LEF methods were developed to improve confidence interval performance in set
 # Reference
 
 [1] Limozin, J.M., Seaman, S.R. and Su, L., 2025. Inference procedures in sequential trial emulation with survival outcomes: Comparing confidence intervals based on the sandwich variance estimator, bootstrap and jackknife. Statistical Methods in Medical Research, 34(10), pp.2011-2033.
-
