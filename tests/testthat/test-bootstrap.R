@@ -1,4 +1,7 @@
+skip_on_cran()
+
 test_that("Same weights recalculated if we use the same weight model coefficients and original dataset", {
+  skip_on_cran()
   set.seed(887)
   trial_pp_dir <- withr::local_tempdir("trial_pp", tempdir(TRUE))
 
@@ -57,6 +60,7 @@ test_that("Same weights recalculated if we use the same weight model coefficient
 })
 
 test_that("Same weights refitted if we use original dataset", {
+  skip_on_cran()
   set.seed(222)
   trial_pp_dir <- withr::local_tempdir("trial_pp", tempdir(TRUE))
 
@@ -105,6 +109,7 @@ test_that("Same weights refitted if we use original dataset", {
 })
 
 test_that("Same weights refitted if we use example bootstrap sample", {
+  skip_on_cran()
   set.seed(194)
   trial_pp_dir <- withr::local_tempdir("trial_pp", tempdir(TRUE))
 
@@ -237,6 +242,7 @@ test_that("Same weights refitted if we use example bootstrap sample", {
 })
 
 test_that("Correct weights recalculated if we use new weight model coefficients and bootstrap sample", {
+  skip_on_cran()
   set.seed(978)
   trial_pp_dir <- withr::local_tempdir("trial_pp", tempdir(TRUE))
 
@@ -345,6 +351,7 @@ test_that("Correct weights recalculated if we use new weight model coefficients 
 })
 
 test_that("no bootstrap with ITT", {
+  skip_on_cran()
   set.seed(194)
   trial_itt_dir <- withr::local_tempdir("trial_itt", tempdir(TRUE))
 
@@ -430,6 +437,7 @@ test_that("predict works with bootstrap", {
 })
 
 test_that("predict works with bootstrap with newdata containing ID", {
+  skip_on_cran()
   set.seed(194)
   trial_pp_dir <- withr::local_tempdir("trial_pp", tempdir(TRUE))
 

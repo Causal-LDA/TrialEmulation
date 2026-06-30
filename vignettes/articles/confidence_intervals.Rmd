@@ -1,15 +1,7 @@
 ---
 title: "Confidence Interval Methods"
-output:
-  rmarkdown::html_vignette:
-    toc: true
-vignette: >
-  %\VignetteIndexEntry{Confidence Interval Methods}
-  %\VignetteEncoding{UTF-8}
-  %\VignetteEngine{knitr::rmarkdown}
-editor_options:
-  chunk_output_type: console
 ---
+
 
 ```{r, include = FALSE}
 knitr::opts_chunk$set(
