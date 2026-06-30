@@ -1,3 +1,5 @@
+# TrialEmulation (development version)
+
 # TrialEmulation 0.0.5
 
 * New confidence interval calculation methods. Thanks @juliettelimozin!
