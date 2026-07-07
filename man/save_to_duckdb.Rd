@@ -10,7 +10,7 @@ save_to_duckdb(path)
 \item{path}{Directory to save \code{DuckDB} database file in.}
 }
 \value{
-A \linkS4class{te_datastore_duckdb} object.
+A \link[=te_datastore_duckdb-class]{te_datastore_duckdb} object.
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
@@ -29,9 +29,9 @@ if (require(duckdb)) {
 
 }
 \seealso{
-Other save_to: 
-\code{\link{save_to_csv}()},
-\code{\link{save_to_datatable}()},
-\code{\link{set_expansion_options}()}
+Other save_to:
+\code{\link[=save_to_csv]{save_to_csv()}},
+\code{\link[=save_to_datatable]{save_to_datatable()}},
+\code{\link[=set_expansion_options]{set_expansion_options()}}
 }
 \concept{save_to}

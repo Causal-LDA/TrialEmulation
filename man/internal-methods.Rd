@@ -30,7 +30,7 @@
 \S4method{expand_trials}{trial_sequence}(object)
 }
 \arguments{
-\item{object}{A \linkS4class{trial_sequence} object}
+\item{object}{A \link[=trial_sequence-class]{trial_sequence} object}
 
 \item{data}{A \code{data.frame} containing all the required variables in the person-time format, i.e., the
 <U+2018>long<U+2019> format.}

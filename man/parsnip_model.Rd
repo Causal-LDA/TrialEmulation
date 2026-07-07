@@ -12,7 +12,7 @@ parsnip_model(model_spec, save_path)
 \item{save_path}{Directory to save models. Set to \code{NA} if models should not be saved.}
 }
 \value{
-An object of class \code{te_parsnip_model} inheriting from \linkS4class{te_model_fitter} which is used for
+An object of class \code{te_parsnip_model} inheriting from \link[=te_model_fitter-class]{te_model_fitter} which is used for
 dispatching methods for the fitting models.
 }
 \description{
@@ -45,8 +45,8 @@ if (
 
 }
 \seealso{
-Other model_fitter: 
-\code{\link{stats_glm_logit}()},
+Other model_fitter:
+\code{\link[=stats_glm_logit]{stats_glm_logit()}},
 \code{\link{te_model_fitter-class}}
 }
 \concept{model_fitter}

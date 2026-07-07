@@ -10,8 +10,8 @@ define how the outcome models are fit. They are used for the dispatch of the int
 \link{fit_weights_model} and \link{predict}.
 }
 \seealso{
-Other model_fitter: 
-\code{\link{parsnip_model}()},
-\code{\link{stats_glm_logit}()}
+Other model_fitter:
+\code{\link[=parsnip_model]{parsnip_model()}},
+\code{\link[=stats_glm_logit]{stats_glm_logit()}}
 }
 \concept{model_fitter}

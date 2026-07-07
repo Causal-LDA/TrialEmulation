@@ -33,7 +33,7 @@ The classes and (internal) methods defined for using parsnip to fit the weight m
 }}
 
 \seealso{
-Other model_fitter_classes: 
+Other model_fitter_classes:
 \code{\link{te_stats_glm_logit-class}}
 }
 \concept{model_fitter_classes}

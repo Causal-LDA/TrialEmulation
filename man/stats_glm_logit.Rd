@@ -10,7 +10,7 @@ stats_glm_logit(save_path)
 \item{save_path}{Directory to save models. Set to \code{NA} if models should not be saved.}
 }
 \value{
-An object of class \code{te_stats_glm_logit} inheriting from \linkS4class{te_model_fitter} which is used for
+An object of class \code{te_stats_glm_logit} inheriting from \link[=te_model_fitter-class]{te_model_fitter} which is used for
 dispatching methods for the fitting models.
 }
 \description{
@@ -25,8 +25,8 @@ Outcome models additional calculate robust variance estimates using \code{sandwi
 stats_glm_logit(save_path = tempdir())
 }
 \seealso{
-Other model_fitter: 
-\code{\link{parsnip_model}()},
+Other model_fitter:
+\code{\link[=parsnip_model]{parsnip_model()}},
 \code{\link{te_model_fitter-class}}
 }
 \concept{model_fitter}
