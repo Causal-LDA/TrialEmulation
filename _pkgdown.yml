@@ -33,6 +33,8 @@ navbar:
         href: articles/new-interface.html
       - text: Extending TrialEmulation
         href: articles/Extending-TrialEmulation.html
+      - text: Confidence Interval Methods
+        href: articles/confidence_intervals.html
 
 
 reference:

@@ -45,8 +45,7 @@ Suggests:
     rmarkdown,
     rpart,
     testthat (>= 3.0.0),
-    withr,
-    ggplot2
+    withr
 LinkingTo: 
     Rcpp
 VignetteBuilder: 
@@ -92,3 +91,4 @@ Collate:
     'weighting.R'
 Config/roxygen2/version: 8.0.0
 Config/Needs/website: rmarkdown
+RoxygenNote: 8.0.0
