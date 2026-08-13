@@ -1,5 +1,3 @@
-skip_on_cran()
-
 test_that("Same weights recalculated if we use the same weight model coefficients and original dataset", {
   skip_on_cran()
   set.seed(887)
@@ -389,6 +387,7 @@ test_that("no bootstrap with ITT", {
 })
 
 test_that("predict works with bootstrap", {
+  skip_on_cran()
   set.seed(194)
   trial_pp_dir <- withr::local_tempdir("trial_pp", tempdir(TRUE))
 
@@ -488,6 +487,7 @@ test_that("predict works with bootstrap with newdata containing ID", {
 })
 
 test_that("predict works with bootstrap with newdata NOT containing ID", {
+  skip_on_cran()
   set.seed(194)
   trial_pp_dir <- withr::local_tempdir("trial_pp", tempdir(TRUE))
 
@@ -538,6 +538,7 @@ test_that("predict works with bootstrap with newdata NOT containing ID", {
 })
 
 test_that("predict works with LEF outcome", {
+  skip_on_cran()
   set.seed(194)
   trial_pp_dir <- withr::local_tempdir("trial_pp", tempdir(TRUE))
 
@@ -588,6 +589,7 @@ test_that("predict works with LEF outcome", {
 })
 
 test_that("predict works with LEF both", {
+  skip_on_cran()
   set.seed(194)
   trial_pp_dir <- withr::local_tempdir("trial_pp", tempdir(TRUE))
 
@@ -637,6 +639,7 @@ test_that("predict works with LEF both", {
 })
 
 test_that("predict works with Jackknife Wald", {
+  skip_on_cran()
   set.seed(194)
   trial_pp_dir <- withr::local_tempdir("trial_pp", tempdir(TRUE))
 
@@ -686,6 +689,7 @@ test_that("predict works with Jackknife Wald", {
 })
 
 test_that("predict works with Jackknife MVN", {
+  skip_on_cran()
   set.seed(194)
   trial_pp_dir <- withr::local_tempdir("trial_pp", tempdir(TRUE))
 
