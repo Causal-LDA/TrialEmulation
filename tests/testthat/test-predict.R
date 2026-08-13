@@ -1,4 +1,5 @@
 test_that("predict.TE_msm works as expected", {
+  skip_on_cran()
   trial_ex <- TrialEmulation::trial_example
   trial_ex$catvarA <- as.factor(trial_ex$catvarA)
   trial_ex$catvarB <- as.factor(trial_ex$catvarB)
@@ -32,6 +33,7 @@ test_that("predict.TE_msm works as expected", {
 })
 
 test_that("predict.TE_msm works with newdata", {
+  skip_on_cran()
   data <- as.data.table(TrialEmulation::vignette_switch_data)
   new_data <- data[data$followup_time == 0 & data$trial_period == 300, ]
   data$catvarA <- factor(data$catvarA)
@@ -138,6 +140,7 @@ test_that("predict.TE_msm warns for As-Treated", {
 
 # Compare with new methods
 test_that("predict.TE_msm gives the same results as new predict", {
+  skip_on_cran()
   trial_ex <- TrialEmulation::trial_example
   trial_ex$catvarA <- as.factor(trial_ex$catvarA)
   trial_ex$catvarB <- as.factor(trial_ex$catvarB)

@@ -89,6 +89,5 @@ Collate:
     'te_stats_glm_logit.R'
     'utils.R'
     'weighting.R'
-Config/roxygen2/version: 8.0.0
+Config/roxygen2/version: 8.1.0
 Config/Needs/website: rmarkdown
-RoxygenNote: 8.0.0

@@ -18,3 +18,4 @@
 ^renv\.lock$
 ^testing$
 ^vignettes/articles$
+^\.vscode$
