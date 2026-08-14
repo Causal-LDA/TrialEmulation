@@ -13,7 +13,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">TrialEmulation</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.4.11</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.5</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -27,6 +27,7 @@
   <ul class="dropdown-menu" aria-labelledby="dropdown-articles"><li><a class="dropdown-item" href="../articles/Getting-Started.html">Getting Started</a></li>
     <li><a class="dropdown-item" href="../articles/new-interface.html">New Interface</a></li>
     <li><a class="dropdown-item" href="../articles/Extending-TrialEmulation.html">Extending TrialEmulation</a></li>
+    <li><a class="dropdown-item" href="../articles/confidence_intervals.html">Confidence Interval Methods</a></li>
   </ul></li>
 <li class="nav-item"><a class="nav-link" href="../news/index.html">Changelog</a></li>
       </ul><ul class="navbar-nav"><li class="nav-item"><a class="external-link nav-link" href="https://github.com/Causal-LDA/TrialEmulation/" aria-label="github"><span class="fa fab fa-github fa-lg"></span></a></li>
@@ -67,7 +68,7 @@ dispatching methods for the fitting models.</p>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
     <p>Specify that the pooled logistic regression outcome models should be fit using <a href="https://rdrr.io/r/stats/glm.html" class="external-link">stats::glm</a> with <code>family = binomial(link = "logit")</code>.</p>
-<p>Outcome models additional calculate robust variance estimates using <code><a href="https://sandwich.R-Forge.R-project.org/reference/vcovCL.html" class="external-link">sandwich::vcovCL</a></code>.</p>
+<p>Outcome models additional calculate robust variance estimates using <code><a href="https://zeileis.codeberg.page/sandwich/reference/vcovCL.html" class="external-link">sandwich::vcovCL</a></code>.</p>
     </div>
     <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
@@ -81,7 +82,7 @@ dispatching methods for the fitting models.</p>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu">stats_glm_logit</span><span class="op">(</span>save_path <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> An object of class "te_stats_glm_logit"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Slot "save_path":</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "/tmp/RtmpoaSm7G"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "/tmp/RtmpEaIeEK"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 </code></pre></div>
     </div>
@@ -90,11 +91,11 @@ dispatching methods for the fitting models.</p>
 
 
     <footer><div class="pkgdown-footer-left">
-  <p>Developed by Isaac Gravestock, Li Su, Roonak Rezvani, Julia Moesch, Medical Research Council (MRC), F. Hoffmann-La Roche AG.</p>
+  <p>Developed by Isaac Gravestock, Li Su, Roonak Rezvani, Julia Moesch, Juliette Limozin, Medical Research Council (MRC), F. Hoffmann-La Roche AG.</p>
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.1.</p>
 </div>
 
     </footer></div>

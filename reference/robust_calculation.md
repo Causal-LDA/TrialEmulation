@@ -2,7 +2,7 @@
 
 This function performs the calculation of robust standard errors based
 on variances estimated using
-[`sandwich::vcovCL`](https://sandwich.R-Forge.R-project.org/reference/vcovCL.html).
+[`sandwich::vcovCL`](https://zeileis.codeberg.page/sandwich/reference/vcovCL.html).
 
 ## Usage
 

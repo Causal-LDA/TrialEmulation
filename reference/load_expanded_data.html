@@ -13,7 +13,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">TrialEmulation</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.4.11</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.5</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -27,6 +27,7 @@
   <ul class="dropdown-menu" aria-labelledby="dropdown-articles"><li><a class="dropdown-item" href="../articles/Getting-Started.html">Getting Started</a></li>
     <li><a class="dropdown-item" href="../articles/new-interface.html">New Interface</a></li>
     <li><a class="dropdown-item" href="../articles/Extending-TrialEmulation.html">Extending TrialEmulation</a></li>
+    <li><a class="dropdown-item" href="../articles/confidence_intervals.html">Confidence Interval Methods</a></li>
   </ul></li>
 <li class="nav-item"><a class="nav-link" href="../news/index.html">Changelog</a></li>
       </ul><ul class="navbar-nav"><li class="nav-item"><a class="external-link nav-link" href="https://github.com/Causal-LDA/TrialEmulation/" aria-label="github"><span class="fa fab fa-github fa-lg"></span></a></li>
@@ -158,7 +159,7 @@ as a <a href="te_outcome_data-class.html">te_outcome_data</a> object.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> A TE Datastore CSV object </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> N: 1558 observations </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Periods: 0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Path: /tmp/RtmpoaSm7G/trial_itt/trial_csvs </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Path: /tmp/RtmpEaIeEK/trial_itt/trial_csvs </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Columns: id, trial_period, followup_time, outcome, weight, treatment, x1, x2, assigned_treatment </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Outcome model: </span>
@@ -226,7 +227,7 @@ as a <a href="te_outcome_data-class.html">te_outcome_data</a> object.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> A TE Datastore CSV object </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> N: 1558 observations </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Periods: 0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Path: /tmp/RtmpoaSm7G/trial_itt/trial_csvs </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Path: /tmp/RtmpEaIeEK/trial_itt/trial_csvs </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Columns: id, trial_period, followup_time, outcome, weight, treatment, x1, x2, assigned_treatment </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Outcome model: </span>
@@ -238,24 +239,24 @@ as a <a href="te_outcome_data-class.html">te_outcome_data</a> object.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Use fit_msm() to fit the outcome model </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Outcome data </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> N: 137 observations from 24 patients in 16 trial periods </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Periods: 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> N: 136 observations from 21 patients in 14 trial periods </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Periods: 1 2 3 4 5 6 7 8 9 10 11 13 15 16 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Subset condition: followup_time %in% 1:20 &amp; x2 &lt; 1 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Sampling control observations with probability: 0.2 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>         id trial_period followup_time outcome weight treatment    x1         x2</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>      &lt;int&gt;        &lt;int&gt;         &lt;int&gt;   &lt;int&gt;  &lt;int&gt;     &lt;int&gt; &lt;int&gt;      &lt;num&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   1:    54            1             1       0      1         0     0 -1.4326303</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   2:    33            1             1       0      1         1     0 -0.5514144</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   1:    88            1             1       0      1         0     1 -0.3808923</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   2:    38            1             1       0      1         0     1 -1.3912346</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  ---                                                                           </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 136:    54           15             2       0      1         1     0  0.6850722</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 137:    54           16             3       0      1         0     1  0.8179964</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 135:    54           15             4       0      1         0     0  0.6850722</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 136:    54           16             1       0      1         1     1  0.8179964</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>      assigned_treatment sample_weight</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                   &lt;int&gt;         &lt;num&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   1:                  0             5</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   2:                  1             5</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  ---                                 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 135:                  0             5</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 136:                  0             5</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 137:                  0             5</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># delete after use</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/unlink.html" class="external-link">unlink</a></span><span class="op">(</span><span class="va">trial_itt_dir</span>, recursive <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
@@ -266,11 +267,11 @@ as a <a href="te_outcome_data-class.html">te_outcome_data</a> object.</p>
 
 
     <footer><div class="pkgdown-footer-left">
-  <p>Developed by Isaac Gravestock, Li Su, Roonak Rezvani, Julia Moesch, Medical Research Council (MRC), F. Hoffmann-La Roche AG.</p>
+  <p>Developed by Isaac Gravestock, Li Su, Roonak Rezvani, Julia Moesch, Juliette Limozin, Medical Research Council (MRC), F. Hoffmann-La Roche AG.</p>
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.1.</p>
 </div>
 
     </footer></div>

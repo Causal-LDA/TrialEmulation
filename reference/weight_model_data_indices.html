@@ -13,7 +13,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">TrialEmulation</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.4.11</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.5</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -27,6 +27,7 @@
   <ul class="dropdown-menu" aria-labelledby="dropdown-articles"><li><a class="dropdown-item" href="../articles/Getting-Started.html">Getting Started</a></li>
     <li><a class="dropdown-item" href="../articles/new-interface.html">New Interface</a></li>
     <li><a class="dropdown-item" href="../articles/Extending-TrialEmulation.html">Extending TrialEmulation</a></li>
+    <li><a class="dropdown-item" href="../articles/confidence_intervals.html">Confidence Interval Methods</a></li>
   </ul></li>
 <li class="nav-item"><a class="nav-link" href="../news/index.html">Changelog</a></li>
       </ul><ul class="navbar-nav"><li class="nav-item"><a class="external-link nav-link" href="https://github.com/Causal-LDA/TrialEmulation/" aria-label="github"><span class="fa fab fa-github fa-lg"></span></a></li>
@@ -165,7 +166,7 @@ fitting this model.</p></dd>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  188.829       150     -93.43779 190.8756 196.9101 186.8756 149         151 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  path                                  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  /tmp/RtmpoaSm7G/model_1a9143c5d921.rds</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  /tmp/RtmpEaIeEK/model_1a55725b1f39.rds</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[d1]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Model: P(treatment = 1 | previous treatment = 1) for denominator </span>
@@ -180,7 +181,7 @@ fitting this model.</p></dd>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  188.829       150     -92.54787 193.0957 205.1649 185.0957 147         151 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  path                                  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  /tmp/RtmpoaSm7G/model_1a9137d767a6.rds</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  /tmp/RtmpEaIeEK/model_1a55556ebd3f.rds</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[n0]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Model: P(treatment = 1 | previous treatment = 0) for numerator </span>
@@ -193,7 +194,7 @@ fitting this model.</p></dd>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  232.2705      169     -113.2746 230.5492 236.8208 226.5492 168         170 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  path                                  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  /tmp/RtmpoaSm7G/model_1a9130d76672.rds</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  /tmp/RtmpEaIeEK/model_1a552914a05d.rds</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[d0]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Model: P(treatment = 1 | previous treatment = 0) for denominator </span>
@@ -208,7 +209,7 @@ fitting this model.</p></dd>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  232.2705      169     -111.03 230.06 242.6032 222.06   166         170 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  path                                  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  /tmp/RtmpoaSm7G/model_1a916258de6c.rds</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  /tmp/RtmpEaIeEK/model_1a5538ac4283.rds</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  </span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># get logical column for own processing</span></span></span>
@@ -387,11 +388,11 @@ fitting this model.</p></dd>
 
 
     <footer><div class="pkgdown-footer-left">
-  <p>Developed by Isaac Gravestock, Li Su, Roonak Rezvani, Julia Moesch, Medical Research Council (MRC), F. Hoffmann-La Roche AG.</p>
+  <p>Developed by Isaac Gravestock, Li Su, Roonak Rezvani, Julia Moesch, Juliette Limozin, Medical Research Council (MRC), F. Hoffmann-La Roche AG.</p>
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.1.</p>
 </div>
 
     </footer></div>

@@ -1,5 +1,14 @@
 # Changelog
 
+## TrialEmulation 0.0.5
+
+- New confidence interval calculation methods. Thanks
+  [@juliettelimozin](https://github.com/juliettelimozin)! Based on
+  [Limozin et al. (2025)
+  doi:10.1177/09622802251356594](https://doi.org/10.1177/09622802251356594).
+  See the vignette for more details.
+- Update maintainer email address
+
 ## TrialEmulation 0.0.4.11
 
 CRAN release: 2026-04-10

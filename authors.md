@@ -13,6 +13,9 @@
 
 - **Julia Moesch**. Author.
 
+- **Juliette Limozin**. Author.
+  [](https://orcid.org/0000-0002-1140-2350)
+
 - **Medical Research Council (MRC)**. Funder.
 
 - **F. Hoffmann-La Roche AG**. Copyright holder, funder.
@@ -22,14 +25,14 @@
 Source:
 [`DESCRIPTION`](https://github.com/Causal-LDA/TrialEmulation/blob/main/DESCRIPTION)
 
-Gravestock I, Su L, Rezvani R, Moesch J (2026). *TrialEmulation: Causal
-Analysis of Observational Time-to-Event Data*. R package version
-0.0.4.11, <https://causal-lda.github.io/TrialEmulation/>.
+Gravestock I, Su L, Rezvani R, Moesch J, Limozin J (2026).
+*TrialEmulation: Causal Analysis of Observational Time-to-Event Data*. R
+package version 0.0.5, <https://causal-lda.github.io/TrialEmulation/>.
 
     @Manual{,
       title = {TrialEmulation: Causal Analysis of Observational Time-to-Event Data},
-      author = {Isaac Gravestock and Li Su and Roonak Rezvani and Julia Moesch},
+      author = {Isaac Gravestock and Li Su and Roonak Rezvani and Julia Moesch and Juliette Limozin},
       year = {2026},
-      note = {R package version 0.0.4.11},
+      note = {R package version 0.0.5},
       url = {https://causal-lda.github.io/TrialEmulation/},
     }

@@ -15,12 +15,12 @@ Useful links:
 
 ## Author
 
-**Maintainer**: Isaac Gravestock <isaac.gravestock@roche.com>
+**Maintainer**: Isaac Gravestock <isaac.gravestock@gmail.com>
 ([ORCID](https://orcid.org/0000-0003-0283-2065))
 
 Authors:
 
-- Isaac Gravestock <isaac.gravestock@roche.com>
+- Isaac Gravestock <isaac.gravestock@gmail.com>
   ([ORCID](https://orcid.org/0000-0003-0283-2065))
 
 - Li Su <li.su@mrc-bsu.cam.ac.uk>
@@ -30,6 +30,8 @@ Authors:
   author)
 
 - Julia Moesch <julia.moesch@roche.com>
+
+- Juliette Limozin ([ORCID](https://orcid.org/0000-0002-1140-2350))
 
 Other contributors:
 

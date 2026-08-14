@@ -115,7 +115,13 @@ larger datasets.
 
 library(ggplot2)
 
-ggplot(as.data.frame(pred_sandwich$difference), aes(x = as.data.frame(pred_sandwich$difference)$followup_time, y = as.data.frame(pred_sandwich$difference)$survival_diff)) +
+ggplot(
+  as.data.frame(pred_sandwich$difference),
+  aes(
+    x = as.data.frame(pred_sandwich$difference)$followup_time,
+    y = as.data.frame(pred_sandwich$difference)$survival_diff
+  )
+) +
   geom_line() +
   geom_line(aes(y = as.data.frame(pred_sandwich$difference)[, 3], color = "Sandwich"), linetype = "dashed") +
   geom_line(aes(y = as.data.frame(pred_sandwich$difference)[, 4], color = "Sandwich"), linetype = "dashed") +
@@ -168,7 +174,10 @@ The `samples` argument specifies the number of bootstrap resamples.
 
 ``` r
 
-ggplot(as.data.frame(pred_boot), aes(x = as.data.frame(pred_boot)$followup_time, y = as.data.frame(pred_boot)$survival_diff)) +
+ggplot(
+  as.data.frame(pred_boot),
+  aes(x = as.data.frame(pred_boot)$followup_time, y = as.data.frame(pred_boot)$survival_diff)
+) +
   geom_line() +
   geom_line(aes(y = as.data.frame(pred_boot)[, 3], color = "Nonpara. bootstrap"), linetype = "dashed") +
   geom_line(aes(y = as.data.frame(pred_boot)[, 4], color = "Nonpara. bootstrap"), linetype = "dashed") +
@@ -255,7 +264,10 @@ substantially faster than the ordinary nonparametric bootstrap.
 
 ``` r
 
-ggplot(as.data.frame(pred_lef_outcome), aes(x = as.data.frame(pred_lef_outcome)$followup_time, y = as.data.frame(pred_lef_outcome)$survival_diff)) +
+ggplot(
+  as.data.frame(pred_lef_outcome),
+  aes(x = as.data.frame(pred_lef_outcome)$followup_time, y = as.data.frame(pred_lef_outcome)$survival_diff)
+) +
   geom_line() +
   geom_line(aes(y = as.data.frame(pred_lef_outcome)[, 3], color = "LEF outcome"), linetype = "dashed") +
   geom_line(aes(y = as.data.frame(pred_lef_outcome)[, 4], color = "LEF outcome"), linetype = "dashed") +
@@ -340,7 +352,10 @@ head(pred_jack_mvn$difference)
 
 ``` r
 
-ggplot(as.data.frame(pred_jack_wald), aes(x = as.data.frame(pred_jack_wald)$followup_time, y = as.data.frame(pred_jack_wald)$survival_diff)) +
+ggplot(
+  as.data.frame(pred_jack_wald),
+  aes(x = as.data.frame(pred_jack_wald)$followup_time, y = as.data.frame(pred_jack_wald)$survival_diff)
+) +
   geom_line() +
   geom_line(aes(y = as.data.frame(pred_jack_wald)[, 3], color = "Jackknife Wald"), linetype = "dashed") +
   geom_line(aes(y = as.data.frame(pred_jack_wald)[, 4], color = "Jackknife Wald"), linetype = "dashed") +
